@@ -16,17 +16,17 @@
 <tr>
 	<td>waitForElementPresent</td>
 	<td>link=Control Panel</td>
-	<td></td>
+	<td>Control Panel</td>
 </tr>
 <tr>
 	<td>clickAtAndWait</td>
 	<td>link=Control Panel</td>
-	<td></td>
+	<td>Control Panel</td>
 </tr>
 <tr>
 	<td>clickAtAndWait</td>
 	<td>link=Blogs</td>
-	<td></td>
+	<td>Blogs</td>
 </tr>
 <tr>
 	<td>clickAtAndWait</td>
@@ -61,15 +61,15 @@
 <tr>
 	<td>selectFrame</td>
 	<td>relative=top</td>
-	<td></td>
+	<td>top</td>
 </tr>
 <tr>
-	<td>clickAt</td>
+	<td>clickAtAndWait</td>
 	<td>//input[@value='Save as Draft']</td>
-	<td></td>
+	<td>Save as Draft</td>
 </tr>
 <tr>
-	<td>assertText</td>
+	<td>assertPartialText</td>
 	<td>//div[@class='portlet-msg-success']</td>
 	<td>Your request completed successfully.</td>
 </tr>
@@ -77,6 +77,11 @@
 	<td>assertText</td>
 	<td>//strong[@class='workflow-status-draft']</td>
 	<td>Draft</td>
+</tr>
+<tr>
+	<td>pause</td>
+	<td>5000</td>
+	<td></td>
 </tr>
 <tr>
 	<td>waitForPartialText</td>
@@ -96,17 +101,17 @@
 <tr>
 	<td>waitForElementPresent</td>
 	<td>link=Control Panel</td>
-	<td></td>
+	<td>Control Panel</td>
 </tr>
 <tr>
 	<td>clickAtAndWait</td>
 	<td>link=Control Panel</td>
-	<td></td>
+	<td>Control Panel</td>
 </tr>
 <tr>
 	<td>clickAtAndWait</td>
 	<td>link=Blogs</td>
-	<td></td>
+	<td>Blogs</td>
 </tr>
 <tr>
 	<td>assertText</td>
