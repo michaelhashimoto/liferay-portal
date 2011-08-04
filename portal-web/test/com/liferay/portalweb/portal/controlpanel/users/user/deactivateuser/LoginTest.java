@@ -20,9 +20,10 @@ import com.liferay.portalweb.portal.util.RuntimeVariables;
 /**
  * @author Brian Wing Shun Chan
  */
-public class DeactivateUserTest extends BaseTestCase {
-	public void testDeactivateUser() throws Exception {
-		selenium.open("/web/guest/home/");
+public class LoginTest extends BaseTestCase {
+	public void testLogin() throws Exception {
+		selenium.setTimeout("180000");
+		selenium.open("/web/guest/home");
 
 		for (int second = 0;; second++) {
 			if (second >= 60) {
@@ -30,7 +31,7 @@ public class DeactivateUserTest extends BaseTestCase {
 			}
 
 			try {
-				if (selenium.isVisible("link=Control Panel")) {
+				if (selenium.isVisible("link=Sign In")) {
 					break;
 				}
 			}
@@ -41,29 +42,8 @@ public class DeactivateUserTest extends BaseTestCase {
 		}
 
 		selenium.saveScreenShotAndSource();
-		selenium.clickAt("link=Control Panel",
-			RuntimeVariables.replace("Control Panel"));
+		selenium.clickAt("link=Sign In", RuntimeVariables.replace("Sign In"));
 		selenium.waitForPageToLoad("30000");
-		selenium.saveScreenShotAndSource();
-		selenium.clickAt("link=Users and Organizations",
-			RuntimeVariables.replace("Users and Organizations"));
-		selenium.waitForPageToLoad("30000");
-		selenium.saveScreenShotAndSource();
-		selenium.type("//input[@id='_125_keywords']",
-			RuntimeVariables.replace("selen01"));
-		selenium.saveScreenShotAndSource();
-		selenium.clickAt("//input[@value='Search']",
-			RuntimeVariables.replace("Search"));
-		selenium.waitForPageToLoad("30000");
-		selenium.saveScreenShotAndSource();
-		assertEquals(RuntimeVariables.replace("selen01"),
-			selenium.getText("//td[2]/a"));
-		selenium.clickAt("//input[@name='_125_rowIds']",
-			RuntimeVariables.replace(""));
-		selenium.click(RuntimeVariables.replace("//input[@value='Deactivate']"));
-		selenium.waitForPageToLoad("30000");
-		assertTrue(selenium.getConfirmation()
-						   .matches("^Are you sure you want to deactivate the selected users[\\s\\S]$"));
 		selenium.saveScreenShotAndSource();
 
 		for (int second = 0;; second++) {
@@ -72,7 +52,7 @@ public class DeactivateUserTest extends BaseTestCase {
 			}
 
 			try {
-				if (selenium.isVisible("//div[@class='portlet-msg-success']")) {
+				if (selenium.isVisible("//input[@id='_58_login']")) {
 					break;
 				}
 			}
@@ -83,9 +63,52 @@ public class DeactivateUserTest extends BaseTestCase {
 		}
 
 		selenium.saveScreenShotAndSource();
-		assertEquals(RuntimeVariables.replace(
-				"Your request completed successfully."),
-			selenium.getText("//div[@class='portlet-msg-success']"));
-		assertFalse(selenium.isTextPresent("selen01"));
+		selenium.type("//input[@id='_58_login']",
+			RuntimeVariables.replace("test@liferay.com"));
+		selenium.saveScreenShotAndSource();
+		selenium.type("//input[@id='_58_password']",
+			RuntimeVariables.replace("test"));
+		selenium.saveScreenShotAndSource();
+
+		for (int second = 0;; second++) {
+			if (second >= 60) {
+				fail("timeout");
+			}
+
+			try {
+				if (selenium.isVisible("//input[@id='_58_rememberMeCheckbox']")) {
+					break;
+				}
+			}
+			catch (Exception e) {
+			}
+
+			Thread.sleep(1000);
+		}
+
+		selenium.saveScreenShotAndSource();
+		selenium.click("//input[@id='_58_rememberMeCheckbox']");
+
+		for (int second = 0;; second++) {
+			if (second >= 60) {
+				fail("timeout");
+			}
+
+			try {
+				if (selenium.isVisible("//input[@value='Sign In']")) {
+					break;
+				}
+			}
+			catch (Exception e) {
+			}
+
+			Thread.sleep(1000);
+		}
+
+		selenium.saveScreenShotAndSource();
+		selenium.clickAt("//input[@value='Sign In']",
+			RuntimeVariables.replace("Sign In"));
+		selenium.waitForPageToLoad("30000");
+		selenium.saveScreenShotAndSource();
 	}
 }
