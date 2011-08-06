@@ -97,7 +97,7 @@ public class ConfigurePortletScopeLayoutPage2Page1Test extends BaseTestCase {
 			}
 
 			try {
-				if (selenium.isVisible("//select[@id='_86_scopeType']")) {
+				if (selenium.isVisible("//select[@id='scopeType']")) {
 					break;
 				}
 			}
@@ -108,7 +108,7 @@ public class ConfigurePortletScopeLayoutPage2Page1Test extends BaseTestCase {
 		}
 
 		selenium.saveScreenShotAndSource();
-		selenium.select("//select[@id='_86_scopeType']",
+		selenium.select("//select[@id='scopeType']",
 			RuntimeVariables.replace("Select Layout"));
 
 		for (int second = 0;; second++) {
@@ -117,7 +117,7 @@ public class ConfigurePortletScopeLayoutPage2Page1Test extends BaseTestCase {
 			}
 
 			try {
-				if (selenium.isVisible("//select[@id='_86_scopeLayoutUuid']")) {
+				if (selenium.isVisible("//select[@id='scopeLayoutUuid']")) {
 					break;
 				}
 			}
@@ -128,7 +128,7 @@ public class ConfigurePortletScopeLayoutPage2Page1Test extends BaseTestCase {
 		}
 
 		selenium.saveScreenShotAndSource();
-		selenium.select("//select[@id='_86_scopeLayoutUuid']",
+		selenium.select("//select[@id='scopeLayoutUuid']",
 			RuntimeVariables.replace("Blogs2 Test2 Page2"));
 		selenium.clickAt("//input[@value='Save']",
 			RuntimeVariables.replace("Save"));
@@ -144,7 +144,7 @@ public class ConfigurePortletScopeLayoutPage2Page1Test extends BaseTestCase {
 				if (RuntimeVariables.replace(
 							"You have successfully updated the setup.")
 										.equals(selenium.getText(
-								"//div[@id='p_p_id_86_']/div/div"))) {
+								"//div[@class='portlet-msg-success']"))) {
 					break;
 				}
 			}
@@ -157,9 +157,9 @@ public class ConfigurePortletScopeLayoutPage2Page1Test extends BaseTestCase {
 		selenium.saveScreenShotAndSource();
 		assertEquals(RuntimeVariables.replace(
 				"You have successfully updated the setup."),
-			selenium.getText("//div[@id='p_p_id_86_']/div/div"));
+			selenium.getText("//div[@class='portlet-msg-success']"));
 		assertEquals("Blogs2 Test2 Page2",
-			selenium.getSelectedLabel("//select[@id='_86_scopeLayoutUuid']"));
+			selenium.getSelectedLabel("//select[@id='scopeLayoutUuid']"));
 		selenium.open("/web/guest/home/");
 
 		for (int second = 0;; second++) {

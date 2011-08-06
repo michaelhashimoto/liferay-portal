@@ -94,7 +94,7 @@ public class ConfigurePortletDisplayStyleAbstractTest extends BaseTestCase {
 			}
 
 			try {
-				if (selenium.isVisible("//select[@id='_86_pageDisplayStyle']")) {
+				if (selenium.isVisible("//select[@id='pageDisplayStyle']")) {
 					break;
 				}
 			}
@@ -105,7 +105,7 @@ public class ConfigurePortletDisplayStyleAbstractTest extends BaseTestCase {
 		}
 
 		selenium.saveScreenShotAndSource();
-		selenium.select("//select[@id='_86_pageDisplayStyle']",
+		selenium.select("//select[@id='pageDisplayStyle']",
 			RuntimeVariables.replace("Abstract"));
 		selenium.clickAt("//input[@value='Save']",
 			RuntimeVariables.replace("Save"));
@@ -134,6 +134,6 @@ public class ConfigurePortletDisplayStyleAbstractTest extends BaseTestCase {
 				"You have successfully updated the setup."),
 			selenium.getText("//div[@class='portlet-msg-success']"));
 		assertEquals("Abstract",
-			selenium.getSelectedLabel("//select[@id='_86_pageDisplayStyle']"));
+			selenium.getSelectedLabel("//select[@id='pageDisplayStyle']"));
 	}
 }
