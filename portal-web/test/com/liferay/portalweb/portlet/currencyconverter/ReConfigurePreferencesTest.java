@@ -43,7 +43,7 @@ public class ReConfigurePreferencesTest extends BaseTestCase {
 
 		selenium.saveScreenShotAndSource();
 		selenium.clickAt("link=Currency Converter Test Page",
-			RuntimeVariables.replace(""));
+			RuntimeVariables.replace("Currency Converter Test Page"));
 		selenium.waitForPageToLoad("30000");
 		selenium.saveScreenShotAndSource();
 
@@ -87,7 +87,8 @@ public class ReConfigurePreferencesTest extends BaseTestCase {
 		assertEquals(RuntimeVariables.replace("Preferences"),
 			selenium.getText(
 				"//div[@class='lfr-component lfr-menu-list']/ul/li[4]/a"));
-		selenium.click("//div[@class='lfr-component lfr-menu-list']/ul/li[4]/a");
+		selenium.clickAt("//div[@class='lfr-component lfr-menu-list']/ul/li[4]/a",
+			RuntimeVariables.replace("Preferences"));
 
 		for (int second = 0;; second++) {
 			if (second >= 60) {
@@ -95,7 +96,7 @@ public class ReConfigurePreferencesTest extends BaseTestCase {
 			}
 
 			try {
-				if (selenium.isVisible("_16_current_actions")) {
+				if (selenium.isVisible("//select[@id='_16_current_actions']")) {
 					break;
 				}
 			}
@@ -106,9 +107,9 @@ public class ReConfigurePreferencesTest extends BaseTestCase {
 		}
 
 		selenium.saveScreenShotAndSource();
-		selenium.addSelection("_16_current_actions",
-			RuntimeVariables.replace("label=Korean Won"));
-		selenium.clickAt("//div[2]/div/span/span/button[1]",
+		selenium.addSelection("//select[@id='_16_current_actions']",
+			RuntimeVariables.replace("Korean Won"));
+		selenium.clickAt("//button[@title='Move selected items from Current to Available.']",
 			RuntimeVariables.replace("Left Arrow"));
 
 		for (int second = 0;; second++) {
@@ -117,7 +118,9 @@ public class ReConfigurePreferencesTest extends BaseTestCase {
 			}
 
 			try {
-				if (selenium.isPartialText("_16_available_actions", "Korean Won")) {
+				if (selenium.isPartialText(
+							"//select[@id='_16_available_actions']",
+							"Korean Won")) {
 					break;
 				}
 			}
@@ -146,7 +149,8 @@ public class ReConfigurePreferencesTest extends BaseTestCase {
 		}
 
 		selenium.saveScreenShotAndSource();
-		selenium.clickAt("//input[@value='Save']", RuntimeVariables.replace(""));
+		selenium.clickAt("//input[@value='Save']",
+			RuntimeVariables.replace("Save"));
 		selenium.waitForPageToLoad("30000");
 		selenium.saveScreenShotAndSource();
 
