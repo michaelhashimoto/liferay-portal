@@ -88,7 +88,7 @@ public class AdvancedSearchOrganizationRegionTest extends BaseTestCase {
 
 				selenium.saveScreenShotAndSource();
 				selenium.select("//select[@id='andOperator']",
-					RuntimeVariables.replace("Any"));
+					RuntimeVariables.replace("All"));
 
 				for (int second = 0;; second++) {
 					if (second >= 60) {
