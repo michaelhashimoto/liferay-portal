@@ -43,8 +43,8 @@ JournalStructure structure = (JournalStructure)request.getAttribute("edit_articl
 if (structure != null) {
 	structureGroupId = structure.getGroupId();
 	parentStructureId = structure.getParentStructureId();
-	structureName = structure.getName();
-	structureDescription = structure.getDescription();
+	structureName = structure.getName(locale);
+	structureDescription = structure.getDescription(locale);
 	structureXSD = structure.getMergedXsd();
 }
 
@@ -79,7 +79,7 @@ if ((structure == null) && Validator.isNotNull(templateId)) {
 
 		structure = JournalStructureLocalServiceUtil.getStructure(structureGroupId, structureId);
 
-		structureName = structure.getName();
+		structureName = structure.getName(locale);
 
 		templates = JournalTemplateLocalServiceUtil.getStructureTemplates(structureGroupId, structureId);
 	}
@@ -789,7 +789,7 @@ private String _getTemplateImage(ThemeDisplay themeDisplay, JournalTemplate temp
 			imageURL = template.getSmallImageURL();
 		}
 		else {
-			imageURL = themeDisplay.getPathImage() + "/journal/template?img_id=" + template.getSmallImageId() + "&t=" + ImageServletTokenUtil.getToken(template.getSmallImageId());
+			imageURL = themeDisplay.getPathImage() + "/journal/template?img_id=" + template.getSmallImageId() + "&t=" + WebServerServletTokenUtil.getToken(template.getSmallImageId());
 		}
 	}
 

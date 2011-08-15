@@ -517,14 +517,15 @@ Liferay.Service.registerClass(
 	Liferay.Service.Asset, "AssetCategory",
 	{
 		addCategory: true,
+		deleteCategories: true,
 		deleteCategory: true,
 		getCategories: true,
 		getCategory: true,
 		getChildCategories: true,
 		getVocabularyCategories: true,
 		getVocabularyRootCategories: true,
-		search: true,
 		moveCategory: true,
+		search: true,
 		updateCategory: true
 	}
 );
@@ -848,6 +849,7 @@ Liferay.Service.registerClass(
 	{
 		addTemplate: true,
 		deleteTemplate: true,
+		getTemplates: true,
 		updateTemplate: true
 	}
 );
