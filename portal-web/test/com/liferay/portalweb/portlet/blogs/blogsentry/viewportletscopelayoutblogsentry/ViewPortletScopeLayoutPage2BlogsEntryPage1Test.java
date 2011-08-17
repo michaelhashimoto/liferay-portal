@@ -49,7 +49,7 @@ public class ViewPortletScopeLayoutPage2BlogsEntryPage1Test extends BaseTestCase
 		assertEquals(RuntimeVariables.replace("Blogs (Blogs2 Test2 Page2)"),
 			selenium.getText("//span[@class='portlet-title-text']"));
 		assertEquals(RuntimeVariables.replace("Blogs Entry Title"),
-			selenium.getText("//div[@class='entry-title']/a"));
+			selenium.getText("//div[@class='entry-title']/h2/a"));
 		assertEquals(RuntimeVariables.replace("Blogs Entry Content"),
 			selenium.getText("//div[@class='entry-body']/p"));
 		selenium.clickAt("//strong/a", RuntimeVariables.replace("Options Icon"));
@@ -101,7 +101,7 @@ public class ViewPortletScopeLayoutPage2BlogsEntryPage1Test extends BaseTestCase
 			}
 
 			try {
-				if (selenium.isVisible("//select[@id='_86_scopeLayoutUuid']")) {
+				if (selenium.isVisible("//select[@id='scopeLayoutUuid']")) {
 					break;
 				}
 			}
@@ -113,6 +113,6 @@ public class ViewPortletScopeLayoutPage2BlogsEntryPage1Test extends BaseTestCase
 
 		selenium.saveScreenShotAndSource();
 		assertEquals("Blogs2 Test2 Page2",
-			selenium.getSelectedLabel("//select[@id='_86_scopeLayoutUuid']"));
+			selenium.getSelectedLabel("//select[@id='scopeLayoutUuid']"));
 	}
 }

@@ -100,7 +100,7 @@ public class ViewPortletScopeLayoutDefaultBlogsEntryPage1Test
 			}
 
 			try {
-				if (selenium.isVisible("//select[@id='_86_scopeType']")) {
+				if (selenium.isVisible("//select[@id='scopeType']")) {
 					break;
 				}
 			}
@@ -112,6 +112,6 @@ public class ViewPortletScopeLayoutDefaultBlogsEntryPage1Test
 
 		selenium.saveScreenShotAndSource();
 		assertEquals("Default",
-			selenium.getSelectedLabel("//select[@id='_86_scopeType']"));
+			selenium.getSelectedLabel("//select[@id='scopeType']"));
 	}
 }

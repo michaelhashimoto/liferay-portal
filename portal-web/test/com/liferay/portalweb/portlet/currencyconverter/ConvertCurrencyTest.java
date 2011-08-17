@@ -30,8 +30,7 @@ public class ConvertCurrencyTest extends BaseTestCase {
 			}
 
 			try {
-				if (selenium.isElementPresent(
-							"link=Currency Converter Test Page")) {
+				if (selenium.isVisible("link=Currency Converter Test Page")) {
 					break;
 				}
 			}
@@ -43,7 +42,7 @@ public class ConvertCurrencyTest extends BaseTestCase {
 
 		selenium.saveScreenShotAndSource();
 		selenium.clickAt("link=Currency Converter Test Page",
-			RuntimeVariables.replace(""));
+			RuntimeVariables.replace("Currency Converter Test Page"));
 		selenium.waitForPageToLoad("30000");
 		selenium.saveScreenShotAndSource();
 
@@ -53,7 +52,7 @@ public class ConvertCurrencyTest extends BaseTestCase {
 			}
 
 			try {
-				if (selenium.isElementPresent("_16_number")) {
+				if (selenium.isElementPresent("//input[@name='_16_number']")) {
 					break;
 				}
 			}
@@ -64,15 +63,37 @@ public class ConvertCurrencyTest extends BaseTestCase {
 		}
 
 		selenium.saveScreenShotAndSource();
-		selenium.type("_16_number", RuntimeVariables.replace("2.5"));
+		selenium.type("//input[@name='_16_number']",
+			RuntimeVariables.replace("2.5"));
 		selenium.saveScreenShotAndSource();
-		selenium.select("_16_from", RuntimeVariables.replace("label=KRW"));
-		selenium.select("_16_to", RuntimeVariables.replace("label=BHD"));
+
+		for (int second = 0;; second++) {
+			if (second >= 60) {
+				fail("timeout");
+			}
+
+			try {
+				if (selenium.isPartialText("//select[@name='_16_from']", "KRW")) {
+					break;
+				}
+			}
+			catch (Exception e) {
+			}
+
+			Thread.sleep(1000);
+		}
+
+		selenium.saveScreenShotAndSource();
+		selenium.select("//select[@name='_16_from']",
+			RuntimeVariables.replace("KRW"));
+		assertTrue(selenium.isPartialText("//select[@name='_16_to']", "BHD"));
+		selenium.select("//select[@name='_16_to']",
+			RuntimeVariables.replace("BHD"));
 		selenium.clickAt("//input[@value='Convert']",
-			RuntimeVariables.replace(""));
+			RuntimeVariables.replace("Convert"));
 		selenium.waitForPageToLoad("30000");
 		selenium.saveScreenShotAndSource();
-		assertEquals("2.5", selenium.getValue("//input[2]"));
+		assertEquals("2.5", selenium.getValue("//input[@name='_16_number']"));
 		assertTrue(selenium.isTextPresent("KRW"));
 		assertTrue(selenium.isTextPresent("BHD"));
 	}

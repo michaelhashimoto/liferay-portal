@@ -45,7 +45,7 @@ public class RateBlogsEntryDetailsTest extends BaseTestCase {
 			RuntimeVariables.replace("Blogs Test Page"));
 		selenium.waitForPageToLoad("30000");
 		selenium.saveScreenShotAndSource();
-		selenium.clickAt("//div[@class='entry-title']/a",
+		selenium.clickAt("//div[@class='entry-title']/h2/a",
 			RuntimeVariables.replace("Blogs Entry Title"));
 		selenium.waitForPageToLoad("30000");
 		selenium.saveScreenShotAndSource();
@@ -68,11 +68,10 @@ public class RateBlogsEntryDetailsTest extends BaseTestCase {
 		}
 
 		selenium.saveScreenShotAndSource();
-
-		String rateCount = selenium.getFirstNumberIncrement(
-				"xPath=(//div[@class='aui-rating-label-element'])[2]");
-		RuntimeVariables.setValue("rateCount", rateCount);
-		selenium.clickAt("//a[5]", RuntimeVariables.replace(""));
+		assertEquals(RuntimeVariables.replace("Average (0 Votes)"),
+			selenium.getText(
+				"xPath=(//div[@class='aui-rating-label-element'])[2]"));
+		selenium.clickAt("//a[5]", RuntimeVariables.replace("5 Stars"));
 
 		for (int second = 0;; second++) {
 			if (second >= 60) {
@@ -80,9 +79,9 @@ public class RateBlogsEntryDetailsTest extends BaseTestCase {
 			}
 
 			try {
-				if (selenium.isPartialText(
-							"xPath=(//div[@class='aui-rating-label-element'])[2]",
-							RuntimeVariables.getValue("rateCount"))) {
+				if (RuntimeVariables.replace("Average (1 Vote)")
+										.equals(selenium.getText(
+								"xPath=(//div[@class='aui-rating-label-element'])[2]"))) {
 					break;
 				}
 			}
@@ -93,8 +92,8 @@ public class RateBlogsEntryDetailsTest extends BaseTestCase {
 		}
 
 		selenium.saveScreenShotAndSource();
-		assertTrue(selenium.isPartialText(
-				"xPath=(//div[@class='aui-rating-label-element'])[2]",
-				RuntimeVariables.getValue("rateCount")));
+		assertEquals(RuntimeVariables.replace("Average (1 Vote)"),
+			selenium.getText(
+				"xPath=(//div[@class='aui-rating-label-element'])[2]"));
 	}
 }

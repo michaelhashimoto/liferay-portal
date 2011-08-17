@@ -100,7 +100,7 @@ public class TearDownPortletDisplayStyleTest extends BaseTestCase {
 					}
 
 					try {
-						if (selenium.isVisible("//select[@id='_86_pageDelta']")) {
+						if (selenium.isVisible("//select[@id='pageDelta']")) {
 							break;
 						}
 					}
@@ -111,9 +111,9 @@ public class TearDownPortletDisplayStyleTest extends BaseTestCase {
 				}
 
 				selenium.saveScreenShotAndSource();
-				selenium.select("//select[@id='_86_pageDelta']",
+				selenium.select("//select[@id='pageDelta']",
 					RuntimeVariables.replace("5"));
-				selenium.select("//select[@id='_86_pageDisplayStyle']",
+				selenium.select("//select[@id='pageDisplayStyle']",
 					RuntimeVariables.replace("Full Content"));
 
 				boolean enableFlagsChecked = selenium.isChecked(
