@@ -54,7 +54,7 @@ public class Gmail_ViewEditWCWebContentUpdatedEmailTest extends BaseTestCase {
 			case 2:
 
 				boolean signInAsADifferentUserPresent = selenium.isElementPresent(
-						"link=Sign in as a different user");
+						"link=Sign out and sign in as a different user");
 
 				if (!signInAsADifferentUserPresent) {
 					label = 3;
@@ -62,8 +62,9 @@ public class Gmail_ViewEditWCWebContentUpdatedEmailTest extends BaseTestCase {
 					continue;
 				}
 
-				selenium.clickAt("link=Sign in as a different user",
-					RuntimeVariables.replace("Sign in as a different user"));
+				selenium.clickAt("link=Sign out and sign in as a different user",
+					RuntimeVariables.replace(
+						"Sign out and sign in as a different user"));
 				selenium.waitForPageToLoad("30000");
 				selenium.saveScreenShotAndSource();
 
