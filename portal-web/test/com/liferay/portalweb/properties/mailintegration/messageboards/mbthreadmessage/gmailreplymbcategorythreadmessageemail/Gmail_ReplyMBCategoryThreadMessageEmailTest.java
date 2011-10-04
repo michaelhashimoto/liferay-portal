@@ -174,7 +174,7 @@ public class Gmail_ReplyMBCategoryThreadMessageEmailTest extends BaseTestCase {
 
 					try {
 						if (selenium.isVisible(
-									"//div/table/tbody/tr/td[1]/div/span")) {
+									"//div[7]/div/table/tbody/tr/td[1]/div/span")) {
 							break;
 						}
 					}
@@ -185,7 +185,7 @@ public class Gmail_ReplyMBCategoryThreadMessageEmailTest extends BaseTestCase {
 				}
 
 				selenium.saveScreenShotAndSource();
-				selenium.clickAt("//div/table/tbody/tr/td[1]/div/span",
+				selenium.clickAt("//div[7]/div/table/tbody/tr/td[1]/div/span",
 					RuntimeVariables.replace("Reply"));
 				Thread.sleep(5000);
 				selenium.selectFrame("//iframe[@id='canvas_frame']");
