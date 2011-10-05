@@ -28,6 +28,10 @@ public class Gmail_ReplyMBCategoryThreadMessageEmailTest extends BaseTestCase {
 		while (label >= 1) {
 			switch (label) {
 			case 1:
+				selenium.selectWindow("null");
+				selenium.saveScreenShotAndSource();
+				selenium.selectFrame("relative=top");
+				selenium.saveScreenShotAndSource();
 				selenium.openWindow("http://www.gmail.com/",
 					RuntimeVariables.replace("gmail"));
 				selenium.waitForPopUp("gmail", RuntimeVariables.replace(""));
@@ -35,7 +39,7 @@ public class Gmail_ReplyMBCategoryThreadMessageEmailTest extends BaseTestCase {
 				selenium.saveScreenShotAndSource();
 				Thread.sleep(60000);
 
-				boolean SignedIn = selenium.isPartialText("//td/a", "Sign out");
+				boolean SignedIn = selenium.isElementPresent("link=Sign out");
 
 				if (!SignedIn) {
 					label = 2;
@@ -54,7 +58,7 @@ public class Gmail_ReplyMBCategoryThreadMessageEmailTest extends BaseTestCase {
 			case 2:
 
 				boolean signInAsADifferentUserPresent = selenium.isElementPresent(
-						"link=Sign in as a different user");
+						"link=Sign out and sign in as a different user");
 
 				if (!signInAsADifferentUserPresent) {
 					label = 3;
@@ -62,8 +66,9 @@ public class Gmail_ReplyMBCategoryThreadMessageEmailTest extends BaseTestCase {
 					continue;
 				}
 
-				selenium.clickAt("link=Sign in as a different user",
-					RuntimeVariables.replace("Sign in as a different user"));
+				selenium.clickAt("link=Sign out and sign in as a different user",
+					RuntimeVariables.replace(
+						"Sign out and sign in as a different user"));
 				selenium.waitForPageToLoad("30000");
 				selenium.saveScreenShotAndSource();
 
@@ -152,7 +157,7 @@ public class Gmail_ReplyMBCategoryThreadMessageEmailTest extends BaseTestCase {
 
 					try {
 						if (selenium.isVisible(
-									"//div/table/tbody/tr/td[1]/div/span")) {
+									"//div[7]/div/table/tbody/tr/td[1]/div/span")) {
 							break;
 						}
 					}
@@ -163,7 +168,7 @@ public class Gmail_ReplyMBCategoryThreadMessageEmailTest extends BaseTestCase {
 				}
 
 				selenium.saveScreenShotAndSource();
-				selenium.clickAt("//div/table/tbody/tr/td[1]/div/span",
+				selenium.clickAt("//div[7]/div/table/tbody/tr/td[1]/div/span",
 					RuntimeVariables.replace("Reply"));
 				Thread.sleep(5000);
 				selenium.selectFrame("//iframe[@id='canvas_frame']");

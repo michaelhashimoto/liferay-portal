@@ -41,7 +41,9 @@ public class Gmail_ViewMBThreadMessageGmailTests extends BaseTests {
 		testSuite.addTestSuite(PostNewMBCategoryThreadMessageSiteTest.class);
 		testSuite.addTestSuite(
 			Gmail_ReplyMBCategoryThreadMessageEmailTest.class);
-		testSuite.addTestSuite(Gmail_ViewMBThreadMessageGmailTest.class);
+		testSuite.addTestSuite(ViewMBThreadMessageGmailTest.class);
+		testSuite.addTestSuite(
+			Gmail_ViewMBThreadMessageGmailMailingListTest.class);
 		testSuite.addTestSuite(Gmail_TearDownEmailTest.class);
 		testSuite.addTestSuite(GmailServer_TearDownEmailTest.class);
 		testSuite.addTestSuite(
@@ -49,7 +51,7 @@ public class Gmail_ViewMBThreadMessageGmailTests extends BaseTests {
 		testSuite.addTestSuite(TearDownMBCategoryTest.class);
 		testSuite.addTestSuite(TearDownPageSiteTest.class);
 		testSuite.addTestSuite(TearDownUserTest.class);
-		testSuite.addTestSuite(TearDownSitesTest.class);
+		testSuite.addTestSuite(TearDownSiteTest.class);
 
 		return testSuite;
 	}
