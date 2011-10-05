@@ -28,6 +28,10 @@ public class Gmail_ViewWCWebContentAddedEmailTest extends BaseTestCase {
 		while (label >= 1) {
 			switch (label) {
 			case 1:
+				selenium.selectWindow("null");
+				selenium.saveScreenShotAndSource();
+				selenium.selectFrame("relative=top");
+				selenium.saveScreenShotAndSource();
 				selenium.openWindow("http://www.gmail.com/",
 					RuntimeVariables.replace("gmail"));
 				selenium.waitForPopUp("gmail", RuntimeVariables.replace(""));
@@ -35,9 +39,9 @@ public class Gmail_ViewWCWebContentAddedEmailTest extends BaseTestCase {
 				selenium.saveScreenShotAndSource();
 				Thread.sleep(60000);
 
-				boolean SignedIn = selenium.isElementPresent("link=Sign out");
+				boolean SignedIn1 = selenium.isElementPresent("link=Sign out");
 
-				if (!SignedIn) {
+				if (!SignedIn1) {
 					label = 2;
 
 					continue;
@@ -147,9 +151,9 @@ public class Gmail_ViewWCWebContentAddedEmailTest extends BaseTestCase {
 						"Web Content Name was added."));
 				Thread.sleep(5000);
 
-				boolean signedIn2 = selenium.isElementPresent("link=Sign out");
+				boolean SignedIn2 = selenium.isElementPresent("link=Sign out");
 
-				if (!signedIn2) {
+				if (!SignedIn2) {
 					label = 5;
 
 					continue;
