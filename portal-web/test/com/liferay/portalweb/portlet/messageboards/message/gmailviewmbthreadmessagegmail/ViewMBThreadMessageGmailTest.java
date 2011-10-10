@@ -20,30 +20,9 @@ import com.liferay.portalweb.portal.util.RuntimeVariables;
 /**
  * @author Brian Wing Shun Chan
  */
-public class Gmail_ViewMBThreadMessageGmailTest extends BaseTestCase {
-	public void testGmail_ViewMBThreadMessageGmail() throws Exception {
-		selenium.open("/web/guest/home/");
-
-		for (int second = 0;; second++) {
-			if (second >= 60) {
-				fail("timeout");
-			}
-
-			try {
-				if (selenium.isElementPresent("link=Site Name")) {
-					break;
-				}
-			}
-			catch (Exception e) {
-			}
-
-			Thread.sleep(1000);
-		}
-
-		selenium.saveScreenShotAndSource();
-		selenium.clickAt("link=Site Name", RuntimeVariables.replace("Site Name"));
-		selenium.waitForPageToLoad("30000");
-		selenium.saveScreenShotAndSource();
+public class ViewMBThreadMessageGmailTest extends BaseTestCase {
+	public void testViewMBThreadMessageGmail() throws Exception {
+		selenium.open("/web/site-name");
 		Thread.sleep(60000);
 
 		for (int second = 0;; second++) {
@@ -52,7 +31,7 @@ public class Gmail_ViewMBThreadMessageGmailTest extends BaseTestCase {
 			}
 
 			try {
-				if (selenium.isVisible("link=Message Boards Test Page")) {
+				if (selenium.isElementPresent("link=Message Boards Test Page")) {
 					break;
 				}
 			}
@@ -75,22 +54,26 @@ public class Gmail_ViewMBThreadMessageGmailTest extends BaseTestCase {
 		selenium.saveScreenShotAndSource();
 		assertEquals(RuntimeVariables.replace("MB Message Subject"),
 			selenium.getText("//td[1]/a"));
+		assertEquals(RuntimeVariables.replace("Joe Bloggs"),
+			selenium.getText("//td[3]/a"));
 		assertEquals(RuntimeVariables.replace("2"),
 			selenium.getText("//td[4]/a"));
+		assertEquals(RuntimeVariables.replace("2"),
+			selenium.getText("//td[5]/a"));
 		selenium.clickAt("//td[1]/a",
 			RuntimeVariables.replace("MB Message Subject"));
 		selenium.waitForPageToLoad("30000");
 		selenium.saveScreenShotAndSource();
 		assertEquals(RuntimeVariables.replace(
 				"Re: [MB Category Name] MB Message Subject"),
-			selenium.getText(
-				"//div[5]/table/tbody/tr[1]/td[2]/div[1]/div/a/strong"));
+			selenium.getText("xpath=(//div[@class='subject']/a/strong)[2]"));
 		assertTrue(selenium.isPartialText(
-				"//div[5]/table/tbody/tr[1]/td[2]/div[2]",
+				"xpath=(//div[@class='thread-body'])[2]",
 				"MB Message Email Reply"));
 		assertEquals(RuntimeVariables.replace("userfn userln"),
-			selenium.getText("//div[5]/table/tbody/tr[1]/td[1]/div/a/span[2]"));
+			selenium.getText("xpath=(//span[@class='user-name'])[2]"));
 		assertEquals(RuntimeVariables.replace("Posts: 1"),
-			selenium.getText("//div[5]/table/tbody/tr[1]/td[1]/div/div/div[2]"));
+			selenium.getText(
+				"xpath=(//div[@class='thread-user-post-count'])[2]"));
 	}
 }

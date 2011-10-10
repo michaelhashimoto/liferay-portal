@@ -27,17 +27,20 @@ public class GmailServer_TearDownEmailTest extends BaseTestCase {
 		while (label >= 1) {
 			switch (label) {
 			case 1:
+				selenium.selectWindow("null");
+				selenium.saveScreenShotAndSource();
+				selenium.selectFrame("relative=top");
+				selenium.saveScreenShotAndSource();
 				selenium.openWindow("http://www.gmail.com/",
 					RuntimeVariables.replace("gmail"));
 				selenium.waitForPopUp("gmail", RuntimeVariables.replace(""));
 				selenium.selectWindow("gmail");
 				selenium.saveScreenShotAndSource();
-				Thread.sleep(5000);
-				Thread.sleep(5000);
+				Thread.sleep(10000);
 
-				boolean signedIn1 = selenium.isPartialText("//td/a", "Sign out");
+				boolean SignedIn1 = selenium.isElementPresent("link=Sign out");
 
-				if (!signedIn1) {
+				if (!SignedIn1) {
 					label = 2;
 
 					continue;
@@ -46,11 +49,15 @@ public class GmailServer_TearDownEmailTest extends BaseTestCase {
 				assertEquals(RuntimeVariables.replace("Sign out"),
 					selenium.getText("//td/a"));
 				selenium.clickAt("//td/a", RuntimeVariables.replace("Sign out"));
+				selenium.clickAt("//span/a",
+					RuntimeVariables.replace("Sign in to Gmail"));
+				selenium.waitForPageToLoad("30000");
+				selenium.saveScreenShotAndSource();
 
 			case 2:
 
 				boolean signInAsADifferentUserPresent = selenium.isElementPresent(
-						"link=Sign in as a different user");
+						"link=Sign out and sign in as a different user");
 
 				if (!signInAsADifferentUserPresent) {
 					label = 3;
@@ -58,8 +65,9 @@ public class GmailServer_TearDownEmailTest extends BaseTestCase {
 					continue;
 				}
 
-				selenium.clickAt("link=Sign in as a different user",
-					RuntimeVariables.replace("Sign in as a different user"));
+				selenium.clickAt("link=Sign out and sign in as a different user",
+					RuntimeVariables.replace(
+						"Sign out and sign in as a different user"));
 				selenium.waitForPageToLoad("30000");
 				selenium.saveScreenShotAndSource();
 
@@ -83,8 +91,7 @@ public class GmailServer_TearDownEmailTest extends BaseTestCase {
 
 				selenium.saveScreenShotAndSource();
 				selenium.type("//input[@id='Email']",
-					RuntimeVariables.replace(
-						"liferay.qa.server.trunk@gmail.com"));
+					RuntimeVariables.replace("liferay.qa.server.trunk"));
 				selenium.saveScreenShotAndSource();
 				selenium.type("//input[@id='Passwd']",
 					RuntimeVariables.replace("loveispatient"));
@@ -161,7 +168,7 @@ public class GmailServer_TearDownEmailTest extends BaseTestCase {
 				Thread.sleep(5000);
 				Thread.sleep(5000);
 
-				boolean signedIn2 = selenium.isPartialText("//td/a", "Sign out");
+				boolean signedIn2 = selenium.isElementPresent("link=Sign out");
 
 				if (!signedIn2) {
 					label = 5;

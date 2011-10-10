@@ -1,13 +1,23 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Gmail_ReplyMBCategoryThreadMessageEmailTest</title>
+<title>Gmail_ViewMBThreadMessageGmailMailingListTest</title>
 </head>
 <body>
 <table cellpadding="1" cellspacing="1" border="1">
 <thead>
-<tr><td rowspan="1" colspan="3">Gmail_ReplyMBCategoryThreadMessageEmailTest</td></tr>
+<tr><td rowspan="1" colspan="3">Gmail_ViewMBThreadMessageGmailMailingListTest</td></tr>
 </thead><tbody>
+<tr>
+	<td>selectWindow</td>
+	<td>null</td>
+	<td></td>
+</tr>
+<tr>
+	<td>selectFrame</td>
+	<td>relative=top</td>
+	<td></td>
+</tr>
 <tr>
 	<td>openWindow</td>
 	<td>http://www.gmail.com/</td>
@@ -25,18 +35,18 @@
 </tr>
 <tr>
 	<td>pause</td>
-	<td>60000</td>
+	<td>10000</td>
 	<td></td>
 </tr>
 <tr>
 	<td>store</td>
 	<td>eval(selenium.isElementPresent('link=Sign out'))</td>
-	<td>SignedIn</td>
+	<td>signedIn1</td>
 </tr>
 <tr>
 	<td>gotoIf</td>
-	<td>!${SignedIn}</td>
-	<td>SignedOut</td>
+	<td>!${signedIn1}</td>
+	<td>signedOut1</td>
 </tr>
 <tr>
 	<td>assertText</td>
@@ -55,12 +65,12 @@
 </tr>
 <tr>
 	<td>label</td>
-	<td>SignedOut</td>
+	<td>signedOut1</td>
 	<td></td>
 </tr>
 <tr>
 	<td>storeElementPresent</td>
-	<td>link=Sign in as a different user</td>
+	<td>link=Sign out and sign in as a different user</td>
 	<td>signInAsADifferentUserPresent</td>
 </tr>
 <tr>
@@ -70,8 +80,8 @@
 </tr>
 <tr>
 	<td>clickAtAndWait</td>
-	<td>link=Sign in as a different user</td>
-	<td>Sign in as a different user</td>
+	<td>link=Sign out and sign in as a different user</td>
+	<td>Sign out and sign in as a different user</td>
 </tr>
 <tr>
 	<td>label</td>
@@ -86,7 +96,7 @@
 <tr>
 	<td>type</td>
 	<td>//input[@id='Email']</td>
-	<td>liferay.qa.testing.trunk</td>
+	<td>liferay.qa.server.trunk</td>
 </tr>
 <tr>
 	<td>type</td>
@@ -129,44 +139,19 @@
 	<td>Sign In</td>
 </tr>
 <tr>
-	<td>waitForText</td>
-	<td>//td[3]/div/span</td>
-	<td>Administrator</td>
+	<td>pause</td>
+	<td>5000</td>
+	<td></td>
 </tr>
 <tr>
-	<td>assertText</td>
-	<td>//td[3]/div/span</td>
-	<td>Administrator</td>
+	<td>close</td>
+	<td>gmail</td>
+	<td></td>
 </tr>
 <tr>
-	<td>clickAt</td>
-	<td>//td[3]/div/span</td>
-	<td>Administrator</td>
-</tr>
-<tr>
-	<td>waitForText</td>
-	<td>//h1/span[1]</td>
-	<td>[MB Category Name] MB Message Subject</td>
-</tr>
-<tr>
-	<td>assertText</td>
-	<td>//h1/span[1]</td>
-	<td>[MB Category Name] MB Message Subject</td>
-</tr>
-<tr>
-	<td>assertPartialText</td>
-	<td>//div[contains(child::text(),'MB Message Body')]</td>
-	<td>MB Message Body</td>
-</tr>
-<tr>
-	<td>waitForVisible</td>
-	<td>//div[7]/div/table/tbody/tr/td[1]/div/span</td>
-	<td>Reply</td>
-</tr>
-<tr>
-	<td>clickAt</td>
-	<td>//div[7]/div/table/tbody/tr/td[1]/div/span</td>
-	<td>Reply</td>
+	<td>selectWindow</td>
+	<td>null</td>
+	<td></td>
 </tr>
 <tr>
 	<td>pause</td>
@@ -174,54 +159,74 @@
 	<td></td>
 </tr>
 <tr>
-	<td>selectFrame</td>
-	<td>//iframe[@id='canvas_frame']</td>
-	<td>Email Body</td>
+	<td>pause</td>
+	<td>5000</td>
+	<td></td>
 </tr>
 <tr>
-	<td>selectFrame</td>
-	<td>//iframe[@class='Am Al editable']</td>
-	<td>Email Body</td>
+	<td>openWindow</td>
+	<td>http://groups.google.com/</td>
+	<td>Google Groups</td>
 </tr>
 <tr>
-	<td>type</td>
-	<td>//body</td>
+	<td>waitForPopUp</td>
+	<td>Google Groups</td>
+	<td></td>
+</tr>
+<tr>
+	<td>selectWindow</td>
+	<td>Google Groups</td>
+	<td></td>
+</tr>
+<tr>
+	<td>pause</td>
+	<td>5000</td>
+	<td></td>
+</tr>
+<tr>
+	<td>pause</td>
+	<td>5000</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>//a[1]/font/b</td>
+	<td>liferay-mailinglist</td>
+</tr>
+<tr>
+	<td>clickAtAndWait</td>
+	<td>//a[1]/font/b</td>
+	<td>liferay-mailinglist</td>
+</tr>
+<tr>
+	<td>assertElementPresent</td>
+	<td>//span[1]/a</td>
+	<td>[MB Category Name] MB Message Subject</td>
+</tr>
+<tr>
+	<td>clickAtAndWait</td>
+	<td>//span[1]/a</td>
+	<td>[MB Category Name] MB Message Subject</td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>//td[1]/span/span</td>
+	<td>Trunk Liferay QA</td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>//p</td>
 	<td>MB Message Email Reply</td>
 </tr>
 <tr>
-	<td>selectFrame</td>
-	<td>relative=top</td>
-	<td>top</td>
-</tr>
-<tr>
-	<td>assertText</td>
-	<td>//div[3]/div/div/div/div[1]/b</td>
-	<td>Send</td>
-</tr>
-<tr>
-	<td>clickAt</td>
-	<td>//div[3]/div/div/div/div[1]/b</td>
-	<td>Send</td>
-</tr>
-<tr>
-	<td>pause</td>
-	<td>5000</td>
-	<td></td>
-</tr>
-<tr>
-	<td>pause</td>
-	<td>5000</td>
-	<td></td>
-</tr>
-<tr>
 	<td>store</td>
-	<td>eval(selenium.isElementPresent('link=Sign out'))</td>
-	<td>signedIn2</td>
+	<td>eval(selenium.isPartialText('//td/a','Sign out'))</td>
+	<td>SignedIn2</td>
 </tr>
 <tr>
 	<td>gotoIf</td>
-	<td>!${signedIn2}</td>
-	<td>signedOut2</td>
+	<td>!${SignedIn2}</td>
+	<td>SignedOut2</td>
 </tr>
 <tr>
 	<td>assertText</td>
@@ -235,7 +240,7 @@
 </tr>
 <tr>
 	<td>label</td>
-	<td>signedOut2</td>
+	<td>SignedOut2</td>
 	<td></td>
 </tr>
 <tr>

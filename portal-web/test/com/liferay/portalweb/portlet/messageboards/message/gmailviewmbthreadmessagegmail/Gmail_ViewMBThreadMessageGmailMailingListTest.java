@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.portalweb.properties.mailintegration.messageboards.mbthreadmessage.gmailreplymbcategorythreadmessageemail;
+package com.liferay.portalweb.portlet.messageboards.message.gmailviewmbthreadmessagegmail;
 
 import com.liferay.portalweb.portal.BaseTestCase;
 import com.liferay.portalweb.portal.util.RuntimeVariables;
@@ -20,24 +20,28 @@ import com.liferay.portalweb.portal.util.RuntimeVariables;
 /**
  * @author Brian Wing Shun Chan
  */
-public class Gmail_ReplyMBCategoryThreadMessageEmailTest extends BaseTestCase {
-	public void testGmail_ReplyMBCategoryThreadMessageEmail()
+public class Gmail_ViewMBThreadMessageGmailMailingListTest extends BaseTestCase {
+	public void testGmail_ViewMBThreadMessageGmailMailingList()
 		throws Exception {
 		int label = 1;
 
 		while (label >= 1) {
 			switch (label) {
 			case 1:
+				selenium.selectWindow("null");
+				selenium.saveScreenShotAndSource();
+				selenium.selectFrame("relative=top");
+				selenium.saveScreenShotAndSource();
 				selenium.openWindow("http://www.gmail.com/",
 					RuntimeVariables.replace("gmail"));
 				selenium.waitForPopUp("gmail", RuntimeVariables.replace(""));
 				selenium.selectWindow("gmail");
 				selenium.saveScreenShotAndSource();
-				Thread.sleep(60000);
+				Thread.sleep(10000);
 
-				boolean SignedIn = selenium.isElementPresent("link=Sign out");
+				boolean signedIn1 = selenium.isElementPresent("link=Sign out");
 
-				if (!SignedIn) {
+				if (!signedIn1) {
 					label = 2;
 
 					continue;
@@ -54,7 +58,7 @@ public class Gmail_ReplyMBCategoryThreadMessageEmailTest extends BaseTestCase {
 			case 2:
 
 				boolean signInAsADifferentUserPresent = selenium.isElementPresent(
-						"link=Sign in as a different user");
+						"link=Sign out and sign in as a different user");
 
 				if (!signInAsADifferentUserPresent) {
 					label = 3;
@@ -62,8 +66,9 @@ public class Gmail_ReplyMBCategoryThreadMessageEmailTest extends BaseTestCase {
 					continue;
 				}
 
-				selenium.clickAt("link=Sign in as a different user",
-					RuntimeVariables.replace("Sign in as a different user"));
+				selenium.clickAt("link=Sign out and sign in as a different user",
+					RuntimeVariables.replace(
+						"Sign out and sign in as a different user"));
 				selenium.waitForPageToLoad("30000");
 				selenium.saveScreenShotAndSource();
 
@@ -87,7 +92,7 @@ public class Gmail_ReplyMBCategoryThreadMessageEmailTest extends BaseTestCase {
 
 				selenium.saveScreenShotAndSource();
 				selenium.type("//input[@id='Email']",
-					RuntimeVariables.replace("liferay.qa.testing.trunk"));
+					RuntimeVariables.replace("liferay.qa.server.trunk"));
 				selenium.saveScreenShotAndSource();
 				selenium.type("//input[@id='Passwd']",
 					RuntimeVariables.replace("loveispatient"));
@@ -115,95 +120,40 @@ public class Gmail_ReplyMBCategoryThreadMessageEmailTest extends BaseTestCase {
 					RuntimeVariables.replace("Sign In"));
 				selenium.waitForPageToLoad("30000");
 				selenium.saveScreenShotAndSource();
-
-				for (int second = 0;; second++) {
-					if (second >= 60) {
-						fail("timeout");
-					}
-
-					try {
-						if (RuntimeVariables.replace("Administrator")
-												.equals(selenium.getText(
-										"//td[3]/div/span"))) {
-							break;
-						}
-					}
-					catch (Exception e) {
-					}
-
-					Thread.sleep(1000);
-				}
-
-				selenium.saveScreenShotAndSource();
-				assertEquals(RuntimeVariables.replace("Administrator"),
-					selenium.getText("//td[3]/div/span"));
-				selenium.clickAt("//td[3]/div/span",
-					RuntimeVariables.replace("Administrator"));
-
-				for (int second = 0;; second++) {
-					if (second >= 60) {
-						fail("timeout");
-					}
-
-					try {
-						if (RuntimeVariables.replace(
-									"[MB Category Name] MB Message Subject")
-												.equals(selenium.getText(
-										"//h1/span[1]"))) {
-							break;
-						}
-					}
-					catch (Exception e) {
-					}
-
-					Thread.sleep(1000);
-				}
-
-				selenium.saveScreenShotAndSource();
-				assertEquals(RuntimeVariables.replace(
-						"[MB Category Name] MB Message Subject"),
-					selenium.getText("//h1/span[1]"));
-				assertTrue(selenium.isPartialText(
-						"//div[contains(child::text(),'MB Message Body')]",
-						"MB Message Body"));
-
-				for (int second = 0;; second++) {
-					if (second >= 60) {
-						fail("timeout");
-					}
-
-					try {
-						if (selenium.isVisible(
-									"//div[7]/div/table/tbody/tr/td[1]/div/span")) {
-							break;
-						}
-					}
-					catch (Exception e) {
-					}
-
-					Thread.sleep(1000);
-				}
-
-				selenium.saveScreenShotAndSource();
-				selenium.clickAt("//div[7]/div/table/tbody/tr/td[1]/div/span",
-					RuntimeVariables.replace("Reply"));
 				Thread.sleep(5000);
-				selenium.selectFrame("//iframe[@id='canvas_frame']");
-				selenium.selectFrame("//iframe[@class='Am Al editable']");
-				selenium.type("//body",
-					RuntimeVariables.replace("MB Message Email Reply"));
-				selenium.selectFrame("relative=top");
+				selenium.close();
+				selenium.selectWindow("null");
 				selenium.saveScreenShotAndSource();
-				assertEquals(RuntimeVariables.replace("Send"),
-					selenium.getText("//div[3]/div/div/div/div[1]/b"));
-				selenium.clickAt("//div[3]/div/div/div/div[1]/b",
-					RuntimeVariables.replace("Send"));
 				Thread.sleep(5000);
 				Thread.sleep(5000);
+				selenium.openWindow("http://groups.google.com/",
+					RuntimeVariables.replace("Google Groups"));
+				selenium.waitForPopUp("Google Groups",
+					RuntimeVariables.replace(""));
+				selenium.selectWindow("Google Groups");
+				selenium.saveScreenShotAndSource();
+				Thread.sleep(5000);
+				Thread.sleep(5000);
+				assertEquals(RuntimeVariables.replace("liferay-mailinglist"),
+					selenium.getText("//a[1]/font/b"));
+				selenium.clickAt("//a[1]/font/b",
+					RuntimeVariables.replace("liferay-mailinglist"));
+				selenium.waitForPageToLoad("30000");
+				selenium.saveScreenShotAndSource();
+				assertTrue(selenium.isElementPresent("//span[1]/a"));
+				selenium.clickAt("//span[1]/a",
+					RuntimeVariables.replace(
+						"[MB Category Name] MB Message Subject"));
+				selenium.waitForPageToLoad("30000");
+				selenium.saveScreenShotAndSource();
+				assertEquals(RuntimeVariables.replace("Trunk Liferay QA"),
+					selenium.getText("//td[1]/span/span"));
+				assertEquals(RuntimeVariables.replace("MB Message Email Reply"),
+					selenium.getText("//p"));
 
-				boolean signedIn2 = selenium.isElementPresent("link=Sign out");
+				boolean SignedIn2 = selenium.isPartialText("//td/a", "Sign out");
 
-				if (!signedIn2) {
+				if (!SignedIn2) {
 					label = 5;
 
 					continue;

@@ -28,6 +28,10 @@ public class Gmail_ViewEditWCWebContentUpdatedEmailTest extends BaseTestCase {
 		while (label >= 1) {
 			switch (label) {
 			case 1:
+				selenium.selectWindow("null");
+				selenium.saveScreenShotAndSource();
+				selenium.selectFrame("relative=top");
+				selenium.saveScreenShotAndSource();
 				selenium.openWindow("http://www.gmail.com/",
 					RuntimeVariables.replace("gmail"));
 				selenium.waitForPopUp("gmail", RuntimeVariables.replace(""));
@@ -35,9 +39,9 @@ public class Gmail_ViewEditWCWebContentUpdatedEmailTest extends BaseTestCase {
 				selenium.saveScreenShotAndSource();
 				Thread.sleep(60000);
 
-				boolean SignedIn = selenium.isElementPresent("link=Sign out");
+				boolean SignedIn1 = selenium.isElementPresent("link=Sign out");
 
-				if (!SignedIn) {
+				if (!SignedIn1) {
 					label = 2;
 
 					continue;
@@ -54,7 +58,7 @@ public class Gmail_ViewEditWCWebContentUpdatedEmailTest extends BaseTestCase {
 			case 2:
 
 				boolean signInAsADifferentUserPresent = selenium.isElementPresent(
-						"link=Sign in as a different user");
+						"link=Sign out and sign in as a different user");
 
 				if (!signInAsADifferentUserPresent) {
 					label = 3;
@@ -62,8 +66,9 @@ public class Gmail_ViewEditWCWebContentUpdatedEmailTest extends BaseTestCase {
 					continue;
 				}
 
-				selenium.clickAt("link=Sign in as a different user",
-					RuntimeVariables.replace("Sign in as a different user"));
+				selenium.clickAt("link=Sign out and sign in as a different user",
+					RuntimeVariables.replace(
+						"Sign out and sign in as a different user"));
 				selenium.waitForPageToLoad("30000");
 				selenium.saveScreenShotAndSource();
 
@@ -145,9 +150,9 @@ public class Gmail_ViewEditWCWebContentUpdatedEmailTest extends BaseTestCase {
 						"Web Content Name Edit was updated."));
 				Thread.sleep(5000);
 
-				boolean signedIn2 = selenium.isElementPresent("link=Sign out");
+				boolean SignedIn2 = selenium.isElementPresent("link=Sign out");
 
-				if (!signedIn2) {
+				if (!SignedIn2) {
 					label = 5;
 
 					continue;
