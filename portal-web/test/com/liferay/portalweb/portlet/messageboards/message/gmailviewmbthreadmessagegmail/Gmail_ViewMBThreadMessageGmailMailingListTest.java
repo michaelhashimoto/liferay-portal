@@ -75,7 +75,7 @@ public class Gmail_ViewMBThreadMessageGmailMailingListTest extends BaseTestCase 
 			case 3:
 
 				for (int second = 0;; second++) {
-					if (second >= 60) {
+					if (second >= 90) {
 						fail("timeout");
 					}
 
@@ -147,10 +147,9 @@ public class Gmail_ViewMBThreadMessageGmailMailingListTest extends BaseTestCase 
 				assertTrue(selenium.isPartialText(
 						"//table[@id='top']/tbody/tr[2]/td[1]/span/span/i",
 						"liferay.qa.server"));
-				assertEquals(RuntimeVariables.replace(
-						"MB Message Body\n--\nLiferay Message Boards\nhttp://localhost:8080/web/site-name/message-boards-test-page/-/message_boards/view_message/10508\n\nhttp://localhost"),
-					selenium.getText(
-						"//div[1]/table/tbody/tr/td[2]/div[1]/div[2]/div"));
+				assertTrue(selenium.isPartialText(
+						"//div[1]/table/tbody/tr/td[2]/div[1]/div[2]/div",
+						"MB Message Body"));
 				assertEquals(RuntimeVariables.replace("Trunk Liferay QA"),
 					selenium.getText(
 						"//div[2]/table/tbody/tr/td[2]/div[1]/div[1]/table/tbody/tr[2]/td[1]/span/span"));

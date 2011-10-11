@@ -30,7 +30,7 @@ public class AssignMembersSiteUserTest extends BaseTestCase {
 				selenium.open("/web/guest/home/");
 
 				for (int second = 0;; second++) {
-					if (second >= 60) {
+					if (second >= 90) {
 						fail("timeout");
 					}
 
@@ -62,7 +62,7 @@ public class AssignMembersSiteUserTest extends BaseTestCase {
 					RuntimeVariables.replace("Actions"));
 
 				for (int second = 0;; second++) {
-					if (second >= 60) {
+					if (second >= 90) {
 						fail("timeout");
 					}
 
@@ -84,9 +84,10 @@ public class AssignMembersSiteUserTest extends BaseTestCase {
 						"//div[@class='lfr-component lfr-menu-list']/ul/li[3]/a"));
 				selenium.clickAt("//div[@class='lfr-component lfr-menu-list']/ul/li[3]/a",
 					RuntimeVariables.replace("Manage Memberships"));
+				Thread.sleep(5000);
 
 				for (int second = 0;; second++) {
-					if (second >= 60) {
+					if (second >= 90) {
 						fail("timeout");
 					}
 
@@ -106,7 +107,7 @@ public class AssignMembersSiteUserTest extends BaseTestCase {
 					RuntimeVariables.replace("Add Members"));
 
 				for (int second = 0;; second++) {
-					if (second >= 60) {
+					if (second >= 90) {
 						fail("timeout");
 					}
 
