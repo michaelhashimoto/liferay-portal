@@ -1358,6 +1358,11 @@
 		</antcall>
 
 		<antcall target="build-test-ant-script">
+			<param name="test.ant.script.command" value="portal-web-dynamic-data-list-display" />
+			<param name="test.ant.script.suite" value="PortalWebDynamicDataListDisplayTestSuite" />
+		</antcall>
+
+		<antcall target="build-test-ant-script">
 			<param name="test.ant.script.command" value="portal-web-hello-velocity" />
 			<param name="test.ant.script.suite" value="PortalWebHelloVelocityTestSuite" />
 		</antcall>
@@ -1701,6 +1706,11 @@
 		<antcall target="build-test-ant-script">
 			<param name="test.ant.script.command" value="staging-community-sites" />
 			<param name="test.ant.script.suite" value="StagingCommunitySitesTestSuite" />
+		</antcall>
+
+		<antcall target="build-test-ant-script">
+			<param name="test.ant.script.command" value="staging-community-user" />
+			<param name="test.ant.script.suite" value="StagingCommunityUserTestSuite" />
 		</antcall>
 
 		<antcall target="build-test-ant-script">
