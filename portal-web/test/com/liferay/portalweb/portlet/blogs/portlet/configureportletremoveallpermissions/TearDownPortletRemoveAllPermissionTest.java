@@ -97,7 +97,7 @@ public class TearDownPortletRemoveAllPermissionTest extends BaseTestCase {
 			}
 
 			try {
-				if (selenium.isVisible("//input[@name='16_ACTION_VIEW']")) {
+				if (selenium.isVisible("//input[@name='10162_ACTION_VIEW']")) {
 					break;
 				}
 			}
@@ -107,36 +107,36 @@ public class TearDownPortletRemoveAllPermissionTest extends BaseTestCase {
 			Thread.sleep(1000);
 		}
 
-		assertFalse(selenium.isChecked("//input[@name='16_ACTION_VIEW']"));
-		selenium.clickAt("//input[@name='16_ACTION_VIEW']",
+		assertFalse(selenium.isChecked("//input[@name='10162_ACTION_VIEW']"));
+		selenium.clickAt("//input[@name='10162_ACTION_VIEW']",
 			RuntimeVariables.replace("Guest View"));
-		assertTrue(selenium.isChecked("//input[@name='16_ACTION_VIEW']"));
+		assertTrue(selenium.isChecked("//input[@name='10162_ACTION_VIEW']"));
 		assertFalse(selenium.isChecked(
-				"//input[@name='10154_ACTION_ADD_TO_PAGE']"));
-		selenium.clickAt("//input[@name='10154_ACTION_ADD_TO_PAGE']",
+				"//input[@name='10163_ACTION_ADD_TO_PAGE']"));
+		selenium.clickAt("//input[@name='10163_ACTION_ADD_TO_PAGE']",
 			RuntimeVariables.replace("Owner Add to Page"));
 		assertTrue(selenium.isChecked(
-				"//input[@name='10154_ACTION_ADD_TO_PAGE']"));
+				"//input[@name='10163_ACTION_ADD_TO_PAGE']"));
 		assertFalse(selenium.isChecked(
-				"//input[@name='10154_ACTION_CONFIGURATION']"));
-		selenium.clickAt("//input[@name='10154_ACTION_CONFIGURATION']",
+				"//input[@name='10163_ACTION_CONFIGURATION']"));
+		selenium.clickAt("//input[@name='10163_ACTION_CONFIGURATION']",
 			RuntimeVariables.replace("Owner Configuration"));
 		assertTrue(selenium.isChecked(
-				"//input[@name='10154_ACTION_CONFIGURATION']"));
-		assertFalse(selenium.isChecked("//input[@name='10154_ACTION_VIEW']"));
-		selenium.clickAt("//input[@name='10154_ACTION_VIEW']",
+				"//input[@name='10163_ACTION_CONFIGURATION']"));
+		assertFalse(selenium.isChecked("//input[@name='10163_ACTION_VIEW']"));
+		selenium.clickAt("//input[@name='10163_ACTION_VIEW']",
 			RuntimeVariables.replace("Owner View"));
-		assertTrue(selenium.isChecked("//input[@name='10154_ACTION_VIEW']"));
+		assertTrue(selenium.isChecked("//input[@name='10163_ACTION_VIEW']"));
 		assertFalse(selenium.isChecked(
-				"//input[@name='10154_ACTION_PERMISSIONS']"));
-		selenium.clickAt("//input[@name='10154_ACTION_PERMISSIONS']",
+				"//input[@name='10163_ACTION_PERMISSIONS']"));
+		selenium.clickAt("//input[@name='10163_ACTION_PERMISSIONS']",
 			RuntimeVariables.replace("Owner Permissions"));
 		assertTrue(selenium.isChecked(
-				"//input[@name='10154_ACTION_PERMISSIONS']"));
-		assertFalse(selenium.isChecked("//input[@name='10159_ACTION_VIEW']"));
-		selenium.clickAt("//input[@name='10159_ACTION_VIEW']",
+				"//input[@name='10163_ACTION_PERMISSIONS']"));
+		assertFalse(selenium.isChecked("//input[@name='10170_ACTION_VIEW']"));
+		selenium.clickAt("//input[@name='10170_ACTION_VIEW']",
 			RuntimeVariables.replace("Site Member Permissions"));
-		assertTrue(selenium.isChecked("//input[@name='10159_ACTION_VIEW']"));
+		assertTrue(selenium.isChecked("//input[@name='10170_ACTION_VIEW']"));
 		selenium.clickAt("//input[@value='Save']",
 			RuntimeVariables.replace("Save"));
 
