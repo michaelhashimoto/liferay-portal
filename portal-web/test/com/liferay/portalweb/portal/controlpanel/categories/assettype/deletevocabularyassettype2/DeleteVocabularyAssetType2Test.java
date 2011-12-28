@@ -115,7 +115,7 @@ public class DeleteVocabularyAssetType2Test extends BaseTestCase {
 
 					try {
 						if (selenium.isVisible(
-									"xPath=(//button[contains(@class,'delete-row')])[2]")) {
+									"//button[contains(@class,'delete-row')]")) {
 							break;
 						}
 					}
@@ -125,7 +125,7 @@ public class DeleteVocabularyAssetType2Test extends BaseTestCase {
 					Thread.sleep(1000);
 				}
 
-				selenium.clickAt("xPath=(//button[contains(@class,'delete-row')])[2]",
+				selenium.clickAt("//button[contains(@class,'delete-row')]",
 					RuntimeVariables.replace("Delete Row"));
 
 				for (int second = 0;; second++) {
@@ -135,7 +135,7 @@ public class DeleteVocabularyAssetType2Test extends BaseTestCase {
 
 					try {
 						if (!selenium.isVisible(
-									"//select[@id='_147_classNameId1']")) {
+									"//select[@id='_147_classNameId0']")) {
 							break;
 						}
 					}
@@ -146,7 +146,7 @@ public class DeleteVocabularyAssetType2Test extends BaseTestCase {
 				}
 
 				assertFalse(selenium.isVisible(
-						"//select[@id='_147_classNameId1']"));
+						"//select[@id='_147_classNameId0']"));
 				assertEquals(RuntimeVariables.replace("Undo (1)"),
 					selenium.getText("//div/a[1]"));
 				selenium.clickAt("//input[@value='Save']",

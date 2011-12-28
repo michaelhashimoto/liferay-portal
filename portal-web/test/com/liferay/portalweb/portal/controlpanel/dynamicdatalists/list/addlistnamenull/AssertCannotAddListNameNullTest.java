@@ -95,14 +95,31 @@ public class AssertCannotAddListNameNullTest extends BaseTestCase {
 		assertTrue(selenium.isPartialText("//td[2]/a", "Data Definition"));
 		selenium.clickAt("//td[2]/a",
 			RuntimeVariables.replace("Data Definition"));
-		selenium.selectFrame("relative=top");
+		selenium.selectWindow("null");
 		selenium.clickAt("//input[@value='Save']",
 			RuntimeVariables.replace("Save"));
-		selenium.waitForPageToLoad("30000");
-		assertEquals(RuntimeVariables.replace(
-				"Your request failed to complete."),
-			selenium.getText("xPath=(//div[@class='portlet-msg-error'])[1]"));
-		assertEquals(RuntimeVariables.replace("Please enter a valid name."),
-			selenium.getText("xPath=(//div[@class='portlet-msg-error'])[2]"));
+
+		for (int second = 0;; second++) {
+			if (second >= 90) {
+				fail("timeout");
+			}
+
+			try {
+				if (selenium.isVisible(
+							"//div[@class='aui-form-validator-message required']")) {
+					break;
+				}
+			}
+			catch (Exception e) {
+			}
+
+			Thread.sleep(1000);
+		}
+
+		assertTrue(selenium.isVisible(
+				"//div[@class='aui-form-validator-message required']"));
+		assertEquals(RuntimeVariables.replace("This field is required."),
+			selenium.getText(
+				"//div[@class='aui-form-validator-message required']"));
 	}
 }

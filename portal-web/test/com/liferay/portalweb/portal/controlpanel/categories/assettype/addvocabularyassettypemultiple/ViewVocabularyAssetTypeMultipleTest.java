@@ -107,10 +107,10 @@ public class ViewVocabularyAssetTypeMultipleTest extends BaseTestCase {
 				}
 
 			case 2:
-				assertEquals("Blogs Entry",
+				assertEquals("Web Content",
 					selenium.getSelectedLabel(
 						"//select[@id='_147_classNameId0']"));
-				assertEquals("Web Content",
+				assertEquals("Blogs Entry",
 					selenium.getSelectedLabel(
 						"//select[@id='_147_classNameId1']"));
 
