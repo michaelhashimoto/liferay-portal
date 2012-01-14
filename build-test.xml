@@ -987,6 +987,12 @@
 		</antcall>
 
 		<antcall target="build-test-ant-script">
+			<param name="test.ant.script.command" value="plugins-sample-application-adapter" />
+			<param name="test.ant.script.plugin.hooks" value="sample-application-adapter-hook" />
+			<param name="test.ant.script.suite" value="PluginsSampleApplicationAdapterTestSuite" />
+		</antcall>
+
+		<antcall target="build-test-ant-script">
 			<param name="test.ant.script.command" value="plugins-sample-dao" />
 			<param name="test.ant.script.plugin.portlets" value="sample-dao-portlet" />
 			<param name="test.ant.script.suite" value="PluginsSampleDAOTestSuite" />
