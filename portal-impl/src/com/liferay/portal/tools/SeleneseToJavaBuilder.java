@@ -55,6 +55,7 @@ public class SeleneseToJavaBuilder {
 		directoryScanner.setExcludes(
 			new String[] {
 				"**\\EvaluateLogTest.java", "**\\EvaluateUserCSVFileTest.java",
+				"**\\EvaluateWSRPVCFFileTest.java",
 				"**\\IterateThemeTest.java", "**\\StopSeleniumTest.java",
 				"**\\WaitForSystemShutdownTest.java"
 			});
