@@ -888,6 +888,12 @@
 		</antcall>
 
 		<antcall target="build-test-ant-script">
+			<param name="test.ant.script.command" value="plugins-ddl-form" />
+			<param name="test.ant.script.plugin.portlets" value="ddl-form-portlet" />
+			<param name="test.ant.script.suite" value="PluginsDDLFormTestSuite" />
+		</antcall>
+
+		<antcall target="build-test-ant-script">
 			<param name="test.ant.script.command" value="plugins-digg" />
 			<param name="test.ant.script.plugin.portlets" value="digg-portlet" />
 			<param name="test.ant.script.suite" value="PluginsDiggTestSuite" />
