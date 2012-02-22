@@ -840,6 +840,11 @@
 		</antcall>
 
 		<antcall target="build-test-ant-script">
+			<param name="test.ant.script.command" value="permissions-use-case" />
+			<param name="test.ant.script.suite" value="PermissionsUseCaseTestSuite" />
+		</antcall>
+
+		<antcall target="build-test-ant-script">
 			<param name="test.ant.script.command" value="permissions-web-content" />
 			<param name="test.ant.script.suite" value="PermissionsWebContentTestSuite" />
 		</antcall>
