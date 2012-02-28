@@ -986,7 +986,6 @@ public class SeleneseToJavaBuilder {
 					String eval = param2.substring(5, param2.length() - 1);
 
 					eval = StringUtil.replace(eval, "'", "\"");
-
 					sb.append(eval);
 				}
 
