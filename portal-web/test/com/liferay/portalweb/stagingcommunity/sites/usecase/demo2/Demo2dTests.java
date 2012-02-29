@@ -12,14 +12,9 @@
  * details.
  */
 
-package com.liferay.portalweb.stagingcommunity.sites.usecase;
+package com.liferay.portalweb.stagingcommunity.sites.usecase.demo2;
 
 import com.liferay.portalweb.portal.BaseTestSuite;
-import com.liferay.portalweb.stagingcommunity.sites.usecase.demo1.Demo1Tests;
-import com.liferay.portalweb.stagingcommunity.sites.usecase.demo2.Demo2aTests;
-import com.liferay.portalweb.stagingcommunity.sites.usecase.demo2.Demo2bTests;
-import com.liferay.portalweb.stagingcommunity.sites.usecase.demo2.Demo2cTests;
-import com.liferay.portalweb.stagingcommunity.sites.usecase.demo2.Demo2dTests;
 
 import junit.framework.Test;
 import junit.framework.TestSuite;
@@ -27,18 +22,14 @@ import junit.framework.TestSuite;
 /**
  * @author Brian Wing Shun Chan
  */
-public class UseCaseTestPlan extends BaseTestSuite {
-
+public class Demo2dTests extends BaseTestSuite {
 	public static Test suite() {
 		TestSuite testSuite = new TestSuite();
-
-		testSuite.addTest(Demo1Tests.suite());
-		testSuite.addTest(Demo2aTests.suite());
-		testSuite.addTest(Demo2bTests.suite());
-		testSuite.addTest(Demo2cTests.suite());
-		testSuite.addTest(Demo2dTests.suite());
+		testSuite.addTestSuite(User_SignOutTest.class);
+		testSuite.addTestSuite(SignInTest.class);
+		testSuite.addTestSuite(TearDownUserTest.class);
+		testSuite.addTestSuite(TearDownSiteTest.class);
 
 		return testSuite;
 	}
-
 }
