@@ -30,7 +30,7 @@ public class UseCaseTestPlan extends BaseTestSuite {
 	public static Test suite() {
 		TestSuite testSuite = new TestSuite();
 
-		testSuite.addTest(PermissionsSiteLevelDemoTests.suite());		
+		testSuite.addTest(PermissionsSiteLevelDemoTests.suite());
 		testSuite.addTest(PermissionsTeamDemoTests.suite());
 		testSuite.addTest(PermissionsUserPersonalSiteDemoTests.suite());
 
