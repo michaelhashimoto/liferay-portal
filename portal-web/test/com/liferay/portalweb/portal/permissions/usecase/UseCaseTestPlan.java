@@ -16,8 +16,8 @@ package com.liferay.portalweb.portal.permissions.usecase;
 
 import com.liferay.portalweb.portal.BaseTestSuite;
 import com.liferay.portalweb.portal.permissions.usecase.permissionssiteleveldemo.PermissionsSiteLevelDemoTests;
-import com.liferay.portalweb.portal.permissions.usecase.permissionsteamdemo.PermissionsTeamDemoTests;
-import com.liferay.portalweb.portal.permissions.usecase.permissionsuserpersonalsitedemo.PermissionsUserPersonalSiteDemoTests;
+//import com.liferay.portalweb.portal.permissions.usecase.permissionsteamdemo.PermissionsTeamDemoTests;
+//import com.liferay.portalweb.portal.permissions.usecase.permissionsuserpersonalsitedemo.PermissionsUserPersonalSiteDemoTests;
 
 import junit.framework.Test;
 import junit.framework.TestSuite;
