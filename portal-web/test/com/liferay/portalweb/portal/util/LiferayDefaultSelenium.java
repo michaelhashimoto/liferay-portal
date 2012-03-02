@@ -46,7 +46,7 @@ public class LiferayDefaultSelenium
 		if (absolutePath.endsWith(StringPool.PERIOD)) {
 			absolutePath = absolutePath.substring(0, absolutePath.length() - 1);
 
-			_projectDir = absolutePath;
+			_sourceDir = absolutePath;
 		}
 	}
 
@@ -158,14 +158,17 @@ public class LiferayDefaultSelenium
 	}
 
 	public void uploadCommonFile(String location, String value) {
-		super.type(
-			location,
-			_projectDir + "portal-web\\test\\com\\liferay\\portalweb\\" +
-				"dependencies\\" + value);
+		String text =
+			_sourceDir + "portal-web\\test\\com\\liferay\\portalweb\\" +
+			"dependencies\\" + value;
+
+		super.type(location, text);
 	}
 
 	public void uploadTempFile(String location, String value) {
-		super.type(location, TestPropsValues.OUTPUT_DIR + value);
+		String text = TestPropsValues.OUTPUT_DIR + value;
+
+		super.type(location, text);
 	}
 
 	@Override
@@ -213,7 +216,7 @@ public class LiferayDefaultSelenium
 	private static final String _SELENIUM_EXECUTABLE_DIR =
 		TestPropsValues.SELENIUM_EXECUTABLE_DIR;
 
-	private String _projectDir;
+	private String _sourceDir;
 	private String _timeout = "90000";
 
 }
