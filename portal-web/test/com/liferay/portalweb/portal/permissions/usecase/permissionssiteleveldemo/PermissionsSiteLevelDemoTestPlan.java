@@ -12,12 +12,10 @@
  * details.
  */
 
-package com.liferay.portalweb.portal.permissions.usecase;
+package com.liferay.portalweb.portal.permissions.webcontent;
 
 import com.liferay.portalweb.portal.BaseTestSuite;
-import com.liferay.portalweb.portal.permissions.usecase.permissionssiteleveldemo.PermissionsSiteLevelDemoTests;
-import com.liferay.portalweb.portal.permissions.usecase.permissionsteamdemo.PermissionsTeamDemoTests;
-import com.liferay.portalweb.portal.permissions.usecase.permissionsuserpersonalsitedemo.PermissionsUserPersonalSiteDemoTests;
+import com.liferay.portalweb.portal.permissions.usecase.permissionssiteleveldemo.User2_ViewSiteMemberRolePermissionTests;
 
 import junit.framework.Test;
 import junit.framework.TestSuite;
@@ -25,14 +23,12 @@ import junit.framework.TestSuite;
 /**
  * @author Brian Wing Shun Chan
  */
-public class UseCaseTestPlan extends BaseTestSuite {
+public class PermissionsSiteLevelDemoTestPlan extends BaseTestSuite {
 
 	public static Test suite() {
 		TestSuite testSuite = new TestSuite();
 
-		testSuite.addTest(PermissionsSiteLevelDemoTests.suite());		
-		testSuite.addTest(PermissionsTeamDemoTests.suite());
-		testSuite.addTest(PermissionsUserPersonalSiteDemoTests.suite());
+		testSuite.addTest(User2_ViewSiteMemberRolePermissionTests.suite());
 
 		return testSuite;
 	}
