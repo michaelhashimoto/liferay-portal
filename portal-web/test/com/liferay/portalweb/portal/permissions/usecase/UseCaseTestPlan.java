@@ -31,8 +31,8 @@ public class UseCaseTestPlan extends BaseTestSuite {
 		TestSuite testSuite = new TestSuite();
 
 		testSuite.addTest(PermissionsScopedRegularRoleDemoTests.suite());
-		//testSuite.addTest(PermissionsTeamDemoTests.suite());
-		//testSuite.addTest(PermissionsUserPersonalSiteDemoTests.suite());
+		testSuite.addTest(PermissionsTeamDemoTests.suite());
+		testSuite.addTest(PermissionsUserPersonalSiteDemoTests.suite());
 
 		return testSuite;
 	}
