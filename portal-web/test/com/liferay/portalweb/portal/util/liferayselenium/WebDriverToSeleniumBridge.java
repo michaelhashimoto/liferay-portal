@@ -22,6 +22,8 @@ import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.WebDriver;
 
+import org.openqa.selenium.*;
+
 /**
  * @author Brian Wing Shun Chan
  */
@@ -30,6 +32,12 @@ public class WebDriverToSeleniumBridge
 
 	public WebDriverToSeleniumBridge(WebDriver webDriver) {
 		super(webDriver);
+	}
+
+	public void acceptConfirmation() {
+		WebDriver.TargetLocator targetLocator = switchTo();
+		Alert alert = targetLocator.alert();
+		alert.accept();
 	}
 
 	public void addCustomRequestHeader(String key, String value) {
@@ -341,6 +349,33 @@ public class WebDriverToSeleniumBridge
 	@Override
 	public String getTitle() {
 		throw new UnsupportedOperationException();
+	}
+
+	public WebElement getWebElement(String locator) {					
+		if (locator.startsWith("//")) {
+			return findElement(By.xpath(locator));
+		}
+		else if (locator.startsWith("xpath=")) {
+			return findElement(By.xpath(locator.substring(6)));
+		}
+		else if (locator.startsWith("link=")) {
+			return findElement(By.linkText(locator.substring(5)));
+		}
+		else if (locator.startsWith("name=")) {
+			return findElement(By.name(locator.substring(5)));
+		}
+		else if (locator.startsWith("class=")) {
+			return findElement(By.className(locator.substring(6)));
+		}
+		else if (locator.startsWith("tag=")) {
+			return findElement(By.tagName(locator.substring(4)));
+		}
+		else if (locator.startsWith("css=")) {
+			return findElement(By.cssSelector(locator.substring(4)));			
+		}
+		else {
+			return findElement(By.id(locator));
+		}
 	}
 
 	public String getValue(String locator) {
