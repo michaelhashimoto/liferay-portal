@@ -1,0 +1,123 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>EditWikiPageTest</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">EditWikiPageTest</td></tr>
+</thead><tbody>
+<tr>
+	<td>waitForVisible</td>
+	<td>link=Wiki Community Social Activity Wiki Public Page</td>
+	<td>Wiki Community Social Activity Wiki Public Page</td>
+</tr>
+<tr>
+	<td>clickAt</td>
+	<td>link=Wiki Community Social Activity Wiki Public Page</td>
+	<td>Wiki Community Social Activity Wiki Public Page</td>
+</tr>
+<tr>
+	<td>waitForVisible</td>
+	<td>//a[@id='_36_mefv']/span</td>
+	<td>Edit</td>
+</tr>
+<tr>
+	<td>clickAt</td>
+	<td>//a[@id='_36_mefv']/span</td>
+	<td>Edit</td>
+</tr>
+<tr>
+	<td>waitForVisible</td>
+	<td>//td[@id='cke_contents__36_editor']/iframe</td>
+	<td>IFrame</td>
+</tr>
+<tr>
+	<td>assertVisible</td>
+	<td>//td[@id='cke_contents__36_editor']/iframe</td>
+	<td>IFrame</td>
+</tr>
+<tr>
+	<td>selectFrame</td>
+	<td>//td[@id='cke_contents__36_editor']/iframe</td>
+	<td>IFrame</td>
+</tr>
+<tr>
+	<td>pause</td>
+	<td>5000</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>//body</td>
+	<td>Content Edit</td>
+</tr>
+<tr>
+	<td>selectFrame</td>
+	<td>relative=top</td>
+	<td>top</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>_36_publishButton</td>
+	<td>Publish</td>
+</tr>
+<tr>
+	<td>waitForText</td>
+	<td>//section/div/div/div/div[1]</td>
+	<td>Your request completed successfully.</td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>//section/div/div/div/div[1]</td>
+	<td>Your request completed successfully.</td>
+</tr>
+<tr>
+	<td>pause</td>
+	<td>5000</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAtAndWait</td>
+	<td>link=Wiki Community Social Activity Wiki Public Page</td>
+	<td>Wiki Community Social Activity Wiki Public Page</td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>//div[@class='wiki-body']/p</td>
+	<td>Content Edit</td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>//div/a/span[2]</td>
+	<td>Joe Bloggs</td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>//td/div/div/div[1]</td>
+	<td>exact:Rank: 1</td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>//td/div/div/div[2]</td>
+	<td>Contribution Score: 0</td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>//td/div/div/div[3]</td>
+	<td>Participation Score: 17</td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>//td/div[3]</td>
+	<td>User's Wiki Pages: 2</td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>//td/div[4]</td>
+	<td>User's Wiki Page Updates: 1</td>
+</tr>
+</tbody></table>
+</body>
+</html>
