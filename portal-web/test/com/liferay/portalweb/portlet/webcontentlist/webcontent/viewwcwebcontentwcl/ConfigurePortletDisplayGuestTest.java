@@ -134,7 +134,7 @@ public class ConfigurePortletDisplayGuestTest extends BaseTestCase {
 			RuntimeVariables.replace("Web Content List Test Page"));
 		selenium.waitForPageToLoad("30000");
 		loadRequiredJavaScriptModules();
-		assertEquals(RuntimeVariables.replace("Web Content Name"),
+		assertEquals(RuntimeVariables.replace("Web Content Title"),
 			selenium.getText("//td[1]/a"));
 	}
 }
