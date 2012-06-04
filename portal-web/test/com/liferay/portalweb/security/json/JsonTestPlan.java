@@ -12,9 +12,10 @@
  * details.
  */
 
-package com.liferay.portalweb.portal.controlpanel.users.user.adduser;
+package com.liferay.portalweb.security.json;
 
 import com.liferay.portalweb.portal.BaseTestSuite;
+import com.liferay.portalweb.security.json.user.UserTestPlan;
 
 import junit.framework.Test;
 import junit.framework.TestSuite;
@@ -22,14 +23,14 @@ import junit.framework.TestSuite;
 /**
  * @author Brian Wing Shun Chan
  */
-public class AddUserTests extends BaseTestSuite {
+public class JsonTestPlan extends BaseTestSuite {
+
 	public static Test suite() {
 		TestSuite testSuite = new TestSuite();
-		testSuite.addTestSuite(ViewUserNullTest.class);
-		testSuite.addTestSuite(AddUserTest.class);
-		testSuite.addTestSuite(TearDownUserTest.class);
-		testSuite.addTestSuite(ViewUserNullTest.class);
+
+		testSuite.addTest(UserTestPlan.suite());
 
 		return testSuite;
 	}
+
 }
