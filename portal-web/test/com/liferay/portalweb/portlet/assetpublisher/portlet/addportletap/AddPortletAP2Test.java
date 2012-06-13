@@ -20,12 +20,12 @@ import com.liferay.portalweb.portal.util.RuntimeVariables;
 /**
  * @author Brian Wing Shun Chan
  */
-public class AddPortletAPTest extends BaseTestCase {
-	public void testAddPortletAP() throws Exception {
+public class AddPortletAP2Test extends BaseTestCase {
+	public void testAddPortletAP2() throws Exception {
 		selenium.open("/web/guest/home/");
 		loadRequiredJavaScriptModules();
-		selenium.clickAt("link=Asset Publisher Test Page1",
-			RuntimeVariables.replace("Asset Publisher Test Page1"));
+		selenium.clickAt("link=Asset Publisher Test Page 2",
+			RuntimeVariables.replace("Asset Publisher Test Page 2"));
 		selenium.waitForPageToLoad("30000");
 		loadRequiredJavaScriptModules();
 		selenium.clickAt("//div[@id='dockbar']",
