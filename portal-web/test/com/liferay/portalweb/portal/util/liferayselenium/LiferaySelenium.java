@@ -37,6 +37,8 @@ public interface LiferaySelenium extends Selenium {
 
 	public boolean isPartialText(String locator, String value);
 
+	public void addPortletKeyboard();
+
 	public void saveScreenShotAndSource() throws Exception;
 
 	public void sendKeys(String locator, String value);

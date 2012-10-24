@@ -261,7 +261,7 @@ public class JournalArticleLocalServiceImpl
 			article.setStatus(WorkflowConstants.STATUS_EXPIRED);
 		}
 
-		journalArticlePersistence.update(article, false);
+		journalArticlePersistence.update(article);
 
 		// Resources
 
@@ -424,7 +424,7 @@ public class JournalArticleLocalServiceImpl
 
 		article.setResourcePrimKey(resourcePrimKey);
 
-		journalArticlePersistence.update(article, false);
+		journalArticlePersistence.update(article);
 
 		return article;
 	}
@@ -456,13 +456,13 @@ public class JournalArticleLocalServiceImpl
 						article.getExpirationDate());
 					currentArticle.setStatus(WorkflowConstants.STATUS_EXPIRED);
 
-					journalArticlePersistence.update(currentArticle, false);
+					journalArticlePersistence.update(currentArticle);
 				}
 			}
 			else {
 				article.setStatus(WorkflowConstants.STATUS_EXPIRED);
 
-				journalArticlePersistence.update(article, false);
+				journalArticlePersistence.update(article);
 			}
 
 			updatePreviousApprovedArticle(article);
@@ -521,7 +521,7 @@ public class JournalArticleLocalServiceImpl
 
 			article.setContent(content);
 
-			journalArticlePersistence.update(article, false);
+			journalArticlePersistence.update(article);
 		}
 	}
 
@@ -562,7 +562,13 @@ public class JournalArticleLocalServiceImpl
 			newArticleId = String.valueOf(counterLocalService.increment());
 		}
 		else {
-			validate(groupId, newArticleId);
+			validate(newArticleId);
+
+			if (journalArticlePersistence.countByG_A(
+					groupId, newArticleId) > 0) {
+
+				throw new DuplicateArticleIdException();
+			}
 		}
 
 		long id = counterLocalService.increment();
@@ -605,7 +611,7 @@ public class JournalArticleLocalServiceImpl
 		newArticle.setSmallImageURL(oldArticle.getSmallImageURL());
 		newArticle.setStatus(oldArticle.getStatus());
 
-		journalArticlePersistence.update(newArticle, false);
+		journalArticlePersistence.update(newArticle);
 
 		// Resources
 
@@ -798,7 +804,7 @@ public class JournalArticleLocalServiceImpl
 		for (JournalArticle article : articles) {
 			article.setLayoutUuid(StringPool.BLANK);
 
-			journalArticlePersistence.update(article, false);
+			journalArticlePersistence.update(article);
 		}
 	}
 
@@ -1663,7 +1669,7 @@ public class JournalArticleLocalServiceImpl
 		for (JournalArticle article : articles) {
 			article.setFolderId(newFolderId);
 
-			journalArticlePersistence.update(article, false);
+			journalArticlePersistence.update(article);
 		}
 	}
 
@@ -1700,7 +1706,7 @@ public class JournalArticleLocalServiceImpl
 
 		article.setContent(content);
 
-		journalArticlePersistence.update(article, false);
+		journalArticlePersistence.update(article);
 
 		return article;
 	}
@@ -2189,7 +2195,7 @@ public class JournalArticleLocalServiceImpl
 			article.setStatus(WorkflowConstants.STATUS_EXPIRED);
 		}
 
-		journalArticlePersistence.update(article, false);
+		journalArticlePersistence.update(article);
 
 		// Asset
 
@@ -2376,7 +2382,7 @@ public class JournalArticleLocalServiceImpl
 
 		article.setContent(content);
 
-		journalArticlePersistence.update(article, false);
+		journalArticlePersistence.update(article);
 
 		return article;
 	}
@@ -2448,7 +2454,7 @@ public class JournalArticleLocalServiceImpl
 
 		article.setContent(content);
 
-		journalArticlePersistence.update(article, false);
+		journalArticlePersistence.update(article);
 
 		return article;
 	}
@@ -2488,7 +2494,7 @@ public class JournalArticleLocalServiceImpl
 		article.setStatusByUserName(user.getFullName());
 		article.setStatusDate(serviceContext.getModifiedDate(now));
 
-		journalArticlePersistence.update(article, false);
+		journalArticlePersistence.update(article);
 
 		if (hasModifiedLatestApprovedVersion(
 				article.getGroupId(), article.getArticleId(),
@@ -2656,7 +2662,7 @@ public class JournalArticleLocalServiceImpl
 		for (JournalArticle article : articles) {
 			article.setTemplateId(newTemplateId);
 
-			journalArticlePersistence.update(article, false);
+			journalArticlePersistence.update(article);
 		}
 	}
 
@@ -3472,7 +3478,7 @@ public class JournalArticleLocalServiceImpl
 			assetEntry.setModifiedDate(
 				previousApprovedArticle.getModifiedDate());
 
-			assetEntryPersistence.update(assetEntry, false);
+			assetEntryPersistence.update(assetEntry);
 
 			if (article.isIndexable()) {
 				Indexer indexer = IndexerRegistryUtil.nullSafeGetIndexer(
@@ -3494,7 +3500,7 @@ public class JournalArticleLocalServiceImpl
 			if (!article.getUrlTitle().equals(urlTitle)) {
 				article.setUrlTitle(urlTitle);
 
-				journalArticlePersistence.update(article, false);
+				journalArticlePersistence.update(article);
 			}
 		}
 	}
@@ -3618,7 +3624,14 @@ public class JournalArticleLocalServiceImpl
 		throws PortalException, SystemException {
 
 		if (!autoArticleId) {
-			validate(groupId, articleId);
+			validate(articleId);
+		}
+
+		JournalArticle article = journalArticlePersistence.fetchByG_A_V(
+			groupId, articleId, version);
+
+		if (article != null) {
+			throw new DuplicateArticleIdException();
 		}
 
 		validate(
@@ -3627,17 +3640,13 @@ public class JournalArticleLocalServiceImpl
 			smallImageFile, smallImageBytes);
 	}
 
-	protected void validate(long groupId, String articleId)
+	protected void validate(String articleId)
 		throws PortalException, SystemException {
 
 		if (Validator.isNull(articleId) ||
 			(articleId.indexOf(CharPool.SPACE) != -1)) {
 
 			throw new ArticleIdException();
-		}
-
-		if (journalArticlePersistence.countByG_A(groupId, articleId) > 0) {
-			throw new DuplicateArticleIdException();
 		}
 	}
 

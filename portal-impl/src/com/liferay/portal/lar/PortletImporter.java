@@ -999,7 +999,7 @@ public class PortletImporter {
 			portletDataContext, portletId, portletPreferences,
 			portletDataElement);
 
-		if (xml != null) {
+		if (Validator.isNotNull(xml)) {
 			PortletPreferencesLocalServiceUtil.updatePreferences(
 				ownerId, ownerType, plid, portletId, xml);
 		}
@@ -1687,7 +1687,7 @@ public class PortletImporter {
 
 						oldScopeGroup.setLiveGroupId(scopeGroup.getGroupId());
 
-						GroupLocalServiceUtil.updateGroup(oldScopeGroup, true);
+						GroupLocalServiceUtil.updateGroup(oldScopeGroup);
 					}
 					catch (NoSuchLayoutException nsle) {
 						if (_log.isWarnEnabled()) {

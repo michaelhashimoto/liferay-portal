@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.portalweb.stagingsite.blogs;
+package com.liferay.portalweb.portlet.blogs.portlet.addportletblogskeyboard;
 
 import com.liferay.portalweb.portal.BaseTestCase;
 import com.liferay.portalweb.portal.util.RuntimeVariables;
@@ -20,13 +20,18 @@ import com.liferay.portalweb.portal.util.RuntimeVariables;
 /**
  * @author Brian Wing Shun Chan
  */
-public class PCR_LogoutTest extends BaseTestCase {
-	public void testPCR_Logout() throws Exception {
+public class AddPortletBlogsKeyboardTest extends BaseTestCase {
+	public void testAddPortletBlogsKeyboard() throws Exception {
 		selenium.selectWindow("null");
 		selenium.selectFrame("relative=top");
-		selenium.waitForElementPresent("link=Sign Out");
-		selenium.click(RuntimeVariables.replace("link=Sign Out"));
+		selenium.open("/web/guest/home/");
+		selenium.clickAt("link=Blogs Test Page1",
+			RuntimeVariables.replace("Blogs Test Page1"));
 		selenium.waitForPageToLoad("30000");
-		selenium.waitForElementPresent("//input[@id='_58_login']");
+		selenium.addPortletKeyboard();
+		selenium.waitForVisible("//section");
+		assertTrue(selenium.isVisible("//section"));
+		assertEquals(RuntimeVariables.replace("Blogs"),
+			selenium.getText("//span[@class='portlet-title-text']"));
 	}
 }
