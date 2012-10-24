@@ -45,6 +45,10 @@ public abstract class BaseWebDriverImpl
 		webDriver.get(browserURL);
 	}
 
+	public void addPortletKeyboard() {
+		LiferaySeleniumHelper.addPortletKeyboard();
+	}
+
 	public void downloadTempFile(String value) {
 		LiferaySeleniumHelper.downloadTempFile(value);
 	}
