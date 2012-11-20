@@ -394,42 +394,72 @@ public class SeleniumXMLToJavaBuilder {
 		return sb.toString();
 	}
 
-	private String getCommandActionsConditional(Element command) {
+	private String getCommandActionsConditional(Element conditional) {
 		StringBundler sb = new StringBundler();
 
-		String actionDefName = command.attributeValue("command");
-		String actionObjectName = command.attributeValue("name") + "Actions";
+		String conditionalCommand = conditional.attributeValue("command");
+		String conditionalLocator = conditional.attributeValue("locator");
+		String conditionalName = conditional.attributeValue("name");
+		String conditionalPath = conditional.attributeValue("path");
+		String conditionalTarget = conditional.attributeValue("target");
+		String conditionalValue = conditional.attributeValue("value");
 
-		sb.append(lowerCaseFirstLetter(actionObjectName));
-		sb.append(StringPool.PERIOD);
-		sb.append(actionDefName);
+		if (conditionalCommand.contains("Not")) {
+			sb.append("!");
 
-		String actionLocator = command.attributeValue("locator");
-		String actionPath = command.attributeValue("path");
-
-		if (!(actionLocator == null)) {
-			sb.append("(");
-			sb.append(replaceVariables("\"" + actionLocator + "\""));
+			conditionalCommand = StringUtil.replace(
+				conditionalCommand, "Not", "");
 		}
-		else if (!(actionPath == null)) {
+
+		if (conditionalName == null) {
+			sb.append("selenium.");
+			sb.append(conditionalCommand);
 			sb.append("(");
-			sb.append(replaceVariables("\"" + actionPath + "\""));
+
+			if (!(conditionalTarget == null)) {
+				sb.append("\"");
+				sb.append(conditionalTarget);
+				sb.append("\"");
+			}
+
+			if (!(conditionalValue == null)) {
+				sb.append(", \"");
+				sb.append(conditionalValue);
+				sb.append("\"");
+			}
+
+			sb.append(")");
 		}
 		else {
-			sb.append("(\"\"");
-		}
+			String actionName = conditionalCommand;
+			String actionObjectName = conditionalName + "Actions";
 
-		String actionValue = command.attributeValue("value");
+			sb.append(lowerCaseFirstLetter(actionObjectName));
+			sb.append(StringPool.PERIOD);
+			sb.append(actionName);
 
-		if (!(actionValue == null)) {
-			sb.append(", ");
-			sb.append(getCommandAttributeValue(command));
-		}
-		else {
-			sb.append(", \"\"");
-		}
+			if (!(conditionalLocator == null)) {
+				sb.append("(");
+				sb.append(replaceVariables("\"" + conditionalLocator + "\""));
+			}
+			else if (!(conditionalPath == null)) {
+				sb.append("(");
+				sb.append(replaceVariables("\"" + conditionalPath + "\""));
+			}
+			else {
+				sb.append("(\"\"");
+			}
 
-		sb.append(")");
+			if (!(conditionalValue == null)) {
+				sb.append(", ");
+				sb.append(getCommandAttributeValue(conditional));
+			}
+			else {
+				sb.append(", \"\"");
+			}
+
+			sb.append(")");
+		}
 
 		return sb.toString();
 	}
