@@ -1,0 +1,6 @@
+<functions>
+	<functiondef name="assertTextPresent" default="true">
+		<selenium command="waitForTextPresent" />
+		<selenium command="assertTextPresent" />
+	</functiondef>
+</functions>

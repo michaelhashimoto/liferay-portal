@@ -1,0 +1,31 @@
+<test
+	name="AddBlogsEntryContentNullCP"
+	description="In the Control Panel Blogs Portlet, ensure that you can not add a Blogs Entry without content."
+>
+	<setup>
+	</setup>
+	<steps>
+		`<macro name="Goto" command="controlPanelPortlet">
+			<param name="portlet" value="Blogs" />
+		</macro>
+
+		<action name="CPBlogsHome" command="click" path="PORTLET_LINK_ADD" value="Add" />
+
+		<action name="CPBlogsAddEntry" command="type" path="CONTENT_FIELD_TITLE" value="Blogs Entry Title" />
+		<action name="CPBlogsAddEntry" command="type" path="CONTENT_FIELD_CONTENT" value="" />
+		<action name="CPBlogsAddEntry" command="click" path="CONTENT_LINK_SAVE" value="Publish" />
+		<action name="CPBlogsAddEntry" command="assertTextEquals" path="CONTENT_TEXT_ERROR_MESSAGE_1" value="Your request failed to complete." />
+		<action name="CPBlogsAddEntry" command="assertTextEquals" path="CONTENT_TEXT_ERROR_MESSAGE_2" value="Please enter valid content." />
+
+		`<macro name="Goto" command="controlPanelPortlet">
+			<param name="portlet" value="Blogs" />
+		</macro>
+
+		<action name="CPBlogsHome" command="assertTextNotPresent" value="Blogs Entry Title" />
+		<action name="CPBlogsHome" command="assertTextNotPresent" value="Blogs Entry Content" />
+	</steps>
+	<teardown>
+		<macro name="CPBlogsEntry" command="tearDown" />
+		<macro name="CPRecycleBin" command="empty" />
+	</teardown>
+</test>

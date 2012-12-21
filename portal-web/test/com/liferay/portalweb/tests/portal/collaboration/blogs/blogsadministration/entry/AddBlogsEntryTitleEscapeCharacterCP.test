@@ -1,0 +1,17 @@
+<test
+	name="AddBlogsEntryTitleEscapeCharactersCP"
+	description="In the Control Panel Blogs Portlet, add a Blogs Entry with a title with escape characters."
+>
+	<setup>
+	</setup>
+	<steps>
+		<macro name="CPBlogsEntry" command="add">
+			<param name="title" value="&lt;!-- --&gt;" />
+			<param name="content" value="Blogs Entry Content" />
+		</macro>
+	</steps>
+	<teardown>
+		<macro name="CPBlogsEntry" command="tearDown" />
+		<macro name="CPRecycleBin" command="empty" />
+	</teardown>
+</test>
