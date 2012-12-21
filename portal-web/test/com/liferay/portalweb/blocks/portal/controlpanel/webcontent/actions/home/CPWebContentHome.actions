@@ -1,0 +1,13 @@
+<actions>
+	<actiondef name="check">
+		<conditional elements="ENTRIES_ARTICLE_1_CHECKBOX">
+			<function name="Check" command="clickAtWCMouseOverArticle" />
+		</conditional>
+	</actiondef>
+
+	<actiondef name="click">
+		<conditional elements="BUTTONS_ACTIONS,BUTTONS_ADD,BUTTONS_MANAGE">
+			<function name="Click" command="textClickAtPause" />
+		</conditional>
+	</actiondef>
+</actions>
