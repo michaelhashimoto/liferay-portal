@@ -10,7 +10,7 @@
 
 	<command name="click">
 		<case locator-key1="ADD_TAG_SAVE">
-			<execute function="Click#valueClickAt" value1="Save" />
+			<execute function="Click#clickAt" value1="Save" />
 		</case>
 	</command>
 </definition>

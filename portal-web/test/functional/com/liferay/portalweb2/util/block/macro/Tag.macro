@@ -1,6 +1,6 @@
 <definition>
 	<command name="addCP">
-		<execute macro="Page#cpGoto">
+		<execute macro="Page#cpGotoContent">
 			<var name="portletName" value="Tags" />
 		</execute>
 
@@ -12,7 +12,7 @@
 	</command>
 
 	<command name="deleteCP">
-		<execute macro="Page#cpGoto">
+		<execute macro="Page#cpGotoContent">
 			<var name="portletName" value="Tags" />
 		</execute>
 
@@ -25,7 +25,7 @@
 	</command>
 
 	<command name="editCP">
-		<execute macro="Page#cpGoto">
+		<execute macro="Page#cpGotoContent">
 			<var name="portletName" value="Tags" />
 		</execute>
 
@@ -35,10 +35,11 @@
 		<execute action="CPTags#click" locator-key1="EDIT_TAG_SAVE" />
 		<execute action="CPTags#assertTextEquals" locator-key1="SUCCESS_MESSAGE" />
 		<execute action="CPTags#assertTextEquals" locator-key1="TAG_DETAILS_HEADER" value1="${tagNameNew}" />
+		<execute action="CPTags#assertTextNotPresent" value1="${tagName}" />
 	</command>
 
 	<command name="tearDownCP">
-		<execute macro="Page#cpGoto">
+		<execute macro="Page#cpGotoContent">
 			<var name="portletName" value="Tags" />
 		</execute>
 

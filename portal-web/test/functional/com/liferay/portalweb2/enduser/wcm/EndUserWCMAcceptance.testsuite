@@ -5,15 +5,9 @@
 
 	<execute test-case="CPSitesAcceptance" />
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-=======
->>>>>>> 13e9ada... LPS-36039
 	<execute test-case="CPTagsAcceptance" />
 
 	<execute test-case="CPWebcontentAcceptance" />
 
->>>>>>> 13e9ada... LPS-36039
 	<execute test-case="DockbarAcceptance" />
 </definition>

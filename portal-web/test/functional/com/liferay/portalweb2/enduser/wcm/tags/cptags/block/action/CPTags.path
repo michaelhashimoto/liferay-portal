@@ -20,7 +20,7 @@
 </tr>
 <tr>
 	<td>SUCCESS_MESSAGE</td>
-	<td>//div[@class='lfr-message-response portlet-msg-success']</td>
+	<td>//div[@class='lfr-message-response alert alert-success']</td>
 	<td></td>
 </tr>
 <tr>
@@ -30,12 +30,12 @@
 </tr>
 <tr>
 	<td>ACTIONS</td>
-	<td>//span[@title='Actions']/ul/li/strong/a</td>
+	<td>//a[contains(text(),'Actions')]</td>
 	<td></td>
 </tr>
 <tr>
 	<td>ADD_TAG</td>
-	<td>//input[@id='_99_addTagButton']</td>
+	<td>//a[contains(text(),'Add Tag')]</td>
 	<td></td>
 </tr>
 <tr>
@@ -56,17 +56,17 @@
 <!--TAG_DETAILS-->
 <tr>
 	<td>TAG_DETAILS_HEADER</td>
-	<td>//h1[@class='header-title']/span</td>
+	<td>//h3[@class='header-title']/span</td>
 	<td></td>
 </tr>
 <tr>
 	<td>TAG_DETAILS_EDIT</td>
-	<td>//input[@value='Edit']</td>
+	<td>//button[contains(text(),'Edit')]</td>
 	<td></td>
 </tr>
 <tr>
 	<td>TAG_DETAILS_DELETE</td>
-	<td>//input[@value='Delete']</td>
+	<td>//button[contains(text(),'Delete')]</td>
 	<td></td>
 </tr>
 <tr>
@@ -82,7 +82,7 @@
 </tr>
 <tr>
 	<td>ADD_TAG_SAVE</td>
-	<td>//input[@value='Save']</td>
+	<td>//button[contains(text(),'Save')]</td>
 	<td></td>
 </tr>
 <tr>
@@ -98,7 +98,7 @@
 </tr>
 <tr>
 	<td>EDIT_TAG_SAVE</td>
-	<td>//input[@value='Save']</td>
+	<td>//button[contains(text(),'Save')]</td>
 	<td></td>
 </tr>
 <tr>
@@ -109,17 +109,17 @@
 <!--ENTRY_TAG-->
 <tr>
 	<td>ENTRY_TAG_1</td>
-	<td>//li/div/span/a</td>
+	<td>//div[3]/div/div/div/div/ul/li/a/span</td>
 	<td></td>
 </tr>
 <tr>
 	<td>ENTRY_TAG_2</td>
-	<td>//li[2]/div/span/a</td>
+	<td>//div[3]/div/div/div/div/ul/li[2]/a/span</td>
 	<td></td>
 </tr>
 <tr>
 	<td>ENTRY_TAG_3</td>
-	<td>//li[3]/div/span/a</td>
+	<td>//div[3]/div/div/div/div/ul/li[3]/a/span</td>
 	<td></td>
 </tr>
 <tr>
@@ -130,7 +130,7 @@
 <!--ACTION-->
 <tr>
 	<td>ACTION_DELETE</td>
-	<td>//div[@class='lfr-component lfr-menu-list']/ul/li/a[contains(.,'Delete')]</td>
+	<td>//ul[@class='dropdown-menu']/li/a[contains(.,'Delete')]</td>
 	<td></td>
 </tr>
 </tbody>
