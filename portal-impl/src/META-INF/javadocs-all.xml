@@ -18027,6 +18027,168 @@
 		</field>
 	</javadoc>
 	<javadoc>
+		<name>EhcacheStreamBootstrapCacheLoader</name>
+		<type>com.liferay.portal.cache.ehcache.EhcacheStreamBootstrapCacheLoader</type>
+		<author><![CDATA[Shuyang Zhou]]></author>
+		<author><![CDATA[Sherry Yang]]></author>
+		<method>
+			<name>resetSkip</name>
+		</method>
+		<method>
+			<name>setSkip</name>
+		</method>
+		<method>
+			<name>start</name>
+		</method>
+		<method>
+			<name>EhcacheStreamBootstrapCacheLoader</name>
+			<param>
+				<name>properties</name>
+				<type>java.util.Properties</type>
+				<comment><![CDATA[]]></comment>
+			</param>
+		</method>
+		<method>
+			<name>clone</name>
+			<return>
+				<comment><![CDATA[]]></comment>
+			</return>
+		</method>
+		<method>
+			<name>doLoad</name>
+			<param>
+				<name>ehcache</name>
+				<type>net.sf.ehcache.Ehcache</type>
+				<comment><![CDATA[]]></comment>
+			</param>
+		</method>
+		<method>
+			<name>isAsynchronous</name>
+			<return>
+				<comment><![CDATA[]]></comment>
+			</return>
+		</method>
+		<method>
+			<name>load</name>
+			<param>
+				<name>ehcache</name>
+				<type>net.sf.ehcache.Ehcache</type>
+				<comment><![CDATA[]]></comment>
+			</param>
+		</method>
+		<field>
+			<name>_log</name>
+		</field>
+		<field>
+			<name>_deferredEhcaches</name>
+		</field>
+		<field>
+			<name>_skipBootstrapThreadLocal</name>
+		</field>
+		<field>
+			<name>_started</name>
+		</field>
+		<field>
+			<name>_bootstrapAsynchronously</name>
+		</field>
+	</javadoc>
+	<javadoc>
+		<name>EhcacheStreamBootstrapCacheLoaderFactory</name>
+		<type>com.liferay.portal.cache.ehcache.EhcacheStreamBootstrapCacheLoaderFactory</type>
+		<author><![CDATA[Shuyang Zhou]]></author>
+		<author><![CDATA[Sherry Yang]]></author>
+		<method>
+			<name>createBootstrapCacheLoader</name>
+			<param>
+				<name>properties</name>
+				<type>java.util.Properties</type>
+				<comment><![CDATA[]]></comment>
+			</param>
+			<return>
+				<comment><![CDATA[]]></comment>
+			</return>
+		</method>
+	</javadoc>
+	<javadoc>
+		<name>EhcacheStreamBootstrapHelpUtil</name>
+		<type>com.liferay.portal.cache.ehcache.EhcacheStreamBootstrapHelpUtil</type>
+		<author><![CDATA[Shuyang Zhou]]></author>
+		<author><![CDATA[Sherry Yang]]></author>
+		<method>
+			<name>acquireCachePeers</name>
+			<param>
+				<name>ehcache</name>
+				<type>net.sf.ehcache.Ehcache</type>
+				<comment><![CDATA[]]></comment>
+			</param>
+			<throws>
+				<name>Exception</name>
+				<type>java.lang.Exception</type>
+				<comment><![CDATA[]]></comment>
+			</throws>
+		</method>
+		<method>
+			<name>createServerSocket</name>
+			<param>
+				<name>startPort</name>
+				<type>int</type>
+				<comment><![CDATA[]]></comment>
+			</param>
+			<return>
+				<comment><![CDATA[]]></comment>
+			</return>
+			<throws>
+				<name>Exception</name>
+				<type>java.lang.Exception</type>
+				<comment><![CDATA[]]></comment>
+			</throws>
+		</method>
+		<method>
+			<name>createServerSocketFromCluster</name>
+			<param>
+				<name>cacheName</name>
+				<type>java.lang.String</type>
+				<comment><![CDATA[]]></comment>
+			</param>
+			<return>
+				<comment><![CDATA[]]></comment>
+			</return>
+			<throws>
+				<name>Exception</name>
+				<type>java.lang.Exception</type>
+				<comment><![CDATA[]]></comment>
+			</throws>
+		</method>
+		<method>
+			<name>loadCachesFromCluster</name>
+			<param>
+				<name>ehcache</name>
+				<type>net.sf.ehcache.Ehcache</type>
+				<comment><![CDATA[]]></comment>
+			</param>
+			<throws>
+				<name>Exception</name>
+				<type>java.lang.Exception</type>
+				<comment><![CDATA[]]></comment>
+			</throws>
+		</method>
+		<field>
+			<name>_BEAN_NAME_MULTI_VM_PORTAL_CACHE_MANAGER</name>
+		</field>
+		<field>
+			<name>_COMMAND_CACHE_TX_START</name>
+		</field>
+		<field>
+			<name>_COMMAND_SOCKET_CLOSE</name>
+		</field>
+		<field>
+			<name>_log</name>
+		</field>
+		<field>
+			<name>_createServerSocketFromClusterMethodKey</name>
+		</field>
+	</javadoc>
+	<javadoc>
 		<name>JGroupsBootstrapCacheLoader</name>
 		<type>com.liferay.portal.cache.ehcache.JGroupsBootstrapCacheLoader</type>
 		<comment><![CDATA[<p>
@@ -23200,6 +23362,12 @@ See http://issues.liferay.com/browse/LPS-11061.
 		<author><![CDATA[Shuyang Zhou]]></author>
 		<method>
 			<name>destroy</name>
+		</method>
+		<method>
+			<name>getBindInetAddress</name>
+			<return>
+				<comment><![CDATA[]]></comment>
+			</return>
 		</method>
 		<method>
 			<name>getLocalTransportAddresses</name>
@@ -29832,6 +30000,12 @@ This class converts all existing permissions from the legacy permissions algorit
 		<author><![CDATA[Laszlo Csontos]]></author>
 		<method>
 			<name>DB2Dialect</name>
+		</method>
+		<method>
+			<name>getForUpdateString</name>
+			<return>
+				<comment><![CDATA[]]></comment>
+			</return>
 		</method>
 		<method>
 			<name>getLimitString</name>
@@ -52682,6 +52856,9 @@ This action ensures that all requests are secure. Extend this and override the <
 			</throws>
 		</method>
 		<field>
+			<name>_NULL_JSON</name>
+		</field>
+		<field>
 			<name>_log</name>
 		</field>
 		<field>
@@ -66713,6 +66890,12 @@ For a usage example see {@link com.liferay.portlet.shopping.util.ShoppingUtil#ge
 		<type>com.liferay.portal.kernel.cluster.ClusterLink</type>
 		<author><![CDATA[Shuyang Zhou]]></author>
 		<method>
+			<name>getBindInetAddress</name>
+			<return>
+				<comment><![CDATA[]]></comment>
+			</return>
+		</method>
+		<method>
 			<name>getLocalTransportAddresses</name>
 			<return>
 				<comment><![CDATA[]]></comment>
@@ -66779,6 +66962,12 @@ For a usage example see {@link com.liferay.portlet.shopping.util.ShoppingUtil#ge
 				<type>com.liferay.portal.kernel.messaging.Message</type>
 				<comment><![CDATA[]]></comment>
 			</param>
+			<return>
+				<comment><![CDATA[]]></comment>
+			</return>
+		</method>
+		<method>
+			<name>getBindInetAddress</name>
 			<return>
 				<comment><![CDATA[]]></comment>
 			</return>
@@ -148582,6 +148771,9 @@ Calling these methods will throw an
 			<name>RUNTIME_PERMISSION_LOAD_LIBRARY</name>
 		</field>
 		<field>
+			<name>RUNTIME_PERMISSION_MODIFY_THREAD</name>
+		</field>
+		<field>
 			<name>RUNTIME_PERMISSION_READ_FILE_DESCRIPTOR</name>
 		</field>
 		<field>
@@ -148589,6 +148781,9 @@ Calling these methods will throw an
 		</field>
 		<field>
 			<name>RUNTIME_PERMISSION_SET_SECURITY_MANAGER</name>
+		</field>
+		<field>
+			<name>RUNTIME_PERMISSION_SUPPRESS_ACCESS_CHECKS</name>
 		</field>
 		<field>
 			<name>RUNTIME_PERMISSION_WRITE_FILE_DESCRIPTOR</name>
@@ -202688,6 +202883,9 @@ Localized values are cached in this class rather than in the value object since 
 			<name>CLUSTER_LINK_ENABLED</name>
 		</field>
 		<field>
+			<name>CLUSTER_LINK_NODE_BOOTUP_RESPONSE_TIMEOUT</name>
+		</field>
+		<field>
 			<name>COMBO_ALLOWED_FILE_EXTENSIONS</name>
 		</field>
 		<field>
@@ -203229,6 +203427,12 @@ Localized values are cached in this class rather than in the value object since 
 		</field>
 		<field>
 			<name>EHCACHE_SINGLE_VM_CONFIG_LOCATION</name>
+		</field>
+		<field>
+			<name>EHCACHE_SOCKET_SO_TIMEOUT</name>
+		</field>
+		<field>
+			<name>EHCACHE_SOCKET_START_PORT</name>
 		</field>
 		<field>
 			<name>EHCACHE_STATISTICS_ENABLED</name>
@@ -209196,6 +209400,32 @@ A class loader proxy able to serialize simple POJOs between two class loaders. I
 		<name>SocketUtil</name>
 		<type>com.liferay.portal.kernel.util.SocketUtil</type>
 		<author><![CDATA[Shuyang Zhou]]></author>
+		<method>
+			<name>createServerSocketChannel</name>
+			<param>
+				<name>bindingInetAddress</name>
+				<type>java.net.InetAddress</type>
+				<comment><![CDATA[]]></comment>
+			</param>
+			<param>
+				<name>startPort</name>
+				<type>int</type>
+				<comment><![CDATA[]]></comment>
+			</param>
+			<param>
+				<name>serverSocketConfigurator</name>
+				<type>com.liferay.portal.kernel.util.SocketUtil.ServerSocketConfigurator</type>
+				<comment><![CDATA[]]></comment>
+			</param>
+			<return>
+				<comment><![CDATA[]]></comment>
+			</return>
+			<throws>
+				<name>IOException</name>
+				<type>java.io.IOException</type>
+				<comment><![CDATA[]]></comment>
+			</throws>
+		</method>
 		<method>
 			<name>getBindInfo</name>
 			<param>
@@ -303141,7 +303371,7 @@ The <code>actionIds</code> attribute stores the bitwise IDs of all the actions a
 			</throws>
 		</method>
 		<field>
-			<name>_BOOTUP_CLUSTER_NODE_RESPONSE_TIMEOUT</name>
+			<name>_CLUSTER_LINK_NODE_BOOTUP_RESPONSE_TIMEOUT</name>
 		</field>
 		<field>
 			<name>_LUCENE_BOOLEAN_QUERY_CLAUSE_MAX_SIZE</name>
@@ -309525,15 +309755,10 @@ The <code>actionIds</code> attribute stores the bitwise IDs of all the actions a
 			</return>
 		</method>
 		<method>
-			<name>wrap</name>
+			<name>wrapWhenActive</name>
 			<param>
 				<name>t</name>
 				<type>T</type>
-				<comment><![CDATA[]]></comment>
-			</param>
-			<param>
-				<name>checkActive</name>
-				<type>boolean</type>
 				<comment><![CDATA[]]></comment>
 			</param>
 			<return>
@@ -340490,6 +340715,32 @@ This method handles the creation of the layout including its resources, metadata
 			</throws>
 		</method>
 		<method>
+			<name>fetchLayoutSetBranch</name>
+			<param>
+				<name>groupId</name>
+				<type>long</type>
+				<comment><![CDATA[]]></comment>
+			</param>
+			<param>
+				<name>privateLayout</name>
+				<type>boolean</type>
+				<comment><![CDATA[]]></comment>
+			</param>
+			<param>
+				<name>name</name>
+				<type>java.lang.String</type>
+				<comment><![CDATA[]]></comment>
+			</param>
+			<return>
+				<comment><![CDATA[]]></comment>
+			</return>
+			<throws>
+				<name>SystemException</name>
+				<type>com.liferay.portal.kernel.exception.SystemException</type>
+				<comment><![CDATA[]]></comment>
+			</throws>
+		</method>
+		<method>
 			<name>getLayoutSetBranch</name>
 			<param>
 				<name>groupId</name>
@@ -341906,6 +342157,22 @@ This method can disable the layout set prototype's link by setting <code>layoutS
 				<type>com.liferay.portal.kernel.exception.PortalException</type>
 				<comment><![CDATA[]]></comment>
 			</throws>
+			<throws>
+				<name>SystemException</name>
+				<type>com.liferay.portal.kernel.exception.SystemException</type>
+				<comment><![CDATA[]]></comment>
+			</throws>
+		</method>
+		<method>
+			<name>getLayoutSetPrototypes</name>
+			<param>
+				<name>companyId</name>
+				<type>long</type>
+				<comment><![CDATA[]]></comment>
+			</param>
+			<return>
+				<comment><![CDATA[]]></comment>
+			</return>
 			<throws>
 				<name>SystemException</name>
 				<type>com.liferay.portal.kernel.exception.SystemException</type>
@@ -414858,6 +415125,39 @@ In most cases, SpringUtil.setContext() would have been called by com.liferay.por
 			</throws>
 		</method>
 		<method>
+			<name>addDefaultLayoutSetBranch</name>
+			<param>
+				<name>userId</name>
+				<type>long</type>
+				<comment><![CDATA[]]></comment>
+			</param>
+			<param>
+				<name>groupId</name>
+				<type>long</type>
+				<comment><![CDATA[]]></comment>
+			</param>
+			<param>
+				<name>groupName</name>
+				<type>java.lang.String</type>
+				<comment><![CDATA[]]></comment>
+			</param>
+			<param>
+				<name>privateLayout</name>
+				<type>boolean</type>
+				<comment><![CDATA[]]></comment>
+			</param>
+			<param>
+				<name>serviceContext</name>
+				<type>com.liferay.portal.service.ServiceContext</type>
+				<comment><![CDATA[]]></comment>
+			</param>
+			<throws>
+				<name>SystemException</name>
+				<type>com.liferay.portal.kernel.exception.SystemException</type>
+				<comment><![CDATA[]]></comment>
+			</throws>
+		</method>
+		<method>
 			<name>checkDefaultLayoutSetBranches</name>
 			<param>
 				<name>userId</name>
@@ -427275,6 +427575,17 @@ In most cases, SpringUtil.setContext() would have been called by com.liferay.por
 		</method>
 	</javadoc>
 	<javadoc>
+		<name>SinceJava</name>
+		<type>com.liferay.portal.tools.javadocformatter.SinceJava</type>
+		<author><![CDATA[Raymond Augé]]></author>
+		<method>
+			<name>value</name>
+			<return>
+				<comment><![CDATA[]]></comment>
+			</return>
+		</method>
+	</javadoc>
+	<javadoc>
 		<name>TimestampUpdater</name>
 		<type>com.liferay.portal.tools.jspc.common.TimestampUpdater</type>
 		<author><![CDATA[Minhchau Dang]]></author>
@@ -430059,8 +430370,8 @@ In most cases, SpringUtil.setContext() would have been called by com.liferay.por
 		<method>
 			<name>push</name>
 			<param>
-				<name>string</name>
-				<type>java.lang.String</type>
+				<name>object</name>
+				<type>java.lang.Object</type>
 				<comment><![CDATA[]]></comment>
 			</param>
 			<return>
@@ -436421,6 +436732,22 @@ In most cases, SpringUtil.setContext() would have been called by com.liferay.por
 			</throws>
 		</method>
 		<method>
+			<name>getExclusionsProperties</name>
+			<param>
+				<name>fileName</name>
+				<type>java.lang.String</type>
+				<comment><![CDATA[]]></comment>
+			</param>
+			<return>
+				<comment><![CDATA[]]></comment>
+			</return>
+			<throws>
+				<name>IOException</name>
+				<type>java.io.IOException</type>
+				<comment><![CDATA[]]></comment>
+			</throws>
+		</method>
+		<method>
 			<name>hasMissingParentheses</name>
 			<param>
 				<name>s</name>
@@ -436502,6 +436829,27 @@ In most cases, SpringUtil.setContext() would have been called by com.liferay.por
 			<return>
 				<comment><![CDATA[]]></comment>
 			</return>
+		</method>
+		<method>
+			<name>stripTopLevelDirectories</name>
+			<param>
+				<name>properties</name>
+				<type>java.util.Properties</type>
+				<comment><![CDATA[]]></comment>
+			</param>
+			<param>
+				<name>level</name>
+				<type>int</type>
+				<comment><![CDATA[]]></comment>
+			</param>
+			<return>
+				<comment><![CDATA[]]></comment>
+			</return>
+			<throws>
+				<name>IOException</name>
+				<type>java.io.IOException</type>
+				<comment><![CDATA[]]></comment>
+			</throws>
 		</method>
 		<method>
 			<name>trimContent</name>
@@ -436827,11 +437175,6 @@ In most cases, SpringUtil.setContext() would have been called by com.liferay.por
 			<name>isClassOrVariableRequired</name>
 			<param>
 				<name>fileName</name>
-				<type>java.lang.String</type>
-				<comment><![CDATA[]]></comment>
-			</param>
-			<param>
-				<name>line</name>
 				<type>java.lang.String</type>
 				<comment><![CDATA[]]></comment>
 			</param>
@@ -437395,19 +437738,19 @@ In most cases, SpringUtil.setContext() would have been called by com.liferay.por
 		</method>
 		<method>
 			<name>formatAntXML</name>
-			<throws>
-				<name>DocumentException</name>
-				<type>com.liferay.portal.kernel.xml.DocumentException</type>
+			<param>
+				<name>fileName</name>
+				<type>java.lang.String</type>
 				<comment><![CDATA[]]></comment>
-			</throws>
-			<throws>
-				<name>IOException</name>
-				<type>java.io.IOException</type>
+			</param>
+			<param>
+				<name>content</name>
+				<type>java.lang.String</type>
 				<comment><![CDATA[]]></comment>
-			</throws>
-		</method>
-		<method>
-			<name>formatDDLStructuresXML</name>
+			</param>
+			<return>
+				<comment><![CDATA[]]></comment>
+			</return>
 			<throws>
 				<name>DocumentException</name>
 				<type>com.liferay.portal.kernel.xml.DocumentException</type>
@@ -437442,19 +437785,11 @@ In most cases, SpringUtil.setContext() would have been called by com.liferay.por
 		</method>
 		<method>
 			<name>formatFriendlyURLRoutesXML</name>
-			<throws>
-				<name>DocumentException</name>
-				<type>com.liferay.portal.kernel.xml.DocumentException</type>
+			<param>
+				<name>fileName</name>
+				<type>java.lang.String</type>
 				<comment><![CDATA[]]></comment>
-			</throws>
-			<throws>
-				<name>IOException</name>
-				<type>java.io.IOException</type>
-				<comment><![CDATA[]]></comment>
-			</throws>
-		</method>
-		<method>
-			<name>formatFriendlyURLRoutesXML</name>
+			</param>
 			<param>
 				<name>content</name>
 				<type>java.lang.String</type>
@@ -437463,14 +437798,6 @@ In most cases, SpringUtil.setContext() would have been called by com.liferay.por
 			<return>
 				<comment><![CDATA[]]></comment>
 			</return>
-			<throws>
-				<name>DocumentException</name>
-				<type>com.liferay.portal.kernel.xml.DocumentException</type>
-				<comment><![CDATA[]]></comment>
-			</throws>
-		</method>
-		<method>
-			<name>formatPortletXML</name>
 			<throws>
 				<name>DocumentException</name>
 				<type>com.liferay.portal.kernel.xml.DocumentException</type>
@@ -437492,19 +437819,6 @@ In most cases, SpringUtil.setContext() would have been called by com.liferay.por
 			<return>
 				<comment><![CDATA[]]></comment>
 			</return>
-			<throws>
-				<name>DocumentException</name>
-				<type>com.liferay.portal.kernel.xml.DocumentException</type>
-				<comment><![CDATA[]]></comment>
-			</throws>
-			<throws>
-				<name>IOException</name>
-				<type>java.io.IOException</type>
-				<comment><![CDATA[]]></comment>
-			</throws>
-		</method>
-		<method>
-			<name>formatServiceXML</name>
 			<throws>
 				<name>DocumentException</name>
 				<type>com.liferay.portal.kernel.xml.DocumentException</type>
@@ -437536,32 +437850,55 @@ In most cases, SpringUtil.setContext() would have been called by com.liferay.por
 		</method>
 		<method>
 			<name>formatStrutsConfigXML</name>
+			<param>
+				<name>fileName</name>
+				<type>java.lang.String</type>
+				<comment><![CDATA[]]></comment>
+			</param>
+			<param>
+				<name>content</name>
+				<type>java.lang.String</type>
+				<comment><![CDATA[]]></comment>
+			</param>
 			<throws>
 				<name>DocumentException</name>
 				<type>com.liferay.portal.kernel.xml.DocumentException</type>
-				<comment><![CDATA[]]></comment>
-			</throws>
-			<throws>
-				<name>IOException</name>
-				<type>java.io.IOException</type>
 				<comment><![CDATA[]]></comment>
 			</throws>
 		</method>
 		<method>
 			<name>formatTilesDefsXML</name>
+			<param>
+				<name>fileName</name>
+				<type>java.lang.String</type>
+				<comment><![CDATA[]]></comment>
+			</param>
+			<param>
+				<name>content</name>
+				<type>java.lang.String</type>
+				<comment><![CDATA[]]></comment>
+			</param>
 			<throws>
 				<name>DocumentException</name>
 				<type>com.liferay.portal.kernel.xml.DocumentException</type>
 				<comment><![CDATA[]]></comment>
 			</throws>
-			<throws>
-				<name>IOException</name>
-				<type>java.io.IOException</type>
-				<comment><![CDATA[]]></comment>
-			</throws>
 		</method>
 		<method>
 			<name>formatWebXML</name>
+			<param>
+				<name>fileName</name>
+				<type>java.lang.String</type>
+				<comment><![CDATA[]]></comment>
+			</param>
+			<param>
+				<name>content</name>
+				<type>java.lang.String</type>
+				<comment><![CDATA[]]></comment>
+			</param>
+			<return>
+				<comment><![CDATA[]]></comment>
+			</return>
 			<throws>
 				<name>IOException</name>
 				<type>java.io.IOException</type>
@@ -441685,6 +442022,11 @@ In most cases, SpringUtil.setContext() would have been called by com.liferay.por
 				<type>java.lang.String</type>
 				<comment><![CDATA[]]></comment>
 			</param>
+			<param>
+				<name>exactMatch</name>
+				<type>boolean</type>
+				<comment><![CDATA[]]></comment>
+			</param>
 			<throws>
 				<name>Exception</name>
 				<type>java.lang.Exception</type>
@@ -441803,6 +442145,32 @@ In most cases, SpringUtil.setContext() would have been called by com.liferay.por
 				<type>java.lang.Exception</type>
 				<comment><![CDATA[]]></comment>
 			</throws>
+		</method>
+		<method>
+			<name>getNewTypeSettings</name>
+			<param>
+				<name>typeSettings</name>
+				<type>java.lang.String</type>
+				<comment><![CDATA[]]></comment>
+			</param>
+			<param>
+				<name>oldRootPortletId</name>
+				<type>java.lang.String</type>
+				<comment><![CDATA[]]></comment>
+			</param>
+			<param>
+				<name>newRootPortletId</name>
+				<type>java.lang.String</type>
+				<comment><![CDATA[]]></comment>
+			</param>
+			<param>
+				<name>exactMatch</name>
+				<type>boolean</type>
+				<comment><![CDATA[]]></comment>
+			</param>
+			<return>
+				<comment><![CDATA[]]></comment>
+			</return>
 		</method>
 	</javadoc>
 	<javadoc>
@@ -476640,6 +477008,12 @@ Preserved parameters are parameters that should be sent with every request as th
 			</param>
 		</method>
 		<method>
+			<name>getLocale</name>
+			<return>
+				<comment><![CDATA[]]></comment>
+			</return>
+		</method>
+		<method>
 			<name>iteratePortletCategories</name>
 			<param>
 				<name>parentNodeView</name>
@@ -480074,6 +480448,9 @@ Preserved parameters are parameters that should be sent with every request as th
 			<name>CLUSTER_LINK_ENABLED</name>
 		</field>
 		<field>
+			<name>CLUSTER_LINK_NODE_BOOTUP_RESPONSE_TIMEOUT</name>
+		</field>
+		<field>
 			<name>COMBO_ALLOWED_FILE_EXTENSIONS</name>
 		</field>
 		<field>
@@ -480525,6 +480902,12 @@ Preserved parameters are parameters that should be sent with every request as th
 		</field>
 		<field>
 			<name>EHCACHE_PORTAL_CACHE_MANAGER_JMX_ENABLED</name>
+		</field>
+		<field>
+			<name>EHCACHE_SOCKET_SO_TIMEOUT</name>
+		</field>
+		<field>
+			<name>EHCACHE_SOCKET_START_PORT</name>
 		</field>
 		<field>
 			<name>EHCACHE_STATISTICS_ENABLED</name>
