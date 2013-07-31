@@ -29409,17 +29409,6 @@ This class converts all existing permissions from the legacy permissions algorit
 			</return>
 		</method>
 		<method>
-			<name>_replaceEscape</name>
-			<param>
-				<name>sql</name>
-				<type>java.lang.String</type>
-				<comment><![CDATA[]]></comment>
-			</param>
-			<return>
-				<comment><![CDATA[]]></comment>
-			</return>
-		</method>
-		<method>
 			<name>_replaceIntegerDivision</name>
 			<param>
 				<name>sql</name>
@@ -430766,6 +430755,22 @@ In most cases, SpringUtil.setContext() would have been called by com.liferay.por
 			</return>
 		</method>
 		<method>
+			<name>getPath</name>
+			<param>
+				<name>rootElement</name>
+				<type>com.liferay.portal.kernel.xml.Element</type>
+				<comment><![CDATA[]]></comment>
+			</param>
+			<param>
+				<name>locatorKey</name>
+				<type>java.lang.String</type>
+				<comment><![CDATA[]]></comment>
+			</param>
+			<return>
+				<comment><![CDATA[]]></comment>
+			</return>
+		</method>
+		<method>
 			<name>getPathClassName</name>
 			<param>
 				<name>pathName</name>
@@ -431069,6 +431074,19 @@ In most cases, SpringUtil.setContext() would have been called by com.liferay.por
 			<name>validateTestSuiteElements</name>
 			<param>
 				<name>testSuiteName</name>
+				<type>java.lang.String</type>
+				<comment><![CDATA[]]></comment>
+			</param>
+		</method>
+		<method>
+			<name>validateVarElements</name>
+			<param>
+				<name>rootElement</name>
+				<type>com.liferay.portal.kernel.xml.Element</type>
+				<comment><![CDATA[]]></comment>
+			</param>
+			<param>
+				<name>fileName</name>
 				<type>java.lang.String</type>
 				<comment><![CDATA[]]></comment>
 			</param>
@@ -432410,6 +432428,19 @@ In most cases, SpringUtil.setContext() would have been called by com.liferay.por
 			</param>
 		</method>
 		<method>
+			<name>validateVarElement</name>
+			<param>
+				<name>fileName</name>
+				<type>java.lang.String</type>
+				<comment><![CDATA[]]></comment>
+			</param>
+			<param>
+				<name>element</name>
+				<type>com.liferay.portal.kernel.xml.Element</type>
+				<comment><![CDATA[]]></comment>
+			</param>
+		</method>
+		<method>
 			<name>validateWhileElement</name>
 			<param>
 				<name>fileName</name>
@@ -432444,6 +432475,12 @@ In most cases, SpringUtil.setContext() would have been called by com.liferay.por
 		</method>
 		<field>
 			<name>_TPL_ROOT</name>
+		</field>
+		<field>
+			<name>_allowedVarAttributes</name>
+		</field>
+		<field>
+			<name>_methodNames</name>
 		</field>
 		<field>
 			<name>_reservedTags</name>
@@ -623139,9 +623176,6 @@ The raw metadata extraction is done asynchronously.
 		</method>
 		<field>
 			<name>_FIELD_NAMESPACE</name>
-		</field>
-		<field>
-			<name>_log</name>
 		</field>
 	</javadoc>
 	<javadoc>
