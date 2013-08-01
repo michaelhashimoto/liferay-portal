@@ -305,7 +305,6 @@ public class JAASTest extends MainServletExecutionTestListener {
 			loginContext.getSubject(), String.valueOf(_user.getUserId()));
 	}
 
-	@Test
 	public void testProcessLoginEvents() throws Exception {
 		final IntegerWrapper counter = new IntegerWrapper();
 

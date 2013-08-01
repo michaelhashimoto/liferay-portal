@@ -16,7 +16,7 @@
 
 <%@ include file="/html/common/init.jsp"  %>
 
-<c:if test='<%= permissionChecker.isOmniadmin() %>'>
+<c:if test="<%= permissionChecker.isOmniadmin() %>">
 
 	<%
 	List<Map<String, String>> licenseProperties = com.liferay.portal.license.LicenseManager.getLicenseProperties();
@@ -50,7 +50,7 @@
 					</c:otherwise>
 				</c:choose>
 
-				<input class="popup-alert-close" type="button" value="Close" onClick="document.getElementById('expiration-notice').style.display = 'none';" />
+				<input class="popup-alert-close" onClick="document.getElementById('expiration-notice').style.display = 'none';" type="button" value="Close" />
 			</div>
 		</c:if>
 

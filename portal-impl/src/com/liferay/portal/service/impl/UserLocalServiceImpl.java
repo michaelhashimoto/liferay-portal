@@ -157,7 +157,7 @@ import java.util.concurrent.ConcurrentHashMap;
  *
  * @author Brian Wing Shun Chan
  * @author Scott Lee
- * @author Raymond Aug??
+ * @author Raymond Augé
  * @author Jorge Ferrer
  * @author Julio Camarero
  * @author Wesley Gong
@@ -705,7 +705,7 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 
 		com.liferay.portal.license.LicenseManager.checkUserLicense();
 
-		long userId =  counterLocalService.increment();
+		long userId = counterLocalService.increment();
 
 		EmailAddressGenerator emailAddressGenerator =
 			EmailAddressGeneratorFactory.getInstance();
@@ -5434,7 +5434,7 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 
 		com.liferay.portal.license.LicenseManager.checkUserLicense(authResult);
 
-		return  authResult;
+		return authResult;
 	}
 
 	protected Date getBirthday(
