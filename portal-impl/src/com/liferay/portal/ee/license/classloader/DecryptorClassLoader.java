@@ -34,6 +34,42 @@ public class DecryptorClassLoader extends ClassLoader {
 
 	public DecryptorClassLoader() {
 		super(PortalClassLoaderUtil.getClassLoader());
+
+		try {
+			String content = StringUtil.read(
+				getParent(), "com/liferay/portal/license/classloader/keys.txt");
+
+			String contentDigest = DigesterUtil.digestBase64(content);
+
+			String[] keys = StringUtil.split(content, StringPool.NEW_LINE);
+
+			int count = 0;
+			int marker = 3;
+			int pos = 0;
+
+			char[] charArray = contentDigest.toCharArray();
+
+			for (char c : charArray) {
+				int x = c;
+
+				count++;
+
+				if ((count % marker) == 0) {
+					_keys[((marker / 3) - 1)] = (Key)Base64.stringToObject(
+						keys[pos]);
+
+					count = 0;
+					marker = marker + 3;
+					pos = 0;
+				}
+				else {
+					pos += x;
+				}
+			}
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	public synchronized Class<?> loadClass(String name)
@@ -42,7 +78,32 @@ public class DecryptorClassLoader extends ClassLoader {
 		Class<?> c = findLoadedClass(name);
 
 		if (c == null) {
-			c = super.loadClass(name);
+			if (name.endsWith(".license.EventsProcessorImpl") ||
+				name.endsWith(".license.StartupAction")) {
+
+				try {
+					String resourceName = name.replace(
+						StringPool.PERIOD, StringPool.SLASH);
+
+					URL url = super.getResource(resourceName);
+
+					byte[] bytes = IOUtils.toByteArray(url.openStream());
+
+					for (Key key : _keys) {
+						bytes = Encryptor.decryptUnencodedAsBytes(key, bytes);
+					}
+
+					c = defineClass(
+						name, bytes, 0, bytes.length,
+						getClass().getProtectionDomain());
+				}
+				catch (Exception e) {
+					throw new ClassNotFoundException(e.getMessage(), e);
+				}
+			}
+			else {
+				c = super.loadClass(name);
+			}
 
 			if (c == null) {
 				throw new ClassNotFoundException(name);
@@ -51,5 +112,7 @@ public class DecryptorClassLoader extends ClassLoader {
 
 		return c;
 	}
+
+	private Key[] _keys = new Key[3];
 
 }
