@@ -153475,19 +153475,16 @@ See http://issues.liferay.com/browse/LEP-2297.
 		<author><![CDATA[Olaf Fricke]]></author>
 		<author><![CDATA[Brian Wing Shun Chan]]></author>
 		<method>
-			<name>destroy</name>
+			<name>doPortalDestroy</name>
 		</method>
 		<method>
-			<name>init</name>
-			<param>
-				<name>servletConfig</name>
-				<type>javax.servlet.ServletConfig</type>
+			<name>doPortalInit</name>
+			<throws>
+				<name>Exception</name>
+				<type>java.lang.Exception</type>
 				<comment><![CDATA[]]></comment>
-			</param>
+			</throws>
 		</method>
-		<field>
-			<name>_log</name>
-		</field>
 		<field>
 			<name>_subContext</name>
 		</field>
@@ -154535,10 +154532,10 @@ See http://issues.liferay.com/browse/LEP-1466.
 			</throws>
 		</method>
 		<field>
-			<name>_servlet</name>
+			<name>servlet</name>
 		</field>
 		<field>
-			<name>_servletConfig</name>
+			<name>servletConfig</name>
 		</field>
 	</javadoc>
 	<javadoc>
@@ -430488,6 +430485,24 @@ In most cases, SpringUtil.setContext() would have been called by com.liferay.por
 			<name>SeleniumBuilderContext</name>
 			<param>
 				<name>baseDir</name>
+				<type>java.lang.String</type>
+				<comment><![CDATA[]]></comment>
+			</param>
+			<throws>
+				<name>Exception</name>
+				<type>java.lang.Exception</type>
+				<comment><![CDATA[]]></comment>
+			</throws>
+		</method>
+		<method>
+			<name>SeleniumBuilderContext</name>
+			<param>
+				<name>baseDir</name>
+				<type>java.lang.String</type>
+				<comment><![CDATA[]]></comment>
+			</param>
+			<param>
+				<name>liferaySeleniumDir</name>
 				<type>java.lang.String</type>
 				<comment><![CDATA[]]></comment>
 			</param>
