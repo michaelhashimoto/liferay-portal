@@ -43,7 +43,7 @@ import javax.servlet.http.HttpSession;
 
 /**
  * @author Brian Wing Shun Chan
- * @author Raymond Aug??
+ * @author Raymond Augé
  */
 public class AutoLoginFilter extends BasePortalFilter {
 

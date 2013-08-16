@@ -95,7 +95,7 @@ dateFormatDateTime.setTimeZone(timeZone);
 
 		Map<String, String> serverInfo = LicenseUtil.getServerInfo();
 
-		List<Map<String, String>> licenseProperties =  LicenseManagerUtil.getLicenseProperties();
+		List<Map<String, String>> licenseProperties = LicenseManagerUtil.getLicenseProperties();
 
 		int portalLicenseState = 0;
 		String portalLicenseType = StringPool.BLANK;
