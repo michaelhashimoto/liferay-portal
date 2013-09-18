@@ -54,9 +54,13 @@ public class BaseTestCase extends LiferaySeleneseTestCase {
 			testCaseCount--;
 		}
 
-		if (!primaryTestSuiteName.contains("TestSuite") &&
+		if (!primaryTestSuiteName.endsWith("TestSuite") &&
 			(testCaseCount < 1)) {
 
+			SeleniumUtil.stopSelenium();
+		}
+
+		if (TestPropsValues.TESTING_CLASS_METHOD) {
 			SeleniumUtil.stopSelenium();
 		}
 	}
@@ -110,7 +114,6 @@ public class BaseTestCase extends LiferaySeleneseTestCase {
 
 			selenium.getEval("window.Liferay.fire(\'initDockbar\');");
 		}
-
 	}
 
 	protected static int testCaseCount;
