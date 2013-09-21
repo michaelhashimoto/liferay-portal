@@ -678,14 +678,14 @@ Please set the environment variable ANT_OPTS to the recommended value of
 	<target name="test-class" depends="compile,instrument-test-coverage,compile-test">
 		<if>
 			<not>
-				<isset property="type" />
+				<isset property="test.type" />
 			</not>
 			<then>
 				<if>
 					<available file="test/functional" type="dir" />
 					<then>
 						<resourcecount property="test.functional.count">
-							<fileset dir="test-classes/functional" includes="**/${class}.class" />
+							<fileset dir="test-classes/functional" includes="**/${test.class}.class" />
 						</resourcecount>
 					</then>
 				</if>
@@ -694,7 +694,7 @@ Please set the environment variable ANT_OPTS to the recommended value of
 					<available file="test/functional-generated" type="dir" />
 					<then>
 						<resourcecount property="test.functional-generated.count">
-							<fileset dir="test-classes/functional-generated" includes="**/${class}.class" />
+							<fileset dir="test-classes/functional-generated" includes="**/${test.class}.class" />
 						</resourcecount>
 					</then>
 				</if>
@@ -703,7 +703,7 @@ Please set the environment variable ANT_OPTS to the recommended value of
 					<available file="test/integration" type="dir" />
 					<then>
 						<resourcecount property="test.integration.count">
-							<fileset dir="test-classes/integration" includes="**/${class}.class" />
+							<fileset dir="test-classes/integration" includes="**/${test.class}.class" />
 						</resourcecount>
 					</then>
 				</if>
@@ -712,14 +712,14 @@ Please set the environment variable ANT_OPTS to the recommended value of
 					<available file="test/unit" type="dir" />
 					<then>
 						<resourcecount property="test.unit.count">
-							<fileset dir="test-classes/unit" includes="**/${class}.class" />
+							<fileset dir="test-classes/unit" includes="**/${test.class}.class" />
 						</resourcecount>
 					</then>
 				</if>
 			</then>
 			<else>
-				<resourcecount property="test.${type}.count">
-					<fileset dir="test-classes/${type}" includes="**/${class}.class" />
+				<resourcecount property="test.${test.type}.count">
+					<fileset dir="test-classes/${test.type}" includes="**/${test.class}.class" />
 				</resourcecount>
 			</else>
 		</if>
@@ -771,17 +771,17 @@ Please set the environment variable ANT_OPTS to the recommended value of
 			<else>
 				<if>
 					<not>
-						<isset property="class" />
+						<isset property="test.class" />
 					</not>
 					<then>
-						<fail>Missing class argument. Use "ant test-class -Dclass=TestClassName".</fail>
+						<fail>Use "ant test-class -Dtest.class=StringUtilTest".</fail>
 					</then>
 					<elseif>
 						<not>
 							<isset property="test.type" />
 						</not>
 						<then>
-							<fail>Class ${class} cannot be found.</fail>
+							<fail>Test class ${test.class} cannot be found.</fail>
 						</then>
 					</elseif>
 				</if>
@@ -809,107 +809,40 @@ Please set the environment variable ANT_OPTS to the recommended value of
 		<if>
 			<available file="test/${test.type}" type="dir" />
 			<then>
-				<if>
-					<or>
-						<isset property="testcase" />
-						<isset property="testcases" />
-					</or>
-					<then>
-						<first id="first">
-							<fileset dir="test-classes/${test.dir}" includes="**/${class}.class">
-								<exclude name="**/DLAppServiceHttpTest.class" />
-								<exclude name="**/DLAppServiceJsonTest.class" />
-								<exclude name="**/DLAppServiceSoapTest.class" />
-								<exclude name="**/UserServiceHttpTest.class" />
-								<exclude name="**/UserServiceSoapTest.class" />
-								<exclude name="${test.excludes}" />
-								<filename regex="${junit.test.excludes}" negate="true" />
-							</fileset>
-						</first>
-						<property name="test.class.name" value="${toString:first}" />
-						<propertyregex
-							input="${test.class.name}"
-							property="test.class.name.fixed"
-							regexp="\\"
-							replace="."
-						/>
-						<propertyregex
-							input="${test.class.name.fixed}"
-							property="test.class.name.final"
-							regexp=".*com(.*)\.class"
-							replace="com\1"
-						/>
-						<if>
-							<isset property="testcases" />
-							<then>
-								<propertyregex
-									defaultValue="${testcases}"
-									input="${testcases}"
-									property="methods"
-									regexp="\,"
-									replace=",test"
-								/>
-							</then>
-							<else>
-								<property name="methods" value="${testcase}" />
-							</else>
-						</if>
-						<junit dir="${project.dir}" fork="on" forkmode="${junit.forkmode}" haltonfailure="false" outputtoformatters="false" printsummary="on" showoutput="true">
-							<sysproperty key="junit.aspectj.dump" file="woven-classes" />
-							<sysproperty key="junit.code.coverage" value="${junit.code.coverage}" />
-							<sysproperty key="junit.debug" value="${junit.debug}" />
-							<sysproperty key="net.sourceforge.cobertura.datafile" file="test-coverage/cobertura.ser" />
-							<jvmarg line="${junit.debug.jpda}" />
-							<jvmarg value="-Xmx${junit.java.mx}" />
-							<jvmarg value="-XX:MaxPermSize=${junit.java.maxpermsize}" />
-							<jvmarg value="-Dexternal-properties=${test.properties}" />
-							<jvmarg value="-Dfile.encoding=UTF-8" />
-							<jvmarg value="-Djava.net.preferIPv4Stack=true" />
-							<jvmarg value="-Duser.timezone=GMT" />
-							<classpath location="test-coverage" />
-							<classpath refid="test.classpath" />
-							<formatter type="brief" usefile="false" />
-							<formatter type="xml" />
-							<test name="${test.class.name.final}" methods="test${methods}" />
-						</junit>
-					</then>
-					<else>
-						<junit dir="${project.dir}" fork="on" forkmode="${junit.forkmode}" haltonfailure="${junit.halt.on.failure}" outputtoformatters="false" printsummary="on" showoutput="true">
-							<sysproperty key="junit.aspectj.dump" file="woven-classes" />
-							<sysproperty key="junit.code.coverage" value="${junit.code.coverage}" />
-							<sysproperty key="junit.debug" value="${junit.debug}" />
-							<sysproperty key="net.sourceforge.cobertura.datafile" file="test-coverage/cobertura.ser" />
-							<jvmarg line="${junit.debug.jpda}" />
-							<jvmarg value="-Xmx${junit.java.mx}" />
-							<jvmarg value="-XX:MaxPermSize=${junit.java.maxpermsize}" />
-							<jvmarg value="-Dexternal-properties=${test.properties}" />
-							<jvmarg value="-Dfile.encoding=UTF-8" />
-							<jvmarg value="-Djava.net.preferIPv4Stack=true" />
-							<jvmarg value="-Duser.timezone=GMT" />
-							<classpath location="test-coverage" />
-							<classpath refid="test.classpath" />
-							<formatter type="brief" usefile="false" />
-							<formatter type="xml" />
-							<batchtest todir="test-results/${test.type}">
-								<fileset dir="test-classes/${test.dir}" includes="**/${class}.class">
-									<exclude name="**/DLAppServiceHttpTest.class" />
-									<exclude name="**/DLAppServiceJsonTest.class" />
-									<exclude name="**/DLAppServiceSoapTest.class" />
-									<exclude name="**/UserServiceHttpTest.class" />
-									<exclude name="**/UserServiceSoapTest.class" />
-									<exclude name="${test.excludes}" />
-									<filename regex="${junit.test.excludes}" negate="true" />
-								</fileset>
-							</batchtest>
-						</junit>
-					</else>
-				</if>
+				<junit dir="${project.dir}" fork="on" forkmode="${junit.forkmode}" haltonfailure="${junit.halt.on.failure}" outputtoformatters="false" printsummary="on" showoutput="true">
+					<sysproperty key="junit.aspectj.dump" file="woven-classes" />
+					<sysproperty key="junit.code.coverage" value="${junit.code.coverage}" />
+					<sysproperty key="junit.debug" value="${junit.debug}" />
+					<sysproperty key="net.sourceforge.cobertura.datafile" file="test-coverage/cobertura.ser" />
+					<jvmarg line="${junit.debug.jpda}" />
+					<jvmarg value="-Xmx${junit.java.mx}" />
+					<jvmarg value="-XX:MaxPermSize=${junit.java.maxpermsize}" />
+					<jvmarg value="-Dexternal-properties=${test.properties}" />
+					<jvmarg value="-Dfile.encoding=UTF-8" />
+					<jvmarg value="-Djava.net.preferIPv4Stack=true" />
+					<jvmarg value="-Duser.timezone=GMT" />
+					<classpath location="test-coverage" />
+					<classpath refid="test.classpath" />
+					<formatter type="brief" usefile="false" />
+					<formatter type="xml" />
+					<batchtest todir="test-results/${test.type}">
+						<fileset dir="test-classes/${test.dir}" includes="**/${test.class}.class">
+							<exclude name="**/DLAppServiceHttpTest.class" />
+							<exclude name="**/DLAppServiceJsonTest.class" />
+							<exclude name="**/DLAppServiceSoapTest.class" />
+							<exclude name="**/UserServiceHttpTest.class" />
+							<exclude name="**/UserServiceSoapTest.class" />
+							<exclude name="${test.excludes}" />
+							<filename regex="${junit.test.excludes}" negate="true" />
+						</fileset>
+					</batchtest>
+				</junit>
 			</then>
 		</if>
 	</target>
 
 	<target name="test-integration" depends="compile,instrument-test-coverage,compile-test-integration">
-		<var name="class" value="*Test" />
+		<var name="test.class" value="*Test" />
 
 		<ant target="test-cmd">
 			<property name="junit.forkmode" value="once" />
@@ -917,7 +850,7 @@ Please set the environment variable ANT_OPTS to the recommended value of
 			<property name="test.type" value="integration" />
 		</ant>
 
-		<var name="class" value="*PersistenceTest" />
+		<var name="test.class" value="*PersistenceTest" />
 
 		<ant target="test-cmd">
 			<property name="junit.forkmode" value="once" />
@@ -953,29 +886,29 @@ Please set the environment variable ANT_OPTS to the recommended value of
 			<classpath refid="test.classpath" />
 			<formatter type="brief" usefile="false" />
 			<formatter type="xml" />
-			<test name="${class}" methods="${methods}" todir="test-results/${test.type}" />
+			<test name="${test.class}" methods="${test.methods}" todir="test-results/${test.type}" />
 		</junit>
 	</target>
 
 	<target name="test-package">
 		<if>
 			<not>
-				<isset property="package" />
+				<isset property="test.package" />
 			</not>
 			<then>
-				<fail>Missing package argument. Use "ant test-package -Dpackage=com.liferay.package".</fail>
+				<fail>Use "ant test-package -Dtest.package=com.liferay.portal.kernel.util".</fail>
 			</then>
 		</if>
 
-		<propertyregex property="class" input="${package}." regexp="\." replace="/" global="true" />
+		<propertyregex property="test.class" input="${test.package}." regexp="\." replace="/" global="true" />
 
 		<ant target="test-class">
-			<property name="class" value="${class}**/*Test" />
+			<property name="test.class" value="${test.class}**/*Test" />
 		</ant>
 	</target>
 
 	<target name="test-unit" depends="compile,instrument-test-coverage,compile-test-unit">
-		<property name="class" value="*Test" />
+		<property name="test.class" value="*Test" />
 
 		<ant target="test-cmd">
 			<property name="junit.forkmode" value="perTest" />
