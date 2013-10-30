@@ -2670,7 +2670,6 @@
 			</not>
 			<then>
 				<delete dir="${liferay.home}/data" />
-				<delete dir="${liferay.home}/deploy" />
 				<delete dir="${liferay.home}/logs" />
 			</then>
 		</if>
@@ -4341,7 +4340,6 @@ custom.sql.function.isnotnull=CONVERT(VARCHAR,?) IS NOT NULL</echo>
 					</not>
 					<then>
 						<delete dir="${liferay.home}/data" />
-						<delete dir="${liferay.home}/deploy" />
 						<delete dir="${liferay.home}/logs" />
 					</then>
 				</if>
