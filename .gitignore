@@ -196,6 +196,8 @@ cobertura.ser
 /support-tomcat/classes
 /support-tomcat/support-tomcat*.jar
 
+/selenium-output
+
 /test-coverage
 /test-results
 
