@@ -168,6 +168,129 @@
 		<execute macro="SOTasks#viewTask" />
 	</command>
 
+	<command name="viewLinkContactscenter">
+		<execute action="SOContactscenter#assertElementPresent" locator-key1="CONTACTS_LIST_NAME" />
+		<execute action="SOContactscenter#assertElementPresent" locator-key1="CONTACTS_LIST_ALL_CHECKBOX" />
+		<execute action="SOContactscenter#assertTextEquals" locator-key1="CONTACTS_LINK_TITLE" value1="Contacts Center" />
+		<execute action="SOContactscenter#assertTextEquals" locator-key1="CONTACTS_LINK_CONNECTIONS" value1="You have 0 connections." />
+		<execute action="SOContactscenter#assertTextEquals" locator-key1="CONTACTS_LINK_FOLLOWING" value1="You are following 0 people." />
+		<execute action="SOContactscenter#assertTextEquals" locator-key1="CONTACTS_LINK_CONTACTS" value1="View my 0 contacts." />
+
+		<execute action="SOUserBar#click" locator-key1="GO_TO" />
+		<execute action="SOUserBar#assertElementPresent" locator-key1="GO_TO_SEARCH_FIELD" />
+
+		<var name="siteName" value="Liferay, Inc." />
+		<execute action="SOUserBar#assertTextEquals" locator-key1="GO_TO_SITE_NAME" value1="${siteName}" />
+
+		<var name="siteName" value="Liferay" />
+		<execute action="SOUserBar#assertTextEquals" locator-key1="GO_TO_SITE_NAME" value1="${siteName}" />
+	</command>
+
+	<command name="viewLinkHome">
+		<execute action="SODashboard#assertTextEquals" locator-key1="WHATS_HAPPENING_CONTENT_FIELD" value1="Update your status..." />
+		<execute action="SODashboard#assertTextEquals" locator-key1="WHATS_HAPPENING_INFO_MESSAGE" value1="You do not have any microblog entries." />
+
+		<execute action="SODashboard#assertTextEquals" locator-key1="ANNOUNCEMENTS_PORTLET_TITLE" value1="Announcements" />
+		<execute action="SODashboard#assertTextEquals" locator-key1="ANNOUNCEMENTS_ADD_ENTRY_BUTTON" value1="Add Entry" />
+		<execute action="SODashboard#assertTextEquals" locator-key1="ANNOUNCEMENTS_MANAGE_ENTRIES_BUTTON" value1="Manage Entries" />
+		<execute action="SODashboard#assertTextEquals" locator-key1="ANNOUNCEMENTS_NO_ANNOUNCEMENTS" value1="There are no new announcements." />
+
+		<execute action="SOActivities#assertTextEquals" locator-key1="ACTIVITIES_PORTLET_TITLE" value1="Activities" />
+		<execute action="SOActivities#assertTextEquals" locator-key1="NAVIGATION_ALL" value1="All" />
+		<execute action="SOActivities#assertTextEquals" locator-key1="NAVIGATION_CONNECTIONS" value1="Connections" />
+		<execute action="SOActivities#assertTextEquals" locator-key1="NAVIGATION_FOLLOWING" value1="Following" />
+		<execute action="SOActivities#assertTextEquals" locator-key1="NAVIGATION_MY_SITE" value1="My Sites" />
+		<execute action="SOActivities#assertTextEquals" locator-key1="NAVIGATION_ME" value1="Me" />
+		<execute action="SOActivities#assertTextEquals" locator-key1="NO_ACTIVITIES" value1="There are no activities." />
+
+		<execute action="SODashboard#assertTextEquals" locator-key1="TASK_PORTLET_TITLE" value1="Upcoming Tasks" />
+		<execute action="SODashboard#assertTextEquals" locator-key1="VIEW_ALL_TASKS_LINK" value1="View All Tasks" />
+
+		<execute action="SODashboard#assertTextEquals" locator-key1="EVENTS_PORTLET_TITLE" value1="Events" />
+		<execute action="SODashboard#assertTextEquals" locator-key1="EVENTS_DISPLAY_NO_EVENTS_MESSAGE" value1="There are no more events today." />
+
+		<execute action="SOUserBar#click" locator-key1="GO_TO" />
+		<execute action="SOUserBar#assertElementPresent" locator-key1="GO_TO_SEARCH_FIELD" />
+
+		<var name="siteName" value="Liferay, Inc." />
+		<execute action="SOUserBar#assertTextEquals" locator-key1="GO_TO_SITE_NAME" value1="${siteName}" />
+
+		<var name="siteName" value="Liferay" />
+		<execute action="SOUserBar#assertTextEquals" locator-key1="GO_TO_SITE_NAME" value1="${siteName}" />
+	</command>
+
+	<command name="viewLinkMicroblogs">
+		<execute action="SOMicroblogs#assertTextEquals" locator-key1="MICROBLOGS_CONTENT_FIELD" value1="Update your status..." />
+		<execute action="SOMicroblogs#assertTextEquals" locator-key1="INFO_MESSAGE" value1="You do not have any microblog entries." />
+
+		<execute action="SOUserBar#click" locator-key1="GO_TO" />
+		<execute action="SOUserBar#assertElementPresent" locator-key1="GO_TO_SEARCH_FIELD" />
+
+		<var name="siteName" value="Liferay, Inc." />
+		<execute action="SOUserBar#assertTextEquals" locator-key1="GO_TO_SITE_NAME" value1="${siteName}" />
+
+		<var name="siteName" value="Liferay" />
+		<execute action="SOUserBar#assertTextEquals" locator-key1="GO_TO_SITE_NAME" value1="${siteName}" />
+	</command>
+
+	<command name="viewLinkMydocuments">
+		<execute action="PGDocumentsandmedia#assertTextEquals" locator-key1="FILTER_HOME" value1="Home" />
+		<execute action="PGDocumentsandmedia#assertTextEquals" locator-key1="FILTER_RECENT" value1="Recent" />
+		<execute action="PGDocumentsandmedia#assertTextEquals" locator-key1="FILTER_MINE" value1="Mine" />
+		<execute action="PGDocumentsandmedia#assertElementPresent" locator-key1="TOOLBAR_SELECT_ALL_CHECKBOX" />
+		<execute action="PGDocumentsandmedia#assertTextEquals" locator-key1="TOOLBAR_ADD" value1="Add" />
+		<execute action="PGDocumentsandmedia#assertTextEquals" locator-key1="TOOLBAR_SORT_BY" value1="Sort By" />
+		<execute action="PGDocumentsandmedia#assertTextEquals" locator-key1="TOOLBAR_MANAGE" value1="Manage" />
+		<execute action="PGDocumentsandmedia#assertElementPresent" locator-key1="TOOLBAR_DISPLAY_ICON" />
+		<execute action="PGDocumentsandmedia#assertElementPresent" locator-key1="TOOLBAR_DISPLAY_DESCRIPTIVE" />
+		<execute action="PGDocumentsandmedia#assertElementPresent" locator-key1="TOOLBAR_DISPLAY_LIST" />
+		<execute action="PGDocumentsandmedia#assertElementPresent" locator-key1="TOOLBAR_SEARCH_FIELD" />
+		<execute action="PGDocumentsandmedia#assertTextEquals" locator-key1="TOOLBAR_SEARCH_BUTTON" value1="Search" />
+
+		<execute action="SOUserBar#click" locator-key1="GO_TO" />
+		<execute action="SOUserBar#assertElementPresent" locator-key1="GO_TO_SEARCH_FIELD" />
+
+		<var name="siteName" value="Liferay, Inc." />
+		<execute action="SOUserBar#assertTextEquals" locator-key1="GO_TO_SITE_NAME" value1="${siteName}" />
+
+		<var name="siteName" value="Liferay" />
+		<execute action="SOUserBar#assertTextEquals" locator-key1="GO_TO_SITE_NAME" value1="${siteName}" />
+	</command>
+
+	<command name="viewLinkPrivateMessaging">
+		<execute action="SOMessages#assertTextEquals" locator-key1="INFO_MESSAGE" value1="No messages found." />
+		<execute action="SOMessages#assertTextEquals" locator-key1="MARK_AS_UNREAD_BUTTON" value1="Mark as Unread" />
+		<execute action="SOMessages#assertTextEquals" locator-key1="MARK_AS_READ_BUTTON" value1="Mark as Read" />
+		<execute action="SOMessages#assertTextEquals" locator-key1="DELETE_BUTTON" value1="Delete" />
+		<execute action="SOMessages#assertTextEquals" locator-key1="NEW_MESSAGE_BUTTON" value1="New Message" />
+
+		<execute action="SOUserBar#click" locator-key1="GO_TO" />
+		<execute action="SOUserBar#assertElementPresent" locator-key1="GO_TO_SEARCH_FIELD" />
+
+		<var name="siteName" value="Liferay, Inc." />
+		<execute action="SOUserBar#assertTextEquals" locator-key1="GO_TO_SITE_NAME" value1="${siteName}" />
+
+		<var name="siteName" value="Liferay" />
+		<execute action="SOUserBar#assertTextEquals" locator-key1="GO_TO_SITE_NAME" value1="${siteName}" />
+	</command>
+
+	<command name="viewLinkTasks">
+		<execute action="SOTasks#assertTextEquals" locator-key1="ASSIGNED_TO_ME_LINK" value1="Assigned to Me" />
+		<execute action="SOTasks#assertTextEquals" locator-key1="I_HAVE_CREATED_LINK" value1="I Have Created" />
+		<execute action="SOTasks#assertTextEquals" locator-key1="ADD_TASK_BUTTON" value1="Add Task" />
+		<execute action="SOTasks#assertTextEquals" locator-key1="PERMISSIONS_BUTTON" value1="Permissions" />
+		<execute action="SOTasks#assertTextEquals" locator-key1="INFO_MESSAGE" value1="No tasks were found." />
+
+		<execute action="SOUserBar#click" locator-key1="GO_TO" />
+		<execute action="SOUserBar#assertElementPresent" locator-key1="GO_TO_SEARCH_FIELD" />
+
+		<var name="siteName" value="Liferay, Inc." />
+		<execute action="SOUserBar#assertTextEquals" locator-key1="GO_TO_SITE_NAME" value1="${siteName}" />
+
+		<var name="siteName" value="Liferay" />
+		<execute action="SOUserBar#assertTextEquals" locator-key1="GO_TO_SITE_NAME" value1="${siteName}" />
+	</command>
+
 	<command name="viewTodaysEventSiteEvent">
 		<execute action="SOUserBar#click" locator-key1="DASHBOARD" />
 
