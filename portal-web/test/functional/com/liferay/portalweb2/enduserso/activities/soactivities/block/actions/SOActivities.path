@@ -57,6 +57,11 @@
 </tr>
 <!--ACTIVITIES-->
 <tr>
+	<td>ACTIVITIES_PORTLET_TITLE</td>
+	<td>//h1[@class='portlet-title'][contains(.,'Activities')]</td>
+	<td></td>
+</tr>
+<tr>
 	<td>ACTIVITIES_USER</td>
 	<td>//div[contains(@class,'activity-item')][${row}]//div[@class='activity-user-name']</td>
 	<td></td>

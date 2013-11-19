@@ -1,6 +1,9 @@
 <definition>
 
 	<command name="assertElementPresent">
+		<case locator-key1="GO_TO_SEARCH_FIELD">
+			<execute function="AssertElementPresent#assertElementPresent" />
+		</case>
 		<case locator-key1="NOTIFICATION">
 			<execute function="AssertElementPresent#assertElementPresent" />
 		</case>

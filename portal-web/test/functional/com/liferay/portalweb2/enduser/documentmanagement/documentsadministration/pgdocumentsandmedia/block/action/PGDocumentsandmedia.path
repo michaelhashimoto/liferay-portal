@@ -36,7 +36,7 @@
 <!--FILTER-->
 <tr>
 	<td>FILTER_HOME</td>
-	<td>//div[@id='_20_folderContainer']/ul/li[1]/span/span</td>
+	<td>//div[@id='_20_folderContainer']/ul/li[1]/a/span[2]</td>
 	<td>Home</td>
 </tr>
 <tr>

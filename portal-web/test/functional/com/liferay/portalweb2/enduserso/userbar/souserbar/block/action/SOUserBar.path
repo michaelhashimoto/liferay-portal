@@ -131,22 +131,22 @@
 </tr>
 <tr>
 	<td>GO_TO_SITE_NAME</td>
-	<td>//li[contains(@class,'social-office-enabled')]/span[contains(.,'${siteName}')]</td>
+	<td>//li[contains(@class,'member')]/span/a[.='${siteName}']</td>
 	<td></td>
 </tr>
 <tr>
 	<td>GO_TO_SITE_NAME_LINK</td>
-	<td>//li[contains(@class,'social-office-enabled')]/span[contains(.,'${siteName}')]/a</td>
+	<td>//li[contains(@class,'member')]/span/a[.='${siteName}']</td>
 	<td></td>
 </tr>
 <tr>
 	<td>GO_TO_FAVORITE_SITE_ICON</td>
-	<td>//li[contains(@class,'social-office-enabled')]/span[@class='action favorite']/a</td>
+	<td>//li[contains(@class,'member')]/span[@class='action favorite']/a</td>
 	<td></td>
 </tr>
 <tr>
 	<td>GO_TO_UNFAVORITE_SITE_ICON</td>
-	<td>//li[contains(@class,'social-office-enabled')]/span[@class='action unfavorite']/a</td>
+	<td>//li[contains(@class,'member')]/span[@class='action unfavorite']/a</td>
 	<td></td>
 </tr>
 <tr>
