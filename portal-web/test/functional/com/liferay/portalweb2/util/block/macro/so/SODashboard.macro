@@ -180,9 +180,11 @@
 		<execute action="SOUserBar#assertElementPresent" locator-key1="GO_TO_SEARCH_FIELD" />
 
 		<var name="siteName" value="Liferay, Inc." />
+
 		<execute action="SOUserBar#assertTextEquals" locator-key1="GO_TO_SITE_NAME" value1="${siteName}" />
 
 		<var name="siteName" value="Liferay" />
+
 		<execute action="SOUserBar#assertTextEquals" locator-key1="GO_TO_SITE_NAME" value1="${siteName}" />
 	</command>
 
@@ -213,9 +215,11 @@
 		<execute action="SOUserBar#assertElementPresent" locator-key1="GO_TO_SEARCH_FIELD" />
 
 		<var name="siteName" value="Liferay, Inc." />
+
 		<execute action="SOUserBar#assertTextEquals" locator-key1="GO_TO_SITE_NAME" value1="${siteName}" />
 
 		<var name="siteName" value="Liferay" />
+
 		<execute action="SOUserBar#assertTextEquals" locator-key1="GO_TO_SITE_NAME" value1="${siteName}" />
 	</command>
 
@@ -227,9 +231,11 @@
 		<execute action="SOUserBar#assertElementPresent" locator-key1="GO_TO_SEARCH_FIELD" />
 
 		<var name="siteName" value="Liferay, Inc." />
+
 		<execute action="SOUserBar#assertTextEquals" locator-key1="GO_TO_SITE_NAME" value1="${siteName}" />
 
 		<var name="siteName" value="Liferay" />
+
 		<execute action="SOUserBar#assertTextEquals" locator-key1="GO_TO_SITE_NAME" value1="${siteName}" />
 	</command>
 
@@ -251,9 +257,11 @@
 		<execute action="SOUserBar#assertElementPresent" locator-key1="GO_TO_SEARCH_FIELD" />
 
 		<var name="siteName" value="Liferay, Inc." />
+
 		<execute action="SOUserBar#assertTextEquals" locator-key1="GO_TO_SITE_NAME" value1="${siteName}" />
 
 		<var name="siteName" value="Liferay" />
+
 		<execute action="SOUserBar#assertTextEquals" locator-key1="GO_TO_SITE_NAME" value1="${siteName}" />
 	</command>
 
@@ -268,9 +276,11 @@
 		<execute action="SOUserBar#assertElementPresent" locator-key1="GO_TO_SEARCH_FIELD" />
 
 		<var name="siteName" value="Liferay, Inc." />
+
 		<execute action="SOUserBar#assertTextEquals" locator-key1="GO_TO_SITE_NAME" value1="${siteName}" />
 
 		<var name="siteName" value="Liferay" />
+
 		<execute action="SOUserBar#assertTextEquals" locator-key1="GO_TO_SITE_NAME" value1="${siteName}" />
 	</command>
 
@@ -285,9 +295,11 @@
 		<execute action="SOUserBar#assertElementPresent" locator-key1="GO_TO_SEARCH_FIELD" />
 
 		<var name="siteName" value="Liferay, Inc." />
+
 		<execute action="SOUserBar#assertTextEquals" locator-key1="GO_TO_SITE_NAME" value1="${siteName}" />
 
 		<var name="siteName" value="Liferay" />
+
 		<execute action="SOUserBar#assertTextEquals" locator-key1="GO_TO_SITE_NAME" value1="${siteName}" />
 	</command>
 
