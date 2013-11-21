@@ -126,6 +126,10 @@
 			</else>
 		</if>
 
+		<execute macro="SODocuments#viewPGDocumentDetailView" />
+	</command>
+
+	<command name="viewPGDocumentDetailView">
 		<execute action="PGDocumentsandmediaDocument#assertTextEquals" locator-key1="TOOLBAR_DOWNLOAD_BUTTON" value1="Download" />
 
 		<if>
@@ -153,7 +157,7 @@
 			</elseif>
 			<else>
 				<execute action="PGDocumentsandmediaDocument#assertTextEquals" locator-key1="TOOLBAR_CHECKOUT_BUTTON" value1="Checkout" />
-		 		<execute action="PGDocumentsandmediaDocument#assertElementNotPresent" locator-key1="TOOLBAR_CHECKIN_BUTTON" />
+				<execute action="PGDocumentsandmediaDocument#assertElementNotPresent" locator-key1="TOOLBAR_CHECKIN_BUTTON" />
 				<execute action="PGDocumentsandmediaDocument#assertElementNotPresent" locator-key1="TOOLBAR_CANCEL_CHECKOUT_BUTTON" />
 			</else>
 		</if>

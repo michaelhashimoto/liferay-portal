@@ -28,7 +28,6 @@
 			<var name="dmDocumentDescription" value="${dmDocumentDescription}" />
 			<var name="dmDocumentFile" value="${dmDocumentFile}" />
 			<var name="dmDocumentTitle" value="${dmDocumentTitle}" />
-			<var name="dmFolderName" value="${dmFolderName2}" />
 			<var name="dmFolderName" value="${dmFolderName}" />
 		</execute>
 
@@ -255,7 +254,6 @@
 				<execute action="SOActivities#assertTextEquals" locator-key1="ACTIVITIES_CONTENT" value1="${threadBody}" />
 			</else>
 		</if>
-
 	</command>
 
 	<command name="viewMicroblogsActivityEntry">
@@ -829,6 +827,39 @@
 				<execute action="SOActivities#assertTextEquals" locator-key1="ACTIVITIES_REPOST" value1="Repost" />
 			</then>
 		</if>
+
+		<execute action="SOActivities#assertTextEquals" locator-key1="ACTIVITIES_COMMENT" value1="Comment" />
+		<execute action="SOActivities#assertElementPresent" locator-key1="ACTIVITIES_COMMENT_FIELD" />
+	</command>
+
+	<command name="viewMultipleDocumentsActivityEntry">
+		<if>
+			<isset var="row" />
+			<then>
+				<var name="row" value="${row}" />
+			</then>
+			<else>
+				<var name="row" value="01" />
+			</else>
+		</if>
+
+		<execute action="SOActivities#assertTextEquals" locator-key1="ACTIVITIES_USER" value1="${userName}" />
+		<execute action="SOActivities#assertElementPresent" locator-key1="ACTIVITIES_TIME_STAMP" />
+		<execute action="SOActivities#assertTextEquals" locator-key1="ACTIVITIES_ACTION" value1="${documentsAction}" />
+
+		<var name="stopAtNumber" value="${number?increment()}" />
+
+		<while>
+			<not>
+				<equals arg1="${documentTitleRow}" arg2="${stopAtNumber}" />
+			</not>
+			<then>
+				<execute action="SOActivities#assertTextEquals" locator-key1="ACTIVITIES_DOCUMENT_TITLE_INCREMENT" value1="${dmDocumentTitle}${documentTitleRow}" />
+				<execute action="SOActivities#assertTextEquals" locator-key1="ACTIVITIES_DOCUMENT_DESCRIPTION_INCREMENT" value1="${dmDocumentDescription}${documentTitleRow}" />
+
+				<var name="documentTitleRow" value="${documentTitleRow?increment()}" />
+			</then>
+		</while>
 
 		<execute action="SOActivities#assertTextEquals" locator-key1="ACTIVITIES_COMMENT" value1="Comment" />
 		<execute action="SOActivities#assertElementPresent" locator-key1="ACTIVITIES_COMMENT_FIELD" />
