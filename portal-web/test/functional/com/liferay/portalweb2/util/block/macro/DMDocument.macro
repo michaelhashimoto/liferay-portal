@@ -39,6 +39,7 @@
 			<isset var="number" />
 			<then>
 				<var name="number" value="${number}" />
+
 				<execute action="PGDocumentsandmedia#assertClick" locator-key1="TOOLBAR_ADD" value1="Add" />
 				<execute action="PGDocumentsandmedia#assertClick" locator-key1="ADD_MENULIST_BASIC_DOCUMENT" value1="Basic Document" />
 
