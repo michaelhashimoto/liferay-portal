@@ -76,7 +76,6 @@
 				<execute action="PGDocumentsandmedia#assertTextEquals" locator-key1="DOCUMENT_MENULIST_DOWNLOAD" value1="Download (${dmDocumentSize})" />
 			</else>
 		</if>
-
 	</command>
 
 	<command name="addPGviaDMD">
