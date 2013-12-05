@@ -2764,6 +2764,19 @@
 		</if>
 	</target>
 
+	<target name="copy-log-file">
+		<for param="log.file">
+			<path>
+				<fileset dir="${liferay.home}/logs">
+					<include name="*.log" />
+				</fileset>
+			</path>
+			<sequential>
+				<copy file="@{log.file}" tofile="log" overwrite="true" />
+			</sequential>
+		</for>
+	</target>
+
 	<target name="copy-optional-jars">
 		<if>
 			<or>
