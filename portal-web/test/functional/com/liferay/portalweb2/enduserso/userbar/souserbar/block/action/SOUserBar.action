@@ -4,6 +4,7 @@
 		<case locator-key1="GO_TO_SEARCH_FIELD">
 			<execute function="AssertElementPresent#assertElementPresent" />
 		</case>
+
 		<case locator-key1="NOTIFICATION">
 			<execute function="AssertElementPresent#assertElementPresent" />
 		</case>
@@ -29,27 +30,35 @@
 		<case locator-key1="DASHBOARD">
 			<execute function="Click#textClickAtAndWait" value1="Dashboard" />
 		</case>
+
 		<case locator-key1="GO_TO">
 			<execute function="Click#pauseClickAt" />
 		</case>
+
 		<case locator-key1="GO_TO_SITES_DIRECTORY_BUTTON">
 			<execute function="Click#pauseClickAt" />
 		</case>
+
 		<case locator-key1="NOTIFICATION_MENU_VIEW_ALL">
 			<execute function="AssertClick#assertPartialTextClickAtAndWait" />
 		</case>
+
 		<case locator-key1="USER_MENU_MY_ACCOUNT">
 			<execute function="AssertClick#assertTextClickAt" />
 		</case>
+
 		<case locator-key1="USER_MENU_MY_PROFILE">
 			<execute function="AssertClick#assertTextClickAtAndWait" />
 		</case>
+
 		<case locator-key1="USER_MENU_CONTROL_PANEL">
 			<execute function="AssertClick#assertTextClickAtAndWait" />
 		</case>
+
 		<case locator-key1="USER_MENU_SIGN_OUT">
 			<execute function="AssertClick#assertTextClickAtAndWait" />
 		</case>
+
 		<case comparator="startsWith" locator1="//span[@data-title='">
 			<execute function="Click#makeVisibleClickAt" />
 		</case>

@@ -3,12 +3,15 @@
 		<case locator-key1="ADD_PAGE_BUTTON">
 			<execute function="AssertClick#assertValueClickAtAndWait" />
 		</case>
+
 		<case locator-key1="NAVIGATION_PRIVATE_PAGES">
 			<execute function="AssertClick#assertTextClickAtAndWait" />
 		</case>
+
 		<case locator-key1="NAVIGATION_PUBLIC_PAGES">
 			<execute function="AssertClick#assertTextClickAtAndWait" />
 		</case>
+
 		<case locator-key1="SAVE_BUTTON">
 			<execute function="AssertClick#assertValueClickAtAndWait" />
 		</case>
@@ -18,9 +21,11 @@
 		<case locator-key1="PAGE_TREE_PAGE_LINK_1">
 			<execute function="AssertElementPresent#assertElementPresent" />
 		</case>
+
 		<case locator-key1="PAGE_TREE_PAGE_LINK_2">
 			<execute function="AssertElementPresent#assertElementPresent" />
 		</case>
+
 		<case locator-key1="PAGE_TREE_PAGE_LINK_3">
 			<execute function="AssertElementPresent#assertElementPresent" />
 		</case>
@@ -30,9 +35,11 @@
 		<case locator-key1="PAGE_TREE_PAGE_LINK_1">
 			<execute function="IsElementNotPresent#isNotVisible" />
 		</case>
+
 		<case locator-key1="PAGE_TREE_PAGE_LINK_2">
 			<execute function="IsElementNotPresent#isNotVisible" />
 		</case>
+
 		<case locator-key1="PAGE_TREE_PAGE_LINK_3">
 			<execute function="IsElementNotPresent#isNotVisible" />
 		</case>
@@ -42,9 +49,11 @@
 		<case locator-key1="PAGE_TREE_PAGE_LINK_1">
 			<execute function="IsElementPresent#isVisible" />
 		</case>
+
 		<case locator-key1="PAGE_TREE_PAGE_LINK_2">
 			<execute function="IsElementPresent#isVisible" />
 		</case>
+
 		<case locator-key1="PAGE_TREE_PAGE_LINK_3">
 			<execute function="IsElementPresent#isVisible" />
 		</case>

@@ -205,7 +205,7 @@
 		<execute action="PGMediagallery#assertTextEquals" locator-key1="ENTRY_TITLE" value1="${mgFolderName}" />
 		<execute action="PGMediagallery#assertClick" locator-key1="ENTRY_TITLE" value1="${mgFolderName}" />
 
-		<execute action="PGMediagalleryFolder#assertClick" locator-key1="MEDIA_TITLE" value1="${mgDocumentTitle}"/>
+		<execute action="PGMediagalleryFolder#assertClick" locator-key1="MEDIA_TITLE" value1="${mgDocumentTitle}" />
 
 		<execute action="PGMediagalleryMedia#click" locator-key1="DELETE_ICON" />
 		<execute action="PGMediagalleryMedia#confirm" locator-key1="CONFIRMATION" value1="Are you sure you want to delete this?" />
@@ -289,7 +289,7 @@
 		<execute action="PGMediagallery#assertTextEquals" locator-key1="ENTRY_TITLE" value1="${mgFolderName}" />
 		<execute action="PGMediagallery#assertClick" locator-key1="ENTRY_TITLE" value1="${mgFolderName}" />
 
-		<execute action="PGMediagalleryFolder#assertClick" locator-key1="MEDIA_TITLE" value1="${mgDocumentTitle}"/>
+		<execute action="PGMediagalleryFolder#assertClick" locator-key1="MEDIA_TITLE" value1="${mgDocumentTitle}" />
 
 		<execute action="PGMediagalleryMedia#assertTextEquals" locator-key1="MEDIA_CAPTION" value1="${mgDocumentTitle} - ${mgDocumentDescription}" />
 		<execute action="PGMediagalleryMedia#click" locator-key1="EDIT_ICON" />

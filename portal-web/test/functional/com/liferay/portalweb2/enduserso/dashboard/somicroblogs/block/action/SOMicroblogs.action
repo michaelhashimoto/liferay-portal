@@ -5,14 +5,15 @@
 		</case>
 	</command>
 
-
 	<command name="assertClick">
 		<case locator-key1="TAB_MENTIONS">
 			<execute function="AssertClick#assertTextClickAtAndWait" />
 		</case>
+
 		<case locator-key1="TAB_TAG_VALUE">
 			<execute function="AssertClick#assertTextClickAtAndWait" />
 		</case>
+
 		<case locator-key1="TAB_TIMELINE">
 			<execute function="AssertClick#assertTextClickAtAndWait" />
 		</case>
@@ -22,6 +23,7 @@
 		<case locator-key1="MICROBLOGS_ENTRY_DELETE_LINK">
 			<execute function="Click#makeVisibleClickAt" />
 		</case>
+
 		<case locator-key1="MICROBLOGS_ENTRY_CONTENT_TAG">
 			<execute function="Click#clickAtAndWait" />
 		</case>
@@ -37,6 +39,7 @@
 		<case locator-key1="MICROBLOGS_ENTRY_DELETE">
 			<execute function="MouseOver#makeVisible" />
 		</case>
+
 		<case locator-key1="MICROBLOGS_ENTRY_EDIT">
 			<execute function="MouseOver#makeVisible" />
 		</case>

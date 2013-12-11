@@ -3,15 +3,19 @@
 		<case locator-key1="ADD">
 			<execute function="AssertClick#pauseAssertTextClickAt" />
 		</case>
+
 		<case comparator="startsWith" locator-key1="ADD_MENULIST_">
 			<execute function="AssertClick#assertTextClickAtAndWait" />
 		</case>
+
 		<case comparator="startsWith" locator-key1="ROLE_MENULIST_">
 			<execute function="AssertClick#assertTextClickAtAndWait" />
 		</case>
+
 		<case comparator="startsWith" locator-key1="ROLE_TABLE_ACTIONS_">
 			<execute function="AssertClick#pauseAssertTextClickAt" />
 		</case>
+
 		<case locator-key1="SEARCH_BUTTON">
 			<execute function="AssertClick#assertValueClickAtAndWait" />
 		</case>

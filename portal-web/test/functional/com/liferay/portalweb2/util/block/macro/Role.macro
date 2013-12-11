@@ -65,7 +65,7 @@
 		<execute action="CPRolesDefinepermissions#assertTextEquals" locator-key1="PERMISSION_TABLE_RESOURCE_SET_INCREMENT" value1="Blogs" />
 		<execute action="CPRolesDefinepermissions#assertTextEquals" locator-key1="PERMISSION_TABLE_RESOURCE_INCREMENT" value1="Blogs" />
 		<execute action="CPRolesDefinepermissions#assertTextEquals" locator-key1="PERMISSION_TABLE_ACTION_INCREMENT" value1="Add Entry" />
-		<execute action="CPRolesDefinepermissions#assertTextEquals" locator-key1="PERMISSION_TABLE_DELETE_INCREMENT" value1="Delete"/>
+		<execute action="CPRolesDefinepermissions#assertTextEquals" locator-key1="PERMISSION_TABLE_DELETE_INCREMENT" value1="Delete" />
 
 		<var name="key_row" value="2" />
 

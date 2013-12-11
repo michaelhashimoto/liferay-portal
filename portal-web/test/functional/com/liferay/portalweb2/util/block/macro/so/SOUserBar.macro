@@ -75,7 +75,7 @@
 		<execute action="Home#open" locator-key1="GUEST_URL" />
 
 		<execute action="SOUserBar#click" locator-key1="USER_NAME" />
-		<execute action="SOUserBar#click" locator-key1="USER_MENU_CONTROL_PANEL" value1="Control Panel"/>
+		<execute action="SOUserBar#click" locator-key1="USER_MENU_CONTROL_PANEL" value1="Control Panel" />
 
 		<if>
 			<isset var="siteScopeName" />
@@ -110,7 +110,7 @@
 
 	<command name="myProfilePG">
 		<execute action="SOUserBar#click" locator-key1="USER_NAME" />
-		<execute action="SOUserBar#click" locator-key1="USER_MENU_MY_PROFILE" value1="My Profile"/>
+		<execute action="SOUserBar#click" locator-key1="USER_MENU_MY_PROFILE" value1="My Profile" />
 
 		<execute action="SOProfile#assertTextEquals" locator-key1="USER_NAME" value1="${userName}" />
 	</command>

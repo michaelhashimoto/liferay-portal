@@ -54,6 +54,7 @@
 		<execute macro="SONavigation#gotoSiteDocuments">
 			<var name="pageType" value="Open Site" />
 		</execute>
+
 		<execute macro="DMDocument#addPG" />
 
 		<execute macro="SONavigation#gotoSiteDocuments">
@@ -87,6 +88,7 @@
 		<execute macro="SONavigation#gotoSiteDocuments">
 			<var name="pageType" value="Open Site" />
 		</execute>
+
 		<execute macro="DMFolderDocument#addPG" />
 
 		<execute macro="SONavigation#gotoSiteDocuments">
@@ -157,6 +159,7 @@
 		<execute macro="SONavigation#gotoSiteDocuments">
 			<var name="pageType" value="Open Site" />
 		</execute>
+
 		<execute macro="DMFolderDocument#addPG" />
 
 		<execute macro="SONavigation#gotoSiteDocuments">
@@ -204,6 +207,7 @@
 		<execute macro="SONavigation#gotoSiteDocuments">
 			<var name="pageType" value="Open Site" />
 		</execute>
+
 		<execute macro="DMFolderDocument#addPG" />
 
 		<execute macro="SONavigation#gotoSiteDocuments">
@@ -254,6 +258,7 @@
 		<execute macro="SONavigation#gotoSiteDocuments">
 			<var name="pageType" value="Open Site" />
 		</execute>
+
 		<execute macro="DMFolderDocument#addPG" />
 
 		<execute macro="SONavigation#gotoSiteDocuments">
@@ -425,6 +430,7 @@
 		<execute macro="SONavigation#gotoSiteDocuments">
 			<var name="pageType" value="Open Site" />
 		</execute>
+
 		<execute action="PGDocumentsandmedia#click" locator-key1="ENTRIES_FOLDER" />
 
 		<execute macro="DMFolderDocument#viewPG">
@@ -473,6 +479,7 @@
 		<execute macro="SONavigation#gotoSiteDocuments">
 			<var name="pageType" value="Open Site" />
 		</execute>
+
 		<execute action="PGDocumentsandmedia#click" locator-key1="ENTRIES_FOLDER" />
 
 		<execute macro="DMFolderDocument#viewPG">
@@ -552,6 +559,7 @@
 		<execute macro="SONavigation#gotoSiteDocuments">
 			<var name="pageType" value="Open Site" />
 		</execute>
+
 		<execute macro="DMFolderDocument#addPG" />
 
 		<execute macro="SONavigation#gotoSiteDocuments">
@@ -772,6 +780,7 @@
 		<execute macro="SONavigation#gotoSiteDocuments">
 			<var name="pageType" value="Open Site" />
 		</execute>
+
 		<execute macro="DMFolderDocument#addPG" />
 
 		<execute macro="SONavigation#gotoSiteDocuments">

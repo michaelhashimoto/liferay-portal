@@ -54,9 +54,10 @@
 		<execute macro="Page#openURL" />
 
 		<execute action="Dockbar#click" locator-key1="ADD" value1="Add" />
-		<execute action="Dockbar#assertClick" locator-key1="ADD_PAGE_LINK" value1="Page" />
-		<execute action="Dockbar#type" locator-key1="ADD_PAGE_NAME_FIELD" value1="りんご" />
-		<execute action="Dockbar#assertClick" locator-key1="ADD_PAGE_BUTTON" value1="Add Page" />
+		<execute action="Dockbar#assertClick" locator-key1="ADD_PAGE" value1="Page" />
+
+		<execute action="Home#type" locator-key1="NEW_PAGE_FIELD" value1="りんご" />
+		<execute action="Home#click" locator-key1="NEW_PAGE_SAVE" />
 
 		<var name="key_pageName" value="りんご" />
 
@@ -73,9 +74,10 @@
 		<execute macro="Page#openURL" />
 
 		<execute action="Dockbar#click" locator-key1="ADD" value1="Add" />
-		<execute action="Dockbar#assertClick" locator-key1="ADD_PAGE_LINK" value1="Page" />
-		<execute action="Dockbar#type" locator-key1="ADD_PAGE_NAME_FIELD" value1="${test}" />
-		<execute action="Dockbar#assertClick" locator-key1="ADD_PAGE_BUTTON" value1="Add Page" />
+		<execute action="Dockbar#assertClick" locator-key1="ADD_PAGE" value1="Page" />
+
+		<execute action="Home#type" locator-key1="NEW_PAGE_FIELD" value1="${test}" />
+		<execute action="Home#click" locator-key1="NEW_PAGE_SAVE" />
 
 		<var name="key_pageName" value="${test}" />
 

@@ -3,6 +3,7 @@
 		<case locator-key1="CATEGORIES_DELETE_BUTTON">
 			<execute function="AssertClick#assertValueClickAtAndWait" />
 		</case>
+
 		<case locator-key1="THREADS_DELETE_BUTTON">
 			<execute function="AssertClick#assertValueClickAtAndWait" />
 		</case>

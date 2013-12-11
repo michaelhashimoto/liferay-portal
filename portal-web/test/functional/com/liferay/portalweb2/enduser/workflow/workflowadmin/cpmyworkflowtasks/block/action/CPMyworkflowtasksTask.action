@@ -3,6 +3,7 @@
 		<case locator-key1="BACK">
 			<execute function="AssertClick#assertPartialTextClickAtAndWait" />
 		</case>
+
 		<case locator-key1="PANEL_OK_BUTTON">
 			<execute function="AssertClick#assertTextClickAtAndWait" />
 		</case>

@@ -3,9 +3,11 @@
 		<case locator-key1="LAUNCH_EDITOR_BUTTON">
 			<execute function="AssertClick#assertValueClickAt" />
 		</case>
+
 		<case locator-key1="SAVE_BUTTON">
 			<execute function="AssertClick#assertValueClickAt" />
 		</case>
+
 		<case locator-key1="SELECT_STRUCTURE_BUTTON">
 			<execute function="AssertClick#assertValueClickAt" />
 		</case>

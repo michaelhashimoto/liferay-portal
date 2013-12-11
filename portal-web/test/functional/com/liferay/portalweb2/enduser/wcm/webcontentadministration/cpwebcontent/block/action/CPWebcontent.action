@@ -3,12 +3,15 @@
 		<case locator-key1="ADD_BUTTON">
 			<execute function="AssertClick#assertValueClickAtAndWait" />
 		</case>
+
 		<case locator-key1="DELETE_BUTTON">
 			<execute function="AssertClick#assertValueClickAtAndWait" />
 		</case>
+
 		<case locator-key1="NAVIGATION_STRUCTURES">
 			<execute function="AssertClick#assertTextClickAtAndWait" />
 		</case>
+
 		<case locator-key1="NAVIGATION_TEMPLATES">
 			<execute function="AssertClick#assertTextClickAtAndWait" />
 		</case>

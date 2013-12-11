@@ -190,7 +190,6 @@
 		<execute action="SOSiteHome#assertTextEquals" locator-key1="NAVIGATION_WIKI" value1="Wiki" />
 	</command>
 
-
 	<command name="viewSOSiteMembership">
 		<execute action="SOUserBar#click" locator-key1="DASHBOARD" />
 		<execute action="SOUserBar#click" locator-key1="GO_TO" />

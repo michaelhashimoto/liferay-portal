@@ -3,6 +3,7 @@
 		<case locator-key1="ADD_STRUCTURE_BUTTON">
 			<execute function="AssertClick#assertValueClickAtAndWait" />
 		</case>
+
 		<case locator-key1="DELETE_BUTTON">
 			<execute function="AssertClick#assertValueClickAtAndWait" />
 		</case>

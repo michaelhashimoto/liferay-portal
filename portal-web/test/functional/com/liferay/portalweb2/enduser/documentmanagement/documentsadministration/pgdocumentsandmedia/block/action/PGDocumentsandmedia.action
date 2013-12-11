@@ -9,9 +9,11 @@
 		<case locator-key1="TOOLBAR_DISPLAY_DESCRIPTIVE">
 			<execute function="Click#clickAtAndWait" />
 		</case>
+
 		<case locator-key1="TOOLBAR_DISPLAY_ICON">
 			<execute function="Click#clickAtAndWait" />
 		</case>
+
 		<case locator-key1="TOOLBAR_DISPLAY_LIST">
 			<execute function="Click#clickAtAndWait" />
 		</case>

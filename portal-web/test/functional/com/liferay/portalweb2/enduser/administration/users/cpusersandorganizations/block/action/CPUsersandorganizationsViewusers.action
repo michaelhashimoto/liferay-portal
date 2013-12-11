@@ -3,18 +3,23 @@
 		<case locator-key1="ADVANCED_SEARCH_BASIC">
 			<execute function="AssertClick#assertPartialTextClickAt" />
 		</case>
+
 		<case locator-key1="ADVANCED_SEARCH_BUTTON">
 			<execute function="AssertClick#assertValueClickAtAndWait" />
 		</case>
+
 		<case locator-key1="BASIC_SEARCH_ADVANCED">
 			<execute function="AssertClick#assertPartialTextClickAt" />
 		</case>
+
 		<case locator-key1="BASIC_SEARCH_BUTTON">
 			<execute function="AssertClick#assertValueClickAtAndWait" />
 		</case>
+
 		<case locator-key1="DEACTIVATE">
 			<execute function="AssertClick#assertValueClickAtAndWait" />
 		</case>
+
 		<case locator-key1="DELETE">
 			<execute function="AssertClick#assertValueClickAtAndWait" />
 		</case>
@@ -30,6 +35,7 @@
 		<case locator-key1="ADVANCED_SEARCH_BASIC">
 			<execute function="IsElementPresent#isVisible" />
 		</case>
+
 		<case locator-key1="BASIC_SEARCH_ADVANCED">
 			<execute function="IsElementPresent#isVisible" />
 		</case>

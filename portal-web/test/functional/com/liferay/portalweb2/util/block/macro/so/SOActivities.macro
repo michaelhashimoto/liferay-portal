@@ -327,7 +327,7 @@
 			</then>
 			<else>
 				<execute action="SOUserBar#click" locator-key1="USER_NAME" />
-				<execute action="SOUserBar#click" locator-key1="USER_MENU_MY_PROFILE" value1="My Profile"/>
+				<execute action="SOUserBar#click" locator-key1="USER_MENU_MY_PROFILE" value1="My Profile" />
 			</else>
 		</if>
 
@@ -662,7 +662,7 @@
 			</then>
 			<else>
 				<execute action="SOUserBar#click" locator-key1="USER_NAME" />
-				<execute action="SOUserBar#click" locator-key1="USER_MENU_MY_PROFILE" value1="My Profile"/>
+				<execute action="SOUserBar#click" locator-key1="USER_MENU_MY_PROFILE" value1="My Profile" />
 			</else>
 		</if>
 

@@ -135,11 +135,11 @@
 	<command name="viewNotificationPG">
 		<execute action="SOUserBar#click" locator-key1="DASHBOARD" />
 		<execute action="SOUserBar#assertElementPresent" locator-key1="NOTIFICATION" />
-		<execute action="SOUserBar#assertTextEquals" locator-key1="NOTIFICATION_MENU_COUNT" value1="1"/>
+		<execute action="SOUserBar#assertTextEquals" locator-key1="NOTIFICATION_MENU_COUNT" value1="1" />
 		<execute action="SOUserBar#mouseOver" locator-key1="NOTIFICATION" />
 		<execute action="SOUserBar#assertTextEquals" locator-key1="NOTIFICATION_MENU_ENTRY_CONTENT" value1="${entryAuthor} sent a new announcement." />
-		<execute action="SOUserBar#assertTextEquals" locator-key1="NOTIFICATION_MENU_ENTRY_SUBCONTENT" value1="${entryTitle}"/>
+		<execute action="SOUserBar#assertTextEquals" locator-key1="NOTIFICATION_MENU_ENTRY_SUBCONTENT" value1="${entryTitle}" />
 		<execute action="SOUserBar#assertClick" locator-key1="NOTIFICATION_MENU_MARK_ALL_AS_READ" value1="Mark All as Read" />
-		<execute action="SOUserBar#assertTextEquals" locator-key1="NOTIFICATION_MENU_COUNT" value1="0"/>
+		<execute action="SOUserBar#assertTextEquals" locator-key1="NOTIFICATION_MENU_COUNT" value1="0" />
 	</command>
 </definition>

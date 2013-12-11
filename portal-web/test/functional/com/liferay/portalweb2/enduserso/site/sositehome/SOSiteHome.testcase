@@ -1065,11 +1065,11 @@
 
 		<execute action="SOUserBar#click" locator-key1="DASHBOARD" />
 		<execute action="SOUserBar#assertElementPresent" locator-key1="NOTIFICATION" />
-		<execute action="SOUserBar#assertTextEquals" locator-key1="NOTIFICATION_MENU_COUNT" value1="0"/>
+		<execute action="SOUserBar#assertTextEquals" locator-key1="NOTIFICATION_MENU_COUNT" value1="0" />
 		<execute action="SOUserBar#mouseOver" locator-key1="NOTIFICATION" />
 		<execute action="SOUserBar#assertTextEquals" locator-key1="NOTIFICATION_MENU_EMPTY" value1="You have no new notifications." />
 		<execute action="SOUserBar#assertTextNotPresent" value1="${entryAuthor} sent a new announcement." />
-		<execute action="SOUserBar#assertElementNotPresent" locator-key1="NOTIFICATION_MENU_ENTRY_SUBCONTENT" value1="${entryTitle}"/>
+		<execute action="SOUserBar#assertElementNotPresent" locator-key1="NOTIFICATION_MENU_ENTRY_SUBCONTENT" value1="${entryTitle}" />
 	</command>
 
 	<tear-down>

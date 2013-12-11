@@ -3,6 +3,7 @@
 		<case locator-key1="PUBLISH_BUTTON">
 			<execute function="AssertClick#assertValueClickAtAndWait" />
 		</case>
+
 		<case locator-key1="SELECT_DOCUMENT_TYPE_BASIC_DOCUMENT">
 			<execute function="AssertClick#assertTextClickAtAndWait" />
 		</case>
