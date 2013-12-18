@@ -19,6 +19,12 @@
 		<execute selenium="pause" argument1="1000" />
 	</command>
 
+	<command name="clickImageElement">
+		<execute selenium="clickImageElement" />
+
+		<execute selenium="pause" argument1="2000" />
+	</command>
+
 	<command name="makeVisibleClickAt">
 		<execute selenium="makeVisible" />
 
