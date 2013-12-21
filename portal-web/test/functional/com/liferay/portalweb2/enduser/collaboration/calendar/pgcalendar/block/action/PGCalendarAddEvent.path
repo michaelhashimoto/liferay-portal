@@ -20,17 +20,17 @@
 </tr>
 <tr>
 	<td>START_DATE_MONTH_SELECT</td>
-	<td>//select[@id='_8_startdatemonth']</td>
+	<td>//select[@id='_8_startdatemonth']|//select[@id='_8_startDateMonth']</td>
 	<td></td>
 </tr>
 <tr>
 	<td>START_DATE_DAY_SELECT</td>
-	<td>//select[@id='_8_startdateday']</td>
+	<td>//select[@id='_8_startdateday']|//select[@id='_8_startDateDay']</td>
 	<td></td>
 </tr>
 <tr>
 	<td>START_DATE_YEAR_SELECT</td>
-	<td>//select[@id='_8_startdateyear']</td>
+	<td>//select[@id='_8_startdateyear']|//select[@id='_8_startDateYear']</td>
 	<td></td>
 </tr>
 <tr>
@@ -201,17 +201,17 @@
 </tr>
 <tr>
 	<td>END_DATE_MONTH_SELECT</td>
-	<td>//div[contains(@class,'end-date')]//select[@id='_8_enddatemonth']</td>
+	<td>//div[contains(@class,'end-date')]//select[@id='_8_enddatemonth']|//select[@id='_8_endDateMonth']</td>
 	<td></td>
 </tr>
 <tr>
 	<td>END_DATE_DAY_SELECT</td>
-	<td>//div[contains(@class,'end-date')]//select[@id='_8_enddateday']</td>
+	<td>//div[contains(@class,'end-date')]//select[@id='_8_enddateday']|//select[@id='_8_endDateDay']</td>
 	<td></td>
 </tr>
 <tr>
 	<td>END_DATE_YEAR_SELECT</td>
-	<td>//div[contains(@class,'end-date')]//select[@id='_8_enddateyear']</td>
+	<td>//div[contains(@class,'end-date')]//select[@id='_8_enddateyear']|//select[@id='_8_endDateYear']</td>
 	<td></td>
 </tr>
 <tr>
