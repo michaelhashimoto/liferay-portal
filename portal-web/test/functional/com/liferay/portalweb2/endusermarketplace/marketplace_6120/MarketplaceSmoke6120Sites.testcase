@@ -21,7 +21,7 @@
         <execute macro="Page#tearDownPG" />
     </tear-down>
 
-	<command name="MarketplaceSmoke6120" priority="5">
+	<command name="MarketplaceSmoke6120Sites" priority="5">
 		<var name="bookmarkFolderName" value="Bookmarks Folder Name" />
 		<var name="bookmarkFolderDescription" value="Booksmarks Folder Description" />
 		<var name="bookmarkDescription1" value="Bookmark1 Description" />
