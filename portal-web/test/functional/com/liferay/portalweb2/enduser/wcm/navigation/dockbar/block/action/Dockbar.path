@@ -126,7 +126,7 @@
 <!--USER-->
 <tr>
 	<td>USER_NAME</td>
-	<td>//span[@class='user-full-name']</td>
+	<td>//span[@class='user-full-name']|//a[contains(@class,'user-fullname')]</td>
 	<td></td>
 </tr>
 <tr>
