@@ -1,4 +1,4 @@
-<definition>
+<definition component-name="portal-util-misc">
 	<property name="theme.plugins.includes" value="welcome-theme" />
 	<property name="web.plugins.includes" value="resource-importer-web" />
 

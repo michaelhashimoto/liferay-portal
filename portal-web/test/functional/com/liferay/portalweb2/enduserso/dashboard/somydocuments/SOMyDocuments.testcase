@@ -1,4 +1,4 @@
-<definition>
+<definition component-name="social-office-dashboard">
 	<set-up>
 		<execute macro="SOUser#firstLoginPG" />
 	</set-up>

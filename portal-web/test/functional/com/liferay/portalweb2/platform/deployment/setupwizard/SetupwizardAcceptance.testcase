@@ -1,4 +1,4 @@
-<definition>
+<definition component-name="portal-deployment">
 	<command name="SetupWizardDefaultConfiguration" priority="5">
 		<property name="setup.wizard.enabled" value="true" />
 

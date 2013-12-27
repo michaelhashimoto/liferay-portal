@@ -1,4 +1,4 @@
-<definition>
+<definition component-name="portal-user-interface">
 	<property name="setup.wizard.enabled" value="true" />
 	<property name="theme.plugins.includes" value="welcome-theme" />
 	<property name="web.plugins.includes" value="resources-importer-web" />

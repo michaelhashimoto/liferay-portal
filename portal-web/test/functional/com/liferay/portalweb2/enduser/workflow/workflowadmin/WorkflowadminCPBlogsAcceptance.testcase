@@ -1,4 +1,4 @@
-<definition>
+<definition component-name="portal-workflow">
 	<property name="hook.plugins.includes" value="kaleo-upgrade-hook" />
 	<property name="web.plugins.includes" value="kaleo-web" />
 
