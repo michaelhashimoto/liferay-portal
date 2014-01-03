@@ -3,7 +3,7 @@
 	<property name="web.plugins.includes" value="resource-importer-web" />
 
 	<set-up>
-		<execute macro="User#loginPG">
+		<execute macro="User#firstLoginPG">
 			<var name="welcome-theme" value="welcome-theme" />
 		</execute>
 	</set-up>
