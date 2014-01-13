@@ -38,7 +38,7 @@
 	<var name="dmFolderName" value="DM Folder Name" />
 	<var name="dmFolderDescription" value="DM Folder Description" />
 
- 	<command name="AddDocument" priority="5">
+	<command name="AddDocument" priority="5">
 		<var name="dmDocumentFile" value="${dmDocumentFile}" />
 		<var name="dmDocumentSize" value="${dmDocumentSize}" />
 		<var name="dmDocumentTitle" value="${dmDocumentTitle}" />
