@@ -4155,6 +4155,12 @@ svn --username ${svn.username} --password ${svn.password} update -r ${svn.info.r
 							/>
 						</unzip>
 
+						<chmod perm="a+x">
+							<fileset dir="${app.server.dir}/patching-tool">
+								<include name="*.sh" />
+							</fileset>
+						</chmod>
+
 						<get
 							dest="${app.server.dir}/patching-tool/patches"
 							src="${test.build.fix.pack.zip.url}"
