@@ -8,7 +8,7 @@
 				<if>
 					<condition action="SOUserBar#isElementNotPresent" locator-key1="VISIBLE_DOCKBAR" />
 					<then>
-						<execute action="SOUserBar#click" locator-key1="TOGGLE_DOCKBAR" />	
+						<execute action="SOUserBar#click" locator-key1="TOGGLE_DOCKBAR" />
 					</then>
 				</if>
 			</then>

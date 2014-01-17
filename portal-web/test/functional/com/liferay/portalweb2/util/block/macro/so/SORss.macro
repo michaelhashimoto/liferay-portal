@@ -3,7 +3,7 @@
 		<if>
 			<condition action="SOUserBar#isElementNotPresent" locator-key1="VISIBLE_DOCKBAR" />
 			<then>
-				<execute action="SOUserBar#click" locator-key1="TOGGLE_DOCKBAR" />	
+				<execute action="SOUserBar#click" locator-key1="TOGGLE_DOCKBAR" />
 			</then>
 		</if>
 
@@ -51,7 +51,7 @@
 			</not>
 			<then>
 				<var name="feedEntryNumber" value="${feedEntryNumber?increment()}" />
-				
+
 				<if>
 					<not>
 						<equals arg1="${expandedFeedEntryNumber}" arg2="${expandedEntriesPerFeed}" />
@@ -60,7 +60,7 @@
 						<var name="expandedFeedEntryNumber" value="${expandedFeedEntryNumber?increment()}" />
 					</then>
 				</if>
-				
+
 				<execute action="SOSiteHome#assertElementPresent" locator-key1="RSS_FEED_ENTRY_TITLE_INCREMENT" />
 
 				<if>

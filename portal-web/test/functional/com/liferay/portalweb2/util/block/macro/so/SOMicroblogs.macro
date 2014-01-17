@@ -133,7 +133,7 @@
 				<execute action="SOMicroblogs#click" locator-key1="MICROBLOGS_CONTENT_AUTOCOMPLETE_USERNAME" value1="${mentionUserEmailAddress}" />
 				<execute action="SOMicroblogs#assertTextEquals" locator-key1="MICROBLOGS_CONTENT_COUNTDOWN" value1="${microblogsEntryCharacterCountdown}" />
 				<execute action="SOMicroblogs#click" locator-key1="POST_BUTTON" />
-				<execute action="SOMicroblogs#assertTextEquals" locator-key1="MICROBLOGS_ENTRY_COMMENT_CONTENT" value1="${microblogsEntryCommentContent} ${mentionUserName}" />		
+				<execute action="SOMicroblogs#assertTextEquals" locator-key1="MICROBLOGS_ENTRY_COMMENT_CONTENT" value1="${microblogsEntryCommentContent} ${mentionUserName}" />
 			</else>
 		</if>
 	</command>
@@ -245,7 +245,7 @@
 				<execute action="SOMicroblogs#assertTextEquals" locator-key1="INFO_MESSAGE" value1="You do not have any microblog entries." />
 			</then>
 		</if>
-		
+
 		<execute action="SOMicroblogs#click" locator-key1="MICROBLOGS_CONTENT_FIELD" />
 	</command>
 
@@ -262,7 +262,7 @@
 		<execute action="SOProfileMicroblogs#assertClick" locator-key1="MICROBLOGS_ENTRY_REPOST_LINK" value1="Repost" />
 
 		<execute action="SOProfileMicroblogsRepost#assertTextEquals" locator-key1="HEADER" value1="Do you want to repost this entry?" />
-	
+
 		<if>
 			<isset var="microblogsEntryAuthorMiddleName" />
 			<then>

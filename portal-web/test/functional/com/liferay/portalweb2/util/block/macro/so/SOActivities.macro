@@ -355,7 +355,7 @@
 					<else>
 						<execute action="SOActivities#assertTextEquals" locator-key1="ACTIVITIES_USER" value1="${microblogsEntryAuthorFirstName} ${microblogsEntryAuthorLastName}" />
 					</else>
-				</if>	
+				</if>
 			</else>
 		</if>
 
@@ -500,7 +500,7 @@
 		<execute action="SOUserBar#click" locator-key1="USER_MENU_MY_ACCOUNT" value1="My Account" />
 
 		<var name="currentUser" path="CPMyAccount" locator-key="USER_NAME_HEADER" />
-	
+
 		<execute action="SOUserBar#click" locator-key1="DASHBOARD" />
 
 		<execute action="SOActivities#assertElementPresent" locator-key1="NO_ACTIVITIES" />
@@ -537,7 +537,7 @@
 								<execute action="SOActivities#assertTextEquals" locator-key1="ACTIVITIES_ACTION" value1="Reposted a microblog entry from ${microblogsEntryAuthorFirstName} ${microblogsEntryAuthorMiddleName} ${microblogsEntryAuthorLastName}." />
 							</then>
 							<else>
-								<execute action="SOActivities#assertTextEquals" locator-key1="ACTIVITIES_ACTION" value1="Reposted a microblog entry from ${microblogsEntryAuthorFirstName} ${microblogsEntryAuthorLastName}." />			
+								<execute action="SOActivities#assertTextEquals" locator-key1="ACTIVITIES_ACTION" value1="Reposted a microblog entry from ${microblogsEntryAuthorFirstName} ${microblogsEntryAuthorLastName}." />
 							</else>
 						</if>
 					</then>
@@ -580,7 +580,7 @@
 								<execute action="SOActivities#assertTextEquals" locator-key1="ACTIVITIES_ACTION" value1="Reposted a microblog entry from ${microblogsEntryAuthorFirstName} ${microblogsEntryAuthorMiddleName} ${microblogsEntryAuthorLastName}." />
 							</then>
 							<else>
-								<execute action="SOActivities#assertTextEquals" locator-key1="ACTIVITIES_ACTION" value1="Reposted a microblog entry from ${microblogsEntryAuthorFirstName} ${microblogsEntryAuthorLastName}." />			
+								<execute action="SOActivities#assertTextEquals" locator-key1="ACTIVITIES_ACTION" value1="Reposted a microblog entry from ${microblogsEntryAuthorFirstName} ${microblogsEntryAuthorLastName}." />
 							</else>
 						</if>
 					</then>
@@ -690,7 +690,7 @@
 					<else>
 						<execute action="SOActivities#assertTextEquals" locator-key1="ACTIVITIES_USER" value1="${microblogsEntryRepostAuthorFirstName}${microblogsEntryRepostAuthorLastName}" />
 					</else>
-				</if>		
+				</if>
 			</else>
 		</if>
 
@@ -708,7 +708,7 @@
 								<execute action="SOActivities#assertTextEquals" locator-key1="ACTIVITIES_ACTION" value1="Reposted a microblog entry from ${microblogsEntryAuthorFirstName}." />
 							</then>
 							<else>
-								<execute action="SOActivities#assertTextEquals" locator-key1="ACTIVITIES_ACTION" value1="Reposted a microblog entry from ${microblogsEntryAuthorFirstName} ${microblogsEntryAuthorMiddleName} ${microblogsEntryAuthorLastName}." />	
+								<execute action="SOActivities#assertTextEquals" locator-key1="ACTIVITIES_ACTION" value1="Reposted a microblog entry from ${microblogsEntryAuthorFirstName} ${microblogsEntryAuthorMiddleName} ${microblogsEntryAuthorLastName}." />
 							</else>
 						</if>
 					</then>
@@ -719,7 +719,7 @@
 								<execute action="SOActivities#assertTextEquals" locator-key1="ACTIVITIES_ACTION" value1="Reposted a microblog entry from ${microblogsEntryAuthorFirstName}." />
 							</then>
 							<else>
-								<execute action="SOActivities#assertTextEquals" locator-key1="ACTIVITIES_ACTION" value1="Reposted a microblog entry from ${microblogsEntryAuthorFirstName} ${microblogsEntryAuthorLastName}." />	
+								<execute action="SOActivities#assertTextEquals" locator-key1="ACTIVITIES_ACTION" value1="Reposted a microblog entry from ${microblogsEntryAuthorFirstName} ${microblogsEntryAuthorLastName}." />
 							</else>
 						</if>
 					</else>
@@ -738,7 +738,7 @@
 										<execute action="SOActivities#assertTextEquals" locator-key1="ACTIVITIES_ACTION" value1="Reposted a microblog entry from ${microblogsEntryAuthorFirstName} ${microblogsEntryAuthorMiddleName} ${microblogsEntryAuthorLastName}." />
 									</then>
 									<else>
-										<execute action="SOActivities#assertTextEquals" locator-key1="ACTIVITIES_ACTION" value1="Reposted a microblog entry from ${microblogsEntryAuthorFirstName} ${microblogsEntryAuthorLastName}." />			
+										<execute action="SOActivities#assertTextEquals" locator-key1="ACTIVITIES_ACTION" value1="Reposted a microblog entry from ${microblogsEntryAuthorFirstName} ${microblogsEntryAuthorLastName}." />
 									</else>
 								</if>
 							</then>
@@ -781,7 +781,7 @@
 										<execute action="SOActivities#assertTextEquals" locator-key1="ACTIVITIES_ACTION" value1="Reposted a microblog entry from ${microblogsEntryAuthorFirstName} ${microblogsEntryAuthorMiddleName} ${microblogsEntryAuthorLastName}." />
 									</then>
 									<else>
-										<execute action="SOActivities#assertTextEquals" locator-key1="ACTIVITIES_ACTION" value1="Reposted a microblog entry from ${microblogsEntryAuthorFirstName} ${microblogsEntryAuthorLastName}." />			
+										<execute action="SOActivities#assertTextEquals" locator-key1="ACTIVITIES_ACTION" value1="Reposted a microblog entry from ${microblogsEntryAuthorFirstName} ${microblogsEntryAuthorLastName}." />
 									</else>
 								</if>
 							</then>

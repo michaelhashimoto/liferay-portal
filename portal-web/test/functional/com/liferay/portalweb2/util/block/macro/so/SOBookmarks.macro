@@ -29,7 +29,7 @@
 	<command name="editBookmarksEntry">
 		<execute action="SOSiteHome#assertClick" locator-key1="BOOKMARKS_ENTRY_ACTIONS" value1="Actions" />
 		<execute action="SOSiteHome#assertClick" locator-key1="ACTIONS_MENULIST_EDIT" value1="Edit" />
-		
+
 		<execute action="SOSiteHomeBookmarksAdd#type" locator-key1="NAME_FIELD" value1="${bookmarksEntryNameEdit}" />
 		<execute action="SOSiteHomeBookmarksAdd#type" locator-key1="URL_FIELD" value1="${bookmarksEntryUrlEdit}" />
 		<execute action="SOSiteHomeBookmarksAdd#type" locator-key1="DESCRIPTION_FIELD" value1="${bookmarksEntryDescriptionEdit}" />

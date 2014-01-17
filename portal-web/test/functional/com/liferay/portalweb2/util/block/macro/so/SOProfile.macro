@@ -145,7 +145,7 @@
 			<var name="userName" value="${userName}" />
 		</execute>
 	</command>
-	
+
 	<command name="addIntroductionProfile">
 		<execute action="SOUserBar#click" locator-key1="USER_NAME" />
 		<execute action="SOUserBar#click" locator-key1="USER_MENU_MY_PROFILE" value1="My Profile" />

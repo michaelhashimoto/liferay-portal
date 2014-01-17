@@ -3,7 +3,7 @@
 		<if>
 			<condition action="SOUserBar#isElementNotPresent" locator-key1="VISIBLE_DOCKBAR" />
 			<then>
-				<execute action="SOUserBar#click" locator-key1="TOGGLE_DOCKBAR" />	
+				<execute action="SOUserBar#click" locator-key1="TOGGLE_DOCKBAR" />
 			</then>
 		</if>
 
@@ -19,7 +19,7 @@
 		<if>
 			<condition action="SOUserBar#isElementNotPresent" locator-key1="VISIBLE_DOCKBAR" />
 			<then>
-				<execute action="SOUserBar#click" locator-key1="TOGGLE_DOCKBAR" />	
+				<execute action="SOUserBar#click" locator-key1="TOGGLE_DOCKBAR" />
 			</then>
 		</if>
 
@@ -72,7 +72,7 @@
 		<if>
 			<condition action="SOUserBar#isElementNotPresent" locator-key1="VISIBLE_DOCKBAR" />
 			<then>
-				<execute action="SOUserBar#click" locator-key1="TOGGLE_DOCKBAR" />	
+				<execute action="SOUserBar#click" locator-key1="TOGGLE_DOCKBAR" />
 			</then>
 		</if>
 
@@ -160,7 +160,7 @@
 				<execute action="SODashboard#assertTextNotPresent" value1="${taskDescription}" />
 			</else>
 		</if>
-			
+
 		<execute action="SOUserBar#click" locator-key1="DASHBOARD" />
 
 		<execute action="SODashboard#assertClick" locator-key1="VIEW_ALL_TASKS_LINK" value1="View All Tasks" />
