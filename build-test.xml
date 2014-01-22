@@ -2760,6 +2760,10 @@ create database lportal2 character set utf8;</echo>
 		</if>
 	</target>
 
+	<target name="clean-up-sikuli-libs">
+		<delete dir="lib/development/libs" />
+	</target>
+
 	<target name="clean-up-vms">
 		<if>
 			<available file="${vm.drive}\${vm.host}\${vm.host}.vmdk.lck" />
@@ -5379,6 +5383,8 @@ custom.sql.function.isnotnull=CONVERT(VARCHAR,?) IS NOT NULL</echo>
 		<antcall target="run-selenium-test" />
 
 		<antcall target="stop-app-server" />
+
+		<antcall target="clean-up-sikuli-libs" />
 
 		<if>
 			<equals arg1="${test.browser}" arg2="googlechrome" />
