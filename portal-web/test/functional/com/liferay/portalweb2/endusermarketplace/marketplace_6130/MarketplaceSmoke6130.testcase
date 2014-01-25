@@ -1,5 +1,4 @@
 <definition component-name="marketplace">
-
 	<set-up>
 		<execute macro="User#firstLoginPG" />
 	</set-up>
