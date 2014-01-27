@@ -3,84 +3,94 @@
 	<property name="portlet.plugins.includes" value="chat-portlet,contacts-portlet,events-display-portlet,microblogs-portlet,private-messaging-portlet,so-announcements-portlet,so-configurations-portlet,so-portlet,tasks-portlet,wysiwyg-portlet" />
 	<property name="theme.plugins.includes" value="so-theme" />
 
+	<var name="adminEmailAddress" value="test@liferay.com" />
+	<var name="adminFirstName" value="Joe" />
+	<var name="adminListName" value="Bloggs, Joe" />
+	<var name="adminName" value="Joe Bloggs" />
+	<var name="contactEmailAddress" value="socialofficecontact01@liferay.com" />
+	<var name="contactName" value="Social01 Office01 Contact01" />
+	<var name="pageName" value="Tasks Page" />
+	<var name="password" value="test" />
+	<var name="portletName" value="Tasks" />
+	<var name="roleName" value="Social Office" />
+	<var name="taskDescription" value="Task Description" />
+	<var name="taskDescriptionEdit" value="Task Description Edit" />
+	<var name="userEmailAddress" value="socialoffice01@liferay.com" />
+	<var name="userFirstName" value="Social01" />
+	<var name="userLastName" value="User01" />
+	<var name="userListName" value="User01, Social01" />
+	<var name="userMiddleName" value="Office01" />
+	<var name="userName" value="Social01 Office01 User01" />
+	<var name="userScreenName" value="socialoffice01" />
+
 	<set-up>
 		<execute macro="SOUser#firstLoginPG" />
 	</set-up>
 
-	<var name="adminName" value="Joe Bloggs" />
-	<var name="adminFirstName" value="Joe" />
-	<var name="adminListName" value="Bloggs, Joe" />
-	<var name="adminEmailAddress" value="test@liferay.com" />
-	<var name="contactEmailAddress" value="socialofficecontact01@liferay.com" />
-	<var name="contactName" value="Social01 Office01 Contact01" />
-	<var name="pageName" value="Tasks Page" />
-	<var name="portletName" value="Tasks" />
-	<var name="password" value="test" />
-	<var name="userEmailAddress" value="socialoffice01@liferay.com" />
-	<var name="userFirstName" value="Social01" />
-	<var name="userMiddleName" value="Office01" />
-	<var name="userName" value="Social01 Office01 User01" />
-	<var name="userLastName" value="User01" />
-	<var name="userListName" value="User01, Social01" />
-	<var name="userScreenName" value="socialoffice01" />
-	<var name="roleName" value="Social Office" />
-	<var name="taskDescription" value="Task Description" />
-	<var name="taskDescriptionEdit" value="Task Description Edit" />
+	<tear-down>
+		<execute macro="SOTasks#tearDownTask" />
+
+		<execute macro="SOUser#tearDownCP" />
+
+		<execute macro="SOUserBar#tearDownNotifications" />
+
+		<execute macro="Page#tearDownPG" />
+	</tear-down>
 
 	<command name="AddTaskAssignedToConnection" priority="5">
 		<execute macro="SOContactsCenter#addConnection">
 			<var name="adminEmailAddress" value="${adminEmailAddress}" />
 			<var name="senderName" value="${adminName}" />
 			<var name="userEmailAddress" value="${userEmailAddress}" />
-			<var name="userName" value="${userName}" />
 			<var name="userFirstName" value="${userFirstName}" />
-			<var name="userListName" value="${userListName}" />
 			<var name="userLastName" value="${userLastName}" />
+			<var name="userListName" value="${userListName}" />
 			<var name="userMiddleName" value="${userMiddleName}" />
+			<var name="userName" value="${userName}" />
 			<var name="userScreenName" value="${userScreenName}" />
 		</execute>
 
 		<execute macro="SOUser#logoutPG" />
 
 		<execute macro="SOUser#loginPG">
-			<var name="userEmailAddress" value="${adminEmailAddress}" />
 			<var name="password" value="test" />
+			<var name="userEmailAddress" value="${adminEmailAddress}" />
 		</execute>
 
 		<execute macro="SONavigation#gotoDashboardTasks" />
 
 		<execute macro="SOTasks#addTask">
 			<var name="taskAssignee" value="${userName}" />
-			<var name="taskReporter" value="${adminName}" />
 			<var name="taskDescription" value="${taskDescription}" />
+			<var name="taskReporter" value="${adminName}" />
 		</execute>
 
 		<execute macro="SONavigation#gotoDashboardTasks" />
 
 		<execute macro="SOTasks#viewTask">
 			<var name="taskAssignee" value="${userName}" />
-			<var name="taskReporter" value="${adminName}" />
 			<var name="taskDescription" value="${taskDescription}" />
+			<var name="taskReporter" value="${adminName}" />
 		</execute>
 
 		<execute macro="SOUser#logoutPG" />
 
 		<execute macro="SOUser#loginPG">
-			<var name="userEmailAddress" value="${userEmailAddress}" />
 			<var name="password" value="test" />
+			<var name="userEmailAddress" value="${userEmailAddress}" />
 		</execute>
 
 		<execute macro="SOTasks#viewTaskNotification">
-			<var name="taskReporter" value="${adminName}" />
 			<var name="taskDescription" value="${taskDescription}" />
+			<var name="taskReporter" value="${adminName}" />
 		</execute>
 
 		<execute macro="SONavigation#gotoDashboardTasks" />
 
 		<execute macro="SOTasks#viewTask">
 			<var name="taskAssignee" value="${userName}" />
-			<var name="taskReporter" value="${adminName}" />
 			<var name="taskDescription" value="${taskDescription}" />
+			<var name="taskReporter" value="${adminName}" />
 		</execute>
 	</command>
 
@@ -90,19 +100,19 @@
 			<var name="adminListName" value="${adminListName}" />
 			<var name="adminName" value="${adminName}" />
 			<var name="userEmailAddress" value="${userEmailAddress}" />
-			<var name="userName" value="${userName}" />
 			<var name="userFirstName" value="${userFirstName}" />
-			<var name="userListName" value="${userListName}" />
 			<var name="userLastName" value="${userLastName}" />
+			<var name="userListName" value="${userListName}" />
 			<var name="userMiddleName" value="${userMiddleName}" />
+			<var name="userName" value="${userName}" />
 			<var name="userScreenName" value="${userScreenName}" />
 		</execute>
 
 		<execute macro="SOUser#logoutPG" />
 
 		<execute macro="SOUser#loginPG">
-			<var name="userEmailAddress" value="${adminEmailAddress}" />
 			<var name="password" value="test" />
+			<var name="userEmailAddress" value="${adminEmailAddress}" />
 		</execute>
 
 		<execute macro="SONavigation#gotoDashboardTasks" />
@@ -113,6 +123,24 @@
 		<execute action="SOTasksAdd#assertTextNotEquals" locator-key1="TASK_ASSIGNEE_SELECT_MENU" value1="${userName}" />
 	</command>
 
+	<command name="AddTaskAssignedToMe" priority="5">
+		<execute macro="SONavigation#gotoDashboardTasks" />
+
+		<execute macro="SOTasks#addTask">
+			<var name="taskAssignee" value="${adminName}" />
+			<var name="taskDescription" value="${taskDescription}" />
+			<var name="taskReporter" value="${adminName}" />
+		</execute>
+
+		<execute macro="SONavigation#gotoDashboardTasks" />
+
+		<execute macro="SOTasks#viewTask">
+			<var name="taskAssignee" value="${adminName}" />
+			<var name="taskDescription" value="${taskDescription}" />
+			<var name="taskReporter" value="${adminName}" />
+		</execute>
+	</command>
+
 	<command name="AddTaskAssignedToMeDueDate" priority="5">
 		<execute macro="SONavigation#gotoDashboardTasks" />
 
@@ -121,8 +149,8 @@
 		<execute macro="SOTasks#addTask">
 			<var name="dueDate" value="true" />
 			<var name="taskAssignee" value="${adminName}" />
-			<var name="taskReporter" value="${adminName}" />
 			<var name="taskDescription" value="${taskDescription}" />
+			<var name="taskReporter" value="${adminName}" />
 		</execute>
 
 		<execute macro="SONavigation#gotoDashboardTasks" />
@@ -130,26 +158,8 @@
 		<execute macro="SOTasks#viewTask">
 			<var name="dueDate" value="true" />
 			<var name="taskAssignee" value="${adminName}" />
-			<var name="taskReporter" value="${adminName}" />
 			<var name="taskDescription" value="${taskDescription}" />
-		</execute>
-	</command>
-
-	<command name="AddTaskAssignedToMe" priority="5">
-		<execute macro="SONavigation#gotoDashboardTasks" />
-
-		<execute macro="SOTasks#addTask">
-			<var name="taskAssignee" value="${adminName}" />
 			<var name="taskReporter" value="${adminName}" />
-			<var name="taskDescription" value="${taskDescription}" />
-		</execute>
-
-		<execute macro="SONavigation#gotoDashboardTasks" />
-
-		<execute macro="SOTasks#viewTask">
-			<var name="taskAssignee" value="${adminName}" />
-			<var name="taskReporter" value="${adminName}" />
-			<var name="taskDescription" value="${taskDescription}" />
 		</execute>
 	</command>
 
@@ -159,8 +169,8 @@
 		<execute macro="SOTasks#addTask">
 			<var name="numberOfTags" value="3" />
 			<var name="taskAssignee" value="${adminName}" />
-			<var name="taskReporter" value="${adminName}" />
 			<var name="taskDescription" value="${taskDescription}" />
+			<var name="taskReporter" value="${adminName}" />
 		</execute>
 
 		<execute macro="SONavigation#gotoDashboardTasks" />
@@ -168,8 +178,8 @@
 		<execute macro="SOTasks#viewTask">
 			<var name="numberOfTags" value="3" />
 			<var name="taskAssignee" value="${adminName}" />
-			<var name="taskReporter" value="${adminName}" />
 			<var name="taskDescription" value="${taskDescription}" />
+			<var name="taskReporter" value="${adminName}" />
 		</execute>
 	</command>
 
@@ -178,8 +188,8 @@
 
 		<execute macro="SOTasks#addTask">
 			<var name="taskAssignee" value="${adminName}" />
-			<var name="taskReporter" value="${adminName}" />
 			<var name="taskDescription" value="${taskDescription}" />
+			<var name="taskReporter" value="${adminName}" />
 		</execute>
 
 		<execute macro="SONavigation#gotoDashboardTasks" />
@@ -187,8 +197,8 @@
 		<execute macro="SOTasks#completeTask">
 			<var name="percentCompletion" value="100" />
 			<var name="taskAssignee" value="${adminName}" />
-			<var name="taskReporter" value="${adminName}" />
 			<var name="taskDescription" value="${taskDescription}" />
+			<var name="taskReporter" value="${adminName}" />
 		</execute>
 
 		<execute macro="SONavigation#gotoDashboardTasks" />
@@ -196,8 +206,8 @@
 		<execute macro="SOTasks#viewTask">
 			<var name="percentCompletion" value="100" />
 			<var name="taskAssignee" value="${adminName}" />
-			<var name="taskReporter" value="${adminName}" />
 			<var name="taskDescription" value="${taskDescription}" />
+			<var name="taskReporter" value="${adminName}" />
 		</execute>
 	</command>
 
@@ -206,8 +216,8 @@
 
 		<execute macro="SOTasks#addTask">
 			<var name="taskAssignee" value="${adminName}" />
-			<var name="taskReporter" value="${adminName}" />
 			<var name="taskDescription" value="${taskDescription}" />
+			<var name="taskReporter" value="${adminName}" />
 		</execute>
 
 		<execute macro="SONavigation#gotoDashboardTasks" />
@@ -215,8 +225,8 @@
 		<execute macro="SOTasks#completeTask">
 			<var name="percentCompletion" value="60" />
 			<var name="taskAssignee" value="${adminName}" />
-			<var name="taskReporter" value="${adminName}" />
 			<var name="taskDescription" value="${taskDescription}" />
+			<var name="taskReporter" value="${adminName}" />
 		</execute>
 
 		<execute macro="SONavigation#gotoDashboardTasks" />
@@ -224,8 +234,8 @@
 		<execute macro="SOTasks#viewTask">
 			<var name="percentCompletion" value="60" />
 			<var name="taskAssignee" value="${adminName}" />
-			<var name="taskReporter" value="${adminName}" />
 			<var name="taskDescription" value="${taskDescription}" />
+			<var name="taskReporter" value="${adminName}" />
 		</execute>
 	</command>
 
@@ -234,16 +244,16 @@
 
 		<execute macro="SOTasks#addTask">
 			<var name="taskAssignee" value="${adminName}" />
-			<var name="taskReporter" value="${adminName}" />
 			<var name="taskDescription" value="${taskDescription}" />
+			<var name="taskReporter" value="${adminName}" />
 		</execute>
 
 		<execute macro="SONavigation#gotoDashboardTasks" />
 
 		<execute macro="SOTasks#deleteTask">
 			<var name="taskAssignee" value="${adminName}" />
-			<var name="taskReporter" value="${adminName}" />
 			<var name="taskDescription" value="${taskDescription}" />
+			<var name="taskReporter" value="${adminName}" />
 		</execute>
 	</command>
 
@@ -252,8 +262,8 @@
 
 		<execute macro="SOTasks#addTask">
 			<var name="taskAssignee" value="${adminName}" />
-			<var name="taskReporter" value="${adminName}" />
 			<var name="taskDescription" value="${taskDescription}" />
+			<var name="taskReporter" value="${adminName}" />
 		</execute>
 
 		<execute macro="SONavigation#gotoDashboardTasks" />
@@ -266,8 +276,8 @@
 
 		<execute macro="SOTasks#viewTask">
 			<var name="taskAssignee" value="${adminName}" />
-			<var name="taskReporter" value="${adminName}" />
 			<var name="taskDescription" value="${taskDescriptionEdit}" />
+			<var name="taskReporter" value="${adminName}" />
 		</execute>
 	</command>
 
@@ -278,8 +288,8 @@
 			<var name="number" value="01" />
 			<var name="tagNumber" value="1" />
 			<var name="taskAssignee" value="${adminName}" />
-			<var name="taskReporter" value="${adminName}" />
 			<var name="taskDescription" value="${taskDescription}" />
+			<var name="taskReporter" value="${adminName}" />
 		</execute>
 
 		<execute macro="Page#addPG">
@@ -299,8 +309,8 @@
 			<var name="number" value="02" />
 			<var name="tagNumber" value="2" />
 			<var name="taskAssignee" value="${adminName}" />
-			<var name="taskReporter" value="${adminName}" />
 			<var name="taskDescription" value="${taskDescription}" />
+			<var name="taskReporter" value="${adminName}" />
 		</execute>
 
 		<execute macro="SONavigation#gotoDashboardTasks" />
@@ -323,8 +333,8 @@
 			<var name="number" value="01" />
 			<var name="tagNumber" value="1" />
 			<var name="taskAssignee" value="${adminName}" />
-			<var name="taskReporter" value="${adminName}" />
 			<var name="taskDescription" value="${taskDescription}" />
+			<var name="taskReporter" value="${adminName}" />
 		</execute>
 
 		<execute macro="Page#addPG">
@@ -344,8 +354,8 @@
 			<var name="number" value="02" />
 			<var name="tagNumber" value="2" />
 			<var name="taskAssignee" value="${adminName}" />
-			<var name="taskReporter" value="${adminName}" />
 			<var name="taskDescription" value="${taskDescription}" />
+			<var name="taskReporter" value="${adminName}" />
 		</execute>
 
 		<execute macro="SONavigation#gotoDashboardTasks" />
@@ -380,47 +390,47 @@
 			<var name="adminEmailAddress" value="${adminEmailAddress}" />
 			<var name="senderName" value="${adminName}" />
 			<var name="userEmailAddress" value="${userEmailAddress}" />
-			<var name="userName" value="${userName}" />
 			<var name="userFirstName" value="${userFirstName}" />
-			<var name="userListName" value="${userListName}" />
 			<var name="userLastName" value="${userLastName}" />
+			<var name="userListName" value="${userListName}" />
 			<var name="userMiddleName" value="${userMiddleName}" />
+			<var name="userName" value="${userName}" />
 			<var name="userScreenName" value="${userScreenName}" />
 		</execute>
 
 		<execute macro="SOUser#logoutPG" />
 
 		<execute macro="SOUser#loginPG">
-			<var name="userEmailAddress" value="${adminEmailAddress}" />
 			<var name="password" value="test" />
+			<var name="userEmailAddress" value="${adminEmailAddress}" />
 		</execute>
 
 		<execute macro="SONavigation#gotoDashboardTasks" />
 
 		<execute macro="SOTasks#addTask">
 			<var name="taskAssignee" value="${userName}" />
-			<var name="taskReporter" value="${adminName}" />
 			<var name="taskDescription" value="${taskDescription}" />
+			<var name="taskReporter" value="${adminName}" />
 		</execute>
 
 		<execute macro="SOUser#logoutPG" />
 
 		<execute macro="SOUser#loginPG">
-			<var name="userEmailAddress" value="${userEmailAddress}" />
 			<var name="password" value="test" />
+			<var name="userEmailAddress" value="${userEmailAddress}" />
 		</execute>
 
 		<execute macro="SOTasks#viewTaskNotification">
-			<var name="taskReporter" value="${adminName}" />
 			<var name="taskDescription" value="${taskDescription}" />
+			<var name="taskReporter" value="${adminName}" />
 		</execute>
 
 		<execute macro="SONavigation#gotoDashboardTasks" />
 
 		<execute macro="SOTasks#resolveTask">
 			<var name="taskAssignee" value="${userName}" />
-			<var name="taskReporter" value="${adminName}" />
 			<var name="taskDescription" value="${taskDescription}" />
+			<var name="taskReporter" value="${adminName}" />
 		</execute>
 
 		<execute macro="SONavigation#gotoDashboardTasks" />
@@ -428,15 +438,15 @@
 		<execute macro="SOTasks#viewTask">
 			<var name="percentCompletion" value="100" />
 			<var name="taskAssignee" value="${userName}" />
-			<var name="taskReporter" value="${adminName}" />
 			<var name="taskDescription" value="${taskDescription}" />
+			<var name="taskReporter" value="${adminName}" />
 		</execute>
 
 		<execute macro="SOUser#logoutPG" />
 
 		<execute macro="SOUser#loginPG">
-			<var name="userEmailAddress" value="${adminEmailAddress}" />
 			<var name="password" value="test" />
+			<var name="userEmailAddress" value="${adminEmailAddress}" />
 		</execute>
 
 		<execute macro="SOTasks#viewResolveTaskNotification">
@@ -449,8 +459,8 @@
 		<execute macro="SOTasks#viewTask">
 			<var name="percentCompletion" value="100" />
 			<var name="taskAssignee" value="${userName}" />
-			<var name="taskReporter" value="${adminName}" />
 			<var name="taskDescription" value="${taskDescription}" />
+			<var name="taskReporter" value="${adminName}" />
 		</execute>
 	</command>
 
@@ -459,16 +469,16 @@
 
 		<execute macro="SOTasks#addTask">
 			<var name="taskAssignee" value="${adminName}" />
-			<var name="taskReporter" value="${adminName}" />
 			<var name="taskDescription" value="${taskDescription}" />
+			<var name="taskReporter" value="${adminName}" />
 		</execute>
 
 		<execute macro="SONavigation#gotoDashboardTasks" />
 
 		<execute macro="SOTasks#resolveTask">
 			<var name="taskAssignee" value="${adminName}" />
-			<var name="taskReporter" value="${adminName}" />
 			<var name="taskDescription" value="${taskDescription}" />
+			<var name="taskReporter" value="${adminName}" />
 		</execute>
 
 		<execute macro="SONavigation#gotoDashboardTasks" />
@@ -476,18 +486,8 @@
 		<execute macro="SOTasks#viewTask">
 			<var name="percentCompletion" value="100" />
 			<var name="taskAssignee" value="${adminName}" />
-			<var name="taskReporter" value="${adminName}" />
 			<var name="taskDescription" value="${taskDescription}" />
+			<var name="taskReporter" value="${adminName}" />
 		</execute>
 	</command>
-
-	<tear-down>
-		<execute macro="SOTasks#tearDownTask" />
-
-		<execute macro="SOUser#tearDownCP" />
-
-		<execute macro="SOUserBar#tearDownNotifications" />
-
-		<execute macro="Page#tearDownPG" />
-	</tear-down>
 </definition>

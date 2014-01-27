@@ -18,32 +18,32 @@
 	</set-up>
 
 	<command name="ConfigureWebform" priority="5">
-		<var name="webFormInformationTitle" value="Suggestions" />
-		<var name="webFormInformationTitleEdit" value="Feed Back" />
-		<var name="webFormInformationDescription" value="Your input is valuable to us. Please send us your suggestions." />
-		<var name="webFormInformationDescriptionEdit" value="Please let us know what you think!" />
+		<var name="webFormFieldsComments" value="Comments" />
+		<var name="webFormFieldsCommentsEdit" value="Additional Comments" />
 		<var name="webFormFieldsName" value="Name" />
 		<var name="webFormFieldsNameEdit" value="Your Name" />
 		<var name="webFormFieldsRating" value="Rating" />
 		<var name="webFormFieldsRatingEdit" value="Rate Us!" />
-		<var name="webFormFieldsComments" value="Comments" />
-		<var name="webFormFieldsCommentsEdit" value="Additional Comments" />
+		<var name="webFormInformationDescription" value="Your input is valuable to us. Please send us your suggestions." />
+		<var name="webFormInformationDescriptionEdit" value="Please let us know what you think!" />
+		<var name="webFormInformationTitle" value="Suggestions" />
+		<var name="webFormInformationTitleEdit" value="Feed Back" />
 
 		<execute macro="Page#gotoPG">
 			<var name="pageName" value="${pageName}" />
 		</execute>
 
 		<execute macro="WebformPortlet#configureWebformPG">
-			<var name="webFormInformationTitle" value="${webFormInformationTitle}" />
-			<var name="webFormInformationTitleEdit" value="${webFormInformationTitleEdit}" />
-			<var name="webFormInformationDescription" value="${webFormInformationDescription}" />
-			<var name="webFormInformationDescriptionEdit" value="${webFormInformationDescriptionEdit}" />
+			<var name="webFormFieldsComments" value="${webFormFieldsComments}" />
+			<var name="webFormFieldsCommentsEdit" value="${webFormFieldsCommentsEdit}" />
 			<var name="webFormFieldsName" value="${webFormFieldsName}" />
 			<var name="webFormFieldsNameEdit" value="${webFormFieldsNameEdit}" />
 			<var name="webFormFieldsRating" value="${webFormFieldsRating}" />
 			<var name="webFormFieldsRatingEdit" value="${webFormFieldsRatingEdit}" />
-			<var name="webFormFieldsComments" value="${webFormFieldsComments}" />
-			<var name="webFormFieldsCommentsEdit" value="${webFormFieldsCommentsEdit}" />
+			<var name="webFormInformationDescription" value="${webFormInformationDescription}" />
+			<var name="webFormInformationDescriptionEdit" value="${webFormInformationDescriptionEdit}" />
+			<var name="webFormInformationTitle" value="${webFormInformationTitle}" />
+			<var name="webFormInformationTitleEdit" value="${webFormInformationTitleEdit}" />
 		</execute>
 
 		<execute macro="Page#gotoPG">
@@ -51,16 +51,16 @@
 		</execute>
 
 		<execute macro="WebformPortlet#viewConfigureWebformPG">
-			<var name="webFormInformationTitle" value="${webFormInformationTitle}" />
-			<var name="webFormInformationTitleEdit" value="${webFormInformationTitleEdit}" />
-			<var name="webFormInformationDescription" value="${webFormInformationDescription}" />
-			<var name="webFormInformationDescriptionEdit" value="${webFormInformationDescriptionEdit}" />
+			<var name="webFormFieldsComments" value="${webFormFieldsComments}" />
+			<var name="webFormFieldsCommentsEdit" value="${webFormFieldsCommentsEdit}" />
 			<var name="webFormFieldsName" value="${webFormFieldsName}" />
 			<var name="webFormFieldsNameEdit" value="${webFormFieldsNameEdit}" />
 			<var name="webFormFieldsRating" value="${webFormFieldsRating}" />
 			<var name="webFormFieldsRatingEdit" value="${webFormFieldsRatingEdit}" />
-			<var name="webFormFieldsComments" value="${webFormFieldsComments}" />
-			<var name="webFormFieldsCommentsEdit" value="${webFormFieldsCommentsEdit}" />
+			<var name="webFormInformationDescription" value="${webFormInformationDescription}" />
+			<var name="webFormInformationDescriptionEdit" value="${webFormInformationDescriptionEdit}" />
+			<var name="webFormInformationTitle" value="${webFormInformationTitle}" />
+			<var name="webFormInformationTitleEdit" value="${webFormInformationTitleEdit}" />
 		</execute>
 	</command>
 

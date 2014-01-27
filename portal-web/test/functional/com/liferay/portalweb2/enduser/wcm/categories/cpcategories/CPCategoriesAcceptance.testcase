@@ -4,8 +4,8 @@
 	</set-up>
 
 	<command name="AddCategory" priority="5">
-		<var name="vocabularyName" value="Vocabulary Name" />
 		<var name="categoryName" value="Category Name" />
+		<var name="vocabularyName" value="Vocabulary Name" />
 
 		<execute macro="Page#gotoCP">
 			<var name="portletName" value="Categories" />
@@ -21,9 +21,9 @@
 	</command>
 
 	<command name="AddSubcategory" priority="5">
-		<var name="vocabularyName" value="Vocabulary Name" />
 		<var name="categoryName" value="Category Name" />
 		<var name="subcategoryName" value="Subcategory Name" />
+		<var name="vocabularyName" value="Vocabulary Name" />
 
 		<execute macro="Page#gotoCP">
 			<var name="portletName" value="Categories" />
@@ -67,8 +67,8 @@
 	</command>
 
 	<command name="DeleteCategory" priority="5">
-		<var name="vocabularyName" value="Vocabulary Name" />
 		<var name="categoryName" value="Category Name" />
+		<var name="vocabularyName" value="Vocabulary Name" />
 
 		<execute macro="Page#gotoCP">
 			<var name="portletName" value="Categories" />
@@ -88,9 +88,9 @@
 	</command>
 
 	<command name="DeleteSubcategory" priority="5">
-		<var name="vocabularyName" value="Vocabulary Name" />
 		<var name="categoryName" value="Category Name" />
 		<var name="subcategoryName" value="Subcategory Name" />
+		<var name="vocabularyName" value="Vocabulary Name" />
 
 		<execute macro="Page#gotoCP">
 			<var name="portletName" value="Categories" />
@@ -130,9 +130,9 @@
 	</command>
 
 	<command name="EditCategory" priority="5">
-		<var name="vocabularyName" value="Vocabulary Name" />
 		<var name="categoryName" value="Category Name" />
 		<var name="categoryNameEdit" value="Category Name Edit" />
+		<var name="vocabularyName" value="Vocabulary Name" />
 
 		<execute macro="Page#gotoCP">
 			<var name="portletName" value="Categories" />
@@ -153,10 +153,10 @@
 	</command>
 
 	<command name="EditSubcategory" priority="5">
-		<var name="vocabularyName" value="Vocabulary Name" />
 		<var name="categoryName" value="Category Name" />
 		<var name="subcategoryName" value="Subcategory Name" />
 		<var name="subcategoryNameEdit" value="Subcategory Name Edit" />
+		<var name="vocabularyName" value="Vocabulary Name" />
 
 		<execute macro="Page#gotoCP">
 			<var name="portletName" value="Categories" />

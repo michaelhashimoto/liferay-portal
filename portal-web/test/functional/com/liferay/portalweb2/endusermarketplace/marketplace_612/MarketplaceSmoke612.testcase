@@ -39,8 +39,8 @@
 		</execute>
 
 		<execute macro="Site#addCP">
-			<var name="siteType" value="Blank" />
 			<var name="siteName" value="${siteName}" />
+			<var name="siteType" value="Blank" />
 		</execute>
 
 		<execute macro="Page#gotoCP">

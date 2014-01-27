@@ -5,6 +5,18 @@
 		<execute macro="User#firstLoginPG" />
 	</set-up>
 
+	<tear-down>
+		<execute macro="Page#gotoCP">
+			<var name="portletName" value="Site Settings" />
+		</execute>
+
+		<execute macro="Staging#deactivateStagingCP">
+			<var name="siteName" value="${siteName}" />
+		</execute>
+
+		<execute macro="Page#tearDownPG" />
+	</tear-down>
+
 	<command name="ActivateStaging" priority="5">
 		<execute macro="Page#gotoCP">
 			<var name="portletName" value="Site Settings" />
@@ -39,27 +51,8 @@
 		</execute>
 
 		<execute macro="Staging#activateStagingCP">
-			<var name="siteName" value="${siteName}" />
 			<var name="pageVersioningEnabled" value="true" />
-		</execute>
-	</command>
-
-	<command name="StagingPublishToLive" priority="5">
-		<execute macro="Page#gotoCP">
-			<var name="portletName" value="Site Settings" />
-		</execute>
-
-		<execute macro="Staging#activateStagingCP">
 			<var name="siteName" value="${siteName}" />
-		</execute>
-
-		<execute macro="Page#gotoPG">
-			<var name="pageName" value="Welcome" />
-			<var name="pageStaging" value="true" />
-		</execute>
-
-		<execute macro="Staging#publishToLiveNowPG">
-			<var name="pageName" value="Welcome" />
 		</execute>
 	</command>
 
@@ -100,15 +93,22 @@
 		<execute action="Home#assertElementPresent" locator-key1="PORTLET_1" />
 	</command>
 
-	<tear-down>
+	<command name="StagingPublishToLive" priority="5">
 		<execute macro="Page#gotoCP">
 			<var name="portletName" value="Site Settings" />
 		</execute>
 
-		<execute macro="Staging#deactivateStagingCP">
+		<execute macro="Staging#activateStagingCP">
 			<var name="siteName" value="${siteName}" />
 		</execute>
 
-		<execute macro="Page#tearDownPG" />
-	</tear-down>
+		<execute macro="Page#gotoPG">
+			<var name="pageName" value="Welcome" />
+			<var name="pageStaging" value="true" />
+		</execute>
+
+		<execute macro="Staging#publishToLiveNowPG">
+			<var name="pageName" value="Welcome" />
+		</execute>
+	</command>
 </definition>

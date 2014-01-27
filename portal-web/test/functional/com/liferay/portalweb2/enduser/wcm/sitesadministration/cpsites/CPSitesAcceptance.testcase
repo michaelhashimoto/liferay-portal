@@ -63,8 +63,8 @@
 		<execute macro="User#logoutPG" />
 
 		<execute macro="User#loginPG">
-			<var name="userEmailAddress" value="${userEmailAddress}" />
 			<var name="password" value="test" />
+			<var name="userEmailAddress" value="${userEmailAddress}" />
 		</execute>
 
 		<execute action="Home#open" locator1="/user/${userScreenName}/home" />
@@ -101,14 +101,14 @@
 
 	<command name="ImportLARSite" priority="5">
 		<var name="file" value="Sites_Public_Pages.lar" />
-		<var name="threadSubject" value="MB Thread Message Subject" />
-		<var name="threadBody" value="MB Thread Message Body" />
-		<var name="threadReplyBody" value="MB Thread Reply Body" />
 		<var name="pageName" value="Message Boards Page" />
 		<var name="portletName" value="Message Boards" />
 		<var name="siteName" value="Site Name" />
-		<var name="sitePageType" value="Public" />
 		<var name="sitePageName" value="Site Page" />
+		<var name="sitePageType" value="Public" />
+		<var name="threadBody" value="MB Thread Message Body" />
+		<var name="threadReplyBody" value="MB Thread Reply Body" />
+		<var name="threadSubject" value="MB Thread Message Subject" />
 
 		<execute macro="Page#gotoCP">
 			<var name="portletName" value="Sites" />
@@ -146,8 +146,8 @@
 
 		<execute macro="MessageboardsThread#addPG">
 			<var name="siteName" value="${siteName}" />
-			<var name="threadSubject" value="${threadSubject}" />
 			<var name="threadBody" value="${threadBody}" />
+			<var name="threadSubject" value="${threadSubject}" />
 		</execute>
 
 		<execute macro="Page#gotoPG">
@@ -157,8 +157,8 @@
 
 		<execute macro="MessageboardsThread#replyPG">
 			<var name="siteName" value="${siteName}" />
-			<var name="threadSubject" value="${threadSubject}" />
 			<var name="threadBody" value="${threadBody}" />
+			<var name="threadSubject" value="${threadSubject}" />
 		</execute>
 
 		<execute macro="Page#gotoPG">
@@ -167,9 +167,9 @@
 		</execute>
 
 		<execute macro="MessageboardsThread#viewReplyPG">
-			<var name="threadSubject" value="${threadSubject}" />
 			<var name="threadBody" value="${threadBody}" />
 			<var name="threadReplyBody" value="${threadReplyBody}" />
+			<var name="threadSubject" value="${threadSubject}" />
 		</execute>
 
 		<execute macro="Page#gotoCP">
@@ -208,9 +208,9 @@
 		</execute>
 
 		<execute macro="MessageboardsThread#viewReplyPG">
-			<var name="threadSubject" value="${threadSubject}" />
 			<var name="threadBody" value="${threadBody}" />
 			<var name="threadReplyBody" value="${threadReplyBody}" />
+			<var name="threadSubject" value="${threadSubject}" />
 		</execute>
 	</command>
 

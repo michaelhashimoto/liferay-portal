@@ -4,9 +4,9 @@
 	</set-up>
 
 	<command name="AddSitePrivateChildPage" priority="5">
+		<var name="siteChildPageName" value="Site Child Page" />
 		<var name="siteGuestName" value="Liferay" />
 		<var name="siteName" value="Site Name" />
-		<var name="siteChildPageName" value="Site Child Page" />
 		<var name="sitePageName" value="Site Page" />
 		<var name="sitePageType" value="Private" />
 		<var name="sitePageURL" value="http://localhost:8080/group/site-name/site-child-page" />
@@ -34,8 +34,8 @@
 		</execute>
 
 		<execute macro="SitePage#addChildCP">
-			<var name="siteName" value="${siteName}" />
 			<var name="siteChildPageName" value="${siteChildPageName}" />
+			<var name="siteName" value="${siteName}" />
 			<var name="sitePageName" value="${sitePageName}" />
 			<var name="sitePageType" value="${sitePageType}" />
 		</execute>
@@ -47,9 +47,9 @@
 		</execute>
 
 		<execute macro="SitePage#viewChildPG">
+			<var name="siteChildPageName" value="${siteChildPageName}" />
 			<var name="siteGuestName" value="${siteGuestName}" />
 			<var name="siteName" value="${siteName}" />
-			<var name="siteChildPageName" value="${siteChildPageName}" />
 			<var name="sitePageName" value="${sitePageName}" />
 			<var name="sitePageURL" value="${sitePageURL}" />
 		</execute>
@@ -134,9 +134,9 @@
 	</command>
 
 	<command name="AddSitePublicChildPage" priority="5">
+		<var name="siteChildPageName" value="Site Child Page" />
 		<var name="siteGuestName" value="Liferay" />
 		<var name="siteName" value="Site Name" />
-		<var name="siteChildPageName" value="Site Child Page" />
 		<var name="sitePageName" value="Site Page" />
 		<var name="sitePageType" value="Public" />
 		<var name="sitePageURL" value="http://localhost:8080/web/site-name/site-child-page" />
@@ -164,8 +164,8 @@
 		</execute>
 
 		<execute macro="SitePage#addChildCP">
-			<var name="siteName" value="${siteName}" />
 			<var name="siteChildPageName" value="${siteChildPageName}" />
+			<var name="siteName" value="${siteName}" />
 			<var name="sitePageName" value="${sitePageName}" />
 			<var name="sitePageType" value="${sitePageType}" />
 		</execute>
@@ -176,9 +176,9 @@
 		</execute>
 
 		<execute macro="SitePage#viewChildPG">
+			<var name="siteChildPageName" value="${siteChildPageName}" />
 			<var name="siteGuestName" value="${siteGuestName}" />
 			<var name="siteName" value="${siteName}" />
-			<var name="siteChildPageName" value="${siteChildPageName}" />
 			<var name="sitePageName" value="${sitePageName}" />
 			<var name="sitePageURL" value="${sitePageURL}" />
 		</execute>

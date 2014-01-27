@@ -19,16 +19,6 @@
 		<execute action="PGWiki#assertTextEquals" locator-key1="WIKI_PAGE_BODY" value1="${wikiChildPageContent}" />
 	</command>
 
-	<command name="addFrontPagePG">
-		<execute action="PGWiki#assertClick" locator-key1="ADD_FRONTPAGE" value1="This page is empty. Edit it to add some text." />
-
-		<execute action="PGWikiAddpage#type" locator-key1="BODY_FIELD" value1="${wikiPageContent}" />
-		<execute action="PGWikiAddpage#assertClick" locator-key1="PUBLISH_BUTTON" value1="Publish" />
-
-		<execute action="PGWiki#assertTextEquals" locator-key1="SUCCESS_MESSAGE"  value1="Your request completed successfully." />
-		<execute action="PGWiki#assertTextEquals" locator-key1="WIKI_PAGE_BODY" value1="${wikiPageContent}" />
-	</command>
-
 	<command name="addFrontPageAttachmentPG">
 		<execute action="PGWiki#assertTextEquals" locator-key1="WIKI_PAGE_BODY" value1="${wikiPageContent}" />
 		<execute action="PGWiki#assertClick" locator-key1="WIKI_PAGE_ATTACHMENTS_LINK" value1="0 Attachments" />
@@ -55,6 +45,16 @@
 		<execute action="PGWikiAddpage#selectFrame" locator-key1="BODY_FIELD" />
 		<execute action="PGWikiAddpage#assertTextEquals" locator-key1="BODY_FIELD_TEXT" value1="${wikiPageContent}" />
 		<execute action="PGWikiAddpage#selectFrameTop" />
+		<execute action="PGWikiAddpage#assertClick" locator-key1="PUBLISH_BUTTON" value1="Publish" />
+
+		<execute action="PGWiki#assertTextEquals" locator-key1="SUCCESS_MESSAGE"  value1="Your request completed successfully." />
+		<execute action="PGWiki#assertTextEquals" locator-key1="WIKI_PAGE_BODY" value1="${wikiPageContent}" />
+	</command>
+
+	<command name="addFrontPagePG">
+		<execute action="PGWiki#assertClick" locator-key1="ADD_FRONTPAGE" value1="This page is empty. Edit it to add some text." />
+
+		<execute action="PGWikiAddpage#type" locator-key1="BODY_FIELD" value1="${wikiPageContent}" />
 		<execute action="PGWikiAddpage#assertClick" locator-key1="PUBLISH_BUTTON" value1="Publish" />
 
 		<execute action="PGWiki#assertTextEquals" locator-key1="SUCCESS_MESSAGE"  value1="Your request completed successfully." />
@@ -173,18 +173,6 @@
 		<execute action="PGWikiAttachments#assertTextEquals" locator-key1="SEARCH_RESULTS" value1="Showing 1 result." />
 	</command>
 
-	<command name="viewSaveAsDraftFrontPagePG">
-		<execute action="PGWiki#assertTextEquals" locator-key1="ADD_FRONTPAGE" value1="This page is empty. Edit it to add some text." />
-		<execute action="PGWiki#assertElementNotPresent" locator-key1="WIKI_PAGE_BODY" />
-		<execute action="PGWiki#assertTextNotPresent" value1="${wikiPageContent}" />
-		<execute action="PGWiki#assertClick" locator-key1="PAGE_ACTIONS_EDIT" value1="Edit" />
-
-		<execute action="PGWikiAddpage#assertTextEquals" locator-key1="WORKFLOW_STATUS" value1="Status: Draft" />
-		<execute action="PGWikiAddpage#selectFrame" locator-key1="BODY_FIELD" />
-		<execute action="PGWikiAddpage#assertTextEquals" locator-key1="BODY_FIELD_TEXT" value1="${wikiPageContent}" />
-		<execute action="PGWikiAddpage#selectFrameTop" />
-	</command>
-
 	<command name="viewPagePG">
 		<execute action="PGWiki#assertClick" locator-key1="NAVIGATION_ALL_PAGES" value1="All Pages" />
 
@@ -212,5 +200,17 @@
 		<execute action="PGWikiDraftpages#assertTextEquals" locator-key1="PENDING_APPROVAL_TABLE_REVISION" value1="1.0" />
 		<execute action="PGWikiDraftpages#assertTextEquals" locator-key1="PENDING_APPROVAL_TABLE_USER" value1="${wikiPageUsername}" />
 		<execute action="PGWikiDraftpages#assertElementPresent" locator-key1="PENDING_APPROVAL_TABLE_DATE" />
+	</command>
+
+	<command name="viewSaveAsDraftFrontPagePG">
+		<execute action="PGWiki#assertTextEquals" locator-key1="ADD_FRONTPAGE" value1="This page is empty. Edit it to add some text." />
+		<execute action="PGWiki#assertElementNotPresent" locator-key1="WIKI_PAGE_BODY" />
+		<execute action="PGWiki#assertTextNotPresent" value1="${wikiPageContent}" />
+		<execute action="PGWiki#assertClick" locator-key1="PAGE_ACTIONS_EDIT" value1="Edit" />
+
+		<execute action="PGWikiAddpage#assertTextEquals" locator-key1="WORKFLOW_STATUS" value1="Status: Draft" />
+		<execute action="PGWikiAddpage#selectFrame" locator-key1="BODY_FIELD" />
+		<execute action="PGWikiAddpage#assertTextEquals" locator-key1="BODY_FIELD_TEXT" value1="${wikiPageContent}" />
+		<execute action="PGWikiAddpage#selectFrameTop" />
 	</command>
 </definition>

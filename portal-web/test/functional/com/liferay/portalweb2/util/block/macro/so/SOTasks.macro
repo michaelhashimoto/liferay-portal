@@ -403,6 +403,17 @@
 		</while>
 	</command>
 
+	<command name="viewResolveTaskNotification">
+		<execute action="SOUserBar#click" locator-key1="DASHBOARD" />
+		<execute action="SOUserBar#assertElementPresent" locator-key1="NOTIFICATION" />
+		<execute action="SOUserBar#assertTextEquals" locator-key1="NOTIFICATION_MENU_COUNT" value1="1" />
+		<execute action="SOUserBar#mouseOver" locator-key1="NOTIFICATION" />
+		<execute action="SOUserBar#assertTextEquals" locator-key1="NOTIFICATION_MENU_ENTRY_CONTENT" value1="${taskAssignee} resolved the task." />
+		<execute action="SOUserBar#assertTextEquals" locator-key1="NOTIFICATION_MENU_ENTRY_SUBCONTENT" value1="${taskDescription}" />
+		<execute action="SOUserBar#assertClick" locator-key1="NOTIFICATION_MENU_MARK_ALL_AS_READ" value1="Mark All as Read" />
+		<execute action="SOUserBar#assertTextEquals" locator-key1="NOTIFICATION_MENU_COUNT" value1="0" />
+	</command>
+
 	<command name="viewTask">
 		<var name="currentUser" path="SODashboard" locator-key="PROFILE_NAME" />
 
@@ -640,17 +651,6 @@
 				<execute action="SOTasksTask#assertTextEquals" locator-key1="TASK_TAG" value1="tag${tagNumber}" />
 			</then>
 		</if>
-	</command>
-
-	<command name="viewResolveTaskNotification">
-		<execute action="SOUserBar#click" locator-key1="DASHBOARD" />
-		<execute action="SOUserBar#assertElementPresent" locator-key1="NOTIFICATION" />
-		<execute action="SOUserBar#assertTextEquals" locator-key1="NOTIFICATION_MENU_COUNT" value1="1" />
-		<execute action="SOUserBar#mouseOver" locator-key1="NOTIFICATION" />
-		<execute action="SOUserBar#assertTextEquals" locator-key1="NOTIFICATION_MENU_ENTRY_CONTENT" value1="${taskAssignee} resolved the task." />
-		<execute action="SOUserBar#assertTextEquals" locator-key1="NOTIFICATION_MENU_ENTRY_SUBCONTENT" value1="${taskDescription}" />
-		<execute action="SOUserBar#assertClick" locator-key1="NOTIFICATION_MENU_MARK_ALL_AS_READ" value1="Mark All as Read" />
-		<execute action="SOUserBar#assertTextEquals" locator-key1="NOTIFICATION_MENU_COUNT" value1="0" />
 	</command>
 
 	<command name="viewTaskNotification">

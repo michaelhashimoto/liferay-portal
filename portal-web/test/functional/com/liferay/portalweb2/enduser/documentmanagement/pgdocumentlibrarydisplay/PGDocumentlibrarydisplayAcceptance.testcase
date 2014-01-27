@@ -49,13 +49,13 @@
 
 	<command name="DeleteDocuments" priority="5">
 		<var name="dmdDocumentFile1" value="Document_1.txt" />
-		<var name="dmdDocumentSize1" value="0.3k" />
-		<var name="dmdDocumentTitle1" value="DM Document1 Title" />
 		<var name="dmdDocumentFile2" value="Document_2.txt" />
-		<var name="dmdDocumentSize2" value="0.5k" />
-		<var name="dmdDocumentTitle2" value="DM Document2 Title" />
 		<var name="dmdDocumentFile3" value="Document_3.txt" />
+		<var name="dmdDocumentSize1" value="0.3k" />
+		<var name="dmdDocumentSize2" value="0.5k" />
 		<var name="dmdDocumentSize3" value="0.8k" />
+		<var name="dmdDocumentTitle1" value="DM Document1 Title" />
+		<var name="dmdDocumentTitle2" value="DM Document2 Title" />
 		<var name="dmdDocumentTitle3" value="DM Document3 Title" />
 
 		<execute macro="Page#gotoPG">
@@ -114,10 +114,10 @@
 	</command>
 
 	<command name="SearchFolderDocument" priority="5">
-		<var name="dmdFolderName" value="DM Folder Name" />
 		<var name="dmdDocumentFile" value="Document_1.txt" />
 		<var name="dmdDocumentSize" value="0.3k" />
 		<var name="dmdDocumentTitle" value="DM Document Title" />
+		<var name="dmdFolderName" value="DM Folder Name" />
 
 		<execute macro="Page#gotoPG">
 			<var name="pageName" value="${pageName}" />
@@ -132,10 +132,10 @@
 		</execute>
 
 		<execute macro="DMFolderDocument#addPGviaDMD">
-			<var name="dmdFolderName" value="${dmdFolderName}" />
 			<var name="dmdDocumentFile" value="${dmdDocumentFile}" />
 			<var name="dmdDocumentSize" value="${dmdDocumentSize}" />
 			<var name="dmdDocumentTitle" value="${dmdDocumentTitle}" />
+			<var name="dmdFolderName" value="${dmdFolderName}" />
 		</execute>
 
 		<execute macro="Page#gotoPG">
@@ -143,9 +143,9 @@
 		</execute>
 
 		<execute macro="DMFolderDocument#searchPGviaDMD">
-			<var name="dmdFolderName" value="${dmdFolderName}" />
 			<var name="dmdDocumentTitle" value="${dmdDocumentTitle}" />
 			<var name="dmdDocumentTitleSearch" value="${dmdDocumentTitle}" />
+			<var name="dmdFolderName" value="${dmdFolderName}" />
 		</execute>
 
 		<execute macro="DMFolderDocument#searchNoPGviaDMD">
@@ -153,9 +153,9 @@
 		</execute>
 
 		<execute macro="DMFolderDocument#searchPGviaDMD">
-			<var name="dmdFolderName" value="${dmdFolderName}" />
 			<var name="dmdDocumentTitle" value="${dmdDocumentTitle}" />
 			<var name="dmdDocumentTitleSearch" value="\&quot;${dmdDocumentTitle}\&quot;" />
+			<var name="dmdFolderName" value="${dmdFolderName}" />
 		</execute>
 
 		<execute macro="DMFolderDocument#searchNoPGviaDMD">

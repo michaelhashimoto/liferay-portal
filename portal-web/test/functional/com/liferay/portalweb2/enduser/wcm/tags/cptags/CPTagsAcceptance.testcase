@@ -3,6 +3,10 @@
 		<execute macro="User#firstLoginPG" />
 	</set-up>
 
+	<tear-down>
+		<execute macro="Tag#tearDownCP" />
+	</tear-down>
+
 	<command name="AddTag" priority="5">
 		<var name="tagName" value="blue" />
 
@@ -45,23 +49,6 @@
 		<execute action="CPTags#assertTextEquals" locator-key1="ENTRY_TAG_3" value1="${tagName3}" />
 	</command>
 
-	<command name="EditTag" priority="5">
-		<var name="tagName" value="blue" />
-		<var name="tagNameEdit" value="teal" />
-
-		<execute macro="Page#gotoCP">
-			<var name="portletName" value="Tags" />
-		</execute>
-
-		<execute macro="Tag#addCP">
-			<var name="tagName" value="${tagName}" />
-		</execute>
-
-		<execute macro="Tag#editCP">
-			<var name="tagNameEdit" value="${tagNameEdit}" />
-		</execute>
-	</command>
-
 	<command name="DeleteTag" priority="5">
 		<var name="tagName" value="blue" />
 
@@ -78,7 +65,20 @@
 		</execute>
 	</command>
 
-	<tear-down>
-		<execute macro="Tag#tearDownCP" />
-	</tear-down>
+	<command name="EditTag" priority="5">
+		<var name="tagName" value="blue" />
+		<var name="tagNameEdit" value="teal" />
+
+		<execute macro="Page#gotoCP">
+			<var name="portletName" value="Tags" />
+		</execute>
+
+		<execute macro="Tag#addCP">
+			<var name="tagName" value="${tagName}" />
+		</execute>
+
+		<execute macro="Tag#editCP">
+			<var name="tagNameEdit" value="${tagNameEdit}" />
+		</execute>
+	</command>
 </definition>

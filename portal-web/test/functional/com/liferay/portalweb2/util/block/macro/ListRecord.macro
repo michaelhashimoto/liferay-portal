@@ -101,16 +101,16 @@
 		<execute action="CPDynamicdatalistsListAddrecord#select" locator1="//select[contains(@name,'_167_${selectNameLabel}')" value1="${recordSelect}" />
 	</command>
 
+	<command name="addTextBoxCmdCP">
+		<execute action="CPDynamicdatalistsListAddrecord#type" locator1="//textarea[contains(@id,'_167_${textBoxNameLabel}')]" value1="${recordTextBox}" />
+	</command>
+
 	<command name="addTextCmdCP">
 		<execute action="CPDynamicdatalistsListAddrecord#type" locator1="//input[contains(@id,'_167_${textNameLabel}')]" value1="${recordText}" />
 	</command>
 
 	<command name="addTextCmdPG">
 		<execute action="PGDDLDisplayAddrecord#type" locator1="//input[contains(@id,'_${textNameLabel}')]" value1="${recordText}" />
-	</command>
-
-	<command name="addTextBoxCmdCP">
-		<execute action="CPDynamicdatalistsListAddrecord#type" locator1="//textarea[contains(@id,'_167_${textBoxNameLabel}')]" value1="${recordTextBox}" />
 	</command>
 
 	<command name="deleteCP">
@@ -160,8 +160,8 @@
 
 	<command name="editDateCmdCP">
 		<execute macro="ListRecord#addDateCmdCP">
-			<var name="recordDateMonth" value="${recordDateMonthEdit}" />
 			<var name="recordDateDay" value="${recordDateDayEdit}" />
+			<var name="recordDateMonth" value="${recordDateMonthEdit}" />
 			<var name="recordDateYear" value="${recordDateYearEdit}" />
 		</execute>
 	</command>
@@ -221,6 +221,12 @@
 		</execute>
 	</command>
 
+	<command name="editTextBoxCmdCP">
+		<execute macro="ListRecord#addTextBoxCmdCP">
+			<var name="recordTextBox" value="${recordTextBoxEdit}" />
+		</execute>
+	</command>
+
 	<command name="editTextCmdCP">
 		<execute macro="ListRecord#addTextCmdCP">
 			<var name="recordText" value="${recordTextEdit}" />
@@ -230,12 +236,6 @@
 	<command name="editTextCmdPG">
 		<execute macro="ListRecord#addTextCmdPG">
 			<var name="recordText" value="${recordTextEdit}" />
-		</execute>
-	</command>
-
-	<command name="editTextBoxCmdCP">
-		<execute macro="ListRecord#addTextBoxCmdCP">
-			<var name="recordTextBox" value="${recordTextBoxEdit}" />
 		</execute>
 	</command>
 

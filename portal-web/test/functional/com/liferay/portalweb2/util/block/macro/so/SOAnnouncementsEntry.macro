@@ -112,6 +112,17 @@
 		</while>
 	</command>
 
+	<command name="viewNotificationPG">
+		<execute action="SOUserBar#click" locator-key1="DASHBOARD" />
+		<execute action="SOUserBar#assertElementPresent" locator-key1="NOTIFICATION" />
+		<execute action="SOUserBar#assertTextEquals" locator-key1="NOTIFICATION_MENU_COUNT" value1="1" />
+		<execute action="SOUserBar#mouseOver" locator-key1="NOTIFICATION" />
+		<execute action="SOUserBar#assertTextEquals" locator-key1="NOTIFICATION_MENU_ENTRY_CONTENT" value1="${entryAuthor} sent a new announcement." />
+		<execute action="SOUserBar#assertTextEquals" locator-key1="NOTIFICATION_MENU_ENTRY_SUBCONTENT" value1="${entryTitle}" />
+		<execute action="SOUserBar#assertClick" locator-key1="NOTIFICATION_MENU_MARK_ALL_AS_READ" value1="Mark All as Read" />
+		<execute action="SOUserBar#assertTextEquals" locator-key1="NOTIFICATION_MENU_COUNT" value1="0" />
+	</command>
+
 	<command name="viewPG">
 		<execute action="SODashboard#assertTextEquals" locator-key1="ANNOUNCEMENTS_ENTRY_ACTION" value1="${entryAuthor} to ${distributionScope}" />
 		<execute action="SODashboard#assertTextEquals" locator-key1="ANNOUNCEMENTS_ENTRY_TITLE" value1="${entryTitle}" />
@@ -130,16 +141,5 @@
 		<execute action="SODashboardManageAnnouncementsEntry#assertTextEquals" locator-key1="ANNOUNCEMENTS_ENTRY_EDIT_LINK" value1="Edit"  />
 		<execute action="SODashboardManageAnnouncementsEntry#assertTextEquals" locator-key1="ANNOUNCEMENTS_ENTRY_DELETE_LINK" value1="Delete"  />
 		<execute action="SODashboardManageAnnouncementsEntry#selectFrameTop" />
-	</command>
-
-	<command name="viewNotificationPG">
-		<execute action="SOUserBar#click" locator-key1="DASHBOARD" />
-		<execute action="SOUserBar#assertElementPresent" locator-key1="NOTIFICATION" />
-		<execute action="SOUserBar#assertTextEquals" locator-key1="NOTIFICATION_MENU_COUNT" value1="1" />
-		<execute action="SOUserBar#mouseOver" locator-key1="NOTIFICATION" />
-		<execute action="SOUserBar#assertTextEquals" locator-key1="NOTIFICATION_MENU_ENTRY_CONTENT" value1="${entryAuthor} sent a new announcement." />
-		<execute action="SOUserBar#assertTextEquals" locator-key1="NOTIFICATION_MENU_ENTRY_SUBCONTENT" value1="${entryTitle}" />
-		<execute action="SOUserBar#assertClick" locator-key1="NOTIFICATION_MENU_MARK_ALL_AS_READ" value1="Mark All as Read" />
-		<execute action="SOUserBar#assertTextEquals" locator-key1="NOTIFICATION_MENU_COUNT" value1="0" />
 	</command>
 </definition>

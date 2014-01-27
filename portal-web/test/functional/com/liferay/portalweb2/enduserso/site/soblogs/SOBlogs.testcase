@@ -6,35 +6,42 @@
 	<var name="key_siteName" value="${siteName}" />
 	<var name="pageName" value="Blogs" />
 	<var name="roleName" value="Site Member" />
-	<var name="siteName" value="Open Site Name" />
 	<var name="siteDescription" value="Open Site Description" />
+	<var name="siteName" value="Open Site Name" />
 	<var name="siteType" value="Open" />
+
+	<var name="entryAuthorFirstName" value="Joe" />
+	<var name="entryAuthorLastName" value="Bloggs" />
+	<var name="entryContent" value="Blogs Entry Content" />
+	<var name="entryContentEdit" value="Blogs Entry Content Edit" />
+	<var name="entryTitle" value="Blogs Entry Title" />
+	<var name="entryTitleEdit" value="Blogs Entry Title Edit" />
 
 	<set-up>
 		<execute macro="SOUser#firstLoginPG" />
 
 		<execute macro="SOUserBar#addSOSite">
-			<var name="siteName" value="${siteName}" />
 			<var name="siteDescription" value="${siteDescription}" />
+			<var name="siteName" value="${siteName}" />
 			<var name="siteType" value="${siteType}" />
 		</execute>
 	</set-up>
 
-	<var name="entryTitle" value="Blogs Entry Title" />
-	<var name="entryContent" value="Blogs Entry Content" />
-	<var name="entryAuthorFirstName" value="Joe" />
-	<var name="entryAuthorLastName" value="Bloggs" />
-	<var name="entryContentEdit" value="Blogs Entry Content Edit" />
-	<var name="entryTitleEdit" value="Blogs Entry Title Edit" />
-	<var name="entryContentEdit" value="Blogs Entry Content Edit" />
+	<tear-down>
+		<execute macro="SOUserBar#tearDownSites" />
+
+		<execute macro="SOUser#tearDownCP" />
+
+		<execute macro="Role#tearDownDefinePermissionCP" />
+	</tear-down>
 
 	<command name="AddSOBlogsEntry" priority="5">
-		<var name="siteName" value="${siteName}" />
-		<var name="entryTitle" value="${entryTitle}" />
 		<var name="entryContent" value="${entryContent}" />
+		<var name="entryTitle" value="${entryTitle}" />
 		<var name="key_siteName" value="${key_siteName}" />
 		<var name="pageName" value="${pageName}" />
 		<var name="pageType" value="${pageType}" />
+		<var name="siteName" value="${siteName}" />
 
 		<execute macro="Page#gotoPG">
 			<var name="pageName" value="${pageName}" />
@@ -87,8 +94,8 @@
 
 	<command name="AddSOBlogsEntrySOUser" priority="5">
 		<var name="adminEmailAddress" value="test@liferay.com" />
-		<var name="entryTitle" value="${entryTitle}" />
 		<var name="entryContent" value="${entryContent}" />
+		<var name="entryTitle" value="${entryTitle}" />
 		<var name="key_siteName" value="${key_siteName}" />
 		<var name="pageName" value="${pageName}" />
 		<var name="pageType" value="${pageType}" />
@@ -97,8 +104,8 @@
 		<var name="siteName" value="${siteName}" />
 		<var name="userEmailAddress" value="socialoffice01@liferay.com" />
 		<var name="userFirstName" value="Social01" />
-		<var name="userMiddleName" value="Office01" />
 		<var name="userLastName" value="User01" />
+		<var name="userMiddleName" value="Office01" />
 		<var name="userScreenName" value="socialoffice01" />
 
 		<execute macro="SOUser#addUserWithSORole">
@@ -106,8 +113,8 @@
 			<var name="password" value="${password}" />
 			<var name="userEmailAddress" value="${userEmailAddress}" />
 			<var name="userFirstName" value="${userFirstName}" />
-			<var name="userMiddleName" value="${userMiddleName}" />
 			<var name="userLastName" value="${userLastName}" />
+			<var name="userMiddleName" value="${userMiddleName}" />
 			<var name="userScreenName" value="${userScreenName}" />
 		</execute>
 
@@ -116,16 +123,16 @@
 		</execute>
 
 		<execute macro="Role#definePermissionSiteMembersBlogsCP">
-			<var name="siteContentPermissions" value="Blogs" />
-			<var name="roleName" value="${roleName}" />
 			<var name="permissions" value="Blogs" />
+			<var name="roleName" value="${roleName}" />
+			<var name="siteContentPermissions" value="Blogs" />
 		</execute>
 
 		<execute macro="SOUser#logoutPG" />
 
 		<execute macro="SOUser#loginPG">
-			<var name="userEmailAddress" value="${userEmailAddress}" />
 			<var name="password" value="test" />
+			<var name="userEmailAddress" value="${userEmailAddress}" />
 		</execute>
 
 		<execute macro="Page#gotoPG">
@@ -161,8 +168,8 @@
 		<execute macro="SOUser#logoutPG" />
 
 		<execute macro="SOUser#loginPG">
-			<var name="userEmailAddress" value="${adminEmailAddress}" />
 			<var name="password" value="test" />
+			<var name="userEmailAddress" value="${adminEmailAddress}" />
 		</execute>
 
 		<execute macro="Page#gotoPG">
@@ -184,106 +191,6 @@
 			<var name="entryAuthorFirstName" value="${userFirstName}" />
 			<var name="entryAuthorLastName" value="${userLastName}" />
 			<var name="entryAuthorMiddleName" value="${userMiddleName}" />
-		</execute>
-
-		<execute action="PGBlogsEntry#assertTextEquals" locator-key1="ENTRY_COMMENTS" value1="0 Comments" />
-		<execute action="PGBlogsEntry#assertTextEquals" locator-key1="ENTRY_AVERAGE_RATING" value1="Average (0 Votes)" />
-	</command>
-
-	<command name="EditSOBlogsEntry" priority="5">
-		<var name="siteName" value="${siteName}" />
-		<var name="entryTitle" value="${entryTitle}" />
-		<var name="entryContent" value="${entryContent}" />
-		<var name="entryTitleEdit" value="${entryTitleEdit}" />
-		<var name="entryContentEdit" value="${entryContentEdit}" />
-		<var name="key_siteName" value="${key_siteName}" />
-
-		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${pageName}" />
-			<var name="pageType" value="Open Site" />
-		</execute>
-
-		<execute macro="BlogsEntry#addPG" />
-
-		<execute macro="BlogsEntry#editPG" />
-	</command>
-
-	<command name="EditSOBlogsEntrySOUser" priority="5">
-		<var name="adminEmailAddress" value="test@liferay.com" />
-		<var name="entryTitle" value="${entryTitle}" />
-		<var name="entryContent" value="${entryContent}" />
-		<var name="entryTitleEdit" value="${entryTitleEdit}" />
-		<var name="entryContentEdit" value="${entryContentEdit}" />
-		<var name="key_siteName" value="${key_siteName}" />
-		<var name="pageName" value="${pageName}" />
-		<var name="pageType" value="${pageType}" />
-		<var name="password" value="test" />
-		<var name="roleName" value="${roleName}" />
-		<var name="siteName" value="${siteName}" />
-		<var name="userEmailAddress" value="socialoffice01@liferay.com" />
-		<var name="userFirstName" value="Social01" />
-		<var name="userMiddleName" value="Office01" />
-		<var name="userLastName" value="User01" />
-		<var name="userScreenName" value="socialoffice01" />
-
-		<execute macro="SOUser#addUserWithSORole">
-			<var name="adminEmailAddress" value="${adminEmailAddress}" />
-			<var name="password" value="${password}" />
-			<var name="userEmailAddress" value="${userEmailAddress}" />
-			<var name="userFirstName" value="${userFirstName}" />
-			<var name="userMiddleName" value="${userMiddleName}" />
-			<var name="userLastName" value="${userLastName}" />
-			<var name="userScreenName" value="${userScreenName}" />
-		</execute>
-
-		<execute macro="SOUserBar#gotoCP">
-			<var name="portletName" value="Roles" />
-		</execute>
-
-		<execute macro="Role#definePermissionSiteMembersBlogsCP">
-			<var name="siteContentPermissions" value="Blogs" />
-			<var name="roleName" value="${roleName}" />
-			<var name="permissions" value="Blogs" />
-		</execute>
-
-		<execute macro="SOUser#logoutPG" />
-
-		<execute macro="SOUser#loginPG">
-			<var name="userEmailAddress" value="${userEmailAddress}" />
-			<var name="password" value="test" />
-		</execute>
-
-		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${pageName}" />
-			<var name="pageType" value="Open Site" />
-		</execute>
-
-		<execute macro="SOSite#joinSitePG">
-			<var name="siteName" value="${siteName}" />
-		</execute>
-
-		<execute macro="BlogsEntry#addPG" />
-
-		<execute macro="BlogsEntry#editPG" />
-
-		<execute macro="SOUser#logoutPG" />
-
-		<execute macro="SOUser#loginPG">
-			<var name="userEmailAddress" value="${adminEmailAddress}" />
-			<var name="password" value="test" />
-		</execute>
-
-		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${pageName}" />
-			<var name="pageType" value="Open Site" />
-		</execute>
-
-		<execute macro="BlogsEntry#viewPG">
-			<var name="entryAuthorFirstName" value="${userFirstName}" />
-			<var name="entryAuthorLastName" value="${userLastName}" />
-			<var name="entryAuthorMiddleName" value="${userMiddleName}" />
-			<var name="entryTitle" value="${entryTitleEdit}" />
-			<var name="entryContent" value="${entryContentEdit}" />
 		</execute>
 
 		<execute action="PGBlogsEntry#assertTextEquals" locator-key1="ENTRY_COMMENTS" value1="0 Comments" />
@@ -291,10 +198,10 @@
 	</command>
 
 	<command name="DeleteSOBlogsEntry" priority="5">
-		<var name="siteName" value="${siteName}" />
-		<var name="entryTitle" value="${entryTitle}" />
 		<var name="entryContent" value="${entryContent}" />
+		<var name="entryTitle" value="${entryTitle}" />
 		<var name="key_siteName" value="${key_siteName}" />
+		<var name="siteName" value="${siteName}" />
 
 		<execute macro="Page#gotoPG">
 			<var name="pageName" value="${pageName}" />
@@ -308,8 +215,8 @@
 
 	<command name="DeleteSOBlogsEntrySOUser" priority="5">
 		<var name="adminEmailAddress" value="test@liferay.com" />
-		<var name="entryTitle" value="${entryTitle}" />
 		<var name="entryContent" value="${entryContent}" />
+		<var name="entryTitle" value="${entryTitle}" />
 		<var name="key_siteName" value="${key_siteName}" />
 		<var name="pageName" value="${pageName}" />
 		<var name="pageType" value="${pageType}" />
@@ -318,8 +225,8 @@
 		<var name="siteName" value="${siteName}" />
 		<var name="userEmailAddress" value="socialoffice01@liferay.com" />
 		<var name="userFirstName" value="Social01" />
-		<var name="userMiddleName" value="Office01" />
 		<var name="userLastName" value="User01" />
+		<var name="userMiddleName" value="Office01" />
 		<var name="userScreenName" value="socialoffice01" />
 
 		<execute macro="SOUser#addUserWithSORole">
@@ -327,8 +234,8 @@
 			<var name="password" value="${password}" />
 			<var name="userEmailAddress" value="${userEmailAddress}" />
 			<var name="userFirstName" value="${userFirstName}" />
-			<var name="userMiddleName" value="${userMiddleName}" />
 			<var name="userLastName" value="${userLastName}" />
+			<var name="userMiddleName" value="${userMiddleName}" />
 			<var name="userScreenName" value="${userScreenName}" />
 		</execute>
 
@@ -337,16 +244,16 @@
 		</execute>
 
 		<execute macro="Role#definePermissionSiteMembersBlogsCP">
-			<var name="siteContentPermissions" value="Blogs" />
-			<var name="roleName" value="${roleName}" />
 			<var name="permissions" value="Blogs" />
+			<var name="roleName" value="${roleName}" />
+			<var name="siteContentPermissions" value="Blogs" />
 		</execute>
 
 		<execute macro="SOUser#logoutPG" />
 
 		<execute macro="SOUser#loginPG">
-			<var name="userEmailAddress" value="${userEmailAddress}" />
 			<var name="password" value="test" />
+			<var name="userEmailAddress" value="${userEmailAddress}" />
 		</execute>
 
 		<execute macro="Page#gotoPG">
@@ -365,8 +272,8 @@
 		<execute macro="SOUser#logoutPG" />
 
 		<execute macro="SOUser#loginPG">
-			<var name="userEmailAddress" value="${adminEmailAddress}" />
 			<var name="password" value="test" />
+			<var name="userEmailAddress" value="${adminEmailAddress}" />
 		</execute>
 
 		<execute macro="Page#gotoPG">
@@ -382,13 +289,113 @@
 		<execute action="PGBlogs#assertElementNotPresent" locator-key1="ENTRY_CONTENT_1" />
 	</command>
 
-	<command name="ViewSOBlogsEntryRecentBlogs" priority="5">
-		<var name="siteName" value="${siteName}" />
-		<var name="entryTitle" value="${entryTitle}" />
+	<command name="EditSOBlogsEntry" priority="5">
 		<var name="entryContent" value="${entryContent}" />
+		<var name="entryContentEdit" value="${entryContentEdit}" />
+		<var name="entryTitle" value="${entryTitle}" />
+		<var name="entryTitleEdit" value="${entryTitleEdit}" />
+		<var name="key_siteName" value="${key_siteName}" />
+		<var name="siteName" value="${siteName}" />
+
+		<execute macro="Page#gotoPG">
+			<var name="pageName" value="${pageName}" />
+			<var name="pageType" value="Open Site" />
+		</execute>
+
+		<execute macro="BlogsEntry#addPG" />
+
+		<execute macro="BlogsEntry#editPG" />
+	</command>
+
+	<command name="EditSOBlogsEntrySOUser" priority="5">
+		<var name="adminEmailAddress" value="test@liferay.com" />
+		<var name="entryContent" value="${entryContent}" />
+		<var name="entryContentEdit" value="${entryContentEdit}" />
+		<var name="entryTitle" value="${entryTitle}" />
+		<var name="entryTitleEdit" value="${entryTitleEdit}" />
 		<var name="key_siteName" value="${key_siteName}" />
 		<var name="pageName" value="${pageName}" />
 		<var name="pageType" value="${pageType}" />
+		<var name="password" value="test" />
+		<var name="roleName" value="${roleName}" />
+		<var name="siteName" value="${siteName}" />
+		<var name="userEmailAddress" value="socialoffice01@liferay.com" />
+		<var name="userFirstName" value="Social01" />
+		<var name="userLastName" value="User01" />
+		<var name="userMiddleName" value="Office01" />
+		<var name="userScreenName" value="socialoffice01" />
+
+		<execute macro="SOUser#addUserWithSORole">
+			<var name="adminEmailAddress" value="${adminEmailAddress}" />
+			<var name="password" value="${password}" />
+			<var name="userEmailAddress" value="${userEmailAddress}" />
+			<var name="userFirstName" value="${userFirstName}" />
+			<var name="userLastName" value="${userLastName}" />
+			<var name="userMiddleName" value="${userMiddleName}" />
+			<var name="userScreenName" value="${userScreenName}" />
+		</execute>
+
+		<execute macro="SOUserBar#gotoCP">
+			<var name="portletName" value="Roles" />
+		</execute>
+
+		<execute macro="Role#definePermissionSiteMembersBlogsCP">
+			<var name="permissions" value="Blogs" />
+			<var name="roleName" value="${roleName}" />
+			<var name="siteContentPermissions" value="Blogs" />
+		</execute>
+
+		<execute macro="SOUser#logoutPG" />
+
+		<execute macro="SOUser#loginPG">
+			<var name="password" value="test" />
+			<var name="userEmailAddress" value="${userEmailAddress}" />
+		</execute>
+
+		<execute macro="Page#gotoPG">
+			<var name="pageName" value="${pageName}" />
+			<var name="pageType" value="Open Site" />
+		</execute>
+
+		<execute macro="SOSite#joinSitePG">
+			<var name="siteName" value="${siteName}" />
+		</execute>
+
+		<execute macro="BlogsEntry#addPG" />
+
+		<execute macro="BlogsEntry#editPG" />
+
+		<execute macro="SOUser#logoutPG" />
+
+		<execute macro="SOUser#loginPG">
+			<var name="password" value="test" />
+			<var name="userEmailAddress" value="${adminEmailAddress}" />
+		</execute>
+
+		<execute macro="Page#gotoPG">
+			<var name="pageName" value="${pageName}" />
+			<var name="pageType" value="Open Site" />
+		</execute>
+
+		<execute macro="BlogsEntry#viewPG">
+			<var name="entryAuthorFirstName" value="${userFirstName}" />
+			<var name="entryAuthorLastName" value="${userLastName}" />
+			<var name="entryAuthorMiddleName" value="${userMiddleName}" />
+			<var name="entryContent" value="${entryContentEdit}" />
+			<var name="entryTitle" value="${entryTitleEdit}" />
+		</execute>
+
+		<execute action="PGBlogsEntry#assertTextEquals" locator-key1="ENTRY_COMMENTS" value1="0 Comments" />
+		<execute action="PGBlogsEntry#assertTextEquals" locator-key1="ENTRY_AVERAGE_RATING" value1="Average (0 Votes)" />
+	</command>
+
+	<command name="ViewSOBlogsEntryRecentBlogs" priority="5">
+		<var name="entryContent" value="${entryContent}" />
+		<var name="entryTitle" value="${entryTitle}" />
+		<var name="key_siteName" value="${key_siteName}" />
+		<var name="pageName" value="${pageName}" />
+		<var name="pageType" value="${pageType}" />
+		<var name="siteName" value="${siteName}" />
 
 		<execute macro="Page#gotoPG">
 			<var name="pageName" value="${pageName}" />
@@ -404,12 +411,4 @@
 
 		<execute macro="SOBlogs#viewBlogsEntryRecentBlogs" />
 	</command>
-
-	<tear-down>
-		<execute macro="SOUserBar#tearDownSites" />
-
-		<execute macro="SOUser#tearDownCP" />
-
-		<execute macro="Role#tearDownDefinePermissionCP" />
-	</tear-down>
 </definition>

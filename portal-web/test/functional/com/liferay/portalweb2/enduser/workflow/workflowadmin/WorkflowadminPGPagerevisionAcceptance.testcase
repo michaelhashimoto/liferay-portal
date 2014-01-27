@@ -55,14 +55,14 @@
 
 		<execute macro="Page#addPGWithWorkflow">
 			<var name="pageName" value="${pageName}" />
-			<var name="pageType" value="Site" />
 			<var name="pageStaging" value="true" />
+			<var name="pageType" value="Site" />
 		</execute>
 
 		<execute macro="Page#viewPGWithWorkflow">
 			<var name="pageName" value="${pageName}" />
-			<var name="pageType" value="Site" />
 			<var name="pageStaging" value="true" />
+			<var name="pageType" value="Site" />
 			<var name="workflowStatus" value="Pending (Review)" />
 		</execute>
 
@@ -78,8 +78,8 @@
 
 		<execute macro="Page#viewPGWithWorkflow">
 			<var name="pageName" value="${pageName}" />
-			<var name="pageType" value="Site" />
 			<var name="pageStaging" value="true" />
+			<var name="pageType" value="Site" />
 			<var name="workflowStatus" value="Pending (Review)" />
 		</execute>
 
@@ -95,8 +95,8 @@
 
 		<execute macro="Page#viewPGWithWorkflow">
 			<var name="pageName" value="${pageName}" />
-			<var name="pageType" value="Site" />
 			<var name="pageStaging" value="true" />
+			<var name="pageType" value="Site" />
 			<var name="workflowStatus" value="Ready for Publication" />
 		</execute>
 
@@ -119,8 +119,8 @@
 
 		<execute macro="Page#addPGWithWorkflow">
 			<var name="pageName" value="${pageName}" />
-			<var name="pageType" value="Site" />
 			<var name="pageStaging" value="true" />
+			<var name="pageType" value="Site" />
 		</execute>
 
 		<execute macro="Page#gotoCP">
@@ -150,8 +150,8 @@
 
 		<execute macro="Page#viewPGWithWorkflow">
 			<var name="pageName" value="${pageName}" />
-			<var name="pageType" value="Site" />
 			<var name="pageStaging" value="true" />
+			<var name="pageType" value="Site" />
 			<var name="workflowStatus" value="Pending (Update)" />
 		</execute>
 
@@ -165,8 +165,8 @@
 
 		<execute macro="Page#viewPGWithWorkflow">
 			<var name="pageName" value="${pageName}" />
-			<var name="pageType" value="Site" />
 			<var name="pageStaging" value="true" />
+			<var name="pageType" value="Site" />
 			<var name="workflowStatus" value="Pending (Update)" />
 		</execute>
 	</command>

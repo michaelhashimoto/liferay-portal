@@ -7,8 +7,8 @@
 		<execute macro="SOUser#firstLoginPG" />
 
 		<execute macro="SOUserBar#addSOSite">
-			<var name="siteName" value="Open Site Name" />
 			<var name="siteDescription" value="Open Site Description" />
+			<var name="siteName" value="Open Site Name" />
 			<var name="siteType" value="Open" />
 		</execute>
 	</set-up>
@@ -18,13 +18,13 @@
 		<var name="adminName" value="Joe Bloggs" />
 		<var name="dmDocumentDescription" value="DM Folder Document Description" />
 		<var name="dmDocumentFile" value="Document_1.doc" />
-		<var name="dmDocumentTitle" value="DM Folder Document Title" />
 		<var name="dmDocumentSize" value="21.5k" />
-		<var name="dmFolderName" value="DM Folder Name" />
+		<var name="dmDocumentTitle" value="DM Folder Document Title" />
 		<var name="dmFolderDescription" value="DM Folder Description" />
+		<var name="dmFolderName" value="DM Folder Name" />
 		<var name="number" value="1" />
-		<var name="siteName" value="Open Site Name" />
 		<var name="siteDescription" value="Open Site Description" />
+		<var name="siteName" value="Open Site Name" />
 		<var name="siteType" value="Open" />
 
 		<execute macro="SONavigation#gotoSiteDocuments">
@@ -32,8 +32,8 @@
 		</execute>
 
 		<execute macro="DMFolder#addPG">
-			<var name="dmFolderName" value="${dmFolderName}" />
 			<var name="dmFolderDescription" value="${dmFolderDescription}" />
+			<var name="dmFolderName" value="${dmFolderName}" />
 			<var name="pageType" value="Open Site" />
 		</execute>
 
@@ -63,8 +63,8 @@
 			<var name="pageType" value="Open Site" />
 		</execute>
 
-		<var name="row" value="1" />
 		<var name="documentTitleRow" value="1" />
+		<var name="row" value="1" />
 
 		<execute macro="SOActivities#viewMultipleDocumentsActivityEntry">
 			<var name="documentsAction" value="Uploaded 2 new documents." />
@@ -76,8 +76,8 @@
 
 		<execute macro="SODocuments#viewPGDocumentDetailView">
 			<var name="dmDocumentDescription" value="${dmDocumentDescription}${documentTitleRow}" />
-			<var name="dmDocumentTitle" value="${dmDocumentTitle}${documentTitleRow}" />
 			<var name="dmDocumentSize" value="${dmDocumentSize}" />
+			<var name="dmDocumentTitle" value="${dmDocumentTitle}${documentTitleRow}" />
 			<var name="dmDocumentUploader" value="${adminName}" />
 			<var name="dmDocumentVersionNumber" value="1.0" />
 		</execute>
@@ -92,8 +92,8 @@
 
 		<execute macro="SODocuments#viewPGDocumentDetailView">
 			<var name="dmDocumentDescription" value="${dmDocumentDescription}${documentTitleRow}" />
-			<var name="dmDocumentTitle" value="${dmDocumentTitle}${documentTitleRow}" />
 			<var name="dmDocumentSize" value="${dmDocumentSize}" />
+			<var name="dmDocumentTitle" value="${dmDocumentTitle}${documentTitleRow}" />
 			<var name="dmDocumentUploader" value="${adminName}" />
 			<var name="dmDocumentVersionNumber" value="1.0" />
 		</execute>
@@ -108,8 +108,8 @@
 		<var name="number" value="1" />
 		<var name="password" value="test" />
 		<var name="roleName" value="Social Office" />
-		<var name="siteName" value="Open Site Name" />
 		<var name="siteDescription" value="Open Site Description" />
+		<var name="siteName" value="Open Site Name" />
 		<var name="siteType" value="Open" />
 		<var name="threadBody" value="MB Category Thread Message Body" />
 		<var name="threadSubject" value="MB Category Thread Message Subject" />
@@ -169,15 +169,15 @@
 		</execute>
 
 		<execute macro="SOActivities#viewForumsActivityEntry">
-			<var name="number" value="2" />
 			<var name="action" value="${forumsAction} ${categoryName}${number}." />
+			<var name="number" value="2" />
 			<var name="row" value="01" />
 			<var name="userName" value="${adminFirstName}" />
 		</execute>
 
 		<execute macro="SOActivities#viewForumsActivityEntry">
-			<var name="number" value="1" />
 			<var name="action" value="${forumsAction} ${categoryName}${number}." />
+			<var name="number" value="1" />
 			<var name="row" value="02" />
 			<var name="userName" value="${adminFirstName}" />
 		</execute>
@@ -193,16 +193,16 @@
 		<var name="dmDocumentDescription" value="DM Folder Document Description" />
 		<var name="dmDocumentFile" value="Document_1.doc" />
 		<var name="dmDocumentTitle" value="DM Folder Document Title" />
-		<var name="dmFolderName" value="DM Folder Name" />
 		<var name="dmFolderDescription" value="DM Folder Description" />>
-		<var name="entryTitle" value="Blogs Entry Title" />
+		<var name="dmFolderName" value="DM Folder Name" />
 		<var name="entryContent" value="Blogs Entry Content" />
+		<var name="entryTitle" value="Blogs Entry Title" />
 		<var name="eventDescription" value="Calendar Event Description" />
 		<var name="eventTitle" value="Calendar Event Title" />
 		<var name="password" value="test" />
 		<var name="roleName" value="Social Office" />
-		<var name="siteName" value="Open Site Name" />
 		<var name="siteDescription" value="Open Site Description" />
+		<var name="siteName" value="Open Site Name" />
 		<var name="siteType" value="Open" />
 		<var name="threadBody" value="MB Category Thread Message Body" />
 		<var name="threadSubject" value="MB Category Thread Message Subject" />
@@ -217,18 +217,18 @@
 			<var name="dmDocumentDescription" value="${dmDocumentDescription}" />
 			<var name="dmDocumentFile" value="${dmDocumentFile}" />
 			<var name="dmDocumentTitle" value="${dmDocumentTitle}" />
-			<var name="dmFolderName" value="${dmFolderName}" />
 			<var name="dmFolderDescription" value="${dmFolderDescription}" />>
-			<var name="entryTitle" value="${entryTitle}" />
+			<var name="dmFolderName" value="${dmFolderName}" />
 			<var name="entryContent" value="${entryContent}" />
+			<var name="entryTitle" value="${entryTitle}" />
 			<var name="eventDescription" value="${eventDescription}" />
 			<var name="eventTitle" value="${eventTitle}" />
 			<var name="siteName" value="${siteName}" />
 			<var name="threadBody" value="${threadBody}" />
 			<var name="threadSubject" value="${threadSubject}" />
+			<var name="userName" value="${adminName}" />
 			<var name="wikiPageContent" value="${wikiPageContent}" />
 			<var name="wikiPageContentEdit" value="${wikiPageContentEdit}" />
-			<var name="userName" value="${adminName}" />
 		</execute>
 
 		<execute macro="SOUserBar#dashboardPG">
@@ -236,16 +236,16 @@
 		</execute>
 
 		<execute macro="SOActivities#viewSiteContent">
+			<var name="blogsAction" value="Wrote a new blog entry." />
 			<var name="bookmarkAction" value="Added a new bookmark." />
+			<var name="calendarAction" value="Added a new calendar event." />
+			<var name="dmDocumentVersionNumber" value="1.0" />
+			<var name="documentsAction" value="Uploaded a new document in the DM Folder Name folder." />
+			<var name="forumsAction" value="Wrote a new forum post in MB Category Name." />
+			<var name="userName" value="Joe in ${siteName}" />
 			<var name="wikiAction" value="Made 2 updates to a wiki page in the Main wiki." />
 			<var name="wikiPageContent" value="${wikiPageContentEdit}" />
 			<var name="wikiPageTitle" value="FrontPage" />
-			<var name="blogsAction" value="Wrote a new blog entry." />
-			<var name="forumsAction" value="Wrote a new forum post in MB Category Name." />
-			<var name="documentsAction" value="Uploaded a new document in the DM Folder Name folder." />
-			<var name="dmDocumentVersionNumber" value="1.0" />
-			<var name="calendarAction" value="Added a new calendar event." />
-			<var name="userName" value="Joe in ${siteName}" />
 		</execute>
 	</command>
 
@@ -261,27 +261,27 @@
 		<var name="dmDocumentFile1" value="Document_1.doc" />
 		<var name="dmDocumentFile2" value="Document_2.doc" />
 		<var name="dmDocumentTitle" value="DM Folder Document Title" />
-		<var name="dmFolderName" value="DM Folder Name" />
 		<var name="dmFolderDescription" value="DM Folder Description" />
-		<var name="entryTitle" value="Blogs Entry Title" />
+		<var name="dmFolderName" value="DM Folder Name" />
 		<var name="entryContent" value="Blogs Entry Content" />
+		<var name="entryTitle" value="Blogs Entry Title" />
 		<var name="eventDescription" value="Calendar Event Description" />
 		<var name="eventTitle" value="Calendar Event Title" />
 		<var name="password" value="test" />
 		<var name="roleName" value="Social Office" />
 		<var name="roleName2" value="Site Administrator" />
 		<var name="roleType2" value="Site" />
-		<var name="siteName" value="Open Site Name" />
 		<var name="siteDescription" value="Open Site Description" />
+		<var name="siteName" value="Open Site Name" />
 		<var name="siteType" value="Open" />
 		<var name="threadBody" value="MB Category Thread Message Body" />
 		<var name="threadSubject" value="MB Category Thread Message Subject" />
 		<var name="userEmailAddress" value="socialoffice01@liferay.com" />
 		<var name="userFirstName" value="Social01" />
-		<var name="userMiddleName" value="Office01" />
-		<var name="userName" value="Social01 Office01 User01" />
 		<var name="userLastName" value="User01" />
 		<var name="userListName" value="User01, Social01" />
+		<var name="userMiddleName" value="Office01" />
+		<var name="userName" value="Social01 Office01 User01" />
 		<var name="userScreenName" value="socialoffice01" />
 		<var name="wikiPageContent" value="Wiki FrontPage Content" />
 		<var name="wikiPageContentEdit1" value="Wiki FrontPage Content Edit1" />
@@ -292,8 +292,8 @@
 			<var name="password" value="test" />
 			<var name="userEmailAddress" value="${userEmailAddress}" />
 			<var name="userFirstName" value="${userFirstName}" />
-			<var name="userMiddleName" value="${userMiddleName}" />
 			<var name="userLastName" value="${userLastName}" />
+			<var name="userMiddleName" value="${userMiddleName}" />
 			<var name="userScreenName" value="${userScreenName}" />
 		</execute>
 
@@ -313,10 +313,10 @@
 		</execute>
 
 		<execute macro="Site#assignRoleCP">
-			<var name="siteName" value="${siteName}" />
 			<var name="roleName" value="${roleName2}" />
 			<var name="roleType" value="${roleType2}" />
 			<var name="searchTerm" value="${roleName2}" />
+			<var name="siteName" value="${siteName}" />
 			<var name="userFirstName" value="${userFirstName}" />
 			<var name="userLastName" value="${userLastName}" />
 			<var name="userScreenName" value="${userScreenName}" />
@@ -332,10 +332,10 @@
 			<var name="dmDocumentDescription" value="${dmDocumentDescription}" />
 			<var name="dmDocumentFile" value="${dmDocumentFile1}" />
 			<var name="dmDocumentTitle" value="${dmDocumentTitle}" />
-			<var name="dmFolderName" value="${dmFolderName}" />
 			<var name="dmFolderDescription" value="${dmFolderDescription}" />
-			<var name="entryTitle" value="${entryTitle}" />
+			<var name="dmFolderName" value="${dmFolderName}" />
 			<var name="entryContent" value="${entryContent}" />
+			<var name="entryTitle" value="${entryTitle}" />
 			<var name="eventDescription" value="${eventDescription}" />
 			<var name="eventTitle" value="${eventTitle}" />
 			<var name="siteName" value="${siteName1}" />
@@ -348,8 +348,8 @@
 		<execute macro="SOUser#logoutPG" />
 
 		<execute macro="SOUser#loginPG">
-			<var name="userEmailAddress" value="${userEmailAddress}" />
 			<var name="password" value="test" />
+			<var name="userEmailAddress" value="${userEmailAddress}" />
 		</execute>
 
 		<execute macro="SOUserBar#myProfilePG">
@@ -370,10 +370,10 @@
 			<var name="dmDocumentDescription" value="${dmDocumentDescription}" />
 			<var name="dmDocumentFile" value="${dmDocumentFile2}" />
 			<var name="dmDocumentTitle" value="${dmDocumentTitle}" />
-			<var name="dmFolderName" value="${dmFolderName}" />
 			<var name="dmFolderDescription" value="${dmFolderDescription}" />
-			<var name="entryTitle" value="${entryTitle}" />
+			<var name="dmFolderName" value="${dmFolderName}" />
 			<var name="entryContent" value="${entryContent}" />
+			<var name="entryTitle" value="${entryTitle}" />
 			<var name="eventDescription" value="${eventDescription}" />
 			<var name="eventTitle" value="${eventTitle}" />
 			<var name="siteName" value="${siteName}" />
@@ -396,28 +396,28 @@
 			<var name="bookmarksEntryName" value="${bookmarksEntryName}" />
 			<var name="calendarAction" value="Added a new calendar event." />
 			<var name="categoryName" value="${categoryName}" />
-			<var name="documentsAction" value="Uploaded a new document in the ${dmFolderName}${number} folder." />
 			<var name="dmDocumentDescription" value="${dmDocumentDescription}" />
 			<var name="dmDocumentTitle" value="${dmDocumentTitle}" />
 			<var name="dmDocumentVersionNumber" value="1.0" />
-			<var name="entryTitle" value="${entryTitle}" />
+			<var name="documentsAction" value="Uploaded a new document in the ${dmFolderName}${number} folder." />
 			<var name="entryContent" value="${entryContent}" />
+			<var name="entryTitle" value="${entryTitle}" />
 			<var name="eventDescription" value="${eventDescription}" />
 			<var name="forumsAction" value="Wrote a new forum post in ${categoryName}${number}." />
 			<var name="siteName" value="${siteName}" />
 			<var name="threadBody" value="${threadBody}" />
 			<var name="threadSubject" value="${threadSubject}" />
+			<var name="userName" value="${userFirstName} in ${siteName}" />
 			<var name="wikiAction" value="Updated a wiki page in the Main wiki." />
 			<var name="wikiPageContent" value="${wikiPageContentEdit2}" />
 			<var name="wikiPageTitle" value="FrontPage" />
-			<var name="userName" value="${userFirstName} in ${siteName}" />
 		</execute>
 
 		<execute macro="SOUser#logoutPG" />
 
 		<execute macro="SOUser#loginPG">
-			<var name="userEmailAddress" value="${adminEmailAddress}" />
 			<var name="password" value="test" />
+			<var name="userEmailAddress" value="${adminEmailAddress}" />
 		</execute>
 
 		<execute macro="SOUserBar#myProfilePG">
@@ -433,21 +433,21 @@
 			<var name="bookmarksEntryName" value="${bookmarksEntryName}" />
 			<var name="calendarAction" value="Added a new calendar event." />
 			<var name="categoryName" value="${categoryName}" />
-			<var name="documentsAction" value="Uploaded a new document in the ${dmFolderName}${number} folder." />
 			<var name="dmDocumentDescription" value="${dmDocumentDescription}" />
 			<var name="dmDocumentTitle" value="${dmDocumentTitle}" />
 			<var name="dmDocumentVersionNumber" value="1.0" />
-			<var name="entryTitle" value="${entryTitle}" />
+			<var name="documentsAction" value="Uploaded a new document in the ${dmFolderName}${number} folder." />
 			<var name="entryContent" value="${entryContent}" />
+			<var name="entryTitle" value="${entryTitle}" />
 			<var name="eventDescription" value="${eventDescription}" />
 			<var name="forumsAction" value="Wrote a new forum post in ${categoryName}${number}." />
 			<var name="siteName" value="${siteName}" />
 			<var name="threadBody" value="${threadBody}" />
 			<var name="threadSubject" value="${threadSubject}" />
+			<var name="userName" value="Joe in ${siteName}" />
 			<var name="wikiAction" value="Made 2 updates to a wiki page in the Main wiki." />
 			<var name="wikiPageContent" value="${wikiPageContentEdit2}" />
 			<var name="wikiPageTitle" value="FrontPage" />
-			<var name="userName" value="Joe in ${siteName}" />
 		</execute>
 	</command>
 
@@ -461,16 +461,16 @@
 		<var name="dmDocumentDescription" value="DM Folder Document Description" />
 		<var name="dmDocumentFile" value="Document_1.doc" />
 		<var name="dmDocumentTitle" value="DM Folder Document Title" />
-		<var name="dmFolderName" value="DM Folder Name" />
 		<var name="dmFolderDescription" value="DM Folder Description" />>
-		<var name="entryTitle" value="Blogs Entry Title" />
+		<var name="dmFolderName" value="DM Folder Name" />
 		<var name="entryContent" value="Blogs Entry Content" />
+		<var name="entryTitle" value="Blogs Entry Title" />
 		<var name="eventDescription" value="Calendar Event Description" />
 		<var name="eventTitle" value="Calendar Event Title" />
 		<var name="password" value="test" />
 		<var name="roleName" value="Social Office" />
-		<var name="siteName" value="Open Site Name" />
 		<var name="siteDescription" value="Open Site Description" />
+		<var name="siteName" value="Open Site Name" />
 		<var name="siteType" value="Open" />
 		<var name="threadBody" value="MB Category Thread Message Body" />
 		<var name="threadSubject" value="MB Category Thread Message Subject" />
@@ -485,18 +485,18 @@
 			<var name="dmDocumentDescription" value="${dmDocumentDescription}" />
 			<var name="dmDocumentFile" value="${dmDocumentFile}" />
 			<var name="dmDocumentTitle" value="${dmDocumentTitle}" />
-			<var name="dmFolderName" value="${dmFolderName}" />
 			<var name="dmFolderDescription" value="${dmFolderDescription}" />>
-			<var name="entryTitle" value="${entryTitle}" />
+			<var name="dmFolderName" value="${dmFolderName}" />
 			<var name="entryContent" value="${entryContent}" />
+			<var name="entryTitle" value="${entryTitle}" />
 			<var name="eventDescription" value="${eventDescription}" />
 			<var name="eventTitle" value="${eventTitle}" />
 			<var name="siteName" value="${siteName}" />
 			<var name="threadBody" value="${threadBody}" />
 			<var name="threadSubject" value="${threadSubject}" />
+			<var name="userName" value="${adminName}" />
 			<var name="wikiPageContent" value="${wikiPageContent}" />
 			<var name="wikiPageContentEdit" value="${wikiPageContentEdit}" />
-			<var name="userName" value="${adminName}" />
 		</execute>
 
 		<execute macro="Page#openURL">
@@ -504,16 +504,16 @@
 		</execute>
 
 		<execute macro="SOActivities#viewSiteContent">
+			<var name="blogsAction" value="Wrote a new blog entry." />
 			<var name="bookmarkAction" value="Added a new bookmark." />
+			<var name="calendarAction" value="Added a new calendar event." />
+			<var name="dmDocumentVersionNumber" value="1.0" />
+			<var name="documentsAction" value="Uploaded a new document in the DM Folder Name folder." />
+			<var name="forumsAction" value="Wrote a new forum post in MB Category Name." />
+			<var name="userName" value="Joe" />
 			<var name="wikiAction" value="Made 2 updates to a wiki page in the Main wiki." />
 			<var name="wikiPageContent" value="${wikiPageContentEdit}" />
 			<var name="wikiPageTitle" value="FrontPage" />
-			<var name="blogsAction" value="Wrote a new blog entry." />
-			<var name="forumsAction" value="Wrote a new forum post in MB Category Name." />
-			<var name="documentsAction" value="Uploaded a new document in the DM Folder Name folder." />
-			<var name="dmDocumentVersionNumber" value="1.0" />
-			<var name="calendarAction" value="Added a new calendar event." />
-			<var name="userName" value="Joe" />
 		</execute>
 	</command>
 

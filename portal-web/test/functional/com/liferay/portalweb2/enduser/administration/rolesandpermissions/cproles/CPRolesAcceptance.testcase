@@ -129,8 +129,8 @@
 
 		<execute macro="Role#definePermissionBlogsEntryCP">
 			<var name="roleName" value="${roleName}" />
-			<var name="roleType" value="${roleType}" />
 			<var name="rolePermission" value="${rolePermission}" />
+			<var name="roleType" value="${roleType}" />
 		</execute>
 
 		<execute macro="User#logoutPG" />
@@ -159,8 +159,8 @@
 
 		<execute macro="Role#removePermissionBlogsEntryCP">
 			<var name="roleName" value="${roleName}" />
-			<var name="roleType" value="${roleType}" />
 			<var name="rolePermission" value="${rolePermission}" />
+			<var name="roleType" value="${roleType}" />
 		</execute>
 
 		<execute macro="User#logoutPG" />
@@ -421,8 +421,8 @@
 
 		<execute macro="Role#definePermissionBlogsEntryCP">
 			<var name="roleName" value="${roleName}" />
-			<var name="roleType" value="${roleType}" />
 			<var name="rolePermission" value="${rolePermission}" />
+			<var name="roleType" value="${roleType}" />
 		</execute>
 
 		<execute macro="User#logoutPG" />
@@ -451,8 +451,8 @@
 
 		<execute macro="Role#removePermissionBlogsEntryCP">
 			<var name="roleName" value="${roleName}" />
-			<var name="roleType" value="${roleType}" />
 			<var name="rolePermission" value="${rolePermission}" />
+			<var name="roleType" value="${roleType}" />
 		</execute>
 
 		<execute macro="User#logoutPG" />
@@ -665,8 +665,8 @@
 
 		<execute macro="Role#definePermissionBlogsEntryCP">
 			<var name="roleName" value="${roleName}" />
-			<var name="roleType" value="${roleType}" />
 			<var name="rolePermission" value="${rolePermission}" />
+			<var name="roleType" value="${roleType}" />
 		</execute>
 
 		<execute macro="User#logoutPG" />
@@ -695,8 +695,8 @@
 
 		<execute macro="Role#removePermissionBlogsEntryCP">
 			<var name="roleName" value="${roleName}" />
-			<var name="roleType" value="${roleType}" />
 			<var name="rolePermission" value="${rolePermission}" />
+			<var name="roleType" value="${roleType}" />
 		</execute>
 
 		<execute macro="Page#gotoPG">
@@ -995,8 +995,8 @@
 
 		<execute macro="Role#definePermissionBlogsEntryCP">
 			<var name="roleName" value="${roleName}" />
-			<var name="roleType" value="${roleType}" />
 			<var name="rolePermission" value="${rolePermission}" />
+			<var name="roleType" value="${roleType}" />
 		</execute>
 
 		<execute macro="User#logoutPG" />
@@ -1025,8 +1025,8 @@
 
 		<execute macro="Role#removePermissionBlogsEntryCP">
 			<var name="roleName" value="${roleName}" />
-			<var name="roleType" value="${roleType}" />
 			<var name="rolePermission" value="${rolePermission}" />
+			<var name="roleType" value="${roleType}" />
 		</execute>
 
 		<execute macro="Page#gotoPG">

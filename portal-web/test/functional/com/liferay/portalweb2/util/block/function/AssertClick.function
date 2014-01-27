@@ -55,18 +55,18 @@
 		<execute selenium="clickAtAndWait" />
 	</command>
 
+	<command name="assertValueClickAtAndWaitCKEditor">
+		<execute selenium="waitForVisible" argument1="//a[@class='cke_button_cut cke_disabled']" />
+
+		<execute function="AssertClick#assertValueClickAtAndWait" />
+	</command>
+
 	<command name="assertValueClickAtAndWaitClickAtAndWait">
 		<execute function="AssertTextEquals#assertValue" />
 
 		<execute selenium="clickAtAndWait" />
 
 		<execute selenium="clickAtAndWait" />
-	</command>
-
-	<command name="assertValueClickAtAndWaitCKEditor">
-		<execute selenium="waitForVisible" argument1="//a[@class='cke_button_cut cke_disabled']" />
-
-		<execute function="AssertClick#assertValueClickAtAndWait" />
 	</command>
 
 	<command name="assertValueClickAtPause">
@@ -77,16 +77,16 @@
 		<execute selenium="pause" argument1="1000" />
 	</command>
 
-	<command name="pauseAssertTextClickAt">
-		<execute selenium="pause" argument1="1000" />
-
-		<execute function="AssertClick#assertTextClickAt" />
-	</command>
-
 	<command name="pauseAssertPartialTextClickAt">
 		<execute selenium="pause" argument1="1000" />
 
 		<execute function="AssertClick#assertPartialTextClickAt" />
+	</command>
+
+	<command name="pauseAssertTextClickAt">
+		<execute selenium="pause" argument1="1000" />
+
+		<execute function="AssertClick#assertTextClickAt" />
 	</command>
 
 	<command name="pauseAssertTextClickAtAndWait">

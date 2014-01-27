@@ -200,14 +200,6 @@
 		<execute action="CPCalendarEvents#assertElementNotPresent" locator-key1="EVENT_TABLE_ACTIONS" value1="Actions" />
 	</command>
 
-	<command name="viewPG">
-		<var name="key_eventTitle" value="${eventTitle}" />
-
-		<execute action="PGCalendar#assertClick" locator-key1="EVENT_TABLE_TITLE" value1="${eventTitle}" />
-
-		<execute macro="Event#viewDetailsPG" />
-	</command>
-
 	<command name="viewDetailsPG">
 		<if>
 			<isset var="number" />
@@ -241,5 +233,13 @@
 		<execute action="PGCalendarEventDetails#assertTextEquals" locator-key1="NO_COMMENTS_YET" value1="No comments yet. Be the first. Subscribe to Comments" />
 		<execute action="PGCalendarEventDetails#assertTextEquals" locator-key1="BE_THE_FIRST_LINK" value1="Be the first." />
 		<execute action="PGCalendarEventDetails#assertTextEquals" locator-key1="SUBSCRIBE_TO_COMMENTS_LINK" value1="Subscribe to Comments" />
+	</command>
+
+	<command name="viewPG">
+		<var name="key_eventTitle" value="${eventTitle}" />
+
+		<execute action="PGCalendar#assertClick" locator-key1="EVENT_TABLE_TITLE" value1="${eventTitle}" />
+
+		<execute macro="Event#viewDetailsPG" />
 	</command>
 </definition>

@@ -15,8 +15,8 @@
 		</execute>
 
 		<execute macro="DMFolder#addPG">
-			<var name="dmFolderName" value="${dmFolderName}" />
 			<var name="dmFolderDescription" value="${dmFolderDescription}" />
+			<var name="dmFolderName" value="${dmFolderName}" />
 			<var name="pageType" value="Open Site" />
 		</execute>
 

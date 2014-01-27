@@ -3,26 +3,26 @@
 	<property name="portlet.plugins.includes" value="chat-portlet,contacts-portlet,events-display-portlet,microblogs-portlet,private-messaging-portlet,so-announcements-portlet,so-configurations-portlet,so-portlet,tasks-portlet,wysiwyg-portlet" />
 	<property name="theme.plugins.includes" value="so-theme" />
 
-	<var name="adminName" value="Joe Bloggs" />
 	<var name="adminEmailAddress" value="test@liferay.com" />
+	<var name="adminName" value="Joe Bloggs" />
 	<var name="key_siteName" value="${siteName}" />
 	<var name="pageName" value="Members" />
 	<var name="password" value="test" />
-	<var name="siteName" value="Open Site Name" />
 	<var name="siteDescription" value="Open Site Description" />
+	<var name="siteName" value="Open Site Name" />
 	<var name="siteType" value="Open" />
 	<var name="userEmailAddress" value="socialoffice01@liferay.com" />
 	<var name="userEmailAddress2" value="socialoffice02@liferay.com" />
 	<var name="userFirstName" value="Social01" />
 	<var name="userFirstName2" value="Social02" />
-	<var name="userMiddleName" value="Office01" />
-	<var name="userMiddleName2" value="Office02" />
-	<var name="userName" value="Social01 Office01 User01" />
-	<var name="userName2" value="Social02 Office02 User02" />
 	<var name="userLastName" value="User01" />
 	<var name="userLastName2" value="User02" />
 	<var name="userListName" value="User01, Social01" />
 	<var name="userListName2" value="User02, Social02" />
+	<var name="userMiddleName" value="Office01" />
+	<var name="userMiddleName2" value="Office02" />
+	<var name="userName" value="Social01 Office01 User01" />
+	<var name="userName2" value="Social02 Office02 User02" />
 	<var name="userScreenName" value="socialoffice01" />
 	<var name="userScreenName2" value="socialoffice02" />
 
@@ -30,8 +30,8 @@
 		<execute macro="SOUser#firstLoginPG" />
 
 		<execute macro="SOUserBar#addSOSite">
-			<var name="siteName" value="${siteName}" />
 			<var name="siteDescription" value="${siteDescription}" />
+			<var name="siteName" value="${siteName}" />
 			<var name="siteType" value="${siteType}" />
 		</execute>
 
@@ -40,8 +40,8 @@
 			<var name="password" value="test" />
 			<var name="userEmailAddress" value="${userEmailAddress}" />
 			<var name="userFirstName" value="${userFirstName}" />
-			<var name="userMiddleName" value="${userMiddleName}" />
 			<var name="userLastName" value="${userLastName}" />
+			<var name="userMiddleName" value="${userMiddleName}" />
 			<var name="userScreenName" value="${userScreenName}" />
 		</execute>
 	</set-up>
@@ -55,16 +55,16 @@
 		<execute macro="SOMembers#inviteMember">
 			<var name="userEmailAddress" value="${userEmailAddress}" />
 			<var name="userFirstName" value="${userFirstName}" />
+			<var name="userLastName" value="${userLastName}" />
 			<var name="userMiddleName" value="${userMiddleName}" />
 			<var name="userName" value="${userName}" />
-			<var name="userLastName" value="${userLastName}" />
 		</execute>
 
 		<execute macro="SOUser#logoutPG" />
 
 		<execute macro="SOUser#loginPG">
-			<var name="userEmailAddress" value="${userEmailAddress}" />
 			<var name="password" value="test" />
+			<var name="userEmailAddress" value="${userEmailAddress}" />
 		</execute>
 
 		<execute macro="SOMembers#confirmMemberInvite">
@@ -76,8 +76,8 @@
 		<execute macro="SOUser#logoutPG" />
 
 		<execute macro="SOUser#loginPG">
-			<var name="userEmailAddress" value="${adminEmailAddress}" />
 			<var name="password" value="test" />
+			<var name="userEmailAddress" value="${adminEmailAddress}" />
 		</execute>
 
 		<execute macro="Page#gotoPG">
@@ -97,16 +97,16 @@
 		<execute macro="SOMembers#inviteMember">
 			<var name="userEmailAddress" value="${userEmailAddress}" />
 			<var name="userFirstName" value="${userFirstName}" />
+			<var name="userLastName" value="${userLastName}" />
 			<var name="userMiddleName" value="${userMiddleName}" />
 			<var name="userName" value="${userName}" />
-			<var name="userLastName" value="${userLastName}" />
 		</execute>
 
 		<execute macro="SOUser#logoutPG" />
 
 		<execute macro="SOUser#loginPG">
-			<var name="userEmailAddress" value="${userEmailAddress}" />
 			<var name="password" value="test" />
+			<var name="userEmailAddress" value="${userEmailAddress}" />
 		</execute>
 
 		<execute macro="SOMembers#ignoreMemberInvite">
@@ -118,8 +118,8 @@
 		<execute macro="SOUser#logoutPG" />
 
 		<execute macro="SOUser#loginPG">
-			<var name="userEmailAddress" value="${adminEmailAddress}" />
 			<var name="password" value="test" />
+			<var name="userEmailAddress" value="${adminEmailAddress}" />
 		</execute>
 
 		<execute macro="Page#gotoPG">
@@ -141,8 +141,8 @@
 		<execute macro="SOUser#logoutPG" />
 
 		<execute macro="SOUser#loginPG">
-			<var name="userEmailAddress" value="${userEmailAddress}" />
 			<var name="password" value="test" />
+			<var name="userEmailAddress" value="${userEmailAddress}" />
 		</execute>
 
 		<execute macro="SOContactsCenter#confirmRequestToConnect">
@@ -153,8 +153,8 @@
 		<execute macro="SOUser#logoutPG" />
 
 		<execute macro="SOUser#loginPG">
-			<var name="userEmailAddress" value="${adminEmailAddress}" />
 			<var name="password" value="test" />
+			<var name="userEmailAddress" value="${adminEmailAddress}" />
 		</execute>
 
 		<execute macro="Page#gotoPG">
@@ -165,16 +165,16 @@
 		<execute macro="SOMembers#inviteMember">
 			<var name="userEmailAddress" value="${userEmailAddress}" />
 			<var name="userFirstName" value="${userFirstName}" />
+			<var name="userLastName" value="${userLastName}" />
 			<var name="userMiddleName" value="${userMiddleName}" />
 			<var name="userName" value="${userName}" />
-			<var name="userLastName" value="${userLastName}" />
 		</execute>
 
 		<execute macro="SOUser#logoutPG" />
 
 		<execute macro="SOUser#loginPG">
-			<var name="userEmailAddress" value="${userEmailAddress}" />
 			<var name="password" value="test" />
+			<var name="userEmailAddress" value="${userEmailAddress}" />
 		</execute>
 
 		<execute macro="SOMembers#confirmMemberInvite">
@@ -184,8 +184,8 @@
 		<execute macro="SOUser#logoutPG" />
 
 		<execute macro="SOUser#loginPG">
-			<var name="userEmailAddress" value="${adminEmailAddress}" />
 			<var name="password" value="test" />
+			<var name="userEmailAddress" value="${adminEmailAddress}" />
 		</execute>
 
 		<execute macro="Page#gotoPG">
@@ -209,8 +209,8 @@
 			<var name="password" value="test" />
 			<var name="userEmailAddress" value="${userEmailAddress2}" />
 			<var name="userFirstName" value="${userFirstName2}" />
-			<var name="userMiddleName" value="${userMiddleName2}" />
 			<var name="userLastName" value="${userLastName2}" />
+			<var name="userMiddleName" value="${userMiddleName2}" />
 			<var name="userScreenName" value="${userScreenName2}" />
 		</execute>
 
@@ -223,9 +223,9 @@
 			<var name="siteRoleInvite" value="Site Owner" />
 			<var name="userEmailAddress" value="${userEmailAddress}" />
 			<var name="userFirstName" value="${userFirstName}" />
+			<var name="userLastName" value="${userLastName}" />
 			<var name="userMiddleName" value="${userMiddleName}" />
 			<var name="userName" value="${userName}" />
-			<var name="userLastName" value="${userLastName}" />
 		</execute>
 
 		<execute macro="Page#gotoPG">
@@ -237,16 +237,16 @@
 			<var name="siteRoleInvite" value="Site Administrator" />
 			<var name="userEmailAddress" value="${userEmailAddress2}" />
 			<var name="userFirstName" value="${userFirstName2}" />
+			<var name="userLastName" value="${userLastName2}" />
 			<var name="userMiddleName" value="${userMiddleName2}" />
 			<var name="userName" value="${userName2}" />
-			<var name="userLastName" value="${userLastName2}" />
 		</execute>
 
 		<execute macro="SOUser#logoutPG" />
 
 		<execute macro="SOUser#loginPG">
-			<var name="userEmailAddress" value="${userEmailAddress}" />
 			<var name="password" value="test" />
+			<var name="userEmailAddress" value="${userEmailAddress}" />
 		</execute>
 
 		<execute macro="SOMembers#confirmMemberInvite">
@@ -257,17 +257,17 @@
 			<var name="siteRoleInvite" value="Site Owner" />
 			<var name="userEmailAddress" value="${userEmailAddress}" />
 			<var name="userFirstName" value="${userFirstName}" />
+			<var name="userLastName" value="${userLastName}" />
 			<var name="userMiddleName" value="${userMiddleName}" />
 			<var name="userName" value="${userName}" />
-			<var name="userLastName" value="${userLastName}" />
 			<var name="userScreenName" value="${userScreenName}" />
 		</execute>
 
 		<execute macro="SOUser#logoutPG" />
 
 		<execute macro="SOUser#loginPG">
-			<var name="userEmailAddress" value="${userEmailAddress2}" />
 			<var name="password" value="test" />
+			<var name="userEmailAddress" value="${userEmailAddress2}" />
 		</execute>
 
 		<execute macro="SOMembers#confirmMemberInvite">
@@ -278,9 +278,9 @@
 			<var name="siteRoleInvite" value="Site Administrator" />
 			<var name="userEmailAddress" value="${userEmailAddress2}" />
 			<var name="userFirstName" value="${userFirstName2}" />
+			<var name="userLastName" value="${userLastName2}" />
 			<var name="userMiddleName" value="${userMiddleName2}" />
 			<var name="userName" value="${userName2}" />
-			<var name="userLastName" value="${userLastName2}" />
 			<var name="userScreenName" value="${userScreenName2}" />
 		</execute>
 	</command>

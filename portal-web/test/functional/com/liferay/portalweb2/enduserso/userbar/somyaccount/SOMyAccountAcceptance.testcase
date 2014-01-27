@@ -20,8 +20,8 @@
 		<execute macro="User#addCP">
 			<var name="userEmailAddress" value="${userEmailAddress}" />
 			<var name="userFirstName" value="${userFirstName}" />
-			<var name="userMiddleName" value="${userMiddleName}" />
 			<var name="userLastName" value="${userLastName}" />
+			<var name="userMiddleName" value="${userMiddleName}" />
 			<var name="userScreenName" value="${userScreenName}" />
 		</execute>
 
@@ -42,10 +42,14 @@
 		<execute macro="SOUser#logoutPG" />
 
 		<execute macro="SOUser#loginPG">
-			<var name="userEmailAddress" value="${userEmailAddress}" />
 			<var name="password" value="test" />
+			<var name="userEmailAddress" value="${userEmailAddress}" />
 		</execute>
 	</set-up>
+
+	<tear-down>
+		<execute macro="SOUser#tearDownCP" />
+	</tear-down>
 
 	<command name="AddAdditionalEmailAddress" priority="5">
 		<var name="userAdditionalEmailAddress" value="socialoffice02@liferay.com" />
@@ -94,22 +98,6 @@
 		</execute>
 	</command>
 
-	<command name="AddIntroduction" priority="5">
-		<var name="userIntroduction" value="Introduction Content" />
-
-		<execute macro="SOProfile#addCommentsMyAccount">
-			<var name="userIntroduction" value="${userIntroduction}" />
-		</execute>
-
-		<execute macro="SOUserBar#gotoProfile">
-			<var name="userName" value="${userName}" />
-		</execute>
-
-		<execute macro="SOProfile#viewIntroductionProfile">
-			<var name="userIntroduction" value="${userIntroduction}" />
-		</execute>
-	</command>
-
 	<command name="AddInstantMessenger" priority="5">
 		<var name="userInstantMessengerAIM" value="socialofficesn" />
 		<var name="userInstantMessengerICQ" value="socialofficesn" />
@@ -141,14 +129,30 @@
 		</execute>
 	</command>
 
+	<command name="AddIntroduction" priority="5">
+		<var name="userIntroduction" value="Introduction Content" />
+
+		<execute macro="SOProfile#addCommentsMyAccount">
+			<var name="userIntroduction" value="${userIntroduction}" />
+		</execute>
+
+		<execute macro="SOUserBar#gotoProfile">
+			<var name="userName" value="${userName}" />
+		</execute>
+
+		<execute macro="SOProfile#viewIntroductionProfile">
+			<var name="userIntroduction" value="${userIntroduction}" />
+		</execute>
+	</command>
+
 	<command name="AddPhoneNumbers" priority="5">
-		<var name="userPhoneNumberNumber" value="123-123-1234" />
 		<var name="userPhoneNumberExtension" value="123" />
+		<var name="userPhoneNumberNumber" value="123-123-1234" />
 		<var name="userPhoneNumberType" value="Business" />
 
 		<execute macro="SOProfile#addPhoneNumbersMyAccount">
-			<var name="userPhoneNumberNumber" value="${userPhoneNumberNumber}" />
 			<var name="userPhoneNumberExtension" value="${userPhoneNumberExtension}" />
+			<var name="userPhoneNumberNumber" value="${userPhoneNumberNumber}" />
 			<var name="userPhoneNumberType" value="${userPhoneNumberType}" />
 		</execute>
 
@@ -157,19 +161,19 @@
 		</execute>
 
 		<execute macro="SOProfile#viewPhoneNumbersProfile">
-			<var name="userPhoneNumberNumber" value="${userPhoneNumberNumber}" />
 			<var name="userPhoneNumberExtension" value="${userPhoneNumberExtension}" />
+			<var name="userPhoneNumberNumber" value="${userPhoneNumberNumber}" />
 			<var name="userPhoneNumberType" value="${userPhoneNumberType}" />
 		</execute>
 	</command>
 
 	<command name="AddProjects" priority="5">
-		<var name="userProjectTitle" value="Expertise Title" />
 		<var name="userProjectDescription" value="Expertise Description" />
+		<var name="userProjectTitle" value="Expertise Title" />
 
 		<execute macro="SOProfile#addProjectsMyAccount">
-			<var name="userProjectTitle" value="${userProjectTitle}" />
 			<var name="userProjectDescription" value="${userProjectDescription}" />
+			<var name="userProjectTitle" value="${userProjectTitle}" />
 		</execute>
 
 		<execute macro="SOUserBar#gotoProfile">
@@ -177,8 +181,8 @@
 		</execute>
 
 		<execute macro="SOProfile#viewProjectsProfile">
-			<var name="userProjectTitle" value="${userProjectTitle}" />
 			<var name="userProjectDescription" value="${userProjectDescription}" />
+			<var name="userProjectTitle" value="${userProjectTitle}" />
 		</execute>
 	</command>
 
@@ -237,12 +241,12 @@
 	</command>
 
 	<command name="AddWebsite" priority="5">
-		<var name="userWebsiteURL" value="http://www.socialoffice01.com" />
 		<var name="userWebsiteType" value="Personal" />
+		<var name="userWebsiteURL" value="http://www.socialoffice01.com" />
 
 		<execute macro="SOProfile#addWebsiteMyAccount">
-			<var name="userWebsiteURL" value="${userWebsiteURL}" />
 			<var name="userWebsiteType" value="${userWebsiteType}" />
+			<var name="userWebsiteURL" value="${userWebsiteURL}" />
 		</execute>
 
 		<execute macro="SOUserBar#gotoProfile">
@@ -250,12 +254,8 @@
 		</execute>
 
 		<execute macro="SOProfile#viewWebsiteProfile">
-			<var name="userWebsiteURL" value="${userWebsiteURL}" />
 			<var name="userWebsiteType" value="${userWebsiteType}" />
+			<var name="userWebsiteURL" value="${userWebsiteURL}" />
 		</execute>
 	</command>
-
-	<tear-down>
-		<execute macro="SOUser#tearDownCP" />
-	</tear-down>
 </definition>

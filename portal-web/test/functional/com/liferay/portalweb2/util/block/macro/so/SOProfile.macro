@@ -136,27 +136,14 @@
 		<execute macro="SOUser#logoutPG" />
 
 		<execute macro="SOUser#loginPG">
-			<var name="userEmailAddress" value="${userEmailAddress}" />
 			<var name="password" value="test" />
+			<var name="userEmailAddress" value="${userEmailAddress}" />
 		</execute>
 
 		<execute macro="SOContactsCenter#confirmRequestToConnect">
 			<var name="senderName" value="${adminName}" />
 			<var name="userName" value="${userName}" />
 		</execute>
-	</command>
-
-	<command name="addIntroductionProfile">
-		<execute action="SOUserBar#click" locator-key1="USER_NAME" />
-		<execute action="SOUserBar#click" locator-key1="USER_MENU_MY_PROFILE" value1="My Profile" />
-
-		<execute action="SOProfile#click" locator-key1="ADD_INTRODUCTION" />
-
-		<execute action="SOProfileAddIntroduction#type" locator-key1="INTRODUCTION_FIELD" value1="${userIntroduction}" />
-		<execute action="SOProfileAddIntroduction#click" locator-key1="SAVE_BUTTON" />
-
-		<execute action="SOProfile#assertTextEquals" locator-key1="PROFILE_INFO_INTRODUCTION_TITLE" value1="Introduction:" />
-		<execute action="SOProfile#assertTextEquals" locator-key1="PROFILE_INFO_INTRODUCTION_CONTENT" value1="${userIntroduction}"  />
 	</command>
 
 	<command name="addInstantMessengerMyAccount">
@@ -268,6 +255,19 @@
 		<execute action="SOProfile#assertTextEquals" locator-key1="PROFILE_INFO_INSTANT_MESSENGER_MSN_CONTENT" value1="msn ${userInstantMessengerWindowsLiveMessenger}" />
 		<execute action="SOProfile#assertTextEquals" locator-key1="PROFILE_INFO_INSTANT_MESSENGER_SKYPE_CONTENT" value1="Skype ${userInstantMessengerSkype}" />
 		<execute action="SOProfile#assertTextEquals" locator-key1="PROFILE_INFO_INSTANT_MESSENGER_YM_CONTENT" value1="ym ${userInstantMessengerYM}" />
+	</command>
+
+	<command name="addIntroductionProfile">
+		<execute action="SOUserBar#click" locator-key1="USER_NAME" />
+		<execute action="SOUserBar#click" locator-key1="USER_MENU_MY_PROFILE" value1="My Profile" />
+
+		<execute action="SOProfile#click" locator-key1="ADD_INTRODUCTION" />
+
+		<execute action="SOProfileAddIntroduction#type" locator-key1="INTRODUCTION_FIELD" value1="${userIntroduction}" />
+		<execute action="SOProfileAddIntroduction#click" locator-key1="SAVE_BUTTON" />
+
+		<execute action="SOProfile#assertTextEquals" locator-key1="PROFILE_INFO_INTRODUCTION_TITLE" value1="Introduction:" />
+		<execute action="SOProfile#assertTextEquals" locator-key1="PROFILE_INFO_INTRODUCTION_CONTENT" value1="${userIntroduction}"  />
 	</command>
 
 	<command name="addPhoneNumbersMyAccount">
@@ -587,6 +587,21 @@
 		<execute action="SOProfile#assertTextEquals" locator-key1="PROFILE_INFO_INTRODUCTION_CONTENT" value1="${userIntroduction}"  />
 	</command>
 
+	<command name="viewNoConnection">
+		<execute action="SOContactscenter#assertClick" locator-key1="CONTACTS_LINK_CONNECTIONS" value1="You have ${filterTypeCount} connections." />
+		<execute action="SOContactscenter#assertSelectedLabel" locator-key1="CONTACTS_LIST_FILTER" value1="Connections" />
+		<execute action="SOContactscenter#assertTextNotPresent" locator-key1="CONTACTS_LIST_EMAIL" value1="${adminEmailAddress}" />
+		<execute action="SOContactscenter#select" locator-key1="CONTACTS_LIST_FILTER" value1="All" />
+		<execute action="SOContactscenter#type" locator-key1="CONTACTS_LIST_SEARCH" value1="${adminName}" />
+		<execute action="SOContactscenter#assertClick" locator-key1="CONTACTS_LIST_NAME" value1="${adminListName}" />
+		<execute action="SOContactscenter#assertClick" locator-key1="USER_DETAILS_NAME" value1="${adminName}" />
+
+		<execute action="SOProfile#assertTextEquals" locator-key1="USER_NAME" value1="${adminName}" />
+		<execute action="SOProfile#assertTextEquals" locator-key1="USER_EMAIL" value1="${adminEmailAddress}" />
+		<execute action="SOProfile#assertElementPresent" locator-key1="CONNECT_BUTTON" />
+		<execute action="SOProfile#assertElementNotPresent" locator-key1="DISCONNECT_BUTTON" />
+	</command>
+
 	<command name="viewPhoneNumbersProfile">
 		<execute action="SOProfile#assertTextEquals" locator-key1="PROFILE_INFO_PHONE_NUMBERS_TITLE" value1="Phones:" />
 
@@ -611,21 +626,6 @@
 				<execute action="SOProfile#assertTextEquals" locator-key1="PROFILE_INFO_PROJECTS_DESCRIPTION" value1="${userProjectDescription}" />
 			</then>
 		</if>
-	</command>
-
-	<command name="viewNoConnection">
-		<execute action="SOContactscenter#assertClick" locator-key1="CONTACTS_LINK_CONNECTIONS" value1="You have ${filterTypeCount} connections." />
-		<execute action="SOContactscenter#assertSelectedLabel" locator-key1="CONTACTS_LIST_FILTER" value1="Connections" />
-		<execute action="SOContactscenter#assertTextNotPresent" locator-key1="CONTACTS_LIST_EMAIL" value1="${adminEmailAddress}" />
-		<execute action="SOContactscenter#select" locator-key1="CONTACTS_LIST_FILTER" value1="All" />
-		<execute action="SOContactscenter#type" locator-key1="CONTACTS_LIST_SEARCH" value1="${adminName}" />
-		<execute action="SOContactscenter#assertClick" locator-key1="CONTACTS_LIST_NAME" value1="${adminListName}" />
-		<execute action="SOContactscenter#assertClick" locator-key1="USER_DETAILS_NAME" value1="${adminName}" />
-
-		<execute action="SOProfile#assertTextEquals" locator-key1="USER_NAME" value1="${adminName}" />
-		<execute action="SOProfile#assertTextEquals" locator-key1="USER_EMAIL" value1="${adminEmailAddress}" />
-		<execute action="SOProfile#assertElementPresent" locator-key1="CONNECT_BUTTON" />
-		<execute action="SOProfile#assertElementNotPresent" locator-key1="DISCONNECT_BUTTON" />
 	</command>
 
 	<command name="viewSMSProfile">

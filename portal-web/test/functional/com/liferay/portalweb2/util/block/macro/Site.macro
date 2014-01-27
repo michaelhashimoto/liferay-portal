@@ -2,6 +2,18 @@
 	<var name="siteMember" value="User" />
 	<var name="siteType" value="Open" />
 
+	<command name="addBlankCP">
+		<execute macro="Site#addCP">
+			<var name="siteType" value="Blank" />
+		</execute>
+	</command>
+
+	<command name="addCommunityCP">
+		<execute macro="Site#addCP">
+			<var name="siteType" value="Community" />
+		</execute>
+	</command>
+
 	<command name="addCP">
 		<execute action="CPSites#assertClick" locator-key1="ADD" value1="Add" />
 
@@ -46,18 +58,6 @@
 
 		<execute action="CPSitesEdit#assertTextEquals" locator-key1="SUCCESS_MESSAGE" value1="Your request completed successfully." />
 		<execute action="CPSitesEdit#assertTextEquals" locator-key1="HEADER" value1="${siteName}" />
-	</command>
-
-	<command name="addBlankCP">
-		<execute macro="Site#addCP">
-			<var name="siteType" value="Blank" />
-		</execute>
-	</command>
-
-	<command name="addCommunityCP">
-		<execute macro="Site#addCP">
-			<var name="siteType" value="Community" />
-		</execute>
 	</command>
 
 	<command name="addIntranetCP">

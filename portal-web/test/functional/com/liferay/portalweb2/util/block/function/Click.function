@@ -5,18 +5,18 @@
 		<execute selenium="clickAt" />
 	</command>
 
+	<command name="clickAtAndWait">
+		<execute selenium="waitForVisible" />
+
+		<execute selenium="clickAtAndWait" />
+	</command>
+
 	<command name="clickAtPause">
 		<execute selenium="waitForVisible" />
 
 		<execute selenium="clickAt" />
 
 		<execute selenium="pause" argument1="1000" />
-	</command>
-
-	<command name="clickAtAndWait">
-		<execute selenium="waitForVisible" />
-
-		<execute selenium="clickAtAndWait" />
 	</command>
 
 	<command name="makeVisibleClickAt">
@@ -99,18 +99,18 @@
 		<execute selenium="clickAtAndWait" />
 	</command>
 
+	<command name="valueClickAtAndWaitCKEditor">
+		<execute selenium="waitForVisible" argument1="//a[@class='cke_button_cut cke_disabled']" />
+
+		<execute function="Click#valueClickAtAndWait" />
+	</command>
+
 	<command name="valueClickAtAndWaitClickAtAndWait">
 		<execute function="AssertTextEquals#assertValue" />
 
 		<execute selenium="clickAtAndWait" />
 
 		<execute selenium="clickAtAndWait" />
-	</command>
-
-	<command name="valueClickAtAndWaitCKEditor">
-		<execute selenium="waitForVisible" argument1="//a[@class='cke_button_cut cke_disabled']" />
-
-		<execute function="Click#valueClickAtAndWait" />
 	</command>
 
 	<command name="valueClickAtPause">

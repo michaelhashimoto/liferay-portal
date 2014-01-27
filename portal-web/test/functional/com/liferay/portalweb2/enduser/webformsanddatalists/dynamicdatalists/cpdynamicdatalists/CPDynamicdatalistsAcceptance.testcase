@@ -3,6 +3,12 @@
 		<execute macro="User#firstLoginPG" />
 	</set-up>
 
+	<tear-down>
+		<execute macro="List#tearDownCP" />
+
+		<execute macro="DataDefinition#tearDownCP" />
+	</tear-down>
+
 	<command name="AddDataDefinition" priority="5">
 		<var name="dataDefinitionDescription" value="Data Definition Description" />
 		<var name="dataDefinitionName" value="Data Definition Name" />
@@ -107,132 +113,6 @@
 		</execute>
 	</command>
 
-	<command name="EditDataDefinition" priority="5">
-		<var name="dataDefinitionDescription" value="Data Definition Description" />
-		<var name="dataDefinitionDescriptionEdit" value="Data Definition Description Edit" />
-		<var name="dataDefinitionName" value="Data Definition Name" />
-		<var name="dataDefinitionNameEdit" value="Data Definition Edit" />
-
-		<execute macro="Page#gotoCP">
-			<var name="portletName" value="Dynamic Data Lists" />
-		</execute>
-
-		<execute macro="DataDefinition#addCP">
-			<var name="dataDefinitionDescription" value="${dataDefinitionDescription}" />
-			<var name="dataDefinitionName" value="${dataDefinitionName}" />
-		</execute>
-
-		<execute macro="Page#gotoCP">
-			<var name="portletName" value="Dynamic Data Lists" />
-		</execute>
-
-		<execute macro="DataDefinition#editCP">
-			<var name="dataDefinitionDescriptionEdit" value="${dataDefinitionDescriptionEdit}" />
-			<var name="dataDefinitionName" value="${dataDefinitionName}" />
-			<var name="dataDefinitionNameEdit" value="${dataDefinitionNameEdit}" />
-		</execute>
-
-		<execute macro="Page#gotoCP">
-			<var name="portletName" value="Dynamic Data Lists" />
-		</execute>
-
-		<execute macro="DataDefinition#viewCP">
-			<var name="dataDefinitionName" value="${dataDefinitionNameEdit}" />
-			<var name="dataDefinitionDescription" value="${dataDefinitionDescriptionEdit}" />
-		</execute>
-	</command>
-
-	<command name="EditList" priority="5">
-		<var name="dataDefinitionDescription" value="Data Definition Description" />
-		<var name="dataDefinitionName" value="Data Definition Name" />
-		<var name="listDescription" value="List Description" />
-		<var name="listDescriptionEdit" value="List Description Edit" />
-		<var name="listName" value="List Name" />
-		<var name="listNameEdit" value="List Name Edit" />
-
-		<execute macro="Page#gotoCP">
-			<var name="portletName" value="Dynamic Data Lists" />
-		</execute>
-
-		<execute macro="DataDefinition#addCP">
-			<var name="dataDefinitionDescription" value="${dataDefinitionDescription}" />
-			<var name="dataDefinitionName" value="${dataDefinitionName}" />
-		</execute>
-
-		<execute macro="Page#gotoCP">
-			<var name="portletName" value="Dynamic Data Lists" />
-		</execute>
-
-		<execute macro="List#addCP">
-			<var name="dataDefinitionName" value="${dataDefinitionName}" />
-			<var name="listDescription" value="${listDescription}" />
-			<var name="listName" value="${listName}" />
-		</execute>
-
-		<execute macro="List#editCP">
-			<var name="listDescription" value="${listDescription}" />
-			<var name="listDescriptionEdit" value="${listDescriptionEdit}" />
-			<var name="listName" value="${listName}" />
-			<var name="listNameEdit" value="${listNameEdit}" />
-		</execute>
-
-		<execute macro="List#viewCP">
-			<var name="listName" value="${listNameEdit}" />
-			<var name="listDescription" value="${listDescriptionEdit}" />
-		</execute>
-	</command>
-
-	<command name="EditRecord" priority="5">
-		<var name="dataDefinitionDescription" value="Data Definition Description" />
-		<var name="dataDefinitionName" value="Data Definition Name" />
-		<var name="listDescription" value="List Description" />
-		<var name="listName" value="List Name" />
-		<var name="recordText" value="Text Field" />
-		<var name="recordTextEdit" value="Text Field Edit" />
-
-		<execute macro="Page#gotoCP">
-			<var name="portletName" value="Dynamic Data Lists" />
-		</execute>
-
-		<execute macro="DataDefinition#addCP">
-			<var name="dataDefinitionDescription" value="${dataDefinitionDescription}" />
-			<var name="dataDefinitionName" value="${dataDefinitionName}" />
-		</execute>
-
-		<execute macro="Page#gotoCP">
-			<var name="portletName" value="Dynamic Data Lists" />
-		</execute>
-
-		<execute macro="List#addCP">
-			<var name="dataDefinitionName" value="${dataDefinitionName}" />
-			<var name="listDescription" value="${listDescription}" />
-			<var name="listName" value="${listName}" />
-		</execute>
-
-		<execute macro="ListRecord#addCP">
-			<var name="listName" value="${listName}" />
-			<var name="recordText" value="${recordText}" />
-		</execute>
-
-		<execute macro="Page#gotoCP">
-			<var name="portletName" value="Dynamic Data Lists" />
-		</execute>
-
-		<execute macro="ListRecord#editCP">
-			<var name="listName" value="${listName}" />
-			<var name="recordTextEdit" value="${recordTextEdit}" />
-		</execute>
-
-		<execute macro="Page#gotoCP">
-			<var name="portletName" value="Dynamic Data Lists" />
-		</execute>
-
-		<execute macro="ListRecord#viewCP">
-			<var name="listName" value="${listName}" />
-			<var name="recordText" value="${recordTextEdit}" />
-		</execute>
-	</command>
-
 	<command name="DeleteDataDefinition" priority="5">
 		<var name="dataDefinitionDescription" value="Data Definition Description" />
 		<var name="dataDefinitionName" value="Data Definition Name" />
@@ -325,9 +205,129 @@
 		</execute>
 	</command>
 
-	<tear-down>
-		<execute macro="List#tearDownCP" />
+	<command name="EditDataDefinition" priority="5">
+		<var name="dataDefinitionDescription" value="Data Definition Description" />
+		<var name="dataDefinitionDescriptionEdit" value="Data Definition Description Edit" />
+		<var name="dataDefinitionName" value="Data Definition Name" />
+		<var name="dataDefinitionNameEdit" value="Data Definition Edit" />
 
-		<execute macro="DataDefinition#tearDownCP" />
-	</tear-down>
+		<execute macro="Page#gotoCP">
+			<var name="portletName" value="Dynamic Data Lists" />
+		</execute>
+
+		<execute macro="DataDefinition#addCP">
+			<var name="dataDefinitionDescription" value="${dataDefinitionDescription}" />
+			<var name="dataDefinitionName" value="${dataDefinitionName}" />
+		</execute>
+
+		<execute macro="Page#gotoCP">
+			<var name="portletName" value="Dynamic Data Lists" />
+		</execute>
+
+		<execute macro="DataDefinition#editCP">
+			<var name="dataDefinitionDescriptionEdit" value="${dataDefinitionDescriptionEdit}" />
+			<var name="dataDefinitionName" value="${dataDefinitionName}" />
+			<var name="dataDefinitionNameEdit" value="${dataDefinitionNameEdit}" />
+		</execute>
+
+		<execute macro="Page#gotoCP">
+			<var name="portletName" value="Dynamic Data Lists" />
+		</execute>
+
+		<execute macro="DataDefinition#viewCP">
+			<var name="dataDefinitionDescription" value="${dataDefinitionDescriptionEdit}" />
+			<var name="dataDefinitionName" value="${dataDefinitionNameEdit}" />
+		</execute>
+	</command>
+
+	<command name="EditList" priority="5">
+		<var name="dataDefinitionDescription" value="Data Definition Description" />
+		<var name="dataDefinitionName" value="Data Definition Name" />
+		<var name="listDescription" value="List Description" />
+		<var name="listDescriptionEdit" value="List Description Edit" />
+		<var name="listName" value="List Name" />
+		<var name="listNameEdit" value="List Name Edit" />
+
+		<execute macro="Page#gotoCP">
+			<var name="portletName" value="Dynamic Data Lists" />
+		</execute>
+
+		<execute macro="DataDefinition#addCP">
+			<var name="dataDefinitionDescription" value="${dataDefinitionDescription}" />
+			<var name="dataDefinitionName" value="${dataDefinitionName}" />
+		</execute>
+
+		<execute macro="Page#gotoCP">
+			<var name="portletName" value="Dynamic Data Lists" />
+		</execute>
+
+		<execute macro="List#addCP">
+			<var name="dataDefinitionName" value="${dataDefinitionName}" />
+			<var name="listDescription" value="${listDescription}" />
+			<var name="listName" value="${listName}" />
+		</execute>
+
+		<execute macro="List#editCP">
+			<var name="listDescription" value="${listDescription}" />
+			<var name="listDescriptionEdit" value="${listDescriptionEdit}" />
+			<var name="listName" value="${listName}" />
+			<var name="listNameEdit" value="${listNameEdit}" />
+		</execute>
+
+		<execute macro="List#viewCP">
+			<var name="listDescription" value="${listDescriptionEdit}" />
+			<var name="listName" value="${listNameEdit}" />
+		</execute>
+	</command>
+
+	<command name="EditRecord" priority="5">
+		<var name="dataDefinitionDescription" value="Data Definition Description" />
+		<var name="dataDefinitionName" value="Data Definition Name" />
+		<var name="listDescription" value="List Description" />
+		<var name="listName" value="List Name" />
+		<var name="recordText" value="Text Field" />
+		<var name="recordTextEdit" value="Text Field Edit" />
+
+		<execute macro="Page#gotoCP">
+			<var name="portletName" value="Dynamic Data Lists" />
+		</execute>
+
+		<execute macro="DataDefinition#addCP">
+			<var name="dataDefinitionDescription" value="${dataDefinitionDescription}" />
+			<var name="dataDefinitionName" value="${dataDefinitionName}" />
+		</execute>
+
+		<execute macro="Page#gotoCP">
+			<var name="portletName" value="Dynamic Data Lists" />
+		</execute>
+
+		<execute macro="List#addCP">
+			<var name="dataDefinitionName" value="${dataDefinitionName}" />
+			<var name="listDescription" value="${listDescription}" />
+			<var name="listName" value="${listName}" />
+		</execute>
+
+		<execute macro="ListRecord#addCP">
+			<var name="listName" value="${listName}" />
+			<var name="recordText" value="${recordText}" />
+		</execute>
+
+		<execute macro="Page#gotoCP">
+			<var name="portletName" value="Dynamic Data Lists" />
+		</execute>
+
+		<execute macro="ListRecord#editCP">
+			<var name="listName" value="${listName}" />
+			<var name="recordTextEdit" value="${recordTextEdit}" />
+		</execute>
+
+		<execute macro="Page#gotoCP">
+			<var name="portletName" value="Dynamic Data Lists" />
+		</execute>
+
+		<execute macro="ListRecord#viewCP">
+			<var name="listName" value="${listName}" />
+			<var name="recordText" value="${recordTextEdit}" />
+		</execute>
+	</command>
 </definition>

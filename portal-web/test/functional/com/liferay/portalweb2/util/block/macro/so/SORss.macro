@@ -42,8 +42,8 @@
 		<execute action="SOSiteHome#assertElementPresent" locator-key1="RSS_FEED_DESCRIPTION" />
 		<execute action="SOSiteHome#assertElementPresent" locator-key1="RSS_FEED_IMAGE" />
 
-		<var name="feedEntryNumber" value="0" />
 		<var name="expandedFeedEntryNumber" value="0" />
+		<var name="feedEntryNumber" value="0" />
 
 		<while>
 			<not>
