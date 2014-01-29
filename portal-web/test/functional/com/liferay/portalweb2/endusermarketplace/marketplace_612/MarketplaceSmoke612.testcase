@@ -1,4 +1,4 @@
-<definition component-name="portal-legacy">
+<definition component-name="marketplace">
 	<property name="theme.plugins.includes" value="welcome-theme" />
 	<property name="web.plugins.includes" value="resource-importer-web" />
 
