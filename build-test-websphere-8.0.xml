@@ -4,6 +4,8 @@
 	<import file="build-test.xml" />
 
 	<target name="run-selenium-websphere-8.0">
+		<echo file="app.server.${user.name}.properties">app.server.type=websphere</echo>
+
 		<antcall target="prepare-vm-server">
 			<param name="vm.vmdk.suffix" value="websphere-8.0.0.0" />
 		</antcall>
