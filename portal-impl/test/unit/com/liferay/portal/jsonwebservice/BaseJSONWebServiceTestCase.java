@@ -30,6 +30,8 @@ import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.util.MethodParametersResolverImpl;
 import com.liferay.portal.util.PropsImpl;
 
+import flexjson.JSONContext;
+
 import java.lang.reflect.Method;
 
 import java.util.HashMap;
@@ -143,8 +145,7 @@ public abstract class BaseJSONWebServiceTestCase extends PowerMockito {
 		return jsonSerializer;
 	}
 
-	private static class SortedHashMapJSONTransformer
-		extends BaseJSONTransformer {
+	private class SortedHashMapJSONTransformer extends BaseJSONTransformer {
 
 		@Override
 		@SuppressWarnings("unchecked")
@@ -154,8 +155,11 @@ public abstract class BaseJSONWebServiceTestCase extends PowerMockito {
 					(HashMap<Object, Object>)object);
 			}
 
-			getContext().transform(object);
+			JSONContext jsonContext = getContext();
+
+			jsonContext.transform(object);
 		}
+
 	}
 
 }
