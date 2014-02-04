@@ -16,6 +16,7 @@ package com.liferay.portal.jsonwebservice;
 
 import com.liferay.portal.json.JSONFactoryImpl;
 import com.liferay.portal.json.JSONIncludesManagerImpl;
+import com.liferay.portal.json.transformer.BaseJSONTransformer;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONIncludesManagerUtil;
 import com.liferay.portal.kernel.json.JSONSerializable;
@@ -30,6 +31,9 @@ import com.liferay.portal.util.MethodParametersResolverImpl;
 import com.liferay.portal.util.PropsImpl;
 
 import java.lang.reflect.Method;
+
+import java.util.HashMap;
+import java.util.TreeMap;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -123,11 +127,35 @@ public abstract class BaseJSONWebServiceTestCase extends PowerMockito {
 			return ((JSONSerializable)object).toJSONString();
 		}
 
-		JSONSerializer jsonSerializer = JSONFactoryUtil.createJSONSerializer();
+		JSONSerializer jsonSerializer = _createJSONSerializer();
 
 		jsonSerializer.exclude("*.class");
 
 		return jsonSerializer.serialize(object);
+	}
+
+	private JSONSerializer _createJSONSerializer() {
+		JSONSerializer jsonSerializer = JSONFactoryUtil.createJSONSerializer();
+
+		jsonSerializer.transform(
+			new SortedHashMapJSONTransformer(), HashMap.class);
+
+		return jsonSerializer;
+	}
+
+	private static class SortedHashMapJSONTransformer
+		extends BaseJSONTransformer {
+
+		@Override
+		@SuppressWarnings("unchecked")
+		public void transform(Object object) {
+			if (object instanceof HashMap) {
+				object = new TreeMap<Object, Object>(
+					(HashMap<Object, Object>)object);
+			}
+
+			getContext().transform(object);
+		}
 	}
 
 }
