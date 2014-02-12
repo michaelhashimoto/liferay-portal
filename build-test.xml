@@ -4659,36 +4659,36 @@ custom.sql.function.isnotnull=CONVERT(VARCHAR,?) IS NOT NULL</echo>
 				<property name="sql.dir" value="sql\legacy\${portal.version}\create\" />
 
 				<if>
-					<contains string="${database.type}" substring="db2" />
+					<equals arg1="${database.type}" arg2="db2" />
 					<then>
 						<property name="sql.file" value="create-db2.sql" />
 					</then>
 					<elseif>
-						<contains string="${database.type}" substring="mysql" />
+						<equals arg1="${database.type}" arg2="mysql" />
 						<then>
 							<property name="sql.file" value="create-mysql.sql" />
 						</then>
 					</elseif>
 					<elseif>
-						<contains string="${database.type}" substring="oracle" />
+						<equals arg1="${database.type}" arg2="oracle" />
 						<then>
 							<property name="sql.file" value="create-oracle.sql" />
 						</then>
 					</elseif>
 					<elseif>
-						<contains string="${database.type}" substring="postgresql" />
+						<equals arg1="${database.type}" arg2="postgresql" />
 						<then>
 							<property name="sql.file" value="create-postgresql.sql" />
 						</then>
 					</elseif>
 					<elseif>
-						<contains string="${database.type}" substring="sql-server" />
+						<equals arg1="${database.type}" arg2="sql.server" />
 						<then>
 							<property name="sql.file" value="create-sql-server.sql" />
 						</then>
 					</elseif>
 					<elseif>
-						<contains string="${database.type}" substring="sybase" />
+						<equals arg1="${database.type}" arg2="sybase" />
 						<then>
 							<property name="sql.file" value="create-sybase.sql" />
 						</then>
@@ -4704,67 +4704,78 @@ custom.sql.function.isnotnull=CONVERT(VARCHAR,?) IS NOT NULL</echo>
 	</target>
 
 	<target name="prepare-versioned-db2-9.7">
-		<echo file="test.${user.name}.properties">database.type=db2-9.7</echo>
+		<echo file="test.${user.name}.properties">database.type=db2
+database.version=9.7</echo>
 
 		<antcall target="prepare-versioned-common" inheritAll="false" />
 	</target>
 
 	<target name="prepare-versioned-db2-10.1">
-		<echo file="test.${user.name}.properties">database.type=db2-10.1</echo>
+		<echo file="test.${user.name}.properties">database.type=db2
+database.version=10.1</echo>
 
 		<antcall target="prepare-versioned-common" inheritAll="false" />
 	</target>
 
 	<target name="prepare-versioned-mysql">
-		<echo file="test.${user.name}.properties">database.type=mysql</echo>
+		<echo file="test.${user.name}.properties">database.type=mysql
+database.version=5.5</echo>
 
 		<antcall target="prepare-versioned-common" inheritAll="false" />
 	</target>
 
 	<target name="prepare-versioned-oracle-10">
-		<echo file="test.${user.name}.properties">database.type=oracle-10</echo>
+		<echo file="test.${user.name}.properties">database.type=oracle
+database.version=10</echo>
 
 		<antcall target="prepare-versioned-common" inheritAll="false" />
 	</target>
 
 	<target name="prepare-versioned-oracle-11">
-		<echo file="test.${user.name}.properties">database.type=oracle-11</echo>
+		<echo file="test.${user.name}.properties">database.type=oracle
+database.version=10</echo>
 
 		<antcall target="prepare-versioned-common" inheritAll="false" />
 	</target>
 
 	<target name="prepare-versioned-postgresql-8.4">
-		<echo file="test.${user.name}.properties">database.type=postgresql-8.4</echo>
+		<echo file="test.${user.name}.properties">database.type=postgresql
+database.version=8.4</echo>
 
 		<antcall target="prepare-versioned-common" inheritAll="false" />
 	</target>
 
 	<target name="prepare-versioned-postgresql-9.0">
-		<echo file="test.${user.name}.properties">database.type=postgresql-9.0</echo>
+		<echo file="test.${user.name}.properties">database.type=postgresql
+database.version=9.0</echo>
 
 		<antcall target="prepare-versioned-common" inheritAll="false" />
 	</target>
 
 	<target name="prepare-versioned-postgresql-9.2">
-		<echo file="test.${user.name}.properties">database.type=postgresql-9.2</echo>
+		<echo file="test.${user.name}.properties">database.type=postgresql
+database.version=9.2</echo>
 
 		<antcall target="prepare-versioned-common" inheritAll="false" />
 	</target>
 
 	<target name="prepare-versioned-sql-server-2005">
-		<echo file="test.${user.name}.properties">database.type=sql-server-2005</echo>
+		<echo file="test.${user.name}.properties">database.type=sql.server
+database.version=2005</echo>
 
 		<antcall target="prepare-versioned-common" inheritAll="false" />
 	</target>
 
 	<target name="prepare-versioned-sql-server-2008">
-		<echo file="test.${user.name}.properties">database.type=sql-server-2008</echo>
+		<echo file="test.${user.name}.properties">database.type=sql.server
+database.version=2008</echo>
 
 		<antcall target="prepare-versioned-common" inheritAll="false" />
 	</target>
 
 	<target name="prepare-versioned-sybase">
-		<echo file="test.${user.name}.properties">database.type=sybase</echo>
+		<echo file="test.${user.name}.properties">database.type=sybase
+database.version=9.7</echo>
 
 		<antcall target="prepare-versioned-common" inheritAll="false" />
 	</target>
