@@ -72,17 +72,17 @@
 <tr>
 	<td>PORTAL_INFO</td>
 	<td>//div[@class='portlet-msg-info']</td>
-	<td> There are no documents or media files in this folder. </td>
+	<td>Info Message</td>
 </tr>
 <tr>
 	<td>REQUEST</td>
 	<td>//div[@class='portlet-msg-success']</td>
-	<td> Your request completed successfully. </td>
+	<td>Success Message</td>
 </tr>
 <tr>
 	<td>CONFIRMATION</td>
 	<td></td>
-	<td>Are you sure you want to delete the selected entries?</td>
+	<td>Confirmation Window</td>
 </tr>
 <tr>
 	<td></td>
@@ -220,7 +220,7 @@
 <tr>
 	<td>LIFERAY_SYNC_LINK</td>
 	<td>//div[@id='_20_syncNotificationContent']/a</td>
-	<td>Access these files offline using Liferay Sync</td>
+	<td></td>
 </tr>
 <tr>
 	<td></td>

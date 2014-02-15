@@ -285,7 +285,7 @@
 <tr>
 	<td>LIFERAY_SYNC_LINK</td>
 	<td>//div[@id='_20_syncNotificationContent']/a</td>
-	<td>Access these files offline using Liferay Sync</td>
+	<td></td>
 </tr>
 <tr>
 	<td></td>
@@ -408,7 +408,7 @@
 <tr>
 	<td>LIST_ENTRIES_DOCUMENT_TITLE</td>
 	<td>//tr[@data-title='${key_dmDocumentTitle}']//span[@class='taglib-text']</td>
-	<td>${key_dmDocumentTitle}</td>
+	<td></td>
 </tr>
 <tr>
 	<td>LIST_ENTRIES_DOCUMENT_WORKFLOW</td>

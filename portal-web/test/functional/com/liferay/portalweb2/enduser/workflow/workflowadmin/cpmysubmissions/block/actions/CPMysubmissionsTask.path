@@ -168,17 +168,17 @@
 <tr>
 	<td>ACTIVITIES_DATE</td>
 	<td>//div[@class='task-activity task-type-1']/div[@class='task-activity-date']</td>
-	<td>Task initially assigned to the Administrator role.</td>
+	<td></td>
 </tr>
 <tr>
 	<td>ACTIVITIES_TEXT_A</td>
 	<td>//div[@class='task-activity task-type-1']/div[2]</td>
-	<td>Task initially assigned to the Administrator role.</td>
+	<td></td>
 </tr>
 <tr>
 	<td>ACTIVITIES_TEXT_B</td>
 	<td>//div[@class='task-activity task-type-1']/div[3]</td>
-	<td>Task initially assigned to the Administrator role.</td>
+	<td></td>
 </tr>
 <tr>
 	<td></td>

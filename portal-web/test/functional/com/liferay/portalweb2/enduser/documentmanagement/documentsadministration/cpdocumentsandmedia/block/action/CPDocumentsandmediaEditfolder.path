@@ -46,12 +46,12 @@
 <tr>
 	<td>DOCUMENT_TYPE_USE_PARENT</td>
 	<td>//input[@id='_20_useFileEntryTypes']</td>
-	<td> Use document type restrictions of the parent folder. </td>
+	<td></td>
 </tr>
 <tr>
 	<td>DOCUMENT_TYPE_OVERRIDE_PARENT</td>
 	<td>//input[@id='_20_overrideFileEntryTypes']</td>
-	<td> Define specific document type restrictions for this folder. </td>
+	<td></td>
 </tr>
 <tr>
 	<td>SELECT_DOCUMENT_TYPE</td>
