@@ -1,5 +1,7 @@
 <definition>
 	<command name="addPG">
+		<description message="Add a ${portletName} portlet to ${pageName}." />
+
 		<execute macro="Page#gotoPG">
 			<var name="pageName" value="${pageName}" />
 		</execute>

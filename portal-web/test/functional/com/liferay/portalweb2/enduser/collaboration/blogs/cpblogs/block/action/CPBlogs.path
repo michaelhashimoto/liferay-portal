@@ -21,7 +21,7 @@
 <tr>
 	<td>PORTLET_TITLE</td>
 	<td>//span[@class='portlet-title-text']</td>
-	<td></td>
+	<td>Portlet Title</td>
 </tr>
 <tr>
 	<td>SUCCESS_MESSAGE</td>

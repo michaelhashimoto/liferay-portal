@@ -21,7 +21,7 @@
 <tr>
 	<td>TITLE</td>
 	<td>//h1[@class='portlet-title']/span[2]</td>
-	<td></td>
+	<td>Portlet Header</td>
 </tr>
 <tr>
 	<td>OPTIONS_ICON</td>

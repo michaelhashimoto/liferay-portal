@@ -128,7 +128,7 @@
 <tr>
 	<td>PAGE</td>
 	<td>//nav/ul/li/a[contains(.,'${key_pageName}')]</td>
-	<td></td>
+	<td>Page</td>
 </tr>
 <tr>
 	<td>PAGE_1</td>
@@ -153,7 +153,7 @@
 <tr>
 	<td>PAGE_2</td>
 	<td>xpath=(//li[contains(@class,'lfr-nav-deletable')])[2]/a</td>
-	<td></td>
+	<td>2nd Page</td>
 </tr>
 <tr>
 	<td>PAGE_2_STAGING</td>
@@ -163,7 +163,7 @@
 <tr>
 	<td>PAGE_3</td>
 	<td>xpath=(//li[contains(@class,'lfr-nav-deletable')])[3]/a</td>
-	<td></td>
+	<td>3rd Page</td>
 </tr>
 <tr>
 	<td>PAGE_CONFIRM</td>
@@ -220,12 +220,12 @@
 <tr>
 	<td>NEW_PAGE_FIELD</td>
 	<td>//li[@class='add-page']//input[contains(@class,'input-text')]</td>
-	<td></td>
+	<td>New Page Field</td>
 </tr>
 <tr>
 	<td>NEW_PAGE_SAVE</td>
 	<td>//button[contains(@id,'Save')]|//button[contains(@id,'save')]</td>
-	<td></td>
+	<td>New Page Save Button</td>
 </tr>
 <tr>
 	<td></td>
