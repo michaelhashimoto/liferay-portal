@@ -41,8 +41,8 @@
 		<execute selenium="typeFrame" />
 	</command>
 
-	<command name="typeImageElement">
-		<execute selenium="typeImageElement" />
+	<command name="typeSikuli">
+		<execute selenium="typeSikuli" />
 
 		<execute selenium="pause" argument1="2000" />
 	</command>
