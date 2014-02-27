@@ -5153,8 +5153,8 @@ database.version=9.7</echo>
 			<then>
 				<exec executable="mysql" input="${liferay.home}/${database.type}.sql">
 					<arg value="--database=lportal" />
-					<arg value="--password=${database.mysql.password}" />
-					<arg value="--user=${database.mysql.username}" />
+					<arg value="--password=${database.password}" />
+					<arg value="--user=${database.username}" />
 				</exec>
 			</then>
 		</if>
