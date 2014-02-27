@@ -25,12 +25,6 @@
 		<execute selenium="pause" argument1="1000" />
 	</command>
 
-	<command name="clickSikuli">
-		<execute selenium="clickSikuli" />
-
-		<execute selenium="pause" argument1="2000" />
-	</command>
-
 	<command name="makeVisibleClickAt">
 		<execute selenium="makeVisible" />
 
@@ -71,6 +65,12 @@
 		<execute selenium="pause" argument1="1000" />
 
 		<execute function="Click#textClickAtAndWait" />
+	</command>
+
+	<command name="sikuliClick">
+		<execute selenium="sikuliClick" />
+
+		<execute selenium="pause" argument1="2000" />
 	</command>
 
 	<command name="textClick">

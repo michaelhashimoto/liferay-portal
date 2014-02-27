@@ -21,6 +21,12 @@
 		<execute function="Type#sendKeys" />
 	</command>
 
+	<command name="sikuliType">
+		<execute selenium="sikuliType" />
+
+		<execute selenium="pause" argument1="2000" />
+	</command>
+
 	<command name="type">
 		<execute selenium="waitForVisible" />
 
@@ -39,12 +45,6 @@
 		<execute selenium="waitForVisible" argument1="//a[@class='cke_button_cut cke_disabled']" />
 
 		<execute selenium="typeFrame" />
-	</command>
-
-	<command name="typeSikuli">
-		<execute selenium="typeSikuli" />
-
-		<execute selenium="pause" argument1="2000" />
 	</command>
 
 	<command name="typeWaitForNotValueNull">
