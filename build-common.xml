@@ -651,7 +651,7 @@ Please set the environment variable ANT_OPTS to the recommended value of
 		</sequential>
 	</macrodef>
 
-	<macrodef name="return-test-type">
+	<macrodef name="set-test-type">
 		<sequential>
 			<if>
 				<not>
@@ -757,6 +757,7 @@ Please set the environment variable ANT_OPTS to the recommended value of
 			</if>
 		</sequential>
 	</macrodef>
+
 	<target name="compile">
 	</target>
 
@@ -1040,7 +1041,7 @@ Please set the environment variable ANT_OPTS to the recommended value of
 	</target>
 
 	<target name="test-class" depends="compile,instrument-test-coverage,compile-test">
-		<return-test-type />
+		<set-test-type />
 
 		<if>
 			<not>
@@ -1137,7 +1138,7 @@ Please set the environment variable ANT_OPTS to the recommended value of
 	</target>
 
 	<target name="test-method" depends="compile,instrument-test-coverage,compile-test">
-		<return-test-type />
+		<set-test-type />
 
 		<if>
 			<or>
