@@ -53,7 +53,7 @@ plugins.includes=${plugins.includes}</echo>
 			<then>
 				<for list="${plugins.includes}" param="plugin.includes">
 					<sequential>
-						<pathconvert property="plugin.war" setonempty="false">
+						<pathconvert pathsep="," property="plugin.war" setonempty="false">
 							<path>
 								<fileset
 									dir="plugins"
@@ -62,10 +62,19 @@ plugins.includes=${plugins.includes}</echo>
 							</path>
 						</pathconvert>
 
+						<propertyregex
+							input="${plugin.war}"
+							override="true"
+							property="plugin.war"
+							regexp=",(.*)"
+							replace=""
+						/>
+
 						<if>
 							<isset property="plugin.war" />
 							<then>
 								<copy file="${plugin.war}" todir="${liferay.home}/deploy" />
+								<var name="plugin.war" unset="true" />
 							</then>
 							<else>
 								<ant dir="${lp.plugins.dir}/${plugin.types}/@{plugin.includes}" inheritAll="false">
