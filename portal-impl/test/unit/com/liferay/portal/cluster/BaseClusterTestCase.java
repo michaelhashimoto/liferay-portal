@@ -14,7 +14,9 @@
 
 package com.liferay.portal.cluster;
 
+import java.io.DataInput;
 import java.io.DataInputStream;
+import java.io.DataOutput;
 import java.io.DataOutputStream;
 import java.io.ObjectInput;
 import java.io.ObjectOutput;
@@ -75,6 +77,12 @@ public class BaseClusterTestCase {
 	protected void assertLogger(
 		List<LogRecord> logRecords, String message, Class<?> exceptionClass) {
 
+		assertLogger(logRecords, message, exceptionClass.getName());
+	}
+
+	protected void assertLogger(
+		List<LogRecord> logRecords, String message, String exceptionClassName) {
+
 		if (message == null) {
 			Assert.assertTrue(logRecords.isEmpty());
 
@@ -87,13 +95,14 @@ public class BaseClusterTestCase {
 
 		Assert.assertEquals(message, logRecord.getMessage());
 
-		if (exceptionClass == null) {
+		if (exceptionClassName == null) {
 			Assert.assertNull(logRecord.getThrown());
 		}
 		else {
 			Throwable throwable = logRecord.getThrown();
 
-			Assert.assertEquals(exceptionClass, throwable.getClass());
+			Assert.assertEquals(
+				exceptionClassName, throwable.getClass().getName());
 		}
 
 		logRecords.clear();
@@ -112,6 +121,9 @@ public class BaseClusterTestCase {
 		public void readExternal(ObjectInput objectInput) {
 		}
 
+		public void readFrom(DataInput dataInput) throws Exception {
+		}
+
 		public void readFrom(DataInputStream dataInputStream) {
 		}
 
@@ -120,6 +132,9 @@ public class BaseClusterTestCase {
 		}
 
 		public void writeExternal(ObjectOutput objectOutput) {
+		}
+
+		public void writeTo(DataOutput dataOutput) throws Exception {
 		}
 
 		public void writeTo(DataOutputStream dataOutputStream) {

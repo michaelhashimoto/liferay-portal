@@ -58,7 +58,9 @@ import com.liferay.portal.util.PortalImpl;
 import com.liferay.portal.util.PortalUtil;
 import com.liferay.portal.uuid.PortalUUIDImpl;
 
+import java.io.DataInput;
 import java.io.DataInputStream;
+import java.io.DataOutput;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.ObjectInput;
@@ -1129,6 +1131,11 @@ public class ClusterSchedulerEngineTest {
 			_timestamp = objectInput.readLong();
 		}
 
+		public void readFrom(DataInput dataInput) throws Exception {
+			_timestamp = dataInput.readLong();
+
+		}
+
 		public void readFrom(DataInputStream dataInputStream)
 			throws IOException {
 
@@ -1143,6 +1150,10 @@ public class ClusterSchedulerEngineTest {
 			throws IOException {
 
 			objectOutput.writeLong(_timestamp);
+		}
+
+		public void writeTo(DataOutput dataOutput) throws Exception {
+			dataOutput.writeLong(_timestamp);
 		}
 
 		public void writeTo(DataOutputStream dataOutputStream)
