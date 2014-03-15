@@ -18,6 +18,7 @@ import com.liferay.portal.kernel.cluster.Address;
 import com.liferay.portal.kernel.cluster.Priority;
 import com.liferay.portal.kernel.cluster.messaging.ClusterForwardMessageListener;
 import com.liferay.portal.kernel.messaging.Message;
+import com.liferay.portal.kernel.test.FixedIssuesUtils;
 import com.liferay.portal.kernel.test.JDKLoggerTestUtil;
 import com.liferay.portal.kernel.util.CharPool;
 import com.liferay.portal.kernel.util.PropsKeys;
@@ -372,9 +373,16 @@ public class ClusterLinkImplTest extends BaseClusterTestCase {
 
 		clusterLinkImpl.sendMulticastMessage(message, Priority.LEVEL1);
 
-		assertLogger(
-			logRecords, "Unable to send multicast message " + message,
-			"org.jgroups.ChannelClosedException");
+		if (FixedIssuesUtils.isIssueFixed("LPE-10588")) {
+			assertLogger(
+				logRecords, "Unable to send multicast message " + message,
+				IllegalStateException.class);
+		}
+		else {
+			assertLogger(
+				logRecords, "Unable to send multicast message " + message,
+				"org.jgroups.ChannelClosedException");
+		}
 
 		clusterLinkImpl.destroy();
 	}
@@ -405,9 +413,16 @@ public class ClusterLinkImplTest extends BaseClusterTestCase {
 
 		clusterLinkImpl.sendMulticastMessage(message, Priority.LEVEL1);
 
-		assertLogger(
-			logRecords, "Unable to send multicast message " + message,
-			"org.jgroups.ChannelNotConnectedException");
+		if (FixedIssuesUtils.isIssueFixed("LPE-10588")) {
+			assertLogger(
+				logRecords, "Unable to send multicast message " + message,
+				IllegalStateException.class);
+		}
+		else {
+			assertLogger(
+				logRecords, "Unable to send multicast message " + message,
+				"org.jgroups.ChannelNotConnectedException");
+		}
 
 		clusterLinkImpl.destroy();
 	}
@@ -494,9 +509,16 @@ public class ClusterLinkImplTest extends BaseClusterTestCase {
 		clusterLinkImpl.sendUnicastMessage(
 			new AddressImpl(new MockAddress()), message, Priority.LEVEL1);
 
-		assertLogger(
-			logRecords, "Unable to send unicast message " + message,
-			"org.jgroups.ChannelClosedException");
+		if (FixedIssuesUtils.isIssueFixed("LPE-10588")) {
+			assertLogger(
+				logRecords, "Unable to send unicast message " + message,
+				IllegalStateException.class);
+		}
+		else {
+			assertLogger(
+				logRecords, "Unable to send unicast message " + message,
+				"org.jgroups.ChannelClosedException");
+		}
 
 		clusterLinkImpl.destroy();
 	}
@@ -528,9 +550,16 @@ public class ClusterLinkImplTest extends BaseClusterTestCase {
 		clusterLinkImpl.sendUnicastMessage(
 			new AddressImpl(new MockAddress()), message, Priority.LEVEL1);
 
-		assertLogger(
-			logRecords, "Unable to send unicast message " + message,
-			"org.jgroups.ChannelNotConnectedException");
+		if (FixedIssuesUtils.isIssueFixed("LPE-10588")) {
+			assertLogger(
+				logRecords, "Unable to send unicast message " + message,
+				IllegalStateException.class);
+		}
+		else {
+			assertLogger(
+				logRecords, "Unable to send unicast message " + message,
+				"org.jgroups.ChannelNotConnectedException");
+		}
 
 		clusterLinkImpl.destroy();
 	}
