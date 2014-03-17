@@ -29,7 +29,7 @@ public class EvaluateUserCSVFileTest extends BaseTestCase {
 	}
 
 	private boolean evaluateUserCSVFile() throws Exception {
-		String fileName = TestPropsValues.OUTPUT_DIR + "users.csv";
+		String fileName = TestPropsValues.OUTPUT_DIR_NAME + "users.csv";
 
 		String xml = FileUtil.read(fileName);
 
