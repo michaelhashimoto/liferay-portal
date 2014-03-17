@@ -66,7 +66,7 @@ plugins.includes=${plugins.includes}</echo>
 							input="${plugin.war}"
 							override="true"
 							property="plugin.war"
-							regexp=",(.*)"
+							regexp=",.*"
 							replace=""
 						/>
 
@@ -74,6 +74,7 @@ plugins.includes=${plugins.includes}</echo>
 							<isset property="plugin.war" />
 							<then>
 								<copy file="${plugin.war}" todir="${liferay.home}/deploy" />
+
 								<var name="plugin.war" unset="true" />
 							</then>
 							<else>
