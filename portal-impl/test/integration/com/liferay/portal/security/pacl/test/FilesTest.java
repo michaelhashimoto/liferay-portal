@@ -368,7 +368,7 @@ public class FilesTest {
 	@Test
 	public void testRead9() throws Exception {
 		try {
-			File file = new File(System.getProperty("java.home"));
+			File file = new File(System.getenv("JAVA_HOME"));
 
 			file.canRead();
 		}
@@ -380,7 +380,7 @@ public class FilesTest {
 	@Test
 	public void testRead10() throws Exception {
 		try {
-			File file = new File(System.getProperty("java.home"), "bin");
+			File file = new File(System.getenv("JAVA_HOME"), "bin");
 
 			file.canRead();
 
@@ -400,7 +400,7 @@ public class FilesTest {
 			}
 
 			File file = new File(
-				System.getProperty("java.home"),
+				System.getenv("JAVA_HOME"),
 				"bin" + File.separator + javaCommand);
 
 			file.canRead();
@@ -420,7 +420,7 @@ public class FilesTest {
 			}
 
 			File file = new File(
-				System.getProperty("java.home"),
+				System.getenv("JAVA_HOME"),
 				"bin".concat(File.separator).concat(javaCommand));
 
 			file.canRead();
