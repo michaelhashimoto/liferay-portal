@@ -4,6 +4,9 @@
 	</set-up>
 
 	<command name="AddBlogsEntry" priority="5">
+		<property name="testray.components" value="Blogs,Collaboration" />
+		<property name="testray.main.component" value="Blogs" />
+
 		<var name="entryContent" value="Blogs Entry Content" />
 		<var name="entryTitle" value="Blogs Entry Title" />
 
