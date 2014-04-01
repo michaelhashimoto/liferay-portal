@@ -5369,7 +5369,7 @@ database.version=9.7</echo>
 		</if>
 	</target>
 
-	<target name="run-simple-server" depends="prepare-portal-ext-properties">
+	<target name="run-simple-server" depends="prepare-portal-properties,prepare-portal-ext-properties">
 		<if>
 			<equals arg1="${cluster.enabled}" arg2="true" />
 			<then>
