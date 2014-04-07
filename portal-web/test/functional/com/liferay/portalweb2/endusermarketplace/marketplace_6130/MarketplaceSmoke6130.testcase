@@ -1,4 +1,6 @@
 <definition component-name="marketplace">
+	<property name="testray.main.component.name" value="Marketplace" />
+
 	<set-up>
 		<execute macro="User#firstLoginPG" />
 	</set-up>

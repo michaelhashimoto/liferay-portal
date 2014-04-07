@@ -1,4 +1,6 @@
 <definition component-name="social-office-dashboard">
+	<property name="testray.main.component.name" value="Social Office" />
+
 	<var name="dmDocumentDescription" value="DM Folder Document Description" />
 	<var name="dmDocumentDescriptionEdit" value="DM Folder Document Description Edit" />
 	<var name="dmDocumentFile" value="Document_1.doc" />

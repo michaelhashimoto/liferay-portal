@@ -1,4 +1,5 @@
 <definition component-name="marketplace">
+	<property name="testray.main.component.name" value="Marketplace" />
 	<property name="theme.plugins.includes" value="welcome-theme" />
 	<property name="web.plugins.includes" value="resource-importer-web" />
 
