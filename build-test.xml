@@ -4749,20 +4749,6 @@ svn --username ${svn.username} --password ${svn.password} update -r ${svn.info.r
 		</if>
 
 		<if>
-			<matches pattern="http" string="${test.build.bundle.tomcat.zip.url}" />
-			<then>
-				<antcall target="prepare-test-bundle">
-					<param name="app.server.type" value="tomcat" />
-					<param name="test.app.server.bin.dir" value="${app.server.tomcat.bin.dir}" />
-					<param name="test.build.bundle.zip.url" value="${test.build.bundle.tomcat.zip.url}" />
-				</antcall>
-			</then>
-			<else>
-				<ant antfile="build-dist.xml" target="build-dist-tomcat" inheritAll="false" />
-			</else>
-		</if>
-
-		<if>
 			<and>
 				<equals arg1="${test.build.bundle.tcserver}" arg2="true" />
 				<isset property="test.build.portal.war.url" />
@@ -4778,6 +4764,20 @@ svn --username ${svn.username} --password ${svn.password} update -r ${svn.info.r
 					<ant antfile="build-dist.xml" target="build-dist-tcserver" inheritAll="false" />
 				</then>
 			</elseif>
+		</if>
+
+		<if>
+			<matches pattern="http" string="${test.build.bundle.tomcat.zip.url}" />
+			<then>
+				<antcall target="prepare-test-bundle">
+					<param name="app.server.type" value="tomcat" />
+					<param name="test.app.server.bin.dir" value="${app.server.tomcat.bin.dir}" />
+					<param name="test.build.bundle.zip.url" value="${test.build.bundle.tomcat.zip.url}" />
+				</antcall>
+			</then>
+			<else>
+				<ant antfile="build-dist.xml" target="build-dist-tomcat" inheritAll="false" />
+			</else>
 		</if>
 
 		<if>
