@@ -350,7 +350,7 @@
 	</command>
 
 	<command name="resolveTask">
-		<var name="currentUser" path="SODashboard" locator-key="PROFILE_NAME" />
+		<var locator-key="PROFILE_NAME" name="currentUser" path="SODashboard" />
 
 		<execute action="SOTasks#assertClick" locator-key1="ASSIGNED_TO_ME_LINK" value1="Assigned to Me" />
 		<execute action="SOTasks#assertClick" locator-key1="TASK_DESCRIPTION_NORMAL" value1="${taskDescription}" />
@@ -415,7 +415,7 @@
 	</command>
 
 	<command name="viewTask">
-		<var name="currentUser" path="SODashboard" locator-key="PROFILE_NAME" />
+		<var locator-key="PROFILE_NAME" name="currentUser" path="SODashboard" />
 
 		<execute action="SOTasks#assertClick" locator-key1="ASSIGNED_TO_ME_LINK" value1="Assigned to Me" />
 

@@ -318,7 +318,7 @@
 		<execute action="SOUserBar#click" locator-key1="USER_NAME" />
 		<execute action="SOUserBar#click" locator-key1="USER_MENU_MY_ACCOUNT" value1="My Account" />
 
-		<var name="currentUser" path="CPMyAccount" locator-key="USER_NAME_HEADER" />
+		<var locator-key="USER_NAME_HEADER" name="currentUser" path="CPMyAccount" />
 
 		<if>
 			<isset var="profileScreenName" />
@@ -499,7 +499,7 @@
 		<execute action="SOUserBar#click" locator-key1="USER_NAME" />
 		<execute action="SOUserBar#click" locator-key1="USER_MENU_MY_ACCOUNT" value1="My Account" />
 
-		<var name="currentUser" path="CPMyAccount" locator-key="USER_NAME_HEADER" />
+		<var locator-key="USER_NAME_HEADER" name="currentUser" path="CPMyAccount" />
 
 		<execute action="SOUserBar#click" locator-key1="DASHBOARD" />
 
@@ -653,7 +653,7 @@
 		<execute action="SOUserBar#click" locator-key1="USER_NAME" />
 		<execute action="SOUserBar#click" locator-key1="USER_MENU_MY_ACCOUNT" value1="My Account" />
 
-		<var name="currentUser" path="CPMyAccount" locator-key="USER_NAME_HEADER" />
+		<var locator-key="USER_NAME_HEADER" name="currentUser" path="CPMyAccount" />
 
 		<if>
 			<isset var="profileScreenName" />

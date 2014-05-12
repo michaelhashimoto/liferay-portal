@@ -13,7 +13,7 @@
 	</command>
 
 	<command name="clickAtConfiguration">
-		<execute selenium="waitForElementPresent" argument1="//script[contains(@src,'/liferay/navigation_interaction.js')]" />
+		<execute argument1="//script[contains(@src,'/liferay/navigation_interaction.js')]" selenium="waitForElementPresent" />
 
 		<execute function="Check#clickAt" />
 	</command>

@@ -22,7 +22,7 @@
 
 		<execute selenium="clickAt" />
 
-		<execute selenium="pause" argument1="1000" />
+		<execute argument1="1000" selenium="pause" />
 	</command>
 
 	<command name="makeVisibleClickAt">
@@ -50,19 +50,19 @@
 	</command>
 
 	<command name="pauseClickAt">
-		<execute selenium="pause" argument1="1000" />
+		<execute argument1="1000" selenium="pause" />
 
 		<execute function="Click#clickAt" />
 	</command>
 
 	<command name="pauseTextClickAt">
-		<execute selenium="pause" argument1="1000" />
+		<execute argument1="1000" selenium="pause" />
 
 		<execute function="Click#textClickAt" />
 	</command>
 
 	<command name="pauseTextClickAtAndWait">
-		<execute selenium="pause" argument1="1000" />
+		<execute argument1="1000" selenium="pause" />
 
 		<execute function="Click#textClickAtAndWait" />
 	</command>
@@ -70,7 +70,7 @@
 	<command name="sikuliClick">
 		<execute selenium="sikuliClick" />
 
-		<execute selenium="pause" argument1="2000" />
+		<execute argument1="2000" selenium="pause" />
 	</command>
 
 	<command name="textClick">
@@ -106,9 +106,9 @@
 	</command>
 
 	<command name="textClickAtClickDockbar">
-		<execute selenium="clickAt" argument1="//div[@id='dockbar']" argument2="" />
+		<execute argument1="//div[@id='dockbar']" argument2="" selenium="clickAt" />
 
-		<execute selenium="waitForElementPresent" argument1="//script[contains(@src,'/aui/aui-button-item/aui-button-item-min.js')]" />
+		<execute argument1="//script[contains(@src,'/aui/aui-button-item/aui-button-item-min.js')]" selenium="waitForElementPresent" />
 
 		<execute function="Click#textClickAt" />
 	</command>
@@ -130,7 +130,7 @@
 	</command>
 
 	<command name="valueClickAtAndWaitCKEditor">
-		<execute selenium="waitForVisible" argument1="//a[@class='cke_button_cut cke_disabled']" />
+		<execute argument1="//a[@class='cke_button_cut cke_disabled']" selenium="waitForVisible" />
 
 		<execute function="Click#valueClickAtAndWait" />
 	</command>
@@ -154,6 +154,6 @@
 
 		<execute selenium="clickAt" />
 
-		<execute selenium="pause" argument1="1000" />
+		<execute argument1="1000" selenium="pause" />
 	</command>
 </definition>

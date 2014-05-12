@@ -254,7 +254,7 @@
 	<command name="viewUpcomingTask">
 		<execute action="SOUserBar#click" locator-key1="DASHBOARD" />
 
-		<var name="currentUser" path="SODashboard" locator-key="PROFILE_NAME" />
+		<var locator-key="PROFILE_NAME" name="currentUser" path="SODashboard" />
 
 		<if>
 			<equals arg1="${taskAssignee}" arg2="${currentUser}" />

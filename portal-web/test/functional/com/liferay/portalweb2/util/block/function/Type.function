@@ -2,7 +2,7 @@
 	<command name="clickAtSendKeys">
 		<execute selenium="waitForVisible" />
 
-		<execute selenium="type" argument2="" />
+		<execute argument2="" selenium="type" />
 
 		<execute selenium="clickAt" />
 
@@ -16,7 +16,7 @@
 	</command>
 
 	<command name="sendKeysApplicationSearch">
-		<execute selenium="waitForElementPresent" argument1="//script[contains(@src,'/aui/aui-live-search/aui-live-search-min.js')]" />
+		<execute argument1="//script[contains(@src,'/aui/aui-live-search/aui-live-search-min.js')]" selenium="waitForElementPresent" />
 
 		<execute function="Type#sendKeys" />
 	</command>
@@ -24,7 +24,7 @@
 	<command name="sikuliType">
 		<execute selenium="sikuliType" />
 
-		<execute selenium="pause" argument1="2000" />
+		<execute argument1="2000" selenium="pause" />
 	</command>
 
 	<command name="type">
@@ -50,7 +50,7 @@
 	<command name="typeFrameWaitForCKEditor">
 		<execute selenium="waitForVisible" />
 
-		<execute selenium="waitForVisible" argument1="//a[@class='cke_button_cut cke_disabled']" />
+		<execute argument1="//a[@class='cke_button_cut cke_disabled']" selenium="waitForVisible" />
 
 		<execute selenium="typeFrame" />
 	</command>

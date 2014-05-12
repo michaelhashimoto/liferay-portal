@@ -36,9 +36,9 @@
 	</command>
 
 	<command name="assertTextClickAtClickDockbar">
-		<execute selenium="clickAt" argument1="//div[@id='dockbar']" argument2="" />
+		<execute argument1="//div[@id='dockbar']" argument2="" selenium="clickAt" />
 
-		<execute selenium="waitForElementPresent" argument1="//script[contains(@src,'/aui/aui-button-item/aui-button-item-min.js')]" />
+		<execute argument1="//script[contains(@src,'/aui/aui-button-item/aui-button-item-min.js')]" selenium="waitForElementPresent" />
 
 		<execute function="AssertClick#assertTextClickAt" />
 	</command>
@@ -56,7 +56,7 @@
 	</command>
 
 	<command name="assertValueClickAtAndWaitCKEditor">
-		<execute selenium="waitForVisible" argument1="//a[@class='cke_button_cut cke_disabled']" />
+		<execute argument1="//a[@class='cke_button_cut cke_disabled']" selenium="waitForVisible" />
 
 		<execute function="AssertClick#assertValueClickAtAndWait" />
 	</command>
@@ -74,23 +74,23 @@
 
 		<execute selenium="clickAt" />
 
-		<execute selenium="pause" argument1="1000" />
+		<execute argument1="1000" selenium="pause" />
 	</command>
 
 	<command name="pauseAssertPartialTextClickAt">
-		<execute selenium="pause" argument1="1000" />
+		<execute argument1="1000" selenium="pause" />
 
 		<execute function="AssertClick#assertPartialTextClickAt" />
 	</command>
 
 	<command name="pauseAssertTextClickAt">
-		<execute selenium="pause" argument1="1000" />
+		<execute argument1="1000" selenium="pause" />
 
 		<execute function="AssertClick#assertTextClickAt" />
 	</command>
 
 	<command name="pauseAssertTextClickAtAndWait">
-		<execute selenium="pause" argument1="1000" />
+		<execute argument1="1000" selenium="pause" />
 
 		<execute function="AssertClick#assertTextClickAtAndWait" />
 	</command>

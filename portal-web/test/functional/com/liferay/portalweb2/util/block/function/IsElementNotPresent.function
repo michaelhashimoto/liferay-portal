@@ -16,7 +16,7 @@
 	</command>
 
 	<command name="pauseIsElementNotPresent">
-		<execute selenium="pause" argument1="1000" />
+		<execute argument1="1000" selenium="pause" />
 
 		<if>
 			<condition selenium="isElementPresent" />

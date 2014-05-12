@@ -16,7 +16,6 @@ package com.liferay.portalweb.asset.assetpublisher.portlet.configureportletdispl
 
 import com.liferay.portalweb.asset.assetpublisher.portlet.addportletap.AddPageAPTest;
 import com.liferay.portalweb.asset.assetpublisher.portlet.addportletap.AddPortletAPTest;
-import com.liferay.portalweb.asset.assetpublisher.portlet.configureportletdisplaystylefullcontent.ConfigurePortletDisplayStyleFullContentTest;
 import com.liferay.portalweb.portal.BaseTestSuite;
 import com.liferay.portalweb.portal.util.TearDownPageTest;
 

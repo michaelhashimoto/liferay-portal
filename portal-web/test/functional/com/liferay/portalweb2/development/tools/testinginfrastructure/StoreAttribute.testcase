@@ -10,7 +10,7 @@
 	</set-up>
 
 	<command name="storeAttributeWithoutVariablesInLocator" priority="5">
-		<var name="attributeValue" path="TestUtils" locator-key="TEST_PATH" attribute="class" />
+		<var attribute="class" locator-key="TEST_PATH" name="attributeValue" path="TestUtils" />
 
 		<echo message="Test storeAttribute #1: using locator-key/path with xpath containing no variables" />
 
@@ -21,7 +21,7 @@
 	</command>
 
 	<command name="storeAttributeWithoutVariablesInLocatorKey" priority="5">
-		<var name="attributeValue" locator="//h1[@class='site-title']/a/span" attribute="class" />
+		<var attribute="class" locator="//h1[@class='site-title']/a/span" name="attributeValue" />
 
 		<echo message="Test storeAttribute #2: using locator with xpath containing no variables" />
 
@@ -34,7 +34,7 @@
 	<command name="storeAttributeWithVariablesInAttributeName" priority="5">
 		<var name="key_testVar" value="site-title" />
 
-		<var name="attributeValue" path="TestUtils" locator-key="TEST_VAR_PATH" attribute="class" />
+		<var attribute="class" locator-key="TEST_VAR_PATH" name="attributeValue" path="TestUtils" />
 
 		<echo message="Test storeAttribute #3: using locator-key/path with xpath containing variables" />
 
@@ -47,7 +47,7 @@
 	<command name="storeAttributeWithVariablesInLocator" priority="5">
 		<var name="class-name">site-title</var>
 
-		<var name="attributeValue" locator="//h1[@class='${class-name}']" attribute="class" />
+		<var attribute="class" locator="//h1[@class='${class-name}']" name="attributeValue" />
 
 		<echo message="Test storeAttribute #4: using locator with xpath containing variables" />
 
@@ -62,7 +62,7 @@
 		<var name="attributeNamePart2">ss</var>
 		<var name="class-name">site-title</var>
 
-		<var name="attributeValue" locator="//h1[@class='${class-name}']" attribute="c${attributeNamePart1}${attributeNamePart2}" />
+		<var attribute="c${attributeNamePart1}${attributeNamePart2}" locator="//h1[@class='${class-name}']" name="attributeValue" />
 
 		<echo message="Test storeAttribute #5: using locator with xpath containing variables" />
 

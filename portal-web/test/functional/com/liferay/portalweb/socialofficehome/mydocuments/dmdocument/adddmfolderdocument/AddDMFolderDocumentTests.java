@@ -15,7 +15,6 @@
 package com.liferay.portalweb.socialofficehome.mydocuments.dmdocument.adddmfolderdocument;
 
 import com.liferay.portalweb.portal.BaseTestSuite;
-import com.liferay.portalweb.socialofficehome.mydocuments.dmdocument.adddmfolderdocument.TearDownDMFolderTest;
 
 import junit.framework.Test;
 import junit.framework.TestSuite;

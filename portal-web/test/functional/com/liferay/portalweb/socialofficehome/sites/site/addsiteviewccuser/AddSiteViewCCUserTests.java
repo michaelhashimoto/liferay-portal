@@ -20,7 +20,6 @@ import com.liferay.portalweb.socialoffice.users.user.addsouser.TearDownSOUserTes
 import com.liferay.portalweb.socialoffice.users.user.editsouserpassword.EditSOUserPasswordTest;
 import com.liferay.portalweb.socialoffice.users.user.selectregularrolessouser.SelectRegularRolesSOUserTest;
 import com.liferay.portalweb.socialofficehome.sites.site.addsitessite.TearDownSOSitesTest;
-import com.liferay.portalweb.socialofficehome.sites.site.addsiteviewccuser.AddSiteViewCCUserTest;
 
 import junit.framework.Test;
 import junit.framework.TestSuite;
