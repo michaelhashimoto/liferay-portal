@@ -5425,8 +5425,6 @@ database.version=9.7</echo>
 							<exec executable="${postgresql.executable}">
 								<arg value="-U" />
 								<arg value="${database.username}" />
-								<arg value="-w" />
-								<arg value="${database.password}" />
 								<arg value="-f" />
 								<arg value="create.sql" />
 							</exec>
