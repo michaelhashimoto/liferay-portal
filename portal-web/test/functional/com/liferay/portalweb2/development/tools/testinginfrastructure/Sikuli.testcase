@@ -2,6 +2,8 @@
 	<property name="testray.main.component.name" value="Tools" />
 
 	<command name="Smoke" priority="5">
+		<execute action="Sikuli#sikuliAssertElementPresent" locator-key1="EMAIL_ADDRESS" />
+		<execute action="Sikuli#sikuliAssertElementNotPresent" locator-key1="AVERAGE_RATING_STAR_ICON_PNG" />
 		<execute action="Sikuli#type" locator-key1="EMAIL_ADDRESS" value1="test@liferay.com" />
 		<execute action="Sikuli#type" locator-key1="PASSWORD" value1="test" />
 		<execute action="Sikuli#click" locator-key1="SIGN_IN" />
