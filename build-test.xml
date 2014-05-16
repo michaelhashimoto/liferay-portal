@@ -3100,7 +3100,7 @@ create database lportal2 character set utf8;</echo>
 		<if>
 			<available file="app.server.${user.name}.properties" />
 			<then>
-				<delete file="app.server.${user.name}.properties" />
+				<app-server-reset />
 			</then>
 		</if>
 
@@ -3883,7 +3883,9 @@ create database lportal2 character set utf8;</echo>
 				<equals arg1="${skip.prepare-bundle}" arg2="true" />
 			</not>
 			<then>
-				<echo file="app.server.${user.name}.properties">app.server.type=tomcat</echo>
+				<app-server-update>
+					app.server.type=tomcat
+				</app-server-update>
 
 				<if>
 					<not>
@@ -3896,7 +3898,7 @@ create database lportal2 character set utf8;</echo>
 
 				<antcall target="all" inheritAll="false" />
 
-				<delete file="app.server.${user.name}.properties" />
+				<app-server-reset />
 			</then>
 		</if>
 	</target>
@@ -4818,13 +4820,15 @@ plugins.includes=marketplace-portlet</echo>
 			<elseif>
 				<equals arg1="${test.build.bundle.weblogic}" arg2="true" />
 				<then>
-					<echo file="app.server.${user.name}.properties">app.server.type=weblogic</echo>
+					<app-server-update>
+						app.server.type=weblogic
+					</app-server-update>
 
 					<ant antfile="build-dist.xml" target="unzip-weblogic" inheritAll="false" />
 
 					<antcall target="deploy" inheritAll="false" />
 
-					<delete file="app.server.${user.name}.properties" />
+					<app-server-reset />
 				</then>
 			</elseif>
 		</if>

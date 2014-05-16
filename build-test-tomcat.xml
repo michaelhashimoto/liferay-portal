@@ -96,7 +96,9 @@ web.server.display.node=true</echo>
 	</target>
 
 	<target name="run-selenium-tomcat">
-		<echo file="app.server.${user.name}.properties">app.server.type=tomcat</echo>
+		<app-server-update>
+			app.server.type=tomcat
+		</app-server-update>
 
 		<if>
 			<not>
@@ -167,7 +169,9 @@ web.server.display.node=true</echo>
 			</fileset>
 		</chmod>
 
-		<echo file="app.server.${user.name}.properties">app.server.tomcat.dir=${app.server.parent.dir}/${bundled.dir.name}</echo>
+		<app-server-update>
+			app.server.tomcat.dir=${app.server.parent.dir}/${bundled.dir.name}
+		</app-server-update>
 
 		<antcall target="revert-test-properties" />
 
@@ -241,7 +245,7 @@ web.server.display.node=true</echo>
 
 		<antcall target="stop-selenium" />
 
-		<delete file="app.server.${user.name}.properties" failonerror="false" />
+		<app-server-reset />
 	</target>
 
 	<target name="run-tomcat">

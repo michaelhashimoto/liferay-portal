@@ -4,7 +4,9 @@
 	<import file="build-test.xml" />
 
 	<target name="run-selenium-websphere-6.1">
-		<echo file="app.server.${user.name}.properties">app.server.type=websphere</echo>
+		<app-server-update>
+			app.server.type=websphere
+		</app-server-update>
 
 		<antcall target="prepare-vm-server">
 			<param name="vm.vmdk.suffix" value="websphere-6.1.0.27" />
