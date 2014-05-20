@@ -1624,9 +1624,9 @@ release was successful.</echo>
 			src="${app.server.parent.dir}/${app.server.tcserver.zip.name}"
 		>
 			<mapper
-				type="glob"
 				from="vfabric-tc-server-standard-${app.server.tcserver.version}.RELEASE/*"
 				to="tc-server-${app.server.tcserver.version}/*"
+				type="glob"
 			/>
 		</unzip>
 
