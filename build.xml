@@ -17,10 +17,6 @@
 		</sequential>
 	</macrodef>
 
-	<macrodef name="setup-jrebel">
-		<sequential>
-			<echo file="${app.server.lib.global.dir}/rebel.xml"><![CDATA[<?xml version="1.0"?>
-
 	<target name="all">
 		<antcall target="clean" />
 		<antcall target="start" />
