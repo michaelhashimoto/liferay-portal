@@ -4,9 +4,9 @@
 	<import file="build-test.xml" />
 
 	<target name="run-latest-upgrade-test">
-		<app-server-update>
+		<app-server-properties-update>
 			app.server.type=tomcat
-		</app-server-update>
+		</app-server-properties-update>
 
 		<ant antfile="build-test-tomcat.xml" target="run-selenium-tomcat" inheritAll="false">
 			<property name="skip.rebuild-database" value="true" />

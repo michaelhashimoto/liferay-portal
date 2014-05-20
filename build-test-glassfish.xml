@@ -16,9 +16,9 @@
 	</target>
 
 	<target name="run-selenium-glassfish">
-		<app-server-update>
+		<app-server-properties-update>
 			app.server.type=glassfish
-		</app-server-update>
+		</app-server-properties-update>
 
 		<if>
 			<not>
@@ -89,10 +89,10 @@
 			</fileset>
 		</chmod>
 
-		<app-server-update>
+		<app-server-properties-update>
 			app.server.type=glassfish
 			app.server.glassfish.dir=${app.server.parent.dir}/${bundled.dir.name}
-		</app-server-update>
+		</app-server-properties-update>
 
 		<antcall target="revert-test-properties" />
 
@@ -141,6 +141,6 @@
 
 		<antcall target="stop-selenium" />
 
-		<app-server-reset />
+		<app-server-properties-reset />
 	</target>
 </project>
