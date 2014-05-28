@@ -4877,6 +4877,8 @@ plugins.includes=marketplace-portlet</echo>
 				<if>
 					<isset property="test.build.portal.war.url" />
 					<then>
+						<mkdir dir="dist" />
+
 						<get
 							dest="dist/liferay-portal-${lp.version}.war"
 							src="${test.build.portal.war.url}"
@@ -4889,6 +4891,8 @@ plugins.includes=marketplace-portlet</echo>
 
 				<ant antfile="build-dist.xml" target="build-dist-tcat" inheritAll="false" />
 
+				<delete dir="dist" />
+
 				<delete file="${lp.plugins.dir}/build.${user.name}.properties" />
 			</then>
 		</if>
@@ -4900,17 +4904,19 @@ plugins.includes=marketplace-portlet</echo>
 			<then>
 				<ant antfile="build-dist.xml" target="unzip-tcserver" inheritAll="false" />
 
+				<mkdir dir="dist" />
+
 				<get
-					dest="liferay-portal.war"
+					dest="dist/liferay-portal-${lp.version}.war"
 					src="${test.build.portal.war.url}"
 				/>
 
 				<unzip
 					dest="${app.server.tcserver.portal.dir}"
-					src="liferay-portal.war"
+					src="dist/liferay-portal-${lp.version}.war"
 				/>
 
-				<delete file="liferay-portal.war" />
+				<delete dir="dist" />
 
 				<get
 					dest="liferay-portal-dependencies.zip"
@@ -4949,17 +4955,19 @@ plugins.includes=marketplace-portlet</echo>
 				<then>
 					<ant antfile="build-dist.xml" target="unzip-weblogic" inheritAll="false" />
 
+					<mkdir dir="dist" />
+
 					<get
-						dest="liferay-portal.war"
+						dest="dist/liferay-portal-${lp.version}.war"
 						src="${test.build.portal.war.url}"
 					/>
 
 					<unzip
 						dest="${app.server.weblogic.portal.dir}"
-						src="liferay-portal.war"
+						src="dist/liferay-portal-${lp.version}.war"
 					/>
 
-					<delete file="liferay-portal.war" />
+					<delete dir="dist" />
 
 					<get
 						dest="liferay-portal-dependencies.zip"
@@ -5005,6 +5013,8 @@ plugins.includes=marketplace-portlet</echo>
 						type="regexp"
 					/>
 				</unzip>
+
+				<delete file="${tstamp.value}.zip" />
 
 				<chmod perm="a+x">
 					<fileset dir="${test.app.server.bin.dir}">
