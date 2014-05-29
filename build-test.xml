@@ -4786,6 +4786,8 @@ svn --username ${svn.username} --password ${svn.password} update -r ${svn.info.r
 			</else>
 		</if>
 
+		<antcall target="prepare-test-build-tomcat-dependents" inheritAll="false" />
+
 		<if>
 			<and>
 				<equals arg1="${test.build.bundle.weblogic}" arg2="true" />
@@ -4811,8 +4813,6 @@ svn --username ${svn.username} --password ${svn.password} update -r ${svn.info.r
 				</then>
 			</elseif>
 		</if>
-
-		<antcall target="prepare-test-build-dependent" inheritAll="false" />
 
 		<if>
 			<matches pattern="http" string="${test.build.license.xml.zip.url}" />
@@ -4850,7 +4850,7 @@ svn --username ${svn.username} --password ${svn.password} update -r ${svn.info.r
 		<antcall target="record-test-package-names" inheritAll="false" />
 	</target>
 
-	<target name="prepare-test-build-dependent">
+	<target name="prepare-test-build-tomcat-dependents">
 		<if>
 			<equals arg1="${test.build.bundle.tcat}" arg2="true" />
 			<then>
