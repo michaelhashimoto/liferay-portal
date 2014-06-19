@@ -3487,6 +3487,44 @@ create database lportal2 character set utf8;</echo>
 		<echo file="portal-web/test-ant-scripts/${ant.script.file.name}">${template.content}</echo>
 	</target>
 
+	<target name="create-emulator">
+		<exec executable="/bin/bash" os="${os.unix}">
+			<arg value="-c" />
+			<arg value="echo no | android create avd -n ${emulator.name} -t ${emulator.target.number}" />
+		</exec>
+
+		<exec executable="cmd.exe" os="${os.windows}">
+			<arg line="/c echo no | android create avd -n ${emulator.name} -t ${emulator.target.number}" />
+		</exec>
+	</target>
+
+	<target name="delete-emulator">
+		<exec executable="/bin/bash" os="${os.unix}">
+			<arg value="-c" />
+			<arg value="android delete avd -n ${emulator.name}" />
+		</exec>
+
+		<exec executable="cmd.exe" os="${os.windows}">
+			<arg line="/c android delete avd -n ${emulator.name}" />
+		</exec>
+	</target>
+
+	<target name="edit-emulator-config">
+		<if>
+			<os family="unix" />
+			<then>
+				<echo file="/root/.android/avd/${emulator.name}.avd/config.ini" append="true">
+hw.keyboard=yes
+				</echo>
+			</then>
+			<else>
+				<echo file="${user.home}/.android/avd/${emulator.name}.avd/config.ini" append="true">
+hw.keyboard=yes
+				</echo>
+			</else>
+		</if>
+	</target>
+
 	<target name="evaluate-logs">
 		<if>
 			<available file="portal-web/test-ant-scripts/log" />
@@ -4594,6 +4632,17 @@ svn --username ${svn.username} --password ${svn.password} update -r ${svn.info.r
 
 	<target name="prepare-selenium">
 		<delete file="portal-web/test/test-portal-web-ext.properties" />
+
+		<if>
+			<isset property="mobile.device.enabled" />
+			<then>
+				<antcall target="start-appium" />
+				<antcall target="create-emulator" />
+				<antcall target="edit-emulator-config" />
+				<antcall target="start-emulator" />
+				<sleep seconds="120" />
+			</then>
+		</if>
 
 		<if>
 			<isset property="selenium.output.dir" />
@@ -6205,6 +6254,12 @@ database.version=9.7</echo>
 			</then>
 		</if>
 
+		<antcall target="stop-appium" />
+
+		<antcall target="stop-emulator" />
+
+		<antcall target="delete-emulator" />
+
 		<antcall target="clean-up-sikuli-temp-files" />
 
 		<antcall target="clean-up-web-xml" />
@@ -6249,6 +6304,28 @@ which can be downloaded from this website: http://code.google.com/p/chromedriver
 				<unzip src="${chrome.driver.zip}" dest="tools/selenium" />
 			</else>
 		</if>
+	</target>
+
+	<target name="start-appium" >
+		<exec executable="gnome-terminal" os="${os.unix}" spawn="true">
+			<arg value="-e" />
+			<arg value="service appium start" />
+		</exec>
+
+		<exec executable="cmd.exe" os="${os.windows}" dir="${appium.win32.dir}">
+			<arg line="/c start node appium" />
+		</exec>
+	</target>
+
+	<target name="start-emulator">
+		<exec executable="/bin/bash" os="${os.unix}" spawn="true">
+			<arg value="-c" />
+			<arg value="emulator -avd ${emulator.name} -no-boot-anim" />
+		</exec>
+
+		<exec executable="cmd.exe" os="${os.windows}">
+			<arg line="/c emulator -avd ${emulator.name} -no-boot-anim" />
+		</exec>
 	</target>
 
 	<target name="start-ie-driver">
@@ -6316,6 +6393,28 @@ Please set "ie.driver.zip" in test.properties to point to "IEDriverServer_x64_2.
 	<target name="stop-chrome-driver">
 		<exec executable="taskkill.exe">
 			<arg line="/F /IM chromedriver.exe" />
+		</exec>
+	</target>
+
+	<target name="stop-appium">
+		<exec executable="/bin/bash" os="${os.unix}" spawn="true" >
+			<arg value="-c" />
+			<arg value="killall node" />
+		</exec>
+
+		<exec executable="cmd.exe" os="${os.windows}" >
+			<arg line="/c tskill node" />
+		</exec>
+	</target>
+
+	<target name="stop-emulator">
+		<exec executable="/bin/bash" os="${os.unix}">
+			<arg value="-c" />
+			<arg value="adb emu kill" />
+		</exec>
+
+		<exec executable="cmd.exe" os="${os.windows}">
+			<arg line="/c adb emu kill" />
 		</exec>
 	</target>
 
