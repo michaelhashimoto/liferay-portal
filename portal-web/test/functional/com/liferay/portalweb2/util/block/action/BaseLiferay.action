@@ -215,6 +215,12 @@
 		</default>
 	</command>
 
+	<command name="isHTMLSourceTextPresent">
+		<default>
+			<execute function="IsHTMLSourceTextPresent#isHTMLSourceTextPresent" />
+		</default>
+	</command>
+
 	<command name="isTextEqual">
 		<case comparator="contains" locator1="/input">
 			<execute function="IsTextEqual#isValue" />
