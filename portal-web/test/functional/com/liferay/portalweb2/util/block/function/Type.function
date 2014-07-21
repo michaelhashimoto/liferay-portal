@@ -15,6 +15,20 @@
 		<execute selenium="sendKeys" />
 	</command>
 
+	<command name="sendKeysAceEditor">
+		<execute selenium="waitForElementPresent" />
+
+		<execute selenium="mouseOver" />
+
+		<execute selenium="sendKeysAceEditor" />
+	</command>
+
+	<command name="sendKeysAceEditorNoMouseOver">
+		<execute selenium="waitForElementPresent" />
+
+		<execute selenium="sendKeysAceEditor" />
+	</command>
+
 	<command name="sendKeysApplicationSearch">
 		<execute argument1="//script[contains(@src,'/aui/aui-live-search/aui-live-search-min.js')]" selenium="waitForElementPresent" />
 
@@ -37,6 +51,12 @@
 		<execute selenium="waitForElementPresent" />
 
 		<execute selenium="mouseOver" />
+
+		<execute selenium="typeAceEditor" />
+	</command>
+
+	<command name="typeAceEditorNoMouseOver">
+		<execute selenium="waitForElementPresent" />
 
 		<execute selenium="typeAceEditor" />
 	</command>
