@@ -255,8 +255,6 @@ print AdminControl.invoke(appManager, 'startApplication', 'liferay-portal')</ech
 			<arg line="-pw ${vm.password} ${vm.username}@${vm.host} cmd.exe /c C:\Progra~1\IBM\WebSphere\AppServer\profiles\AppSrv01\bin\stopServer.bat server1" />
 		</exec>
 
-		<antcall target="clean-up-logs" />
-
 		<tstamp>
 			<format property="log.tstamp.value" pattern="yyyy-MM-dd" />
 		</tstamp>

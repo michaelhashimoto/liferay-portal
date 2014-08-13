@@ -37,10 +37,6 @@
 	</target>
 
 	<target name="run-websphere-7.0">
-		<antcall target="clean-up-logs" />
-
-		<record action="start" name="log" />
-
 		<antcall target="run-simple-server">
 			<param name="simple.server.dir" value="${app.server.websphere.dir}" />
 			<param name="simple.server.bin.dir" value="${app.server.websphere.bin.dir}" />
@@ -52,8 +48,6 @@
 			<param name="simple.server.stop.executable" value="stopServer.bat" />
 			<param name="simple.server.stop.executable.arg.line" value="server1" />
 		</antcall>
-
-		<record action="stop" name="log" />
 
 		<antcall target="evaluate-logs" />
 	</target>
