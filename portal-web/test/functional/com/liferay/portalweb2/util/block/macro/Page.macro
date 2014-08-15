@@ -79,9 +79,9 @@
 
 		<execute macro="Page#openURL" />
 
-		<var name="key_pageName" value="${pageName}" />
-
-		<execute action="Home#click" locator-key1="PAGE" value1="${pageName}" />
+		<execute action="Home#click" locator-key1="PAGE" value1="${pageName}">
+			<var name="key_pageName" value="${pageName}" />
+		</execute>
 	</command>
 
 	<command name="isPresent">
