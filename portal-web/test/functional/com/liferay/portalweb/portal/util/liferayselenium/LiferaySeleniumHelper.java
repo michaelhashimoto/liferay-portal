@@ -1065,7 +1065,7 @@ public class LiferaySeleniumHelper {
 			line = value.substring(x, y);
 		}
 
-		liferaySelenium.typeKeys(locator, line.trim(), true);
+		liferaySelenium.typeKeys(locator, line.trim());
 
 		liferaySelenium.keyPress(locator, "\\13");
 
@@ -1080,7 +1080,7 @@ public class LiferaySeleniumHelper {
 				line = value.substring(x, value.length());
 			}
 
-			liferaySelenium.typeKeys(locator, line.trim(), true);
+			liferaySelenium.typeKeys(locator, line.trim());
 
 			liferaySelenium.keyPress(locator, "\\13");
 		}
