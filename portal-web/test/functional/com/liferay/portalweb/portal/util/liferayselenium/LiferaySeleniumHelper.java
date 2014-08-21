@@ -820,7 +820,7 @@ public class LiferaySeleniumHelper {
 		captureScreen(
 			liferaySelenium.getProjectDirName() +
 				"portal-web/test-results/functional/screenshots/" +
-				_screenshotCount + ".jpg");
+					_screenshotCount + ".jpg");
 	}
 
 	public static void saveScreenshotBeforeAction(
@@ -834,7 +834,7 @@ public class LiferaySeleniumHelper {
 		captureScreen(
 			liferaySelenium.getProjectDirName() +
 				"portal-web/test-results/functional/screenshots/" +
-				"ScreenshotBeforeAction" + _screenshotErrorCount + ".jpg");
+					"ScreenshotBeforeAction" + _screenshotErrorCount + ".jpg");
 	}
 
 	public static void sendEmail(
