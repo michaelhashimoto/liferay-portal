@@ -10,7 +10,7 @@
 		<var name="entryContent" value="Blogs Entry Content" />
 		<var name="entryTitle" value="Blogs Entry Title" />
 
-		<execute macro="Page#gotoContentCP">
+		<execute macro="Page#gotoCP">
 			<var name="portletName" value="Blogs" />
 		</execute>
 
@@ -19,7 +19,7 @@
 			<var name="entryTitle" value="${entryTitle}" />
 		</execute>
 
-		<execute macro="Page#gotoContentCP">
+		<execute macro="Page#gotoCP">
 			<var name="portletName" value="Blogs" />
 		</execute>
 
@@ -28,7 +28,7 @@
 			<var name="entryTitle" value="${entryTitle}" />
 		</execute>
 
-		<execute macro="Page#gotoContentCP">
+		<execute macro="Page#gotoCP">
 			<var name="portletName" value="Blogs" />
 		</execute>
 
@@ -38,15 +38,13 @@
 
 		<var name="key_entryComment" value="${entryComment}" />
 
-		<execute action="CPBlogsEntry#assertTextEquals" locator-key1="ENTRY_TITLE_LINK" value1="${entryTitle}" />
-		<execute action="CPBlogsEntry#mouseOver" locator-key1="COMMENT" />
-		<execute action="CPBlogsEntry#assertClick" locator-key1="COMMENT_DELETE_1" value1="Delete" />
+		<execute action="CPBlogsEntry#assertClick" locator-key1="COMMENT_DELETE" value1="Delete" />
 
 		<var method="selenium#getAlert()" name="string" />
 
 		<execute macro="TestUtils#assertEquals">
 			<var name="actual" value="${string}" />
-			<var name="expected" value="Are you sure you want to delete this? It will be deleted immediately." />
+			<var name="expected" value="Are you sure you want to delete this?" />
 		</execute>
 	</command>
 
@@ -54,7 +52,7 @@
 		<var name="entryContent" value="Blogs Entry Content" />
 		<var name="entryTitle" value="Blogs Entry Title" />
 
-		<execute macro="Page#gotoContentCP">
+		<execute macro="Page#gotoCP">
 			<var name="portletName" value="Blogs" />
 		</execute>
 
@@ -75,7 +73,7 @@
 		<var name="entryContent" value="Blogs Entry Content" />
 		<var name="entryTitle" value="Blogs Entry Title" />
 
-		<execute macro="Page#gotoContentCP">
+		<execute macro="Page#gotoCP">
 			<var name="portletName" value="Blogs" />
 		</execute>
 
@@ -95,7 +93,7 @@
 	</command>
 
 	<command name="GetCurrentDay" priority="5">
-		<execute macro="Page#gotoContentCP">
+		<execute macro="Page#gotoCP">
 			<var name="portletName" value="Blogs" />
 		</execute>
 
@@ -110,7 +108,7 @@
 	</command>
 
 	<command name="GetCurrentMonth" priority="5">
-		<execute macro="Page#gotoContentCP">
+		<execute macro="Page#gotoCP">
 			<var name="portletName" value="Blogs" />
 		</execute>
 
@@ -128,7 +126,7 @@
 	</command>
 
 	<command name="GetCurrentYear" priority="5">
-		<execute macro="Page#gotoContentCP">
+		<execute macro="Page#gotoCP">
 			<var name="portletName" value="Blogs" />
 		</execute>
 
@@ -143,7 +141,7 @@
 	</command>
 
 	<!--<command name="GetFirstNumber" priority="5">
-		<execute macro="Page#gotoContentCP">
+		<execute macro="Page#gotoCP">
 			<var name="portletName" value="Blogs" />
 		</execute>
 
@@ -158,7 +156,7 @@
 	</command>
 
 	<command name="GetFirstNumberIncrement" priority="5">
-		<execute macro="Page#gotoContentCP">
+		<execute macro="Page#gotoCP">
 			<var name="portletName" value="Blogs" />
 		</execute>
 
@@ -211,7 +209,7 @@
 		<var name="entryContent" value="Blogs Entry Content" />
 		<var name="entryTitle" value="Blogs Entry Title" />
 
-		<execute macro="Page#gotoContentCP">
+		<execute macro="Page#gotoCP">
 			<var name="portletName" value="Blogs" />
 		</execute>
 
@@ -220,7 +218,7 @@
 			<var name="entryTitle" value="${entryTitle}" />
 		</execute>
 
-		<execute macro="Page#gotoContentCP">
+		<execute macro="Page#gotoCP">
 			<var name="portletName" value="Blogs" />
 		</execute>
 
@@ -242,7 +240,7 @@
 		<var name="entryContent" value="Blogs Entry Content" />
 		<var name="entryTitle" value="Blogs Entry Title" />
 
-		<execute macro="Page#gotoContentCP">
+		<execute macro="Page#gotoCP">
 			<var name="portletName" value="Blogs" />
 		</execute>
 
@@ -251,7 +249,7 @@
 			<var name="entryTitle" value="${entryTitle}" />
 		</execute>
 
-		<execute macro="Page#gotoContentCP">
+		<execute macro="Page#gotoCP">
 			<var name="portletName" value="Blogs" />
 		</execute>
 
@@ -260,7 +258,7 @@
 			<var name="entryTitle" value="${entryTitle}" />
 		</execute>
 
-		<execute macro="Page#gotoContentCP">
+		<execute macro="Page#gotoCP">
 			<var name="portletName" value="Blogs" />
 		</execute>
 
@@ -271,8 +269,7 @@
 		<var name="key_entryComment" value="${entryComment}" />
 
 		<execute action="CPBlogsEntry#assertTextEquals" locator-key1="ENTRY_TITLE_LINK" value1="${entryTitle}" />
-		<execute action="CPBlogsEntry#mouseOver" locator-key1="COMMENT" />
-		<execute action="CPBlogsEntry#assertClick" locator-key1="COMMENT_DELETE_1" value1="Delete" />
+		<execute action="CPBlogsEntry#assertClick" locator-key1="COMMENT_DELETE" value1="Delete" />
 
 		<var method="selenium#isAlertPresent()" name="alert" />
 
@@ -287,7 +284,7 @@
 		<var name="entryContent" value="Blogs Entry Content" />
 		<var name="entryTitle" value="Blogs Entry Title" />
 
-		<execute macro="Page#gotoContentCP">
+		<execute macro="Page#gotoCP">
 			<var name="portletName" value="Blogs" />
 		</execute>
 
@@ -336,7 +333,7 @@
 		<var name="entryContent" value="Blogs Entry Content" />
 		<var name="entryTitle" value="Blogs Entry Title" />
 
-		<execute macro="Page#gotoContentCP">
+		<execute macro="Page#gotoCP">
 			<var name="portletName" value="Blogs" />
 		</execute>
 
@@ -357,7 +354,7 @@
 		<var name="entryContent" value="Blogs Entry Content" />
 		<var name="entryTitle" value="Blogs Entry Title" />
 
-		<execute macro="Page#gotoContentCP">
+		<execute macro="Page#gotoCP">
 			<var name="portletName" value="Blogs" />
 		</execute>
 
@@ -366,7 +363,7 @@
 			<var name="entryTitle" value="${entryTitle}" />
 		</execute>
 
-		<execute macro="Page#gotoContentCP">
+		<execute macro="Page#gotoCP">
 			<var name="portletName" value="Blogs" />
 		</execute>
 
@@ -396,7 +393,7 @@
 		<var name="entryContent" value="Blogs Entry Content" />
 		<var name="entryTitle" value="Blogs Entry Title" />
 
-		<execute macro="Page#gotoContentCP">
+		<execute macro="Page#gotoCP">
 			<var name="portletName" value="Blogs" />
 		</execute>
 
@@ -405,7 +402,7 @@
 			<var name="entryTitle" value="${entryTitle}" />
 		</execute>
 
-		<execute macro="Page#gotoContentCP">
+		<execute macro="Page#gotoCP">
 			<var name="portletName" value="Blogs" />
 		</execute>
 
@@ -435,7 +432,7 @@
 		<var name="entryContent" value="Blogs Entry Content" />
 		<var name="entryTitle" value="Blogs Entry Title" />
 
-		<execute macro="Page#gotoContentCP">
+		<execute macro="Page#gotoCP">
 			<var name="portletName" value="Blogs" />
 		</execute>
 
@@ -444,7 +441,7 @@
 			<var name="entryTitle" value="${entryTitle}" />
 		</execute>
 
-		<execute macro="Page#gotoContentCP">
+		<execute macro="Page#gotoCP">
 			<var name="portletName" value="Blogs" />
 		</execute>
 
@@ -471,7 +468,9 @@
 	</command>-->
 
 	<command name="IsTextNotPresent" priority="5">
-		<var method="selenium#isTextNotPresent('Site Administrator')" name="string" />
+		<execute macro="Page#openURL" />
+
+		<var method="selenium#isTextPresent('Please select a tool from the left menu.')" name="string" />
 
 		<execute macro="TestUtils#assertEquals">
 			<var name="actual" value="${string}" />
@@ -480,9 +479,12 @@
 	</command>
 
 	<command name="IsTextPresent" priority="5">
-		<execute action="Dockbar#assertClick" locator-key1="ADMIN" value1="Admin" />
+		<execute macro="Page#openURL" />
 
-		<var method="selenium#isTextPresent('Site Administrator')" name="string" />
+		<execute action="Dockbar#mouseOver" locator-key1="GO_TO" />
+		<execute action="Dockbar#assertClick" locator-key1="GO_TO_CONTROL_PANEL" value1="Control Panel" />
+
+		<var method="selenium#isTextPresent('Please select a tool from the left menu.')" name="string" />
 
 		<execute macro="TestUtils#assertEquals">
 			<var name="actual" value="${string}" />
@@ -494,7 +496,7 @@
 		<var name="entryContent" value="Blogs Entry Content" />
 		<var name="entryTitle" value="Blogs Entry Title" />
 
-		<execute macro="Page#gotoContentCP">
+		<execute macro="Page#gotoCP">
 			<var name="portletName" value="Blogs" />
 		</execute>
 
@@ -503,7 +505,7 @@
 			<var name="entryTitle" value="${entryTitle}" />
 		</execute>
 
-		<execute macro="Page#gotoContentCP">
+		<execute macro="Page#gotoCP">
 			<var name="portletName" value="Blogs" />
 		</execute>
 
