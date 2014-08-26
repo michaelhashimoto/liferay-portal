@@ -69,6 +69,32 @@
 	<td>//tr[contains(.,'${key_entryTitle}')]/td/span[@title='Actions']/ul/li/strong/a/span</td>
 	<td></td>
 </tr>
+<tr>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<!--ENTRY_MENULIST-->
+<tr>
+	<td>ENTRY_MENULIST_VIEW</td>
+	<td>//a[@role='menuitem' and contains(.,'View')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ENTRY_MENULIST_EDIT</td>
+	<td>//a[@role='menuitem' and contains(.,'Edit')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ENTRY_MENULIST_PERMISSIONS</td>
+	<td>//a[@role='menuitem' and contains(.,'Permissions')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ENTRY_MENULIST_DELETE</td>
+	<td>//a[@role='menuitem' and contains(.,'Delete')]</td>
+	<td></td>
+</tr>
 </tbody>
 </table>
 </body>
