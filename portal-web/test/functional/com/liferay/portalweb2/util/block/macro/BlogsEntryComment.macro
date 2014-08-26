@@ -1,4 +1,16 @@
 <definition>
+	<command name="addCP">
+		<var name="key_entryTitle" value="${entryTitle}" />
+
+		<execute action="CPBlogs#assertClick" locator-key1="ENTRY_TABLE_TITLE" value1="${entryTitle}" />
+
+		<execute action="CPBlogsEntry#assertClick" locator-key1="COMMENTS_ADD" value1="Be the first." />
+		<execute action="CPBlogsEntry#type" locator-key1="COMMENTS_BODY_FIELD" value1="${entryComment}" />
+		<execute action="CPBlogsEntry#assertClick" locator-key1="COMMENTS_REPLY_BUTTON" value1="Reply" />
+		<execute action="CPBlogsEntry#assertTextEquals" locator-key1="COMMENTS_SUCCESS" value1="Your request processed successfully." />
+		<execute action="CPBlogsEntry#assertTextEquals" locator-key1="COMMENT_1" value1="${entryComment}" />
+	</command>
+
 	<command name="addPG">
 		<execute action="PGBlogs#assertClick" locator-key1="ENTRY_TITLE_1" value1="${entryTitle}" />
 
