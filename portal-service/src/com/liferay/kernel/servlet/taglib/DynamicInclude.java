@@ -12,17 +12,20 @@
  * details.
  */
 
-package com.liferay.portal.kernel.process;
+package com.liferay.kernel.servlet.taglib;
 
-import java.io.Serializable;
+import java.io.IOException;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
- * @author Shuyang Zhou
+ * @author Carlos Sierra Andrés
  */
-public interface ProcessExecutor {
+public interface DynamicInclude {
 
-	public <T extends Serializable> ProcessChannel<T> execute(
-			ProcessConfig processConfig, ProcessCallable<T> processCallable)
-		throws ProcessException;
+	public void include(
+			HttpServletRequest request, HttpServletResponse response)
+		throws IOException;
 
 }
