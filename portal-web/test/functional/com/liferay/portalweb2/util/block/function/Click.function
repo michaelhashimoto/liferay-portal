@@ -5,6 +5,10 @@
 		<execute function="MouseOver#mouseOver" />
 
 		<execute selenium="clickAt" />
+
+		<execute selenium="assertJavaScriptErrors" />
+
+		<execute selenium="assertLiferayErrors" />
 	</command>
 
 	<command name="clickAtAndWait">
@@ -13,6 +17,10 @@
 		<execute function="MouseOver#mouseOver" />
 
 		<execute selenium="clickAtAndWait" />
+
+		<execute selenium="assertJavaScriptErrors" />
+
+		<execute selenium="assertLiferayErrors" />
 	</command>
 
 	<command name="clickAtPause">
@@ -23,6 +31,10 @@
 		<execute selenium="clickAt" />
 
 		<execute argument1="1000" selenium="pause" />
+
+		<execute selenium="assertJavaScriptErrors" />
+
+		<execute selenium="assertLiferayErrors" />
 	</command>
 
 	<command name="makeVisibleClickAt">
@@ -31,6 +43,10 @@
 		<execute function="MouseOver#mouseOver" />
 
 		<execute selenium="clickAt" />
+
+		<execute selenium="assertJavaScriptErrors" />
+
+		<execute selenium="assertLiferayErrors" />
 	</command>
 
 	<command name="partialTextClickAt">
@@ -39,6 +55,10 @@
 		<execute function="MouseOver#mouseOver" />
 
 		<execute selenium="clickAt" />
+
+		<execute selenium="assertJavaScriptErrors" />
+
+		<execute selenium="assertLiferayErrors" />
 	</command>
 
 	<command name="partialTextClickAtAndWait">
@@ -47,30 +67,50 @@
 		<execute function="MouseOver#mouseOver" />
 
 		<execute selenium="clickAtAndWait" />
+
+		<execute selenium="assertJavaScriptErrors" />
+
+		<execute selenium="assertLiferayErrors" />
 	</command>
 
 	<command name="pauseClickAt">
 		<execute argument1="1000" selenium="pause" />
 
 		<execute function="Click#clickAt" />
+
+		<execute selenium="assertJavaScriptErrors" />
+
+		<execute selenium="assertLiferayErrors" />
 	</command>
 
 	<command name="pauseTextClickAt">
 		<execute argument1="1000" selenium="pause" />
 
 		<execute function="Click#textClickAt" />
+
+		<execute selenium="assertJavaScriptErrors" />
+
+		<execute selenium="assertLiferayErrors" />
 	</command>
 
 	<command name="pauseTextClickAtAndWait">
 		<execute argument1="1000" selenium="pause" />
 
 		<execute function="Click#textClickAtAndWait" />
+
+		<execute selenium="assertJavaScriptErrors" />
+
+		<execute selenium="assertLiferayErrors" />
 	</command>
 
 	<command name="sikuliClick">
 		<execute selenium="sikuliClick" />
 
 		<execute argument1="2000" selenium="pause" />
+
+		<execute selenium="assertJavaScriptErrors" />
+
+		<execute selenium="assertLiferayErrors" />
 	</command>
 
 	<command name="textClick">
@@ -79,6 +119,10 @@
 		<execute function="MouseOver#mouseOver" />
 
 		<execute selenium="click" />
+
+		<execute selenium="assertJavaScriptErrors" />
+
+		<execute selenium="assertLiferayErrors" />
 	</command>
 
 	<command name="textClickAndWait">
@@ -87,6 +131,10 @@
 		<execute function="MouseOver#mouseOver" />
 
 		<execute selenium="clickAndWait" />
+
+		<execute selenium="assertJavaScriptErrors" />
+
+		<execute selenium="assertLiferayErrors" />
 	</command>
 
 	<command name="textClickAt">
@@ -95,6 +143,10 @@
 		<execute function="MouseOver#mouseOver" />
 
 		<execute selenium="clickAt" />
+
+		<execute selenium="assertJavaScriptErrors" />
+
+		<execute selenium="assertLiferayErrors" />
 	</command>
 
 	<command name="textClickAtAndWait">
@@ -103,6 +155,10 @@
 		<execute function="MouseOver#mouseOver" />
 
 		<execute selenium="clickAtAndWait" />
+
+		<execute selenium="assertJavaScriptErrors" />
+
+		<execute selenium="assertLiferayErrors" />
 	</command>
 
 	<command name="textClickAtClickDockbar">
@@ -111,6 +167,10 @@
 		<execute argument1="//script[contains(@src,'/aui/aui-button-item/aui-button-item-min.js')]" selenium="waitForElementPresent" />
 
 		<execute function="Click#textClickAt" />
+
+		<execute selenium="assertJavaScriptErrors" />
+
+		<execute selenium="assertLiferayErrors" />
 	</command>
 
 	<command name="valueClickAt">
@@ -119,6 +179,10 @@
 		<execute function="MouseOver#mouseOver" />
 
 		<execute selenium="clickAt" />
+
+		<execute selenium="assertJavaScriptErrors" />
+
+		<execute selenium="assertLiferayErrors" />
 	</command>
 
 	<command name="valueClickAtAndWait">
@@ -127,12 +191,20 @@
 		<execute function="MouseOver#mouseOver" />
 
 		<execute selenium="clickAtAndWait" />
+
+		<execute selenium="assertJavaScriptErrors" />
+
+		<execute selenium="assertLiferayErrors" />
 	</command>
 
 	<command name="valueClickAtAndWaitCKEditor">
 		<execute argument1="//a[@class='cke_button_cut cke_disabled']" selenium="waitForVisible" />
 
 		<execute function="Click#valueClickAtAndWait" />
+
+		<execute selenium="assertJavaScriptErrors" />
+
+		<execute selenium="assertLiferayErrors" />
 	</command>
 
 	<command name="valueClickAtAndWaitClickAtAndWait">
@@ -145,6 +217,10 @@
 		<execute function="MouseOver#mouseOver" />
 
 		<execute selenium="clickAtAndWait" />
+
+		<execute selenium="assertJavaScriptErrors" />
+
+		<execute selenium="assertLiferayErrors" />
 	</command>
 
 	<command name="valueClickAtPause">
@@ -155,5 +231,9 @@
 		<execute selenium="clickAt" />
 
 		<execute argument1="1000" selenium="pause" />
+
+		<execute selenium="assertJavaScriptErrors" />
+
+		<execute selenium="assertLiferayErrors" />
 	</command>
 </definition>
