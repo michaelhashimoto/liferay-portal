@@ -13,6 +13,12 @@
 		</case>
 	</command>
 
+	<command name="assertClickNoError">
+		<case locator-key1="MICROBLOGS_ENTRY_DELETE_LINK">
+			<execute function="AssertClickNoError#makeVisibleClick" />
+		</case>
+	</command>
+
 	<command name="assertTextEquals">
 		<case locator-key1="MICROBLOGS_ENTRY_AUTHOR">
 			<execute function="AssertTextEquals#assertPartialText" />

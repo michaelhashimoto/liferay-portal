@@ -22,4 +22,20 @@
 
 		<execute selenium="click" />
 	</command>
+
+	<command name="makeVisibleClick">
+		<execute selenium="makeVisible" />
+
+		<execute selenium="waitForVisible" />
+
+		<execute selenium="mouseOver" />
+
+		<execute function="AssertClickNoError#assertTextClick" />
+	</command>
+
+	<command name="pauseAssertTextClick">
+		<execute argument1="1000" selenium="pause" />
+
+		<execute function="AssertClickNoError#assertTextClick" />
+	</command>
 </definition>
