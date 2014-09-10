@@ -147,7 +147,7 @@
 		<execute action="CPDynamicdatalistsDatadefinitions#type" locator-key1="BASIC_SEARCH_FIELD" value1="${dataDefinitionName}" />
 		<execute action="CPDynamicdatalistsDatadefinitions#assertClick" locator-key1="BASIC_SEARCH_BUTTON" value1="Search" />
 		<execute action="CPDynamicdatalistsDatadefinitions#assertClick" locator-key1="DATA_DEFINITION_TABLE_ACTIONS_1" value1="Actions" />
-		<execute action="CPDynamicdatalistsDatadefinitions#assertClick" locator-key1="DATA_DEFINITION_MENULIST_DELETE" value1="Delete" />
+		<execute action="CPDynamicdatalistsDatadefinitions#assertClickNoError" locator-key1="DATA_DEFINITION_MENULIST_DELETE" value1="Delete" />
 		<execute action="CPDynamicdatalistsDatadefinitions#confirm" locator-key1="CONFIRMATION" value1="Are you sure you want to delete this?" />
 		<execute action="CPDynamicdatalistsDatadefinitions#assertTextEquals" locator-key1="SUCCESS_MESSAGE" value1="Your request completed successfully." />
 		<execute action="CPDynamicdatalistsDatadefinitions#type" locator-key1="BASIC_SEARCH_FIELD" value1="${dataDefinitionName}" />
@@ -190,7 +190,7 @@
 			<condition action="CPDynamicdatalistsDatadefinitions#isElementPresent" locator-key1="DATA_DEFINITION_TABLE_ACTIONS_1" />
 			<then>
 				<execute action="CPDynamicdatalistsDatadefinitions#assertClick" locator-key1="DATA_DEFINITION_TABLE_ACTIONS_1" value1="Actions" />
-				<execute action="CPDynamicdatalistsDatadefinitions#assertClick" locator-key1="DATA_DEFINITION_MENULIST_DELETE" value1="Delete" />
+				<execute action="CPDynamicdatalistsDatadefinitions#assertClickNoError" locator-key1="DATA_DEFINITION_MENULIST_DELETE" value1="Delete" />
 				<execute action="CPDynamicdatalistsDatadefinitions#confirm" locator-key1="CONFIRMATION" value1="Are you sure you want to delete this?" />
 				<execute action="CPDynamicdatalistsDatadefinitions#assertTextEquals" locator-key1="SUCCESS_MESSAGE" value1="Your request completed successfully." />
 			</then>

@@ -11,7 +11,7 @@
 
 	<command name="deleteCP">
 		<execute action="CPUsergroups#assertClick" locator-key1="USER_GROUP_TABLE_ACTIONS_1" value1="Actions" />
-		<execute action="CPUsergroups#assertClick" locator-key1="USER_GROUP_MENULIST_DELETE" value1="Delete" />
+		<execute action="CPUsergroups#assertClickNoError" locator-key1="USER_GROUP_MENULIST_DELETE" value1="Delete" />
 		<execute action="CPUsergroups#confirm" locator-key1="CONFIRMATION" value1="Are you sure you want to delete this?" />
 		a<execute action="CPUsergroups#assertTextEquals" locator-key1="SUCCESS_MESSAGE" value1="Your request completed successfully." />
 		<execute action="CPUsergroups#assertElementNotPresent" locator-key1="USER_GROUP_TABLE_NAME_1" />
@@ -38,7 +38,7 @@
 			<then>
 				<execute action="CPUsergroups#click" locator-key1="USER_GROUP_TABLE_ALL_CHECKBOX" />
 				<execute action="CPUsergroups#assertChecked" locator-key1="USER_GROUP_TABLE_ALL_CHECKBOX" />
-				<execute action="CPUsergroups#assertClick" locator-key1="DELETE_BUTTON" value1="Delete" />
+				<execute action="CPUsergroups#assertClickNoError" locator-key1="DELETE_BUTTON" value1="Delete" />
 				<execute action="CPUsergroups#confirm" locator-key1="CONFIRMATION" value1="Are you sure you want to delete this?" />
 				<execute action="CPUsergroups#assertTextEquals" locator-key1="SUCCESS_MESSAGE" value1="Your request completed successfully." />
 				<execute action="CPUsergroups#assertTextEquals" locator-key1="INFO_MESSAGE" value1="No user groups were found." />

@@ -110,7 +110,7 @@
 			<condition action="CPWebcontent#isElementPresent" locator-key1="WEB_CONTENT_TABLE_ALL_CHECKBOX" />
 			<then>
 				<execute action="CPWebcontent#check" locator-key1="WEB_CONTENT_TABLE_ALL_CHECKBOX" />
-				<execute action="CPWebcontent#assertClick" locator-key1="DELETE_BUTTON" value1="Delete" />
+				<execute action="CPWebcontent#assertClickNoError" locator-key1="DELETE_BUTTON" value1="Delete" />
 				<execute action="CPWebcontent#confirm" locator-key1="CONFIRMATION" value1="Are you sure you want to delete the selected web content?" />
 				<execute action="CPWebcontent#assertTextEquals" locator-key1="SUCCESS_MESSAGE" value1="Your request completed successfully." />
 			</then>

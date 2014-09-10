@@ -14,7 +14,7 @@
 	<command name="deleteCP">
 		<execute action="CPWiki#assertTextEquals" locator-key1="WIKI_NODE_TABLE_WIKI_2" value1="${wikiNodeName}" />
 		<execute action="CPWiki#assertClick" locator-key1="WIKI_NODE_TABLE_ACTIONS_2" value1="Actions" />
-		<execute action="CPWiki#assertClick" locator-key1="WIKI_NODE_MENULIST_DELETE" value1="Delete" />
+		<execute action="CPWiki#assertClickNoError" locator-key1="WIKI_NODE_MENULIST_DELETE" value1="Delete" />
 		<execute action="CPWiki#confirm" locator-key1="CONFIRMATION" value1="Are you sure you want to delete this?" />
 		<execute action="CPWiki#assertTextNotPresent" value1="${wikiNodeName}" />
 	</command>
@@ -42,7 +42,7 @@
 			<condition action="CPWiki#isElementPresent" locator-key1="WIKI_NODE_TABLE_ACTIONS_2" value1="Actions" />
 			<then>
 				<execute action="CPWiki#assertClick" locator-key1="WIKI_NODE_TABLE_ACTIONS_2" value1="Actions" />
-				<execute action="CPWiki#assertClick" locator-key1="WIKI_NODE_MENULIST_DELETE" value1="Delete" />
+				<execute action="CPWiki#assertClickNoError" locator-key1="WIKI_NODE_MENULIST_DELETE" value1="Delete" />
 				<execute action="CPWiki#confirm" locator-key1="CONFIRMATION" value1="Are you sure you want to delete this?" />
 			</then>
 		</while>

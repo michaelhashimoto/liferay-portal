@@ -28,7 +28,7 @@
 			<condition action="CPWebcontentStructures#isElementPresent" locator-key1="STRUCTURE_TABLE_ALL_CHECKBOX" />
 			<then>
 				<execute action="CPWebcontentStructures#check" locator-key1="STRUCTURE_TABLE_ALL_CHECKBOX" />
-				<execute action="CPWebcontentStructures#assertClick" locator-key1="DELETE_BUTTON" value1="Delete" />
+				<execute action="CPWebcontentStructures#assertClickNoError" locator-key1="DELETE_BUTTON" value1="Delete" />
 				<execute action="CPWebcontentStructures#confirm" locator-key1="CONFIRMATION" value1="Are you sure you want to delete the selected structures?" />
 				<execute action="CPWebcontentStructures#assertTextEquals" locator-key1="SUCCESS_MESSAGE" value1="Your request completed successfully." />
 			</then>

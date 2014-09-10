@@ -50,7 +50,7 @@
 			<condition action="CPWebcontentTemplates#isElementPresent" locator-key1="TEMPLATE_TABLE_ALL_CHECKBOX" />
 			<then>
 				<execute action="CPWebcontentTemplates#check" locator-key1="TEMPLATE_TABLE_ALL_CHECKBOX" />
-				<execute action="CPWebcontentTemplates#assertClick" locator-key1="DELETE_BUTTON" value1="Delete" />
+				<execute action="CPWebcontentTemplates#assertClickNoError" locator-key1="DELETE_BUTTON" value1="Delete" />
 				<execute action="CPWebcontentTemplates#confirm" locator-key1="CONFIRMATION" value1="Are you sure you want to delete the selected templates?" />
 				<execute action="CPWebcontentTemplates#assertTextEquals" locator-key1="SUCCESS_MESSAGE" value1="Your request completed successfully." />
 			</then>

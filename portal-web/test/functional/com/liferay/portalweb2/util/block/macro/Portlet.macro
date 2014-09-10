@@ -31,7 +31,7 @@
 			<var name="pageName" value="${pageName}" />
 		</execute>
 
-		<execute action="Home#click" locator-key1="PORTLET_REMOVE_1" />
+		<execute action="Home#clickNoError" locator-key1="PORTLET_REMOVE_1" />
 		<execute action="Home#confirm" locator-key1="CONFIRMATION" value1="Are you sure you want to remove this component?" />
 		<execute action="Home#assertElementNotPresent" locator-key1="PORTLET_1" />
 	</command>

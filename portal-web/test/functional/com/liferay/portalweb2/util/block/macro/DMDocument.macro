@@ -126,7 +126,7 @@
 		<execute action="CPDocumentsandmedia#click" locator-key1="DOCUMENT_CONTAINER_DOCUMENT1_CHECKBOX" />
 		<execute action="CPDocumentsandmedia#assertElementPresent" locator-key1="ACTIONS" />
 		<execute action="CPDocumentsandmedia#assertClick" locator-key1="ACTIONS" value1="Actions" />
-		<execute action="CPDocumentsandmedia#assertClick" locator-key1="ACTIONS_MENULIST_DELETE" value1="Delete" />
+		<execute action="CPDocumentsandmedia#assertClickNoError" locator-key1="ACTIONS_MENULIST_DELETE" value1="Delete" />
 		<execute action="CPDocumentsandmedia#confirm" locator-key1="CONFIRMATION" value1="Are you sure you want to delete the selected entries?" />
 		<execute action="CPDocumentsandmedia#assertTextEquals" locator-key1="REQUEST" value1="Your request completed successfully." />
 
@@ -147,7 +147,7 @@
 		<execute action="PGDocumentsandmedia#click" locator-key1="ENTRIES_DOCUMENT" />
 
 		<execute action="PGDocumentsandmediaDocument#assertTextEquals" locator-key1="DOCUMENT_INFO_TITLE" value1="${dmDocumentTitle}" />
-		<execute action="PGDocumentsandmediaDocument#assertClick" locator-key1="TOOLBAR_DELETE_BUTTON" value1="Delete" />
+		<execute action="PGDocumentsandmediaDocument#assertClickNoError" locator-key1="TOOLBAR_DELETE_BUTTON" value1="Delete" />
 		<execute action="PGDocumentsandmediaDocument#confirm" locator-key1="CONFIRMATION" value1="Are you sure you want to delete this entry?" />
 		<execute action="PGDocumentsandmediaDocument#assertTextEquals" locator-key1="SUCCESS_MESSAGE" value1="Your request completed successfully." />
 		<execute action="PGDocumentsandmediaDocument#assertElementNotPresent" locator-key1="DOCUMENT_INFO_TITLE" />
@@ -156,7 +156,7 @@
 	<command name="deletePGviaDMD">
 		<execute action="PGDocumentlibrarydisplay#assertTextEquals" locator-key1="DOCUMENTS_TABLE_NAME_1" value1="${dmdDocumentTitle}" />
 		<execute action="PGDocumentlibrarydisplay#click" locator-key1="DOCUMENTS_TABLE_ACTIONS_BUTTON_1" />
-		<execute action="PGDocumentlibrarydisplay#assertClick" locator-key1="DOCUMENT_MENULIST_DELETE" value1="Delete" />
+		<execute action="PGDocumentlibrarydisplay#assertClickNoError" locator-key1="DOCUMENT_MENULIST_DELETE" value1="Delete" />
 		<execute action="PGDocumentlibrarydisplay#confirm" locator-key1="CONFIRMATION" value1="Are you sure you want to delete this?" />
 		<execute action="PGDocumentlibrarydisplay#assertTextEquals" locator-key1="SUCCESS_MESSAGE" value1="Your request completed successfully." />
 		<execute action="PGDocumentlibrarydisplay#assertTextNotPresent" value1="${dmdDocumentTitle}" />
@@ -245,7 +245,7 @@
 				<execute action="CPDocumentsandmedia#check" locator-key1="SELECT_ALL_ROWS_CHECKBOX" />
 				<execute action="CPDocumentsandmedia#assertClick" locator-key1="ACTIONS" value1="Actions" />
 				<execute action="CPDocumentsandmedia#assertElementPresent" locator-key1="ACTIONS_MENULIST_DELETE" />
-				<execute action="CPDocumentsandmedia#assertClick" locator-key1="ACTIONS_MENULIST_DELETE" value1="Delete" />
+				<execute action="CPDocumentsandmedia#assertClickNoError" locator-key1="ACTIONS_MENULIST_DELETE" value1="Delete" />
 				<execute action="CPDocumentsandmedia#confirm" locator-key1="CONFIRMATION" value1="Are you sure you want to delete the selected entries?" />
 				<execute action="CPDocumentsandmedia#assertTextEquals" locator-key1="REQUEST" value1="Your request completed successfully." />
 			</then>
@@ -263,7 +263,7 @@
 				<execute action="PGDocumentsandmedia#check" locator-key1="TOOLBAR_SELECT_ALL_CHECKBOX" />
 				<execute action="PGDocumentsandmedia#assertClick" locator-key1="TOOLBAR_ACTIONS" value1="Actions" />
 				<execute action="PGDocumentsandmedia#assertElementPresent" locator-key1="ACTIONS_MENULIST_DELETE" />
-				<execute action="PGDocumentsandmedia#assertClick" locator-key1="ACTIONS_MENULIST_DELETE" value1="Delete" />
+				<execute action="PGDocumentsandmedia#assertClickNoError" locator-key1="ACTIONS_MENULIST_DELETE" value1="Delete" />
 				<execute action="PGDocumentsandmedia#confirm" locator-key1="CONFIRMATION" value1="Are you sure you want to delete the selected entries?" />
 				<execute action="PGDocumentsandmedia#assertTextEquals" locator-key1="SUCCESS_MESSAGE" value1="Your request completed successfully." />
 			</then>
@@ -279,7 +279,7 @@
 			<condition action="PGDocumentlibrarydisplay#isElementPresent" locator-key1="DOCUMENTS_TABLE_ACTIONS_BUTTON_1" />
 			<then>
 				<execute action="PGDocumentlibrarydisplay#click" locator-key1="DOCUMENTS_TABLE_ACTIONS_BUTTON_1" />
-				<execute action="PGDocumentlibrarydisplay#assertClick" locator-key1="DOCUMENT_MENULIST_DELETE" value1="Delete" />
+				<execute action="PGDocumentlibrarydisplay#assertClickNoError" locator-key1="DOCUMENT_MENULIST_DELETE" value1="Delete" />
 				<execute action="PGDocumentlibrarydisplay#confirm" locator-key1="CONFIRMATION" value1="Are you sure you want to delete this?" />
 				<execute action="PGDocumentlibrarydisplay#assertTextEquals" locator-key1="SUCCESS_MESSAGE" value1="Your request completed successfully." />
 			</then>

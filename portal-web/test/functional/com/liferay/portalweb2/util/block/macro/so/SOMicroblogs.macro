@@ -237,7 +237,7 @@
 	<command name="deleteMicroblogsEntry">
 		<execute action="SOMicroblogs#mouseOver" locator-key1="MICROBLOGS_ENTRY_EDIT" />
 		<execute action="SOMicroblogs#mouseOver" locator-key1="MICROBLOGS_ENTRY_DELETE" />
-		<execute action="SOMicroblogs#click" locator-key1="MICROBLOGS_ENTRY_DELETE_LINK" value1="Delete" />
+		<execute action="SOMicroblogs#assertClickNoError" locator-key1="MICROBLOGS_ENTRY_DELETE_LINK" value1="Delete" />
 		<execute action="SOMicroblogs#confirm" locator-key1="CONFIRMATION" value1="Are you sure you want to delete this post?" />
 	</command>
 
@@ -291,7 +291,7 @@
 			<then>
 				<execute action="SOMicroblogs#mouseOver" locator-key1="MICROBLOGS_ENTRY_EDIT" />
 				<execute action="SOMicroblogs#mouseOver" locator-key1="MICROBLOGS_ENTRY_DELETE" />
-				<execute action="SOMicroblogs#click" locator-key1="MICROBLOGS_ENTRY_DELETE_LINK" value1="Delete" />
+				<execute action="SOMicroblogs#assertClickNoError" locator-key1="MICROBLOGS_ENTRY_DELETE_LINK" value1="Delete" />
 				<execute action="SOMicroblogs#confirm" locator-key1="CONFIRMATION" value1="Are you sure you want to delete this post?" />
 			</then>
 		</while>

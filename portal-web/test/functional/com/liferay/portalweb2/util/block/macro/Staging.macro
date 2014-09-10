@@ -59,7 +59,7 @@
 		</if>
 
 		<execute action="PGStagingPublishToLiveNow#check" locator-key1="PUBLISH_RANGE_ALL" />
-		<execute action="PGStagingPublishToLiveNow#assertClick" locator-key1="PUBLISH_BUTTON" value1="Publish" />
+		<execute action="PGStagingPublishToLiveNow#assertClickNoError" locator-key1="PUBLISH_BUTTON" value1="Publish" />
 		<execute action="PGStagingPublishToLiveNow#confirm" locator-key1="CONFIRMATION" value1="Are you sure you want to publish these pages?" />
 		<execute action="PGStagingPublishToLiveNow#assertTextEquals" locator-key1="SUCCESS_MESSAGE" value1="Your request completed successfully." />
 		<execute action="PGStagingPublishToLiveNow#click" locator-key1="CLOSE_BUTTON" value1="X" />
