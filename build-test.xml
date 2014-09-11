@@ -6056,9 +6056,9 @@ database.version=9.7</echo>
 				for (int i = 0; i < packageGroupCount; i++) {
 					Set packageGroup = packageGroups.get(i);
 
-					sb.append("test.package.group[");
+					sb.append("TEST_PACKAGE_GROUP_");
 					sb.append(i);
-					sb.append("]=");
+					sb.append("=");
 					sb.append(StringUtil.merge(packageGroup));
 					sb.append("\n");
 				}
