@@ -6284,7 +6284,7 @@ cluster.link.bind.addr["cluster-link-udp"]=127.0.0.1
 				<antcall target="build-test-results-xml" />
 
 				<first id="first">
-					<fileset dir="portal-web/test-results/functional/" includes="TEST-com.liferay.portalweb2.*.xml" />
+					<fileset dir="portal-web/test-results/functional/" includes="TEST-com.liferay.portalweb.portal.*.xml" />
 				</first>
 
 				<property name="jenkins.results.xml.file" value="${toString:first}" />
