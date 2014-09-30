@@ -4081,7 +4081,7 @@ create database lportal2 character set utf8;</echo>
 				</and>
 			</or>
 			<then>
-				<ant dir="portal-web" target="build-selenium-new" inheritAll="false" />
+				<ant dir="portal-web" target="build-selenium" inheritAll="false" />
 			</then>
 		</if>
 	</target>
@@ -5388,7 +5388,7 @@ plugins.includes=${plugins.includes}</echo>
 			</then>
 		</if>
 
-		<ant dir="portal-impl" target="build-selenium-new-block" inheritAll="false" />
+		<ant dir="portal-impl" target="build-selenium-block" inheritAll="false" />
 
 		<antcall target="compile-test" inheritAll="false" />
 
