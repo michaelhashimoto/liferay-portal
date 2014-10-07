@@ -6237,6 +6237,8 @@ cluster.link.bind.addr["cluster-link-udp"]=127.0.0.1
 			<else>
 				<antcallback return="test.simple.class.name" target="parse-test-class" />
 
+				<var name="test.class" unset="true" />
+
 				<ant dir="portal-web" target="test-class" inheritAll="false">
 					<property name="test.class" value="${test.simple.class.name}" />
 				</ant>
