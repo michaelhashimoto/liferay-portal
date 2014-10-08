@@ -1030,6 +1030,12 @@ public class LiferaySeleniumHelper {
 			LiferaySelenium liferaySelenium, String image, String value)
 		throws Exception {
 
+		_screen.click(
+			liferaySelenium.getProjectDirName() +
+			liferaySelenium.getSikuliImagesDirName() + image);
+
+		_screen.type("a", Key.CTRL);
+
 		sikuliType(
 			liferaySelenium, image,
 			liferaySelenium.getProjectDirName() +
@@ -1057,6 +1063,12 @@ public class LiferaySeleniumHelper {
 	public static void sikuliUploadTempFile(
 			LiferaySelenium liferaySelenium, String image, String value)
 		throws Exception {
+
+		_screen.click(
+			liferaySelenium.getProjectDirName() +
+			liferaySelenium.getSikuliImagesDirName() + image);
+
+		_screen.type("a", Key.CTRL);
 
 		String slash = "/";
 
