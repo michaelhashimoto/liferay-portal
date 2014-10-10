@@ -207,6 +207,8 @@ ${app.server.tomcat.dir}, then run "ant -buildfile build-dist.xml unzip-tomcat".
 		<antcall target="deploy-additional-jars" />
 		<antcall target="update-app-server-scripts" />
 
+		<antcall target="update-app-server-scripts" />
+
 		<mkdir dir="${app.server.log.dir}" />
 		<mkdir dir="${app.server.temp.dir}" />
 		<mkdir dir="${app.server.work.dir}" />
