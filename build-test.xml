@@ -6242,32 +6242,33 @@ cluster.link.bind.addr["cluster-link-udp"]=127.0.0.1
 
 				StringBuilder sb = new StringBuilder();
 
-				Set allPackageNames = getPackageNames();
 				int allPackageGroupsSize = Integer.parseInt(project.getProperty("test.package.groups.size"));
 
-				String isolatedPackageNamesString = project.getProperty("test.package.names.isolated");
+				String longRunningPackageNamesString = project.getProperty("test.package.names.long.running");
 
-				String[] isolatedPackageNames = isolatedPackageNamesString.split(",");
+				String[] longRunningPackageNames = longRunningPackageNamesString.split(",");
 
-				int isolatedPackageGroupsSize = isolatedPackageNames.length;
+				int longRunningPackageGroupsSize = longRunningPackageNames.length;
 
-				if (isolatedPackageNamesString.equals("")) {
-					isolatedPackageGroupsSize = 0;
+				if (longRunningPackageNamesString.equals("")) {
+					longRunningPackageGroupsSize = 0;
 				}
 
-				int connectedPackageGroupsSize = allPackageGroupsSize - isolatedPackageGroupsSize;
+				int shortRunningPackageGroupsSize = allPackageGroupsSize - longRunningPackageGroupsSize;
 
-				Set connectedPackageNames = new TreeSet();
+				Set shortRunningPackageNames = new TreeSet();
 
-				connectedPackageNames.addAll(allPackageNames);
+				Set allPackageNames = getPackageNames();
 
-				for (String isolatedPackageName : isolatedPackageNames) {
-					connectedPackageNames.remove(isolatedPackageName);
+				shortRunningPackageNames.addAll(allPackageNames);
+
+				for (String longRunningPackageName : longRunningPackageNames) {
+					shortRunningPackageNames.remove(longRunningPackageName);
 				}
 
-				Map packageGroups = getPackageGroups(connectedPackageNames, connectedPackageGroupsSize);
+				Map packageGroups = getPackageGroups(shortRunningPackageNames, shortRunningPackageGroupsSize);
 
-				for (int i = 0; i < connectedPackageGroupsSize; i++) {
+				for (int i = 0; i < shortRunningPackageGroupsSize; i++) {
 					Set packageGroup = packageGroups.get(i);
 
 					sb.append("TEST_PACKAGE_GROUP_");
@@ -6289,13 +6290,11 @@ cluster.link.bind.addr["cluster-link-udp"]=127.0.0.1
 					sb.append("\n\n");
 				}
 
-				for (int i = 0; i < isolatedPackageGroupsSize; i++) {
-					int j = connectedPackageGroupsSize + i;
-
+				for (int i = 0; i < longRunningPackageGroupsSize; i++) {
 					sb.append("TEST_PACKAGE_GROUP_");
-					sb.append(j);
+					sb.append(shortRunningPackageGroupsSize + i);
 					sb.append("=");
-					sb.append(isolatedPackageNames[i]);
+					sb.append(longRunningPackageNames[i]);
 					sb.append("\n\n");
 				}
 
