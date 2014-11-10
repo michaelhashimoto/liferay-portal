@@ -6423,6 +6423,7 @@ cluster.link.bind.addr["cluster-link-udp"]=127.0.0.1
 
 				<ant dir="portal-web" target="test-method">
 					<property name="test.class" value="${test.simple.class.name}" />
+					<property name="test.dir" value="functional-generated" />
 					<property name="test.methods" value="${test.method.name}" />
 					<property name="test.type" value="functional" />
 				</ant>
@@ -6434,6 +6435,7 @@ cluster.link.bind.addr["cluster-link-udp"]=127.0.0.1
 
 				<ant dir="portal-web" target="test-class" inheritAll="false">
 					<property name="test.class" value="${test.simple.class.name}" />
+					<property name="test.dir" value="functional-generated" />
 				</ant>
 			</else>
 		</if>
