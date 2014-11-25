@@ -6536,7 +6536,7 @@ cluster.link.bind.addr["cluster-link-udp"]=127.0.0.1
 					DirectoryScanner directoryScanner = new DirectoryScanner();
 
 					directoryScanner.setBasedir(project.getProperty("lp.plugins.dir"));
-					directoryScanner.setIncludes(new String[] {"**/hooks/*/build.xml","**/layoutpl/*/build.xml","**/portlets/*/build.xml","**/themes/*/build.xml","**/webs/*/build.xml"});
+					directoryScanner.setIncludes(new String[] {"**/hooks/*/build.xml", "**/layoutpl/*/build.xml", "**/portlets/*/build.xml", "**/themes/*/build.xml", "**/webs/*/build.xml"});
 
 					directoryScanner.scan();
 
