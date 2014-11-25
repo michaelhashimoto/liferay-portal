@@ -1212,7 +1212,7 @@ public class LiferaySeleniumHelper {
 
 		liferaySelenium.typeKeys(locator, line.trim());
 
-		liferaySelenium.keyPress(locator, "\\13");
+		liferaySelenium.keyPress(locator, "\\RETURN");
 
 		while (y != -1) {
 			x = value.indexOf("}", x) + 1;
@@ -1227,7 +1227,7 @@ public class LiferaySeleniumHelper {
 
 			liferaySelenium.typeKeys(locator, line.trim());
 
-			liferaySelenium.keyPress(locator, "\\13");
+			liferaySelenium.keyPress(locator, "\\RETURN");
 		}
 	}
 
