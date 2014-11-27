@@ -4590,7 +4590,7 @@ create database lportal${database.index} character set utf8;</echo>
 			}
 		</script>
 
-		<fail message="'${test.name}.testcase' does not exist." unless="test.class.name" />
+		<fail message="${test.name}.testcase does not exist." unless="test.class.name" />
 
 		<if>
 			<not>
