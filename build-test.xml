@@ -6462,11 +6462,7 @@ cluster.link.bind.addr["cluster-link-udp"]=127.0.0.1
 
 					directoryScanner.scan();
 
-					String[] fileNames = directoryScanner.getIncludedFiles();
-
-					Arrays.sort(fileNames);
-
-					for (String fileName : fileNames) {
+					for (String fileName : directoryScanner.getIncludedFiles()) {
 						int x = fileName.indexOf("com" + File.separator);
 						int y = fileName.lastIndexOf(File.separatorChar);
 
