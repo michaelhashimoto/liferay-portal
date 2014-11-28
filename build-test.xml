@@ -6432,20 +6432,20 @@ cluster.link.bind.addr["cluster-link-udp"]=127.0.0.1
 				Map getPackageGroups(Set packageNames, int packageGroupsSize) {
 					Map packageGroups = new HashMap();
 
-					Iterator iterator = packageNames.iterator();
+					int i = 0;
 
-					for (int i = 0; i < packageNames.size(); i++) {
-						int index = i % packageGroupsSize;
+					for (String packageName : packageNames) {
+						int index = i++ % packageGroupsSize;
 
 						Set packageGroup = packageGroups.get(index);
 
 						if (packageGroup == null) {
 							packageGroup = new TreeSet();
+
+							packageGroups.put(index, packageGroup);
 						}
 
-						packageGroup.add(iterator.next());
-
-						packageGroups.put(index, packageGroup);
+						packageGroup.add(packageName);
 					}
 
 					return packageGroups;
@@ -6457,6 +6457,7 @@ cluster.link.bind.addr["cluster-link-udp"]=127.0.0.1
 					DirectoryScanner directoryScanner = new DirectoryScanner();
 
 					directoryScanner.setBasedir(project.getBaseDir());
+					directoryScanner.setExcludes(new String[] {"*/pacl/test/[\\w]+Test.class", "**/*ServiceHttpTest.java", "**/*ServiceJsonTest.java", "**/*ServiceSoapTest.java"});
 					directoryScanner.setIncludes(new String[] {"**/test/integration/**/*Test.java", "**/test/unit/**/*Test.java"});
 
 					directoryScanner.scan();
@@ -6466,24 +6467,12 @@ cluster.link.bind.addr["cluster-link-udp"]=127.0.0.1
 					Arrays.sort(fileNames);
 
 					for (String fileName : fileNames) {
-						int x = fileName.indexOf("com/");
-						int y = fileName.lastIndexOf("/");
-
-						if (File.separator.equals("\\")) {
-							x = fileName.indexOf("com\\");
-							y = fileName.lastIndexOf("\\");
-						}
-
-						if (fileName.endsWith("ServiceHttpTest.java") || fileName.endsWith("ServiceJsonTest.java") || fileName.endsWith("ServiceSoapTest.java")) {
-							continue;
-						}
+						int x = fileName.indexOf("com" + File.separator);
+						int y = fileName.lastIndexOf(File.separatorChar);
 
 						String packageName = fileName.substring(x, y);
 
-						packageName = packageName.replace("/", ".");
-						packageName = packageName.replace("\\", ".");
-
-						packageNames.add(packageName);
+						packageNames.add(packageName.replace(File.separatorChar, '.'));
 					}
 
 					return packageNames;
@@ -6524,16 +6513,13 @@ cluster.link.bind.addr["cluster-link-udp"]=127.0.0.1
 					sb.append(i);
 					sb.append("=");
 
-					Iterator iterator = packageGroup.iterator();
-
-					while (iterator.hasNext()) {
-						String packageName = iterator.next();
-
+					for (String packageName : packageGroup) {
 						sb.append(packageName);
+						sb.append(",");
+					}
 
-						if (iterator.hasNext()) {
-							sb.append(",");
-						}
+					if (!packageGroup.isEmpty()) {
+						sb.setLength(sb.length() - 1);
 					}
 
 					sb.append("\n\n");
@@ -6551,25 +6537,23 @@ cluster.link.bind.addr["cluster-link-udp"]=127.0.0.1
 
 				for (int i = 0; i < allPackageGroupsSize; i++) {
 					sb.append(i);
+					sb.append(" ");
+				}
 
-					if (i < allPackageGroupsSize - 1) {
-						sb.append(" ");
-					}
+				if (allPackageGroupsSize > 0) {
+					sb.setLength(sb.length() - 1);
 				}
 
 				sb.append("\n\n");
 				sb.append("TEST_PACKAGE_NAMES=");
 
-				Iterator iterator = allPackageNames.iterator();
-
-				while (iterator.hasNext()) {
-					String packageName = iterator.next();
-
+				for (String packageName : allPackageNames) {
 					sb.append(packageName);
+					sb.append(" ");
+				}
 
-					if (iterator.hasNext()) {
-						sb.append(" ");
-					}
+				if (!allPackageNames.isEmpty()) {
+					sb.setLength(sb.length() - 1);
 				}
 
 				project.setProperty("test.package.names.properties.content", sb.toString());
