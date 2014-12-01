@@ -5793,7 +5793,7 @@ plugins.includes=${plugins.includes}</echo>
 
 		<antcall target="compile-test" inheritAll="false" />
 
-		<antcall target="record-test-package-names" inheritAll="false" />
+		<antcall target="record-test-class-file-names" inheritAll="false" />
 	</target>
 
 	<target name="prepare-test-build-tomcat-dependents">
@@ -6424,7 +6424,7 @@ cluster.link.bind.addr["cluster-link-udp"]=127.0.0.1
 		<delete file="${liferay.home}/${database.type}.sql" />
 	</target>
 
-	<target name="record-test-package-names">
+	<target name="record-test-class-file-names">
 		<script classpathref="project.classpath" language="beanshell">
 			<![CDATA[
 				import org.apache.tools.ant.DirectoryScanner;
@@ -6505,7 +6505,7 @@ cluster.link.bind.addr["cluster-link-udp"]=127.0.0.1
 				for (int i = 0; i < shortRunningPackageGroupsSize; i++) {
 					Set packageGroup = packageGroups.get(i);
 
-					sb.append("TEST_PACKAGE_GROUP_");
+					sb.append("TEST_CLASS_GROUP_");
 					sb.append(i);
 					sb.append("=");
 
@@ -6522,14 +6522,14 @@ cluster.link.bind.addr["cluster-link-udp"]=127.0.0.1
 				}
 
 				for (int i = 0; i < longRunningPackageGroupsSize; i++) {
-					sb.append("TEST_PACKAGE_GROUP_");
+					sb.append("TEST_CLASS_GROUP_");
 					sb.append(shortRunningPackageGroupsSize + i);
 					sb.append("=");
 					sb.append(longRunningPackageNames[i]);
 					sb.append("\n\n");
 				}
 
-				sb.append("TEST_PACKAGE_GROUPS=");
+				sb.append("TEST_CLASS_GROUPS=");
 
 				for (int i = 0; i < allPackageGroupsSize; i++) {
 					sb.append(i);
@@ -6552,11 +6552,11 @@ cluster.link.bind.addr["cluster-link-udp"]=127.0.0.1
 					sb.setLength(sb.length() - 1);
 				}
 
-				project.setProperty("test.package.names.properties.content", sb.toString());
+				project.setProperty("test.class.file.names.properties.content", sb.toString());
 			]]>
 		</script>
 
-		<echo file="test.package.names.properties">${test.package.names.properties.content}</echo>
+		<echo file="test.class.file.names.properties">${test.class.file.names.properties.content}</echo>
 	</target>
 
 	<target name="record-test-package-names">
