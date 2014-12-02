@@ -52,16 +52,7 @@ public class ReflectionUtil {
 			field.setAccessible(true);
 		}
 
-		int modifiers = field.getModifiers();
-
-		if ((modifiers & Modifier.FINAL) == Modifier.FINAL) {
-			Field modifiersField = ReflectionUtil.getDeclaredField(
-				Field.class, "modifiers");
-
-			modifiersField.setInt(field, modifiers & ~Modifier.FINAL);
-		}
-
-		return field;
+		return unfinalField(field);
 	}
 
 	public static Method getDeclaredMethod(
@@ -164,6 +155,18 @@ public class ReflectionUtil {
 
 	public static <T> T throwException(Throwable throwable) {
 		return ReflectionUtil.<T, RuntimeException>_doThrowException(throwable);
+	}
+
+	public static Field unfinalField(Field field) throws Exception {
+		int modifiers = field.getModifiers();
+
+		if ((modifiers & Modifier.FINAL) == Modifier.FINAL) {
+			Field modifiersField = getDeclaredField(Field.class, "modifiers");
+
+			modifiersField.setInt(field, modifiers & ~Modifier.FINAL);
+		}
+
+		return field;
 	}
 
 	@SuppressWarnings("unchecked")
