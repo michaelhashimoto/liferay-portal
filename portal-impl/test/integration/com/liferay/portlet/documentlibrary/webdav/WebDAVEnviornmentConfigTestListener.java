@@ -16,7 +16,7 @@ package com.liferay.portlet.documentlibrary.webdav;
 
 import com.liferay.portal.kernel.test.TestContext;
 import com.liferay.portal.kernel.util.Tuple;
-import com.liferay.portal.test.EnvironmentExecutionTestListener;
+import com.liferay.portal.test.MainServletExecutionTestListener;
 import com.liferay.portal.webdav.methods.Method;
 
 import javax.servlet.http.HttpServletResponse;
@@ -27,7 +27,7 @@ import org.junit.Assert;
  * @author Miguel Pastor
  */
 public class WebDAVEnviornmentConfigTestListener
-	extends EnvironmentExecutionTestListener {
+	extends MainServletExecutionTestListener {
 
 	@Override
 	public void runAfterClass(TestContext testContext) {
