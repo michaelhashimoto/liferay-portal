@@ -29,10 +29,8 @@ import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.model.LayoutRevision;
 import com.liferay.portal.model.impl.LayoutRevisionModelImpl;
 import com.liferay.portal.service.ServiceTestUtil;
-import com.liferay.portal.service.persistence.BasePersistence;
 import com.liferay.portal.service.persistence.PersistenceExecutionTestListener;
 import com.liferay.portal.test.LiferayPersistenceIntegrationJUnitTestRunner;
-import com.liferay.portal.test.persistence.TransactionalPersistenceAdvice;
 import com.liferay.portal.util.PropsValues;
 
 import org.junit.After;
@@ -41,11 +39,9 @@ import org.junit.Test;
 
 import org.junit.runner.RunWith;
 
-import java.io.Serializable;
-
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 /**
  * @author Brian Wing Shun Chan
@@ -56,25 +52,13 @@ import java.util.Set;
 public class LayoutRevisionPersistenceTest {
 	@After
 	public void tearDown() throws Exception {
-		Map<Serializable, BasePersistence<?>> basePersistences = _transactionalPersistenceAdvice.getBasePersistences();
+		Iterator<LayoutRevision> iterator = _layoutRevisions.iterator();
 
-		Set<Serializable> primaryKeys = basePersistences.keySet();
+		while (iterator.hasNext()) {
+			_persistence.remove(iterator.next());
 
-		for (Serializable primaryKey : primaryKeys) {
-			BasePersistence<?> basePersistence = basePersistences.get(primaryKey);
-
-			try {
-				basePersistence.remove(primaryKey);
-			}
-			catch (Exception e) {
-				if (_log.isDebugEnabled()) {
-					_log.debug("The model with primary key " + primaryKey +
-						" was already deleted");
-				}
-			}
+			iterator.remove();
 		}
-
-		_transactionalPersistenceAdvice.reset();
 	}
 
 	@Test
@@ -170,7 +154,7 @@ public class LayoutRevisionPersistenceTest {
 
 		newLayoutRevision.setStatusDate(ServiceTestUtil.nextDate());
 
-		_persistence.update(newLayoutRevision, false);
+		_layoutRevisions.add(_persistence.update(newLayoutRevision, false));
 
 		LayoutRevision existingLayoutRevision = _persistence.findByPrimaryKey(newLayoutRevision.getPrimaryKey());
 
@@ -461,12 +445,12 @@ public class LayoutRevisionPersistenceTest {
 
 		layoutRevision.setStatusDate(ServiceTestUtil.nextDate());
 
-		_persistence.update(layoutRevision, false);
+		_layoutRevisions.add(_persistence.update(layoutRevision, false));
 
 		return layoutRevision;
 	}
 
 	private static Log _log = LogFactoryUtil.getLog(LayoutRevisionPersistenceTest.class);
+	private List<LayoutRevision> _layoutRevisions = new ArrayList<LayoutRevision>();
 	private LayoutRevisionPersistence _persistence = (LayoutRevisionPersistence)PortalBeanLocatorUtil.locate(LayoutRevisionPersistence.class.getName());
-	private TransactionalPersistenceAdvice _transactionalPersistenceAdvice = (TransactionalPersistenceAdvice)PortalBeanLocatorUtil.locate(TransactionalPersistenceAdvice.class.getName());
 }

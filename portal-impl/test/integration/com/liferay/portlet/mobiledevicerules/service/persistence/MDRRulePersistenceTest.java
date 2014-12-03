@@ -27,10 +27,8 @@ import com.liferay.portal.kernel.util.IntegerWrapper;
 import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.service.ServiceTestUtil;
-import com.liferay.portal.service.persistence.BasePersistence;
 import com.liferay.portal.service.persistence.PersistenceExecutionTestListener;
 import com.liferay.portal.test.LiferayPersistenceIntegrationJUnitTestRunner;
-import com.liferay.portal.test.persistence.TransactionalPersistenceAdvice;
 import com.liferay.portal.util.PropsValues;
 
 import com.liferay.portlet.mobiledevicerules.NoSuchRuleException;
@@ -43,11 +41,9 @@ import org.junit.Test;
 
 import org.junit.runner.RunWith;
 
-import java.io.Serializable;
-
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 /**
  * @author Edward C. Han
@@ -58,25 +54,13 @@ import java.util.Set;
 public class MDRRulePersistenceTest {
 	@After
 	public void tearDown() throws Exception {
-		Map<Serializable, BasePersistence<?>> basePersistences = _transactionalPersistenceAdvice.getBasePersistences();
+		Iterator<MDRRule> iterator = _mdrRules.iterator();
 
-		Set<Serializable> primaryKeys = basePersistences.keySet();
+		while (iterator.hasNext()) {
+			_persistence.remove(iterator.next());
 
-		for (Serializable primaryKey : primaryKeys) {
-			BasePersistence<?> basePersistence = basePersistences.get(primaryKey);
-
-			try {
-				basePersistence.remove(primaryKey);
-			}
-			catch (Exception e) {
-				if (_log.isDebugEnabled()) {
-					_log.debug("The model with primary key " + primaryKey +
-						" was already deleted");
-				}
-			}
+			iterator.remove();
 		}
-
-		_transactionalPersistenceAdvice.reset();
 	}
 
 	@Test
@@ -136,7 +120,7 @@ public class MDRRulePersistenceTest {
 
 		newMDRRule.setTypeSettings(ServiceTestUtil.randomString());
 
-		_persistence.update(newMDRRule, false);
+		_mdrRules.add(_persistence.update(newMDRRule, false));
 
 		MDRRule existingMDRRule = _persistence.findByPrimaryKey(newMDRRule.getPrimaryKey());
 
@@ -344,12 +328,12 @@ public class MDRRulePersistenceTest {
 
 		mdrRule.setTypeSettings(ServiceTestUtil.randomString());
 
-		_persistence.update(mdrRule, false);
+		_mdrRules.add(_persistence.update(mdrRule, false));
 
 		return mdrRule;
 	}
 
 	private static Log _log = LogFactoryUtil.getLog(MDRRulePersistenceTest.class);
+	private List<MDRRule> _mdrRules = new ArrayList<MDRRule>();
 	private MDRRulePersistence _persistence = (MDRRulePersistence)PortalBeanLocatorUtil.locate(MDRRulePersistence.class.getName());
-	private TransactionalPersistenceAdvice _transactionalPersistenceAdvice = (TransactionalPersistenceAdvice)PortalBeanLocatorUtil.locate(TransactionalPersistenceAdvice.class.getName());
 }

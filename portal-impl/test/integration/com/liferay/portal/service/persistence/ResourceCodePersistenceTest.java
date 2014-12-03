@@ -29,10 +29,8 @@ import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.model.ResourceCode;
 import com.liferay.portal.model.impl.ResourceCodeModelImpl;
 import com.liferay.portal.service.ServiceTestUtil;
-import com.liferay.portal.service.persistence.BasePersistence;
 import com.liferay.portal.service.persistence.PersistenceExecutionTestListener;
 import com.liferay.portal.test.LiferayPersistenceIntegrationJUnitTestRunner;
-import com.liferay.portal.test.persistence.TransactionalPersistenceAdvice;
 import com.liferay.portal.util.PropsValues;
 
 import org.junit.After;
@@ -41,11 +39,9 @@ import org.junit.Test;
 
 import org.junit.runner.RunWith;
 
-import java.io.Serializable;
-
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 /**
  * @author Brian Wing Shun Chan
@@ -56,25 +52,13 @@ import java.util.Set;
 public class ResourceCodePersistenceTest {
 	@After
 	public void tearDown() throws Exception {
-		Map<Serializable, BasePersistence<?>> basePersistences = _transactionalPersistenceAdvice.getBasePersistences();
+		Iterator<ResourceCode> iterator = _resourceCodes.iterator();
 
-		Set<Serializable> primaryKeys = basePersistences.keySet();
+		while (iterator.hasNext()) {
+			_persistence.remove(iterator.next());
 
-		for (Serializable primaryKey : primaryKeys) {
-			BasePersistence<?> basePersistence = basePersistences.get(primaryKey);
-
-			try {
-				basePersistence.remove(primaryKey);
-			}
-			catch (Exception e) {
-				if (_log.isDebugEnabled()) {
-					_log.debug("The model with primary key " + primaryKey +
-						" was already deleted");
-				}
-			}
+			iterator.remove();
 		}
-
-		_transactionalPersistenceAdvice.reset();
 	}
 
 	@Test
@@ -116,7 +100,7 @@ public class ResourceCodePersistenceTest {
 
 		newResourceCode.setScope(ServiceTestUtil.nextInt());
 
-		_persistence.update(newResourceCode, false);
+		_resourceCodes.add(_persistence.update(newResourceCode, false));
 
 		ResourceCode existingResourceCode = _persistence.findByPrimaryKey(newResourceCode.getPrimaryKey());
 
@@ -295,12 +279,12 @@ public class ResourceCodePersistenceTest {
 
 		resourceCode.setScope(ServiceTestUtil.nextInt());
 
-		_persistence.update(resourceCode, false);
+		_resourceCodes.add(_persistence.update(resourceCode, false));
 
 		return resourceCode;
 	}
 
 	private static Log _log = LogFactoryUtil.getLog(ResourceCodePersistenceTest.class);
+	private List<ResourceCode> _resourceCodes = new ArrayList<ResourceCode>();
 	private ResourceCodePersistence _persistence = (ResourceCodePersistence)PortalBeanLocatorUtil.locate(ResourceCodePersistence.class.getName());
-	private TransactionalPersistenceAdvice _transactionalPersistenceAdvice = (TransactionalPersistenceAdvice)PortalBeanLocatorUtil.locate(TransactionalPersistenceAdvice.class.getName());
 }

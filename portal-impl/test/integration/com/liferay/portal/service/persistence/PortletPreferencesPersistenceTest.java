@@ -29,10 +29,8 @@ import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.model.PortletPreferences;
 import com.liferay.portal.model.impl.PortletPreferencesModelImpl;
 import com.liferay.portal.service.ServiceTestUtil;
-import com.liferay.portal.service.persistence.BasePersistence;
 import com.liferay.portal.service.persistence.PersistenceExecutionTestListener;
 import com.liferay.portal.test.LiferayPersistenceIntegrationJUnitTestRunner;
-import com.liferay.portal.test.persistence.TransactionalPersistenceAdvice;
 import com.liferay.portal.util.PropsValues;
 
 import org.junit.After;
@@ -41,11 +39,9 @@ import org.junit.Test;
 
 import org.junit.runner.RunWith;
 
-import java.io.Serializable;
-
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 /**
  * @author Brian Wing Shun Chan
@@ -56,25 +52,13 @@ import java.util.Set;
 public class PortletPreferencesPersistenceTest {
 	@After
 	public void tearDown() throws Exception {
-		Map<Serializable, BasePersistence<?>> basePersistences = _transactionalPersistenceAdvice.getBasePersistences();
+		Iterator<PortletPreferences> iterator = _portletPreferenceses.iterator();
 
-		Set<Serializable> primaryKeys = basePersistences.keySet();
+		while (iterator.hasNext()) {
+			_persistence.remove(iterator.next());
 
-		for (Serializable primaryKey : primaryKeys) {
-			BasePersistence<?> basePersistence = basePersistences.get(primaryKey);
-
-			try {
-				basePersistence.remove(primaryKey);
-			}
-			catch (Exception e) {
-				if (_log.isDebugEnabled()) {
-					_log.debug("The model with primary key " + primaryKey +
-						" was already deleted");
-				}
-			}
+			iterator.remove();
 		}
-
-		_transactionalPersistenceAdvice.reset();
 	}
 
 	@Test
@@ -120,7 +104,8 @@ public class PortletPreferencesPersistenceTest {
 
 		newPortletPreferences.setPreferences(ServiceTestUtil.randomString());
 
-		_persistence.update(newPortletPreferences, false);
+		_portletPreferenceses.add(_persistence.update(newPortletPreferences,
+				false));
 
 		PortletPreferences existingPortletPreferences = _persistence.findByPrimaryKey(newPortletPreferences.getPrimaryKey());
 
@@ -313,12 +298,12 @@ public class PortletPreferencesPersistenceTest {
 
 		portletPreferences.setPreferences(ServiceTestUtil.randomString());
 
-		_persistence.update(portletPreferences, false);
+		_portletPreferenceses.add(_persistence.update(portletPreferences, false));
 
 		return portletPreferences;
 	}
 
 	private static Log _log = LogFactoryUtil.getLog(PortletPreferencesPersistenceTest.class);
+	private List<PortletPreferences> _portletPreferenceses = new ArrayList<PortletPreferences>();
 	private PortletPreferencesPersistence _persistence = (PortletPreferencesPersistence)PortalBeanLocatorUtil.locate(PortletPreferencesPersistence.class.getName());
-	private TransactionalPersistenceAdvice _transactionalPersistenceAdvice = (TransactionalPersistenceAdvice)PortalBeanLocatorUtil.locate(TransactionalPersistenceAdvice.class.getName());
 }

@@ -27,10 +27,8 @@ import com.liferay.portal.kernel.util.IntegerWrapper;
 import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.service.ServiceTestUtil;
-import com.liferay.portal.service.persistence.BasePersistence;
 import com.liferay.portal.service.persistence.PersistenceExecutionTestListener;
 import com.liferay.portal.test.LiferayPersistenceIntegrationJUnitTestRunner;
-import com.liferay.portal.test.persistence.TransactionalPersistenceAdvice;
 import com.liferay.portal.util.PropsValues;
 
 import com.liferay.portlet.wiki.NoSuchNodeException;
@@ -43,11 +41,9 @@ import org.junit.Test;
 
 import org.junit.runner.RunWith;
 
-import java.io.Serializable;
-
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 /**
  * @author Brian Wing Shun Chan
@@ -58,25 +54,13 @@ import java.util.Set;
 public class WikiNodePersistenceTest {
 	@After
 	public void tearDown() throws Exception {
-		Map<Serializable, BasePersistence<?>> basePersistences = _transactionalPersistenceAdvice.getBasePersistences();
+		Iterator<WikiNode> iterator = _wikiNodes.iterator();
 
-		Set<Serializable> primaryKeys = basePersistences.keySet();
+		while (iterator.hasNext()) {
+			_persistence.remove(iterator.next());
 
-		for (Serializable primaryKey : primaryKeys) {
-			BasePersistence<?> basePersistence = basePersistences.get(primaryKey);
-
-			try {
-				basePersistence.remove(primaryKey);
-			}
-			catch (Exception e) {
-				if (_log.isDebugEnabled()) {
-					_log.debug("The model with primary key " + primaryKey +
-						" was already deleted");
-				}
-			}
+			iterator.remove();
 		}
-
-		_transactionalPersistenceAdvice.reset();
 	}
 
 	@Test
@@ -132,7 +116,7 @@ public class WikiNodePersistenceTest {
 
 		newWikiNode.setLastPostDate(ServiceTestUtil.nextDate());
 
-		_persistence.update(newWikiNode, false);
+		_wikiNodes.add(_persistence.update(newWikiNode, false));
 
 		WikiNode existingWikiNode = _persistence.findByPrimaryKey(newWikiNode.getPrimaryKey());
 
@@ -343,12 +327,12 @@ public class WikiNodePersistenceTest {
 
 		wikiNode.setLastPostDate(ServiceTestUtil.nextDate());
 
-		_persistence.update(wikiNode, false);
+		_wikiNodes.add(_persistence.update(wikiNode, false));
 
 		return wikiNode;
 	}
 
 	private static Log _log = LogFactoryUtil.getLog(WikiNodePersistenceTest.class);
+	private List<WikiNode> _wikiNodes = new ArrayList<WikiNode>();
 	private WikiNodePersistence _persistence = (WikiNodePersistence)PortalBeanLocatorUtil.locate(WikiNodePersistence.class.getName());
-	private TransactionalPersistenceAdvice _transactionalPersistenceAdvice = (TransactionalPersistenceAdvice)PortalBeanLocatorUtil.locate(TransactionalPersistenceAdvice.class.getName());
 }

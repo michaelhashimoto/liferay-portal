@@ -27,10 +27,8 @@ import com.liferay.portal.kernel.util.IntegerWrapper;
 import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.service.ServiceTestUtil;
-import com.liferay.portal.service.persistence.BasePersistence;
 import com.liferay.portal.service.persistence.PersistenceExecutionTestListener;
 import com.liferay.portal.test.LiferayPersistenceIntegrationJUnitTestRunner;
-import com.liferay.portal.test.persistence.TransactionalPersistenceAdvice;
 import com.liferay.portal.util.PropsValues;
 
 import com.liferay.portlet.bookmarks.NoSuchFolderException;
@@ -43,11 +41,9 @@ import org.junit.Test;
 
 import org.junit.runner.RunWith;
 
-import java.io.Serializable;
-
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 /**
  * @author Brian Wing Shun Chan
@@ -58,25 +54,13 @@ import java.util.Set;
 public class BookmarksFolderPersistenceTest {
 	@After
 	public void tearDown() throws Exception {
-		Map<Serializable, BasePersistence<?>> basePersistences = _transactionalPersistenceAdvice.getBasePersistences();
+		Iterator<BookmarksFolder> iterator = _bookmarksFolders.iterator();
 
-		Set<Serializable> primaryKeys = basePersistences.keySet();
+		while (iterator.hasNext()) {
+			_persistence.remove(iterator.next());
 
-		for (Serializable primaryKey : primaryKeys) {
-			BasePersistence<?> basePersistence = basePersistences.get(primaryKey);
-
-			try {
-				basePersistence.remove(primaryKey);
-			}
-			catch (Exception e) {
-				if (_log.isDebugEnabled()) {
-					_log.debug("The model with primary key " + primaryKey +
-						" was already deleted");
-				}
-			}
+			iterator.remove();
 		}
-
-		_transactionalPersistenceAdvice.reset();
 	}
 
 	@Test
@@ -134,7 +118,7 @@ public class BookmarksFolderPersistenceTest {
 
 		newBookmarksFolder.setDescription(ServiceTestUtil.randomString());
 
-		_persistence.update(newBookmarksFolder, false);
+		_bookmarksFolders.add(_persistence.update(newBookmarksFolder, false));
 
 		BookmarksFolder existingBookmarksFolder = _persistence.findByPrimaryKey(newBookmarksFolder.getPrimaryKey());
 
@@ -344,12 +328,12 @@ public class BookmarksFolderPersistenceTest {
 
 		bookmarksFolder.setDescription(ServiceTestUtil.randomString());
 
-		_persistence.update(bookmarksFolder, false);
+		_bookmarksFolders.add(_persistence.update(bookmarksFolder, false));
 
 		return bookmarksFolder;
 	}
 
 	private static Log _log = LogFactoryUtil.getLog(BookmarksFolderPersistenceTest.class);
+	private List<BookmarksFolder> _bookmarksFolders = new ArrayList<BookmarksFolder>();
 	private BookmarksFolderPersistence _persistence = (BookmarksFolderPersistence)PortalBeanLocatorUtil.locate(BookmarksFolderPersistence.class.getName());
-	private TransactionalPersistenceAdvice _transactionalPersistenceAdvice = (TransactionalPersistenceAdvice)PortalBeanLocatorUtil.locate(TransactionalPersistenceAdvice.class.getName());
 }

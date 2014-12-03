@@ -29,10 +29,8 @@ import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.model.ResourceBlock;
 import com.liferay.portal.model.impl.ResourceBlockModelImpl;
 import com.liferay.portal.service.ServiceTestUtil;
-import com.liferay.portal.service.persistence.BasePersistence;
 import com.liferay.portal.service.persistence.PersistenceExecutionTestListener;
 import com.liferay.portal.test.LiferayPersistenceIntegrationJUnitTestRunner;
-import com.liferay.portal.test.persistence.TransactionalPersistenceAdvice;
 import com.liferay.portal.util.PropsValues;
 
 import org.junit.After;
@@ -41,11 +39,9 @@ import org.junit.Test;
 
 import org.junit.runner.RunWith;
 
-import java.io.Serializable;
-
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 /**
  * @author Brian Wing Shun Chan
@@ -56,25 +52,13 @@ import java.util.Set;
 public class ResourceBlockPersistenceTest {
 	@After
 	public void tearDown() throws Exception {
-		Map<Serializable, BasePersistence<?>> basePersistences = _transactionalPersistenceAdvice.getBasePersistences();
+		Iterator<ResourceBlock> iterator = _resourceBlocks.iterator();
 
-		Set<Serializable> primaryKeys = basePersistences.keySet();
+		while (iterator.hasNext()) {
+			_persistence.remove(iterator.next());
 
-		for (Serializable primaryKey : primaryKeys) {
-			BasePersistence<?> basePersistence = basePersistences.get(primaryKey);
-
-			try {
-				basePersistence.remove(primaryKey);
-			}
-			catch (Exception e) {
-				if (_log.isDebugEnabled()) {
-					_log.debug("The model with primary key " + primaryKey +
-						" was already deleted");
-				}
-			}
+			iterator.remove();
 		}
-
-		_transactionalPersistenceAdvice.reset();
 	}
 
 	@Test
@@ -120,7 +104,7 @@ public class ResourceBlockPersistenceTest {
 
 		newResourceBlock.setReferenceCount(ServiceTestUtil.nextLong());
 
-		_persistence.update(newResourceBlock, false);
+		_resourceBlocks.add(_persistence.update(newResourceBlock, false));
 
 		ResourceBlock existingResourceBlock = _persistence.findByPrimaryKey(newResourceBlock.getPrimaryKey());
 
@@ -312,12 +296,12 @@ public class ResourceBlockPersistenceTest {
 
 		resourceBlock.setReferenceCount(ServiceTestUtil.nextLong());
 
-		_persistence.update(resourceBlock, false);
+		_resourceBlocks.add(_persistence.update(resourceBlock, false));
 
 		return resourceBlock;
 	}
 
 	private static Log _log = LogFactoryUtil.getLog(ResourceBlockPersistenceTest.class);
+	private List<ResourceBlock> _resourceBlocks = new ArrayList<ResourceBlock>();
 	private ResourceBlockPersistence _persistence = (ResourceBlockPersistence)PortalBeanLocatorUtil.locate(ResourceBlockPersistence.class.getName());
-	private TransactionalPersistenceAdvice _transactionalPersistenceAdvice = (TransactionalPersistenceAdvice)PortalBeanLocatorUtil.locate(TransactionalPersistenceAdvice.class.getName());
 }

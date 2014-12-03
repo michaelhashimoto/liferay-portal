@@ -27,10 +27,8 @@ import com.liferay.portal.kernel.test.ExecutionTestListeners;
 import com.liferay.portal.kernel.util.IntegerWrapper;
 import com.liferay.portal.model.UserNotificationEvent;
 import com.liferay.portal.service.ServiceTestUtil;
-import com.liferay.portal.service.persistence.BasePersistence;
 import com.liferay.portal.service.persistence.PersistenceExecutionTestListener;
 import com.liferay.portal.test.LiferayPersistenceIntegrationJUnitTestRunner;
-import com.liferay.portal.test.persistence.TransactionalPersistenceAdvice;
 
 import org.junit.After;
 import org.junit.Assert;
@@ -38,11 +36,9 @@ import org.junit.Test;
 
 import org.junit.runner.RunWith;
 
-import java.io.Serializable;
-
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 /**
  * @author Brian Wing Shun Chan
@@ -53,25 +49,13 @@ import java.util.Set;
 public class UserNotificationEventPersistenceTest {
 	@After
 	public void tearDown() throws Exception {
-		Map<Serializable, BasePersistence<?>> basePersistences = _transactionalPersistenceAdvice.getBasePersistences();
+		Iterator<UserNotificationEvent> iterator = _userNotificationEvents.iterator();
 
-		Set<Serializable> primaryKeys = basePersistences.keySet();
+		while (iterator.hasNext()) {
+			_persistence.remove(iterator.next());
 
-		for (Serializable primaryKey : primaryKeys) {
-			BasePersistence<?> basePersistence = basePersistences.get(primaryKey);
-
-			try {
-				basePersistence.remove(primaryKey);
-			}
-			catch (Exception e) {
-				if (_log.isDebugEnabled()) {
-					_log.debug("The model with primary key " + primaryKey +
-						" was already deleted");
-				}
-			}
+			iterator.remove();
 		}
-
-		_transactionalPersistenceAdvice.reset();
 	}
 
 	@Test
@@ -123,7 +107,8 @@ public class UserNotificationEventPersistenceTest {
 
 		newUserNotificationEvent.setArchived(ServiceTestUtil.randomBoolean());
 
-		_persistence.update(newUserNotificationEvent, false);
+		_userNotificationEvents.add(_persistence.update(
+				newUserNotificationEvent, false));
 
 		UserNotificationEvent existingUserNotificationEvent = _persistence.findByPrimaryKey(newUserNotificationEvent.getPrimaryKey());
 
@@ -308,12 +293,13 @@ public class UserNotificationEventPersistenceTest {
 
 		userNotificationEvent.setArchived(ServiceTestUtil.randomBoolean());
 
-		_persistence.update(userNotificationEvent, false);
+		_userNotificationEvents.add(_persistence.update(userNotificationEvent,
+				false));
 
 		return userNotificationEvent;
 	}
 
 	private static Log _log = LogFactoryUtil.getLog(UserNotificationEventPersistenceTest.class);
+	private List<UserNotificationEvent> _userNotificationEvents = new ArrayList<UserNotificationEvent>();
 	private UserNotificationEventPersistence _persistence = (UserNotificationEventPersistence)PortalBeanLocatorUtil.locate(UserNotificationEventPersistence.class.getName());
-	private TransactionalPersistenceAdvice _transactionalPersistenceAdvice = (TransactionalPersistenceAdvice)PortalBeanLocatorUtil.locate(TransactionalPersistenceAdvice.class.getName());
 }

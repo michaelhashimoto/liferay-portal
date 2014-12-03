@@ -29,10 +29,8 @@ import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.model.Permission;
 import com.liferay.portal.model.impl.PermissionModelImpl;
 import com.liferay.portal.service.ServiceTestUtil;
-import com.liferay.portal.service.persistence.BasePersistence;
 import com.liferay.portal.service.persistence.PersistenceExecutionTestListener;
 import com.liferay.portal.test.LiferayPersistenceIntegrationJUnitTestRunner;
-import com.liferay.portal.test.persistence.TransactionalPersistenceAdvice;
 import com.liferay.portal.util.PropsValues;
 
 import org.junit.After;
@@ -41,11 +39,9 @@ import org.junit.Test;
 
 import org.junit.runner.RunWith;
 
-import java.io.Serializable;
-
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 /**
  * @author Brian Wing Shun Chan
@@ -56,25 +52,13 @@ import java.util.Set;
 public class PermissionPersistenceTest {
 	@After
 	public void tearDown() throws Exception {
-		Map<Serializable, BasePersistence<?>> basePersistences = _transactionalPersistenceAdvice.getBasePersistences();
+		Iterator<Permission> iterator = _permissions.iterator();
 
-		Set<Serializable> primaryKeys = basePersistences.keySet();
+		while (iterator.hasNext()) {
+			_persistence.remove(iterator.next());
 
-		for (Serializable primaryKey : primaryKeys) {
-			BasePersistence<?> basePersistence = basePersistences.get(primaryKey);
-
-			try {
-				basePersistence.remove(primaryKey);
-			}
-			catch (Exception e) {
-				if (_log.isDebugEnabled()) {
-					_log.debug("The model with primary key " + primaryKey +
-						" was already deleted");
-				}
-			}
+			iterator.remove();
 		}
-
-		_transactionalPersistenceAdvice.reset();
 	}
 
 	@Test
@@ -116,7 +100,7 @@ public class PermissionPersistenceTest {
 
 		newPermission.setResourceId(ServiceTestUtil.nextLong());
 
-		_persistence.update(newPermission, false);
+		_permissions.add(_persistence.update(newPermission, false));
 
 		Permission existingPermission = _persistence.findByPrimaryKey(newPermission.getPrimaryKey());
 
@@ -295,12 +279,12 @@ public class PermissionPersistenceTest {
 
 		permission.setResourceId(ServiceTestUtil.nextLong());
 
-		_persistence.update(permission, false);
+		_permissions.add(_persistence.update(permission, false));
 
 		return permission;
 	}
 
 	private static Log _log = LogFactoryUtil.getLog(PermissionPersistenceTest.class);
+	private List<Permission> _permissions = new ArrayList<Permission>();
 	private PermissionPersistence _persistence = (PermissionPersistence)PortalBeanLocatorUtil.locate(PermissionPersistence.class.getName());
-	private TransactionalPersistenceAdvice _transactionalPersistenceAdvice = (TransactionalPersistenceAdvice)PortalBeanLocatorUtil.locate(TransactionalPersistenceAdvice.class.getName());
 }
