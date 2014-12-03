@@ -40,7 +40,6 @@ import com.liferay.portal.service.persistence.BasePersistence;
 import com.liferay.portal.service.persistence.PersistenceExecutionTestListener;
 import com.liferay.portal.test.AssertUtils;
 import com.liferay.portal.test.LiferayPersistenceIntegrationJUnitTestRunner;
-import com.liferay.portal.test.persistence.TransactionalPersistenceAdvice;
 import com.liferay.portal.util.PropsValues;
 
 import java.sql.Blob;
@@ -50,8 +49,10 @@ import java.sql.SQLException;
 
 import java.io.Serializable;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
@@ -67,24 +68,13 @@ public class ${entity.name}PersistenceTest {
 
 	@After
 	public void tearDown() throws Exception {
-		Map<Serializable, BasePersistence<?>> basePersistences = _transactionalPersistenceAdvice.getBasePersistences();
+		Iterator<${entity.name}> iterator = _${entity.varNames}.iterator();
 
-		Set<Serializable> primaryKeys = basePersistences.keySet();
+		while (iterator.hasNext()) {
+			_persistence.remove(iterator.next());
 
-		for (Serializable primaryKey : primaryKeys) {
-			BasePersistence<?> basePersistence = basePersistences.get(primaryKey);
-
-			try {
-				basePersistence.remove(primaryKey);
-			}
-			catch (Exception e) {
-				if (_log.isDebugEnabled()) {
-					_log.debug("The model with primary key " + primaryKey + " was already deleted");
-				}
-			}
+			iterator.remove();
 		}
-
-		_transactionalPersistenceAdvice.reset();
 	}
 
 	@Test
@@ -216,7 +206,7 @@ public class ${entity.name}PersistenceTest {
 			</#if>
 		</#list>
 
-		_persistence.update(new${entity.name}, false);
+		_${entity.varNames}.add(_persistence.update(new${entity.name}, false));
 
 		${entity.name} existing${entity.name} = _persistence.findByPrimaryKey(new${entity.name}.getPrimaryKey());
 
@@ -587,7 +577,7 @@ public class ${entity.name}PersistenceTest {
 			</#if>
 		</#list>
 
-		_persistence.update(${entity.varName}, false);
+		_${entity.varNames}.add(_persistence.update(${entity.varName}, false));
 
 		return ${entity.varName};
 	}
@@ -845,7 +835,7 @@ public class ${entity.name}PersistenceTest {
 
 	private static Log _log = LogFactoryUtil.getLog(${entity.name}PersistenceTest.class);
 
+	private List<${entity.name}> _${entity.varNames} = new ArrayList<${entity.name}>();
 	private ${entity.name}Persistence _persistence = (${entity.name}Persistence)${beanLocatorUtilShortName}.locate(${entity.name}Persistence.class.getName());
-	private TransactionalPersistenceAdvice _transactionalPersistenceAdvice = (TransactionalPersistenceAdvice)${beanLocatorUtilShortName}.locate(TransactionalPersistenceAdvice.class.getName());
 
 }

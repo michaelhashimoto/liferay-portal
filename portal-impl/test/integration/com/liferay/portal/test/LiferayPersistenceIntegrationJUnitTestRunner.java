@@ -16,9 +16,6 @@ package com.liferay.portal.test;
 
 import com.liferay.portal.util.InitUtil;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.junit.runners.model.InitializationError;
 
 /**
@@ -35,11 +32,7 @@ public class LiferayPersistenceIntegrationJUnitTestRunner
 
 	@Override
 	public void initApplicationContext() {
-		List<String> extraConfigLocations = new ArrayList<String>(1);
-
-		extraConfigLocations.add("META-INF/test-persistence-spring.xml");
-
-		InitUtil.initWithSpring(extraConfigLocations);
+		InitUtil.initWithSpring(null);
 	}
 
 }
