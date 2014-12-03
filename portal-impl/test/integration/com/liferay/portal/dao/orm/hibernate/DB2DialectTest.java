@@ -21,24 +21,34 @@ import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.dao.orm.SQLQuery;
 import com.liferay.portal.kernel.dao.orm.Session;
 import com.liferay.portal.kernel.dao.orm.SessionFactory;
-import com.liferay.portal.kernel.test.ExecutionTestListeners;
-import com.liferay.portal.service.persistence.PersistenceExecutionTestListener;
 import com.liferay.portal.test.LiferayIntegrationJUnitTestRunner;
+import com.liferay.portal.util.PropsValues;
 
 import java.util.List;
 
+import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Assume;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 /**
  * @author Laszlo Csontos
  */
-@ExecutionTestListeners(listeners = {PersistenceExecutionTestListener.class})
 @RunWith(LiferayIntegrationJUnitTestRunner.class)
 public class DB2DialectTest {
+
+	@BeforeClass
+	public static void setUpClass() {
+		PropsValues.SPRING_HIBERNATE_SESSION_DELEGATED = false;
+	}
+
+	@AfterClass
+	public static void tearDownClass() {
+		PropsValues.SPRING_HIBERNATE_SESSION_DELEGATED = true;
+	}
 
 	@Before
 	public void setUp() throws Exception {

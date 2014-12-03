@@ -22,10 +22,9 @@ import com.liferay.portal.kernel.dao.orm.ProjectionFactoryUtil;
 import com.liferay.portal.kernel.dao.orm.RestrictionsFactoryUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.test.ExecutionTestListeners;
 import com.liferay.portal.kernel.util.IntegerWrapper;
+import com.liferay.portal.model.ModelListener;
 import com.liferay.portal.service.ServiceTestUtil;
-import com.liferay.portal.service.persistence.PersistenceExecutionTestListener;
 import com.liferay.portal.test.LiferayIntegrationJUnitTestRunner;
 import com.liferay.portal.util.PropsValues;
 
@@ -34,7 +33,10 @@ import com.liferay.portlet.messageboards.model.MBDiscussion;
 import com.liferay.portlet.messageboards.model.impl.MBDiscussionModelImpl;
 
 import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.Assert;
+import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import org.junit.runner.RunWith;
@@ -46,10 +48,27 @@ import java.util.List;
 /**
  * @author Brian Wing Shun Chan
  */
-@ExecutionTestListeners(listeners =  {
-	PersistenceExecutionTestListener.class})
 @RunWith(LiferayIntegrationJUnitTestRunner.class)
 public class MBDiscussionPersistenceTest {
+	@BeforeClass
+	public static void setUpClass() {
+		PropsValues.SPRING_HIBERNATE_SESSION_DELEGATED = false;
+	}
+
+	@AfterClass
+	public static void tearDownClass() {
+		PropsValues.SPRING_HIBERNATE_SESSION_DELEGATED = true;
+	}
+
+	@Before
+	public void setUp() {
+		_listeners = _persistence.getListeners();
+
+		for (ModelListener<MBDiscussion> modelListener : _listeners) {
+			_persistence.unregisterListener(modelListener);
+		}
+	}
+
 	@After
 	public void tearDown() throws Exception {
 		Iterator<MBDiscussion> iterator = _mbDiscussions.iterator();
@@ -58,6 +77,10 @@ public class MBDiscussionPersistenceTest {
 			_persistence.remove(iterator.next());
 
 			iterator.remove();
+		}
+
+		for (ModelListener<MBDiscussion> modelListener : _listeners) {
+			_persistence.registerListener(modelListener);
 		}
 	}
 
@@ -288,5 +311,6 @@ public class MBDiscussionPersistenceTest {
 
 	private static Log _log = LogFactoryUtil.getLog(MBDiscussionPersistenceTest.class);
 	private List<MBDiscussion> _mbDiscussions = new ArrayList<MBDiscussion>();
+	private ModelListener<MBDiscussion>[] _listeners;
 	private MBDiscussionPersistence _persistence = (MBDiscussionPersistence)PortalBeanLocatorUtil.locate(MBDiscussionPersistence.class.getName());
 }
