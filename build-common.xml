@@ -1178,6 +1178,7 @@ rerun your task.
 
 		<ant target="test-cmd">
 			<property name="junit.forkmode" value="perTest" />
+			<property name="test.includes" value="**/*Test.class" />
 			<property name="test.type" value="${test.type}" />
 		</ant>
 
@@ -1240,7 +1241,7 @@ rerun your task.
 					<formatter type="brief" usefile="false" />
 					<formatter type="xml" />
 					<batchtest todir="test-results/${test.type}">
-						<fileset dir="test-classes/${test.dir}" includes="**/${test.class}.class">
+						<fileset dir="test-classes/${test.dir}" includes="${test.includes}">
 							<exclude name="**/DLAppServiceHttpTest.class" />
 							<exclude name="**/DLAppServiceJsonTest.class" />
 							<exclude name="**/DLAppServiceSoapTest.class" />
@@ -1251,8 +1252,8 @@ rerun your task.
 						</fileset>
 					</batchtest>
 				</junit>
-			</then>
-		</if>
+					</then>
+				</if>
 	</target>
 
 	<target name="test-integration" depends="compile,instrument-test-coverage,compile-test-integration">
@@ -1261,6 +1262,7 @@ rerun your task.
 		<ant target="test-cmd">
 			<property name="junit.forkmode" value="once" />
 			<property name="test.excludes" value="**/*PersistenceTest.class" />
+			<property name="test.includes" value="**/*Test.class" />
 			<property name="test.type" value="integration" />
 		</ant>
 
@@ -1268,6 +1270,7 @@ rerun your task.
 
 		<ant target="test-cmd">
 			<property name="junit.forkmode" value="once" />
+			<property name="test.includes" value="**/*PersistenceTest.class" />
 			<property name="test.type" value="integration" />
 		</ant>
 
@@ -1403,6 +1406,7 @@ rerun your task.
 						<ant target="test-cmd">
 							<property name="junit.forkmode" value="${junit.forkmode}" />
 							<property name="test.excludes" value="**/*PersistenceTest.class" />
+							<property name="test.includes" value="**/${test.package.dir}/*Test.class" />
 							<property name="test.type" value="integration" />
 						</ant>
 
@@ -1430,6 +1434,7 @@ rerun your task.
 
 						<ant target="test-cmd">
 							<property name="junit.forkmode" value="once" />
+							<property name="test.includes" value="**/*PersistenceTest.class" />
 							<property name="test.type" value="integration" />
 						</ant>
 
@@ -1460,6 +1465,7 @@ rerun your task.
 
 						<ant target="test-cmd">
 							<property name="junit.forkmode" value="perTest" />
+							<property name="test.includes" value="**/${test.package.dir}/*Test.class" />
 							<property name="test.type" value="unit" />
 						</ant>
 
@@ -1477,6 +1483,7 @@ rerun your task.
 
 		<ant target="test-cmd">
 			<property name="junit.forkmode" value="perTest" />
+			<property name="test.includes" value="**/*Test.class" />
 			<property name="test.type" value="unit" />
 		</ant>
 
