@@ -1178,7 +1178,7 @@ rerun your task.
 
 		<ant target="test-cmd">
 			<property name="junit.forkmode" value="perTest" />
-			<property name="test.includes" value="**/*Test.class" />
+			<property name="test.includes" value="**/${test.class}.class" />
 			<property name="test.type" value="${test.type}" />
 		</ant>
 
