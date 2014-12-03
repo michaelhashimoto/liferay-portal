@@ -27,7 +27,7 @@ import com.liferay.portal.kernel.util.IntegerWrapper;
 import com.liferay.portal.service.ServiceTestUtil;
 import com.liferay.portal.service.persistence.PersistenceExecutionTestListener;
 import com.liferay.portal.test.AssertUtils;
-import com.liferay.portal.test.LiferayPersistenceIntegrationJUnitTestRunner;
+import com.liferay.portal.test.LiferayIntegrationJUnitTestRunner;
 
 import com.liferay.portlet.shopping.NoSuchItemPriceException;
 import com.liferay.portlet.shopping.model.ShoppingItemPrice;
@@ -47,7 +47,7 @@ import java.util.List;
  */
 @ExecutionTestListeners(listeners =  {
 	PersistenceExecutionTestListener.class})
-@RunWith(LiferayPersistenceIntegrationJUnitTestRunner.class)
+@RunWith(LiferayIntegrationJUnitTestRunner.class)
 public class ShoppingItemPricePersistenceTest {
 	@After
 	public void tearDown() throws Exception {
