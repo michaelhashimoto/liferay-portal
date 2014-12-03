@@ -30,9 +30,4 @@ public class LiferayPersistenceIntegrationJUnitTestRunner
 		super(clazz);
 	}
 
-	@Override
-	public void initApplicationContext() {
-		InitUtil.initWithSpring(null);
-	}
-
 }
