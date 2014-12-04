@@ -21,14 +21,14 @@ import com.liferay.portal.kernel.test.TestContext;
 import com.liferay.portal.search.lucene.LuceneHelperUtil;
 import com.liferay.portal.service.ServiceTestUtil;
 import com.liferay.portal.servlet.MainServlet;
+import com.liferay.portal.test.mock.AutoDeployMockServletContext;
 import com.liferay.portal.util.TestPropsValues;
-
 import java.io.File;
+
 
 import javax.servlet.ServletException;
 
 import org.springframework.core.io.FileSystemResourceLoader;
-import org.springframework.core.io.ResourceLoader;
 import org.springframework.mock.web.MockServletConfig;
 import org.springframework.mock.web.MockServletContext;
 
@@ -60,8 +60,7 @@ public class MainServletExecutionTestListener
 		}
 
 		MockServletContext mockServletContext =
-			new AutoDeployMockServletContext(
-				getResourceBasePath(), new FileSystemResourceLoader());
+			new AutoDeployMockServletContext();
 
 		MockServletConfig mockServletConfig = new MockServletConfig(
 			mockServletContext);
@@ -84,21 +83,6 @@ public class MainServletExecutionTestListener
 	}
 
 	protected static MainServlet mainServlet;
-
-	protected class AutoDeployMockServletContext extends MockServletContext {
-
-		public AutoDeployMockServletContext(
-			String resourceBasePath, ResourceLoader resourceLoader) {
-
-			super(resourceBasePath, resourceLoader);
-		}
-
-		/**
-		 * @see com.liferay.portal.server.capabilities.TomcatServerCapabilities
-		 */
-		protected Boolean autoDeploy = Boolean.TRUE;
-
-	}
 
 	private static Log _log = LogFactoryUtil.getLog(
 		MainServletExecutionTestListener.class);
