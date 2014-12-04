@@ -23,12 +23,9 @@ import com.liferay.portal.service.ServiceTestUtil;
 import com.liferay.portal.servlet.MainServlet;
 import com.liferay.portal.test.mock.AutoDeployMockServletContext;
 import com.liferay.portal.util.TestPropsValues;
-import java.io.File;
-
 
 import javax.servlet.ServletException;
 
-import org.springframework.core.io.FileSystemResourceLoader;
 import org.springframework.mock.web.MockServletConfig;
 import org.springframework.mock.web.MockServletContext;
 
@@ -74,12 +71,6 @@ public class MainServletExecutionTestListener
 			throw new RuntimeException(
 				"The main servlet could not be initialized");
 		}
-	}
-
-	protected String getResourceBasePath() {
-		File file = new File("portal-web/docroot");
-
-		return "file:" + file.getAbsolutePath();
 	}
 
 	protected static MainServlet mainServlet;

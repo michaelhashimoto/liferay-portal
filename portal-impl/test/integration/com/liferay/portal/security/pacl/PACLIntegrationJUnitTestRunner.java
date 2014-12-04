@@ -35,6 +35,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import javax.naming.Context;
 
 import org.junit.runners.model.InitializationError;
+
 import org.springframework.core.io.FileSystemResourceLoader;
 import org.springframework.mock.web.MockServletContext;
 
@@ -56,8 +57,8 @@ public class PACLIntegrationJUnitTestRunner
 			return;
 		}
 
-		MockServletContext mockServletContext =
-			new MockServletContext(new FileSystemResourceLoader());
+		MockServletContext mockServletContext = new MockServletContext(
+			new FileSystemResourceLoader());
 
 		ServletContextPool.put(StringPool.BLANK, mockServletContext);
 

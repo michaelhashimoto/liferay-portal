@@ -29,8 +29,10 @@ import com.liferay.portal.kernel.search.IndexerRegistryUtil;
 import com.liferay.portal.kernel.search.SearchContext;
 import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.FriendlyURLNormalizerUtil;
+import com.liferay.portal.kernel.util.LocaleThreadLocal;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.PropsKeys;
+import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.velocity.VelocityEngineUtil;
@@ -56,7 +58,6 @@ import com.liferay.portal.tools.DBUpgrader;
 import com.liferay.portal.util.InitUtil;
 import com.liferay.portal.util.PortalInstances;
 import com.liferay.portal.util.PortalUtil;
-import com.liferay.portal.util.PropsUtil;
 import com.liferay.portal.util.PropsValues;
 import com.liferay.portal.util.TestPropsValues;
 import com.liferay.portlet.asset.AssetRendererFactoryRegistryUtil;
@@ -477,6 +478,10 @@ public class ServiceTestUtil {
 		WorkflowHandlerRegistryUtil.register(new MBMessageWorkflowHandler());
 		WorkflowHandlerRegistryUtil.register(new UserWorkflowHandler());
 
+		// Thread locals
+
+		_setThreadLocals();
+
 		// Company
 
 		try {
@@ -584,6 +589,17 @@ public class ServiceTestUtil {
 		catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+
+	private static void _setThreadLocals() {
+		LocaleThreadLocal.setThemeDisplayLocale(new Locale("en", "US"));
+
+		ServiceContext serviceContext = new ServiceContext();
+
+		serviceContext.setPathMain("path");
+		serviceContext.setPortalURL("http://tests:8080");
+
+		ServiceContextThreadLocal.pushServiceContext(serviceContext);
 	}
 
 	private static Random _random = new Random();
