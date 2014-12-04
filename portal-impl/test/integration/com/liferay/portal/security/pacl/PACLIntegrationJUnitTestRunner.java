@@ -16,6 +16,7 @@ package com.liferay.portal.security.pacl;
 
 import com.liferay.portal.deploy.hot.HookHotDeployListener;
 import com.liferay.portal.kernel.deploy.hot.HotDeployUtil;
+import com.liferay.portal.kernel.servlet.ServletContextPool;
 import com.liferay.portal.kernel.util.PortalLifecycleUtil;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.service.ServiceTestUtil;
@@ -34,6 +35,8 @@ import java.util.concurrent.ConcurrentHashMap;
 import javax.naming.Context;
 
 import org.junit.runners.model.InitializationError;
+import org.springframework.core.io.FileSystemResourceLoader;
+import org.springframework.mock.web.MockServletContext;
 
 /**
  * @author Raymond Augé
@@ -52,6 +55,11 @@ public class PACLIntegrationJUnitTestRunner
 		if (_initialized) {
 			return;
 		}
+
+		MockServletContext mockServletContext =
+			new MockServletContext(new FileSystemResourceLoader());
+
+		ServletContextPool.put(StringPool.BLANK, mockServletContext);
 
 		Class<?> clazz = getClass();
 
