@@ -1369,17 +1369,16 @@ rerun your task.
 		<if>
 			<available file="test/integration" type="dir" />
 			<then>
-				<resourcecount property="test.integration.other.count">
+				<resourcecount property="test.integration.count">
 					<fileset
 						dir="test/integration"
-						excludes="**/${test.package.dir}/*PersistenceTest.java"
 						includes="**/${test.package.dir}/*Test.java"
 					/>
 				</resourcecount>
 
 				<if>
 					<not>
-						<equals arg1="${test.integration.other.count}" arg2="0" />
+						<equals arg1="${test.integration.count}" arg2="0" />
 					</not>
 					<then>
 						<var name="test.class" value="**/${test.package.dir}/*Test" />
@@ -1396,38 +1395,11 @@ rerun your task.
 
 						<ant target="test-cmd">
 							<property name="junit.forkmode" value="${junit.forkmode}" />
-							<property name="test.excludes" value="**/*PersistenceTest.class" />
 							<property name="test.includes" value="**/${test.package.dir}/*Test.class" />
 							<property name="test.type" value="integration" />
 						</ant>
 
 						<var name="junit.forkmode" unset="true" />
-
-						<antcall target="report-test-coverage">
-							<param name="test.type" value="integration" />
-						</antcall>
-					</then>
-				</if>
-
-				<resourcecount property="test.integration.persistence.count">
-					<fileset
-						dir="test/integration"
-						includes="**/${test.package.dir}/*PersistenceTest.java"
-					/>
-				</resourcecount>
-
-				<if>
-					<not>
-						<equals arg1="${test.integration.persistence.count}" arg2="0" />
-					</not>
-					<then>
-						<var name="test.class" value="**/${test.package.dir}/*PersistenceTest" />
-
-						<ant target="test-cmd">
-							<property name="junit.forkmode" value="once" />
-							<property name="test.includes" value="**/*PersistenceTest.class" />
-							<property name="test.type" value="integration" />
-						</ant>
 
 						<antcall target="report-test-coverage">
 							<param name="test.type" value="integration" />
