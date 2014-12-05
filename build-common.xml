@@ -1261,16 +1261,7 @@ rerun your task.
 
 		<ant target="test-cmd">
 			<property name="junit.forkmode" value="once" />
-			<property name="test.excludes" value="**/*PersistenceTest.class" />
 			<property name="test.includes" value="**/*Test.class" />
-			<property name="test.type" value="integration" />
-		</ant>
-
-		<var name="test.class" value="*PersistenceTest" />
-
-		<ant target="test-cmd">
-			<property name="junit.forkmode" value="once" />
-			<property name="test.includes" value="**/*PersistenceTest.class" />
 			<property name="test.type" value="integration" />
 		</ant>
 
