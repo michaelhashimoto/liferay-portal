@@ -1252,8 +1252,8 @@ rerun your task.
 						</fileset>
 					</batchtest>
 				</junit>
-					</then>
-				</if>
+			</then>
+		</if>
 	</target>
 
 	<target name="test-integration" depends="compile,instrument-test-coverage,compile-test-integration">
