@@ -1187,7 +1187,7 @@ rerun your task.
 		</antcall>
 	</target>
 
-	<target name="test-class-group">
+	<target name="test-class-group" depends="compile,compile-test">
 		<if>
 			<not>
 				<isset property="test.class.group.index" />
@@ -1199,15 +1199,28 @@ rerun your task.
 
 		<property file="${project.dir}/test.class.file.names.properties" />
 
-		<propertycopy from="TEST_CLASS_GROUP_${test.class.group.index}" name="test.packages" />
+		<propertycopy from="TEST_CLASS_GROUP_${test.class.group.index}" name="test.classes" />
 
-		<for list="${test.packages}" param="test.package">
-			<sequential>
-				<antcall target="test-package">
-					<param name="test.package" value="@{test.package}" />
-				</antcall>
-			</sequential>
-		</for>
+		<ant target="test-cmd">
+			<property name="junit.forkmode" value="once" />
+			<property name="test.includes" value="${test.classes}" />
+			<property name="test.type" value="integration" />
+		</ant>
+
+		<antcall target="report-test-coverage">
+			<param name="test.type" value="integration" />
+		</antcall>
+
+		<ant target="test-cmd">
+			<property name="junit.forkmode" value="perTest" />
+			<property name="test.includes" value="${test.classes}" />
+			<property name="test.type" value="unit" />
+		</ant>
+
+		<antcall target="report-test-coverage">
+			<param name="test.type" value="unit" />
+		</antcall>
+
 	</target>
 
 	<target name="test-cmd">
