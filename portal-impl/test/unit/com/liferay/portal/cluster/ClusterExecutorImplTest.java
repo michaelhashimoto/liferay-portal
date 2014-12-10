@@ -272,11 +272,15 @@ public class ClusterExecutorImplTest extends BaseClusterExecutorImplTestCase {
 			clusterExecutorImpl.initChannels();
 			clusterExecutorImpl.initSystemProperties();
 
+			InetAddressUtilExceptionAdvice.setGetException(new Exception());
+
 			clusterExecutorImpl.initialize();
 
 			assertLogger(
 				logRecords, "Unable to determine local network address",
 				Exception.class);
+
+			InetAddressUtilExceptionAdvice.setGetException(null);
 
 			clusterExecutorImpl.initBindAddress();
 

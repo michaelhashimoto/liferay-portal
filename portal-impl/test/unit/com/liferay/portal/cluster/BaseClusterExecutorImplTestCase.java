@@ -109,14 +109,24 @@ public abstract class BaseClusterExecutorImplTestCase
 	@Aspect
 	public static class InetAddressUtilExceptionAdvice {
 
+		public static void setGetException(Exception exception) {
+			_getException = exception;
+		}
+
 		@Around(
 			"call(* com.liferay.portal.kernel.util.InetAddressUtil." +
 				"getLocalInetAddress())")
 		public Object throwException(ProceedingJoinPoint proceedingJoinPoint)
 			throws Throwable {
 
-			throw new Exception();
+			if (_getException != null) {
+				throw _getException;
+			}
+
+			return proceedingJoinPoint.proceed();
 		}
+
+		private static Exception _getException;
 
 	}
 
