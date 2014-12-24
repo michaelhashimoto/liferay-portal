@@ -5340,13 +5340,15 @@ svn --username ${svn.username} --password ${svn.password} update -r ${svn.info.r
 					<then>
 						<exec executable="/bin/bash" os="${os.unix}" outputproperty="sharepoint.vm.host.name">
 							<arg value="-c" />
-							<arg value="curl &quot;http://it.liferay.com/osb-ici-controller-web/vm/allocation/borrow?leaseTime=30000&amp;resourceType=qa%2Esharepoint2010&quot;" />
+							<arg value="curl" />
+							<arg value="&quot;http://it.liferay.com/osb-ici-controller-web/vm/allocation/borrow?leaseTime=30000&amp;resourceType=qa%2Esharepoint2010&quot;" />
 						</exec>
 					</then>
 					<else>
 						<exec executable="cmd" outputproperty="sharepoint.vm.host.name">
 							<arg value="/c" />
-							<arg value="curl &quot;http://it.liferay.com/osb-ici-controller-web/vm/allocation/borrow?leaseTime=30000&amp;resourceType=qa%2Esharepoint2010&quot;" />
+							<arg value="curl" />
+							<arg value="&quot;http://it.liferay.com/osb-ici-controller-web/vm/allocation/borrow?leaseTime=30000&amp;resourceType=qa%2Esharepoint2010&quot;" />
 						</exec>
 					</else>
 				</if>
@@ -7071,13 +7073,15 @@ cluster.link.bind.addr["cluster-link-udp"]=127.0.0.1
 					<then>
 						<exec executable="/bin/bash" os="${os.unix}">
 							<arg value="-c" />
-							<arg value="curl &quot;http://it.liferay.com/osb-ici-controller-web/vm/allocation/release?hostname=${sharepoint.vm.host.name}&amp;resourceType=qa%2Esharepoint2010&quot;" />
+							<arg value="curl" />
+							<arg value="&quot;http://it.liferay.com/osb-ici-controller-web/vm/allocation/release?hostname=${sharepoint.vm.host.name}&amp;resourceType=qa%2Esharepoint2010&quot;" />
 						</exec>
 					</then>
 					<else>
 						<exec executable="cmd">
 							<arg value="/c" />
-							<arg value="curl &quot;http://it.liferay.com/osb-ici-controller-web/vm/allocation/release?hostname=${sharepoint.vm.host.name}&amp;resourceType=qa%2Esharepoint2010&quot;" />
+							<arg value="curl" />
+							<arg value="&quot;http://it.liferay.com/osb-ici-controller-web/vm/allocation/release?hostname=${sharepoint.vm.host.name}&amp;resourceType=qa%2Esharepoint2010&quot;" />
 						</exec>
 					</else>
 				</if>
