@@ -5333,7 +5333,7 @@ svn --username ${svn.username} --password ${svn.password} update -r ${svn.info.r
 		</if>
 
 		<if>
-			<equals arg1="${sharepoint.vm.host.name.retrieve}" arg2="true" />
+			<equals arg1="${sharepoint.enabled}" arg2="true" />
 			<then>
 				<if>
 					<os family="unix" />
@@ -7064,7 +7064,7 @@ cluster.link.bind.addr["cluster-link-udp"]=127.0.0.1
 		<antcall target="run-selenium-test" />
 
 		<if>
-			<equals arg1="${sharepoint.vm.host.name.retrieve}" arg2="true" />
+			<equals arg1="${sharepoint.enabled}" arg2="true" />
 			<then>
 				<property file="${project.dir}/portal-web/test/test-portal-web-ext.properties" />
 
