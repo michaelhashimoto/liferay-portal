@@ -5340,15 +5340,13 @@ svn --username ${svn.username} --password ${svn.password} update -r ${svn.info.r
 					<then>
 						<exec executable="/bin/bash" os="${os.unix}" outputproperty="sharepoint.vm.host.name">
 							<arg value="-c" />
-							<arg value="curl" />
-							<arg value="&quot;http://it.liferay.com/osb-ici-controller-web/vm/allocation/borrow?leaseTime=30000&amp;resourceType=qa%2Esharepoint2010&quot;" />
+							<arg value="curl &quot;http://it.liferay.com/osb-ici-controller-web/vm/allocation/borrow?leaseTime=30000&amp;resourceType=qa%2Esharepoint2010&quot;" />
 						</exec>
 					</then>
 					<else>
 						<exec executable="cmd" outputproperty="sharepoint.vm.host.name">
 							<arg value="/c" />
-							<arg value="curl" />
-							<arg value="&quot;http://it.liferay.com/osb-ici-controller-web/vm/allocation/borrow?leaseTime=30000&amp;resourceType=qa%2Esharepoint2010&quot;" />
+							<arg value="curl &quot;http://it.liferay.com/osb-ici-controller-web/vm/allocation/borrow?leaseTime=30000&amp;resourceType=qa%2Esharepoint2010&quot;" />
 						</exec>
 					</else>
 				</if>
