@@ -1,4 +1,4 @@
-<definition>
+<definition default="textCopy">
 	<command name="ckEditorCopy">
 		<execute argument1="//a[@class='cke_button_cut cke_disabled']" selenium="waitForVisible" />
 

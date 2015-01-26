@@ -1,4 +1,4 @@
-<definition>
+<definition default="paste">
 	<command name="ckEditorPaste">
 		<execute argument1="//a[@class='cke_button_cut cke_disabled']" selenium="waitForVisible" />
 

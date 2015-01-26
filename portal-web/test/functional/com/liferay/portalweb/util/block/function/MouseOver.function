@@ -1,4 +1,4 @@
-<definition>
+<definition default="mouseOver">
 	<command name="makeVisible">
 		<execute selenium="makeVisible" />
 

@@ -1,4 +1,4 @@
-<definition>
+<definition default="select">
 	<command name="select">
 		<execute selenium="waitForVisible" />
 
