@@ -6756,9 +6756,7 @@ cluster.link.bind.addr["cluster-link-udp"]=127.0.0.1
 			<![CDATA[
 				import org.apache.tools.ant.DirectoryScanner;
 
-				Set getPluginNames() {
-					Set pluginNames = new TreeSet();
-
+				List getPluginNames() {
 					DirectoryScanner directoryScanner = new DirectoryScanner();
 
 					directoryScanner.setBasedir(project.getProperty("lp.plugins.dir"));
@@ -6768,7 +6766,7 @@ cluster.link.bind.addr["cluster-link-udp"]=127.0.0.1
 
 					String[] fileNames = directoryScanner.getIncludedFiles();
 
-					Arrays.sort(fileNames);
+					List pluginNames = new ArrayList();
 
 					for (String fileName : fileNames) {
 						int x = fileName.indexOf("/");
@@ -6783,6 +6781,8 @@ cluster.link.bind.addr["cluster-link-udp"]=127.0.0.1
 
 						pluginNames.add(pluginName);
 					}
+
+					Collections.sort(pluginNames);
 
 					return pluginNames;
 				}
