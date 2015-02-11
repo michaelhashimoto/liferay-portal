@@ -609,8 +609,9 @@ Please set the environment variable ANT_OPTS to the recommended value of
 											</exec>
 										</then>
 										<else>
-											<exec dir="@{dir}" executable="${command.executable}" output="${command.output}">
-												<arg line="${command.arg.line}" />
+											<exec dir="@{dir}" executable="/bin/bash" output="${command.output}">
+												<arg value="-c" />
+												<arg value="${command.executable} ${command.arg.line}" />
 											</exec>
 										</else>
 									</if>
@@ -652,8 +653,9 @@ Please set the environment variable ANT_OPTS to the recommended value of
 												</exec>
 											</then>
 											<else>
-												<exec append="true" dir="@{dir}" executable="${command.executable}" output="${command.output}">
-													<arg line="${command.arg.line}" />
+												<exec append="true" dir="@{dir}" executable="/bin/bash" output="${command.output}">
+													<arg value="-c" />
+													<arg value="${command.executable} ${command.arg.line}" />
 												</exec>
 											</else>
 										</if>
@@ -678,8 +680,9 @@ Please set the environment variable ANT_OPTS to the recommended value of
 											</exec>
 										</then>
 										<else>
-											<exec dir="@{dir}" executable="${command.executable}">
-												<arg line="${command.arg.line}" />
+											<exec dir="@{dir}" executable="/bin/bash">
+												<arg value="-c" />
+												<arg value="${command.executable} ${command.arg.line}" />
 											</exec>
 										</else>
 									</if>
