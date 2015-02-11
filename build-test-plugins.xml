@@ -379,6 +379,25 @@ print AdminConfig.save()</echo>
 		</for>
 	</target>
 
+	<target name="test-plugin-group">
+		<if>
+			<not>
+				<isset property="test.plugin.group.index" />
+			</not>
+			<then>
+				<fail>Use "ant test-plugin-group -Dtest.plugin.group.index=0".</fail>
+			</then>
+		</if>
+
+		<property file="${project.dir}/test.plugin.names.properties" />
+
+		<propertycopy from="TEST_PLUGIN_GROUP_${test.plugin.group.index}" name="test.plugins" />
+
+		<antcall target="compile-plugins">
+			<param name="plugins.includes" value="${test.plugins}" />
+		</antcall>
+	</target>
+
 	<target name="test-service-builder">
 		<echo file="${lp.plugins.dir}/build.${user.name}.properties">app.server.dir=${app.server.tomcat.dir}</echo>
 
