@@ -329,7 +329,7 @@ print AdminConfig.save()</echo>
 
 	<target name="test-plugin">
 		<if>
-			<contains string="${plugin}" substring="layouttpl" />
+			<contains string="${test.plugin}" substring="layouttpl" />
 			<then>
 				<var name="select" value="\2" />
 			</then>
@@ -339,9 +339,9 @@ print AdminConfig.save()</echo>
 		</if>
 
 		<propertyregex
-			input="${plugin}"
+			input="${test.plugin}"
 			override="true"
-			property="plugin.type"
+			property="test.plugin.type"
 			regexp="(\w+-)+(\w+)"
 			select="${select}"
 		/>
@@ -351,24 +351,24 @@ app.server.type=${app.server.type}
 
 auto.deploy.dir=${liferay.home}/deploy
 
-plugins.includes=${plugin}</echo>
+plugins.includes=${test.plugin}</echo>
 
 		<ant-execute
-			ant.dir="${lp.plugins.dir}/${plugin.type}/${plugin}"
+			ant.dir="${lp.plugins.dir}/${test.plugin.type}/${test.plugin}"
 			ant.target="clean"
 		/>
 
 		<if>
-			<contains string="${plugin}" substring="portlet" />
+			<contains string="${test.plugin}" substring="portlet" />
 			<then>
 				<ant-execute
-					ant.dir="${lp.plugins.dir}/${plugin.type}/${plugin}"
+					ant.dir="${lp.plugins.dir}/${test.plugin.type}/${test.plugin}"
 					ant.target="compile-jsp"
 				/>
 			</then>
 			<else>
 				<ant-execute
-					ant.dir="${lp.plugins.dir}/${plugin.type}/${plugin}"
+					ant.dir="${lp.plugins.dir}/${test.plugin.type}/${test.plugin}"
 					ant.target="compile"
 				/>
 			</else>
@@ -392,7 +392,7 @@ plugins.includes=${plugin}</echo>
 		<for list="${test.plugins}" param="test.plugin">
 			<sequential>
 				<antcall target="test-plugin">
-					<param name="plugin" value="@{test.plugin}" />
+					<param name="test.plugin" value="@{test.plugin}" />
 				</antcall>
 			</sequential>
 		</for>
