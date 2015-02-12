@@ -4131,8 +4131,6 @@ create database lportal${database.index} character set utf8;</echo>
 	<system-err></system-err>
 </testsuite>]]></echo>
 
-				<record-testray-components />
-
 				<antcall target="build-test-results-xml" />
 
 				<copy
