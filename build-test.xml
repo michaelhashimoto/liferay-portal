@@ -6106,6 +6106,8 @@ plugins.includes=${plugins.includes}</echo>
 		<antcall target="compile-test" inheritAll="false" />
 
 		<antcall target="record-test-class-file-names" inheritAll="false" />
+
+		<antcall target="record-test-plugin-names" inheritAll="false" />
 	</target>
 
 	<target name="prepare-test-build-tomcat-dependents">
