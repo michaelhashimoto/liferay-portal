@@ -4164,6 +4164,8 @@ go]]></replacevalue>
 		Deploy plugin files to the deploy directory.
 		-->
 
+		<get-testcase-property property.name="hook.plugins.includes" />
+
 		<if>
 			<isset property="hook.plugins.includes" />
 			<then>
@@ -4175,6 +4177,8 @@ go]]></replacevalue>
 				<property name="plugins.deployed" value="true" />
 			</then>
 		</if>
+
+		<get-testcase-property property.name="layouttpl.plugins.includes" />
 
 		<if>
 			<isset property="layouttpl.plugins.includes" />
@@ -4196,6 +4200,8 @@ go]]></replacevalue>
 				</ant>
 			</then>
 		</if>
+
+		<get-testcase-property property.name="portlet.plugins.includes" />
 
 		<if>
 			<isset property="portlet.plugins.includes" />
@@ -4221,6 +4227,8 @@ go]]></replacevalue>
 			</then>
 		</if>
 
+		<get-testcase-property property.name="theme.plugins.includes" />
+
 		<if>
 			<isset property="theme.plugins.includes" />
 			<then>
@@ -4232,6 +4240,8 @@ go]]></replacevalue>
 				<property name="plugins.deployed" value="true" />
 			</then>
 		</if>
+
+		<get-testcase-property property.name="web.plugins.includes" />
 
 		<if>
 			<isset property="web.plugins.includes" />
