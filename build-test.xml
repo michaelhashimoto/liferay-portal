@@ -7267,6 +7267,13 @@ cluster.link.bind.addr["cluster-link-udp"]=127.0.0.1
 			</then>
 		</if>
 
+		<if>
+			<equals arg1="${solr.enabled}" arg2="true" />
+			<then>
+				<ant antfile="build-test-solr.xml" target="prepare-solr-web-properties" />
+			</then>
+		</if>
+
 		<antcall target="deploy-specified-plugins" />
 
 		<antcall target="deploy-extra-apps" />
