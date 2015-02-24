@@ -5616,6 +5616,8 @@ svn --username ${svn.username} --password ${svn.password} update -r ${svn.info.r
 			</then>
 		</if>
 
+		<get-testcase-property property.name="ignore.errors" />
+
 		<if>
 			<isset property="ignore.errors" />
 			<then>
@@ -5661,6 +5663,8 @@ svn --username ${svn.username} --password ${svn.password} update -r ${svn.info.r
 			</then>
 		</if>
 
+		<get-testcase-property property.name="mobile.device.enabled" />
+
 		<if>
 			<equals arg1="${mobile.device.enabled}" arg2="true" />
 			<then>
@@ -5671,6 +5675,8 @@ svn --username ${svn.username} --password ${svn.password} update -r ${svn.info.r
 				</echo>
 			</then>
 		</if>
+
+		<get-testcase-property property.name="sharepoint.enabled" />
 
 		<if>
 			<equals arg1="${sharepoint.enabled}" arg2="true" />
@@ -5734,6 +5740,8 @@ svn --username ${svn.username} --password ${svn.password} update -r ${svn.info.r
 				</echo>
 			</then>
 		</if>
+
+		<get-testcase-property property.name="test.assert.javascript.errors" />
 
 		<if>
 			<equals arg1="${test.assert.javascript.errors}" arg2="false" />
@@ -5804,6 +5812,8 @@ svn --username ${svn.username} --password ${svn.password} update -r ${svn.info.r
 				</echo>
 			</then>
 		</if>
+
+		<get-testcase-property property.name="portal.url" />
 
 		<if>
 			<equals arg1="${test.selenium.unit.enabled}" arg2="true" />
@@ -5884,6 +5894,8 @@ svn --username ${svn.username} --password ${svn.password} update -r ${svn.info.r
 				</echo>
 			</then>
 		</if>
+
+		<get-testcase-property property.name="timeout.explicit.wait" />
 
 		<if>
 			<isset property="timeout.explicit.wait" />
