@@ -1145,6 +1145,8 @@
 	</target>
 
 	<target name="build-sql-file">
+		<get-testcase-property property.name="portal.version" />
+
 		<if>
 			<equals arg1="${test.database.minimal}" arg2="true" />
 			<then>
@@ -1203,6 +1205,8 @@
 				<equals arg1="${database.type}" arg2="hsql" />
 			</not>
 			<then>
+				<get-testcase-property property.name="databases.size" />
+
 				<if>
 					<and>
 						<isset property="databases.size" />
