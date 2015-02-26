@@ -8,4 +8,8 @@
 	<command name="ViewAxisServices" priority="5">
 		<execute macro="Api#apiAxisView" />
 	</command>
+
+	<command name="ViewAxisServices" priority="5">
+		<execute macro="Api#apiAxisView" />
+	</command>
 </definition>
