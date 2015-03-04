@@ -114,9 +114,9 @@
 			<var name="userScreenName" value="${userScreenName}" />
 		</execute>
 
-		<execute function="#click" locator1="SOUserBar#DASHBOARD" />
+		<execute function="Click#textClickAtAndWait" locator1="SOUserBar#DASHBOARD" />
 
-		<execute function="#click" locator1="SODashboard#NAVIGATION_CONTACTS_CENTER" />
+		<execute function="Click#textClickAtAndWait" locator1="SODashboard#NAVIGATION_CONTACTS_CENTER" />
 
 		<execute function="#type" locator1="SOContactscenter#CONTACTS_LIST_SEARCH" value1="${userFirstName}" />
 		<execute function="#select" locator1="SOContactscenter#CONTACTS_LIST_FILTER" value1="Connections" />
@@ -148,17 +148,17 @@
 			<var name="userEmailAddress" value="${adminEmailAddress}" />
 		</execute>
 
-		<execute function="#click" locator1="SOUserBar#DASHBOARD" />
+		<execute function="Click#textClickAtAndWait" locator1="SOUserBar#DASHBOARD" />
 
-		<execute function="#click" locator1="SODashboard#NAVIGATION_CONTACTS_CENTER" />
+		<execute function="Click#textClickAtAndWait" locator1="SODashboard#NAVIGATION_CONTACTS_CENTER" />
 
 		<execute function="#type" locator1="SOContactscenter#CONTACTS_LIST_SEARCH" value1="${userFirstName}" />
 		<execute function="#select" locator1="SOContactscenter#CONTACTS_LIST_FILTER" value1="Connections" />
 		<execute function="#assertTextEquals" locator1="SOContactscenter#CONTACTS_LIST_EMPTY" value1="There are no results." />
 
-		<execute function="#click" locator1="SOUserBar#DASHBOARD" />
+		<execute function="Click#textClickAtAndWait" locator1="SOUserBar#DASHBOARD" />
 
-		<execute function="#click" locator1="SODashboard#NAVIGATION_CONTACTS_CENTER" />
+		<execute function="Click#textClickAtAndWait" locator1="SODashboard#NAVIGATION_CONTACTS_CENTER" />
 
 		<execute function="#type" locator1="SOContactscenter#CONTACTS_LIST_SEARCH" value1="${userFirstName}" />
 		<execute function="#select" locator1="SOContactscenter#CONTACTS_LIST_FILTER" value1="All" />
@@ -170,7 +170,7 @@
 		<execute function="#assertTextEquals" locator1="SOContactscenter#USER_DETAILS_NAME" value1="${userName}" />
 		<execute function="#assertTextEquals" locator1="SOContactscenter#USER_DETAILS_EMAIL" value1="${userEmailAddress}" />
 		<execute function="#assertTextEquals" locator1="SOContactscenter#CONNECT_BUTTON" value1="Connect" />
-		<execute function="#assertElementNotPresent" locator1="SOContactscenter#DISCONNECT_BUTTON" />
+		<execute function="AssertElementNotPresent#assertNotVisible" locator1="SOContactscenter#DISCONNECT_BUTTON" />
 
 		<execute macro="SOContactsCenter#requestToConnect">
 			<var name="userEmailAddress" value="${userEmailAddress}" />
@@ -198,9 +198,9 @@
 			<var name="userEmailAddress" value="${adminEmailAddress}" />
 		</execute>
 
-		<execute function="#click" locator1="SOUserBar#DASHBOARD" />
+		<execute function="Click#textClickAtAndWait" locator1="SOUserBar#DASHBOARD" />
 
-		<execute function="#click" locator1="SODashboard#NAVIGATION_CONTACTS_CENTER" />
+		<execute function="Click#textClickAtAndWait" locator1="SODashboard#NAVIGATION_CONTACTS_CENTER" />
 
 		<execute function="#type" locator1="SOContactscenter#CONTACTS_LIST_SEARCH" value1="${userFirstName}" />
 		<execute function="#select" locator1="SOContactscenter#CONTACTS_LIST_FILTER" value1="Connections" />
@@ -212,7 +212,7 @@
 		<execute function="#assertTextEquals" locator1="SOContactscenter#USER_DETAILS_NAME" value1="${userName}" />
 		<execute function="#assertTextEquals" locator1="SOContactscenter#USER_DETAILS_EMAIL" value1="${userEmailAddress}" />
 		<execute function="#assertTextEquals" locator1="SOContactscenter#DISCONNECT_BUTTON" value1="Disconnect" />
-		<execute function="#assertElementNotPresent" locator1="SOContactscenter#CONNECT_BUTTON" />
+		<execute function="AssertElementNotPresent#assertNotVisible" locator1="SOContactscenter#CONNECT_BUTTON" />
 	</command>
 
 	<command name="SearchFollowing" priority="5">
@@ -233,9 +233,9 @@
 			<var name="userEmailAddress" value="${userEmailAddress}" />
 		</execute>
 
-		<execute function="#click" locator1="SOUserBar#DASHBOARD" />
+		<execute function="Click#textClickAtAndWait" locator1="SOUserBar#DASHBOARD" />
 
-		<execute function="#click" locator1="SODashboard#NAVIGATION_CONTACTS_CENTER" />
+		<execute function="Click#textClickAtAndWait" locator1="SODashboard#NAVIGATION_CONTACTS_CENTER" />
 
 		<execute function="#type" locator1="SOContactscenter#CONTACTS_LIST_SEARCH" value1="${adminFirstName}" />
 		<execute function="#select" locator1="SOContactscenter#CONTACTS_LIST_FILTER" value1="Following" />
@@ -247,9 +247,9 @@
 			<var name="adminName" value="${adminName}" />
 		</execute>
 
-		<execute function="#click" locator1="SOUserBar#DASHBOARD" />
+		<execute function="Click#textClickAtAndWait" locator1="SOUserBar#DASHBOARD" />
 
-		<execute function="#click" locator1="SODashboard#NAVIGATION_CONTACTS_CENTER" />
+		<execute function="Click#textClickAtAndWait" locator1="SODashboard#NAVIGATION_CONTACTS_CENTER" />
 
 		<execute function="#type" locator1="SOContactscenter#CONTACTS_LIST_SEARCH" value1="${adminFirstName}" />
 		<execute function="#select" locator1="SOContactscenter#CONTACTS_LIST_FILTER" value1="Following" />
@@ -273,9 +273,9 @@
 			<var name="userScreenName" value="${userScreenName}" />
 		</execute>
 
-		<execute function="#click" locator1="SOUserBar#DASHBOARD" />
+		<execute function="Click#textClickAtAndWait" locator1="SOUserBar#DASHBOARD" />
 
-		<execute function="#click" locator1="SODashboard#NAVIGATION_CONTACTS_CENTER" />
+		<execute function="Click#textClickAtAndWait" locator1="SODashboard#NAVIGATION_CONTACTS_CENTER" />
 
 		<execute function="#pause" value1="1000" />
 		<execute function="#select" locator1="SOContactscenter#CONTACTS_LIST_FILTER" value1="All" />
@@ -394,57 +394,57 @@
 			<var name="userEmailAddress" value="${adminEmailAddress}" />
 		</execute>
 
-		<execute function="#click" locator1="SOUserBar#DASHBOARD" />
-		<execute function="#assertElementPresent" locator1="SOUserBar#NOTIFICATION" />
+		<execute function="Click#textClickAtAndWait" locator1="SOUserBar#DASHBOARD" />
+		<execute function="AssertElementPresent#assertElementPresent" locator1="SOUserBar#NOTIFICATION" />
 		<execute function="#assertTextEquals" locator1="SOUserBar#NOTIFICATION_MENU_COUNT" value1="6" />
 		<execute function="#mouseOver" locator1="SOUserBar#NOTIFICATION" />
-		<execute function="#click" locator1="SOUserBar#NOTIFICATION_MENU_VIEW_ALL" value1="View All" />
+		<execute function="AssertClick#assertPartialTextClickAtAndWait" locator1="SOUserBar#NOTIFICATION_MENU_VIEW_ALL" value1="View All" />
 
 		<var name="row" value="1" />
 
-		<execute function="#assertTextEquals" locator1="SONotifications#NOTIFICATIONS_ENTRY_INCREMENT" value1="${userName3} sent you a message." />
+		<execute function="AssertTextEquals#assertPartialText" locator1="SONotifications#NOTIFICATIONS_ENTRY_INCREMENT" value1="${userName3} sent you a message." />
 
 		<var name="row" value="2" />
 
-		<execute function="#assertTextEquals" locator1="SONotifications#NOTIFICATIONS_ENTRY_INCREMENT" value1="${userName3} would like to add you as a connection." />
+		<execute function="AssertTextEquals#assertPartialText" locator1="SONotifications#NOTIFICATIONS_ENTRY_INCREMENT" value1="${userName3} would like to add you as a connection." />
 
 		<var name="row" value="3" />
 
-		<execute function="#assertTextEquals" locator1="SONotifications#NOTIFICATIONS_ENTRY_INCREMENT" value1="${userName2} sent you a message." />
+		<execute function="AssertTextEquals#assertPartialText" locator1="SONotifications#NOTIFICATIONS_ENTRY_INCREMENT" value1="${userName2} sent you a message." />
 
 		<var name="row" value="4" />
 
-		<execute function="#assertTextEquals" locator1="SONotifications#NOTIFICATIONS_ENTRY_INCREMENT" value1="${userName2} would like to add you as a connection." />
+		<execute function="AssertTextEquals#assertPartialText" locator1="SONotifications#NOTIFICATIONS_ENTRY_INCREMENT" value1="${userName2} would like to add you as a connection." />
 
 		<var name="row" value="5" />
 
-		<execute function="#assertTextEquals" locator1="SONotifications#NOTIFICATIONS_ENTRY_INCREMENT" value1="${userName} sent you a message." />
+		<execute function="AssertTextEquals#assertPartialText" locator1="SONotifications#NOTIFICATIONS_ENTRY_INCREMENT" value1="${userName} sent you a message." />
 
 		<var name="row" value="6" />
 
-		<execute function="#assertTextEquals" locator1="SONotifications#NOTIFICATIONS_ENTRY_INCREMENT" value1="${userName} would like to add you as a connection." />
+		<execute function="AssertTextEquals#assertPartialText" locator1="SONotifications#NOTIFICATIONS_ENTRY_INCREMENT" value1="${userName} would like to add you as a connection." />
 		<execute function="#select" locator1="SONotifications#NOTIFICATIONS_ENTRIES_PER_PAGE_SELECT" value1="5" />
 		<execute function="#assertTextEquals" locator1="SONotifications#SEARCH_RESULTS" value1="Showing 1 - 5 of 6 results." />
 
 		<var name="row" value="1" />
 
-		<execute function="#assertTextEquals" locator1="SONotifications#NOTIFICATIONS_ENTRY_INCREMENT" value1="${userName3} sent you a message." />
+		<execute function="AssertTextEquals#assertPartialText" locator1="SONotifications#NOTIFICATIONS_ENTRY_INCREMENT" value1="${userName3} sent you a message." />
 
 		<var name="row" value="2" />
 
-		<execute function="#assertTextEquals" locator1="SONotifications#NOTIFICATIONS_ENTRY_INCREMENT" value1="${userName3} would like to add you as a connection." />
+		<execute function="AssertTextEquals#assertPartialText" locator1="SONotifications#NOTIFICATIONS_ENTRY_INCREMENT" value1="${userName3} would like to add you as a connection." />
 
 		<var name="row" value="3" />
 
-		<execute function="#assertTextEquals" locator1="SONotifications#NOTIFICATIONS_ENTRY_INCREMENT" value1="${userName2} sent you a message." />
+		<execute function="AssertTextEquals#assertPartialText" locator1="SONotifications#NOTIFICATIONS_ENTRY_INCREMENT" value1="${userName2} sent you a message." />
 
 		<var name="row" value="4" />
 
-		<execute function="#assertTextEquals" locator1="SONotifications#NOTIFICATIONS_ENTRY_INCREMENT" value1="${userName2} would like to add you as a connection." />
+		<execute function="AssertTextEquals#assertPartialText" locator1="SONotifications#NOTIFICATIONS_ENTRY_INCREMENT" value1="${userName2} would like to add you as a connection." />
 
 		<var name="row" value="5" />
 
-		<execute function="#assertTextEquals" locator1="SONotifications#NOTIFICATIONS_ENTRY_INCREMENT" value1="${userName} sent you a message." />
+		<execute function="AssertTextEquals#assertPartialText" locator1="SONotifications#NOTIFICATIONS_ENTRY_INCREMENT" value1="${userName} sent you a message." />
 
 		<var name="row" value="6" />
 
@@ -454,7 +454,7 @@
 
 		<var name="row" value="1" />
 
-		<execute function="#assertTextEquals" locator1="SONotifications#NOTIFICATIONS_ENTRY_INCREMENT" value1="${userName} would like to add you as a connection." />
+		<execute function="AssertTextEquals#assertPartialText" locator1="SONotifications#NOTIFICATIONS_ENTRY_INCREMENT" value1="${userName} would like to add you as a connection." />
 
 		<var name="row" value="2" />
 

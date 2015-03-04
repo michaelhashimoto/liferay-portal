@@ -2,15 +2,15 @@
 	<command name="addChildPagePG">
 		<var name="key_wikiChildPageTitle" value="${wikiChildPageTitle}" />
 
-		<execute function="#assertClick" locator1="PGWiki#NAVIGATION_ALL_PAGES" value1="All Pages" />
+		<execute function="AssertClick#assertTextClickAtAndWait" locator1="PGWiki#NAVIGATION_ALL_PAGES" value1="All Pages" />
 
 		<execute function="#assertClick" locator1="link=${wikiPageTitle}" value1="${wikiPageTitle}" />
 
-		<execute function="#assertClick" locator1="PGWiki#ADD_CHILD_PAGE" value1="Add Child Page" />
+		<execute function="AssertClick#assertTextClickAtAndWait" locator1="PGWiki#ADD_CHILD_PAGE" value1="Add Child Page" />
 
 		<execute function="#type" locator1="PGWikiAddpage#TITLE_FIELD" value1="${wikiChildPageTitle}" />
-		<execute function="#type" locator1="PGWikiAddpage#BODY_FIELD" value1="${wikiChildPageContent}" />
-		<execute function="#assertClick" locator1="PGWikiAddpage#PUBLISH_BUTTON" value1="Publish" />
+		<execute function="Type#typeFrameWaitForCKEditor" locator1="PGWikiAddpage#BODY_FIELD" value1="${wikiChildPageContent}" />
+		<execute function="AssertClick#assertValueClickAtAndWaitCKEditor" locator1="PGWikiAddpage#PUBLISH_BUTTON" value1="Publish" />
 
 		<execute function="#assertTextEquals" locator1="PGWiki#SUCCESS_MESSAGE"  value1="Your request completed successfully." />
 		<execute function="#assertTextEquals" locator1="PGWiki#WIKI_PAGE_CHILD_PAGE" value1="${wikiChildPageTitle}" />
@@ -21,14 +21,14 @@
 
 	<command name="addFrontPageAttachmentPG">
 		<execute function="#assertTextEquals" locator1="PGWiki#WIKI_PAGE_BODY" value1="${wikiPageContent}" />
-		<execute function="#assertClick" locator1="PGWiki#WIKI_PAGE_ATTACHMENTS_LINK" value1="0 Attachments" />
+		<execute function="AssertClick#assertTextClickAtAndWait" locator1="PGWiki#WIKI_PAGE_ATTACHMENTS_LINK" value1="0 Attachments" />
 
 		<execute function="#assertTextEquals" locator1="PGWikiAttachments#INFO_MESSAGE" value1="This page does not have any file attachments." />
-		<execute function="#assertClick" locator1="PGWikiAttachments#ADD_ATTACHMENTS_BUTTON" value1="Add Attachments" />
+		<execute function="AssertClick#assertValueClickAtAndWait" locator1="PGWikiAttachments#ADD_ATTACHMENTS_BUTTON" value1="Add Attachments" />
 
-		<execute function="#assertClick" locator1="PGWikiAttachmentsAdd#USE_THE_CLASSIC_UPLOADER_LINK" value1="Use the classic uploader." />
+		<execute function="AssertClick#assertTextClickAtAndWait" locator1="PGWikiAttachmentsAdd#USE_THE_CLASSIC_UPLOADER_LINK" value1="Use the classic uploader." />
 		<execute function="#uploadCommonFile" locator1="PGWikiAttachmentsAdd#UPLOAD_ATTACHMENT_FIELD" value1="${wikiPageAttachmentName}" />
-		<execute function="#assertClick" locator1="PGWikiAttachmentsAdd#SAVE_BUTTON" value1="Save" />
+		<execute function="AssertClick#assertValueClickAtAndWait" locator1="PGWikiAttachmentsAdd#SAVE_BUTTON" value1="Save" />
 
 		<execute function="#assertTextEquals" locator1="PGWikiAttachments#SUCCESS_MESSAGE" value1="Your request completed successfully." />
 		<execute function="#assertTextEquals" locator1="PGWikiAttachments#ATTACHMENT_NAME" value1="${wikiPageAttachmentName}" />
@@ -39,48 +39,48 @@
 	<command name="addFrontPageDraftPG">
 		<execute function="#assertTextEquals" locator1="PGWiki#ADD_FRONTPAGE" value1="This page is empty. Edit it to add some text." />
 		<execute function="#assertTextNotPresent" value1="${wikiPageContent}" />
-		<execute function="#assertClick" locator1="PGWiki#PAGE_ACTIONS_EDIT" value1="Edit" />
+		<execute function="AssertClick#assertTextClickAtAndWait" locator1="PGWiki#PAGE_ACTIONS_EDIT" value1="Edit" />
 
 		<execute function="#assertTextEquals" locator1="PGWikiAddpage#WORKFLOW_STATUS" value1="Status: Draft" />
 		<execute function="#selectFrame" locator1="PGWikiAddpage#BODY_FIELD" />
 		<execute function="#assertTextEquals" locator1="PGWikiAddpage#BODY_FIELD_TEXT" value1="${wikiPageContent}" />
 		<execute function="#selectFrameTop" />
-		<execute function="#assertClick" locator1="PGWikiAddpage#PUBLISH_BUTTON" value1="Publish" />
+		<execute function="AssertClick#assertValueClickAtAndWaitCKEditor" locator1="PGWikiAddpage#PUBLISH_BUTTON" value1="Publish" />
 
 		<execute function="#assertTextEquals" locator1="PGWiki#SUCCESS_MESSAGE"  value1="Your request completed successfully." />
 		<execute function="#assertTextEquals" locator1="PGWiki#WIKI_PAGE_BODY" value1="${wikiPageContent}" />
 	</command>
 
 	<command name="addFrontPagePG">
-		<execute function="#assertClick" locator1="PGWiki#ADD_FRONTPAGE" value1="This page is empty. Edit it to add some text." />
+		<execute function="AssertClick#assertTextClickAtAndWait" locator1="PGWiki#ADD_FRONTPAGE" value1="This page is empty. Edit it to add some text." />
 
-		<execute function="#type" locator1="PGWikiAddpage#BODY_FIELD" value1="${wikiPageContent}" />
-		<execute function="#assertClick" locator1="PGWikiAddpage#PUBLISH_BUTTON" value1="Publish" />
+		<execute function="Type#typeFrameWaitForCKEditor" locator1="PGWikiAddpage#BODY_FIELD" value1="${wikiPageContent}" />
+		<execute function="AssertClick#assertValueClickAtAndWaitCKEditor" locator1="PGWikiAddpage#PUBLISH_BUTTON" value1="Publish" />
 
 		<execute function="#assertTextEquals" locator1="PGWiki#SUCCESS_MESSAGE"  value1="Your request completed successfully." />
 		<execute function="#assertTextEquals" locator1="PGWiki#WIKI_PAGE_BODY" value1="${wikiPageContent}" />
 	</command>
 
 	<command name="addFrontPagePGHTMLSource" >
-		<execute function="#assertClick" locator1="PGWiki#ADD_FRONTPAGE" value1="This page is empty. Edit it to add some text." />
+		<execute function="AssertClick#assertTextClickAtAndWait" locator1="PGWiki#ADD_FRONTPAGE" value1="This page is empty. Edit it to add some text." />
 
 		<execute function="#selectNoError" locator1="PGWikiAddpage#FORMAT_DROPDOWN" value1="HTML" />
 		<execute function="#confirm" locator1="PGWikiAddpage#CONFIRMATION" value1="You may lose some formatting when switching from Creole to HTML. Do you want to continue?" />
-		<execute function="#assertClick" locator1="PGWikiAddpage#SOURCE_BUTTON" value1="Source" />
+		<execute function="AssertClick#assertTextClickAtAndWait" locator1="PGWikiAddpage#SOURCE_BUTTON" value1="Source" />
 		<execute function="#type" locator1="PGWikiAddpage#CK_EDITOR_SOURCE_FIELD" value1="${wikiPageContent}" />
-		<execute function="#assertClick" locator1="PGWikiAddpage#PUBLISH_BUTTON" value1="Publish" />
+		<execute function="AssertClick#assertValueClickAtAndWaitCKEditor" locator1="PGWikiAddpage#PUBLISH_BUTTON" value1="Publish" />
 
 		<execute function="#assertTextEquals" locator1="PGWiki#SUCCESS_MESSAGE"  value1="Your request completed successfully." />
 		<execute function="#assertTextEquals" locator1="PGWiki#WIKI_PAGE_BODY" value1="${wikiPageText}" />
 	</command>
 
 	<command name="addPagePG">
-		<execute function="#assertClick" locator1="PGWiki#NAVIGATION_ALL_PAGES" value1="All Pages" />
-		<execute function="#assertClick" locator1="PGWikiAllpages#ADD_PAGE_BUTTON" value1="Add Page" />
+		<execute function="AssertClick#assertTextClickAtAndWait" locator1="PGWiki#NAVIGATION_ALL_PAGES" value1="All Pages" />
+		<execute function="AssertClick#assertValueClickAtAndWait" locator1="PGWikiAllpages#ADD_PAGE_BUTTON" value1="Add Page" />
 
 		<execute function="#type" locator1="PGWikiAddpage#TITLE_FIELD" value1="${wikiPageTitle}" />
-		<execute function="#type" locator1="PGWikiAddpage#BODY_FIELD" value1="${wikiPageContent}" />
-		<execute function="#assertClick" locator1="PGWikiAddpage#PUBLISH_BUTTON" value1="Publish" />
+		<execute function="Type#typeFrameWaitForCKEditor" locator1="PGWikiAddpage#BODY_FIELD" value1="${wikiPageContent}" />
+		<execute function="AssertClick#assertValueClickAtAndWaitCKEditor" locator1="PGWikiAddpage#PUBLISH_BUTTON" value1="Publish" />
 
 		<execute function="#assertTextEquals" locator1="PGWikiAllpages#SUCCESS_MESSAGE"  value1="Your request completed successfully." />
 		<execute function="#assertTextEquals" locator1="PGWikiAllpages#WIKI_PAGE_TABLE_PAGE_2" value1="${wikiPageTitle}" />
@@ -91,16 +91,16 @@
 	</command>
 
 	<command name="addPagePGWithWorkflow">
-		<execute function="#assertClick" locator1="PGWiki#NAVIGATION_ALL_PAGES" value1="All Pages" />
+		<execute function="AssertClick#assertTextClickAtAndWait" locator1="PGWiki#NAVIGATION_ALL_PAGES" value1="All Pages" />
 
-		<execute function="#assertClick" locator1="PGWikiAllpages#ADD_PAGE_BUTTON" value1="Add Page" />
+		<execute function="AssertClick#assertValueClickAtAndWait" locator1="PGWikiAllpages#ADD_PAGE_BUTTON" value1="Add Page" />
 
 		<execute function="#type" locator1="PGWikiAddpage#TITLE_FIELD" value1="${wikiPageTitle}" />
-		<execute function="#type" locator1="PGWikiAddpage#BODY_FIELD" value1="${wikiPageContent}" />
-		<execute function="#assertClick" locator1="PGWikiAddpage#SUBMIT_FOR_PUBLICATION_BUTTON" value1="Submit for Publication" />
+		<execute function="Type#typeFrameWaitForCKEditor" locator1="PGWikiAddpage#BODY_FIELD" value1="${wikiPageContent}" />
+		<execute function="AssertClick#assertValueClickAtAndWait" locator1="PGWikiAddpage#SUBMIT_FOR_PUBLICATION_BUTTON" value1="Submit for Publication" />
 
 		<execute function="#assertTextEquals" locator1="PGWikiAllpages#SUCCESS_MESSAGE" value1="Your request completed successfully." />
-		<execute function="#assertClick" locator1="PGWikiAllpages#NAVIGATION_DRAFT_PAGES" value1="Draft Pages" />
+		<execute function="AssertClick#assertTextClickAtAndWait" locator1="PGWikiAllpages#NAVIGATION_DRAFT_PAGES" value1="Draft Pages" />
 
 		<var name="key_wikiPageTitle" value="${wikiPageTitle}" />
 
@@ -113,7 +113,7 @@
 	</command>
 
 	<command name="deleteFrontPagePG">
-		<execute function="#assertClick" locator1="PGWiki#NAVIGATION_ALL_PAGES" value1="All Pages" />
+		<execute function="AssertClick#assertTextClickAtAndWait" locator1="PGWiki#NAVIGATION_ALL_PAGES" value1="All Pages" />
 
 		<execute function="#assertClick" locator1="PGWikiAllpages#WIKI_PAGE_TABLE_ACTIONS_1" value1="Actions" />
 		<execute function="#assertClickNoError" locator1="PGWikiAllpages#WIKI_PAGE_MENULIST_DELETE" value1="Delete" />
@@ -126,20 +126,20 @@
 			<var name="pageName" value="${pageName}" />
 		</execute>
 
-		<execute function="#assertClick" locator1="PGWiki#PAGE_ACTIONS_EDIT" value1="Edit" />
+		<execute function="AssertClick#assertTextClickAtAndWait" locator1="PGWiki#PAGE_ACTIONS_EDIT" value1="Edit" />
 
-		<execute function="#type" locator1="PGWikiAddpage#BODY_FIELD" value1="${wikiPageContentEdit}" />
-		<execute function="#assertClick" locator1="PGWikiAddpage#PUBLISH_BUTTON" value1="Publish" />
+		<execute function="Type#typeFrameWaitForCKEditor" locator1="PGWikiAddpage#BODY_FIELD" value1="${wikiPageContentEdit}" />
+		<execute function="AssertClick#assertValueClickAtAndWaitCKEditor" locator1="PGWikiAddpage#PUBLISH_BUTTON" value1="Publish" />
 
 		<execute function="#assertTextEquals" locator1="PGWiki#SUCCESS_MESSAGE"  value1="Your request completed successfully." />
 		<execute function="#assertTextEquals" locator1="PGWiki#WIKI_PAGE_BODY" value1="${wikiPageContentEdit}" />
 	</command>
 
 	<command name="saveAsDraftFrontPagePG">
-		<execute function="#assertClick" locator1="PGWiki#ADD_FRONTPAGE" value1="This page is empty. Edit it to add some text." />
+		<execute function="AssertClick#assertTextClickAtAndWait" locator1="PGWiki#ADD_FRONTPAGE" value1="This page is empty. Edit it to add some text." />
 
-		<execute function="#type" locator1="PGWikiAddpage#BODY_FIELD" value1="${wikiPageContent}" />
-		<execute function="#assertClick" locator1="PGWikiAddpage#SAVE_AS_DRAFT_BUTTON" value1="Save as Draft" />
+		<execute function="Type#typeFrameWaitForCKEditor" locator1="PGWikiAddpage#BODY_FIELD" value1="${wikiPageContent}" />
+		<execute function="AssertClick#assertValueClickAtAndWaitCKEditor" locator1="PGWikiAddpage#SAVE_AS_DRAFT_BUTTON" value1="Save as Draft" />
 		<execute function="#assertTextEquals" locator1="PGWikiAddpage#SUCCESS_MESSAGE"  value1="Your request completed successfully." />
 		<execute function="#assertTextEquals" locator1="PGWikiAddpage#WORKFLOW_STATUS" value1="Status: Draft" />
 		<execute function="#selectFrame" locator1="PGWikiAddpage#BODY_FIELD" />
@@ -166,7 +166,7 @@
 
 	<command name="viewFrontPageAttachmentPG">
 		<execute function="#assertTextEquals" locator1="PGWiki#WIKI_PAGE_BODY" value1="${wikiPageContent}" />
-		<execute function="#assertClick" locator1="PGWiki#WIKI_PAGE_ATTACHMENTS_LINK" value1="1 Attachment" />
+		<execute function="AssertClick#assertTextClickAtAndWait" locator1="PGWiki#WIKI_PAGE_ATTACHMENTS_LINK" value1="1 Attachment" />
 
 		<execute function="#assertTextEquals" locator1="PGWikiAttachments#ATTACHMENT_NAME" value1="${wikiPageAttachmentName}" />
 		<execute function="#assertTextEquals" locator1="PGWikiAttachments#ATTACHMENT_SIZE" value1="${wikiPageAttachmentSize}" />
@@ -174,7 +174,7 @@
 	</command>
 
 	<command name="viewPagePG">
-		<execute function="#assertClick" locator1="PGWiki#NAVIGATION_ALL_PAGES" value1="All Pages" />
+		<execute function="AssertClick#assertTextClickAtAndWait" locator1="PGWiki#NAVIGATION_ALL_PAGES" value1="All Pages" />
 
 		<var name="key_wikiPageTitle" value="${wikiPageTitle}" />
 
@@ -183,14 +183,14 @@
 		<execute function="#assertTextEquals" locator1="PGWikiAllpages#WIKI_PAGE_TABLE_REVISION" value1="${wikiPageRevision}" />
 		<execute function="#assertTextEquals" locator1="PGWikiAllpages#WIKI_PAGE_TABLE_USER" value1="${wikiPageUsername}" />
 		<execute function="#assertElementPresent" locator1="PGWikiAllpages#WIKI_PAGE_TABLE_DATE" />
-		<execute function="#assertClick" locator1="PGWikiAllpages#WIKI_PAGE_TABLE_PAGE" value1="${wikiPageTitle}" />
+		<execute function="AssertClick#assertTextClickAtAndWait" locator1="PGWikiAllpages#WIKI_PAGE_TABLE_PAGE" value1="${wikiPageTitle}" />
 
 		<execute function="#assertTextEquals" locator1="PGWiki#WIKI_PAGE_TITLE" value1="${wikiPageTitle}" />
 		<execute function="#assertTextEquals" locator1="PGWiki#WIKI_PAGE_BODY" value1="${wikiPageContent}" />
 	</command>
 
 	<command name="viewPagePGWithWorkflow">
-		<execute function="#assertClick" locator1="PGWiki#NAVIGATION_DRAFT_PAGES" value1="Draft Pages" />
+		<execute function="AssertClick#assertTextClickAtAndWait" locator1="PGWiki#NAVIGATION_DRAFT_PAGES" value1="Draft Pages" />
 
 		<var name="key_wikiPageTitle" value="${wikiPageTitle}" />
 
@@ -206,7 +206,7 @@
 		<execute function="#assertTextEquals" locator1="PGWiki#ADD_FRONTPAGE" value1="This page is empty. Edit it to add some text." />
 		<execute function="#assertElementNotPresent" locator1="PGWiki#WIKI_PAGE_BODY" />
 		<execute function="#assertTextNotPresent" value1="${wikiPageContent}" />
-		<execute function="#assertClick" locator1="PGWiki#PAGE_ACTIONS_EDIT" value1="Edit" />
+		<execute function="AssertClick#assertTextClickAtAndWait" locator1="PGWiki#PAGE_ACTIONS_EDIT" value1="Edit" />
 
 		<execute function="#assertTextEquals" locator1="PGWikiAddpage#WORKFLOW_STATUS" value1="Status: Draft" />
 		<execute function="#selectFrame" locator1="PGWikiAddpage#BODY_FIELD" />

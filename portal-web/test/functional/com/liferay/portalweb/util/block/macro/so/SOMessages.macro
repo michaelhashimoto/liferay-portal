@@ -2,11 +2,11 @@
 	<var name="password" value="test" />
 
 	<command name="sendMessage">
-		<execute function="#assertClick" locator1="SOMessages#NEW_MESSAGE_BUTTON" value1="New Message" />
+		<execute function="AssertClick#assertValueClickAt" locator1="SOMessages#NEW_MESSAGE_BUTTON" value1="New Message" />
 
 		<execute function="#click" locator1="SOMessagesAdd#TO_FIELD_DROPDOWN" />
-		<execute function="#type" locator1="SOMessagesAdd#TO_FIELD" value1="${recipientName}" />
-		<execute function="#assertClick" locator1="SOMessagesAdd#TO_FIELD_DROPDOWN_LIST" value1="${key_recipientName}" />
+		<execute function="Type#sendKeys" locator1="SOMessagesAdd#TO_FIELD" value1="${recipientName}" />
+		<execute function="AssertClick#pauseAssertPartialTextClickAt" locator1="SOMessagesAdd#TO_FIELD_DROPDOWN_LIST" value1="${key_recipientName}" />
 		<execute function="#assertTextEquals" locator1="SOMessagesAdd#TO_FIELD" value1="${recipientName} &lt;${recipientScreenName}&gt;, " />
 
 		<if>
@@ -50,9 +50,9 @@
 	<command name="tearDownPG">
 		<execute macro="SOUser#firstLoginPG" />
 
-		<execute function="#click" locator1="SOUserBar#DASHBOARD" />
+		<execute function="Click#textClickAtAndWait" locator1="SOUserBar#DASHBOARD" />
 
-		<execute function="#click" locator1="SODashboard#NAVIGATION_MESSAGES" />
+		<execute function="Click#textClickAtAndWait" locator1="SODashboard#NAVIGATION_MESSAGES" />
 		<execute function="#check" locator1="SOMessages#SELECT_ALL_CHECKBOX" />
 		<execute function="#click" locator1="SOMessages#DELETE_BUTTON" />
 		<execute function="#assertTextEquals" locator1="SOMessages#INFO_MESSAGE" value1="No messages found." />
@@ -68,7 +68,7 @@
 				<execute function="#assertTextEquals" locator1="SOMessagesMessage#PRIVATE_MESSAGE_SUBJECT" value1="${messageSubject}${number}" />
 				<execute function="#assertTextEquals" locator1="SOMessagesMessage#PRIVATE_MESSAGE_USERS" value1="Between ${connectionName} And You" />
 				<execute function="#assertTextEquals" locator1="SOMessagesMessage#PRIVATE_MESSAGE_SENDER" value1="${senderName}" />
-				<execute function="#assertTextEquals" locator1="SOMessagesMessage#PRIVATE_MESSAGE_BODY" value1="${messageBody}${number}" />
+				<execute function="AssertTextEquals#assertPartialText" locator1="SOMessagesMessage#PRIVATE_MESSAGE_BODY" value1="${messageBody}${number}" />
 			</then>
 			<else>
 				<execute function="#click" locator1="SOMessages#MESSAGE_SUBJECT" />
@@ -76,7 +76,7 @@
 				<execute function="#assertTextEquals" locator1="SOMessagesMessage#PRIVATE_MESSAGE_SUBJECT" value1="${messageSubject}" />
 				<execute function="#assertTextEquals" locator1="SOMessagesMessage#PRIVATE_MESSAGE_USERS" value1="Between ${connectionName} And You" />
 				<execute function="#assertTextEquals" locator1="SOMessagesMessage#PRIVATE_MESSAGE_SENDER" value1="${senderName}" />
-				<execute function="#assertTextEquals" locator1="SOMessagesMessage#PRIVATE_MESSAGE_BODY" value1="${messageBody}" />
+				<execute function="AssertTextEquals#assertPartialText" locator1="SOMessagesMessage#PRIVATE_MESSAGE_BODY" value1="${messageBody}" />
 			</else>
 		</if>
 
@@ -106,11 +106,11 @@
 	</command>
 
 	<command name="viewMessageNotification">
-		<execute function="#click" locator1="SOUserBar#DASHBOARD" />
-		<execute function="#assertElementPresent" locator1="SOUserBar#NOTIFICATION" />
+		<execute function="Click#textClickAtAndWait" locator1="SOUserBar#DASHBOARD" />
+		<execute function="AssertElementPresent#assertElementPresent" locator1="SOUserBar#NOTIFICATION" />
 		<execute function="#assertTextEquals" locator1="SOUserBar#NOTIFICATION_MENU_COUNT" value1="1" />
 		<execute function="#mouseOver" locator1="SOUserBar#NOTIFICATION" />
-		<execute function="#assertTextEquals" locator1="SOUserBar#NOTIFICATION_MENU_ENTRY_CONTENT" value1="${senderName} sent you a message." />
+		<execute function="AssertTextEquals#assertPartialText" locator1="SOUserBar#NOTIFICATION_MENU_ENTRY_CONTENT" value1="${senderName} sent you a message." />
 		<execute function="#assertTextEquals" locator1="SOUserBar#NOTIFICATION_MENU_ENTRY_SUBCONTENT" value1="${messageBody}" />
 		<execute function="#assertClick" locator1="SOUserBar#NOTIFICATION_MENU_MARK_ALL_AS_READ" value1="Mark All as Read" />
 		<execute function="#assertTextEquals" locator1="SOUserBar#NOTIFICATION_MENU_COUNT" value1="0" />
@@ -125,7 +125,7 @@
 		<execute function="#assertTextEquals" locator1="SOMessagesMessage#PRIVATE_MESSAGE_SUBJECT" value1="${messageSubject}" />
 		<execute function="#assertTextEquals" locator1="SOMessagesMessage#PRIVATE_MESSAGE_USERS" value1="Between ${connectionName} And You" />
 		<execute function="#assertTextEquals" locator1="SOMessagesMessage#PRIVATE_MESSAGE_SENDER" value1="${senderName}" />
-		<execute function="#assertTextEquals" locator1="SOMessagesMessage#PRIVATE_MESSAGE_BODY" value1="${messageBody}" />
+		<execute function="AssertTextEquals#assertPartialText" locator1="SOMessagesMessage#PRIVATE_MESSAGE_BODY" value1="${messageBody}" />
 
 		<if>
 			<isset var="messageAttachmentFile" />
@@ -136,7 +136,7 @@
 		</if>
 
 		<execute function="#assertTextEquals" locator1="SOMessagesMessage#PRIVATE_MESSAGE_REPLY_SENDER" value1="${replySenderName}" />
-		<execute function="#assertTextEquals" locator1="SOMessagesMessage#PRIVATE_MESSAGE_REPLY_BODY" value1="${messageReplyBody}" />
+		<execute function="AssertTextEquals#assertPartialText" locator1="SOMessagesMessage#PRIVATE_MESSAGE_REPLY_BODY" value1="${messageReplyBody}" />
 
 		<if>
 			<isset var="messageAttachmentFile" />

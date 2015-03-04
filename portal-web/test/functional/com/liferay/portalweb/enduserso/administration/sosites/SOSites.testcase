@@ -295,7 +295,7 @@
 
 		<execute function="#click" locator1="SOUserBar#GO_TO_SITE_NAME_LINK" />
 
-		<execute function="#click" locator1="SOSiteHome#NAVIGATION_MEMBERS" value1="Members" />
+		<execute function="Click#textClickAtAndWait" locator1="SOSiteHome#NAVIGATION_MEMBERS" value1="Members" />
 
 		<execute macro="SOMembers#inviteMember">
 			<var name="userEmailAddress" value="${userEmailAddress}" />
@@ -356,7 +356,7 @@
 
 		<execute function="#click" locator1="SOUserBar#GO_TO_SITE_NAME_LINK" />
 
-		<execute function="#click" locator1="SOSiteHome#NAVIGATION_MEMBERS" value1="Members" />
+		<execute function="Click#textClickAtAndWait" locator1="SOSiteHome#NAVIGATION_MEMBERS" value1="Members" />
 
 		<execute macro="SOMembers#inviteMember">
 			<var name="userEmailAddress" value="${userEmailAddress}" />
@@ -417,7 +417,7 @@
 
 		<execute function="#click" locator1="SOUserBar#GO_TO_SITE_NAME_LINK" />
 
-		<execute function="#click" locator1="SOSiteHome#NAVIGATION_MEMBERS" value1="Members" />
+		<execute function="Click#textClickAtAndWait" locator1="SOSiteHome#NAVIGATION_MEMBERS" value1="Members" />
 
 		<execute macro="SOMembers#inviteMember">
 			<var name="userEmailAddress" value="${userEmailAddress}" />
@@ -478,7 +478,7 @@
 
 		<execute function="#click" locator1="SOUserBar#GO_TO_SITE_NAME_LINK" />
 
-		<execute function="#click" locator1="SOSiteHome#NAVIGATION_MEMBERS" value1="Members" />
+		<execute function="Click#textClickAtAndWait" locator1="SOSiteHome#NAVIGATION_MEMBERS" value1="Members" />
 
 		<execute macro="SOMembers#inviteMember">
 			<var name="userEmailAddress" value="${userEmailAddress}" />
@@ -793,7 +793,7 @@
 
 		<execute function="#click" locator1="SOUserBar#GO_TO_SITE_NAME_LINK" />
 
-		<execute function="#click" locator1="SOSiteHome#NAVIGATION_MEMBERS" value1="Members" />
+		<execute function="Click#textClickAtAndWait" locator1="SOSiteHome#NAVIGATION_MEMBERS" value1="Members" />
 
 		<execute macro="SOMembers#inviteMember">
 			<var name="userEmailAddress" value="${userEmailAddress}" />
@@ -1442,9 +1442,9 @@
 			<var name="siteType" value="${siteType4}" />
 		</execute>
 
-		<execute function="#click" locator1="SOUserBar#DASHBOARD" />
-		<execute function="#click" locator1="SOUserBar#GO_TO" />
-		<execute function="#click" locator1="SOUserBar#GO_TO_SITES_DIRECTORY_BUTTON" />
+		<execute function="Click#textClickAtAndWait" locator1="SOUserBar#DASHBOARD" />
+		<execute function="Click#pauseClickAt" locator1="SOUserBar#GO_TO" />
+		<execute function="Click#pauseClickAt" locator1="SOUserBar#GO_TO_SITES_DIRECTORY_BUTTON" />
 
 		<execute function="#select" locator1="SOUserBarSitesDirectory#SITE_CATEGORY_SELECT" value1="All Sites" />
 		<execute function="#assertTextEquals" locator1="SOUserBarSitesDirectory#SITE_NAME_LINK_1" value1="${siteName1}" />
@@ -1476,9 +1476,9 @@
 
 		<var name="siteName" value="${siteName2}" />
 
-		<execute function="#click" locator1="SOUserBar#DASHBOARD" />
-		<execute function="#click" locator1="SOUserBar#GO_TO" />
-		<execute function="#click" locator1="SOUserBar#GO_TO_SITES_DIRECTORY_BUTTON" />
+		<execute function="Click#textClickAtAndWait" locator1="SOUserBar#DASHBOARD" />
+		<execute function="Click#pauseClickAt" locator1="SOUserBar#GO_TO" />
+		<execute function="Click#pauseClickAt" locator1="SOUserBar#GO_TO_SITES_DIRECTORY_BUTTON" />
 
 		<execute function="#select" locator1="SOUserBarSitesDirectory#SITE_CATEGORY_SELECT" value1="My Sites" />
 		<execute function="#type" locator1="SOUserBarSitesDirectory#SITE_SEARCH_FIELD" value1="${siteName2}" />
@@ -1490,9 +1490,9 @@
 
 		<var name="siteName" value="${siteName3}" />
 
-		<execute function="#click" locator1="SOUserBar#DASHBOARD" />
-		<execute function="#click" locator1="SOUserBar#GO_TO" />
-		<execute function="#click" locator1="SOUserBar#GO_TO_SITES_DIRECTORY_BUTTON" />
+		<execute function="Click#textClickAtAndWait" locator1="SOUserBar#DASHBOARD" />
+		<execute function="Click#pauseClickAt" locator1="SOUserBar#GO_TO" />
+		<execute function="Click#pauseClickAt" locator1="SOUserBar#GO_TO_SITES_DIRECTORY_BUTTON" />
 
 		<execute function="#select" locator1="SOUserBarSitesDirectory#SITE_CATEGORY_SELECT" value1="My Sites" />
 		<execute function="#type" locator1="SOUserBarSitesDirectory#SITE_SEARCH_FIELD" value1="${siteName3}" />
@@ -1504,9 +1504,9 @@
 
 		<var name="siteName" value="${siteName4}" />
 
-		<execute function="#click" locator1="SOUserBar#DASHBOARD" />
-		<execute function="#click" locator1="SOUserBar#GO_TO" />
-		<execute function="#click" locator1="SOUserBar#GO_TO_SITES_DIRECTORY_BUTTON" />
+		<execute function="Click#textClickAtAndWait" locator1="SOUserBar#DASHBOARD" />
+		<execute function="Click#pauseClickAt" locator1="SOUserBar#GO_TO" />
+		<execute function="Click#pauseClickAt" locator1="SOUserBar#GO_TO_SITES_DIRECTORY_BUTTON" />
 
 		<execute function="#select" locator1="SOUserBarSitesDirectory#SITE_CATEGORY_SELECT" value1="My Sites" />
 		<execute function="#type" locator1="SOUserBarSitesDirectory#SITE_SEARCH_FIELD" value1="${siteName4}" />

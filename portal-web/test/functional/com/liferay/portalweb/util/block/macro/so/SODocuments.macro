@@ -6,7 +6,7 @@
 			<var name="userName" value="Joe Bloggs" />
 		</execute>
 
-		<execute function="#click" locator1="SODashboard#NAVIGATION_MY_DOCUMENTS" value1="My Documents" />
+		<execute function="Click#textClickAtAndWait" locator1="SODashboard#NAVIGATION_MY_DOCUMENTS" value1="My Documents" />
 
 		<execute function="#click" locator1="PGDocumentsandmedia#TOOLBAR_DISPLAY_ICON" value1="Icon Display" />
 	</command>
@@ -18,7 +18,7 @@
 			<var name="userName" value="Joe Bloggs" />
 		</execute>
 
-		<execute function="#click" locator1="SODashboard#NAVIGATION_MY_DOCUMENTS" value1="My Documents" />
+		<execute function="Click#textClickAtAndWait" locator1="SODashboard#NAVIGATION_MY_DOCUMENTS" value1="My Documents" />
 
 		<if>
 			<condition function="#isElementPresent" locator1="PGDocumentsandmedia#ENTRIES_DOCUMENT_GENERIC" />
@@ -176,7 +176,7 @@
 		<execute function="#assertTextEquals" locator1="PGDocumentsandmediaDocument#DOCUMENT_INFO_DESCRIPTION" value1="${dmDocumentDescription}" />
 
 		<execute function="#assertElementPresent" locator1="PGDocumentsandmediaDocument#DOCUMENT_INFO_THUMBNAIL" />
-		<execute function="#assertTextEquals" locator1="PGDocumentsandmediaDocument#DOCUMENT_INFO_UPLOADED_BY" value1="Uploaded by ${dmDocumentUploader}" />
+		<execute function="AssertTextEquals#assertPartialText" locator1="PGDocumentsandmediaDocument#DOCUMENT_INFO_UPLOADED_BY" value1="Uploaded by ${dmDocumentUploader}" />
 		<execute function="#assertElementPresent" locator1="PGDocumentsandmediaDocument#DOCUMENT_INFO_RATING" value1="Ratings" />
 
 		<execute function="#assertTextEquals" locator1="SODocuments#VERSION_HISTORY_TITLE" value1="Version History" />

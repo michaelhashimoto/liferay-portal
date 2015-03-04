@@ -121,7 +121,7 @@
 		<execute function="#click" locator1="SOTasks#ADD_TASK_BUTTON" />
 
 		<execute function="#type" locator1="SOTasksAdd#TASK_DESCRIPTION_FIELD" value1="${taskDescription}" />
-		<execute function="#assertTextNotEquals" locator1="SOTasksAdd#TASK_ASSIGNEE_SELECT_MENU" value1="${userName}" />
+		<execute function="AssertTextNotEquals#assertNotPartialText" locator1="SOTasksAdd#TASK_ASSIGNEE_SELECT_MENU" value1="${userName}" />
 	</command>
 
 	<command name="AddTaskAssignedToMe" priority="5">

@@ -31,32 +31,32 @@
 		<execute function="#assertTextEquals" locator1="Setupwizard#DATABASE_CHANGE_JDBC_DRIVER_CLASS_NAME_LABEL" value1="JDBC Driver Class Name (Required)" />
 		<execute function="#assertTextEquals" locator1="Setupwizard#DATABASE_CHANGE_USER_NAME_LABEL" value1="User Name" />
 		<execute function="#assertTextEquals" locator1="Setupwizard#DATABASE_CHANGE_PASSWORD_LABEL" value1="Password" />
-		<execute function="#assertClick" locator1="Setupwizard#FINISH_CONFIGURATION_BUTTON" value1="Finish Configuration" />
+		<execute function="AssertClick#assertValueClickAtAndWait" locator1="Setupwizard#FINISH_CONFIGURATION_BUTTON" value1="Finish Configuration" />
 
 		<execute function="#assertTextEquals" locator1="SetupwizardFinishconfiguration#SUCCESS_MESSAGE" value1="Your configuration was saved successfully." />
-		<execute function="#assertTextEquals" locator1="SetupwizardFinishconfiguration#CONFIGURATION_SAVE_MESSAGE" value1="The configuration was saved in" />
-		<execute function="#assertTextEquals" locator1="SetupwizardFinishconfiguration#CONFIGURATION_SAVE_LOCATION" value1="portal-setup-wizard.properties" />
-		<execute function="#assertClick" locator1="SetupwizardFinishconfiguration#GO_TO_MY_PORTAL_BUTTON" value1="Go to My Portal" />
+		<execute function="AssertTextEquals#assertPartialText" locator1="SetupwizardFinishconfiguration#CONFIGURATION_SAVE_MESSAGE" value1="The configuration was saved in" />
+		<execute function="AssertTextEquals#assertPartialText" locator1="SetupwizardFinishconfiguration#CONFIGURATION_SAVE_LOCATION" value1="portal-setup-wizard.properties" />
+		<execute function="AssertClick#assertValueClickAtAndWait" locator1="SetupwizardFinishconfiguration#GO_TO_MY_PORTAL_BUTTON" value1="Go to My Portal" />
 
-		<execute function="#assertClick" locator1="PGLoginTermsofservice#I_AGREE_BUTTON" value1="I Agree" />
+		<execute function="AssertClick#assertValueClickAtAndWait" locator1="PGLoginTermsofservice#I_AGREE_BUTTON" value1="I Agree" />
 
 		<execute function="#type" locator1="PGLoginNewpassword#PASSWORD_FIELD" value1="${newPassword}" />
 		<execute function="#type" locator1="PGLoginNewpassword#ENTER_AGAIN_FIELD" value1="${newPassword}" />
-		<execute function="#assertClick" locator1="PGLoginNewpassword#SAVE_BUTTON" value1="Save" />
+		<execute function="AssertClick#assertValueClickAtAndWait" locator1="PGLoginNewpassword#SAVE_BUTTON" value1="Save" />
 
 		<execute function="#type" locator1="PGLoginPasswordreminder#ANSWER_FIELD" value1="${passwordReminder}" />
-		<execute function="#assertClick" locator1="PGLoginPasswordreminder#SAVE_BUTTON" value1="Save" />
+		<execute function="AssertClick#assertValueClickAtAndWait" locator1="PGLoginPasswordreminder#SAVE_BUTTON" value1="Save" />
 
 		<execute macro="Page#openURL" />
 
 		<execute function="#assertTextEquals" locator1="Home#BREADCRUMB_2" value1="Welcome" />
 
-		<execute function="#assertTextEquals" locator1="PGSignin#PORTLET_TITLE" value1="Sign In" />
-		<execute function="#assertTextEquals" locator1="PGSignin#PORTLET_CONTENT" value1="You are signed in as ${administratorFirstName} ${administratorLastName}" />
+		<execute function="AssertTextEquals#assertText" locator1="PGSignin#PORTLET_TITLE" value1="Sign In" />
+		<execute function="AssertTextEquals#assertPartialText" locator1="PGSignin#PORTLET_CONTENT" value1="You are signed in as ${administratorFirstName} ${administratorLastName}" />
 		<execute function="#assertTextEquals" locator1="PGSignin#PORTLET_CONTENT_USER_NAME" value1="${administratorFirstName} ${administratorLastName}" />
 
-		<execute function="#assertTextEquals" locator1="PGHelloworld#PORTLET_TITLE" value1="Hello World" />
-		<execute function="#assertTextEquals" locator1="PGHelloworld#PORTLET_CONTENT" value1="Welcome to Liferay Portal" />
+		<execute function="AssertTextEquals#assertText" locator1="PGHelloworld#PORTLET_TITLE" value1="Hello World" />
+		<execute function="AssertTextEquals#assertPartialText" locator1="PGHelloworld#PORTLET_CONTENT" value1="Welcome to Liferay Portal" />
 
 		<execute macro="Page#addPG">
 			<var name="pageName" value="${pageName}" />

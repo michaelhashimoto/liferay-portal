@@ -69,7 +69,7 @@
 
 		<execute macro="BlogsEntry#viewPGDetails" />
 
-		<execute function="#assertTextEquals" locator1="PGBlogsEntry#ENTRY_VIEW_COUNT" value1="1 View" />
+		<execute function="AssertTextEquals#assertPartialText" locator1="PGBlogsEntry#ENTRY_VIEW_COUNT" value1="1 View" />
 
 		<execute macro="Page#gotoPG">
 			<var name="pageName" value="${pageName}" />
@@ -78,7 +78,7 @@
 
 		<execute macro="BlogsEntry#viewPGDetails" />
 
-		<execute function="#assertTextEquals" locator1="PGBlogsEntry#ENTRY_VIEW_COUNT" value1="2 Views" />
+		<execute function="AssertTextEquals#assertPartialText" locator1="PGBlogsEntry#ENTRY_VIEW_COUNT" value1="2 Views" />
 
 		<execute function="#open" locator1="SOBlogs#OPEN_SITE_NAME_BLOGS_RSS_URL" />
 

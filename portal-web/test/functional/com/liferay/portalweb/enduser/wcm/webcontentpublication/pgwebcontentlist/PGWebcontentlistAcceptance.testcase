@@ -43,7 +43,7 @@
 		</execute>
 
 		<execute function="#assertTextEquals" locator1="PGWebcontentlist#WEB_CONTENT_TABLE_TITLE_1" value1="${webContentTitle}" />
-		<execute function="#assertClick" locator1="PGWebcontentlist#WEB_CONTENT_TABLE_TITLE_1" value1="${webContentTitle}" />
+		<execute function="AssertClick#assertTextClickAtAndWait" locator1="PGWebcontentlist#WEB_CONTENT_TABLE_TITLE_1" value1="${webContentTitle}" />
 
 		<execute function="#assertTextEquals" locator1="PGWebcontentlistWebcontent#WEB_CONTENT_TITLE" value1="${webContentTitle}" />
 		<execute function="#assertTextEquals" locator1="PGWebcontentlistWebcontent#WEB_CONTENT_CONTENT" value1="${webContentContent}" />

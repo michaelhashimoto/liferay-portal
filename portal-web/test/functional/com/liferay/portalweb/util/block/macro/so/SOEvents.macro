@@ -10,7 +10,7 @@
 		<if>
 			<condition function="#isElementPresent" locator1="SOUserBar#EDIT_CONTROLS_NOT_FLAGGED" />
 			<then>
-				<execute function="#mouseOver" locator1="Dockbar#EDIT_CONTROLS" />
+				<execute function="MouseOver#mouseOverClickDockbar" locator1="Dockbar#EDIT_CONTROLS" />
 				<execute function="#assertClick" locator1="Dockbar#EDIT_CONTROLS" value1="Edit Controls" />
 			</then>
 		</if>
@@ -21,7 +21,7 @@
 
 		<execute function="#selectFrame" locator1="SOSiteHomeEventsConfiguration#CONFIGURATION_IFRAME" />
 		<execute function="#select" locator1="SOSiteHomeEventsConfiguration#DISPLAY_SETTINGS_MAX_DAYS_DISPLAYED_SELECT" value1="${maxDisplayDays}" />
-		<execute function="#assertClick" locator1="SOSiteHomeEventsConfiguration#SAVE_BUTTON" value1="Save" />
+		<execute function="AssertClick#assertValueClickAtAndWait" locator1="SOSiteHomeEventsConfiguration#SAVE_BUTTON" value1="Save" />
 		<execute function="#assertTextEquals" locator1="SOSiteHomeEventsConfiguration#SUCCESS_MESSAGE" value1="You have successfully updated the setup." />
 		<execute function="#selectFrameTop" />
 		<execute function="#click" locator1="SOSiteHomeEventsConfiguration#CLOSE_BUTTON" />

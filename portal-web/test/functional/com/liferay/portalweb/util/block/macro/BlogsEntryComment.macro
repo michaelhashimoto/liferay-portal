@@ -14,9 +14,9 @@
 	<command name="addPG">
 		<execute function="#assertClick" locator1="PGBlogs#ENTRY_TITLE_1" value1="${entryTitle}" />
 
-		<execute function="#assertClick" locator1="PGBlogsEntry#COMMENTS_ADD" value1="Be the first." />
+		<execute function="AssertClick#assertTextClickAt" locator1="PGBlogsEntry#COMMENTS_ADD" value1="Be the first." />
 		<execute function="#type" locator1="PGBlogsEntry#COMMENTS_BODY_FIELD" value1="${entryComment}" />
-		<execute function="#assertClick" locator1="PGBlogsEntry#COMMENTS_REPLY_BUTTON" value1="Reply" />
+		<execute function="AssertClick#assertValueClickAt" locator1="PGBlogsEntry#COMMENTS_REPLY_BUTTON" value1="Reply" />
 		<execute function="#assertTextEquals" locator1="PGBlogsEntry#COMMENTS_SUCCESS" value1="Your request processed successfully." />
 		<execute function="#assertTextEquals" locator1="PGBlogsEntry#COMMENT_1" value1="${entryComment}" />
 	</command>

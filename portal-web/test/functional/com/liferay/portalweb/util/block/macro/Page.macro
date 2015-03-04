@@ -16,8 +16,8 @@
 			</then>
 		</if>
 
-		<execute function="#mouseOver" locator1="Dockbar#ADD" />
-		<execute function="#assertClick" locator1="Dockbar#ADD_PAGE" value1="Page" />
+		<execute function="MouseOver#textMouseOverClickDockbar" locator1="Dockbar#ADD" />
+		<execute function="AssertClick#assertTextClickAt" locator1="Dockbar#ADD_PAGE" value1="Page" />
 
 		<execute function="#type" locator1="Home#NEW_PAGE_FIELD" value1="${pageName}" />
 		<execute function="#click" locator1="Home#NEW_PAGE_SAVE" />
@@ -30,7 +30,7 @@
 	<command name="addPGWithWorkflow">
 		<execute macro="Page#openURL" />
 
-		<execute function="#mouseOver" locator1="Dockbar#ADD" />
+		<execute function="MouseOver#textMouseOverClickDockbar" locator1="Dockbar#ADD" />
 		<execute function="#click" locator1="Dockbar#ADD_PAGE" />
 
 		<execute function="#type" locator1="Home#NEW_PAGE_FIELD" value1="${pageName}" />
@@ -49,8 +49,8 @@
 
 		<execute macro="Page#openURL" />
 
-		<execute function="#mouseOver" locator1="Dockbar#GO_TO" />
-		<execute function="#assertClick" locator1="Dockbar#GO_TO_CONTROL_PANEL" value1="Control Panel" />
+		<execute function="MouseOver#textMouseOverClickDockbar" locator1="Dockbar#GO_TO" />
+		<execute function="AssertClick#assertTextClickAtAndWait" locator1="Dockbar#GO_TO_CONTROL_PANEL" value1="Control Panel" />
 
 		<if>
 			<isset var="siteScopeName" />
@@ -146,9 +146,9 @@
 		<while>
 			<condition function="#isElementPresent" locator1="Home#PAGE_2" />
 			<then>
-				<execute function="#mouseOver" locator1="Home#PAGE_2" />
+				<execute function="MouseOver#mouseOverClickNavigation" locator1="Home#PAGE_2" />
 				<execute function="#assertClickNoError" locator1="Home#PAGE_DELETE_2" value1="X" />
-				<execute function="#confirm" locator1="Home#PAGE_CONFIRM" value1="Are you sure you want to delete this page?" />
+				<execute function="Confirm#waitForConfirmation" locator1="Home#PAGE_CONFIRM" value1="Are you sure you want to delete this page?" />
 				<execute function="#assertElementNotPresent" locator1="Home#PAGE_DELETE_2" />
 			</then>
 		</while>

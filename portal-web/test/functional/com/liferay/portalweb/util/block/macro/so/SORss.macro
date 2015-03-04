@@ -10,7 +10,7 @@
 		<if>
 			<condition function="#isElementPresent" locator1="SOUserBar#EDIT_CONTROLS_NOT_FLAGGED" />
 			<then>
-				<execute function="#mouseOver" locator1="Dockbar#EDIT_CONTROLS" />
+				<execute function="MouseOver#mouseOverClickDockbar" locator1="Dockbar#EDIT_CONTROLS" />
 				<execute function="#assertClick" locator1="Dockbar#EDIT_CONTROLS" value1="Edit Controls" />
 			</then>
 		</if>
@@ -30,14 +30,14 @@
 		<execute function="#check" locator1="SOSiteHomeRssConfiguration#DISPLAY_SETTINGS_SHOW_FEED_ITEM_AUTHOR_CHECKBOX" />
 		<execute function="#select" locator1="SOSiteHomeRssConfiguration#DISPLAY_SETTINGS_ENTRIES_PER_FEED_SELECT" value1="${entriesPerFeed}" />
 		<execute function="#select" locator1="SOSiteHomeRssConfiguration#DISPLAY_SETTINGS_EXPANDED_ENTRIES_PER_FEED_SELECT" value1="${expandedEntriesPerFeed}" />
-		<execute function="#assertClick" locator1="SOSiteHomeRssConfiguration#SAVE_BUTTON" value1="Save" />
+		<execute function="AssertClick#assertValueClickAtAndWait" locator1="SOSiteHomeRssConfiguration#SAVE_BUTTON" value1="Save" />
 		<execute function="#assertTextEquals" locator1="SOSiteHomeRssConfiguration#SUCCESS_MESSAGE" value1="You have successfully updated the setup." />
 		<execute function="#selectFrameTop" />
 		<execute function="#click" locator1="SOSiteHomeEventsConfiguration#CLOSE_BUTTON" />
 	</command>
 
 	<command name="viewRssFeed">
-		<execute function="#assertTextEquals" locator1="SOSiteHome#RSS_FEED_TITLE" value1="CNET" />
+		<execute function="AssertTextEquals#assertPartialText" locator1="SOSiteHome#RSS_FEED_TITLE" value1="CNET" />
 		<execute function="#assertElementPresent" locator1="SOSiteHome#RSS_FEED_PUBLISHED_DATE" />
 		<execute function="#assertElementPresent" locator1="SOSiteHome#RSS_FEED_DESCRIPTION" />
 		<execute function="#assertElementPresent" locator1="SOSiteHome#RSS_FEED_IMAGE" />

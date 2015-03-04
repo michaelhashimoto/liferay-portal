@@ -1,19 +1,19 @@
 <definition>
 	<command name="addChildCP">
 		<execute function="#type" locator1="CPSites#SEARCH_FIELD" value1="${siteName}" />
-		<execute function="#assertClick" locator1="CPSites#SEARCH_BUTTON" value1="Search" />
+		<execute function="AssertClick#assertValueClickAtAndWait" locator1="CPSites#SEARCH_BUTTON" value1="Search" />
 		<execute function="#assertClick" locator1="CPSites#SITE_TABLE_ACTIONS" value1="Actions" />
 		<execute function="#assertClick" locator1="CPSites#SITE_MENULIST_MANAGE_PAGES" value1="Manage Pages" />
 
 		<if>
 			<equals arg1="${sitePageType}" arg2="Private" />
 			<then>
-				<execute function="#assertClick" locator1="CPSitepages#NAVIGATION_PRIVATE_PAGES" value1="Private Pages" />
+				<execute function="AssertClick#assertTextClickAtAndWait" locator1="CPSitepages#NAVIGATION_PRIVATE_PAGES" value1="Private Pages" />
 			</then>
 			<elseif>
 				<equals arg1="${sitePageType}" arg2="Public" />
 				<then>
-					<execute function="#assertClick" locator1="CPSitepages#NAVIGATION_PUBLIC_PAGES" value1="Public Pages" />
+					<execute function="AssertClick#assertTextClickAtAndWait" locator1="CPSitepages#NAVIGATION_PUBLIC_PAGES" value1="Public Pages" />
 				</then>
 			</elseif>
 			<else>
@@ -27,7 +27,7 @@
 
 		<execute function="#assertClick" locator1="CPSitepages#TOOLBAR_ADD_CHILD_PAGE" value1="Add Child Page" />
 		<execute function="#type" locator1="CPSitepages#ADD_PAGE_NAME_FIELD" value1="${siteChildPageName}" />
-		<execute function="#assertClick" locator1="CPSitepages#ADD_PAGE_BUTTON" value1="Add Page" />
+		<execute function="AssertClick#assertValueClickAtAndWait" locator1="CPSitepages#ADD_PAGE_BUTTON" value1="Add Page" />
 		<execute function="#assertTextEquals" locator1="CPSitepages#SUCCESS_MESSAGE" value1="Your request completed successfully." />
 
 		<execute macro="SitePage#expandTreeCP" />
@@ -38,19 +38,19 @@
 
 	<command name="addCP">
 		<execute function="#type" locator1="CPSites#SEARCH_FIELD" value1="${siteName}" />
-		<execute function="#assertClick" locator1="CPSites#SEARCH_BUTTON" value1="Search" />
+		<execute function="AssertClick#assertValueClickAtAndWait" locator1="CPSites#SEARCH_BUTTON" value1="Search" />
 		<execute function="#assertClick" locator1="CPSites#SITE_TABLE_ACTIONS" value1="Actions" />
 		<execute function="#assertClick" locator1="CPSites#SITE_MENULIST_MANAGE_PAGES" value1="Manage Pages" />
 
 		<if>
 			<equals arg1="${sitePageType}" arg2="Private" />
 			<then>
-				<execute function="#assertClick" locator1="CPSitepages#NAVIGATION_PRIVATE_PAGES" value1="Private Pages" />
+				<execute function="AssertClick#assertTextClickAtAndWait" locator1="CPSitepages#NAVIGATION_PRIVATE_PAGES" value1="Private Pages" />
 			</then>
 			<elseif>
 				<equals arg1="${sitePageType}" arg2="Public" />
 				<then>
-					<execute function="#assertClick" locator1="CPSitepages#NAVIGATION_PUBLIC_PAGES" value1="Public Pages" />
+					<execute function="AssertClick#assertTextClickAtAndWait" locator1="CPSitepages#NAVIGATION_PUBLIC_PAGES" value1="Public Pages" />
 				</then>
 			</elseif>
 			<else>
@@ -60,7 +60,7 @@
 
 		<execute function="#assertClick" locator1="CPSitepages#TOOLBAR_ADD_PAGE" value1="Add Page" />
 		<execute function="#type" locator1="CPSitepages#ADD_PAGE_NAME_FIELD" value1="${sitePageName}" />
-		<execute function="#assertClick" locator1="CPSitepages#ADD_PAGE_BUTTON" value1="Add Page" />
+		<execute function="AssertClick#assertValueClickAtAndWait" locator1="CPSitepages#ADD_PAGE_BUTTON" value1="Add Page" />
 		<execute function="#assertTextEquals" locator1="CPSitepages#SUCCESS_MESSAGE" value1="Your request completed successfully." />
 
 		<execute macro="SitePage#expandRootCP" />
@@ -70,10 +70,10 @@
 
 	<command name="expandRootCP">
 		<execute function="#click" locator1="CPSitepages#PAGE_TREE_ROOT_ARROW" />
-		<execute function="#assertElementPresent" locator1="CPSitepages#PAGE_TREE_PAGE_LINK_1" />
+		<execute function="AssertElementPresent#assertElementPresent" locator1="CPSitepages#PAGE_TREE_PAGE_LINK_1" />
 
 		<if>
-			<condition function="#isElementNotPresent" locator1="CPSitepages#PAGE_TREE_PAGE_LINK_1" />
+			<condition function="IsElementNotPresent#isNotVisible" locator1="CPSitepages#PAGE_TREE_PAGE_LINK_1" />
 			<then>
 				<execute function="#click" locator1="CPSitepages#PAGE_TREE_ROOT_ARROW" />
 			</then>
@@ -115,15 +115,15 @@
 		<execute function="#check" locator1="CPSitepagesImport#APPLICATIONS_DELETE_PORTLET_DATA_CHECKBOX" />
 		<execute function="#check" locator1="CPSitepagesImport#OTHER_PERMISSIONS_CHECKBOX" />
 		<execute function="#check" locator1="CPSitepagesImport#OTHER_CATEGORIES_CHECKBOX" />
-		<execute function="#assertClick" locator1="CPSitepagesImport#IMPORT_BUTTON" value1="Import" />
+		<execute function="AssertClick#assertValueClickAtAndWait" locator1="CPSitepagesImport#IMPORT_BUTTON" value1="Import" />
 		<execute function="#selectFrame" />
 
 		<execute function="#assertTextEquals" locator1="CPSitepages#SUCCESS_MESSAGE" value1="Your request completed successfully." />
 	</command>
 
 	<command name="viewChildPG">
-		<execute function="#mouseOver" locator1="Home#PAGE_1" value1="${sitePageName}" />
-		<execute function="#click" locator1="Home#PAGE_1_CHILD_PAGE_1" value1="${siteChildPageName}" />
+		<execute function="MouseOver#mouseOverClickNavigation" locator1="Home#PAGE_1" value1="${sitePageName}" />
+		<execute function="AssertClick#assertTextClickAtAndWait" locator1="Home#PAGE_1_CHILD_PAGE_1" value1="${siteChildPageName}" />
 		<execute function="#assertTextEquals" locator1="Home#BREADCRUMB_1" value1="${siteGuestName}" />
 		<execute function="#assertTextEquals" locator1="Home#BREADCRUMB_2" value1="${siteName}" />
 		<execute function="#assertTextEquals" locator1="Home#BREADCRUMB_3" value1="${sitePageName}" />

@@ -33,7 +33,7 @@
 
 				<var name="number" value="${number}" />
 
-				<execute function="#type" locator1="SOMicroblogs#MICROBLOGS_CONTENT_INPUT_FIELD" value1="${microblogsEntryContent}${number}" />
+				<execute function="Type#sendKeys" locator1="SOMicroblogs#MICROBLOGS_CONTENT_INPUT_FIELD" value1="${microblogsEntryContent}${number}" />
 				<execute function="#assertTextEquals" locator1="SOMicroblogs#MICROBLOGS_CONTENT_COUNTDOWN" value1="${microblogsEntryCharacterCountdown}" />
 				<execute function="#click" locator1="SOMicroblogs#POST_BUTTON" />
 				<execute function="#assertTextEquals" locator1="SOMicroblogs#MICROBLOGS_ENTRY_CONTENT_INCREMENT" value1="${microblogsEntryContent}${number}" />
@@ -49,7 +49,7 @@
 					</else>
 				</if>
 
-				<execute function="#type" locator1="SOMicroblogs#MICROBLOGS_CONTENT_INPUT_FIELD" value1="${microblogsEntryContent}" />
+				<execute function="Type#sendKeys" locator1="SOMicroblogs#MICROBLOGS_CONTENT_INPUT_FIELD" value1="${microblogsEntryContent}" />
 				<execute function="#assertTextEquals" locator1="SOMicroblogs#MICROBLOGS_CONTENT_COUNTDOWN" value1="${microblogsEntryCharacterCountdown}" />
 				<execute function="#click" locator1="SOMicroblogs#POST_BUTTON" />
 				<execute function="#assertTextEquals" locator1="SOMicroblogs#MICROBLOGS_ENTRY_CONTENT" value1="${microblogsEntryContent}" />
@@ -78,7 +78,7 @@
 				<execute function="#assertClick" locator1="SOMicroblogs#MICROBLOGS_ENTRY_COMMENT_LINK" value1="Comment" />
 				<execute function="#click" locator1="SOMicroblogs#MICROBLOGS_ENTRY_COMMENT_CONTENT_FIELD" />
 				<execute function="#click" locator1="SOMicroblogs#MICROBLOGS_CONTENT_INPUT_FIELD" />
-				<execute function="#type" locator1="SOMicroblogs#MICROBLOGS_CONTENT_INPUT_FIELD" value1="${microblogsEntryCommentContent}" />
+				<execute function="Type#sendKeys" locator1="SOMicroblogs#MICROBLOGS_CONTENT_INPUT_FIELD" value1="${microblogsEntryCommentContent}" />
 				<execute function="#assertTextEquals" locator1="SOMicroblogs#MICROBLOGS_ENTRY_COMMENT_CONTENT_COUNTDOWN" value1="${microblogsEntryCharacterCountdown}" />
 				<execute function="#click" locator1="SOMicroblogs#MICROBLOGS_ENTRY_COMMENT_POST_BUTTON" />
 				<execute function="#assertTextEquals" locator1="SOMicroblogs#MICROBLOGS_ENTRY_COMMENT_CONTENT" value1="${microblogsEntryCommentContent}" />
@@ -87,7 +87,7 @@
 				<execute function="#assertClick" locator1="SOMicroblogs#MICROBLOGS_ENTRY_COMMENT_LINK" value1="Comment" />
 				<execute function="#click" locator1="SOMicroblogs#MICROBLOGS_CONTENT_FIELD" />
 				<execute function="#click" locator1="SOMicroblogs#MICROBLOGS_CONTENT_INPUT_FIELD" />
-				<execute function="#type" locator1="SOMicroblogs#MICROBLOGS_CONTENT_INPUT_FIELD" value1="${microblogsEntryCommentContent}" />
+				<execute function="Type#sendKeys" locator1="SOMicroblogs#MICROBLOGS_CONTENT_INPUT_FIELD" value1="${microblogsEntryCommentContent}" />
 				<execute function="#assertTextEquals" locator1="SOMicroblogs#MICROBLOGS_CONTENT_COUNTDOWN" value1="${microblogsEntryCharacterCountdown}" />
 				<execute function="#click" locator1="SOMicroblogs#POST_BUTTON" />
 				<execute function="#assertTextEquals" locator1="SOMicroblogs#MICROBLOGS_ENTRY_COMMENT_CONTENT" value1="${microblogsEntryCommentContent}" />
@@ -116,7 +116,7 @@
 			<then>
 				<execute function="#click" locator1="SOMicroblogs#MICROBLOGS_ENTRY_COMMENT_CONTENT_FIELD" />
 				<execute function="#click" locator1="SOMicroblogs#MICROBLOGS_CONTENT_INPUT_FIELD" />
-				<execute function="#type" locator1="SOMicroblogs#MICROBLOGS_CONTENT_INPUT_FIELD" value1="${microblogsEntryCommentContent} @${mentionUserFirstName}" />
+				<execute function="Type#sendKeys" locator1="SOMicroblogs#MICROBLOGS_CONTENT_INPUT_FIELD" value1="${microblogsEntryCommentContent} @${mentionUserFirstName}" />
 				<execute function="#assertTextEquals" locator1="SOMicroblogs#MICROBLOGS_CONTENT_AUTOCOMPLETE_USERNAME" value1="${mentionUserName}" />
 				<execute function="#assertTextEquals" locator1="SOMicroblogs#MICROBLOGS_CONTENT_AUTOCOMPLETE_EMAIL" value1="${mentionUserEmailAddress}" />
 				<execute function="#click" locator1="SOMicroblogs#MICROBLOGS_CONTENT_AUTOCOMPLETE_USERNAME" value1="${mentionUserEmailAddress}" />
@@ -127,7 +127,7 @@
 			<else>
 				<execute function="#click" locator1="SOMicroblogs#MICROBLOGS_CONTENT_FIELD" />
 				<execute function="#click" locator1="SOMicroblogs#MICROBLOGS_CONTENT_INPUT_FIELD" />
-				<execute function="#type" locator1="SOMicroblogs#MICROBLOGS_CONTENT_INPUT_FIELD" value1="${microblogsEntryCommentContent} @${mentionUserFirstName}" />
+				<execute function="Type#sendKeys" locator1="SOMicroblogs#MICROBLOGS_CONTENT_INPUT_FIELD" value1="${microblogsEntryCommentContent} @${mentionUserFirstName}" />
 				<execute function="#assertTextEquals" locator1="SOMicroblogs#MICROBLOGS_CONTENT_AUTOCOMPLETE_USERNAME" value1="${mentionUserName}" />
 				<execute function="#assertTextEquals" locator1="SOMicroblogs#MICROBLOGS_CONTENT_AUTOCOMPLETE_EMAIL" value1="${mentionUserEmailAddress}" />
 				<execute function="#click" locator1="SOMicroblogs#MICROBLOGS_CONTENT_AUTOCOMPLETE_USERNAME" value1="${mentionUserEmailAddress}" />
@@ -172,7 +172,7 @@
 
 				<var name="number" value="${number}" />
 
-				<execute function="#type" locator1="SOMicroblogs#MICROBLOGS_CONTENT_INPUT_FIELD" value1="#${microblogsEntryContent}${number}" />
+				<execute function="Type#sendKeys" locator1="SOMicroblogs#MICROBLOGS_CONTENT_INPUT_FIELD" value1="#${microblogsEntryContent}${number}" />
 				<execute function="#assertTextEquals" locator1="SOMicroblogs#MICROBLOGS_CONTENT_COUNTDOWN" value1="${microblogsEntryCharacterCountdown}" />
 				<execute function="#click" locator1="SOMicroblogs#POST_BUTTON" />
 				<execute function="#assertTextEquals" locator1="SOMicroblogs#MICROBLOGS_ENTRY_CONTENT_INCREMENT" value1="${microblogsEntryContent}${number}" />
@@ -188,7 +188,7 @@
 					</else>
 				</if>
 
-				<execute function="#type" locator1="SOMicroblogs#MICROBLOGS_CONTENT_INPUT_FIELD" value1="#${microblogsEntryContent}" />
+				<execute function="Type#sendKeys" locator1="SOMicroblogs#MICROBLOGS_CONTENT_INPUT_FIELD" value1="#${microblogsEntryContent}" />
 				<execute function="#assertTextEquals" locator1="SOMicroblogs#MICROBLOGS_CONTENT_COUNTDOWN" value1="${microblogsEntryCharacterCountdown}" />
 				<execute function="#click" locator1="SOMicroblogs#POST_BUTTON" />
 				<execute function="#assertTextEquals" locator1="SOMicroblogs#MICROBLOGS_ENTRY_CONTENT" value1="${microblogsEntryContent}" />
@@ -225,7 +225,7 @@
 			</else>
 		</if>
 
-		<execute function="#type" locator1="SOMicroblogs#MICROBLOGS_CONTENT_INPUT_FIELD" value1="@${mentionUserFirstName}" />
+		<execute function="Type#sendKeys" locator1="SOMicroblogs#MICROBLOGS_CONTENT_INPUT_FIELD" value1="@${mentionUserFirstName}" />
 		<execute function="#assertTextEquals" locator1="SOMicroblogs#MICROBLOGS_CONTENT_AUTOCOMPLETE_USERNAME" value1="${mentionUserName}" />
 		<execute function="#assertTextEquals" locator1="SOMicroblogs#MICROBLOGS_CONTENT_AUTOCOMPLETE_EMAIL" value1="${mentionUserEmailAddress}" />
 		<execute function="#click" locator1="SOMicroblogs#MICROBLOGS_CONTENT_AUTOCOMPLETE_USERNAME" value1="${mentionUserEmailAddress}" />
@@ -235,16 +235,16 @@
 	</command>
 
 	<command name="deleteMicroblogsEntry">
-		<execute function="#mouseOver" locator1="SOMicroblogs#MICROBLOGS_ENTRY_EDIT" />
-		<execute function="#mouseOver" locator1="SOMicroblogs#MICROBLOGS_ENTRY_DELETE" />
-		<execute function="#assertClickNoError" locator1="SOMicroblogs#MICROBLOGS_ENTRY_DELETE_LINK" value1="Delete" />
+		<execute function="MouseOver#makeVisible" locator1="SOMicroblogs#MICROBLOGS_ENTRY_EDIT" />
+		<execute function="MouseOver#makeVisible" locator1="SOMicroblogs#MICROBLOGS_ENTRY_DELETE" />
+		<execute function="AssertClickNoError#makeVisibleClick" locator1="SOMicroblogs#MICROBLOGS_ENTRY_DELETE_LINK" value1="Delete" />
 		<execute function="#confirm" locator1="SOMicroblogs#CONFIRMATION" value1="Are you sure you want to delete this post?" />
 	</command>
 
 	<command name="gotoMicroblogsContentField">
-		<execute function="#click" locator1="SOUserBar#DASHBOARD" />
+		<execute function="Click#textClickAtAndWait" locator1="SOUserBar#DASHBOARD" />
 
-		<execute function="#click" locator1="SODashboard#NAVIGATION_MICROBLOGS" />
+		<execute function="Click#textClickAtAndWait" locator1="SODashboard#NAVIGATION_MICROBLOGS" />
 
 		<if>
 			<condition function="#isElementNotPresent" locator1="SOMicroblogs#MICROBLOGS_ENTRY_CONTENT" />
@@ -282,16 +282,16 @@
 	<command name="tearDownMicroblogsEntry">
 		<execute macro="SOUser#firstLoginPG" />
 
-		<execute function="#click" locator1="SOUserBar#DASHBOARD" />
+		<execute function="Click#textClickAtAndWait" locator1="SOUserBar#DASHBOARD" />
 
-		<execute function="#click" locator1="SODashboard#NAVIGATION_MICROBLOGS" />
+		<execute function="Click#textClickAtAndWait" locator1="SODashboard#NAVIGATION_MICROBLOGS" />
 
 		<while>
-			<condition function="#isElementPresent" locator1="SOMicroblogs#MICROBLOGS_ENTRY_DELETE_LINK" value1="Delete" />
+			<condition function="IsElementPresent#pauseIsElementPresent" locator1="SOMicroblogs#MICROBLOGS_ENTRY_DELETE_LINK" value1="Delete" />
 			<then>
-				<execute function="#mouseOver" locator1="SOMicroblogs#MICROBLOGS_ENTRY_EDIT" />
-				<execute function="#mouseOver" locator1="SOMicroblogs#MICROBLOGS_ENTRY_DELETE" />
-				<execute function="#assertClickNoError" locator1="SOMicroblogs#MICROBLOGS_ENTRY_DELETE_LINK" value1="Delete" />
+				<execute function="MouseOver#makeVisible" locator1="SOMicroblogs#MICROBLOGS_ENTRY_EDIT" />
+				<execute function="MouseOver#makeVisible" locator1="SOMicroblogs#MICROBLOGS_ENTRY_DELETE" />
+				<execute function="AssertClickNoError#makeVisibleClick" locator1="SOMicroblogs#MICROBLOGS_ENTRY_DELETE_LINK" value1="Delete" />
 				<execute function="#confirm" locator1="SOMicroblogs#CONFIRMATION" value1="Are you sure you want to delete this post?" />
 			</then>
 		</while>
@@ -307,10 +307,10 @@
 						<if>
 							<isset var="microblogsEntryRepostAuthorMiddleName" />
 							<then>
-								<execute function="#assertTextEquals" locator1="SOMicroblogs#MICROBLOGS_ENTRY_AUTHOR" value1="${microblogsEntryRepostAuthorFirstName} ${microblogsEntryRepostAuthorMiddleName} ${microblogsEntryRepostAuthorLastName} Reposted From ${microblogsEntryAuthorFirstName} ${microblogsEntryAuthorMiddleName} ${microblogsEntryAuthorLastName}" />
+								<execute function="AssertTextEquals#assertPartialText" locator1="SOMicroblogs#MICROBLOGS_ENTRY_AUTHOR" value1="${microblogsEntryRepostAuthorFirstName} ${microblogsEntryRepostAuthorMiddleName} ${microblogsEntryRepostAuthorLastName} Reposted From ${microblogsEntryAuthorFirstName} ${microblogsEntryAuthorMiddleName} ${microblogsEntryAuthorLastName}" />
 							</then>
 							<else>
-								<execute function="#assertTextEquals" locator1="SOMicroblogs#MICROBLOGS_ENTRY_AUTHOR" value1="${microblogsEntryRepostAuthorFirstName} ${microblogsEntryRepostAuthorLastName} Reposted From ${microblogsEntryAuthorFirstName} ${microblogsEntryAuthorMiddleName} ${microblogsEntryAuthorLastName}" />
+								<execute function="AssertTextEquals#assertPartialText" locator1="SOMicroblogs#MICROBLOGS_ENTRY_AUTHOR" value1="${microblogsEntryRepostAuthorFirstName} ${microblogsEntryRepostAuthorLastName} Reposted From ${microblogsEntryAuthorFirstName} ${microblogsEntryAuthorMiddleName} ${microblogsEntryAuthorLastName}" />
 							</else>
 						</if>
 					</then>
@@ -318,10 +318,10 @@
 						<if>
 							<isset var="microblogsEntryRepostAuthorMiddleName" />
 							<then>
-								<execute function="#assertTextEquals" locator1="SOMicroblogs#MICROBLOGS_ENTRY_AUTHOR" value1="${microblogsEntryRepostAuthorFirstName} ${microblogsEntryRepostAuthorMiddleName} ${microblogsEntryRepostAuthorLastName} Reposted From ${microblogsEntryAuthorFirstName} ${microblogsEntryAuthorLastName}" />
+								<execute function="AssertTextEquals#assertPartialText" locator1="SOMicroblogs#MICROBLOGS_ENTRY_AUTHOR" value1="${microblogsEntryRepostAuthorFirstName} ${microblogsEntryRepostAuthorMiddleName} ${microblogsEntryRepostAuthorLastName} Reposted From ${microblogsEntryAuthorFirstName} ${microblogsEntryAuthorLastName}" />
 							</then>
 							<else>
-								<execute function="#assertTextEquals" locator1="SOMicroblogs#MICROBLOGS_ENTRY_AUTHOR" value1="${microblogsEntryRepostAuthorFirstName} ${microblogsEntryRepostAuthorLastName} Reposted From ${microblogsEntryAuthorFirstName} ${microblogsEntryAuthorLastName}" />
+								<execute function="AssertTextEquals#assertPartialText" locator1="SOMicroblogs#MICROBLOGS_ENTRY_AUTHOR" value1="${microblogsEntryRepostAuthorFirstName} ${microblogsEntryRepostAuthorLastName} Reposted From ${microblogsEntryAuthorFirstName} ${microblogsEntryAuthorLastName}" />
 							</else>
 						</if>
 					</else>
@@ -331,10 +331,10 @@
 				<if>
 					<isset var="microblogsEntryAuthorMiddleName" />
 					<then>
-						<execute function="#assertTextEquals" locator1="SOMicroblogs#MICROBLOGS_ENTRY_AUTHOR" value1="${microblogsEntryAuthorFirstName} ${microblogsEntryAuthorMiddleName} ${microblogsEntryAuthorLastName}" />
+						<execute function="AssertTextEquals#assertPartialText" locator1="SOMicroblogs#MICROBLOGS_ENTRY_AUTHOR" value1="${microblogsEntryAuthorFirstName} ${microblogsEntryAuthorMiddleName} ${microblogsEntryAuthorLastName}" />
 					</then>
 					<else>
-						<execute function="#assertTextEquals" locator1="SOMicroblogs#MICROBLOGS_ENTRY_AUTHOR" value1="${microblogsEntryAuthorFirstName} ${microblogsEntryAuthorLastName}" />
+						<execute function="AssertTextEquals#assertPartialText" locator1="SOMicroblogs#MICROBLOGS_ENTRY_AUTHOR" value1="${microblogsEntryAuthorFirstName} ${microblogsEntryAuthorLastName}" />
 					</else>
 				</if>
 			</else>
@@ -386,18 +386,18 @@
 	</command>
 
 	<command name="viewMicroblogsEntryCommentNotification">
-		<execute function="#click" locator1="SOUserBar#DASHBOARD" />
-		<execute function="#assertElementPresent" locator1="SOUserBar#NOTIFICATION" />
+		<execute function="Click#textClickAtAndWait" locator1="SOUserBar#DASHBOARD" />
+		<execute function="AssertElementPresent#assertElementPresent" locator1="SOUserBar#NOTIFICATION" />
 		<execute function="#assertTextEquals" locator1="SOUserBar#NOTIFICATION_MENU_COUNT" value1="1" />
 		<execute function="#mouseOver" locator1="SOUserBar#NOTIFICATION" />
 
 		<if>
 			<isset var="microblogsEntryCommentAuthorMiddleName" />
 			<then>
-				<execute function="#assertTextEquals" locator1="SOUserBar#NOTIFICATION_MENU_ENTRY_CONTENT" value1="${microblogsEntryCommentAuthorFirstName} ${microblogsEntryCommentAuthorMiddleName} ${microblogsEntryCommentAuthorLastName} commented on your post." />
+				<execute function="AssertTextEquals#assertPartialText" locator1="SOUserBar#NOTIFICATION_MENU_ENTRY_CONTENT" value1="${microblogsEntryCommentAuthorFirstName} ${microblogsEntryCommentAuthorMiddleName} ${microblogsEntryCommentAuthorLastName} commented on your post." />
 			</then>
 			<else>
-				<execute function="#assertTextEquals" locator1="SOUserBar#NOTIFICATION_MENU_ENTRY_CONTENT" value1="${microblogsEntryCommentAuthorFirstName} ${microblogsEntryCommentAuthorLastName} commented on your post." />
+				<execute function="AssertTextEquals#assertPartialText" locator1="SOUserBar#NOTIFICATION_MENU_ENTRY_CONTENT" value1="${microblogsEntryCommentAuthorFirstName} ${microblogsEntryCommentAuthorLastName} commented on your post." />
 			</else>
 		</if>
 
@@ -409,7 +409,7 @@
 	<command name="viewMicroblogsEntryMention">
 		<var name="microblogsEntryContent" value="${mentionUserName}" />
 
-		<execute function="#click" locator1="SOUserBar#DASHBOARD" />
+		<execute function="Click#textClickAtAndWait" locator1="SOUserBar#DASHBOARD" />
 
 		<if>
 			<condition function="#isElementNotPresent" locator1="SODashboard#WHATS_HAPPENING_ENTRY_CONTENT" />
@@ -418,7 +418,7 @@
 			</then>
 		</if>
 
-		<execute function="#click" locator1="SODashboard#NAVIGATION_MICROBLOGS" />
+		<execute function="Click#textClickAtAndWait" locator1="SODashboard#NAVIGATION_MICROBLOGS" />
 
 		<execute macro="SOMicroblogs#viewMicroblogsEntryAuthor" />
 
@@ -426,7 +426,7 @@
 
 		<execute macro="SOMicroblogs#viewMicroblogsEntryCommentLink" />
 
-		<execute function="#assertClick" locator1="SOMicroblogs#TAB_MENTIONS" value1="Mentions" />
+		<execute function="AssertClick#assertTextClickAtAndWait" locator1="SOMicroblogs#TAB_MENTIONS" value1="Mentions" />
 
 		<execute macro="SOMicroblogs#viewMicroblogsEntryAuthor" />
 
@@ -441,26 +441,26 @@
 	</command>
 
 	<command name="viewMicroblogsEntryNone">
-		<execute function="#click" locator1="SOUserBar#DASHBOARD" />
+		<execute function="Click#textClickAtAndWait" locator1="SOUserBar#DASHBOARD" />
 
-		<execute function="#assertClick" locator1="SOActivities#NAVIGATION_CONNECTIONS" value1="Connections" />
+		<execute function="AssertClick#assertTextClickAtAndWait" locator1="SOActivities#NAVIGATION_CONNECTIONS" value1="Connections" />
 		<execute function="#assertTextEquals" locator1="SOActivities#NO_ACTIVITIES" value1="There are no activities." />
 		<execute function="#assertTextNotPresent" value1="${microblogsEntryContent}" />
-		<execute function="#assertClick" locator1="SOActivities#NAVIGATION_FOLLOWING" value1="Following" />
+		<execute function="AssertClick#assertTextClickAtAndWait" locator1="SOActivities#NAVIGATION_FOLLOWING" value1="Following" />
 		<execute function="#assertTextEquals" locator1="SOActivities#NO_ACTIVITIES" value1="There are no activities." />
 		<execute function="#assertTextNotPresent" value1="${microblogsEntryContent}" />
 
-		<execute function="#click" locator1="SODashboard#NAVIGATION_MICROBLOGS" />
+		<execute function="Click#textClickAtAndWait" locator1="SODashboard#NAVIGATION_MICROBLOGS" />
 
 		<execute function="#assertTextNotPresent" value1="${microblogsEntryContent}" />
 	</command>
 
 	<command name="viewMicroblogsEntryNotViewableByEveryone">
-		<execute function="#click" locator1="SOUserBar#DASHBOARD" />
+		<execute function="Click#textClickAtAndWait" locator1="SOUserBar#DASHBOARD" />
 
 		<execute function="#assertTextEquals" locator1="SODashboard#WHATS_HAPPENING_INFO_MESSAGE" value1="You do not have any microblog entries." />
 
-		<execute function="#click" locator1="SODashboard#NAVIGATION_MICROBLOGS" />
+		<execute function="Click#textClickAtAndWait" locator1="SODashboard#NAVIGATION_MICROBLOGS" />
 
 		<execute macro="SOMicroblogs#viewMicroblogsEntryAuthor" />
 
@@ -472,20 +472,20 @@
 	</command>
 
 	<command name="viewMicroblogsEntryViewableByEveryone">
-		<execute function="#click" locator1="SOUserBar#DASHBOARD" />
+		<execute function="Click#textClickAtAndWait" locator1="SOUserBar#DASHBOARD" />
 
-		<execute function="#click" locator1="SODashboard#NAVIGATION_CONTACTS_CENTER" />
+		<execute function="Click#textClickAtAndWait" locator1="SODashboard#NAVIGATION_CONTACTS_CENTER" />
 
 		<execute function="#type" locator1="SOContactscenter#CONTACTS_LIST_SEARCH" value1="${microblogsEntryAuthorScreenName}" />
-		<execute function="#assertClick" locator1="SOContactscenter#CONTACTS_LIST_NAME" value1="${microblogsEntryAuthorLastName}, ${microblogsEntryAuthorFirstName}" />
+		<execute function="AssertClick#pauseAssertTextClickAt" locator1="SOContactscenter#CONTACTS_LIST_NAME" value1="${microblogsEntryAuthorLastName}, ${microblogsEntryAuthorFirstName}" />
 
 		<if>
 			<isset var="microblogsEntryAuthorMiddleName" />
 			<then>
-				<execute function="#assertClick" locator1="SOContactscenter#USER_DETAILS_NAME" value1="${microblogsEntryAuthorFirstName} ${microblogsEntryAuthorMiddleName} ${microblogsEntryAuthorLastName}" />
+				<execute function="AssertClick#assertTextClickAtAndWait" locator1="SOContactscenter#USER_DETAILS_NAME" value1="${microblogsEntryAuthorFirstName} ${microblogsEntryAuthorMiddleName} ${microblogsEntryAuthorLastName}" />
 			</then>
 			<else>
-				<execute function="#assertClick" locator1="SOContactscenter#USER_DETAILS_NAME" value1="${microblogsEntryAuthorFirstName} ${microblogsEntryAuthorLastName}" />
+				<execute function="AssertClick#assertTextClickAtAndWait" locator1="SOContactscenter#USER_DETAILS_NAME" value1="${microblogsEntryAuthorFirstName} ${microblogsEntryAuthorLastName}" />
 			</else>
 		</if>
 
@@ -527,11 +527,11 @@
 				<var name="number" value="${number}" />
 				<var name="whatsHappeningNumber" value="${whatsHappeningNumber}" />
 
-				<execute function="#click" locator1="SOUserBar#DASHBOARD" />
+				<execute function="Click#textClickAtAndWait" locator1="SOUserBar#DASHBOARD" />
 
 				<execute function="#assertTextEquals" locator1="SODashboard#WHATS_HAPPENING_ENTRY_CONTENT" value1="${microblogsEntryContent}${whatsHappeningNumber}" />
 
-				<execute function="#click" locator1="SODashboard#NAVIGATION_MICROBLOGS" />
+				<execute function="Click#textClickAtAndWait" locator1="SODashboard#NAVIGATION_MICROBLOGS" />
 
 				<execute macro="SOMicroblogs#viewMicroblogsEntryAuthor" />
 
@@ -542,10 +542,10 @@
 				<execute function="#assertElementNotPresent" locator1="SOMicroblogs#MICROBLOGS_ENTRY_REPOST_LINK" value1="Repost" />
 			</then>
 			<else>
-				<execute function="#click" locator1="SOUserBar#DASHBOARD" />
+				<execute function="Click#textClickAtAndWait" locator1="SOUserBar#DASHBOARD" />
 
 				<execute function="#assertTextEquals" locator1="SODashboard#WHATS_HAPPENING_ENTRY_CONTENT" value1="${microblogsEntryContent}" />
-				<execute function="#click" locator1="SODashboard#NAVIGATION_MICROBLOGS" />
+				<execute function="Click#textClickAtAndWait" locator1="SODashboard#NAVIGATION_MICROBLOGS" />
 
 				<execute macro="SOMicroblogs#viewMicroblogsEntryAuthor" />
 
@@ -584,7 +584,7 @@
 				<execute function="#assertTextEquals" locator1="SOMicroblogs#TAB_TAG_VALUE" value1="${microblogsEntryTagValue}" />
 				<execute function="#assertTextEquals" locator1="SOMicroblogs#MICROBLOGS_ENTRY_CONTENT_INCREMENT" value1="${microblogsEntryContent}${number}" />
 				<execute function="#assertTextEquals" locator1="SOMicroblogs#MICROBLOGS_ENTRY_CONTENT_TAG_INCREMENT" value1="${microblogsEntryTagValue}" />
-				<execute function="#assertClick" locator1="SOMicroblogs#TAB_TAG_VALUE" value1="${microblogsEntryTagValue}" />
+				<execute function="AssertClick#assertTextClickAtAndWait" locator1="SOMicroblogs#TAB_TAG_VALUE" value1="${microblogsEntryTagValue}" />
 
 				<execute macro="SOMicroblogs#viewMicroblogsEntryAuthor" />
 
@@ -602,7 +602,7 @@
 				<execute function="#assertTextEquals" locator1="SOMicroblogs#TAB_TAG_VALUE" value1="${microblogsEntryTagValue}" />
 				<execute function="#assertTextEquals" locator1="SOMicroblogs#MICROBLOGS_ENTRY_CONTENT" value1="${microblogsEntryContent}" />
 				<execute function="#assertTextEquals" locator1="SOMicroblogs#MICROBLOGS_ENTRY_CONTENT_TAG" value1="${microblogsEntryTagValue}" />
-				<execute function="#assertClick" locator1="SOMicroblogs#TAB_TAG_VALUE" value1="${microblogsEntryTagValue}" />
+				<execute function="AssertClick#assertTextClickAtAndWait" locator1="SOMicroblogs#TAB_TAG_VALUE" value1="${microblogsEntryTagValue}" />
 
 				<execute macro="SOMicroblogs#viewMicroblogsEntryAuthor" />
 
@@ -614,9 +614,9 @@
 	</command>
 
 	<command name="viewOwnMicroblogsRepost">
-		<execute function="#click" locator1="SOUserBar#DASHBOARD" />
+		<execute function="Click#textClickAtAndWait" locator1="SOUserBar#DASHBOARD" />
 
-		<execute function="#click" locator1="SODashboard#NAVIGATION_MICROBLOGS" />
+		<execute function="Click#textClickAtAndWait" locator1="SODashboard#NAVIGATION_MICROBLOGS" />
 
 		<execute macro="SOMicroblogs#viewMicroblogsEntryAuthor" />
 

@@ -113,11 +113,11 @@
 				<var name="number" value="${number}" />
 
 				<execute function="#assertTextEquals" locator1="SOActivities#ACTIVITIES_TITLE" value1="${entryTitle}${number}" />
-				<execute function="#assertTextEquals" locator1="SOActivities#ACTIVITIES_CONTENT" value1="${entryContent}${number}" />
+				<execute function="AssertTextEquals#assertPartialText" locator1="SOActivities#ACTIVITIES_CONTENT" value1="${entryContent}${number}" />
 			</then>
 			<else>
 				<execute function="#assertTextEquals" locator1="SOActivities#ACTIVITIES_TITLE" value1="${entryTitle}" />
-				<execute function="#assertTextEquals" locator1="SOActivities#ACTIVITIES_CONTENT" value1="${entryContent}" />
+				<execute function="AssertTextEquals#assertPartialText" locator1="SOActivities#ACTIVITIES_CONTENT" value1="${entryContent}" />
 			</else>
 		</if>
 
@@ -146,11 +146,11 @@
 				<var name="number" value="${number}" />
 
 				<execute function="#assertTextEquals" locator1="SOActivities#ACTIVITIES_TITLE" value1="${bookmarksEntryName}${number}" />
-				<execute function="#assertTextEquals" locator1="SOActivities#ACTIVITIES_CONTENT" value1="${bookmarksEntryDescription}${number}" />
+				<execute function="AssertTextEquals#assertPartialText" locator1="SOActivities#ACTIVITIES_CONTENT" value1="${bookmarksEntryDescription}${number}" />
 			</then>
 			<else>
 				<execute function="#assertTextEquals" locator1="SOActivities#ACTIVITIES_TITLE" value1="${bookmarksEntryName}" />
-				<execute function="#assertTextEquals" locator1="SOActivities#ACTIVITIES_CONTENT" value1="${bookmarksEntryDescription}" />
+				<execute function="AssertTextEquals#assertPartialText" locator1="SOActivities#ACTIVITIES_CONTENT" value1="${bookmarksEntryDescription}" />
 			</else>
 		</if>
 
@@ -247,11 +247,11 @@
 				<var name="number" value="${number}" />
 
 				<execute function="#assertTextEquals" locator1="SOActivities#ACTIVITIES_TITLE" value1="${threadSubject}${number}" />
-				<execute function="#assertTextEquals" locator1="SOActivities#ACTIVITIES_CONTENT" value1="${threadBody}${number}" />
+				<execute function="AssertTextEquals#assertPartialText" locator1="SOActivities#ACTIVITIES_CONTENT" value1="${threadBody}${number}" />
 			</then>
 			<else>
 				<execute function="#assertTextEquals" locator1="SOActivities#ACTIVITIES_TITLE" value1="${threadSubject}" />
-				<execute function="#assertTextEquals" locator1="SOActivities#ACTIVITIES_CONTENT" value1="${threadBody}" />
+				<execute function="AssertTextEquals#assertPartialText" locator1="SOActivities#ACTIVITIES_CONTENT" value1="${threadBody}" />
 			</else>
 		</if>
 	</command>
@@ -316,7 +316,7 @@
 		</if>
 
 		<execute function="#click" locator1="SOUserBar#USER_NAME" />
-		<execute function="#click" locator1="SOUserBar#USER_MENU_MY_ACCOUNT" value1="My Account" />
+		<execute function="AssertClick#assertTextClickAt" locator1="SOUserBar#USER_MENU_MY_ACCOUNT" value1="My Account" />
 
 		<var locator="USER_NAME_HEADER" name="currentUser" path="CPMyAccount" />
 
@@ -327,7 +327,7 @@
 			</then>
 			<else>
 				<execute function="#click" locator1="SOUserBar#USER_NAME" />
-				<execute function="#click" locator1="SOUserBar#USER_MENU_MY_PROFILE" value1="My Profile" />
+				<execute function="AssertClick#assertTextClickAtAndWait" locator1="SOUserBar#USER_MENU_MY_PROFILE" value1="My Profile" />
 			</else>
 		</if>
 
@@ -409,7 +409,7 @@
 
 		<execute function="#assertElementPresent" locator1="SOActivities#ACTIVITIES_TIME_STAMP" />
 		<execute function="#assertTextEquals" locator1="SOActivities#ACTIVITIES_ACTION" value1="Commented on a microblog entry." />
-		<execute function="#assertTextEquals" locator1="SOActivities#ACTIVITIES_CONTENT" value1="${microblogsEntryContent}" />
+		<execute function="AssertTextEquals#assertPartialText" locator1="SOActivities#ACTIVITIES_CONTENT" value1="${microblogsEntryContent}" />
 		<execute function="#assertTextEquals" locator1="SOActivities#ACTIVITIES_VIEW_MICROBLOGS" value1="View Microblogs" />
 
 		<if>
@@ -497,11 +497,11 @@
 		</if>
 
 		<execute function="#click" locator1="SOUserBar#USER_NAME" />
-		<execute function="#click" locator1="SOUserBar#USER_MENU_MY_ACCOUNT" value1="My Account" />
+		<execute function="AssertClick#assertTextClickAt" locator1="SOUserBar#USER_MENU_MY_ACCOUNT" value1="My Account" />
 
 		<var locator="USER_NAME_HEADER" name="currentUser" path="CPMyAccount" />
 
-		<execute function="#click" locator1="SOUserBar#DASHBOARD" />
+		<execute function="Click#textClickAtAndWait" locator1="SOUserBar#DASHBOARD" />
 
 		<execute function="#assertElementPresent" locator1="SOActivities#NO_ACTIVITIES" />
 
@@ -615,7 +615,7 @@
 			</else>
 		</if>
 
-		<execute function="#assertTextEquals" locator1="SOActivities#ACTIVITIES_CONTENT" value1="${microblogsEntryContent}" />
+		<execute function="AssertTextEquals#assertPartialText" locator1="SOActivities#ACTIVITIES_CONTENT" value1="${microblogsEntryContent}" />
 		<execute function="#assertTextEquals" locator1="SOActivities#ACTIVITIES_VIEW_MICROBLOGS" value1="View Microblogs" />
 
 		<if>
@@ -651,7 +651,7 @@
 		</if>
 
 		<execute function="#click" locator1="SOUserBar#USER_NAME" />
-		<execute function="#click" locator1="SOUserBar#USER_MENU_MY_ACCOUNT" value1="My Account" />
+		<execute function="AssertClick#assertTextClickAt" locator1="SOUserBar#USER_MENU_MY_ACCOUNT" value1="My Account" />
 
 		<var locator="USER_NAME_HEADER" name="currentUser" path="CPMyAccount" />
 
@@ -662,7 +662,7 @@
 			</then>
 			<else>
 				<execute function="#click" locator1="SOUserBar#USER_NAME" />
-				<execute function="#click" locator1="SOUserBar#USER_MENU_MY_PROFILE" value1="My Profile" />
+				<execute function="AssertClick#assertTextClickAtAndWait" locator1="SOUserBar#USER_MENU_MY_PROFILE" value1="My Profile" />
 			</else>
 		</if>
 
@@ -818,7 +818,7 @@
 			</else>
 		</if>
 
-		<execute function="#assertTextEquals" locator1="SOActivities#ACTIVITIES_CONTENT" value1="${microblogsEntryContent}" />
+		<execute function="AssertTextEquals#assertPartialText" locator1="SOActivities#ACTIVITIES_CONTENT" value1="${microblogsEntryContent}" />
 		<execute function="#assertTextEquals" locator1="SOActivities#ACTIVITIES_VIEW_MICROBLOGS" value1="View Microblogs" />
 
 		<if>
@@ -911,7 +911,7 @@
 		<execute function="#assertElementPresent" locator1="SOActivities#ACTIVITIES_TIME_STAMP" />
 		<execute function="#assertTextEquals" locator1="SOActivities#ACTIVITIES_ACTION" value1="${action}" />
 		<execute function="#assertTextEquals" locator1="SOActivities#ACTIVITIES_TITLE" value1="${wikiPageTitle}" />
-		<execute function="#assertTextEquals" locator1="SOActivities#ACTIVITIES_CONTENT" value1="${wikiPageContent}" />
+		<execute function="AssertTextEquals#assertPartialText" locator1="SOActivities#ACTIVITIES_CONTENT" value1="${wikiPageContent}" />
 		<execute function="#assertTextEquals" locator1="SOActivities#ACTIVITIES_VIEW_CHANGES" value1="View Changes" />
 		<execute function="#assertTextEquals" locator1="SOActivities#ACTIVITIES_COMMENT" value1="Comment" />
 		<execute function="#assertElementPresent" locator1="SOActivities#ACTIVITIES_COMMENT_FIELD" />

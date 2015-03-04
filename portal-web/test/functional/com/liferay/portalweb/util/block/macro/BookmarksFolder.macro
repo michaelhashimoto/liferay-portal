@@ -10,7 +10,7 @@
 
 		<execute function="#assertTextEquals" locator1="PGBookmarks#SUCCESS_MESSAGE" value1="Your request completed successfully." />
 		<execute function="#assertTextEquals" locator1="PGBookmarks#FOLDERS_TABLE_FOLDER_NAME" value1="${bookmarkFolderName}" />
-		<execute function="#assertTextEquals" locator1="PGBookmarks#FOLDERS_TABLE_FOLDER_DESCRIPTION" value1="${bookmarkFolderDescription}" />
+		<execute function="AssertTextEquals#assertPartialText" locator1="PGBookmarks#FOLDERS_TABLE_FOLDER_DESCRIPTION" value1="${bookmarkFolderDescription}" />
 	</command>
 
 	<command name="deletePG" >

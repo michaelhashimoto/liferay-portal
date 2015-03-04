@@ -15,7 +15,7 @@
 				<execute function="#uploadCommonFile" locator1="PGDocumentsandmediaAdddocument#FILE_FIELD" value1="${dmDocumentFile}" />
 				<execute function="#type" locator1="PGDocumentsandmediaAdddocument#TITLE_FIELD" value1="${dmDocumentTitle}${number}" />
 				<execute function="#type" locator1="PGDocumentsandmediaAdddocument#DESCRIPTION_FIELD" value1="${dmDocumentDescription}${number}" />
-				<execute function="#assertClick" locator1="PGDocumentsandmediaAdddocument#PUBLISH_BUTTON" value1="Publish" />
+				<execute function="AssertClick#assertValueClickAtAndWait" locator1="PGDocumentsandmediaAdddocument#PUBLISH_BUTTON" value1="Publish" />
 			</then>
 			<else>
 				<execute function="#click" locator1="PGDocumentsandmedia#ENTRIES_FOLDER" />
@@ -26,7 +26,7 @@
 				<execute function="#uploadCommonFile" locator1="PGDocumentsandmediaAdddocument#FILE_FIELD" value1="${dmDocumentFile}" />
 				<execute function="#type" locator1="PGDocumentsandmediaAdddocument#TITLE_FIELD" value1="${dmDocumentTitle}" />
 				<execute function="#type" locator1="PGDocumentsandmediaAdddocument#DESCRIPTION_FIELD" value1="${dmDocumentDescription}" />
-				<execute function="#assertClick" locator1="PGDocumentsandmediaAdddocument#PUBLISH_BUTTON" value1="Publish" />
+				<execute function="AssertClick#assertValueClickAtAndWait" locator1="PGDocumentsandmediaAdddocument#PUBLISH_BUTTON" value1="Publish" />
 			</else>
 		</if>
 
@@ -34,21 +34,21 @@
 	</command>
 
 	<command name="addPGviaDMD">
-		<execute function="#assertClick" locator1="PGDocumentlibrarydisplay#FOLDERS_TABLE_NAME_1" value1="${dmdFolderName}" />
+		<execute function="AssertClick#assertTextClickAtAndWait" locator1="PGDocumentlibrarydisplay#FOLDERS_TABLE_NAME_1" value1="${dmdFolderName}" />
 
 		<execute function="#click" locator1="PGDocumentlibrarydisplayFolder#SUBFOLDER_MENU_ADD_DOCUMENT" value1="${dmdDocumentTitle}" />
 
-		<execute function="#selectFrame" locator1="PGDocumentlibrarydisplayAdddocument#SELECT_DOCUMENT_TYPE_IFRAME" />
-		<execute function="#assertClick" locator1="PGDocumentlibrarydisplayAdddocument#SELECT_DOCUMENT_TYPE_BASIC_DOCUMENT" value1="Basic Document" />
+		<execute function="SelectFrame#selectFrameWaitForScript" locator1="PGDocumentlibrarydisplayAdddocument#SELECT_DOCUMENT_TYPE_IFRAME" />
+		<execute function="AssertClick#assertTextClickAtAndWait" locator1="PGDocumentlibrarydisplayAdddocument#SELECT_DOCUMENT_TYPE_BASIC_DOCUMENT" value1="Basic Document" />
 		<execute function="#selectFrame" />
 		<execute function="#uploadCommonFile" locator1="PGDocumentlibrarydisplayAdddocument#DOCUMENT_FILE_FIELD" value1="${dmdDocumentFile}" />
 		<execute function="#type" locator1="PGDocumentlibrarydisplayAdddocument#DOCUMENT_TITLE_FIELD" value1="${dmdDocumentTitle}" />
-		<execute function="#assertClick" locator1="PGDocumentlibrarydisplayAdddocument#PUBLISH_BUTTON" value1="Publish" />
+		<execute function="AssertClick#assertValueClickAtAndWait" locator1="PGDocumentlibrarydisplayAdddocument#PUBLISH_BUTTON" value1="Publish" />
 
 		<execute function="#assertTextEquals" locator1="PGDocumentlibrarydisplayFolder#SUCCESS_MESSAGE" value1="Your request completed successfully." />
 		<execute function="#assertTextEquals" locator1="PGDocumentlibrarydisplayFolder#DOCUMENTS_TABLE_NAME_1" value1="${dmdDocumentTitle}" />
 		<execute function="#assertTextEquals" locator1="PGDocumentlibrarydisplayFolder#DOCUMENTS_TABLE_SIZE_1" value1="${dmdDocumentSize}" />
-		<execute function="#assertClick" locator1="PGDocumentlibrarydisplayFolder#DOCUMENTS_TABLE_NAME_1" value1="${dmdDocumentTitle}" />
+		<execute function="AssertClick#assertTextClickAtAndWait" locator1="PGDocumentlibrarydisplayFolder#DOCUMENTS_TABLE_NAME_1" value1="${dmdDocumentTitle}" />
 
 		<execute function="#assertTextEquals" locator1="PGDocumentlibrarydisplayDocument#DOCUMENT_HEADER_TITLE" value1="${dmdDocumentTitle}" />
 		<execute function="#assertTextEquals" locator1="PGDocumentlibrarydisplayDocument#DOCUMENT_TITLE" value1="${dmdDocumentTitle}" />
@@ -315,7 +315,7 @@
 		<execute function="#selectWindow" locator1="PGDocumentsandmediaMovefiles#SELECT_POP_UP" />
 		<execute function="#assertClick" locator1="PGDocumentsandmediaMovefiles#SELECT_POP_UP_CHOOSE_2" value1="Choose" />
 		<execute function="#selectWindow" locator1="PGDocumentsandmediaMovefiles#SELECT_NULL_WINDOW" />
-		<execute function="#assertClick" locator1="PGDocumentsandmediaMovefiles#MOVE" value1="Move" />
+		<execute function="AssertClick#assertValueClickAtAndWait" locator1="PGDocumentsandmediaMovefiles#MOVE" value1="Move" />
 
 		<execute function="#assertTextEquals" locator1="PGDocumentsandmedia#SUCCESS_MESSAGE" value1="Your request completed successfully." />
 	</command>
@@ -440,13 +440,13 @@
 
 	<command name="searchNoPGviaDMD">
 		<execute function="#type" locator1="PGDocumentlibrarydisplaySearch#SEARCH_FIELD" value1="${dmdDocumentTitleSearch}" />
-		<execute function="#assertClick" locator1="PGDocumentlibrarydisplaySearch#SEARCH_BUTTON" value1="Search" />
+		<execute function="AssertClick#assertValueClickAtAndWait" locator1="PGDocumentlibrarydisplaySearch#SEARCH_BUTTON" value1="Search" />
 		<execute function="#assertTextEquals" locator1="PGDocumentlibrarydisplaySearch#INFO_MESSAGE" value1="No documents were found that matched the keywords: ${dmdDocumentTitleSearch}." />
 	</command>
 
 	<command name="searchPGviaDMD">
 		<execute function="#type" locator1="PGDocumentlibrarydisplay#SEARCH_FIELD" value1="${dmdDocumentTitleSearch}" />
-		<execute function="#assertClick" locator1="PGDocumentlibrarydisplay#SEARCH_BUTTON" value1="Search" />
+		<execute function="AssertClick#assertValueClickAtAndWait" locator1="PGDocumentlibrarydisplay#SEARCH_BUTTON" value1="Search" />
 
 		<execute function="#assertTextEquals" locator1="PGDocumentlibrarydisplaySearch#SEARCH_RESULTS_FOLDER" value1="${dmdFolderName}" />
 		<execute function="#assertTextEquals" locator1="PGDocumentlibrarydisplaySearch#SEARCH_RESULTS_DOCUMENT" value1="${dmdDocumentTitle}" />
@@ -456,7 +456,7 @@
 		<execute function="#assertTextEquals" locator1="PGDocumentsandmedia#BREADCRUMB_HOME" value1="Home" />
 		<execute function="#type" locator1="PGDocumentsandmedia#TOOLBAR_SEARCH_FIELD" value1="${dmDocumentTitle}" />
 		<execute function="#assertClick" locator1="PGDocumentsandmedia#TOOLBAR_SEARCH_BUTTON" value1="Search" />
-		<execute function="#assertClick" locator1="PGDocumentsandmedia#ENTRIES_DOCUMENT_SEARCH_TITLE" value1="${dmDocumentTitle}" />
+		<execute function="AssertClick#assertTextClickAtAndWait" locator1="PGDocumentsandmedia#ENTRIES_DOCUMENT_SEARCH_TITLE" value1="${dmDocumentTitle}" />
 
 		<execute function="#assertTextEquals" locator1="PGDocumentsandmediaDocument#TOOLBAR_DOWNLOAD_BUTTON" value1="Download" />
 		<execute function="#assertTextEquals" locator1="PGDocumentsandmediaDocument#TOOLBAR_EDIT_BUTTON" value1="Edit" />
@@ -476,7 +476,7 @@
 		</if>
 
 		<execute function="#assertElementPresent" locator1="PGDocumentsandmediaDocument#DOCUMENT_INFO_THUMBNAIL" />
-		<execute function="#assertTextEquals" locator1="PGDocumentsandmediaDocument#DOCUMENT_INFO_UPLOADED_BY" value1="Uploaded by ${dmDocumentUploader}" />
+		<execute function="AssertTextEquals#assertPartialText" locator1="PGDocumentsandmediaDocument#DOCUMENT_INFO_UPLOADED_BY" value1="Uploaded by ${dmDocumentUploader}" />
 		<execute function="#assertElementPresent" locator1="PGDocumentsandmediaDocument#DOCUMENT_INFO_RATING" value1="Ratings" />
 
 		<if>
@@ -504,7 +504,7 @@
 		<execute function="#assertTextEquals" locator1="PGDocumentsandmedia#BREADCRUMB_HOME" value1="Home" />
 		<execute function="#type" locator1="PGDocumentsandmedia#TOOLBAR_SEARCH_FIELD" value1="${dmDocumentTitle}" />
 		<execute function="#assertClick" locator1="PGDocumentsandmedia#TOOLBAR_SEARCH_BUTTON" value1="Search" />
-		<execute function="#assertClick" locator1="PGDocumentsandmedia#ENTRIES_DOCUMENT_SEARCH_TITLE" value1="${dmDocumentTitle}" />
+		<execute function="AssertClick#assertTextClickAtAndWait" locator1="PGDocumentsandmedia#ENTRIES_DOCUMENT_SEARCH_TITLE" value1="${dmDocumentTitle}" />
 
 		<execute function="#assertTextEquals" locator1="PGDocumentsandmediaDocument#TOOLBAR_DOWNLOAD_BUTTON" value1="Download" />
 
@@ -519,7 +519,7 @@
 		</if>
 
 		<execute function="#assertElementPresent" locator1="PGDocumentsandmediaDocument#DOCUMENT_INFO_THUMBNAIL" />
-		<execute function="#assertTextEquals" locator1="PGDocumentsandmediaDocument#DOCUMENT_INFO_UPLOADED_BY" value1="Uploaded by ${dmDocumentUploader}" />
+		<execute function="AssertTextEquals#assertPartialText" locator1="PGDocumentsandmediaDocument#DOCUMENT_INFO_UPLOADED_BY" value1="Uploaded by ${dmDocumentUploader}" />
 		<execute function="#assertElementPresent" locator1="PGDocumentsandmediaDocument#DOCUMENT_INFO_RATING" value1="Ratings" />
 
 		<if>
@@ -547,7 +547,7 @@
 		<execute function="#assertTextEquals" locator1="PGDocumentsandmedia#BREADCRUMB_HOME" value1="Home" />
 		<execute function="#type" locator1="PGDocumentsandmedia#TOOLBAR_SEARCH_FIELD" value1="${dmDocumentTitle}" />
 		<execute function="#assertClick" locator1="PGDocumentsandmedia#TOOLBAR_SEARCH_BUTTON" value1="Search" />
-		<execute function="#assertClick" locator1="PGDocumentsandmedia#ENTRIES_DOCUMENT_SEARCH_TITLE" value1="${dmDocumentTitle} (Draft)" />
+		<execute function="AssertClick#assertTextClickAtAndWait" locator1="PGDocumentsandmedia#ENTRIES_DOCUMENT_SEARCH_TITLE" value1="${dmDocumentTitle} (Draft)" />
 
 		<execute function="#assertTextEquals" locator1="PGDocumentsandmediaDocument#TOOLBAR_DOWNLOAD_BUTTON" value1="Download" />
 		<execute function="#assertTextEquals" locator1="PGDocumentsandmediaDocument#TOOLBAR_EDIT_BUTTON" value1="Edit" />
@@ -567,7 +567,7 @@
 		</if>
 
 		<execute function="#assertElementPresent" locator1="PGDocumentsandmediaDocument#DOCUMENT_INFO_THUMBNAIL" />
-		<execute function="#assertTextEquals" locator1="PGDocumentsandmediaDocument#DOCUMENT_INFO_UPLOADED_BY" value1="Uploaded by ${dmDocumentUploader}" />
+		<execute function="AssertTextEquals#assertPartialText" locator1="PGDocumentsandmediaDocument#DOCUMENT_INFO_UPLOADED_BY" value1="Uploaded by ${dmDocumentUploader}" />
 		<execute function="#assertElementPresent" locator1="PGDocumentsandmediaDocument#DOCUMENT_INFO_RATING" value1="Ratings" />
 
 		<if>

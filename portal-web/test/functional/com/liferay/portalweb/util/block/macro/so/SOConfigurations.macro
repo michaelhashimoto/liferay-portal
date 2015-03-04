@@ -4,7 +4,7 @@
 			<var name="portletName" value="Social Office Configurations" />
 		</execute>
 
-		<execute function="#click" locator1="SOConfigurations#STATUS_AVAILABLE" />
+		<execute function="Click#clickAtPause" locator1="SOConfigurations#STATUS_AVAILABLE" />
 		<execute function="#type" locator1="SOConfigurations#SEARCH_FIELD" value1="${userScreenName}" />
 		<execute function="#click" locator1="SOConfigurations#SEARCH_BUTTON" />
 
@@ -12,7 +12,7 @@
 
 		<execute function="#assertTextEquals" locator1="SOConfigurations#USER_TABLE_SCREEN_NAME_1" value1="${userScreenName}" />
 		<execute function="#check" locator1="SOConfigurations#USER_TABLE_CHECKBOX_1" />
-		<execute function="#click" locator1="SOConfigurations#SAVE_BUTTON" />
+		<execute function="Click#valueClickAtAndWait" locator1="SOConfigurations#SAVE_BUTTON" />
 
 		<execute function="#assertTextEquals" locator1="CPRolesAssignmembersUsers#SUCCESS_MESSAGE" />
 
@@ -24,7 +24,7 @@
 			<var name="portletName" value="Social Office Configurations" />
 		</execute>
 
-		<execute function="#click" locator1="SOConfigurations#STATUS_CURRENT" />
+		<execute function="Click#clickAtPause" locator1="SOConfigurations#STATUS_CURRENT" />
 		<execute function="#type" locator1="SOConfigurations#SEARCH_FIELD" value1="${userScreenName}" />
 		<execute function="#click" locator1="SOConfigurations#SEARCH_BUTTON" />
 
@@ -32,7 +32,7 @@
 
 		<execute function="#assertTextEquals" locator1="SOConfigurations#USER_TABLE_SCREEN_NAME_1" value1="${userScreenName}" />
 		<execute function="#uncheck" locator1="SOConfigurations#USER_TABLE_CHECKBOX_1" />
-		<execute function="#click" locator1="SOConfigurations#SAVE_BUTTON" />
+		<execute function="Click#valueClickAtAndWait" locator1="SOConfigurations#SAVE_BUTTON" />
 
 		<execute function="#assertTextEquals" locator1="CPRolesAssignmembersUsers#SUCCESS_MESSAGE" />
 	</command>

@@ -13,14 +13,14 @@
 	<command name="viewMyPostsPG">
 		<var name="key_threadSubject" value="${threadSubject}" />
 
-		<execute function="#assertClick" locator1="PGMessageboards#NAVIGATION_MY_POSTS" value1="My Posts" />
+		<execute function="AssertClick#assertTextClickAtAndWait" locator1="PGMessageboards#NAVIGATION_MY_POSTS" value1="My Posts" />
 
 		<execute function="#click" locator1="SOUserBar#TOGGLE_DOCKBAR" />
 
 		<if>
-			<condition function="#isElementNotPresent" locator1="SOForums#BREADCRUMB_PORTLET_TITLE" />
+			<condition function="IsElementNotPresent#pauseIsElementNotPresent" locator1="SOForums#BREADCRUMB_PORTLET_TITLE" />
 			<then>
-				<execute function="#mouseOver" locator1="Dockbar#EDIT_CONTROLS" />
+				<execute function="MouseOver#mouseOverClickDockbar" locator1="Dockbar#EDIT_CONTROLS" />
 				<execute function="#assertClick" locator1="Dockbar#EDIT_CONTROLS" value1="Edit Controls" />
 			</then>
 		</if>
@@ -37,7 +37,7 @@
 		<execute function="#assertTextEquals" locator1="PGMessageboardsMyposts#THREAD_TABLE_POSTS" value1="1" />
 		<execute function="#assertTextEquals" locator1="PGMessageboardsMyposts#THREAD_TABLE_LAST_POST" value1="By: ${userName}" />
 		<execute function="#assertElementPresent" locator1="PGMessageboardsMyposts#THREAD_TABLE_ACTIONS" />
-		<execute function="#assertClick" locator1="PGMessageboardsMyposts#THREAD_TABLE_THREAD" value1="${threadSubject}" />
+		<execute function="AssertClick#assertTextClickAtAndWait" locator1="PGMessageboardsMyposts#THREAD_TABLE_THREAD" value1="${threadSubject}" />
 
 		<execute function="#assertTextEquals" locator1="SOForums#BREADCRUMB_PORTLET_TITLE" value1="BREADCRUMB" />
 		<execute function="#assertTextEquals" locator1="SOForums#MESSAGE_BOARDS_PORTLET_TITLE" value1="MESSAGE BOARDS" />
@@ -48,7 +48,7 @@
 		<execute function="#assertTextEquals" locator1="SOForums#BREADCRUMB_5" value1="${threadSubject}" />
 
 		<execute function="#assertTextEquals" locator1="PGMessageboardsThread#TITLE_HEADER" value1="${threadSubject}" />
-		<execute function="#assertTextEquals" locator1="PGMessageboardsThread#THREAD_CONTROLS_BACK" value1="Back to ${categoryName}" />
+		<execute function="AssertTextEquals#assertPartialText" locator1="PGMessageboardsThread#THREAD_CONTROLS_BACK" value1="Back to ${categoryName}" />
 		<execute function="#assertTextEquals" locator1="PGMessageboardsThread#THREAD_CONTROLS_NAVIGATION" value1="Threads [ Previous | Next ]" />
 		<execute function="#assertTextEquals" locator1="PGMessageboardsThread#MESSAGE_USERNAME_1" value1="${userName}" />
 		<execute function="#assertTextEquals" locator1="PGMessageboardsThread#MESSAGE_SUBJECT_1" value1="${threadSubject}" />
@@ -63,9 +63,9 @@
 		<execute function="#click" locator1="SOUserBar#TOGGLE_DOCKBAR" />
 
 		<if>
-			<condition function="#isElementNotPresent" locator1="SOForums#BREADCRUMB_PORTLET_TITLE" />
+			<condition function="IsElementNotPresent#pauseIsElementNotPresent" locator1="SOForums#BREADCRUMB_PORTLET_TITLE" />
 			<then>
-				<execute function="#mouseOver" locator1="Dockbar#EDIT_CONTROLS" />
+				<execute function="MouseOver#mouseOverClickDockbar" locator1="Dockbar#EDIT_CONTROLS" />
 				<execute function="#assertClick" locator1="Dockbar#EDIT_CONTROLS" value1="Edit Controls" />
 			</then>
 		</if>
@@ -107,7 +107,7 @@
 		<execute function="#assertTextEquals" locator1="SOForums#BREADCRUMB_5" value1="${threadSubject}" />
 
 		<execute function="#assertTextEquals" locator1="PGMessageboardsThread#TITLE_HEADER" value1="${threadSubject}" />
-		<execute function="#assertTextEquals" locator1="PGMessageboardsThread#THREAD_CONTROLS_BACK" value1="Back to ${categoryName}" />
+		<execute function="AssertTextEquals#assertPartialText" locator1="PGMessageboardsThread#THREAD_CONTROLS_BACK" value1="Back to ${categoryName}" />
 		<execute function="#assertTextEquals" locator1="PGMessageboardsThread#THREAD_CONTROLS_NAVIGATION" value1="Threads [ Previous | Next ]" />
 		<execute function="#assertTextEquals" locator1="PGMessageboardsThread#MESSAGE_USERNAME_1" value1="${userName}" />
 		<execute function="#assertTextEquals" locator1="PGMessageboardsThread#MESSAGE_SUBJECT_1" value1="${threadSubject}" />
@@ -119,14 +119,14 @@
 	<command name="viewRecentPostsPG">
 		<var name="key_threadSubject" value="${threadSubject}" />
 
-		<execute function="#assertClick" locator1="PGMessageboards#NAVIGATION_RECENT_POSTS" value1="Recent Posts" />
+		<execute function="AssertClick#assertTextClickAtAndWait" locator1="PGMessageboards#NAVIGATION_RECENT_POSTS" value1="Recent Posts" />
 
 		<execute function="#click" locator1="SOUserBar#TOGGLE_DOCKBAR" />
 
 		<if>
-			<condition function="#isElementNotPresent" locator1="SOForums#BREADCRUMB_PORTLET_TITLE" />
+			<condition function="IsElementNotPresent#pauseIsElementNotPresent" locator1="SOForums#BREADCRUMB_PORTLET_TITLE" />
 			<then>
-				<execute function="#mouseOver" locator1="Dockbar#EDIT_CONTROLS" />
+				<execute function="MouseOver#mouseOverClickDockbar" locator1="Dockbar#EDIT_CONTROLS" />
 				<execute function="#assertClick" locator1="Dockbar#EDIT_CONTROLS" value1="Edit Controls" />
 			</then>
 		</if>
@@ -143,14 +143,14 @@
 		<execute function="#assertTextEquals" locator1="PGMessageboardsMyposts#THREAD_TABLE_POSTS" value1="1" />
 		<execute function="#assertTextEquals" locator1="PGMessageboardsMyposts#THREAD_TABLE_LAST_POST" value1="By: ${userName}" />
 		<execute function="#assertElementPresent" locator1="PGMessageboardsMyposts#THREAD_TABLE_ACTIONS" />
-		<execute function="#assertClick" locator1="PGMessageboardsMyposts#THREAD_TABLE_THREAD" value1="${threadSubject}" />
+		<execute function="AssertClick#assertTextClickAtAndWait" locator1="PGMessageboardsMyposts#THREAD_TABLE_THREAD" value1="${threadSubject}" />
 
 		<execute function="#click" locator1="SOUserBar#TOGGLE_DOCKBAR" />
 
 		<if>
-			<condition function="#isElementNotPresent" locator1="SOForums#BREADCRUMB_PORTLET_TITLE" />
+			<condition function="IsElementNotPresent#pauseIsElementNotPresent" locator1="SOForums#BREADCRUMB_PORTLET_TITLE" />
 			<then>
-				<execute function="#mouseOver" locator1="Dockbar#EDIT_CONTROLS" />
+				<execute function="MouseOver#mouseOverClickDockbar" locator1="Dockbar#EDIT_CONTROLS" />
 				<execute function="#assertClick" locator1="Dockbar#EDIT_CONTROLS" value1="Edit Controls" />
 			</then>
 		</if>
@@ -164,7 +164,7 @@
 		<execute function="#assertTextEquals" locator1="SOForums#BREADCRUMB_5" value1="${threadSubject}" />
 
 		<execute function="#assertTextEquals" locator1="PGMessageboardsThread#TITLE_HEADER" value1="${threadSubject}" />
-		<execute function="#assertTextEquals" locator1="PGMessageboardsThread#THREAD_CONTROLS_BACK" value1="Back to ${categoryName}" />
+		<execute function="AssertTextEquals#assertPartialText" locator1="PGMessageboardsThread#THREAD_CONTROLS_BACK" value1="Back to ${categoryName}" />
 		<execute function="#assertTextEquals" locator1="PGMessageboardsThread#THREAD_CONTROLS_NAVIGATION" value1="Threads [ Previous | Next ]" />
 		<execute function="#assertTextEquals" locator1="PGMessageboardsThread#MESSAGE_USERNAME_1" value1="${userName}" />
 		<execute function="#assertTextEquals" locator1="PGMessageboardsThread#MESSAGE_SUBJECT_1" value1="${threadSubject}" />
@@ -179,9 +179,9 @@
 		<execute function="#click" locator1="SOUserBar#TOGGLE_DOCKBAR" />
 
 		<if>
-			<condition function="#isElementNotPresent" locator1="SOForums#BREADCRUMB_PORTLET_TITLE" />
+			<condition function="IsElementNotPresent#pauseIsElementNotPresent" locator1="SOForums#BREADCRUMB_PORTLET_TITLE" />
 			<then>
-				<execute function="#mouseOver" locator1="Dockbar#EDIT_CONTROLS" />
+				<execute function="MouseOver#mouseOverClickDockbar" locator1="Dockbar#EDIT_CONTROLS" />
 				<execute function="#assertClick" locator1="Dockbar#EDIT_CONTROLS" value1="Edit Controls" />
 			</then>
 		</if>
@@ -223,7 +223,7 @@
 		<execute function="#assertTextEquals" locator1="SOForums#BREADCRUMB_5" value1="${threadSubject}" />
 
 		<execute function="#assertTextEquals" locator1="PGMessageboardsThread#TITLE_HEADER" value1="${threadSubject}" />
-		<execute function="#assertTextEquals" locator1="PGMessageboardsThread#THREAD_CONTROLS_BACK" value1="Back to ${categoryName}" />
+		<execute function="AssertTextEquals#assertPartialText" locator1="PGMessageboardsThread#THREAD_CONTROLS_BACK" value1="Back to ${categoryName}" />
 		<execute function="#assertTextEquals" locator1="PGMessageboardsThread#THREAD_CONTROLS_NAVIGATION" value1="Threads [ Previous | Next ]" />
 		<execute function="#assertTextEquals" locator1="PGMessageboardsThread#THREAD_TABLE_SUBJECT_1" value1="${threadSubject}" />
 		<execute function="#assertTextEquals" locator1="PGMessageboardsThread#THREAD_TABLE_SUBJECT_2" value1="RE: ${threadSubject}" />

@@ -1,12 +1,12 @@
 <definition>
 	<command name="tearDownCP">
-		<execute function="#click" locator1="SOUserBar#DASHBOARD" />
+		<execute function="Click#textClickAtAndWait" locator1="SOUserBar#DASHBOARD" />
 		<execute function="#click" locator1="SOUserBar#USER_NAME" />
-		<execute function="#click" locator1="SOUserBar#USER_MENU_CONTROL_PANEL" value1="Control Panel" />
+		<execute function="AssertClick#assertTextClickAtAndWait" locator1="SOUserBar#USER_MENU_CONTROL_PANEL" value1="Control Panel" />
 
 		<execute function="#click" locator1="//ul[@class='category-portlets']/li/a[contains(.,'Calendar')]" />
 
-		<execute function="#assertClick" locator1="PGCalendar#VIEW_EVENTS" value1="Events" />
+		<execute function="AssertClick#assertTextClickAtAndWait" locator1="PGCalendar#VIEW_EVENTS" value1="Events" />
 
 		<while>
 			<condition function="#isElementPresent" locator1="CPCalendarEvents#EVENT_TABLE_ACTIONS" value1="Actions" />

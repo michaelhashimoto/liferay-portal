@@ -1,7 +1,7 @@
 <definition>
 	<command name="addSOSite">
-		<execute function="#click" locator1="SOUserBar#DASHBOARD" />
-		<execute function="#click" locator1="SOUserBar#GO_TO" />
+		<execute function="Click#textClickAtAndWait" locator1="SOUserBar#DASHBOARD" />
+		<execute function="Click#pauseClickAt" locator1="SOUserBar#GO_TO" />
 		<execute function="#click" locator1="SOUserBar#GO_TO_ADD_SITE_BUTTON" />
 
 		<execute function="#type" locator1="SOUserBarAddSite#NAME_FIELD" value1="${siteName}" />
@@ -28,43 +28,43 @@
 			</else>
 		</if>
 
-		<execute function="#click" locator1="SOUserBarAddSite#SAVE_BUTTON" />
-		<execute function="#assertElementNotPresent" locator1="SOUserBarAddSite#SAVE_BUTTON" />
+		<execute function="Click#clickAtPause" locator1="SOUserBarAddSite#SAVE_BUTTON" />
+		<execute function="AssertElementNotPresent#assertNotVisible" locator1="SOUserBarAddSite#SAVE_BUTTON" />
 	</command>
 
 	<command name="dashboardPG">
-		<execute function="#click" locator1="SOUserBar#DASHBOARD" />
+		<execute function="Click#textClickAtAndWait" locator1="SOUserBar#DASHBOARD" />
 
 		<execute function="#assertTextEquals" locator1="SODashboard#PROFILE_NAME" value1="${userName}" />
 	</command>
 
 	<command name="deleteSOSite">
-		<execute function="#click" locator1="SOUserBar#DASHBOARD" />
-		<execute function="#click" locator1="SOUserBar#GO_TO" />
-		<execute function="#click" locator1="SOUserBar#GO_TO_SITES_DIRECTORY_BUTTON" />
+		<execute function="Click#textClickAtAndWait" locator1="SOUserBar#DASHBOARD" />
+		<execute function="Click#pauseClickAt" locator1="SOUserBar#GO_TO" />
+		<execute function="Click#pauseClickAt" locator1="SOUserBar#GO_TO_SITES_DIRECTORY_BUTTON" />
 
 		<if>
 			<equals arg1="${siteType}" arg2="Private" />
 			<then>
-				<execute function="#click" locator1="SOUserBar#GO_TO" />
+				<execute function="Click#pauseClickAt" locator1="SOUserBar#GO_TO" />
 				<execute function="#select" locator1="SOUserBar#GO_TO_SITE_CATEGORY_SELECT" value1="My Sites" />
 			</then>
 			<else>
-				<execute function="#click" locator1="SOUserBar#GO_TO" />
+				<execute function="Click#pauseClickAt" locator1="SOUserBar#GO_TO" />
 				<execute function="#select" locator1="SOUserBar#GO_TO_SITE_CATEGORY_SELECT" value1="All Sites" />
 			</else>
 		</if>
 
 		<execute function="#type" locator1="SOUserBarSitesDirectory#SITE_SEARCH_FIELD" value1="${siteName}" />
 		<execute function="#assertTextEquals" locator1="SOUserBarSitesDirectory#SITE_NAME_LINK" value1="${siteName}" />
-		<execute function="#assertClickNoError" locator1="SOUserBarSitesDirectory#DELETE_SITE_ICON" value1="Delete" />
+		<execute function="AssertClickNoError#pauseAssertTextClick" locator1="SOUserBarSitesDirectory#DELETE_SITE_ICON" value1="Delete" />
 		<execute function="#confirm" locator1="SOUserBarSitesDirectory#CONFIRMATION" value1="Are you sure you want to delete ${siteName}?" />
 		<execute function="#assertTextNotPresent" value1="${siteName}" />
 	</command>
 
 	<command name="favoriteSOSite">
-		<execute function="#click" locator1="SOUserBar#DASHBOARD" />
-		<execute function="#click" locator1="SOUserBar#GO_TO" />
+		<execute function="Click#textClickAtAndWait" locator1="SOUserBar#DASHBOARD" />
+		<execute function="Click#pauseClickAt" locator1="SOUserBar#GO_TO" />
 		<execute function="#type" locator1="SOUserBar#GO_TO_SEARCH_FIELD" value1="${siteName}" />
 		<execute function="#assertTextEquals" locator1="SOUserBar#GO_TO_SITE_NAME_LINK" value1="${siteName}" />
 		<execute function="#click" locator1="SOUserBar#GO_TO_FAVORITE_SITE_ICON" />
@@ -75,7 +75,7 @@
 		<execute function="#open" locator1="Home#GUEST_URL" />
 
 		<execute function="#click" locator1="SOUserBar#USER_NAME" />
-		<execute function="#click" locator1="SOUserBar#USER_MENU_CONTROL_PANEL" value1="Control Panel" />
+		<execute function="AssertClick#assertTextClickAtAndWait" locator1="SOUserBar#USER_MENU_CONTROL_PANEL" value1="Control Panel" />
 
 		<if>
 			<isset var="siteScopeName" />
@@ -105,13 +105,13 @@
 		</execute>
 
 		<execute function="#click" locator1="SOUserBar#USER_NAME" />
-		<execute function="#click" locator1="SOUserBar#USER_MENU_MY_PROFILE" value1="My Profile" />
+		<execute function="AssertClick#assertTextClickAtAndWait" locator1="SOUserBar#USER_MENU_MY_PROFILE" value1="My Profile" />
 	</command>
 
 	<command name="joinSOSite">
-		<execute function="#click" locator1="SOUserBar#DASHBOARD" />
-		<execute function="#click" locator1="SOUserBar#GO_TO" />
-		<execute function="#click" locator1="SOUserBar#GO_TO_SITES_DIRECTORY_BUTTON" />
+		<execute function="Click#textClickAtAndWait" locator1="SOUserBar#DASHBOARD" />
+		<execute function="Click#pauseClickAt" locator1="SOUserBar#GO_TO" />
+		<execute function="Click#pauseClickAt" locator1="SOUserBar#GO_TO_SITES_DIRECTORY_BUTTON" />
 
 		<execute function="#type" locator1="SOUserBarSitesDirectory#SITE_SEARCH_FIELD" value1="${siteName}" />
 		<execute function="#assertTextEquals" locator1="SOUserBarSitesDirectory#SITE_NAME_LINK" value1="${siteName}" />
@@ -121,9 +121,9 @@
 	</command>
 
 	<command name="leaveSOSite">
-		<execute function="#click" locator1="SOUserBar#DASHBOARD" />
-		<execute function="#click" locator1="SOUserBar#GO_TO" />
-		<execute function="#click" locator1="SOUserBar#GO_TO_SITES_DIRECTORY_BUTTON" />
+		<execute function="Click#textClickAtAndWait" locator1="SOUserBar#DASHBOARD" />
+		<execute function="Click#pauseClickAt" locator1="SOUserBar#GO_TO" />
+		<execute function="Click#pauseClickAt" locator1="SOUserBar#GO_TO_SITES_DIRECTORY_BUTTON" />
 
 		<execute function="#type" locator1="SOUserBarSitesDirectory#SITE_SEARCH_FIELD" value1="${siteName}" />
 		<execute function="#assertTextEquals" locator1="SOUserBarSitesDirectory#SITE_NAME_LINK" value1="${siteName}" />
@@ -143,15 +143,15 @@
 
 	<command name="myProfilePG">
 		<execute function="#click" locator1="SOUserBar#USER_NAME" />
-		<execute function="#click" locator1="SOUserBar#USER_MENU_MY_PROFILE" value1="My Profile" />
+		<execute function="AssertClick#assertTextClickAtAndWait" locator1="SOUserBar#USER_MENU_MY_PROFILE" value1="My Profile" />
 
 		<execute function="#assertTextEquals" locator1="SOProfile#USER_NAME" value1="${userName}" />
 	</command>
 
 	<command name="requestMembershipSOSite">
-		<execute function="#click" locator1="SOUserBar#DASHBOARD" />
-		<execute function="#click" locator1="SOUserBar#GO_TO" />
-		<execute function="#click" locator1="SOUserBar#GO_TO_SITES_DIRECTORY_BUTTON" />
+		<execute function="Click#textClickAtAndWait" locator1="SOUserBar#DASHBOARD" />
+		<execute function="Click#pauseClickAt" locator1="SOUserBar#GO_TO" />
+		<execute function="Click#pauseClickAt" locator1="SOUserBar#GO_TO_SITES_DIRECTORY_BUTTON" />
 
 		<execute function="#type" locator1="SOUserBarSitesDirectory#SITE_SEARCH_FIELD" value1="${siteName}" />
 
@@ -171,8 +171,8 @@
 	</command>
 
 	<command name="searchSOSite">
-		<execute function="#click" locator1="SOUserBar#DASHBOARD" />
-		<execute function="#click" locator1="SOUserBar#GO_TO" />
+		<execute function="Click#textClickAtAndWait" locator1="SOUserBar#DASHBOARD" />
+		<execute function="Click#pauseClickAt" locator1="SOUserBar#GO_TO" />
 
 		<if>
 			<equals arg1="${siteType}" arg2="Private" />
@@ -184,7 +184,7 @@
 			</else>
 		</if>
 
-		<execute function="#click" locator1="SOUserBar#GO_TO" />
+		<execute function="Click#pauseClickAt" locator1="SOUserBar#GO_TO" />
 		<execute function="#type" locator1="SOUserBar#GO_TO_SEARCH_FIELD" value1="${siteName}" />
 		<execute function="#assertTextEquals" locator1="SOUserBar#GO_TO_SITE_NAME_LINK" value1="${siteName}" />
 	</command>
@@ -192,16 +192,16 @@
 	<command name="tearDownNotifications">
 		<execute macro="SOUser#firstLoginPG" />
 
-		<execute function="#click" locator1="SOUserBar#DASHBOARD" />
+		<execute function="Click#textClickAtAndWait" locator1="SOUserBar#DASHBOARD" />
 
 		<execute function="#mouseOver" locator1="SOUserBar#NOTIFICATION" />
-		<execute function="#click" locator1="SOUserBar#NOTIFICATION_MENU_VIEW_ALL" value1="View All" />
+		<execute function="AssertClick#assertPartialTextClickAtAndWait" locator1="SOUserBar#NOTIFICATION_MENU_VIEW_ALL" value1="View All" />
 
 		<while>
 			<condition function="#isElementPresent" locator1="SONotifications#NOTIFICATIONS_CHECKBOX" />
 			<then>
 				<execute function="#check" locator1="SONotifications#NOTIFICATIONS_CHECKBOX" />
-				<execute function="#click" locator1="SONotifications#DELETE_BUTTON" />
+				<execute function="Click#clickAtAndWait" locator1="SONotifications#DELETE_BUTTON" />
 			</then>
 		</while>
 	</command>
@@ -214,7 +214,7 @@
 		</execute>
 
 		<execute function="#type" locator1="CPSites#SEARCH_FIELD" value1="Name" />
-		<execute function="#assertClick" locator1="CPSites#SEARCH_BUTTON" value1="Search" />
+		<execute function="AssertClick#assertValueClickAtAndWait" locator1="CPSites#SEARCH_BUTTON" value1="Search" />
 
 		<while>
 			<condition function="#isElementPresent" locator1="CPSites#SITE_TABLE_ACTIONS" />

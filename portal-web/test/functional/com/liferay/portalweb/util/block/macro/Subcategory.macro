@@ -9,7 +9,7 @@
 		<execute function="#assertClick" locator1="CPCategories#CATEGORY_DETAILS_ADD_SUBCATEGORY_BUTTON" value1="Add Subcategory" />
 		<execute function="#type" locator1="CPCategories#ADD_SUBCATEGORY_NAME_FIELD" value1="${subcategoryName}" />
 		<execute function="#assertClick" locator1="CPCategories#ADD_SUBCATEGORY_SAVE_BUTTON" value1="Save" />
-		<execute function="#assertTextEquals" locator1="CPCategories#SUCCESS_MESSAGE" value1="Your request processed successfully." />
+		<execute function="AssertTextEquals#assertTextNoWaitForText" locator1="CPCategories#SUCCESS_MESSAGE" value1="Your request processed successfully." />
 		<execute function="#click" locator1="CPCategories#CATEGORY_DETAILS_DROPDOWN_TREE" />
 		<execute function="#click" locator1="CPCategories#SUBCATEGORY_CHECKBOX" />
 		<execute function="#assertTextEquals" locator1="CPCategories#SUBCATEGORY_DETAILS_HEADER" value1="${subcategoryName}" />
@@ -30,7 +30,7 @@
 		<execute function="#assertClick" locator1="CPCategories#ACTIONS_BUTTON" value1="Actions" />
 		<execute function="#assertClickNoError" locator1="CPCategories#ACTIONS_MENULIST_DELETE" value1="Delete" />
 		<execute function="#confirm" locator1="CPCategories#CONFIRMATION" value1="Are you sure you want to delete the selected categories?" />
-		<execute function="#assertTextEquals" locator1="CPCategories#SUCCESS_MESSAGE" value1="Your request processed successfully." />
+		<execute function="AssertTextEquals#assertTextNoWaitForText" locator1="CPCategories#SUCCESS_MESSAGE" value1="Your request processed successfully." />
 		<execute function="#assertTextNotPresent" value1="${subcategoryName}" />
 	</command>
 
@@ -46,7 +46,7 @@
 		<execute function="#assertClick" locator1="CPCategories#SUBCATEGORY_DETAILS_EDIT_BUTTON" value1="Edit" />
 		<execute function="#type" locator1="CPCategories#EDIT_SUBCATEGORY_NAME_FIELD" value1="${subcategoryNameEdit}" />
 		<execute function="#assertClick" locator1="CPCategories#EDIT_SUBCATEGORY_SAVE_BUTTON" value1="Save" />
-		<execute function="#assertTextEquals" locator1="CPCategories#SUCCESS_MESSAGE" value1="Your request processed successfully." />
+		<execute function="AssertTextEquals#assertTextNoWaitForText" locator1="CPCategories#SUCCESS_MESSAGE" value1="Your request processed successfully." />
 		<execute function="#click" locator1="CPCategories#CATEGORY_DETAILS_DROPDOWN_TREE" />
 		<execute function="#click" locator1="CPCategories#SUBCATEGORY_CHECKBOX" />
 		<execute function="#assertTextEquals" locator1="CPCategories#SUBCATEGORY_DETAILS_HEADER" value1="${subcategoryNameEdit}" />

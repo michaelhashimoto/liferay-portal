@@ -198,7 +198,7 @@
 		<execute function="#assertClick" locator1="SOMembers#MEMBERS_LINK_CONNECTIONS" value1="You have 1 connections in this site." />
 		<execute function="#assertTextEquals" locator1="SOMembers#MEMBERS_LIST_NAME" value1="${userLastName}, ${userFirstName}" />
 		<execute function="#assertTextEquals" locator1="SOMembers#MEMBERS_LIST_EMAIL" value1="${userEmailAddress}" />
-		<execute function="#click" locator1="SOMembers#MEMBERS_LIST_NAME" value1="${userLastName}, ${userFirstName}" />
+		<execute function="Click#pauseTextClickAt" locator1="SOMembers#MEMBERS_LIST_NAME" value1="${userLastName}, ${userFirstName}" />
 
 		<execute function="#assertTextEquals" locator1="SOMembers#USER_DETAILS_NAME" value1="${userName}" />
 		<execute function="#assertTextEquals" locator1="SOMembers#USER_DETAILS_EMAIL" value1="${userEmailAddress}" />
