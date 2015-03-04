@@ -15,10 +15,10 @@
 
 	<command name="addCPwithStructure">
 		<execute action="CPWebcontent#assertClick" locator-key1="ADD_DROPDOWN" value1="Add" />
-		<execute action="CPWebcontent#click" locator1="//div[@class='lfr-component lfr-menu-list']/ul/li/a[contains(.,'${structureName}')]" />
+		<execute function="#click" locator1="//div[@class='lfr-component lfr-menu-list']/ul/li/a[contains(.,'${structureName}')]" />
 
 		<execute action="CPWebcontentAddwebcontent#type" locator-key1="TITLE_FIELD" value1="${webContentTitle}" />
-		<execute action="CPWebcontentAddwebcontent#type" locator1="//input[@name='_15_text_text']" value1="${webContentText}" />
+		<execute function="#type" locator1="//input[@name='_15_text_text']" value1="${webContentText}" />
 		<execute action="CPWebcontentAddwebcontent#assertClick" locator-key1="PUBLISH_BUTTON" value1="Publish" />
 
 		<var name="key_webContentTitle" value="${webContentTitle}" />
@@ -168,7 +168,7 @@
 		<execute action="PGWebcontentdisplayEditwebcontent#assertTextEquals" locator-key1="WORKFLOW_STATUS" value1="Pending (${workflowTask})" />
 		<execute action="PGWebcontentdisplayEditwebcontent#assertTextEquals" locator-key1="TITLE_FIELD" value1="${webContentTitle}" />
 		<execute action="PGWebcontentdisplayEditwebcontent#selectFrame" locator-key1="CONTENT_FIELD" />
-		<execute action="PGWebcontentdisplayEditwebcontent#assertTextEquals" locator1="//body" value1="${webContentContent}" />
+		<execute function="#assertTextEquals" locator1="//body" value1="${webContentContent}" />
 		<execute action="PGWebcontentdisplayEditwebcontent#selectFrameTop" />
 	</command>
 </definition>

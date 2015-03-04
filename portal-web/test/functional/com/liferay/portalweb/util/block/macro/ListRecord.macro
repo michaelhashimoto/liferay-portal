@@ -3,12 +3,12 @@
 		<if>
 			<equals arg1="${recordBoolean}" arg2="false" />
 			<then>
-				<execute action="CPDynamicdatalistsListAddrecord#uncheck" locator1="//input[contains(@id,'_167_${booleanNameLabel}')]" />
+				<execute function="#uncheck" locator1="//input[contains(@id,'_167_${booleanNameLabel}')]" />
 			</then>
 			<elseif>
 				<equals arg1="${recordBoolean}" arg2="true" />
 				<then>
-					<execute action="CPDynamicdatalistsListAddrecord#check" locator1="//input[contains(@id,'_167_${booleanNameLabel}')]" />
+					<execute function="#check" locator1="//input[contains(@id,'_167_${booleanNameLabel}')]" />
 				</then>
 			</elseif>
 			<else>
@@ -36,13 +36,13 @@
 	</command>
 
 	<command name="addDateCmdCP">
-		<execute action="CPDynamicdatalistsListAddrecord#select" locator1="//select[contains(@id,'_167_${dateNameLabel}') and @class='datepicker-month']" value1="${recordDateMonth}" />
-		<execute action="CPDynamicdatalistsListAddrecord#select" locator1="//select[contains(@id,'_167_${dateNameLabel}') and @class='datepicker-day']" value1="${recordDateDay}" />
-		<execute action="CPDynamicdatalistsListAddrecord#select" locator1="//select[contains(@id,'_167_${dateNameLabel}') and @class='datepicker-year']" value1="${recordDateYear}" />
+		<execute function="#select" locator1="//select[contains(@id,'_167_${dateNameLabel}') and @class='datepicker-month']" value1="${recordDateMonth}" />
+		<execute function="#select" locator1="//select[contains(@id,'_167_${dateNameLabel}') and @class='datepicker-day']" value1="${recordDateDay}" />
+		<execute function="#select" locator1="//select[contains(@id,'_167_${dateNameLabel}') and @class='datepicker-year']" value1="${recordDateYear}" />
 	</command>
 
 	<command name="addDecimalCmdCP">
-		<execute action="CPDynamicdatalistsListAddrecord#type" locator1="//input[contains(@id,'_167_${decimalNameLabel}')]" value1="${recordDecimal}" />
+		<execute function="#type" locator1="//input[contains(@id,'_167_${decimalNameLabel}')]" value1="${recordDecimal}" />
 	</command>
 
 	<command name="addDocumentsAndMediaCmdCP">
@@ -54,11 +54,11 @@
 	</command>
 
 	<command name="addIntegerCmdCP">
-		<execute action="CPDynamicdatalistsListAddrecord#type" locator1="//input[contains(@id,'_167_${integerNameLabel}')]" value1="${recordInteger}" />
+		<execute function="#type" locator1="//input[contains(@id,'_167_${integerNameLabel}')]" value1="${recordInteger}" />
 	</command>
 
 	<command name="addNumberCmdCP">
-		<execute action="CPDynamicdatalistsListAddrecord#type" locator1="//input[contains(@id,'_167_${numberNameLabel}')]" value1="${recordNumber}" />
+		<execute function="#type" locator1="//input[contains(@id,'_167_${numberNameLabel}')]" value1="${recordNumber}" />
 	</command>
 
 	<command name="addPG">
@@ -77,18 +77,18 @@
 		<if>
 			<equals arg1="${recordRadio}" arg2="1" />
 			<then>
-				<execute action="CPDynamicdatalistsListAddrecord#assertClick" locator1="xpath=(//input[contains(@name,'_167_${radioNameLabel}')])[1]" value1="${radioNameLabel}" />
+				<execute function="#assertClick" locator1="xpath=(//input[contains(@name,'_167_${radioNameLabel}')])[1]" value1="${radioNameLabel}" />
 			</then>
 			<elseif>
 				<equals arg1="${recordRadio}" arg2="2" />
 				<then>
-					<execute action="CPDynamicdatalistsListAddrecord#assertClick" locator1="xpath=(//input[contains(@name,'_167_${radioNameLabel}')])[2]" value1="${radioNameLabel}" />
+					<execute function="#assertClick" locator1="xpath=(//input[contains(@name,'_167_${radioNameLabel}')])[2]" value1="${radioNameLabel}" />
 				</then>
 			</elseif>
 			<elseif>
 				<equals arg1="${recordRadio}" arg2="3" />
 				<then>
-					<execute action="CPDynamicdatalistsListAddrecord#assertClick" locator1="xpath=(//input[contains(@name,'_167_${radioNameLabel}')])[3]" value1="${radioNameLabel}" />
+					<execute function="#assertClick" locator1="xpath=(//input[contains(@name,'_167_${radioNameLabel}')])[3]" value1="${radioNameLabel}" />
 				</then>
 			</elseif>
 			<else>
@@ -98,19 +98,19 @@
 	</command>
 
 	<command name="addSelectCmdCP">
-		<execute action="CPDynamicdatalistsListAddrecord#select" locator1="//select[contains(@name,'_167_${selectNameLabel}')" value1="${recordSelect}" />
+		<execute function="#select" locator1="//select[contains(@name,'_167_${selectNameLabel}')" value1="${recordSelect}" />
 	</command>
 
 	<command name="addTextBoxCmdCP">
-		<execute action="CPDynamicdatalistsListAddrecord#type" locator1="//textarea[contains(@id,'_167_${textBoxNameLabel}')]" value1="${recordTextBox}" />
+		<execute function="#type" locator1="//textarea[contains(@id,'_167_${textBoxNameLabel}')]" value1="${recordTextBox}" />
 	</command>
 
 	<command name="addTextCmdCP">
-		<execute action="CPDynamicdatalistsListAddrecord#type" locator1="//input[contains(@id,'_167_${textNameLabel}')]" value1="${recordText}" />
+		<execute function="#type" locator1="//input[contains(@id,'_167_${textNameLabel}')]" value1="${recordText}" />
 	</command>
 
 	<command name="addTextCmdPG">
-		<execute action="PGDDLDisplayAddrecord#type" locator1="//input[contains(@id,'_${textNameLabel}')]" value1="${recordText}" />
+		<execute function="#type" locator1="//input[contains(@id,'_${textNameLabel}')]" value1="${recordText}" />
 	</command>
 
 	<command name="deleteCP">

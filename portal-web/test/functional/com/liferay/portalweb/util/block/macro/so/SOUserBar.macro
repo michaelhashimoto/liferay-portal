@@ -91,10 +91,10 @@
 		<if>
 			<equals arg1="${portletName}" arg2="Workflow" />
 			<then>
-				<execute action="Home#click" locator1="xPath=(//ul[@class='category-portlets']/li/a[contains(.,'${portletName}')])[3]" />
+				<execute function="#click" locator1="xPath=(//ul[@class='category-portlets']/li/a[contains(.,'${portletName}')])[3]" />
 			</then>
 			<else>
-				<execute action="Home#click" locator1="//ul[@class='category-portlets']/li/a[contains(.,'${portletName}')]" />
+				<execute function="#click" locator1="//ul[@class='category-portlets']/li/a[contains(.,'${portletName}')]" />
 			</else>
 		</if>
 	</command>

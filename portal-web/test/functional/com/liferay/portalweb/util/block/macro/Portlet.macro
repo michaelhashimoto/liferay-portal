@@ -21,7 +21,7 @@
 		<execute action="Dockbar#mouseOver" locator-key1="ADD" />
 		<execute action="Dockbar#click" locator-key1="ADD_APPLICATION" />
 		<execute action="Dockbar#type" locator-key1="ADD_APPLICATION_SEARCH_FIELD" value1="${portletName}" />
-		<execute action="Dockbar#click" locator1="//div[@title='${portletName}']/p/a" value1="Add" />
+		<execute function="#click" locator1="//div[@title='${portletName}']/p/a" value1="Add" />
 
 		<execute action="Home#assertElementPresent" locator-key1="PORTLET_1" />
 	</command>

@@ -4,7 +4,7 @@
 
 		<execute action="PGWiki#assertClick" locator-key1="NAVIGATION_ALL_PAGES" value1="All Pages" />
 
-		<execute action="PGWikiAllpages#assertClick" locator1="link=${wikiPageTitle}" value1="${wikiPageTitle}" />
+		<execute function="#assertClick" locator1="link=${wikiPageTitle}" value1="${wikiPageTitle}" />
 
 		<execute action="PGWiki#assertClick" locator-key1="ADD_CHILD_PAGE" value1="Add Child Page" />
 

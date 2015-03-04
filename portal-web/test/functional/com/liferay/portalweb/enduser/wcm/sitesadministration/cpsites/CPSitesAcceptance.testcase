@@ -69,7 +69,7 @@
 			<var name="userEmailAddress" value="${userEmailAddress}" />
 		</execute>
 
-		<execute action="Home#open" locator1="/user/${userScreenName}/home" />
+		<execute function="#open" locator1="/user/${userScreenName}/home" />
 
 		<execute action="PGPersonalsiteMysites#assertTextEquals" locator-key1="MY_SITES_INFO_MESSAGE" value1="No sites were found." />
 		<execute action="PGPersonalsiteMysites#assertClick" locator-key1="MY_SITES_AVAILABLE_SITES" value1="Available Sites" />

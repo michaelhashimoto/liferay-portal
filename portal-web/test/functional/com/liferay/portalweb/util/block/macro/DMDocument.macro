@@ -219,7 +219,7 @@
 
 		<execute action="CPDocumentsandmediaMovedocument#selectWindow" locator-key1="FOLDER_WINDOW_ID" />
 		<execute action="CPDocumentsandmediaMovedocument#assertClick" locator-key1="FOLDER_WINDOW_FOLDER1_CHOOSE_BUTTON" value1="Choose" />
-		<execute action="CPDocumentsandmediaMovedocument#selectWindow" locator1="null" />
+		<execute function="#selectWindow" locator1="null" />
 
 		<execute action="CPDocumentsandmediaMovedocument#assertTextEquals" locator-key1="PARENT_FOLDER" value1="${dmFolderName}" />
 		<execute action="CPDocumentsandmediaMovedocument#assertClick" locator-key1="MOVE_BUTTON" value1="Move" />

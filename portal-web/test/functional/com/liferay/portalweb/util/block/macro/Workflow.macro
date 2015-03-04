@@ -266,7 +266,7 @@
 		<execute action="CPMysubmissionsCompleted#assertTextEquals" locator-key1="COMPLETED_TABLE_STATUS" value1="${workflowTask}" />
 		<execute action="CPMysubmissionsCompleted#assertElementPresent" locator-key1="COMPLETED_TABLE_LAST_ACTIVITY_DATE" />
 		<execute action="CPMysubmissionsCompleted#assertElementPresent" locator-key1="COMPLETED_TABLE_END_DATE" />
-		<execute action="CPMysubmissionsCompleted#assertElementNotPresent" locator1="//div[@id='_158_workflowInstancesSearchContainer']//tr[contains(.,'${key_workflowAssetTitle}')]/td[7]/span/a[contains(@id,'menu_withdraw-submission')]/span" />
+		<execute function="#assertElementNotPresent" locator1="//div[@id='_158_workflowInstancesSearchContainer']//tr[contains(.,'${key_workflowAssetTitle}')]/td[7]/span/a[contains(@id,'menu_withdraw-submission')]/span" />
 		<execute action="CPMysubmissionsCompleted#assertTextNotPresent" value1="Withdraw Submission" />
 	</command>
 
