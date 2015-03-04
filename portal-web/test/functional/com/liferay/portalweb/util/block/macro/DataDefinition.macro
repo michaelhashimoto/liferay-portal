@@ -1,6 +1,6 @@
 <definition>
 	<command name="addBooleanCmdCP">
-		<execute action="CPDynamicdatalistsDatadefinitionsAdd#dragAndDrop" locator1="FIELDS_BOOLEAN" locator2="FORM_BUILDER" value1="Boolean" />
+		<execute function="#dragAndDrop" locator1="CPDynamicdatalistsDatadefinitionsAdd#FIELDS_BOOLEAN" locator2="CPDynamicdatalistsDatadefinitionsAdd#FORM_BUILDER" value1="Boolean" />
 		<execute action="CPDynamicdatalistsDatadefinitionsAdd#doubleClick" locator1="FORM_BOOLEAN_FIELD_1" />
 		<execute action="CPDynamicdatalistsDatadefinitionsAdd#doubleClick" locator1="SETTINGS_NAME" />
 		<execute action="CPDynamicdatalistsDatadefinitionsAdd#type" locator1="SETTINGS_CELL_EDITOR_FIELD" value1="${booleanNameLabel}" />
@@ -31,7 +31,7 @@
 	</command>
 
 	<command name="addDateCmdCP">
-		<execute action="CPDynamicdatalistsDatadefinitionsAdd#dragAndDrop" locator1="FIELDS_DATE" locator2="FORM_BUILDER" value1="Date" />
+		<execute function="#dragAndDrop" locator1="CPDynamicdatalistsDatadefinitionsAdd#FIELDS_DATE" locator2="CPDynamicdatalistsDatadefinitionsAdd#FORM_BUILDER" value1="Date" />
 		<execute action="CPDynamicdatalistsDatadefinitionsAdd#doubleClick" locator1="FORM_DATE_FIELD_1" />
 		<execute action="CPDynamicdatalistsDatadefinitionsAdd#doubleClick" locator1="SETTINGS_NAME" />
 		<execute action="CPDynamicdatalistsDatadefinitionsAdd#type" locator1="SETTINGS_CELL_EDITOR_FIELD" value1="${dateNameLabel}" />
@@ -42,7 +42,7 @@
 	</command>
 
 	<command name="addDecimalCmdCP">
-		<execute action="CPDynamicdatalistsDatadefinitionsAdd#dragAndDrop" locator1="FIELDS_DECIMAL" locator2="FORM_BUILDER" value1="Decimal" />
+		<execute function="#dragAndDrop" locator1="CPDynamicdatalistsDatadefinitionsAdd#FIELDS_DECIMAL" locator2="CPDynamicdatalistsDatadefinitionsAdd#FORM_BUILDER" value1="Decimal" />
 		<execute action="CPDynamicdatalistsDatadefinitionsAdd#doubleClick" locator1="FORM_DECIMAL_FIELD_1" />
 		<execute action="CPDynamicdatalistsDatadefinitionsAdd#doubleClick" locator1="SETTINGS_NAME" />
 		<execute action="CPDynamicdatalistsDatadefinitionsAdd#type" locator1="SETTINGS_CELL_EDITOR_FIELD" value1="${decimalNameLabel}" />
@@ -53,7 +53,7 @@
 	</command>
 
 	<command name="addDocumentsAndMediaCmdCP">
-		<execute action="CPDynamicdatalistsDatadefinitionsAdd#dragAndDrop" locator1="FIELDS_DOCUMENTS_AND_MEDIA" locator2="FORM_BUILDER" value1="Documents and Media" />
+		<execute function="#dragAndDrop" locator1="CPDynamicdatalistsDatadefinitionsAdd#FIELDS_DOCUMENTS_AND_MEDIA" locator2="CPDynamicdatalistsDatadefinitionsAdd#FORM_BUILDER" value1="Documents and Media" />
 		<execute action="CPDynamicdatalistsDatadefinitionsAdd#doubleClick" locator1="FORM_DOCUMENTS_AND_MEDIA_FIELD_1" />
 		<execute action="CPDynamicdatalistsDatadefinitionsAdd#doubleClick" locator1="SETTINGS_NAME" />
 		<execute action="CPDynamicdatalistsDatadefinitionsAdd#type" locator1="SETTINGS_CELL_EDITOR_FIELD" value1="${documentsAndMediaNameLabel}" />
@@ -64,7 +64,7 @@
 	</command>
 
 	<command name="addFileUploadCmdCP">
-		<execute action="CPDynamicdatalistsDatadefinitionsAdd#dragAndDrop" locator1="FIELDS_FILE_UPLOAD" locator2="FORM_BUILDER" value1="File Upload" />
+		<execute function="#dragAndDrop" locator1="CPDynamicdatalistsDatadefinitionsAdd#FIELDS_FILE_UPLOAD" locator2="CPDynamicdatalistsDatadefinitionsAdd#FORM_BUILDER" value1="File Upload" />
 		<execute action="CPDynamicdatalistsDatadefinitionsAdd#doubleClick" locator1="FORM_FILE_UPLOAD_FIELD_1" />
 		<execute action="CPDynamicdatalistsDatadefinitionsAdd#doubleClick" locator1="SETTINGS_NAME" />
 		<execute action="CPDynamicdatalistsDatadefinitionsAdd#type" locator1="SETTINGS_CELL_EDITOR_FIELD" value1="${fileUploadNameLabel}" />
@@ -75,7 +75,7 @@
 	</command>
 
 	<command name="addIntegerCmdCP">
-		<execute action="CPDynamicdatalistsDatadefinitionsAdd#dragAndDrop" locator1="FIELDS_INTEGER" locator2="FORM_BUILDER" value1="Ingeger" />
+		<execute function="#dragAndDrop" locator1="CPDynamicdatalistsDatadefinitionsAdd#FIELDS_INTEGER" locator2="CPDynamicdatalistsDatadefinitionsAdd#FORM_BUILDER" value1="Ingeger" />
 		<execute action="CPDynamicdatalistsDatadefinitionsAdd#doubleClick" locator1="FORM_INTEGER_FIELD_1" />
 		<execute action="CPDynamicdatalistsDatadefinitionsAdd#doubleClick" locator1="SETTINGS_NAME" />
 		<execute action="CPDynamicdatalistsDatadefinitionsAdd#type" locator1="SETTINGS_CELL_EDITOR_FIELD" value1="${integerNameLabel}" />
@@ -86,7 +86,7 @@
 	</command>
 
 	<command name="addNumberCmdCP">
-		<execute action="CPDynamicdatalistsDatadefinitionsAdd#dragAndDrop" locator1="FIELDS_NUMBER" locator2="FORM_BUILDER" value1="Number" />
+		<execute function="#dragAndDrop" locator1="CPDynamicdatalistsDatadefinitionsAdd#FIELDS_NUMBER" locator2="CPDynamicdatalistsDatadefinitionsAdd#FORM_BUILDER" value1="Number" />
 		<execute action="CPDynamicdatalistsDatadefinitionsAdd#doubleClick" locator1="FORM_NUMBER_FIELD_1" />
 		<execute action="CPDynamicdatalistsDatadefinitionsAdd#doubleClick" locator1="SETTINGS_NAME" />
 		<execute action="CPDynamicdatalistsDatadefinitionsAdd#type" locator1="SETTINGS_CELL_EDITOR_FIELD" value1="${numberNameLabel}" />
@@ -97,7 +97,7 @@
 	</command>
 
 	<command name="addRadioCmdCP">
-		<execute action="CPDynamicdatalistsDatadefinitionsAdd#dragAndDrop" locator1="FIELDS_RADIO" locator2="FORM_BUILDER" value1="Radio" />
+		<execute function="#dragAndDrop" locator1="CPDynamicdatalistsDatadefinitionsAdd#FIELDS_RADIO" locator2="CPDynamicdatalistsDatadefinitionsAdd#FORM_BUILDER" value1="Radio" />
 		<execute action="CPDynamicdatalistsDatadefinitionsAdd#doubleClick" locator1="FORM_RADIO_FIELD_1" />
 		<execute action="CPDynamicdatalistsDatadefinitionsAdd#doubleClick" locator1="SETTINGS_NAME" />
 		<execute action="CPDynamicdatalistsDatadefinitionsAdd#type" locator1="SETTINGS_CELL_EDITOR_FIELD" value1="${radioNameLabel}" />
@@ -108,7 +108,7 @@
 	</command>
 
 	<command name="addSelectCmdCP">
-		<execute action="CPDynamicdatalistsDatadefinitionsAdd#dragAndDrop" locator1="FIELDS_SELECT" locator2="FORM_BUILDER" value1="Select" />
+		<execute function="#dragAndDrop" locator1="CPDynamicdatalistsDatadefinitionsAdd#FIELDS_SELECT" locator2="CPDynamicdatalistsDatadefinitionsAdd#FORM_BUILDER" value1="Select" />
 		<execute action="CPDynamicdatalistsDatadefinitionsAdd#doubleClick" locator1="FORM_SELECT_FIELD_1" />
 		<execute action="CPDynamicdatalistsDatadefinitionsAdd#doubleClick" locator1="SETTINGS_NAME" />
 		<execute action="CPDynamicdatalistsDatadefinitionsAdd#type" locator1="SETTINGS_CELL_EDITOR_FIELD" value1="${selectNameLabel}" />
@@ -119,7 +119,7 @@
 	</command>
 
 	<command name="addTextBoxCmdCP">
-		<execute action="CPDynamicdatalistsDatadefinitionsAdd#dragAndDrop" locator1="FIELDS_TEXT_BOX" locator2="FORM_BUILDER" value1="Text Box" />
+		<execute function="#dragAndDrop" locator1="CPDynamicdatalistsDatadefinitionsAdd#FIELDS_TEXT_BOX" locator2="CPDynamicdatalistsDatadefinitionsAdd#FORM_BUILDER" value1="Text Box" />
 		<execute action="CPDynamicdatalistsDatadefinitionsAdd#doubleClick" locator1="FORM_TEXT_BOX_FIELD_1" />
 		<execute action="CPDynamicdatalistsDatadefinitionsAdd#doubleClick" locator1="SETTINGS_NAME" />
 		<execute action="CPDynamicdatalistsDatadefinitionsAdd#type" locator1="SETTINGS_CELL_EDITOR_FIELD" value1="${textBoxNameLabel}" />
@@ -130,7 +130,7 @@
 	</command>
 
 	<command name="addTextCmdCP">
-		<execute action="CPDynamicdatalistsDatadefinitionsAdd#dragAndDrop" locator1="FIELDS_TEXT" locator2="FORM_BUILDER" value1="Text" />
+		<execute function="#dragAndDrop" locator1="CPDynamicdatalistsDatadefinitionsAdd#FIELDS_TEXT" locator2="CPDynamicdatalistsDatadefinitionsAdd#FORM_BUILDER" value1="Text" />
 		<execute action="CPDynamicdatalistsDatadefinitionsAdd#doubleClick" locator1="FORM_TEXT_FIELD_1" />
 		<execute action="CPDynamicdatalistsDatadefinitionsAdd#doubleClick" locator1="SETTINGS_NAME" />
 		<execute action="CPDynamicdatalistsDatadefinitionsAdd#type" locator1="SETTINGS_CELL_EDITOR_FIELD" value1="${textNameLabel}" />
