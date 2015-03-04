@@ -185,6 +185,6 @@
 		<execute function="#assertTextEquals" locator1="SOMembers#MEMBERS_LINK_ALL" value1="View all 1 users." />
 		<execute function="#type" locator1="SOMembers#MEMBERS_LIST_SEARCH" value1="${userEmailAddress}" />
 		<execute function="#assertTextEquals" locator1="SOMembers#MEMBERS_LIST_EMPTY" value1="There are no results." />
-		<execute action="SOMembers#assertTextNotPresent" value1="${userLastName}, ${userFirstName}" />
+		<execute function="#assertTextNotPresent" value1="${userLastName}, ${userFirstName}" />
 	</command>
 </definition>

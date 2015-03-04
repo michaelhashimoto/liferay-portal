@@ -40,7 +40,7 @@
 
 		<execute function="#selectFrame" locator1="PGDocumentlibrarydisplayAdddocument#SELECT_DOCUMENT_TYPE_IFRAME" />
 		<execute function="#assertClick" locator1="PGDocumentlibrarydisplayAdddocument#SELECT_DOCUMENT_TYPE_BASIC_DOCUMENT" value1="Basic Document" />
-		<execute action="PGDocumentlibrarydisplayAdddocument#selectFrame" />
+		<execute function="#selectFrame" />
 		<execute function="#uploadCommonFile" locator1="PGDocumentlibrarydisplayAdddocument#DOCUMENT_FILE_FIELD" value1="${dmdDocumentFile}" />
 		<execute function="#type" locator1="PGDocumentlibrarydisplayAdddocument#DOCUMENT_TITLE_FIELD" value1="${dmdDocumentTitle}" />
 		<execute function="#assertClick" locator1="PGDocumentlibrarydisplayAdddocument#PUBLISH_BUTTON" value1="Publish" />
@@ -64,7 +64,7 @@
 
 		<execute function="#selectFrame" locator1="PGMediagallerySelectmediatype#SELECT_MEDIA_TYPE_IFRAME" />
 		<execute function="#assertClick" locator1="PGMediagallerySelectmediatype#MEDIA_TABLE_BASIC_DOCUMENT" value1="Basic Document" />
-		<execute action="PGMediagallerySelectmediatype#selectFrame" />
+		<execute function="#selectFrame" />
 
 		<execute function="#uploadCommonFile" locator1="PGMediagalleryAddmedia#FILE" value1="${mgDocumentFile}" />
 		<execute function="#type" locator1="PGMediagalleryAddmedia#TITLE_FIELD" value1="${mgDocumentTitle}" />

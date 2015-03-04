@@ -27,7 +27,7 @@
 		<execute function="#assertClickNoError" locator1="PGMessageboards#CATEGORY_MENULIST_DELETE" value1="Delete" />
 		<execute function="#confirm" locator1="PGMessageboards#CONFIRMATION" value1="Are you sure you want to delete this?" />
 		<execute function="#assertTextEquals" locator1="PGMessageboards#SUCCESS_MESSAGE" value1="Your request completed successfully." />
-		<execute action="PGMessageboards#assertTextNotPresent" value1="${categoryName}" />
+		<execute function="#assertTextNotPresent" value1="${categoryName}" />
 	</command>
 
 	<command name="editPG">

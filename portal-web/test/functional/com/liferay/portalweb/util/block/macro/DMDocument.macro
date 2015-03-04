@@ -29,7 +29,7 @@
 				<execute function="#assertTextEquals" locator1="CPDocumentsandmedia#DOCUMENT_MENULIST_DOWNLOAD" value1="Download (${dmDocumentSize})" />
 			</then>
 			<else>
-				<execute action="CPDocumentsandmedia#assertTextPresent" value1="${dmDocumentTitle}" />
+				<execute function="#assertTextPresent" value1="${dmDocumentTitle}" />
 			</else>
 		</if>
 	</command>
@@ -83,7 +83,7 @@
 
 		<execute function="#selectFrame" locator1="PGDocumentlibrarydisplayAdddocument#SELECT_DOCUMENT_TYPE_IFRAME" />
 		<execute function="#assertClick" locator1="PGDocumentlibrarydisplayAdddocument#SELECT_DOCUMENT_TYPE_BASIC_DOCUMENT" value1="Basic Document" />
-		<execute action="PGDocumentlibrarydisplayAdddocument#selectFrame" />
+		<execute function="#selectFrame" />
 		<execute function="#uploadCommonFile" locator1="PGDocumentlibrarydisplayAdddocument#DOCUMENT_FILE_FIELD" value1="${dmdDocumentFile}" />
 		<execute function="#type" locator1="PGDocumentlibrarydisplayAdddocument#DOCUMENT_TITLE_FIELD" value1="${dmdDocumentTitle}" />
 		<execute function="#assertClick" locator1="PGDocumentlibrarydisplayAdddocument#PUBLISH_BUTTON" value1="Publish" />
@@ -159,7 +159,7 @@
 		<execute function="#assertClickNoError" locator1="PGDocumentlibrarydisplay#DOCUMENT_MENULIST_DELETE" value1="Delete" />
 		<execute function="#confirm" locator1="PGDocumentlibrarydisplay#CONFIRMATION" value1="Are you sure you want to delete this?" />
 		<execute function="#assertTextEquals" locator1="PGDocumentlibrarydisplay#SUCCESS_MESSAGE" value1="Your request completed successfully." />
-		<execute action="PGDocumentlibrarydisplay#assertTextNotPresent" value1="${dmdDocumentTitle}" />
+		<execute function="#assertTextNotPresent" value1="${dmdDocumentTitle}" />
 	</command>
 
 	<command name="downloadCP">

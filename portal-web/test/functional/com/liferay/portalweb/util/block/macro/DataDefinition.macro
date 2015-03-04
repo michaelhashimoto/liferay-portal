@@ -27,7 +27,7 @@
 
 		<execute function="#assertTextEquals" locator1="CPDynamicdatalistsDatadefinitions#SUCCESS_MESSAGE" value1="Your request completed successfully." />
 
-		<execute action="CPDynamicdatalists#selectFrameTop" />
+		<execute function="#selectFrameTop" />
 	</command>
 
 	<command name="addDateCmdCP">
@@ -152,9 +152,9 @@
 		<execute function="#assertTextEquals" locator1="CPDynamicdatalistsDatadefinitions#SUCCESS_MESSAGE" value1="Your request completed successfully." />
 		<execute function="#type" locator1="CPDynamicdatalistsDatadefinitions#BASIC_SEARCH_FIELD" value1="${dataDefinitionName}" />
 		<execute function="#assertClick" locator1="CPDynamicdatalistsDatadefinitions#BASIC_SEARCH_BUTTON" value1="Search" />
-		<execute action="CPDynamicdatalistsDatadefinitions#assertTextNotPresent" value1="${dataDefinitionName}" />
+		<execute function="#assertTextNotPresent" value1="${dataDefinitionName}" />
 
-		<execute action="CPDynamicdatalists#selectFrameTop" />
+		<execute function="#selectFrameTop" />
 	</command>
 
 	<command name="editCP">
@@ -172,7 +172,7 @@
 
 		<execute function="#assertTextEquals" locator1="CPDynamicdatalistsDatadefinitions#SUCCESS_MESSAGE" value1="Your request completed successfully." />
 
-		<execute action="CPDynamicdatalists#selectFrameTop" />
+		<execute function="#selectFrameTop" />
 	</command>
 
 	<command name="tearDownCP">
@@ -211,6 +211,6 @@
 		<execute function="#assertTextEquals" locator1="CPDynamicdatalistsDatadefinitionsEdit#DESCRIPTION_FIELD" value1="${dataDefinitionDescription}" />
 		<execute function="#assertTextEquals" locator1="CPDynamicdatalistsDatadefinitionsEdit#FORM_FIELD_1" value1="Text" />
 
-		<execute action="CPDynamicdatalists#selectFrameTop" />
+		<execute function="#selectFrameTop" />
 	</command>
 </definition>

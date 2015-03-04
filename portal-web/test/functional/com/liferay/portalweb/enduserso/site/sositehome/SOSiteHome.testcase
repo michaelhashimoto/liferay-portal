@@ -1079,7 +1079,7 @@
 		<execute function="#assertTextEquals" locator1="SOUserBar#NOTIFICATION_MENU_COUNT" value1="0" />
 		<execute function="#mouseOver" locator1="SOUserBar#NOTIFICATION" />
 		<execute function="#assertTextEquals" locator1="SOUserBar#NOTIFICATION_MENU_EMPTY" value1="You have no new notifications." />
-		<execute action="SOUserBar#assertTextNotPresent" value1="${entryAuthor} sent a new announcement." />
+		<execute function="#assertTextNotPresent" value1="${entryAuthor} sent a new announcement." />
 		<execute function="#assertElementNotPresent" locator1="SOUserBar#NOTIFICATION_MENU_ENTRY_SUBCONTENT" value1="${entryTitle}" />
 	</command>
 </definition>

@@ -421,7 +421,7 @@
 		</execute>
 
 		<execute function="#assertTextEquals" locator1="SOProfile#CONTACTS_INFO_MESSAGE" value1="${adminName} has no contacts." />
-		<execute action="SOProfile#assertTextNotPresent" value1="${userName}" />
+		<execute function="#assertTextNotPresent" value1="${userName}" />
 
 		<execute function="#click" locator1="SOUserBar#DASHBOARD" />
 
@@ -462,7 +462,7 @@
 		</execute>
 
 		<execute function="#assertTextEquals" locator1="SOProfile#CONTACTS_INFO_MESSAGE" value1="${adminName} has no contacts." />
-		<execute action="SOProfile#assertTextNotPresent" value1="${userName}" />
+		<execute function="#assertTextNotPresent" value1="${userName}" />
 
 		<execute function="#click" locator1="SOUserBar#DASHBOARD" />
 
@@ -481,7 +481,7 @@
 		<execute function="#assertTextEquals" locator1="SOContactscenter#CONTACTS_LIST_NAME" value1="${userListName}" />
 		<execute function="#assertTextEquals" locator1="SOContactscenter#CONTACTS_LIST_EMAIL" value1="${userEmailAddress}" />
 		<execute function="#assertTextEquals" locator1="SOContactscenter#CONNECTIONS_LINK" value1="You have 0 connections." />
-		<execute action="SOContactscenter#pause" value1="1000" />
+		<execute function="#pause" value1="1000" />
 		<execute function="#click" locator1="SOContactscenter#CONTACTS_LIST_NAME" value1="${userListName}" />
 		<execute function="#assertTextEquals" locator1="SOContactscenter#USER_DETAILS_NAME" value1="${userName}" />
 		<execute function="#assertTextEquals" locator1="SOContactscenter#USER_DETAILS_EMAIL" value1="${userEmailAddress}" />
@@ -519,7 +519,7 @@
 		</execute>
 
 		<execute function="#assertTextEquals" locator1="SOProfile#CONTACTS_NAME" value1="${userName}" />
-		<execute action="SOProfile#assertTextNotPresent" value1="${adminName} has no contacts." />
+		<execute function="#assertTextNotPresent" value1="${adminName} has no contacts." />
 
 		<execute function="#click" locator1="SOUserBar#DASHBOARD" />
 
@@ -530,7 +530,7 @@
 		<execute function="#assertTextEquals" locator1="SOContactscenter#CONTACTS_LIST_NAME" value1="${userListName}" />
 		<execute function="#assertTextEquals" locator1="SOContactscenter#CONTACTS_LIST_EMAIL" value1="${userEmailAddress}" />
 		<execute function="#assertTextEquals" locator1="SOContactscenter#CONNECTIONS_LINK" value1="You have 1 connections." />
-		<execute action="SOContactscenter#pause" value1="1000" />
+		<execute function="#pause" value1="1000" />
 		<execute function="#click" locator1="SOContactscenter#CONTACTS_LIST_NAME" value1="${userListName}" />
 		<execute function="#assertTextEquals" locator1="SOContactscenter#USER_DETAILS_NAME" value1="${userName}" />
 		<execute function="#assertTextEquals" locator1="SOContactscenter#USER_DETAILS_EMAIL" value1="${userEmailAddress}" />

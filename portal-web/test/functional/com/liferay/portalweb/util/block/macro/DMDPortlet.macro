@@ -19,6 +19,6 @@
 		<execute function="#assertChecked" locator1="PGDocumentlibrarydisplayConfiguration#SETUP_DISPLAY_SETTINGS_SHOW_NAVIGATION_LINKS_CHECKBOX" />
 		<execute function="#assertChecked" locator1="PGDocumentlibrarydisplayConfiguration#SETUP_DISPLAY_SETTINGS_SHOW_SEARCH_CHECKBOX" />
 
-		<execute action="PGDocumentlibrarydisplay#selectFrame" />
+		<execute function="#selectFrame" />
 	</command>
 </definition>

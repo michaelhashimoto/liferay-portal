@@ -570,7 +570,7 @@
 		<execute function="#click" locator1="SOUserBar#DASHBOARD" />
 
 		<execute function="#assertTextEquals" locator1="SODashboard#WHATS_HAPPENING_ENTRY_CONTENT" value1="${microblogsEntryContent}" />
-		<execute action="SODashboard#assertTextNotPresent" value1="Microblogs Post Comment" />
+		<execute function="#assertTextNotPresent" value1="Microblogs Post Comment" />
 		<execute function="#click" locator1="SODashboard#NAVIGATION_MICROBLOGS" />
 
 		<execute macro="SOMicroblogs#viewMicroblogsEntryAuthor">

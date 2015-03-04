@@ -20,7 +20,7 @@
 		<execute function="#assertClickNoError" locator1="PGBookmarks#FOLDER_MENULIST_DELETE" value1="Delete" />
 		<execute function="#confirm" locator1="PGBookmarks#CONFIRMATION" value1="Are you sure you want to delete this?" />
 		<execute function="#assertTextEquals" locator1="PGBookmarks#SUCCESS_MESSAGE" value1="Your request completed successfully." />
-		<execute action="PGBookmarks#assertTextNotPresent" value1="${bookmarkFolderName}" />
+		<execute function="#assertTextNotPresent" value1="${bookmarkFolderName}" />
 	</command>
 
 	<command name="tearDownCP">

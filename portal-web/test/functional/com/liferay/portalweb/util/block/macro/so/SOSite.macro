@@ -258,13 +258,13 @@
 		<execute function="#type" locator1="SOUserBar#GO_TO_SEARCH_FIELD" value1="${siteName}" />
 		<execute function="#assertTextEquals" locator1="SOUserBar#GO_TO_SITE_EMPTY" value1="There are no results." />
 		<execute function="#assertElementNotPresent" locator1="SOUserBar#GO_TO_SITE_NAME_LINK" />
-		<execute action="SOUserBar#assertTextNotPresent" value1="${siteName}" />
+		<execute function="#assertTextNotPresent" value1="${siteName}" />
 		<execute function="#click" locator1="SOUserBar#GO_TO_SITES_DIRECTORY_BUTTON" />
 
 		<execute function="#select" locator1="SOUserBarSitesDirectory#SITE_CATEGORY_SELECT" value1="My Sites" />
 		<execute function="#type" locator1="SOUserBarSitesDirectory#SITE_SEARCH_FIELD" value1="${siteName}" />
 		<execute function="#assertTextEquals" locator1="SOUserBarSitesDirectory#EMPTY_INFO_MESSAGE" value1="There are no results." />
-		<execute action="SOUserBarSitesDirectory#assertTextNotPresent" value1="${siteName}" />
+		<execute function="#assertTextNotPresent" value1="${siteName}" />
 		<execute function="#select" locator1="SOUserBarSitesDirectory#SITE_CATEGORY_SELECT" value1="All Sites" />
 		<execute function="#type" locator1="SOUserBarSitesDirectory#SITE_SEARCH_FIELD" value1="${siteName}" />
 
@@ -279,7 +279,7 @@
 				<equals arg1="${siteType}" arg2="Private" />
 				<then>
 					<execute function="#assertTextEquals" locator1="SOUserBarSitesDirectory#EMPTY_INFO_MESSAGE" value1="There are no results." />
-					<execute action="SOUserBarSitesDirectory#assertTextNotPresent" value1="${siteName}" />
+					<execute function="#assertTextNotPresent" value1="${siteName}" />
 				</then>
 			</elseif>
 			<else>
@@ -335,7 +335,7 @@
 				<execute function="#assertTextEquals" locator1="SOMembers#MEMBERS_LINK_ALL" value1="View all 1 users." />
 				<execute function="#type" locator1="SOMembers#MEMBERS_LIST_SEARCH" value1="${userEmailAddress}" />
 				<execute function="#assertTextEquals" locator1="SOMembers#MEMBERS_LIST_EMPTY" value1="There are no results." />
-				<execute action="SOMembers#assertTextNotPresent" value1="${userListName}" />
+				<execute function="#assertTextNotPresent" value1="${userListName}" />
 			</then>
 		</if>
 	</command>

@@ -32,7 +32,7 @@
 		<execute function="#select" locator1="SOSiteHomeRssConfiguration#DISPLAY_SETTINGS_EXPANDED_ENTRIES_PER_FEED_SELECT" value1="${expandedEntriesPerFeed}" />
 		<execute function="#assertClick" locator1="SOSiteHomeRssConfiguration#SAVE_BUTTON" value1="Save" />
 		<execute function="#assertTextEquals" locator1="SOSiteHomeRssConfiguration#SUCCESS_MESSAGE" value1="You have successfully updated the setup." />
-		<execute action="SODashboardManageAnnouncementsEntry#selectFrameTop" />
+		<execute function="#selectFrameTop" />
 		<execute function="#click" locator1="SOSiteHomeEventsConfiguration#CLOSE_BUTTON" />
 	</command>
 

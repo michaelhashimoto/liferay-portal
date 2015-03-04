@@ -445,14 +445,14 @@
 
 		<execute function="#assertClick" locator1="SOActivities#NAVIGATION_CONNECTIONS" value1="Connections" />
 		<execute function="#assertTextEquals" locator1="SOActivities#NO_ACTIVITIES" value1="There are no activities." />
-		<execute action="SOActivities#assertTextNotPresent" value1="${microblogsEntryContent}" />
+		<execute function="#assertTextNotPresent" value1="${microblogsEntryContent}" />
 		<execute function="#assertClick" locator1="SOActivities#NAVIGATION_FOLLOWING" value1="Following" />
 		<execute function="#assertTextEquals" locator1="SOActivities#NO_ACTIVITIES" value1="There are no activities." />
-		<execute action="SOActivities#assertTextNotPresent" value1="${microblogsEntryContent}" />
+		<execute function="#assertTextNotPresent" value1="${microblogsEntryContent}" />
 
 		<execute function="#click" locator1="SODashboard#NAVIGATION_MICROBLOGS" />
 
-		<execute action="SOActivities#assertTextNotPresent" value1="${microblogsEntryContent}" />
+		<execute function="#assertTextNotPresent" value1="${microblogsEntryContent}" />
 	</command>
 
 	<command name="viewMicroblogsEntryNotViewableByEveryone">

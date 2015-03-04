@@ -128,7 +128,7 @@
 		<execute function="#assertClick" locator1="PGMessageboards#CATEGORY_TABLE_CATEGORY" value1="${categoryName}" />
 
 		<execute function="#assertTextEquals" locator1="PGMessageboards#INFO_MESSAGE" value1="There are no threads in this category." />
-		<execute action="PGMessageboards#assertTextNotPresent" value1="${threadSubject}" />
+		<execute function="#assertTextNotPresent" value1="${threadSubject}" />
 	</command>
 
 	<command name="EditMBCategoryThread" priority="5">

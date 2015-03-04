@@ -302,7 +302,7 @@
 				<execute macro="SOTasks#viewTaskDetails" />
 			</then>
 			<else>
-				<execute action="SODashboard#assertTextNotPresent" value1="${taskDescription}" />
+				<execute function="#assertTextNotPresent" value1="${taskDescription}" />
 			</else>
 		</if>
 

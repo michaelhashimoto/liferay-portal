@@ -142,7 +142,7 @@
 		<execute function="#assertClickNoError" locator1="CPSites#SITE_MENULIST_DELETE" value1="Delete" />
 		<execute function="#confirm" locator1="CPSites#CONFIRMATION" value1="Are you sure you want to delete this?" />
 		<execute function="#assertTextEquals" locator1="CPSites#INFO_MESSAGE" value1="No sites were found." />
-		<execute action="CPSites#assertTextNotPresent" value1="${siteName}" />
+		<execute function="#assertTextNotPresent" value1="${siteName}" />
 	</command>
 
 	<command name="removeMemberCP">

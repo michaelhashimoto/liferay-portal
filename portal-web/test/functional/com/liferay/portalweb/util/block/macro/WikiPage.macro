@@ -38,13 +38,13 @@
 
 	<command name="addFrontPageDraftPG">
 		<execute function="#assertTextEquals" locator1="PGWiki#ADD_FRONTPAGE" value1="This page is empty. Edit it to add some text." />
-		<execute action="PGWiki#assertTextNotPresent" value1="${wikiPageContent}" />
+		<execute function="#assertTextNotPresent" value1="${wikiPageContent}" />
 		<execute function="#assertClick" locator1="PGWiki#PAGE_ACTIONS_EDIT" value1="Edit" />
 
 		<execute function="#assertTextEquals" locator1="PGWikiAddpage#WORKFLOW_STATUS" value1="Status: Draft" />
 		<execute function="#selectFrame" locator1="PGWikiAddpage#BODY_FIELD" />
 		<execute function="#assertTextEquals" locator1="PGWikiAddpage#BODY_FIELD_TEXT" value1="${wikiPageContent}" />
-		<execute action="PGWikiAddpage#selectFrameTop" />
+		<execute function="#selectFrameTop" />
 		<execute function="#assertClick" locator1="PGWikiAddpage#PUBLISH_BUTTON" value1="Publish" />
 
 		<execute function="#assertTextEquals" locator1="PGWiki#SUCCESS_MESSAGE"  value1="Your request completed successfully." />
@@ -144,7 +144,7 @@
 		<execute function="#assertTextEquals" locator1="PGWikiAddpage#WORKFLOW_STATUS" value1="Status: Draft" />
 		<execute function="#selectFrame" locator1="PGWikiAddpage#BODY_FIELD" />
 		<execute function="#assertTextEquals" locator1="PGWikiAddpage#BODY_FIELD_TEXT" value1="${wikiPageContent}" />
-		<execute action="PGWikiAddpage#selectFrameTop" />
+		<execute function="#selectFrameTop" />
 	</command>
 
 	<command name="tearDownCP">
@@ -205,12 +205,12 @@
 	<command name="viewSaveAsDraftFrontPagePG">
 		<execute function="#assertTextEquals" locator1="PGWiki#ADD_FRONTPAGE" value1="This page is empty. Edit it to add some text." />
 		<execute function="#assertElementNotPresent" locator1="PGWiki#WIKI_PAGE_BODY" />
-		<execute action="PGWiki#assertTextNotPresent" value1="${wikiPageContent}" />
+		<execute function="#assertTextNotPresent" value1="${wikiPageContent}" />
 		<execute function="#assertClick" locator1="PGWiki#PAGE_ACTIONS_EDIT" value1="Edit" />
 
 		<execute function="#assertTextEquals" locator1="PGWikiAddpage#WORKFLOW_STATUS" value1="Status: Draft" />
 		<execute function="#selectFrame" locator1="PGWikiAddpage#BODY_FIELD" />
 		<execute function="#assertTextEquals" locator1="PGWikiAddpage#BODY_FIELD_TEXT" value1="${wikiPageContent}" />
-		<execute action="PGWikiAddpage#selectFrameTop" />
+		<execute function="#selectFrameTop" />
 	</command>
 </definition>

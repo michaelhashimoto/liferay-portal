@@ -165,7 +165,7 @@
 		<execute function="#assertTextEquals" locator1="SOContactscenter#CONTACTS_LIST_NAME" value1="${userListName}" />
 		<execute function="#assertTextEquals" locator1="SOContactscenter#CONTACTS_LIST_EMAIL" value1="${userEmailAddress}" />
 		<execute function="#assertTextEquals" locator1="SOContactscenter#CONNECTIONS_LINK" value1="You have 0 connections." />
-		<execute action="SOContactscenter#pause" value1="1000" />
+		<execute function="#pause" value1="1000" />
 		<execute function="#click" locator1="SOContactscenter#CONTACTS_LIST_NAME" value1="${userListName}" />
 		<execute function="#assertTextEquals" locator1="SOContactscenter#USER_DETAILS_NAME" value1="${userName}" />
 		<execute function="#assertTextEquals" locator1="SOContactscenter#USER_DETAILS_EMAIL" value1="${userEmailAddress}" />
@@ -207,7 +207,7 @@
 		<execute function="#assertTextEquals" locator1="SOContactscenter#CONTACTS_LIST_NAME" value1="${userListName}" />
 		<execute function="#assertTextEquals" locator1="SOContactscenter#CONTACTS_LIST_EMAIL" value1="${userEmailAddress}" />
 		<execute function="#assertTextEquals" locator1="SOContactscenter#CONNECTIONS_LINK" value1="You have 1 connections." />
-		<execute action="SOContactscenter#pause" value1="1000" />
+		<execute function="#pause" value1="1000" />
 		<execute function="#click" locator1="SOContactscenter#CONTACTS_LIST_NAME" value1="${userListName}" />
 		<execute function="#assertTextEquals" locator1="SOContactscenter#USER_DETAILS_NAME" value1="${userName}" />
 		<execute function="#assertTextEquals" locator1="SOContactscenter#USER_DETAILS_EMAIL" value1="${userEmailAddress}" />
@@ -256,7 +256,7 @@
 		<execute function="#assertTextEquals" locator1="SOContactscenter#CONTACTS_LIST_NAME" value1="${adminListName}" />
 		<execute function="#assertTextEquals" locator1="SOContactscenter#CONTACTS_LIST_EMAIL" value1="${adminEmailAddress}" />
 		<execute function="#assertTextEquals" locator1="SOContactscenter#FOLLOWING_LINK" value1="You are following 1 people." />
-		<execute action="SOContactscenter#pause" value1="1000" />
+		<execute function="#pause" value1="1000" />
 		<execute function="#click" locator1="SOContactscenter#CONTACTS_LIST_NAME" value1="${adminListName}" />
 		<execute function="#assertTextEquals" locator1="SOContactscenter#USER_DETAILS_NAME" value1="${adminName}" />
 		<execute function="#assertTextEquals" locator1="SOContactscenter#USER_DETAILS_EMAIL" value1="${adminEmailAddress}" />
@@ -277,7 +277,7 @@
 
 		<execute function="#click" locator1="SODashboard#NAVIGATION_CONTACTS_CENTER" />
 
-		<execute action="SOContactscenter#pause" value1="1000" />
+		<execute function="#pause" value1="1000" />
 		<execute function="#select" locator1="SOContactscenter#CONTACTS_LIST_FILTER" value1="All" />
 		<execute function="#type" locator1="SOContactscenter#CONTACTS_LIST_SEARCH" value1="${userFirstName}" />
 		<execute function="#assertTextEquals" locator1="SOContactscenter#CONTACTS_LIST_NAME" value1="${userListName}" />

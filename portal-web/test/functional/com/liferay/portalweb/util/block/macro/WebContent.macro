@@ -51,7 +51,7 @@
 		<execute function="#selectFrame" locator1="PGAssetpublisherAddnewwebcontent#WEB_CONTENT_IFRAME" />
 		<execute function="#assertClick" locator1="PGAssetpublisherAddnewwebcontent#PUBLISH_BUTTON" value1="Publish" />
 
-		<execute action="PGAssetpublisher#selectFrame" />
+		<execute function="#selectFrame" />
 		<execute function="#assertTextEquals" locator1="PGAssetpublisher#ASSET_TITLE_1" value1="${webContentTitle}" />
 		<execute function="#assertTextEquals" locator1="PGAssetpublisher#ASSET_SUMMARY_1" value1="${webContentContent}" />
 	</command>
@@ -76,8 +76,8 @@
 		<execute function="#selectFrame" locator1="PGAssetpublisherAddnewwebcontent#WEB_CONTENT_IFRAME" />
 		<execute function="#assertClick" locator1="PGAssetpublisherAddnewwebcontent#SUBMIT_FOR_PUBLICATION_BUTTON" value1="Submit for Publication" />
 
-		<execute action="PGAssetpublisher#selectFrame" />
-		<execute action="PGAssetpublisher#assertTextNotPresent" value1="${webContentTitle}" />
+		<execute function="#selectFrame" />
+		<execute function="#assertTextNotPresent" value1="${webContentTitle}" />
 		<execute function="#assertTextEquals" locator1="PGAssetpublisher#INFO_MESSAGE" value1="There are no results." />
 	</command>
 
@@ -158,7 +158,7 @@
 	<command name="viewPGWithWorkflowViaAP">
 		<var name="key_webContentTitle" value="${webContentTitle}" />
 
-		<execute action="PGAssetpublisher#assertTextNotPresent" value1="${webContentTitle}" />
+		<execute function="#assertTextNotPresent" value1="${webContentTitle}" />
 	</command>
 
 	<command name="viewPGWithWorkflowViaWCD">
@@ -169,6 +169,6 @@
 		<execute function="#assertTextEquals" locator1="PGWebcontentdisplayEditwebcontent#TITLE_FIELD" value1="${webContentTitle}" />
 		<execute function="#selectFrame" locator1="PGWebcontentdisplayEditwebcontent#CONTENT_FIELD" />
 		<execute function="#assertTextEquals" locator1="//body" value1="${webContentContent}" />
-		<execute action="PGWebcontentdisplayEditwebcontent#selectFrameTop" />
+		<execute function="#selectFrameTop" />
 	</command>
 </definition>

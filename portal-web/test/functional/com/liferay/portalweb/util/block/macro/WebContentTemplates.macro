@@ -18,7 +18,7 @@
 				<execute function="#assertTextPresent" locator1="CPWebcontentTemplatesAddtemplateStructure#STRUCTURE_TABLE_DESCRIPTION_1" value1="${structureDescription}" />
 				<execute function="#assertClick" locator1="CPWebcontentTemplatesAddtemplateStructure#STRUCTURE_TABLE_NAME_1" value1="${structureName}" />
 
-				<execute action="CPWebcontentTemplatesAddtemplate#selectFrame" />
+				<execute function="#selectFrame" />
 				<execute function="#assertTextEquals" locator1="CPWebcontentTemplatesAddtemplate#STRUCTURE_NAME" value1="${structureName}" />
 			</then>
 		</if>
@@ -29,7 +29,7 @@
 		<execute function="#type" locator1="CPWebcontentTemplatesAddtemplateEditor#EDITOR_FIELD" value1="$text.getData()" />
 		<execute function="#assertClick" locator1="CPWebcontentTemplatesAddtemplateEditor#UPDATE_BUTTON" value1="Update" />
 
-		<execute action="CPWebcontentTemplatesAddtemplate#selectFrame" />
+		<execute function="#selectFrame" />
 
 		<execute function="#assertClick" locator1="CPWebcontentTemplatesAddtemplate#SAVE_BUTTON" value1="Save" />
 

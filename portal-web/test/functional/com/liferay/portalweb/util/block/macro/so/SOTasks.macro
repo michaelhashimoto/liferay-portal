@@ -135,7 +135,7 @@
 
 		<execute function="#mouseOver" locator1="SOTasks#TASK_PROGRESS_BAR" />
 		<execute function="#click" locator1="SOTasks#TASK_PROGRESS_BAR_PERCENT_CLICK" />
-		<execute action="SOTasks#pause" value1="1000" />
+		<execute function="#pause" value1="1000" />
 
 		<if>
 			<equals arg1="${percentCompletion}" arg2="100" />
@@ -251,7 +251,7 @@
 			</then>
 		</if>
 
-		<execute action="SOTasks#assertTextNotPresent" value1="${taskDescription}" />
+		<execute function="#assertTextNotPresent" value1="${taskDescription}" />
 
 		<execute function="#click" locator1="SOTasks#I_HAVE_CREATED_LINK" />
 		<execute function="#check" locator1="SOTasks#SHOW_COMPLETED_TASKS_CHECKBOX" />
@@ -263,7 +263,7 @@
 			</then>
 		</if>
 
-		<execute action="SOTasks#assertTextNotPresent" value1="${taskDescription}" />
+		<execute function="#assertTextNotPresent" value1="${taskDescription}" />
 	</command>
 
 	<command name="editTask">
@@ -360,7 +360,7 @@
 		<execute function="#assertTextEquals" locator1="SOTasksTask#TASK_REPORTER" value1="Created by ${taskReporter}" />
 		<execute function="#assertTextEquals" locator1="SOTasksTask#TASK_PRIORITY_NORMAL" value1="Normal" />
 		<execute function="#assertTextEquals" locator1="SOTasksTask#TASK_STATUS" value1="Open" />
-		<execute action="SOTasksTask#assertTextNotPresent" value1="Resolved" />
+		<execute function="#assertTextNotPresent" value1="Resolved" />
 		<execute function="#click" locator1="SOTasksTask#TASK_RESOLVE_BUTTON" value1="Resolve" />
 		<execute function="#assertTextEquals" locator1="SOTasksTask#TASK_STATUS" value1="Resolved" />
 	</command>

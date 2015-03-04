@@ -732,7 +732,7 @@
 
 		<execute function="#assertClick" locator1="SOMicroblogs#TAB_TIMELINE" value1="Timeline" />
 
-		<execute action="SOMicroblogs#pause" value1="1000" />
+		<execute function="#pause" value1="1000" />
 
 		<var name="number" value="01" />
 

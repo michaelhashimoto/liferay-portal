@@ -9,7 +9,7 @@
 		<execute function="#assertClick" locator1="PGWebcontentlistConfiguration#SAVE_BUTTON" value1="Save" />
 		<execute function="#assertTextEquals" locator1="PGWebcontentlistConfiguration#SUCCESS_MESSAGE" value1="You have successfully updated the setup." />
 
-		<execute action="PGWebcontentlist#selectFrame" />
+		<execute function="#selectFrame" />
 
 		<execute function="#assertTextEquals" locator1="PGWebcontentlist#WEB_CONTENT_TABLE_TITLE_1" value1="${webContentTitle}" />
 	</command>

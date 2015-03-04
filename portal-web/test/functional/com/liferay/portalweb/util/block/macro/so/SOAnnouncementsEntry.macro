@@ -6,11 +6,11 @@
 		<execute function="#select" locator1="SODashboardAddAnnouncementsEntry#DISTRIBUTION_SCOPE_SELECT" value1="${distributionScope}" />
 		<execute function="#type" locator1="SODashboardAddAnnouncementsEntry#TITLE_FIELD" value1="${entryTitle}" />
 		<execute function="#type" locator1="SODashboardAddAnnouncementsEntry#CONTENT_FIELD" value1="${entryContent}" />
-		<execute action="SODashboardAddAnnouncementsEntry#selectFrameTop" />
+		<execute function="#selectFrameTop" />
 		<execute function="#selectFrame" locator1="SODashboardAddAnnouncementsEntry#ADD_ENTRY_IFRAME" />
 		<execute function="#type" locator1="SODashboardAddAnnouncementsEntry#URL_FIELD" value1="${entryURL}" />
 		<execute function="#assertClick" locator1="SODashboardAddAnnouncementsEntry#SAVE_BUTTON" value1="Save" />
-		<execute action="SODashboardAddAnnouncementsEntry#selectFrameTop" />
+		<execute function="#selectFrameTop" />
 
 		<execute function="#assertElementPresent" locator1="SODashboard#ANNOUNCEMENTS_ENTRY_TITLE" />
 	</command>
@@ -20,8 +20,8 @@
 		<execute function="#assertTextEquals" locator1="SODashboard#ANNOUNCEMENTS_ENTRY_CONTENT" value1="${entryContent}" />
 		<execute function="#clickNoError" locator1="SODashboard#ANNOUNCEMENTS_ENTRY_DELETE_LINK" />
 		<execute function="#confirm" locator1="SODashboard#CONFIRMATION" value1="Are you sure you want to delete the selected entry?" />
-		<execute action="SODashboard#assertTextNotPresent" value1="{entryTitle}" />
-		<execute action="SODashboard#assertTextNotPresent" value1="{entryContent}" />
+		<execute function="#assertTextNotPresent" value1="{entryTitle}" />
+		<execute function="#assertTextNotPresent" value1="{entryContent}" />
 	</command>
 
 	<command name="editPG">
@@ -32,11 +32,11 @@
 		<execute function="#selectFrame" locator1="SODashboardAddAnnouncementsEntry#ADD_ENTRY_IFRAME" />
 		<execute function="#type" locator1="SODashboardAddAnnouncementsEntry#TITLE_FIELD" value1="${entryTitleEdit}" />
 		<execute function="#type" locator1="SODashboardAddAnnouncementsEntry#CONTENT_FIELD" value1="${entryContentEdit}" />
-		<execute action="SODashboardAddAnnouncementsEntry#selectFrameTop" />
+		<execute function="#selectFrameTop" />
 		<execute function="#selectFrame" locator1="SODashboardAddAnnouncementsEntry#ADD_ENTRY_IFRAME" />
 		<execute function="#type" locator1="SODashboardAddAnnouncementsEntry#URL_FIELD" value1="${entryURL}" />
 		<execute function="#assertClick" locator1="SODashboardAddAnnouncementsEntry#SAVE_BUTTON" value1="Save" />
-		<execute action="SODashboardAddAnnouncementsEntry#selectFrameTop" />
+		<execute function="#selectFrameTop" />
 
 		<execute function="#assertElementPresent" locator1="SODashboard#ANNOUNCEMENTS_ENTRY_TITLE" />
 	</command>
@@ -140,6 +140,6 @@
 		<execute function="#assertElementPresent" locator1="SODashboardManageAnnouncementsEntry#ANNOUNCEMENTS_ENTRY_EXPIRATION_DATE" />
 		<execute function="#assertTextEquals" locator1="SODashboardManageAnnouncementsEntry#ANNOUNCEMENTS_ENTRY_EDIT_LINK" value1="Edit"  />
 		<execute function="#assertTextEquals" locator1="SODashboardManageAnnouncementsEntry#ANNOUNCEMENTS_ENTRY_DELETE_LINK" value1="Delete"  />
-		<execute action="SODashboardManageAnnouncementsEntry#selectFrameTop" />
+		<execute function="#selectFrameTop" />
 	</command>
 </definition>

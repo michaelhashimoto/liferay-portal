@@ -16,7 +16,7 @@
 		<execute function="#assertClick" locator1="CPWiki#WIKI_NODE_TABLE_ACTIONS_2" value1="Actions" />
 		<execute function="#assertClickNoError" locator1="CPWiki#WIKI_NODE_MENULIST_DELETE" value1="Delete" />
 		<execute function="#confirm" locator1="CPWiki#CONFIRMATION" value1="Are you sure you want to delete this?" />
-		<execute action="CPWiki#assertTextNotPresent" value1="${wikiNodeName}" />
+		<execute function="#assertTextNotPresent" value1="${wikiNodeName}" />
 	</command>
 
 	<command name="editCP">

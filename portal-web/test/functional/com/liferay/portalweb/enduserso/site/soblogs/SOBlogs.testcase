@@ -82,9 +82,9 @@
 
 		<execute function="#open" locator1="SOBlogs#OPEN_SITE_NAME_BLOGS_RSS_URL" />
 
-		<execute action="PGBlogs#assertTextPresent" value1="${siteName}" />
-		<execute action="PGBlogs#assertTextPresent" value1="${entryTitle}" />
-		<execute action="PGBlogs#assertTextPresent" value1="${entryContent}" />
+		<execute function="#assertTextPresent" value1="${siteName}" />
+		<execute function="#assertTextPresent" value1="${entryTitle}" />
+		<execute function="#assertTextPresent" value1="${entryContent}" />
 		<execute function="#click" locator1="PGBlogs#RSS_ENTRY_TITLE" value1="${entryTitle}" />
 
 		<execute function="#assertTextEquals" locator1="PGBlogsEntry#ENTRY_TITLE" value1="${entryTitle}" />

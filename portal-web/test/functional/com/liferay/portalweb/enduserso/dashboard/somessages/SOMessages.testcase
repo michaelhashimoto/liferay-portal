@@ -126,7 +126,7 @@
 		<execute function="#assertClick" locator1="SOMessagesMessage#DELETE_BUTTON" value1="Delete" />
 		<execute function="#assertTextEquals" locator1="SOMessagesMessage#SUCCESS_MESSAGE" value1="Your request completed successfully." />
 		<execute function="#assertTextEquals" locator1="SOMessagesMessage#INFO_MESSAGE" value1="No messages found." />
-		<execute action="SOMessagesMessage#assertTextNotPresent" value1="${messageSubject}" />
+		<execute function="#assertTextNotPresent" value1="${messageSubject}" />
 	</command>
 
 	<command name="DeleteMessageBySOUser2" priority="5">
@@ -226,13 +226,13 @@
 		<execute function="#click" locator1="SODashboard#NAVIGATION_MESSAGES" />
 
 		<execute function="#assertTextEquals" locator1="SOMessages#INFO_MESSAGE" value1="No messages found." />
-		<execute action="SOMessages#assertTextNotPresent" value1="Message Subject" />
-		<execute action="SOMessages#assertTextNotPresent" value1="Message Body" />
+		<execute function="#assertTextNotPresent" value1="Message Subject" />
+		<execute function="#assertTextNotPresent" value1="Message Body" />
 
 		<execute function="#click" locator1="SOUserBar#DASHBOARD" />
 		<execute function="#assertElementPresent" locator1="SOUserBar#NOTIFICATION" />
 		<execute function="#assertTextEquals" locator1="SOUserBar#NOTIFICATION_MENU_COUNT" value1="0" />
-		<execute action="SOMessages#assertTextNotPresent" value1="${senderName} sent you a message." />
+		<execute function="#assertTextNotPresent" value1="${senderName} sent you a message." />
 
 		<execute macro="SOUser#logoutPG" />
 
@@ -283,7 +283,7 @@
 		<execute function="#assertClick" locator1="SOMessagesMessage#DELETE_BUTTON" value1="Delete" />
 		<execute function="#assertTextEquals" locator1="SOMessagesMessage#SUCCESS_MESSAGE" value1="Your request completed successfully." />
 		<execute function="#assertTextEquals" locator1="SOMessagesMessage#INFO_MESSAGE" value1="No messages found." />
-		<execute action="SOMessagesMessage#assertTextNotPresent" value1="${messageSubject}" />
+		<execute function="#assertTextNotPresent" value1="${messageSubject}" />
 	</command>
 
 	<command name="DeleteMessagesAll" priority="5">
