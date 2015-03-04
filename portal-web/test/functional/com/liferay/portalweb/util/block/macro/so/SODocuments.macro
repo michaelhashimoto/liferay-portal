@@ -6,9 +6,9 @@
 			<var name="userName" value="Joe Bloggs" />
 		</execute>
 
-		<execute action="SODashboard#click" locator1="NAVIGATION_MY_DOCUMENTS" value1="My Documents" />
+		<execute function="#click" locator1="SODashboard#NAVIGATION_MY_DOCUMENTS" value1="My Documents" />
 
-		<execute action="PGDocumentsandmedia#click" locator1="TOOLBAR_DISPLAY_ICON" value1="Icon Display" />
+		<execute function="#click" locator1="PGDocumentsandmedia#TOOLBAR_DISPLAY_ICON" value1="Icon Display" />
 	</command>
 
 	<command name="tearDownPG">
@@ -18,17 +18,17 @@
 			<var name="userName" value="Joe Bloggs" />
 		</execute>
 
-		<execute action="SODashboard#click" locator1="NAVIGATION_MY_DOCUMENTS" value1="My Documents" />
+		<execute function="#click" locator1="SODashboard#NAVIGATION_MY_DOCUMENTS" value1="My Documents" />
 
 		<if>
-			<condition action="PGDocumentsandmedia#isElementPresent" locator1="ENTRIES_DOCUMENT_GENERIC" />
+			<condition function="#isElementPresent" locator1="PGDocumentsandmedia#ENTRIES_DOCUMENT_GENERIC" />
 			<then>
-				<execute action="PGDocumentsandmedia#check" locator1="TOOLBAR_SELECT_ALL_CHECKBOX" />
-				<execute action="PGDocumentsandmedia#assertClick" locator1="TOOLBAR_ACTIONS" value1="Actions" />
-				<execute action="PGDocumentsandmedia#assertElementPresent" locator1="ACTIONS_MENULIST_DELETE" />
-				<execute action="PGDocumentsandmedia#assertClickNoError" locator1="ACTIONS_MENULIST_DELETE" value1="Delete" />
-				<execute action="PGDocumentsandmedia#confirm" locator1="CONFIRMATION" value1="Are you sure you want to delete the selected entries?" />
-				<execute action="PGDocumentsandmedia#assertTextEquals" locator1="SUCCESS_MESSAGE" value1="Your request completed successfully." />
+				<execute function="#check" locator1="PGDocumentsandmedia#TOOLBAR_SELECT_ALL_CHECKBOX" />
+				<execute function="#assertClick" locator1="PGDocumentsandmedia#TOOLBAR_ACTIONS" value1="Actions" />
+				<execute function="#assertElementPresent" locator1="PGDocumentsandmedia#ACTIONS_MENULIST_DELETE" />
+				<execute function="#assertClickNoError" locator1="PGDocumentsandmedia#ACTIONS_MENULIST_DELETE" value1="Delete" />
+				<execute function="#confirm" locator1="PGDocumentsandmedia#CONFIRMATION" value1="Are you sure you want to delete the selected entries?" />
+				<execute function="#assertTextEquals" locator1="PGDocumentsandmedia#SUCCESS_MESSAGE" value1="Your request completed successfully." />
 			</then>
 		</if>
 	</command>
@@ -36,82 +36,82 @@
 	<command name="viewPGDisplayView">
 		<var name="key_dmDocumentTitle" value="${dmDocumentTitle}" />
 
-		<execute action="PGDocumentsandmedia#assertElementPresent" locator1="ENTRIES_DOCUMENT" />
+		<execute function="#assertElementPresent" locator1="PGDocumentsandmedia#ENTRIES_DOCUMENT" />
 
 		<if>
 			<equals arg1="${workflow}" arg2="Draft" />
 			<then>
-				<execute action="PGDocumentsandmedia#assertTextEquals" locator1="ENTRIES_DOCUMENT_TITLE" value1="${dmDocumentTitle} (Draft)" />
+				<execute function="#assertTextEquals" locator1="PGDocumentsandmedia#ENTRIES_DOCUMENT_TITLE" value1="${dmDocumentTitle} (Draft)" />
 			</then>
 			<elseif>
 				<equals arg1="${workflow}" arg2="Checkedout" />
 				<then>
-					<execute action="PGDocumentsandmedia#assertElementPresent" locator1="ENTRIES_DOCUMENT_LOCKED_ICON" />
-					<execute action="PGDocumentsandmedia#assertTextEquals" locator1="ENTRIES_DOCUMENT_TITLE" value1="${dmDocumentTitle} (Draft)" />
+					<execute function="#assertElementPresent" locator1="PGDocumentsandmedia#ENTRIES_DOCUMENT_LOCKED_ICON" />
+					<execute function="#assertTextEquals" locator1="PGDocumentsandmedia#ENTRIES_DOCUMENT_TITLE" value1="${dmDocumentTitle} (Draft)" />
 				</then>
 			</elseif>
 			<else>
-				<execute action="PGDocumentsandmedia#assertTextEquals" locator1="ENTRIES_DOCUMENT_TITLE" value1="${dmDocumentTitle}" />
+				<execute function="#assertTextEquals" locator1="PGDocumentsandmedia#ENTRIES_DOCUMENT_TITLE" value1="${dmDocumentTitle}" />
 			</else>
 		</if>
 
-		<execute action="PGDocumentsandmedia#click" locator1="TOOLBAR_DISPLAY_DESCRIPTIVE" value1="Descriptive Display" />
-		<execute action="PGDocumentsandmedia#assertElementPresent" locator1="ENTRIES_DOCUMENT" />
+		<execute function="#click" locator1="PGDocumentsandmedia#TOOLBAR_DISPLAY_DESCRIPTIVE" value1="Descriptive Display" />
+		<execute function="#assertElementPresent" locator1="PGDocumentsandmedia#ENTRIES_DOCUMENT" />
 
 		<if>
 			<equals arg1="${workflow}" arg2="Draft" />
 			<then>
-				<execute action="PGDocumentsandmedia#assertTextEquals" locator1="ENTRIES_DOCUMENT_TITLE" value1="${dmDocumentTitle} (Draft)" />
+				<execute function="#assertTextEquals" locator1="PGDocumentsandmedia#ENTRIES_DOCUMENT_TITLE" value1="${dmDocumentTitle} (Draft)" />
 			</then>
 			<elseif>
 				<equals arg1="${workflow}" arg2="Checkedout" />
 				<then>
-					<execute action="PGDocumentsandmedia#assertElementPresent" locator1="ENTRIES_DOCUMENT_LOCKED_ICON" />
-					<execute action="PGDocumentsandmedia#assertTextEquals" locator1="ENTRIES_DOCUMENT_TITLE" value1="${dmDocumentTitle} (Draft)" />
+					<execute function="#assertElementPresent" locator1="PGDocumentsandmedia#ENTRIES_DOCUMENT_LOCKED_ICON" />
+					<execute function="#assertTextEquals" locator1="PGDocumentsandmedia#ENTRIES_DOCUMENT_TITLE" value1="${dmDocumentTitle} (Draft)" />
 				</then>
 			</elseif>
 			<elseif>
 				<equals arg1="${workflow}" arg2="Locked" />
 				<then>
-					<execute action="PGDocumentsandmedia#assertElementPresent" locator1="ENTRIES_DOCUMENT_LOCKED_ICON" />
-					<execute action="PGDocumentsandmedia#assertTextEquals" locator1="ENTRIES_DOCUMENT_TITLE" value1="${dmDocumentTitle}" />
+					<execute function="#assertElementPresent" locator1="PGDocumentsandmedia#ENTRIES_DOCUMENT_LOCKED_ICON" />
+					<execute function="#assertTextEquals" locator1="PGDocumentsandmedia#ENTRIES_DOCUMENT_TITLE" value1="${dmDocumentTitle}" />
 				</then>
 			</elseif>
 			<else>
-				<execute action="PGDocumentsandmedia#assertTextEquals" locator1="ENTRIES_DOCUMENT_TITLE" value1="${dmDocumentTitle}" />
+				<execute function="#assertTextEquals" locator1="PGDocumentsandmedia#ENTRIES_DOCUMENT_TITLE" value1="${dmDocumentTitle}" />
 			</else>
 		</if>
 
-		<execute action="PGDocumentsandmedia#assertTextEquals" locator1="ENTRIES_DOCUMENT_DESCRIPTION" value1="${dmDocumentDescription}" />
-		<execute action="PGDocumentsandmedia#click" locator1="TOOLBAR_DISPLAY_LIST" value1="List Display" />
+		<execute function="#assertTextEquals" locator1="PGDocumentsandmedia#ENTRIES_DOCUMENT_DESCRIPTION" value1="${dmDocumentDescription}" />
+		<execute function="#click" locator1="PGDocumentsandmedia#TOOLBAR_DISPLAY_LIST" value1="List Display" />
 
 		<if>
 			<equals arg1="${workflow}" arg2="Draft" />
 			<then>
-				<execute action="PGDocumentsandmedia#assertTextEquals" locator1="LIST_ENTRIES_DOCUMENT_TITLE" value1="${dmDocumentTitle}" />
+				<execute function="#assertTextEquals" locator1="PGDocumentsandmedia#LIST_ENTRIES_DOCUMENT_TITLE" value1="${dmDocumentTitle}" />
 			</then>
 			<elseif>
 				<equals arg1="${workflow}" arg2="Checkedout" />
 				<then>
-					<execute action="PGDocumentsandmedia#assertTextEquals" locator1="LIST_ENTRIES_DOCUMENT_TITLE" value1="${dmDocumentTitle}" />
-					<execute action="PGDocumentsandmedia#assertTextEquals" locator1="LIST_ENTRIES_DOCUMENT_WORKFLOW" value1="(Draft)" />
-					<execute action="PGDocumentsandmedia#assertElementPresent" locator1="LIST_ENTRIES_DOCUMENT_LOCKED_ICON" />
+					<execute function="#assertTextEquals" locator1="PGDocumentsandmedia#LIST_ENTRIES_DOCUMENT_TITLE" value1="${dmDocumentTitle}" />
+					<execute function="#assertTextEquals" locator1="PGDocumentsandmedia#LIST_ENTRIES_DOCUMENT_WORKFLOW" value1="(Draft)" />
+					<execute function="#assertElementPresent" locator1="PGDocumentsandmedia#LIST_ENTRIES_DOCUMENT_LOCKED_ICON" />
 				</then>
 			</elseif>
 			<elseif>
 				<equals arg1="${workflow}" arg2="Locked" />
 				<then>
-					<execute action="PGDocumentsandmedia#assertTextEquals" locator1="LIST_ENTRIES_DOCUMENT_TITLE" value1="${dmDocumentTitle}" />
-					<execute action="PGDocumentsandmedia#assertElementPresent" locator1="LIST_ENTRIES_DOCUMENT_LOCKED_ICON" />
+					<execute function="#assertTextEquals" locator1="PGDocumentsandmedia#LIST_ENTRIES_DOCUMENT_TITLE" value1="${dmDocumentTitle}" />
+					<execute function="#assertElementPresent" locator1="PGDocumentsandmedia#LIST_ENTRIES_DOCUMENT_LOCKED_ICON" />
 				</then>
 			</elseif>
 			<else>
-				<execute action="PGDocumentsandmedia#assertTextEquals" locator1="LIST_ENTRIES_DOCUMENT_TITLE" value1="${dmDocumentTitle}" />
+				<execute function="#assertTextEquals" locator1="PGDocumentsandmedia#LIST_ENTRIES_DOCUMENT_TITLE" value1="${dmDocumentTitle}" />
 			</else>
 		</if>
 
-		<execute action="PGDocumentsandmedia#click" locator1="TOOLBAR_DISPLAY_ICON" value1="Icon Display" />
-		<execute action="PGDocumentsandmedia#assertTextEquals" locator1="BREADCRUMB_HOME" value1="Home" />
+		<execute function="#click" locator1="PGDocumentsandmedia#TOOLBAR_DISPLAY_ICON" value1="Icon Display" />
+		<execute function="#assertTextEquals" locator1="PGDocumentsandmedia#BREADCRUMB_HOME" value1="Home" />
 
 		<if>
 			<or>
@@ -119,10 +119,10 @@
 				<equals arg1="${workflow}" arg2="Checkedout" />
 			</or>
 			<then>
-				<execute action="PGDocumentsandmedia#assertClick" locator1="ENTRIES_DOCUMENT_TITLE" value1="${dmDocumentTitle} (Draft)" />
+				<execute function="#assertClick" locator1="PGDocumentsandmedia#ENTRIES_DOCUMENT_TITLE" value1="${dmDocumentTitle} (Draft)" />
 			</then>
 			<else>
-				<execute action="PGDocumentsandmedia#assertClick" locator1="ENTRIES_DOCUMENT_TITLE" value1="${dmDocumentTitle}" />
+				<execute function="#assertClick" locator1="PGDocumentsandmedia#ENTRIES_DOCUMENT_TITLE" value1="${dmDocumentTitle}" />
 			</else>
 		</if>
 
@@ -130,35 +130,35 @@
 	</command>
 
 	<command name="viewPGDocumentDetailView">
-		<execute action="PGDocumentsandmediaDocument#assertTextEquals" locator1="TOOLBAR_DOWNLOAD_BUTTON" value1="Download" />
+		<execute function="#assertTextEquals" locator1="PGDocumentsandmediaDocument#TOOLBAR_DOWNLOAD_BUTTON" value1="Download" />
 
 		<if>
 			<not>
 				<equals arg1="${workflow}" arg2="Locked" />
 			</not>
 			<then>
-				<execute action="PGDocumentsandmediaDocument#assertTextEquals" locator1="TOOLBAR_EDIT_BUTTON" value1="Edit" />
-				<execute action="PGDocumentsandmediaDocument#assertTextEquals" locator1="TOOLBAR_MOVE_BUTTON" value1="Move" />
+				<execute function="#assertTextEquals" locator1="PGDocumentsandmediaDocument#TOOLBAR_EDIT_BUTTON" value1="Edit" />
+				<execute function="#assertTextEquals" locator1="PGDocumentsandmediaDocument#TOOLBAR_MOVE_BUTTON" value1="Move" />
 			</then>
 		</if>
 
 		<if>
 			<equals arg1="${workflow}" arg2="Checkedout" />
 			<then>
-				<execute action="PGDocumentsandmediaDocument#assertElementNotPresent" locator1="TOOLBAR_CHECKOUT_BUTTON" value1="Checkout" />
-				<execute action="PGDocumentsandmediaDocument#assertTextEquals" locator1="TOOLBAR_CHECKIN_BUTTON" value1="Checkin" />
-				<execute action="PGDocumentsandmediaDocument#assertTextEquals" locator1="TOOLBAR_CANCEL_CHECKOUT_BUTTON" value1="Cancel Checkout" />
+				<execute function="#assertElementNotPresent" locator1="PGDocumentsandmediaDocument#TOOLBAR_CHECKOUT_BUTTON" value1="Checkout" />
+				<execute function="#assertTextEquals" locator1="PGDocumentsandmediaDocument#TOOLBAR_CHECKIN_BUTTON" value1="Checkin" />
+				<execute function="#assertTextEquals" locator1="PGDocumentsandmediaDocument#TOOLBAR_CANCEL_CHECKOUT_BUTTON" value1="Cancel Checkout" />
 			</then>
 			<elseif>
 				<equals arg1="${workflow}" arg2="Locked" />
 				<then>
-					<execute action="PGDocumentsandmediaDocument#assertTextEquals" locator1="TOOLBAR_DOWNLOAD_BUTTON" value1="Download" />
+					<execute function="#assertTextEquals" locator1="PGDocumentsandmediaDocument#TOOLBAR_DOWNLOAD_BUTTON" value1="Download" />
 				</then>
 			</elseif>
 			<else>
-				<execute action="PGDocumentsandmediaDocument#assertTextEquals" locator1="TOOLBAR_CHECKOUT_BUTTON" value1="Checkout" />
-				<execute action="PGDocumentsandmediaDocument#assertElementNotPresent" locator1="TOOLBAR_CHECKIN_BUTTON" />
-				<execute action="PGDocumentsandmediaDocument#assertElementNotPresent" locator1="TOOLBAR_CANCEL_CHECKOUT_BUTTON" />
+				<execute function="#assertTextEquals" locator1="PGDocumentsandmediaDocument#TOOLBAR_CHECKOUT_BUTTON" value1="Checkout" />
+				<execute function="#assertElementNotPresent" locator1="PGDocumentsandmediaDocument#TOOLBAR_CHECKIN_BUTTON" />
+				<execute function="#assertElementNotPresent" locator1="PGDocumentsandmediaDocument#TOOLBAR_CANCEL_CHECKOUT_BUTTON" />
 			</else>
 		</if>
 
@@ -167,19 +167,19 @@
 				<equals arg1="${workflow}" arg2="Locked" />
 			</not>
 			<then>
-				<execute action="PGDocumentsandmediaDocument#assertTextEquals" locator1="TOOLBAR_PERMISSIONS_BUTTON" value1="Permissions" />
-				<execute action="PGDocumentsandmediaDocument#assertTextEquals" locator1="TOOLBAR_DELETE_BUTTON" value1="Delete" />
+				<execute function="#assertTextEquals" locator1="PGDocumentsandmediaDocument#TOOLBAR_PERMISSIONS_BUTTON" value1="Permissions" />
+				<execute function="#assertTextEquals" locator1="PGDocumentsandmediaDocument#TOOLBAR_DELETE_BUTTON" value1="Delete" />
 			</then>
 		</if>
 
-		<execute action="SODocuments#assertTextEquals" locator1="DOCUMENT_INFO_TITLE" value1="${dmDocumentTitle}" />
-		<execute action="PGDocumentsandmediaDocument#assertTextEquals" locator1="DOCUMENT_INFO_DESCRIPTION" value1="${dmDocumentDescription}" />
+		<execute function="#assertTextEquals" locator1="SODocuments#DOCUMENT_INFO_TITLE" value1="${dmDocumentTitle}" />
+		<execute function="#assertTextEquals" locator1="PGDocumentsandmediaDocument#DOCUMENT_INFO_DESCRIPTION" value1="${dmDocumentDescription}" />
 
-		<execute action="PGDocumentsandmediaDocument#assertElementPresent" locator1="DOCUMENT_INFO_THUMBNAIL" />
-		<execute action="PGDocumentsandmediaDocument#assertTextEquals" locator1="DOCUMENT_INFO_UPLOADED_BY" value1="Uploaded by ${dmDocumentUploader}" />
-		<execute action="PGDocumentsandmediaDocument#assertElementPresent" locator1="DOCUMENT_INFO_RATING" value1="Ratings" />
+		<execute function="#assertElementPresent" locator1="PGDocumentsandmediaDocument#DOCUMENT_INFO_THUMBNAIL" />
+		<execute function="#assertTextEquals" locator1="PGDocumentsandmediaDocument#DOCUMENT_INFO_UPLOADED_BY" value1="Uploaded by ${dmDocumentUploader}" />
+		<execute function="#assertElementPresent" locator1="PGDocumentsandmediaDocument#DOCUMENT_INFO_RATING" value1="Ratings" />
 
-		<execute action="SODocuments#assertTextEquals" locator1="VERSION_HISTORY_TITLE" value1="Version History" />
+		<execute function="#assertTextEquals" locator1="SODocuments#VERSION_HISTORY_TITLE" value1="Version History" />
 
 		<if>
 			<not>
@@ -191,28 +191,28 @@
 					<then>
 						<var name="versionNumber" value="PWC" />
 
-						<execute action="SODocuments#assertTextEquals" locator1="VERSION_HISTORY_NUMBER" value1="Version PWC" />
-						<execute action="SODocuments#assertTextEquals" locator1="VERSION_HISTORY_UPLOADER_NAME" value1="By: ${dmDocumentUploader}" />
-						<execute action="SODocuments#assertElementPresent" locator1="VERSION_HISTORY_DATE" />
-						<execute action="SODocuments#assertTextEquals" locator1="VERSION_HISTORY_SIZE" value1="Size: ${dmDocumentSize}" />
+						<execute function="#assertTextEquals" locator1="SODocuments#VERSION_HISTORY_NUMBER" value1="Version PWC" />
+						<execute function="#assertTextEquals" locator1="SODocuments#VERSION_HISTORY_UPLOADER_NAME" value1="By: ${dmDocumentUploader}" />
+						<execute function="#assertElementPresent" locator1="SODocuments#VERSION_HISTORY_DATE" />
+						<execute function="#assertTextEquals" locator1="SODocuments#VERSION_HISTORY_SIZE" value1="Size: ${dmDocumentSize}" />
 					</then>
 					<else>
 						<var name="versionNumber" value="${dmDocumentVersionNumber}" />
 
-						<execute action="SODocuments#assertTextEquals" locator1="VERSION_HISTORY_NUMBER" value1="Version ${dmDocumentVersionNumber}" />
-						<execute action="SODocuments#assertTextEquals" locator1="VERSION_HISTORY_UPLOADER_NAME" value1="By: ${dmDocumentUploader}" />
-						<execute action="SODocuments#assertElementPresent" locator1="VERSION_HISTORY_DATE" />
-						<execute action="SODocuments#assertTextEquals" locator1="VERSION_HISTORY_SIZE" value1="Size: ${dmDocumentSize}" />
+						<execute function="#assertTextEquals" locator1="SODocuments#VERSION_HISTORY_NUMBER" value1="Version ${dmDocumentVersionNumber}" />
+						<execute function="#assertTextEquals" locator1="SODocuments#VERSION_HISTORY_UPLOADER_NAME" value1="By: ${dmDocumentUploader}" />
+						<execute function="#assertElementPresent" locator1="SODocuments#VERSION_HISTORY_DATE" />
+						<execute function="#assertTextEquals" locator1="SODocuments#VERSION_HISTORY_SIZE" value1="Size: ${dmDocumentSize}" />
 
 						<if>
 							<isset var="dmDocumentPreviousVersionNumber" />
 							<then>
 								<var name="versionNumber" value="${dmDocumentPreviousVersionNumber}" />
 
-								<execute action="SODocuments#assertTextEquals" locator1="VERSION_HISTORY_NUMBER" value1="Version ${dmDocumentPreviousVersionNumber}" />
-								<execute action="SODocuments#assertTextEquals" locator1="VERSION_HISTORY_UPLOADER_NAME" value1="By: ${dmDocumentPreviousUploader}" />
-								<execute action="SODocuments#assertElementPresent" locator1="VERSION_HISTORY_DATE" />
-								<execute action="SODocuments#assertTextEquals" locator1="VERSION_HISTORY_SIZE" value1="Size: ${dmDocumentPreviousSize}" />
+								<execute function="#assertTextEquals" locator1="SODocuments#VERSION_HISTORY_NUMBER" value1="Version ${dmDocumentPreviousVersionNumber}" />
+								<execute function="#assertTextEquals" locator1="SODocuments#VERSION_HISTORY_UPLOADER_NAME" value1="By: ${dmDocumentPreviousUploader}" />
+								<execute function="#assertElementPresent" locator1="SODocuments#VERSION_HISTORY_DATE" />
+								<execute function="#assertTextEquals" locator1="SODocuments#VERSION_HISTORY_SIZE" value1="Size: ${dmDocumentPreviousSize}" />
 							</then>
 						</if>
 					</else>
@@ -223,25 +223,25 @@
 		<if>
 			<equals arg1="${workflow}" arg2="Draft" />
 			<then>
-				<execute action="PGDocumentsandmediaDocument#assertTextEquals" locator1="DOCUMENT_DETAILS_VERSION" value1="Version ${dmDocumentVersionNumber}" />
-				<execute action="PGDocumentsandmediaDocument#assertTextEquals" locator1="DOCUMENT_DETAILS_WORKFLOW" value1="Status: Draft" />
+				<execute function="#assertTextEquals" locator1="PGDocumentsandmediaDocument#DOCUMENT_DETAILS_VERSION" value1="Version ${dmDocumentVersionNumber}" />
+				<execute function="#assertTextEquals" locator1="PGDocumentsandmediaDocument#DOCUMENT_DETAILS_WORKFLOW" value1="Status: Draft" />
 			</then>
 			<elseif>
 				<equals arg1="${workflow}" arg2="Checkedout" />
 				<then>
-					<execute action="PGDocumentsandmediaDocument#assertTextEquals" locator1="DOCUMENT_DETAILS_VERSION" value1="Version PWC" />
-					<execute action="PGDocumentsandmediaDocument#assertTextEquals" locator1="DOCUMENT_DETAILS_WORKFLOW" value1="Status: Draft" />
+					<execute function="#assertTextEquals" locator1="PGDocumentsandmediaDocument#DOCUMENT_DETAILS_VERSION" value1="Version PWC" />
+					<execute function="#assertTextEquals" locator1="PGDocumentsandmediaDocument#DOCUMENT_DETAILS_WORKFLOW" value1="Status: Draft" />
 				</then>
 				<else>
-					<execute action="PGDocumentsandmediaDocument#assertTextEquals" locator1="DOCUMENT_DETAILS_VERSION" value1="Version ${dmDocumentVersionNumber}" />
-					<execute action="PGDocumentsandmediaDocument#assertTextEquals" locator1="DOCUMENT_DETAILS_WORKFLOW" value1="Status: Approved" />
+					<execute function="#assertTextEquals" locator1="PGDocumentsandmediaDocument#DOCUMENT_DETAILS_VERSION" value1="Version ${dmDocumentVersionNumber}" />
+					<execute function="#assertTextEquals" locator1="PGDocumentsandmediaDocument#DOCUMENT_DETAILS_WORKFLOW" value1="Status: Approved" />
 				</else>
 			</elseif>
 		</if>
 
-		<execute action="PGDocumentsandmediaDocument#assertTextEquals" locator1="DOCUMENT_DETAILS_UPLOADER" value1="Last Updated by ${dmDocumentUploader}" />
-		<execute action="PGDocumentsandmediaDocument#assertElementPresent" locator1="DOCUMENT_DETAILS_DATE" />
-		<execute action="PGDocumentsandmediaDocument#assertTextEquals" locator1="DOCUMENT_DETAILS_DOWNLOAD" value1="Download (${dmDocumentSize})" />
-		<execute action="PGDocumentsandmediaDocument#assertTextEquals" locator1="DOCUMENT_DETAILS_URL" value1="Get URL or WebDAV URL." />
+		<execute function="#assertTextEquals" locator1="PGDocumentsandmediaDocument#DOCUMENT_DETAILS_UPLOADER" value1="Last Updated by ${dmDocumentUploader}" />
+		<execute function="#assertElementPresent" locator1="PGDocumentsandmediaDocument#DOCUMENT_DETAILS_DATE" />
+		<execute function="#assertTextEquals" locator1="PGDocumentsandmediaDocument#DOCUMENT_DETAILS_DOWNLOAD" value1="Download (${dmDocumentSize})" />
+		<execute function="#assertTextEquals" locator1="PGDocumentsandmediaDocument#DOCUMENT_DETAILS_URL" value1="Get URL or WebDAV URL." />
 	</command>
 </definition>

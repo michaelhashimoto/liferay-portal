@@ -2,29 +2,29 @@
 	<command name="addPG">
 		<var name="key_bookmarkName" value="${bookmarkName}" />
 
-		<execute action="PGBookmarks#assertClick" locator1="HOME_MENU_ADD_BOOKMARK" value1="Add Bookmark" />
+		<execute function="#assertClick" locator1="PGBookmarks#HOME_MENU_ADD_BOOKMARK" value1="Add Bookmark" />
 
-		<execute action="PGBookmarksAddbookmark#type" locator1="NAME_FIELD" value1="${bookmarkName}" />
-		<execute action="PGBookmarksAddbookmark#type" locator1="URL_FIELD" value1="${bookmarkURL}" />
+		<execute function="#type" locator1="PGBookmarksAddbookmark#NAME_FIELD" value1="${bookmarkName}" />
+		<execute function="#type" locator1="PGBookmarksAddbookmark#URL_FIELD" value1="${bookmarkURL}" />
 
 		<if>
 			<isset var="bookmarkDescription" />
 			<then>
-				<execute action="PGBookmarksAddbookmark#type" locator1="DESCRIPTION_FIELD" value1="${bookmarkDescription}" />
+				<execute function="#type" locator1="PGBookmarksAddbookmark#DESCRIPTION_FIELD" value1="${bookmarkDescription}" />
 			</then>
 		</if>
 
-		<execute action="PGBookmarksAddbookmark#assertClick" locator1="SAVE_BUTTON" value1="Save" />
+		<execute function="#assertClick" locator1="PGBookmarksAddbookmark#SAVE_BUTTON" value1="Save" />
 
-		<execute action="PGBookmarks#assertTextEquals" locator1="SUCCESS_MESSAGE" value1="Your request completed successfully." />
-		<execute action="PGBookmarks#assertTextEquals" locator1="BOOKMARKS_TABLE_NAME" value1="${bookmarkName}" />
-		<execute action="PGBookmarks#assertTextEquals" locator1="BOOKMARKS_TABLE_URL" value1="${bookmarkURL}" />
+		<execute function="#assertTextEquals" locator1="PGBookmarks#SUCCESS_MESSAGE" value1="Your request completed successfully." />
+		<execute function="#assertTextEquals" locator1="PGBookmarks#BOOKMARKS_TABLE_NAME" value1="${bookmarkName}" />
+		<execute function="#assertTextEquals" locator1="PGBookmarks#BOOKMARKS_TABLE_URL" value1="${bookmarkURL}" />
 	</command>
 
 	<command name="addToFolderPG">
 		<var name="key_folderName" value="${bookmarkFolderName}" />
 
-		<execute action="PGBookmarks#assertClick" locator1="FOLDERS_TABLE_FOLDER_NAME" value1="${bookmarkFolderName}" />
+		<execute function="#assertClick" locator1="PGBookmarks#FOLDERS_TABLE_FOLDER_NAME" value1="${bookmarkFolderName}" />
 
 		<execute macro="Bookmark#addPG">
 			<var name="bookmarkName" value="${bookmarkName}" />
@@ -38,11 +38,11 @@
 		</execute>
 
 		<while>
-			<condition action="CPBookmarks#isElementPresent" locator1="BOOKMARKS_TABLE_ACTIONS_BUTTON_GENERIC" />
+			<condition function="#isElementPresent" locator1="CPBookmarks#BOOKMARKS_TABLE_ACTIONS_BUTTON_GENERIC" />
 			<then>
-				<execute action="CPBookmarks#assertClick" locator1="BOOKMARKS_TABLE_ACTIONS_BUTTON_GENERIC" value1="Actions" />
-				<execute action="CPBookmarks#assertClick" locator1="BOOKMARK_MENULIST_DELETE" value1="Delete" />
-				<execute action="CPBookmarks#assertTextEquals" locator1="SUCCESS_MESSAGE" value1="Your request completed successfully." />
+				<execute function="#assertClick" locator1="CPBookmarks#BOOKMARKS_TABLE_ACTIONS_BUTTON_GENERIC" value1="Actions" />
+				<execute function="#assertClick" locator1="CPBookmarks#BOOKMARK_MENULIST_DELETE" value1="Delete" />
+				<execute function="#assertTextEquals" locator1="CPBookmarks#SUCCESS_MESSAGE" value1="Your request completed successfully." />
 			</then>
 		</while>
 	</command>
@@ -50,7 +50,7 @@
 	<command name="viewInFolderPG">
 		<var name="key_folderName" value="${bookmarkFolderName}" />
 
-		<execute action="PGBookmarks#assertClick" locator1="FOLDERS_TABLE_FOLDER_NAME" value1="${bookmarkFolderName}" />
+		<execute function="#assertClick" locator1="PGBookmarks#FOLDERS_TABLE_FOLDER_NAME" value1="${bookmarkFolderName}" />
 
 		<execute macro="Bookmark#viewPG">
 			<var name="bookmarkName" value="${bookmarkName}" />
@@ -61,18 +61,18 @@
 	<command name="viewPG">
 		<var name="key_bookmarkName" value="${bookmarkName}" />
 
-		<execute action="PGBookmarks#assertTextEquals" locator1="BOOKMARKS_TABLE_NAME" value1="${bookmarkName}" />
-		<execute action="PGBookmarks#assertTextEquals" locator1="BOOKMARKS_TABLE_URL" value1="${bookmarkURL}" />
+		<execute function="#assertTextEquals" locator1="PGBookmarks#BOOKMARKS_TABLE_NAME" value1="${bookmarkName}" />
+		<execute function="#assertTextEquals" locator1="PGBookmarks#BOOKMARKS_TABLE_URL" value1="${bookmarkURL}" />
 
-		<execute action="PGBookmarks#assertClick" locator1="BOOKMARKS_TABLE_NAME" value1="${bookmarkName}" />
+		<execute function="#assertClick" locator1="PGBookmarks#BOOKMARKS_TABLE_NAME" value1="${bookmarkName}" />
 
-		<execute action="PGBookmarksBookmark#assertTextEquals" locator1="NAME" value1="${bookmarkName}" />
-		<execute action="PGBookmarksBookmark#assertTextEquals" locator1="URL" value1="${bookmarkURL}" />
+		<execute function="#assertTextEquals" locator1="PGBookmarksBookmark#NAME" value1="${bookmarkName}" />
+		<execute function="#assertTextEquals" locator1="PGBookmarksBookmark#URL" value1="${bookmarkURL}" />
 
 		<if>
 			<isset var="bookmarkDescription" />
 			<then>
-				<execute action="PGBookmarksBookmark#assertTextEquals" locator1="DESCRIPTION" value1="${bookmarkDescription}" />
+				<execute function="#assertTextEquals" locator1="PGBookmarksBookmark#DESCRIPTION" value1="${bookmarkDescription}" />
 			</then>
 		</if>
 	</command>

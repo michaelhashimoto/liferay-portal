@@ -1,31 +1,31 @@
 <definition>
 	<command name="addCP">
-		<execute action="CPUsergroups#assertClick" locator1="ADD" value1="Add" />
+		<execute function="#assertClick" locator1="CPUsergroups#ADD" value1="Add" />
 
-		<execute action="CPUsergroupsAddusergroup#type" locator1="NAME_FIELD" value1="${userGroupName}" />
-		<execute action="CPUsergroupsAddusergroup#click" locator1="SAVE_BUTTON" value1="Save" />
+		<execute function="#type" locator1="CPUsergroupsAddusergroup#NAME_FIELD" value1="${userGroupName}" />
+		<execute function="#click" locator1="CPUsergroupsAddusergroup#SAVE_BUTTON" value1="Save" />
 
-		<execute action="CPUsergroups#assertTextEquals" locator1="SUCCESS_MESSAGE" value1="Your request completed successfully." />
-		<execute action="CPUsergroups#assertTextEquals" locator1="USER_GROUP_TABLE_NAME_1" value1="${userGroupName}" />
+		<execute function="#assertTextEquals" locator1="CPUsergroups#SUCCESS_MESSAGE" value1="Your request completed successfully." />
+		<execute function="#assertTextEquals" locator1="CPUsergroups#USER_GROUP_TABLE_NAME_1" value1="${userGroupName}" />
 	</command>
 
 	<command name="deleteCP">
-		<execute action="CPUsergroups#assertClick" locator1="USER_GROUP_TABLE_ACTIONS_1" value1="Actions" />
-		<execute action="CPUsergroups#assertClickNoError" locator1="USER_GROUP_MENULIST_DELETE" value1="Delete" />
-		<execute action="CPUsergroups#confirm" locator1="CONFIRMATION" value1="Are you sure you want to delete this?" />
-		<execute action="CPUsergroups#assertTextEquals" locator1="SUCCESS_MESSAGE" value1="Your request completed successfully." />
-		<execute action="CPUsergroups#assertElementNotPresent" locator1="USER_GROUP_TABLE_NAME_1" />
+		<execute function="#assertClick" locator1="CPUsergroups#USER_GROUP_TABLE_ACTIONS_1" value1="Actions" />
+		<execute function="#assertClickNoError" locator1="CPUsergroups#USER_GROUP_MENULIST_DELETE" value1="Delete" />
+		<execute function="#confirm" locator1="CPUsergroups#CONFIRMATION" value1="Are you sure you want to delete this?" />
+		<execute function="#assertTextEquals" locator1="CPUsergroups#SUCCESS_MESSAGE" value1="Your request completed successfully." />
+		<execute function="#assertElementNotPresent" locator1="CPUsergroups#USER_GROUP_TABLE_NAME_1" />
 	</command>
 
 	<command name="editCP">
-		<execute action="CPUsergroups#assertClick" locator1="USER_GROUP_TABLE_ACTIONS_1" value1="Actions" />
-		<execute action="CPUsergroups#assertClick" locator1="USER_GROUP_MENULIST_EDIT" value1="Edit" />
+		<execute function="#assertClick" locator1="CPUsergroups#USER_GROUP_TABLE_ACTIONS_1" value1="Actions" />
+		<execute function="#assertClick" locator1="CPUsergroups#USER_GROUP_MENULIST_EDIT" value1="Edit" />
 
-		<execute action="CPUsergroupsEditusergroup#type" locator1="NAME_FIELD" value1="${userGroupNameEdit}" />
-		<execute action="CPUsergroupsEditusergroup#assertClick" locator1="SAVE_BUTTON" value1="Save" />
+		<execute function="#type" locator1="CPUsergroupsEditusergroup#NAME_FIELD" value1="${userGroupNameEdit}" />
+		<execute function="#assertClick" locator1="CPUsergroupsEditusergroup#SAVE_BUTTON" value1="Save" />
 
-		<execute action="CPUsergroups#assertTextEquals" locator1="SUCCESS_MESSAGE" value1="Your request completed successfully." />
-		<execute action="CPUsergroups#assertTextEquals" locator1="USER_GROUP_TABLE_NAME_1" value1="${userGroupNameEdit}" />
+		<execute function="#assertTextEquals" locator1="CPUsergroups#SUCCESS_MESSAGE" value1="Your request completed successfully." />
+		<execute function="#assertTextEquals" locator1="CPUsergroups#USER_GROUP_TABLE_NAME_1" value1="${userGroupNameEdit}" />
 	</command>
 
 	<command name="tearDownCP">
@@ -34,14 +34,14 @@
 		</execute>
 
 		<while>
-			<condition action="CPUsergroups#isElementPresent" locator1="USER_GROUP_TABLE_CHECKBOX_1" />
+			<condition function="#isElementPresent" locator1="CPUsergroups#USER_GROUP_TABLE_CHECKBOX_1" />
 			<then>
-				<execute action="CPUsergroups#click" locator1="USER_GROUP_TABLE_ALL_CHECKBOX" />
-				<execute action="CPUsergroups#assertChecked" locator1="USER_GROUP_TABLE_ALL_CHECKBOX" />
-				<execute action="CPUsergroups#assertClickNoError" locator1="DELETE_BUTTON" value1="Delete" />
-				<execute action="CPUsergroups#confirm" locator1="CONFIRMATION" value1="Are you sure you want to delete this?" />
-				<execute action="CPUsergroups#assertTextEquals" locator1="SUCCESS_MESSAGE" value1="Your request completed successfully." />
-				<execute action="CPUsergroups#assertTextEquals" locator1="INFO_MESSAGE" value1="No user groups were found." />
+				<execute function="#click" locator1="CPUsergroups#USER_GROUP_TABLE_ALL_CHECKBOX" />
+				<execute function="#assertChecked" locator1="CPUsergroups#USER_GROUP_TABLE_ALL_CHECKBOX" />
+				<execute function="#assertClickNoError" locator1="CPUsergroups#DELETE_BUTTON" value1="Delete" />
+				<execute function="#confirm" locator1="CPUsergroups#CONFIRMATION" value1="Are you sure you want to delete this?" />
+				<execute function="#assertTextEquals" locator1="CPUsergroups#SUCCESS_MESSAGE" value1="Your request completed successfully." />
+				<execute function="#assertTextEquals" locator1="CPUsergroups#INFO_MESSAGE" value1="No user groups were found." />
 			</then>
 		</while>
 	</command>

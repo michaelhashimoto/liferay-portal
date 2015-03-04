@@ -1,13 +1,13 @@
 <definition>
 	<command name="gotoDashboardTasks">
-		<execute action="SOUserBar#click" locator1="DASHBOARD" />
+		<execute function="#click" locator1="SOUserBar#DASHBOARD" />
 
-		<execute action="SODashboard#assertClick" locator1="NAVIGATION_TASKS" value1="Tasks" />
+		<execute function="#assertClick" locator1="SODashboard#NAVIGATION_TASKS" value1="Tasks" />
 	</command>
 
 	<command name="gotoSiteDocuments">
 		<execute macro="Page#openURL" />
 
-		<execute action="SOSiteHome#click" locator1="NAVIGATION_DOCUMENTS" value1="Documents" />
+		<execute function="#click" locator1="SOSiteHome#NAVIGATION_DOCUMENTS" value1="Documents" />
 	</command>
 </definition>

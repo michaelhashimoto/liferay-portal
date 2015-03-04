@@ -1,16 +1,16 @@
 <definition>
 	<command name="configureSetupPG">
-		<execute action="PGWebcontentlist#assertClick" locator1="OPTIONS_ICON" value1="Options" />
-		<execute action="PGWebcontentlist#assertClick" locator1="OPTIONS_MENULIST_CONFIGURATION" value1="Configuration" />
+		<execute function="#assertClick" locator1="PGWebcontentlist#OPTIONS_ICON" value1="Options" />
+		<execute function="#assertClick" locator1="PGWebcontentlist#OPTIONS_MENULIST_CONFIGURATION" value1="Configuration" />
 
-		<execute action="PGWebcontentlistConfiguration#selectFrame" locator1="CONFIGURATION_IFRAME" />
-		<execute action="PGWebcontentlistConfiguration#select" locator1="DISPLAY_SETTINGS_DISPLAY_URL_SELECT" value1="Normal" />
-		<execute action="PGWebcontentlistConfiguration#select" locator1="DISPLAY_SETTINGS_DISPLAY_PER_PAGE_SELECT" value1="10" />
-		<execute action="PGWebcontentlistConfiguration#assertClick" locator1="SAVE_BUTTON" value1="Save" />
-		<execute action="PGWebcontentlistConfiguration#assertTextEquals" locator1="SUCCESS_MESSAGE" value1="You have successfully updated the setup." />
+		<execute function="#selectFrame" locator1="PGWebcontentlistConfiguration#CONFIGURATION_IFRAME" />
+		<execute function="#select" locator1="PGWebcontentlistConfiguration#DISPLAY_SETTINGS_DISPLAY_URL_SELECT" value1="Normal" />
+		<execute function="#select" locator1="PGWebcontentlistConfiguration#DISPLAY_SETTINGS_DISPLAY_PER_PAGE_SELECT" value1="10" />
+		<execute function="#assertClick" locator1="PGWebcontentlistConfiguration#SAVE_BUTTON" value1="Save" />
+		<execute function="#assertTextEquals" locator1="PGWebcontentlistConfiguration#SUCCESS_MESSAGE" value1="You have successfully updated the setup." />
 
 		<execute action="PGWebcontentlist#selectFrame" />
 
-		<execute action="PGWebcontentlist#assertTextEquals" locator1="WEB_CONTENT_TABLE_TITLE_1" value1="${webContentTitle}" />
+		<execute function="#assertTextEquals" locator1="PGWebcontentlist#WEB_CONTENT_TABLE_TITLE_1" value1="${webContentTitle}" />
 	</command>
 </definition>

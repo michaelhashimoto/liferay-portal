@@ -1,112 +1,112 @@
 <definition>
 	<command name="addCP">
-		<execute action="CPDynamicdatalists#assertClick" locator1="TOOLBAR_ADD" value1="Add" />
+		<execute function="#assertClick" locator1="CPDynamicdatalists#TOOLBAR_ADD" value1="Add" />
 
-		<execute action="CPDynamicdatalistsAddlist#type" locator1="NAME_FIELD" value1="${listName}" />
-		<execute action="CPDynamicdatalistsAddlist#type" locator1="DESCRIPTION_FIELD" value1="${listDescription}" />
-		<execute action="CPDynamicdatalistsAddlist#assertClick" locator1="DATA_DEFINITION_SELECT_LINK" value1="Select" />
+		<execute function="#type" locator1="CPDynamicdatalistsAddlist#NAME_FIELD" value1="${listName}" />
+		<execute function="#type" locator1="CPDynamicdatalistsAddlist#DESCRIPTION_FIELD" value1="${listDescription}" />
+		<execute function="#assertClick" locator1="CPDynamicdatalistsAddlist#DATA_DEFINITION_SELECT_LINK" value1="Select" />
 
-		<execute action="CPDynamicdatalistsAddlistDatadefinitions#selectFrame" locator1="DATA_DEFINITIONS_IFRAME" />
-		<execute action="CPDynamicdatalistsAddlistDatadefinitions#type" locator1="BASIC_SEARCH_FIELD" value1="${dataDefinitionName}" />
-		<execute action="CPDynamicdatalistsAddlistDatadefinitions#assertClick" locator1="BASIC_SEARCH_BUTTON" value1="Search" />
-		<execute action="CPDynamicdatalistsAddlistDatadefinitions#assertClick" locator1="DATA_DEFINITION_TABLE_NAME_1" value1="${dataDefinitionName}" />
+		<execute function="#selectFrame" locator1="CPDynamicdatalistsAddlistDatadefinitions#DATA_DEFINITIONS_IFRAME" />
+		<execute function="#type" locator1="CPDynamicdatalistsAddlistDatadefinitions#BASIC_SEARCH_FIELD" value1="${dataDefinitionName}" />
+		<execute function="#assertClick" locator1="CPDynamicdatalistsAddlistDatadefinitions#BASIC_SEARCH_BUTTON" value1="Search" />
+		<execute function="#assertClick" locator1="CPDynamicdatalistsAddlistDatadefinitions#DATA_DEFINITION_TABLE_NAME_1" value1="${dataDefinitionName}" />
 
 		<execute action="CPDynamicdatalists#selectFrameTop" />
 
-		<execute action="CPDynamicdatalistsAddlist#assertTextEquals" locator1="DATA_DEFINITION_NAME" value1="${dataDefinitionName}" />
-		<execute action="CPDynamicdatalistsAddlist#assertClick" locator1="SAVE_BUTTON" value1="Save" />
+		<execute function="#assertTextEquals" locator1="CPDynamicdatalistsAddlist#DATA_DEFINITION_NAME" value1="${dataDefinitionName}" />
+		<execute function="#assertClick" locator1="CPDynamicdatalistsAddlist#SAVE_BUTTON" value1="Save" />
 
-		<execute action="CPDynamicdatalists#assertTextEquals" locator1="SUCCESS_MESSAGE" value1="Your request completed successfully." />
+		<execute function="#assertTextEquals" locator1="CPDynamicdatalists#SUCCESS_MESSAGE" value1="Your request completed successfully." />
 	</command>
 
 	<command name="addPG">
-		<execute action="PGDDLDisplay#assertClick" locator1="TOOLBAR_ADD_LIST" />
+		<execute function="#assertClick" locator1="PGDDLDisplay#TOOLBAR_ADD_LIST" />
 
-		<execute action="PGDDLDisplayAddlist#type" locator1="NAME_FIELD" value1="${listName}" />
-		<execute action="PGDDLDisplayAddlist#type" locator1="DESCRIPTION_FIELD" value1="${listDescription}" />
-		<execute action="PGDDLDisplayAddlist#assertClick" locator1="DATA_DEFINITION_SELECT_LINK" value1="Select" />
+		<execute function="#type" locator1="PGDDLDisplayAddlist#NAME_FIELD" value1="${listName}" />
+		<execute function="#type" locator1="PGDDLDisplayAddlist#DESCRIPTION_FIELD" value1="${listDescription}" />
+		<execute function="#assertClick" locator1="PGDDLDisplayAddlist#DATA_DEFINITION_SELECT_LINK" value1="Select" />
 
-		<execute action="PGDDLDisplayAddlistDatadefinitions#selectFrame" locator1="DATA_DEFINITIONS_IFRAME" />
-		<execute action="PGDDLDisplayAddlistDatadefinitions#type" locator1="BASIC_SEARCH_FIELD" value1="${dataDefinitionName}" />
-		<execute action="PGDDLDisplayAddlistDatadefinitions#assertClick" locator1="BASIC_SEARCH_BUTTON" value1="Search" />
-		<execute action="PGDDLDisplayAddlistDatadefinitions#assertClick" locator1="DATA_DEFINITION_TABLE_NAME_1" value1="${dataDefinitionName}" />
+		<execute function="#selectFrame" locator1="PGDDLDisplayAddlistDatadefinitions#DATA_DEFINITIONS_IFRAME" />
+		<execute function="#type" locator1="PGDDLDisplayAddlistDatadefinitions#BASIC_SEARCH_FIELD" value1="${dataDefinitionName}" />
+		<execute function="#assertClick" locator1="PGDDLDisplayAddlistDatadefinitions#BASIC_SEARCH_BUTTON" value1="Search" />
+		<execute function="#assertClick" locator1="PGDDLDisplayAddlistDatadefinitions#DATA_DEFINITION_TABLE_NAME_1" value1="${dataDefinitionName}" />
 
 		<execute action="PGDDLDisplayAddlist#selectFrameTop" />
-		<execute action="PGDDLDisplayAddlist#assertTextEquals" locator1="DATA_DEFINITION_NAME" value1="${dataDefinitionName}" />
-		<execute action="PGDDLDisplayAddlist#assertClick" locator1="SAVE_BUTTON" value1="Save" />
+		<execute function="#assertTextEquals" locator1="PGDDLDisplayAddlist#DATA_DEFINITION_NAME" value1="${dataDefinitionName}" />
+		<execute function="#assertClick" locator1="PGDDLDisplayAddlist#SAVE_BUTTON" value1="Save" />
 	</command>
 
 	<command name="deleteCP">
-		<execute action="CPDynamicdatalists#type" locator1="BASIC_SEARCH_FIELD" value1="${listName}" />
-		<execute action="CPDynamicdatalists#assertClick" locator1="BASIC_SEARCH_BUTTON" value1="Search" />
-		<execute action="CPDynamicdatalists#assertTextEquals" locator1="LIST_TABLE_NAME_1" value1="${listName}" />
-		<execute action="CPDynamicdatalists#assertClick" locator1="LIST_TABLE_ACTIONS_1" value1="Actions" />
-		<execute action="CPDynamicdatalists#assertClickNoError" locator1="LIST_MENULIST_DELETE" value1="Delete" />
-		<execute action="CPDynamicdatalists#confirm" locator1="CONFIRMATION" value1="Are you sure you want to delete this?" />
-		<execute action="CPDynamicdatalists#assertTextEquals" locator1="SUCCESS_MESSAGE" value1="Your request completed successfully." />
+		<execute function="#type" locator1="CPDynamicdatalists#BASIC_SEARCH_FIELD" value1="${listName}" />
+		<execute function="#assertClick" locator1="CPDynamicdatalists#BASIC_SEARCH_BUTTON" value1="Search" />
+		<execute function="#assertTextEquals" locator1="CPDynamicdatalists#LIST_TABLE_NAME_1" value1="${listName}" />
+		<execute function="#assertClick" locator1="CPDynamicdatalists#LIST_TABLE_ACTIONS_1" value1="Actions" />
+		<execute function="#assertClickNoError" locator1="CPDynamicdatalists#LIST_MENULIST_DELETE" value1="Delete" />
+		<execute function="#confirm" locator1="CPDynamicdatalists#CONFIRMATION" value1="Are you sure you want to delete this?" />
+		<execute function="#assertTextEquals" locator1="CPDynamicdatalists#SUCCESS_MESSAGE" value1="Your request completed successfully." />
 		<execute action="CPDynamicdatalists#assertTextNotPresent" value1="${listName}" />
 	</command>
 
 	<command name="deletePG">
-		<execute action="PGDDLDisplay#assertClick" locator1="TOOLBAR_SELECT_LIST" />
+		<execute function="#assertClick" locator1="PGDDLDisplay#TOOLBAR_SELECT_LIST" />
 
-		<execute action="PGDDLDisplayConfiguration#selectFrame" locator1="CONFIGURATION_IFRAME" />
-		<execute action="PGDDLDisplayConfiguration#type" locator1="BASIC_SEARCH_FIELD" value1="${listName}" />
-		<execute action="PGDDLDisplayConfiguration#assertClick" locator1="BASIC_SEARCH_BUTTON" value1="Search" />
-		<execute action="PGDDLDisplayConfiguration#assertTextEquals" locator1="LIST_TABLE_NAME_1" value1="${listName}" />
-		<execute action="PGDDLDisplayConfiguration#assertClick" locator1="LIST_TABLE_ACTIONS_1" value1="Actions" />
-		<execute action="PGDDLDisplayConfiguration#assertClickNoError" locator1="LIST_MENULIST_DELETE" value1="Delete" />
-		<execute action="PGDDLDisplayConfiguration#confirm" locator1="CONFIRMATION" value1="Are you sure you want to delete this?" />
+		<execute function="#selectFrame" locator1="PGDDLDisplayConfiguration#CONFIGURATION_IFRAME" />
+		<execute function="#type" locator1="PGDDLDisplayConfiguration#BASIC_SEARCH_FIELD" value1="${listName}" />
+		<execute function="#assertClick" locator1="PGDDLDisplayConfiguration#BASIC_SEARCH_BUTTON" value1="Search" />
+		<execute function="#assertTextEquals" locator1="PGDDLDisplayConfiguration#LIST_TABLE_NAME_1" value1="${listName}" />
+		<execute function="#assertClick" locator1="PGDDLDisplayConfiguration#LIST_TABLE_ACTIONS_1" value1="Actions" />
+		<execute function="#assertClickNoError" locator1="PGDDLDisplayConfiguration#LIST_MENULIST_DELETE" value1="Delete" />
+		<execute function="#confirm" locator1="PGDDLDisplayConfiguration#CONFIRMATION" value1="Are you sure you want to delete this?" />
 		<execute action="PGDDLDisplayConfiguration#assertTextNotPresent" value1="${listNameEdit}" />
 
 		<execute action="PGDDLDisplay#selectFrameTop" />
 	</command>
 
 	<command name="editCP">
-		<execute action="CPDynamicdatalists#type" locator1="BASIC_SEARCH_FIELD" value1="${listName}" />
-		<execute action="CPDynamicdatalists#assertClick" locator1="BASIC_SEARCH_BUTTON" value1="Search" />
-		<execute action="CPDynamicdatalists#assertTextEquals" locator1="LIST_TABLE_NAME_1" value1="${listName}" />
-		<execute action="CPDynamicdatalists#assertClick" locator1="LIST_TABLE_ACTIONS_1" value1="Actions" />
-		<execute action="CPDynamicdatalists#assertClick" locator1="LIST_MENULIST_EDIT" value1="Edit" />
+		<execute function="#type" locator1="CPDynamicdatalists#BASIC_SEARCH_FIELD" value1="${listName}" />
+		<execute function="#assertClick" locator1="CPDynamicdatalists#BASIC_SEARCH_BUTTON" value1="Search" />
+		<execute function="#assertTextEquals" locator1="CPDynamicdatalists#LIST_TABLE_NAME_1" value1="${listName}" />
+		<execute function="#assertClick" locator1="CPDynamicdatalists#LIST_TABLE_ACTIONS_1" value1="Actions" />
+		<execute function="#assertClick" locator1="CPDynamicdatalists#LIST_MENULIST_EDIT" value1="Edit" />
 
-		<execute action="CPDynamicdatalistsEditlist#type" locator1="NAME_FIELD" value1="${listNameEdit}" />
-		<execute action="CPDynamicdatalistsEditlist#type" locator1="DESCRIPTION_FIELD" value1="${listDescriptionEdit}" />
-		<execute action="CPDynamicdatalistsEditlist#assertClick" locator1="SAVE_BUTTON" value1="Save" />
+		<execute function="#type" locator1="CPDynamicdatalistsEditlist#NAME_FIELD" value1="${listNameEdit}" />
+		<execute function="#type" locator1="CPDynamicdatalistsEditlist#DESCRIPTION_FIELD" value1="${listDescriptionEdit}" />
+		<execute function="#assertClick" locator1="CPDynamicdatalistsEditlist#SAVE_BUTTON" value1="Save" />
 
-		<execute action="CPDynamicdatalists#assertTextEquals" locator1="SUCCESS_MESSAGE" value1="Your request completed successfully." />
+		<execute function="#assertTextEquals" locator1="CPDynamicdatalists#SUCCESS_MESSAGE" value1="Your request completed successfully." />
 	</command>
 
 	<command name="editPG">
-		<execute action="PGDDLDisplay#assertClick" locator1="TOOLBAR_SELECT_LIST" />
+		<execute function="#assertClick" locator1="PGDDLDisplay#TOOLBAR_SELECT_LIST" />
 
-		<execute action="PGDDLDisplayConfiguration#selectFrame" locator1="CONFIGURATION_IFRAME" />
-		<execute action="PGDDLDisplayConfiguration#type" locator1="BASIC_SEARCH_FIELD" value1="${listName}" />
-		<execute action="PGDDLDisplayConfiguration#assertClick" locator1="BASIC_SEARCH_BUTTON" value1="Search" />
-		<execute action="PGDDLDisplayConfiguration#assertTextEquals" locator1="LIST_TABLE_NAME_1" value1="${listName}" />
-		<execute action="PGDDLDisplayConfiguration#assertClick" locator1="LIST_TABLE_ACTIONS_1" value1="Actions" />
-		<execute action="PGDDLDisplayConfiguration#assertClick" locator1="LIST_MENULIST_EDIT" value1="Edit" />
+		<execute function="#selectFrame" locator1="PGDDLDisplayConfiguration#CONFIGURATION_IFRAME" />
+		<execute function="#type" locator1="PGDDLDisplayConfiguration#BASIC_SEARCH_FIELD" value1="${listName}" />
+		<execute function="#assertClick" locator1="PGDDLDisplayConfiguration#BASIC_SEARCH_BUTTON" value1="Search" />
+		<execute function="#assertTextEquals" locator1="PGDDLDisplayConfiguration#LIST_TABLE_NAME_1" value1="${listName}" />
+		<execute function="#assertClick" locator1="PGDDLDisplayConfiguration#LIST_TABLE_ACTIONS_1" value1="Actions" />
+		<execute function="#assertClick" locator1="PGDDLDisplayConfiguration#LIST_MENULIST_EDIT" value1="Edit" />
 
-		<execute action="PGDDLDisplayConfigurationEditlist#type" locator1="NAME_FIELD" value1="${listNameEdit}" />
-		<execute action="PGDDLDisplayConfigurationEditlist#type" locator1="DESCRIPTION_FIELD" value1="${listDescriptionEdit}" />
-		<execute action="PGDDLDisplayConfigurationEditlist#assertClick" locator1="SAVE_BUTTON" value1="Save" />
+		<execute function="#type" locator1="PGDDLDisplayConfigurationEditlist#NAME_FIELD" value1="${listNameEdit}" />
+		<execute function="#type" locator1="PGDDLDisplayConfigurationEditlist#DESCRIPTION_FIELD" value1="${listDescriptionEdit}" />
+		<execute function="#assertClick" locator1="PGDDLDisplayConfigurationEditlist#SAVE_BUTTON" value1="Save" />
 
-		<execute action="PGDDLDisplayConfiguration#assertTextEquals" locator1="INFO_MESSAGE" value1="Displaying List: ${listNameEdit}" />
-		<execute action="PGDDLDisplayConfiguration#assertTextEquals" locator1="LIST_TABLE_NAME_1" value1="${listNameEdit}" />
-		<execute action="PGDDLDisplayConfiguration#assertTextEquals" locator1="LIST_TABLE_DESCRIPTION_1" value1="${listDescriptionEdit}" />
+		<execute function="#assertTextEquals" locator1="PGDDLDisplayConfiguration#INFO_MESSAGE" value1="Displaying List: ${listNameEdit}" />
+		<execute function="#assertTextEquals" locator1="PGDDLDisplayConfiguration#LIST_TABLE_NAME_1" value1="${listNameEdit}" />
+		<execute function="#assertTextEquals" locator1="PGDDLDisplayConfiguration#LIST_TABLE_DESCRIPTION_1" value1="${listDescriptionEdit}" />
 
 		<execute action="PGDDLDisplay#selectFrameTop" />
 	</command>
 
 	<command name="selectPG">
-		<execute action="PGDDLDisplay#assertClick" locator1="TOOLBAR_SELECT_LIST" />
+		<execute function="#assertClick" locator1="PGDDLDisplay#TOOLBAR_SELECT_LIST" />
 
-		<execute action="PGDDLDisplayConfiguration#selectFrame" locator1="CONFIGURATION_IFRAME" />
-		<execute action="PGDDLDisplayConfiguration#type" locator1="BASIC_SEARCH_FIELD" value1="${listName}" />
-		<execute action="PGDDLDisplayConfiguration#assertClick" locator1="BASIC_SEARCH_BUTTON" value1="Search" />
-		<execute action="PGDDLDisplayConfiguration#assertClick" locator1="LIST_TABLE_NAME_1" value1="${listName}" />
-		<execute action="PGDDLDisplayConfiguration#assertTextEquals" locator1="INFO_MESSAGE" value1="Displaying List: ${listName} (Modified)" />
-		<execute action="PGDDLDisplayConfiguration#assertClick" locator1="SAVE_BUTTON" value1="Save" />
-		<execute action="PGDDLDisplayConfiguration#assertTextEquals" locator1="SUCCESS_MESSAGE" value1="You have successfully updated the setup." />
+		<execute function="#selectFrame" locator1="PGDDLDisplayConfiguration#CONFIGURATION_IFRAME" />
+		<execute function="#type" locator1="PGDDLDisplayConfiguration#BASIC_SEARCH_FIELD" value1="${listName}" />
+		<execute function="#assertClick" locator1="PGDDLDisplayConfiguration#BASIC_SEARCH_BUTTON" value1="Search" />
+		<execute function="#assertClick" locator1="PGDDLDisplayConfiguration#LIST_TABLE_NAME_1" value1="${listName}" />
+		<execute function="#assertTextEquals" locator1="PGDDLDisplayConfiguration#INFO_MESSAGE" value1="Displaying List: ${listName} (Modified)" />
+		<execute function="#assertClick" locator1="PGDDLDisplayConfiguration#SAVE_BUTTON" value1="Save" />
+		<execute function="#assertTextEquals" locator1="PGDDLDisplayConfiguration#SUCCESS_MESSAGE" value1="You have successfully updated the setup." />
 
 		<execute action="PGDDLDisplay#selectFrameTop" />
 	</command>
@@ -117,28 +117,28 @@
 		</execute>
 
 		<while>
-			<condition action="CPDynamicdatalists#isElementPresent" locator1="LIST_TABLE_ACTIONS_1" />
+			<condition function="#isElementPresent" locator1="CPDynamicdatalists#LIST_TABLE_ACTIONS_1" />
 			<then>
-				<execute action="CPDynamicdatalists#assertClick" locator1="LIST_TABLE_ACTIONS_1" value1="Actions" />
-				<execute action="CPDynamicdatalists#assertClickNoError" locator1="LIST_MENULIST_DELETE" value1="Delete" />
-				<execute action="CPDynamicdatalists#confirm" locator1="CONFIRMATION" value1="Are you sure you want to delete this?" />
-				<execute action="CPDynamicdatalists#assertTextEquals" locator1="SUCCESS_MESSAGE" value1="Your request completed successfully." />
+				<execute function="#assertClick" locator1="CPDynamicdatalists#LIST_TABLE_ACTIONS_1" value1="Actions" />
+				<execute function="#assertClickNoError" locator1="CPDynamicdatalists#LIST_MENULIST_DELETE" value1="Delete" />
+				<execute function="#confirm" locator1="CPDynamicdatalists#CONFIRMATION" value1="Are you sure you want to delete this?" />
+				<execute function="#assertTextEquals" locator1="CPDynamicdatalists#SUCCESS_MESSAGE" value1="Your request completed successfully." />
 			</then>
 		</while>
 	</command>
 
 	<command name="viewCP">
-		<execute action="CPDynamicdatalists#type" locator1="BASIC_SEARCH_FIELD" value1="${listName}" />
-		<execute action="CPDynamicdatalists#assertClick" locator1="BASIC_SEARCH_BUTTON" value1="Search" />
-		<execute action="CPDynamicdatalists#assertTextEquals" locator1="LIST_TABLE_NAME_1" value1="${listName}" />
-		<execute action="CPDynamicdatalists#assertTextEquals" locator1="LIST_TABLE_DESCRIPTION_1" value1="${listDescription}" />
-		<execute action="CPDynamicdatalists#assertClick" locator1="LIST_TABLE_NAME_1" value1="${listName}" />
+		<execute function="#type" locator1="CPDynamicdatalists#BASIC_SEARCH_FIELD" value1="${listName}" />
+		<execute function="#assertClick" locator1="CPDynamicdatalists#BASIC_SEARCH_BUTTON" value1="Search" />
+		<execute function="#assertTextEquals" locator1="CPDynamicdatalists#LIST_TABLE_NAME_1" value1="${listName}" />
+		<execute function="#assertTextEquals" locator1="CPDynamicdatalists#LIST_TABLE_DESCRIPTION_1" value1="${listDescription}" />
+		<execute function="#assertClick" locator1="CPDynamicdatalists#LIST_TABLE_NAME_1" value1="${listName}" />
 
-		<execute action="CPDynamicdatalistsList#assertTextEquals" locator1="HEADER_TITLE" value1="${listName}" />
-		<execute action="CPDynamicdatalistsList#assertElementPresent" locator1="ADD_RECORD_BUTTON" />
+		<execute function="#assertTextEquals" locator1="CPDynamicdatalistsList#HEADER_TITLE" value1="${listName}" />
+		<execute function="#assertElementPresent" locator1="CPDynamicdatalistsList#ADD_RECORD_BUTTON" />
 	</command>
 
 	<command name="viewPG">
-		<execute action="PGDDLDisplay#assertTextEquals" locator1="HEADER_TITLE" value1="${listName}" />
+		<execute function="#assertTextEquals" locator1="PGDDLDisplay#HEADER_TITLE" value1="${listName}" />
 	</command>
 </definition>

@@ -1,32 +1,32 @@
 <definition>
 	<command name="addCP">
-		<execute action="CPDocumentsandmedia#assertClick" locator1="ADD" value1="Add" />
-		<execute action="CPDocumentsandmedia#assertClick" locator1="ADD_MENULIST_BASIC_DOCUMENT" value1="Basic Document" />
+		<execute function="#assertClick" locator1="CPDocumentsandmedia#ADD" value1="Add" />
+		<execute function="#assertClick" locator1="CPDocumentsandmedia#ADD_MENULIST_BASIC_DOCUMENT" value1="Basic Document" />
 
 		<if>
 			<equals arg1="${uploadTempFile}" arg2="true" />
 			<then>
-				<execute action="CPDocumentsandmediaAdddocument#uploadTempFile" locator1="FILE_FIELD" value1="${dmDocumentFile}" />
+				<execute function="#uploadTempFile" locator1="CPDocumentsandmediaAdddocument#FILE_FIELD" value1="${dmDocumentFile}" />
 			</then>
 			<else>
-				<execute action="CPDocumentsandmediaAdddocument#uploadCommonFile" locator1="FILE_FIELD" value1="${dmDocumentFile}" />
+				<execute function="#uploadCommonFile" locator1="CPDocumentsandmediaAdddocument#FILE_FIELD" value1="${dmDocumentFile}" />
 			</else>
 		</if>
 
-		<execute action="CPDocumentsandmediaAdddocument#uploadCommonFile" locator1="FILE_FIELD" value1="${dmDocumentFile}" />
-		<execute action="CPDocumentsandmediaAdddocument#type" locator1="TITLE_FIELD" value1="${dmDocumentTitle}" />
-		<execute action="CPDocumentsandmediaAdddocument#type" locator1="DESCRIPTION_FIELD" value1="${dmDocumentDescription}" />
-		<execute action="CPDocumentsandmediaAdddocument#assertClick" locator1="PUBLISH_BUTTON" value1="Publish" />
+		<execute function="#uploadCommonFile" locator1="CPDocumentsandmediaAdddocument#FILE_FIELD" value1="${dmDocumentFile}" />
+		<execute function="#type" locator1="CPDocumentsandmediaAdddocument#TITLE_FIELD" value1="${dmDocumentTitle}" />
+		<execute function="#type" locator1="CPDocumentsandmediaAdddocument#DESCRIPTION_FIELD" value1="${dmDocumentDescription}" />
+		<execute function="#assertClick" locator1="CPDocumentsandmediaAdddocument#PUBLISH_BUTTON" value1="Publish" />
 
-		<execute action="CPDocumentsandmedia#assertTextEquals" locator1="REQUEST" value1="Your request completed successfully." />
-		<execute action="CPDocumentsandmedia#assertElementPresent" locator1="DOCUMENT_CONTAINER_DOCUMENT1" />
+		<execute function="#assertTextEquals" locator1="CPDocumentsandmedia#REQUEST" value1="Your request completed successfully." />
+		<execute function="#assertElementPresent" locator1="CPDocumentsandmedia#DOCUMENT_CONTAINER_DOCUMENT1" />
 
 		<if>
-			<condition action="CPDocumentsandmedia#isElementNotPresent" locator1="DOCUMENT_CONTAINER_DOCUMENT2" />
+			<condition function="#isElementNotPresent" locator1="CPDocumentsandmedia#DOCUMENT_CONTAINER_DOCUMENT2" />
 			<then>
-				<execute action="CPDocumentsandmedia#assertTextEquals" locator1="DOCUMENT_CONTAINER_DOCUMENT1_TITLE" value1="${dmDocumentTitle}" />
-				<execute action="CPDocumentsandmedia#click" locator1="DOCUMENT_CONTAINER_DOCUMENT1_DROPDOWN" />
-				<execute action="CPDocumentsandmedia#assertTextEquals" locator1="DOCUMENT_MENULIST_DOWNLOAD" value1="Download (${dmDocumentSize})" />
+				<execute function="#assertTextEquals" locator1="CPDocumentsandmedia#DOCUMENT_CONTAINER_DOCUMENT1_TITLE" value1="${dmDocumentTitle}" />
+				<execute function="#click" locator1="CPDocumentsandmedia#DOCUMENT_CONTAINER_DOCUMENT1_DROPDOWN" />
+				<execute function="#assertTextEquals" locator1="CPDocumentsandmedia#DOCUMENT_MENULIST_DOWNLOAD" value1="Download (${dmDocumentSize})" />
 			</then>
 			<else>
 				<execute action="CPDocumentsandmedia#assertTextPresent" value1="${dmDocumentTitle}" />
@@ -40,103 +40,103 @@
 			<then>
 				<var name="number" value="${number}" />
 
-				<execute action="PGDocumentsandmedia#assertClick" locator1="TOOLBAR_ADD" value1="Add" />
-				<execute action="PGDocumentsandmedia#assertClick" locator1="ADD_MENULIST_BASIC_DOCUMENT" value1="Basic Document" />
+				<execute function="#assertClick" locator1="PGDocumentsandmedia#TOOLBAR_ADD" value1="Add" />
+				<execute function="#assertClick" locator1="PGDocumentsandmedia#ADD_MENULIST_BASIC_DOCUMENT" value1="Basic Document" />
 
-				<execute action="PGDocumentsandmediaAdddocument#uploadCommonFile" locator1="FILE_FIELD" value1="${dmDocumentFile}" />
-				<execute action="PGDocumentsandmediaAdddocument#type" locator1="TITLE_FIELD" value1="${dmDocumentTitle}${number}" />
-				<execute action="PGDocumentsandmediaAdddocument#type" locator1="DESCRIPTION_FIELD" value1="${dmDocumentDescription}${number}" />
-				<execute action="PGDocumentsandmediaAdddocument#assertClick" locator1="PUBLISH_BUTTON" value1="Publish" />
+				<execute function="#uploadCommonFile" locator1="PGDocumentsandmediaAdddocument#FILE_FIELD" value1="${dmDocumentFile}" />
+				<execute function="#type" locator1="PGDocumentsandmediaAdddocument#TITLE_FIELD" value1="${dmDocumentTitle}${number}" />
+				<execute function="#type" locator1="PGDocumentsandmediaAdddocument#DESCRIPTION_FIELD" value1="${dmDocumentDescription}${number}" />
+				<execute function="#assertClick" locator1="PGDocumentsandmediaAdddocument#PUBLISH_BUTTON" value1="Publish" />
 
-				<execute action="PGDocumentsandmedia#assertTextEquals" locator1="SUCCESS_MESSAGE" value1="Your request completed successfully." />
+				<execute function="#assertTextEquals" locator1="PGDocumentsandmedia#SUCCESS_MESSAGE" value1="Your request completed successfully." />
 
 				<var name="key_dmDocumentTitle" value="${dmDocumentTitle}${number}" />
 
-				<execute action="PGDocumentsandmedia#assertElementPresent" locator1="ENTRIES_DOCUMENT" />
-				<execute action="PGDocumentsandmedia#assertTextEquals" locator1="ENTRIES_DOCUMENT_TITLE" value1="${dmDocumentTitle}${number}" />
-				<execute action="PGDocumentsandmedia#click" locator1="ENTRIES_DOCUMENT_ACTIONS" />
-				<execute action="PGDocumentsandmedia#assertTextEquals" locator1="DOCUMENT_MENULIST_DOWNLOAD" value1="Download (${dmDocumentSize})" />
+				<execute function="#assertElementPresent" locator1="PGDocumentsandmedia#ENTRIES_DOCUMENT" />
+				<execute function="#assertTextEquals" locator1="PGDocumentsandmedia#ENTRIES_DOCUMENT_TITLE" value1="${dmDocumentTitle}${number}" />
+				<execute function="#click" locator1="PGDocumentsandmedia#ENTRIES_DOCUMENT_ACTIONS" />
+				<execute function="#assertTextEquals" locator1="PGDocumentsandmedia#DOCUMENT_MENULIST_DOWNLOAD" value1="Download (${dmDocumentSize})" />
 			</then>
 			<else>
-				<execute action="PGDocumentsandmedia#assertClick" locator1="TOOLBAR_ADD" value1="Add" />
-				<execute action="PGDocumentsandmedia#assertClick" locator1="ADD_MENULIST_BASIC_DOCUMENT" value1="Basic Document" />
+				<execute function="#assertClick" locator1="PGDocumentsandmedia#TOOLBAR_ADD" value1="Add" />
+				<execute function="#assertClick" locator1="PGDocumentsandmedia#ADD_MENULIST_BASIC_DOCUMENT" value1="Basic Document" />
 
-				<execute action="PGDocumentsandmediaAdddocument#uploadCommonFile" locator1="FILE_FIELD" value1="${dmDocumentFile}" />
-				<execute action="PGDocumentsandmediaAdddocument#type" locator1="TITLE_FIELD" value1="${dmDocumentTitle}" />
-				<execute action="PGDocumentsandmediaAdddocument#type" locator1="DESCRIPTION_FIELD" value1="${dmDocumentDescription}" />
-				<execute action="PGDocumentsandmediaAdddocument#assertClick" locator1="PUBLISH_BUTTON" value1="Publish" />
+				<execute function="#uploadCommonFile" locator1="PGDocumentsandmediaAdddocument#FILE_FIELD" value1="${dmDocumentFile}" />
+				<execute function="#type" locator1="PGDocumentsandmediaAdddocument#TITLE_FIELD" value1="${dmDocumentTitle}" />
+				<execute function="#type" locator1="PGDocumentsandmediaAdddocument#DESCRIPTION_FIELD" value1="${dmDocumentDescription}" />
+				<execute function="#assertClick" locator1="PGDocumentsandmediaAdddocument#PUBLISH_BUTTON" value1="Publish" />
 
-				<execute action="PGDocumentsandmedia#assertTextEquals" locator1="SUCCESS_MESSAGE" value1="Your request completed successfully." />
+				<execute function="#assertTextEquals" locator1="PGDocumentsandmedia#SUCCESS_MESSAGE" value1="Your request completed successfully." />
 
 				<var name="key_dmDocumentTitle" value="${dmDocumentTitle}" />
 
-				<execute action="PGDocumentsandmedia#assertElementPresent" locator1="ENTRIES_DOCUMENT" />
-				<execute action="PGDocumentsandmedia#assertTextEquals" locator1="ENTRIES_DOCUMENT_TITLE" value1="${dmDocumentTitle}" />
-				<execute action="PGDocumentsandmedia#click" locator1="ENTRIES_DOCUMENT_ACTIONS" />
-				<execute action="PGDocumentsandmedia#assertTextEquals" locator1="DOCUMENT_MENULIST_DOWNLOAD" value1="Download (${dmDocumentSize})" />
+				<execute function="#assertElementPresent" locator1="PGDocumentsandmedia#ENTRIES_DOCUMENT" />
+				<execute function="#assertTextEquals" locator1="PGDocumentsandmedia#ENTRIES_DOCUMENT_TITLE" value1="${dmDocumentTitle}" />
+				<execute function="#click" locator1="PGDocumentsandmedia#ENTRIES_DOCUMENT_ACTIONS" />
+				<execute function="#assertTextEquals" locator1="PGDocumentsandmedia#DOCUMENT_MENULIST_DOWNLOAD" value1="Download (${dmDocumentSize})" />
 			</else>
 		</if>
 	</command>
 
 	<command name="addPGviaDMD">
-		<execute action="PGDocumentlibrarydisplay#assertClick" locator1="FOLDER_MENU_ADD_DOCUMENT" value1="Add Document" />
+		<execute function="#assertClick" locator1="PGDocumentlibrarydisplay#FOLDER_MENU_ADD_DOCUMENT" value1="Add Document" />
 
-		<execute action="PGDocumentlibrarydisplayAdddocument#selectFrame" locator1="SELECT_DOCUMENT_TYPE_IFRAME" />
-		<execute action="PGDocumentlibrarydisplayAdddocument#assertClick" locator1="SELECT_DOCUMENT_TYPE_BASIC_DOCUMENT" value1="Basic Document" />
+		<execute function="#selectFrame" locator1="PGDocumentlibrarydisplayAdddocument#SELECT_DOCUMENT_TYPE_IFRAME" />
+		<execute function="#assertClick" locator1="PGDocumentlibrarydisplayAdddocument#SELECT_DOCUMENT_TYPE_BASIC_DOCUMENT" value1="Basic Document" />
 		<execute action="PGDocumentlibrarydisplayAdddocument#selectFrame" />
-		<execute action="PGDocumentlibrarydisplayAdddocument#uploadCommonFile" locator1="DOCUMENT_FILE_FIELD" value1="${dmdDocumentFile}" />
-		<execute action="PGDocumentlibrarydisplayAdddocument#type" locator1="DOCUMENT_TITLE_FIELD" value1="${dmdDocumentTitle}" />
-		<execute action="PGDocumentlibrarydisplayAdddocument#assertClick" locator1="PUBLISH_BUTTON" value1="Publish" />
+		<execute function="#uploadCommonFile" locator1="PGDocumentlibrarydisplayAdddocument#DOCUMENT_FILE_FIELD" value1="${dmdDocumentFile}" />
+		<execute function="#type" locator1="PGDocumentlibrarydisplayAdddocument#DOCUMENT_TITLE_FIELD" value1="${dmdDocumentTitle}" />
+		<execute function="#assertClick" locator1="PGDocumentlibrarydisplayAdddocument#PUBLISH_BUTTON" value1="Publish" />
 
-		<execute action="PGDocumentlibrarydisplay#assertTextEquals" locator1="SUCCESS_MESSAGE" value1="Your request completed successfully." />
+		<execute function="#assertTextEquals" locator1="PGDocumentlibrarydisplay#SUCCESS_MESSAGE" value1="Your request completed successfully." />
 
 		<if>
-			<condition action="PGDocumentlibrarydisplay#isElementPresent" locator1="DOCUMENTS_TABLE_NAME_3" />
+			<condition function="#isElementPresent" locator1="PGDocumentlibrarydisplay#DOCUMENTS_TABLE_NAME_3" />
 			<then>
-				<execute action="PGDocumentlibrarydisplay#assertTextEquals" locator1="DOCUMENTS_TABLE_NAME_3" value1="${dmdDocumentTitle}" />
-				<execute action="PGDocumentlibrarydisplay#assertTextEquals" locator1="DOCUMENTS_TABLE_SIZE_3" value1="${dmdDocumentSize}" />
-				<execute action="PGDocumentlibrarydisplay#assertClick" locator1="DOCUMENTS_TABLE_NAME_3" value1="${dmdDocumentTitle}" />
+				<execute function="#assertTextEquals" locator1="PGDocumentlibrarydisplay#DOCUMENTS_TABLE_NAME_3" value1="${dmdDocumentTitle}" />
+				<execute function="#assertTextEquals" locator1="PGDocumentlibrarydisplay#DOCUMENTS_TABLE_SIZE_3" value1="${dmdDocumentSize}" />
+				<execute function="#assertClick" locator1="PGDocumentlibrarydisplay#DOCUMENTS_TABLE_NAME_3" value1="${dmdDocumentTitle}" />
 			</then>
 			<elseif>
-				<condition action="PGDocumentlibrarydisplay#isElementPresent" locator1="DOCUMENTS_TABLE_NAME_2" />
+				<condition function="#isElementPresent" locator1="PGDocumentlibrarydisplay#DOCUMENTS_TABLE_NAME_2" />
 				<then>
-					<execute action="PGDocumentlibrarydisplay#assertTextEquals" locator1="DOCUMENTS_TABLE_NAME_2" value1="${dmdDocumentTitle}" />
-					<execute action="PGDocumentlibrarydisplay#assertTextEquals" locator1="DOCUMENTS_TABLE_SIZE_2" value1="${dmdDocumentSize}" />
-					<execute action="PGDocumentlibrarydisplay#assertClick" locator1="DOCUMENTS_TABLE_NAME_2" value1="${dmdDocumentTitle}" />
+					<execute function="#assertTextEquals" locator1="PGDocumentlibrarydisplay#DOCUMENTS_TABLE_NAME_2" value1="${dmdDocumentTitle}" />
+					<execute function="#assertTextEquals" locator1="PGDocumentlibrarydisplay#DOCUMENTS_TABLE_SIZE_2" value1="${dmdDocumentSize}" />
+					<execute function="#assertClick" locator1="PGDocumentlibrarydisplay#DOCUMENTS_TABLE_NAME_2" value1="${dmdDocumentTitle}" />
 				</then>
 			</elseif>
 			<else>
-				<execute action="PGDocumentlibrarydisplay#assertTextEquals" locator1="DOCUMENTS_TABLE_NAME_1" value1="${dmdDocumentTitle}" />
-				<execute action="PGDocumentlibrarydisplay#assertTextEquals" locator1="DOCUMENTS_TABLE_SIZE_1" value1="${dmdDocumentSize}" />
-				<execute action="PGDocumentlibrarydisplay#assertClick" locator1="DOCUMENTS_TABLE_NAME_1" value1="${dmdDocumentTitle}" />
+				<execute function="#assertTextEquals" locator1="PGDocumentlibrarydisplay#DOCUMENTS_TABLE_NAME_1" value1="${dmdDocumentTitle}" />
+				<execute function="#assertTextEquals" locator1="PGDocumentlibrarydisplay#DOCUMENTS_TABLE_SIZE_1" value1="${dmdDocumentSize}" />
+				<execute function="#assertClick" locator1="PGDocumentlibrarydisplay#DOCUMENTS_TABLE_NAME_1" value1="${dmdDocumentTitle}" />
 			</else>
 		</if>
 
-		<execute action="PGDocumentlibrarydisplayDocument#assertTextEquals" locator1="DOCUMENT_HEADER_TITLE" value1="${dmdDocumentTitle}" />
-		<execute action="PGDocumentlibrarydisplayDocument#assertTextEquals" locator1="DOCUMENT_TITLE" value1="${dmdDocumentTitle}" />
-		<execute action="PGDocumentlibrarydisplayDocument#assertTextEquals" locator1="DOCUMENT_VERSION" value1="Version 1.0" />
+		<execute function="#assertTextEquals" locator1="PGDocumentlibrarydisplayDocument#DOCUMENT_HEADER_TITLE" value1="${dmdDocumentTitle}" />
+		<execute function="#assertTextEquals" locator1="PGDocumentlibrarydisplayDocument#DOCUMENT_TITLE" value1="${dmdDocumentTitle}" />
+		<execute function="#assertTextEquals" locator1="PGDocumentlibrarydisplayDocument#DOCUMENT_VERSION" value1="Version 1.0" />
 	</command>
 
 	<command name="deleteCP">
-		<execute action="CPDocumentsandmedia#assertElementPresent" locator1="DOCUMENT_CONTAINER_DOCUMENT1" />
-		<execute action="CPDocumentsandmedia#assertTextEquals" locator1="DOCUMENT_CONTAINER_DOCUMENT1_TITLE" value1="${dmDocumentTitle}" />
+		<execute function="#assertElementPresent" locator1="CPDocumentsandmedia#DOCUMENT_CONTAINER_DOCUMENT1" />
+		<execute function="#assertTextEquals" locator1="CPDocumentsandmedia#DOCUMENT_CONTAINER_DOCUMENT1_TITLE" value1="${dmDocumentTitle}" />
 
-		<execute action="CPDocumentsandmedia#mouseOver" locator1="DOCUMENT_CONTAINER_DOCUMENT1" />
-		<execute action="CPDocumentsandmedia#assertElementPresent" locator1="DOCUMENT_CONTAINER_DOCUMENT1_CHECKBOX" />
-		<execute action="CPDocumentsandmedia#click" locator1="DOCUMENT_CONTAINER_DOCUMENT1_CHECKBOX" />
-		<execute action="CPDocumentsandmedia#assertElementPresent" locator1="ACTIONS" />
-		<execute action="CPDocumentsandmedia#assertClick" locator1="ACTIONS" value1="Actions" />
-		<execute action="CPDocumentsandmedia#assertClickNoError" locator1="ACTIONS_MENULIST_DELETE" value1="Delete" />
-		<execute action="CPDocumentsandmedia#confirm" locator1="CONFIRMATION" value1="Are you sure you want to delete the selected entries?" />
-		<execute action="CPDocumentsandmedia#assertTextEquals" locator1="REQUEST" value1="Your request completed successfully." />
+		<execute function="#mouseOver" locator1="CPDocumentsandmedia#DOCUMENT_CONTAINER_DOCUMENT1" />
+		<execute function="#assertElementPresent" locator1="CPDocumentsandmedia#DOCUMENT_CONTAINER_DOCUMENT1_CHECKBOX" />
+		<execute function="#click" locator1="CPDocumentsandmedia#DOCUMENT_CONTAINER_DOCUMENT1_CHECKBOX" />
+		<execute function="#assertElementPresent" locator1="CPDocumentsandmedia#ACTIONS" />
+		<execute function="#assertClick" locator1="CPDocumentsandmedia#ACTIONS" value1="Actions" />
+		<execute function="#assertClickNoError" locator1="CPDocumentsandmedia#ACTIONS_MENULIST_DELETE" value1="Delete" />
+		<execute function="#confirm" locator1="CPDocumentsandmedia#CONFIRMATION" value1="Are you sure you want to delete the selected entries?" />
+		<execute function="#assertTextEquals" locator1="CPDocumentsandmedia#REQUEST" value1="Your request completed successfully." />
 
 		<if>
-			<condition action="CPDocumentsandmedia#isElementPresent" locator1="DOCUMENT_CONTAINER_DOCUMENT1" />
+			<condition function="#isElementPresent" locator1="CPDocumentsandmedia#DOCUMENT_CONTAINER_DOCUMENT1" />
 			<then>
-				<execute action="CPDocumentsandmedia#assertTextNotEquals" locator1="DOCUMENT_CONTAINER_DOCUMENT1_TITLE" value1="${dmDocumentTitle}" />
+				<execute function="#assertTextNotEquals" locator1="CPDocumentsandmedia#DOCUMENT_CONTAINER_DOCUMENT1_TITLE" value1="${dmDocumentTitle}" />
 			</then>
 			<else>
-				<execute action="CPDocumentsandmedia#assertElementNotPresent" locator1="DOCUMENT_CONTAINER_DOCUMENT1" />
+				<execute function="#assertElementNotPresent" locator1="CPDocumentsandmedia#DOCUMENT_CONTAINER_DOCUMENT1" />
 			</else>
 		</if>
 	</command>
@@ -144,93 +144,93 @@
 	<command name="deletePG">
 		<var name="key_dmDocumentTitle" value="${dmDocumentTitle}" />
 
-		<execute action="PGDocumentsandmedia#click" locator1="ENTRIES_DOCUMENT" />
+		<execute function="#click" locator1="PGDocumentsandmedia#ENTRIES_DOCUMENT" />
 
-		<execute action="PGDocumentsandmediaDocument#assertTextEquals" locator1="DOCUMENT_INFO_TITLE" value1="${dmDocumentTitle}" />
-		<execute action="PGDocumentsandmediaDocument#assertClickNoError" locator1="TOOLBAR_DELETE_BUTTON" value1="Delete" />
-		<execute action="PGDocumentsandmediaDocument#confirm" locator1="CONFIRMATION" value1="Are you sure you want to delete this entry?" />
-		<execute action="PGDocumentsandmediaDocument#assertTextEquals" locator1="SUCCESS_MESSAGE" value1="Your request completed successfully." />
-		<execute action="PGDocumentsandmediaDocument#assertElementNotPresent" locator1="DOCUMENT_INFO_TITLE" />
+		<execute function="#assertTextEquals" locator1="PGDocumentsandmediaDocument#DOCUMENT_INFO_TITLE" value1="${dmDocumentTitle}" />
+		<execute function="#assertClickNoError" locator1="PGDocumentsandmediaDocument#TOOLBAR_DELETE_BUTTON" value1="Delete" />
+		<execute function="#confirm" locator1="PGDocumentsandmediaDocument#CONFIRMATION" value1="Are you sure you want to delete this entry?" />
+		<execute function="#assertTextEquals" locator1="PGDocumentsandmediaDocument#SUCCESS_MESSAGE" value1="Your request completed successfully." />
+		<execute function="#assertElementNotPresent" locator1="PGDocumentsandmediaDocument#DOCUMENT_INFO_TITLE" />
 	</command>
 
 	<command name="deletePGviaDMD">
-		<execute action="PGDocumentlibrarydisplay#assertTextEquals" locator1="DOCUMENTS_TABLE_NAME_1" value1="${dmdDocumentTitle}" />
-		<execute action="PGDocumentlibrarydisplay#click" locator1="DOCUMENTS_TABLE_ACTIONS_BUTTON_1" />
-		<execute action="PGDocumentlibrarydisplay#assertClickNoError" locator1="DOCUMENT_MENULIST_DELETE" value1="Delete" />
-		<execute action="PGDocumentlibrarydisplay#confirm" locator1="CONFIRMATION" value1="Are you sure you want to delete this?" />
-		<execute action="PGDocumentlibrarydisplay#assertTextEquals" locator1="SUCCESS_MESSAGE" value1="Your request completed successfully." />
+		<execute function="#assertTextEquals" locator1="PGDocumentlibrarydisplay#DOCUMENTS_TABLE_NAME_1" value1="${dmdDocumentTitle}" />
+		<execute function="#click" locator1="PGDocumentlibrarydisplay#DOCUMENTS_TABLE_ACTIONS_BUTTON_1" />
+		<execute function="#assertClickNoError" locator1="PGDocumentlibrarydisplay#DOCUMENT_MENULIST_DELETE" value1="Delete" />
+		<execute function="#confirm" locator1="PGDocumentlibrarydisplay#CONFIRMATION" value1="Are you sure you want to delete this?" />
+		<execute function="#assertTextEquals" locator1="PGDocumentlibrarydisplay#SUCCESS_MESSAGE" value1="Your request completed successfully." />
 		<execute action="PGDocumentlibrarydisplay#assertTextNotPresent" value1="${dmdDocumentTitle}" />
 	</command>
 
 	<command name="downloadCP">
-		<execute action="CPDocumentsandmedia#assertElementPresent" locator1="DOCUMENT_CONTAINER_DOCUMENT1" />
-		<execute action="CPDocumentsandmedia#assertTextEquals" locator1="DOCUMENT_CONTAINER_DOCUMENT1_TITLE" value1="${dmDocumentTitle}" />
+		<execute function="#assertElementPresent" locator1="CPDocumentsandmedia#DOCUMENT_CONTAINER_DOCUMENT1" />
+		<execute function="#assertTextEquals" locator1="CPDocumentsandmedia#DOCUMENT_CONTAINER_DOCUMENT1_TITLE" value1="${dmDocumentTitle}" />
 
-		<execute action="CPDocumentsandmedia#mouseOver" locator1="DOCUMENT_CONTAINER_DOCUMENT1" />
-		<execute action="CPDocumentsandmedia#assertElementPresent" locator1="DOCUMENT_CONTAINER_DOCUMENT1_DROPDOWN" />
-		<execute action="CPDocumentsandmedia#click" locator1="DOCUMENT_CONTAINER_DOCUMENT1_DROPDOWN" />
-		<execute action="CPDocumentsandmedia#click" locator1="DOCUMENT_MENULIST_DOWNLOAD" value1="Download" />
+		<execute function="#mouseOver" locator1="CPDocumentsandmedia#DOCUMENT_CONTAINER_DOCUMENT1" />
+		<execute function="#assertElementPresent" locator1="CPDocumentsandmedia#DOCUMENT_CONTAINER_DOCUMENT1_DROPDOWN" />
+		<execute function="#click" locator1="CPDocumentsandmedia#DOCUMENT_CONTAINER_DOCUMENT1_DROPDOWN" />
+		<execute function="#click" locator1="CPDocumentsandmedia#DOCUMENT_MENULIST_DOWNLOAD" value1="Download" />
 	</command>
 
 	<command name="editCP">
-		<execute action="CPDocumentsandmedia#assertElementPresent" locator1="DOCUMENT_CONTAINER_DOCUMENT1" />
-		<execute action="CPDocumentsandmedia#assertTextEquals" locator1="DOCUMENT_CONTAINER_DOCUMENT1_TITLE" value1="${dmDocumentTitle}" />
+		<execute function="#assertElementPresent" locator1="CPDocumentsandmedia#DOCUMENT_CONTAINER_DOCUMENT1" />
+		<execute function="#assertTextEquals" locator1="CPDocumentsandmedia#DOCUMENT_CONTAINER_DOCUMENT1_TITLE" value1="${dmDocumentTitle}" />
 
-		<execute action="CPDocumentsandmedia#mouseOver" locator1="DOCUMENT_CONTAINER_DOCUMENT1" />
-		<execute action="CPDocumentsandmedia#assertElementPresent" locator1="DOCUMENT_CONTAINER_DOCUMENT1_DROPDOWN" />
-		<execute action="CPDocumentsandmedia#click" locator1="DOCUMENT_CONTAINER_DOCUMENT1_DROPDOWN" />
-		<execute action="CPDocumentsandmedia#assertElementPresent" locator1="DOCUMENT_MENULIST_EDIT" />
-		<execute action="CPDocumentsandmedia#assertClick" locator1="DOCUMENT_MENULIST_EDIT" value1="Edit" />
+		<execute function="#mouseOver" locator1="CPDocumentsandmedia#DOCUMENT_CONTAINER_DOCUMENT1" />
+		<execute function="#assertElementPresent" locator1="CPDocumentsandmedia#DOCUMENT_CONTAINER_DOCUMENT1_DROPDOWN" />
+		<execute function="#click" locator1="CPDocumentsandmedia#DOCUMENT_CONTAINER_DOCUMENT1_DROPDOWN" />
+		<execute function="#assertElementPresent" locator1="CPDocumentsandmedia#DOCUMENT_MENULIST_EDIT" />
+		<execute function="#assertClick" locator1="CPDocumentsandmedia#DOCUMENT_MENULIST_EDIT" value1="Edit" />
 
-		<execute action="CPDocumentsandmediaEditdocument#type" locator1="TITLE_FIELD" value1="${dmDocumentTitleEdit}" />
-		<execute action="CPDocumentsandmediaEditdocument#type" locator1="DESCRIPTION_FIELD" value1="${dmDocumentDescriptionEdit}" />
-		<execute action="CPDocumentsandmediaEditdocument#assertClick" locator1="PUBLISH_BUTTON" value1="Publish" />
+		<execute function="#type" locator1="CPDocumentsandmediaEditdocument#TITLE_FIELD" value1="${dmDocumentTitleEdit}" />
+		<execute function="#type" locator1="CPDocumentsandmediaEditdocument#DESCRIPTION_FIELD" value1="${dmDocumentDescriptionEdit}" />
+		<execute function="#assertClick" locator1="CPDocumentsandmediaEditdocument#PUBLISH_BUTTON" value1="Publish" />
 
-		<execute action="CPDocumentsandmedia#assertTextEquals" locator1="REQUEST" value1="Your request completed successfully." />
-		<execute action="CPDocumentsandmedia#assertElementPresent" locator1="DOCUMENT_CONTAINER_DOCUMENT1" />
-		<execute action="CPDocumentsandmedia#assertTextEquals" locator1="DOCUMENT_CONTAINER_DOCUMENT1_TITLE" value1="${dmDocumentTitleEdit}" />
+		<execute function="#assertTextEquals" locator1="CPDocumentsandmedia#REQUEST" value1="Your request completed successfully." />
+		<execute function="#assertElementPresent" locator1="CPDocumentsandmedia#DOCUMENT_CONTAINER_DOCUMENT1" />
+		<execute function="#assertTextEquals" locator1="CPDocumentsandmedia#DOCUMENT_CONTAINER_DOCUMENT1_TITLE" value1="${dmDocumentTitleEdit}" />
 	</command>
 
 	<command name="editPG">
 		<var name="key_dmDocumentTitle" value="${dmDocumentTitle}" />
 
-		<execute action="PGDocumentsandmedia#click" locator1="ENTRIES_DOCUMENT" />
+		<execute function="#click" locator1="PGDocumentsandmedia#ENTRIES_DOCUMENT" />
 
-		<execute action="PGDocumentsandmediaDocument#assertTextEquals" locator1="DOCUMENT_INFO_TITLE" value1="${dmDocumentTitle}" />
-		<execute action="PGDocumentsandmediaDocument#assertClick" locator1="TOOLBAR_EDIT_BUTTON" value1="Edit" />
+		<execute function="#assertTextEquals" locator1="PGDocumentsandmediaDocument#DOCUMENT_INFO_TITLE" value1="${dmDocumentTitle}" />
+		<execute function="#assertClick" locator1="PGDocumentsandmediaDocument#TOOLBAR_EDIT_BUTTON" value1="Edit" />
 
-		<execute action="PGDocumentsandmediaEditdocument#type" locator1="TITLE_FIELD" value1="${dmDocumentTitleEdit}"  />
-		<execute action="PGDocumentsandmediaEditdocument#type" locator1="DESCRIPTION_FIELD" value1="${dmDocumentDescriptionEdit}" />
-		<execute action="PGDocumentsandmediaEditdocument#assertClick" locator1="PUBLISH_BUTTON" value1="Publish" />
+		<execute function="#type" locator1="PGDocumentsandmediaEditdocument#TITLE_FIELD" value1="${dmDocumentTitleEdit}"  />
+		<execute function="#type" locator1="PGDocumentsandmediaEditdocument#DESCRIPTION_FIELD" value1="${dmDocumentDescriptionEdit}" />
+		<execute function="#assertClick" locator1="PGDocumentsandmediaEditdocument#PUBLISH_BUTTON" value1="Publish" />
 
-		<execute action="PGDocumentsandmediaDocument#assertTextEquals" locator1="SUCCESS_MESSAGE" value1="Your request completed successfully." />
-		<execute action="PGDocumentsandmediaDocument#assertTextEquals" locator1="DOCUMENT_INFO_TITLE" value1="${dmDocumentTitleEdit}" />
+		<execute function="#assertTextEquals" locator1="PGDocumentsandmediaDocument#SUCCESS_MESSAGE" value1="Your request completed successfully." />
+		<execute function="#assertTextEquals" locator1="PGDocumentsandmediaDocument#DOCUMENT_INFO_TITLE" value1="${dmDocumentTitleEdit}" />
 	</command>
 
 	<command name="moveToFolderCP">
-		<execute action="CPDocumentsandmedia#assertElementPresent" locator1="DOCUMENT_CONTAINER_DOCUMENT1" />
-		<execute action="CPDocumentsandmedia#assertElementPresent" locator1="DOCUMENT_CONTAINER_FOLDER2" />
+		<execute function="#assertElementPresent" locator1="CPDocumentsandmedia#DOCUMENT_CONTAINER_DOCUMENT1" />
+		<execute function="#assertElementPresent" locator1="CPDocumentsandmedia#DOCUMENT_CONTAINER_FOLDER2" />
 
-		<execute action="CPDocumentsandmedia#click" locator1="DOCUMENT_CONTAINER_DOCUMENT1_DROPDOWN" />
-		<execute action="CPDocumentsandmedia#assertElementPresent" locator1="DOCUMENT_MENULIST_MOVE" />
-		<execute action="CPDocumentsandmedia#assertClick" locator1="DOCUMENT_MENULIST_MOVE" value1="Move" />
+		<execute function="#click" locator1="CPDocumentsandmedia#DOCUMENT_CONTAINER_DOCUMENT1_DROPDOWN" />
+		<execute function="#assertElementPresent" locator1="CPDocumentsandmedia#DOCUMENT_MENULIST_MOVE" />
+		<execute function="#assertClick" locator1="CPDocumentsandmedia#DOCUMENT_MENULIST_MOVE" value1="Move" />
 
-		<execute action="CPDocumentsandmediaMovedocument#assertClick" locator1="SELECT_PARENT_FOLDER_BUTTON" value1="Select" />
+		<execute function="#assertClick" locator1="CPDocumentsandmediaMovedocument#SELECT_PARENT_FOLDER_BUTTON" value1="Select" />
 
-		<execute action="CPDocumentsandmediaMovedocument#selectWindow" locator1="FOLDER_WINDOW_ID" />
-		<execute action="CPDocumentsandmediaMovedocument#assertClick" locator1="FOLDER_WINDOW_FOLDER1_CHOOSE_BUTTON" value1="Choose" />
+		<execute function="#selectWindow" locator1="CPDocumentsandmediaMovedocument#FOLDER_WINDOW_ID" />
+		<execute function="#assertClick" locator1="CPDocumentsandmediaMovedocument#FOLDER_WINDOW_FOLDER1_CHOOSE_BUTTON" value1="Choose" />
 		<execute function="#selectWindow" locator1="null" />
 
-		<execute action="CPDocumentsandmediaMovedocument#assertTextEquals" locator1="PARENT_FOLDER" value1="${dmFolderName}" />
-		<execute action="CPDocumentsandmediaMovedocument#assertClick" locator1="MOVE_BUTTON" value1="Move" />
+		<execute function="#assertTextEquals" locator1="CPDocumentsandmediaMovedocument#PARENT_FOLDER" value1="${dmFolderName}" />
+		<execute function="#assertClick" locator1="CPDocumentsandmediaMovedocument#MOVE_BUTTON" value1="Move" />
 
-		<execute action="CPDocumentsandmedia#assertTextEquals" locator1="REQUEST" value1="Your request completed successfully." />
-		<execute action="CPDocumentsandmedia#assertElementPresent" locator1="DOCUMENT_CONTAINER_FOLDER1" />
-		<execute action="CPDocumentsandmedia#assertTextEquals" locator1="DOCUMENT_CONTAINER_FOLDER1_TITLE" value1="${dmFolderName}" />
-		<execute action="CPDocumentsandmedia#click" locator1="DOCUMENT_CONTAINER_FOLDER1" />
-		<!--<execute action="CPDocumentsandmedia#assertTextEquals" locator1="BREADCRUMB_LAST" value1="${dmFolderName}" />-->
-		<execute action="CPDocumentsandmedia#assertElementPresent" locator1="FOLDER_VIEW_DOCUMENT1" />
-		<execute action="CPDocumentsandmedia#assertTextEquals" locator1="FOLDER_VIEW_DOCUMENT1_TITLE" value1="${dmDocumentTitle}" />
+		<execute function="#assertTextEquals" locator1="CPDocumentsandmedia#REQUEST" value1="Your request completed successfully." />
+		<execute function="#assertElementPresent" locator1="CPDocumentsandmedia#DOCUMENT_CONTAINER_FOLDER1" />
+		<execute function="#assertTextEquals" locator1="CPDocumentsandmedia#DOCUMENT_CONTAINER_FOLDER1_TITLE" value1="${dmFolderName}" />
+		<execute function="#click" locator1="CPDocumentsandmedia#DOCUMENT_CONTAINER_FOLDER1" />
+		<!--<execute function="#assertTextEquals" locator1="CPDocumentsandmedia#BREADCRUMB_LAST" value1="${dmFolderName}" />-->
+		<execute function="#assertElementPresent" locator1="CPDocumentsandmedia#FOLDER_VIEW_DOCUMENT1" />
+		<execute function="#assertTextEquals" locator1="CPDocumentsandmedia#FOLDER_VIEW_DOCUMENT1_TITLE" value1="${dmDocumentTitle}" />
 	</command>
 
 	<command name="tearDownCP">
@@ -239,15 +239,15 @@
 		</execute>
 
 		<while>
-			<condition action="CPDocumentsandmedia#isElementPresent" locator1="DOCUMENT_CONTAINER_DOCUMENT1" />
+			<condition function="#isElementPresent" locator1="CPDocumentsandmedia#DOCUMENT_CONTAINER_DOCUMENT1" />
 			<then>
-				<execute action="CPDocumentsandmedia#select" locator1="PAGINATION_ROWS_PER_PAGE_SELECT" value1="75" />
-				<execute action="CPDocumentsandmedia#check" locator1="SELECT_ALL_ROWS_CHECKBOX" />
-				<execute action="CPDocumentsandmedia#assertClick" locator1="ACTIONS" value1="Actions" />
-				<execute action="CPDocumentsandmedia#assertElementPresent" locator1="ACTIONS_MENULIST_DELETE" />
-				<execute action="CPDocumentsandmedia#assertClickNoError" locator1="ACTIONS_MENULIST_DELETE" value1="Delete" />
-				<execute action="CPDocumentsandmedia#confirm" locator1="CONFIRMATION" value1="Are you sure you want to delete the selected entries?" />
-				<execute action="CPDocumentsandmedia#assertTextEquals" locator1="REQUEST" value1="Your request completed successfully." />
+				<execute function="#select" locator1="CPDocumentsandmedia#PAGINATION_ROWS_PER_PAGE_SELECT" value1="75" />
+				<execute function="#check" locator1="CPDocumentsandmedia#SELECT_ALL_ROWS_CHECKBOX" />
+				<execute function="#assertClick" locator1="CPDocumentsandmedia#ACTIONS" value1="Actions" />
+				<execute function="#assertElementPresent" locator1="CPDocumentsandmedia#ACTIONS_MENULIST_DELETE" />
+				<execute function="#assertClickNoError" locator1="CPDocumentsandmedia#ACTIONS_MENULIST_DELETE" value1="Delete" />
+				<execute function="#confirm" locator1="CPDocumentsandmedia#CONFIRMATION" value1="Are you sure you want to delete the selected entries?" />
+				<execute function="#assertTextEquals" locator1="CPDocumentsandmedia#REQUEST" value1="Your request completed successfully." />
 			</then>
 		</while>
 	</command>
@@ -258,14 +258,14 @@
 		</execute>
 
 		<if>
-			<condition action="PGDocumentsandmedia#isElementPresent" locator1="ENTRIES_DOCUMENT_GENERIC" />
+			<condition function="#isElementPresent" locator1="PGDocumentsandmedia#ENTRIES_DOCUMENT_GENERIC" />
 			<then>
-				<execute action="PGDocumentsandmedia#check" locator1="TOOLBAR_SELECT_ALL_CHECKBOX" />
-				<execute action="PGDocumentsandmedia#assertClick" locator1="TOOLBAR_ACTIONS" value1="Actions" />
-				<execute action="PGDocumentsandmedia#assertElementPresent" locator1="ACTIONS_MENULIST_DELETE" />
-				<execute action="PGDocumentsandmedia#assertClickNoError" locator1="ACTIONS_MENULIST_DELETE" value1="Delete" />
-				<execute action="PGDocumentsandmedia#confirm" locator1="CONFIRMATION" value1="Are you sure you want to delete the selected entries?" />
-				<execute action="PGDocumentsandmedia#assertTextEquals" locator1="SUCCESS_MESSAGE" value1="Your request completed successfully." />
+				<execute function="#check" locator1="PGDocumentsandmedia#TOOLBAR_SELECT_ALL_CHECKBOX" />
+				<execute function="#assertClick" locator1="PGDocumentsandmedia#TOOLBAR_ACTIONS" value1="Actions" />
+				<execute function="#assertElementPresent" locator1="PGDocumentsandmedia#ACTIONS_MENULIST_DELETE" />
+				<execute function="#assertClickNoError" locator1="PGDocumentsandmedia#ACTIONS_MENULIST_DELETE" value1="Delete" />
+				<execute function="#confirm" locator1="PGDocumentsandmedia#CONFIRMATION" value1="Are you sure you want to delete the selected entries?" />
+				<execute function="#assertTextEquals" locator1="PGDocumentsandmedia#SUCCESS_MESSAGE" value1="Your request completed successfully." />
 			</then>
 		</if>
 	</command>
@@ -276,19 +276,19 @@
 		</execute>
 
 		<while>
-			<condition action="PGDocumentlibrarydisplay#isElementPresent" locator1="DOCUMENTS_TABLE_ACTIONS_BUTTON_1" />
+			<condition function="#isElementPresent" locator1="PGDocumentlibrarydisplay#DOCUMENTS_TABLE_ACTIONS_BUTTON_1" />
 			<then>
-				<execute action="PGDocumentlibrarydisplay#click" locator1="DOCUMENTS_TABLE_ACTIONS_BUTTON_1" />
-				<execute action="PGDocumentlibrarydisplay#assertClickNoError" locator1="DOCUMENT_MENULIST_DELETE" value1="Delete" />
-				<execute action="PGDocumentlibrarydisplay#confirm" locator1="CONFIRMATION" value1="Are you sure you want to delete this?" />
-				<execute action="PGDocumentlibrarydisplay#assertTextEquals" locator1="SUCCESS_MESSAGE" value1="Your request completed successfully." />
+				<execute function="#click" locator1="PGDocumentlibrarydisplay#DOCUMENTS_TABLE_ACTIONS_BUTTON_1" />
+				<execute function="#assertClickNoError" locator1="PGDocumentlibrarydisplay#DOCUMENT_MENULIST_DELETE" value1="Delete" />
+				<execute function="#confirm" locator1="PGDocumentlibrarydisplay#CONFIRMATION" value1="Are you sure you want to delete this?" />
+				<execute function="#assertTextEquals" locator1="PGDocumentlibrarydisplay#SUCCESS_MESSAGE" value1="Your request completed successfully." />
 			</then>
 		</while>
 	</command>
 
 	<command name="viewPG">
-		<execute action="PGDocumentsandmedia#type" locator1="TOOLBAR_SEARCH_FIELD" value1="${dmDocumentTitle}" />
-		<execute action="PGDocumentsandmedia#assertClick" locator1="TOOLBAR_SEARCH_BUTTON" value1="Search" />
-		<execute action="PGDocumentsandmedia#assertTextEquals" locator1="ENTRIES_DOCUMENT_SEARCH_TITLE" value1="${dmDocumentTitle}" />
+		<execute function="#type" locator1="PGDocumentsandmedia#TOOLBAR_SEARCH_FIELD" value1="${dmDocumentTitle}" />
+		<execute function="#assertClick" locator1="PGDocumentsandmedia#TOOLBAR_SEARCH_BUTTON" value1="Search" />
+		<execute function="#assertTextEquals" locator1="PGDocumentsandmedia#ENTRIES_DOCUMENT_SEARCH_TITLE" value1="${dmDocumentTitle}" />
 	</command>
 </definition>

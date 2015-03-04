@@ -2,22 +2,22 @@
 	<command name="addCP">
 		<var name="key_entryTitle" value="${entryTitle}" />
 
-		<execute action="CPBlogs#assertClick" locator1="ENTRY_TABLE_TITLE" value1="${entryTitle}" />
+		<execute function="#assertClick" locator1="CPBlogs#ENTRY_TABLE_TITLE" value1="${entryTitle}" />
 
-		<execute action="CPBlogsEntry#assertClick" locator1="COMMENTS_ADD" value1="Be the first." />
-		<execute action="CPBlogsEntry#type" locator1="COMMENTS_BODY_FIELD" value1="${entryComment}" />
-		<execute action="CPBlogsEntry#assertClick" locator1="COMMENTS_REPLY_BUTTON" value1="Reply" />
-		<execute action="CPBlogsEntry#assertTextEquals" locator1="COMMENTS_SUCCESS" value1="Your request processed successfully." />
-		<execute action="CPBlogsEntry#assertTextEquals" locator1="COMMENT_1" value1="${entryComment}" />
+		<execute function="#assertClick" locator1="CPBlogsEntry#COMMENTS_ADD" value1="Be the first." />
+		<execute function="#type" locator1="CPBlogsEntry#COMMENTS_BODY_FIELD" value1="${entryComment}" />
+		<execute function="#assertClick" locator1="CPBlogsEntry#COMMENTS_REPLY_BUTTON" value1="Reply" />
+		<execute function="#assertTextEquals" locator1="CPBlogsEntry#COMMENTS_SUCCESS" value1="Your request processed successfully." />
+		<execute function="#assertTextEquals" locator1="CPBlogsEntry#COMMENT_1" value1="${entryComment}" />
 	</command>
 
 	<command name="addPG">
-		<execute action="PGBlogs#assertClick" locator1="ENTRY_TITLE_1" value1="${entryTitle}" />
+		<execute function="#assertClick" locator1="PGBlogs#ENTRY_TITLE_1" value1="${entryTitle}" />
 
-		<execute action="PGBlogsEntry#assertClick" locator1="COMMENTS_ADD" value1="Be the first." />
-		<execute action="PGBlogsEntry#type" locator1="COMMENTS_BODY_FIELD" value1="${entryComment}" />
-		<execute action="PGBlogsEntry#assertClick" locator1="COMMENTS_REPLY_BUTTON" value1="Reply" />
-		<execute action="PGBlogsEntry#assertTextEquals" locator1="COMMENTS_SUCCESS" value1="Your request processed successfully." />
-		<execute action="PGBlogsEntry#assertTextEquals" locator1="COMMENT_1" value1="${entryComment}" />
+		<execute function="#assertClick" locator1="PGBlogsEntry#COMMENTS_ADD" value1="Be the first." />
+		<execute function="#type" locator1="PGBlogsEntry#COMMENTS_BODY_FIELD" value1="${entryComment}" />
+		<execute function="#assertClick" locator1="PGBlogsEntry#COMMENTS_REPLY_BUTTON" value1="Reply" />
+		<execute function="#assertTextEquals" locator1="PGBlogsEntry#COMMENTS_SUCCESS" value1="Your request processed successfully." />
+		<execute function="#assertTextEquals" locator1="PGBlogsEntry#COMMENT_1" value1="${entryComment}" />
 	</command>
 </definition>

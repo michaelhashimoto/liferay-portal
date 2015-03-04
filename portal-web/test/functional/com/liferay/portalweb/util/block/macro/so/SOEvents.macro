@@ -1,29 +1,29 @@
 <definition>
 	<command name="configureEventsPortletDisplayDays">
 		<if>
-			<condition action="SOUserBar#isElementNotPresent" locator1="VISIBLE_DOCKBAR" />
+			<condition function="#isElementNotPresent" locator1="SOUserBar#VISIBLE_DOCKBAR" />
 			<then>
-				<execute action="SOUserBar#click" locator1="TOGGLE_DOCKBAR" />
+				<execute function="#click" locator1="SOUserBar#TOGGLE_DOCKBAR" />
 			</then>
 		</if>
 
 		<if>
-			<condition action="SOUserBar#isElementPresent" locator1="EDIT_CONTROLS_NOT_FLAGGED" />
+			<condition function="#isElementPresent" locator1="SOUserBar#EDIT_CONTROLS_NOT_FLAGGED" />
 			<then>
-				<execute action="Dockbar#mouseOver" locator1="EDIT_CONTROLS" />
-				<execute action="Dockbar#assertClick" locator1="EDIT_CONTROLS" value1="Edit Controls" />
+				<execute function="#mouseOver" locator1="Dockbar#EDIT_CONTROLS" />
+				<execute function="#assertClick" locator1="Dockbar#EDIT_CONTROLS" value1="Edit Controls" />
 			</then>
 		</if>
 
-		<execute action="SOSiteHome#click" locator1="EVENTS_DISPLAY_OPTIONS" />
+		<execute function="#click" locator1="SOSiteHome#EVENTS_DISPLAY_OPTIONS" />
 
-		<execute action="BasePortlet#click" locator1="OPTIONS_MENULIST_CONFIGURATION" />
+		<execute function="#click" locator1="BasePortlet#OPTIONS_MENULIST_CONFIGURATION" />
 
-		<execute action="SOSiteHomeEventsConfiguration#selectFrame" locator1="CONFIGURATION_IFRAME" />
-		<execute action="SOSiteHomeEventsConfiguration#select" locator1="DISPLAY_SETTINGS_MAX_DAYS_DISPLAYED_SELECT" value1="${maxDisplayDays}" />
-		<execute action="SOSiteHomeEventsConfiguration#assertClick" locator1="SAVE_BUTTON" value1="Save" />
-		<execute action="SOSiteHomeEventsConfiguration#assertTextEquals" locator1="SUCCESS_MESSAGE" value1="You have successfully updated the setup." />
+		<execute function="#selectFrame" locator1="SOSiteHomeEventsConfiguration#CONFIGURATION_IFRAME" />
+		<execute function="#select" locator1="SOSiteHomeEventsConfiguration#DISPLAY_SETTINGS_MAX_DAYS_DISPLAYED_SELECT" value1="${maxDisplayDays}" />
+		<execute function="#assertClick" locator1="SOSiteHomeEventsConfiguration#SAVE_BUTTON" value1="Save" />
+		<execute function="#assertTextEquals" locator1="SOSiteHomeEventsConfiguration#SUCCESS_MESSAGE" value1="You have successfully updated the setup." />
 		<execute action="SODashboardManageAnnouncementsEntry#selectFrameTop" />
-		<execute action="SOSiteHomeEventsConfiguration#click" locator1="CLOSE_BUTTON" />
+		<execute function="#click" locator1="SOSiteHomeEventsConfiguration#CLOSE_BUTTON" />
 	</command>
 </definition>

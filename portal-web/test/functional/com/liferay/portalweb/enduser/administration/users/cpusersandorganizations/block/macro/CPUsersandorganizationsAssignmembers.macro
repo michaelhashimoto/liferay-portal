@@ -1,23 +1,23 @@
 <definition>
 	<command name="showAdvancedSearch">
 		<if>
-			<condition action="CPUsersandorganizationsAssignmembers#isElementPresent" locator1="BASIC_SEARCH_ADVANCED" value1="Advanced" />
+			<condition function="#isElementPresent" locator1="CPUsersandorganizationsAssignmembers#BASIC_SEARCH_ADVANCED" value1="Advanced" />
 			<then>
-				<execute action="CPUsersandorganizationsAssignmembers#assertClick" locator1="BASIC_SEARCH_ADVANCED" value1="Advanced" />
+				<execute function="#assertClick" locator1="CPUsersandorganizationsAssignmembers#BASIC_SEARCH_ADVANCED" value1="Advanced" />
 			</then>
 		</if>
 
-		<execute action="CPUsersandorganizationsAssignmembers#assertElementPresent" locator1="ADVANCED_SEARCH_MATCH_SELECT" />
+		<execute function="#assertElementPresent" locator1="CPUsersandorganizationsAssignmembers#ADVANCED_SEARCH_MATCH_SELECT" />
 	</command>
 
 	<command name="showBasicSearch">
 		<if>
-			<condition action="CPUsersandorganizationsAssignmembers#isElementPresent" locator1="ADVANCED_SEARCH_BASIC" value1="Basic" />
+			<condition function="#isElementPresent" locator1="CPUsersandorganizationsAssignmembers#ADVANCED_SEARCH_BASIC" value1="Basic" />
 			<then>
-				<execute action="CPUsersandorganizationsAssignmembers#assertClick" locator1="ADVANCED_SEARCH_BASIC" value1="Basic" />
+				<execute function="#assertClick" locator1="CPUsersandorganizationsAssignmembers#ADVANCED_SEARCH_BASIC" value1="Basic" />
 			</then>
 		</if>
 
-		<execute action="CPUsersandorganizationsAssignmembers#assertElementPresent" locator1="BASIC_SEARCH_FIELD" />
+		<execute function="#assertElementPresent" locator1="CPUsersandorganizationsAssignmembers#BASIC_SEARCH_FIELD" />
 	</command>
 </definition>

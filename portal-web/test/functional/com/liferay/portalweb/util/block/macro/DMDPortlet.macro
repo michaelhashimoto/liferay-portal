@@ -4,20 +4,20 @@
 			<var name="pageName" value="${pageName}" />
 		</execute>
 
-		<execute action="PGDocumentlibrarydisplay#assertClick" locator1="OPTIONS_WRENCH_ICON" value1="Options" />
-		<execute action="PGDocumentlibrarydisplay#assertClick" locator1="OPTIONS_MENULIST_CONFIGURATION" value1="Configuration" />
+		<execute function="#assertClick" locator1="PGDocumentlibrarydisplay#OPTIONS_WRENCH_ICON" value1="Options" />
+		<execute function="#assertClick" locator1="PGDocumentlibrarydisplay#OPTIONS_MENULIST_CONFIGURATION" value1="Configuration" />
 
-		<execute action="PGDocumentlibrarydisplayConfiguration#selectFrame" locator1="CONFIGURATION_IFRAME" />
-		<execute action="PGDocumentlibrarydisplayConfiguration#check" locator1="SETUP_DISPLAY_SETTINGS_SHOW_ACTIONS_CHECKBOX" />
-		<execute action="PGDocumentlibrarydisplayConfiguration#check" locator1="SETUP_DISPLAY_SETTINGS_SHOW_FOLDER_MENU_CHECKBOX" />
-		<execute action="PGDocumentlibrarydisplayConfiguration#check" locator1="SETUP_DISPLAY_SETTINGS_SHOW_NAVIGATION_LINKS_CHECKBOX" />
-		<execute action="PGDocumentlibrarydisplayConfiguration#check" locator1="SETUP_DISPLAY_SETTINGS_SHOW_SEARCH_CHECKBOX" />
-		<execute action="PGDocumentlibrarydisplayAddfolder#assertClick" locator1="SAVE_BUTTON" value1="Save" />
-		<execute action="PGDocumentlibrarydisplayConfiguration#assertTextEquals" locator1="SUCCESS_MESSAGE" value1="You have successfully updated the setup." />
-		<execute action="PGDocumentlibrarydisplayConfiguration#assertChecked" locator1="SETUP_DISPLAY_SETTINGS_SHOW_ACTIONS_CHECKBOX" />
-		<execute action="PGDocumentlibrarydisplayConfiguration#assertChecked" locator1="SETUP_DISPLAY_SETTINGS_SHOW_FOLDER_MENU_CHECKBOX" />
-		<execute action="PGDocumentlibrarydisplayConfiguration#assertChecked" locator1="SETUP_DISPLAY_SETTINGS_SHOW_NAVIGATION_LINKS_CHECKBOX" />
-		<execute action="PGDocumentlibrarydisplayConfiguration#assertChecked" locator1="SETUP_DISPLAY_SETTINGS_SHOW_SEARCH_CHECKBOX" />
+		<execute function="#selectFrame" locator1="PGDocumentlibrarydisplayConfiguration#CONFIGURATION_IFRAME" />
+		<execute function="#check" locator1="PGDocumentlibrarydisplayConfiguration#SETUP_DISPLAY_SETTINGS_SHOW_ACTIONS_CHECKBOX" />
+		<execute function="#check" locator1="PGDocumentlibrarydisplayConfiguration#SETUP_DISPLAY_SETTINGS_SHOW_FOLDER_MENU_CHECKBOX" />
+		<execute function="#check" locator1="PGDocumentlibrarydisplayConfiguration#SETUP_DISPLAY_SETTINGS_SHOW_NAVIGATION_LINKS_CHECKBOX" />
+		<execute function="#check" locator1="PGDocumentlibrarydisplayConfiguration#SETUP_DISPLAY_SETTINGS_SHOW_SEARCH_CHECKBOX" />
+		<execute function="#assertClick" locator1="PGDocumentlibrarydisplayAddfolder#SAVE_BUTTON" value1="Save" />
+		<execute function="#assertTextEquals" locator1="PGDocumentlibrarydisplayConfiguration#SUCCESS_MESSAGE" value1="You have successfully updated the setup." />
+		<execute function="#assertChecked" locator1="PGDocumentlibrarydisplayConfiguration#SETUP_DISPLAY_SETTINGS_SHOW_ACTIONS_CHECKBOX" />
+		<execute function="#assertChecked" locator1="PGDocumentlibrarydisplayConfiguration#SETUP_DISPLAY_SETTINGS_SHOW_FOLDER_MENU_CHECKBOX" />
+		<execute function="#assertChecked" locator1="PGDocumentlibrarydisplayConfiguration#SETUP_DISPLAY_SETTINGS_SHOW_NAVIGATION_LINKS_CHECKBOX" />
+		<execute function="#assertChecked" locator1="PGDocumentlibrarydisplayConfiguration#SETUP_DISPLAY_SETTINGS_SHOW_SEARCH_CHECKBOX" />
 
 		<execute action="PGDocumentlibrarydisplay#selectFrame" />
 	</command>

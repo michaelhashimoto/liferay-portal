@@ -96,7 +96,7 @@
 			<var name="userName" value="${adminName}" />
 		</execute>
 
-		<execute action="SOActivities#click" locator1="NAVIGATION_CONNECTIONS" />
+		<execute function="#click" locator1="SOActivities#NAVIGATION_CONNECTIONS" />
 
 		<execute macro="SOActivities#viewMicroblogsActivityEntry">
 			<var name="microblogsEntryContent" value="${microblogsEntryContent}" />
@@ -134,10 +134,10 @@
 			<var name="userName" value="${userName1}" />
 		</execute>
 
-		<execute action="SOActivities#click" locator1="NAVIGATION_ALL" />
-		<execute action="SOActivities#assertTextEquals" locator1="NO_ACTIVITIES" value1="There are no activities." />
-		<execute action="SOActivities#click" locator1="NAVIGATION_CONNECTIONS" />
-		<execute action="SOActivities#assertTextEquals" locator1="NO_ACTIVITIES" value1="There are no activities." />
+		<execute function="#click" locator1="SOActivities#NAVIGATION_ALL" />
+		<execute function="#assertTextEquals" locator1="SOActivities#NO_ACTIVITIES" value1="There are no activities." />
+		<execute function="#click" locator1="SOActivities#NAVIGATION_CONNECTIONS" />
+		<execute function="#assertTextEquals" locator1="SOActivities#NO_ACTIVITIES" value1="There are no activities." />
 
 		<execute macro="SOUser#logoutPG" />
 
@@ -173,7 +173,7 @@
 			<var name="userName" value="${adminName}" />
 		</execute>
 
-		<execute action="SOActivities#click" locator1="NAVIGATION_FOLLOWING" />
+		<execute function="#click" locator1="SOActivities#NAVIGATION_FOLLOWING" />
 
 		<execute macro="SOActivities#viewMicroblogsActivityEntry">
 			<var name="microblogsEntryContent" value="${microblogsEntryContent}" />
@@ -196,10 +196,10 @@
 			<var name="userName" value="${userName2}" />
 		</execute>
 
-		<execute action="SOActivities#click" locator1="NAVIGATION_ALL" />
-		<execute action="SOActivities#assertTextEquals" locator1="NO_ACTIVITIES" value1="There are no activities." />
-		<execute action="SOActivities#click" locator1="NAVIGATION_FOLLOWING" />
-		<execute action="SOActivities#assertTextEquals" locator1="NO_ACTIVITIES" value1="There are no activities." />
+		<execute function="#click" locator1="SOActivities#NAVIGATION_ALL" />
+		<execute function="#assertTextEquals" locator1="SOActivities#NO_ACTIVITIES" value1="There are no activities." />
+		<execute function="#click" locator1="SOActivities#NAVIGATION_FOLLOWING" />
+		<execute function="#assertTextEquals" locator1="SOActivities#NO_ACTIVITIES" value1="There are no activities." />
 	</command>
 
 	<command name="ViewDashboardActivitiesProfiles" priority="5">
@@ -262,10 +262,10 @@
 			<var name="userName" value="${userName}" />
 		</execute>
 
-		<execute action="SOActivities#click" locator1="NAVIGATION_ALL" />
-		<execute action="SOActivities#assertTextEquals" locator1="NO_ACTIVITIES" value1="There are no activities." />
-		<execute action="SOActivities#click" locator1="NAVIGATION_CONNECTIONS" />
-		<execute action="SOActivities#assertTextEquals" locator1="NO_ACTIVITIES" value1="There are no activities." />
+		<execute function="#click" locator1="SOActivities#NAVIGATION_ALL" />
+		<execute function="#assertTextEquals" locator1="SOActivities#NO_ACTIVITIES" value1="There are no activities." />
+		<execute function="#click" locator1="SOActivities#NAVIGATION_CONNECTIONS" />
+		<execute function="#assertTextEquals" locator1="SOActivities#NO_ACTIVITIES" value1="There are no activities." />
 
 		<execute macro="SOMicroblogs#addMicroblogsEntry">
 			<var name="microblogsEntryCharacterCountdown" value="${microblogsEntryCharacterCountdown1}" />
@@ -290,7 +290,7 @@
 			<var name="number" value="02" />
 		</execute>
 
-		<execute action="SOActivities#click" locator1="NAVIGATION_CONNECTIONS" />
+		<execute function="#click" locator1="SOActivities#NAVIGATION_CONNECTIONS" />
 
 		<execute macro="SOActivities#viewMicroblogsActivityEntry">
 			<var name="microblogsEntryContent" value="${microblogsEntryContent4}" />
@@ -323,7 +323,7 @@
 			<var name="userFirstName" value="${microblogsEntryAuthorFirstName}" />
 		</execute>
 
-		<execute action="SOActivities#click" locator1="NAVIGATION_CONNECTIONS" />
+		<execute function="#click" locator1="SOActivities#NAVIGATION_CONNECTIONS" />
 
 		<execute macro="SOActivities#viewMicroblogsActivityEntry">
 			<var name="microblogsEntryContent" value="${microblogsEntryContent2}" />

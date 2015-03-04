@@ -1,5 +1,5 @@
 <definition>
 	<command name="selectMobileDevice">
-		<execute action="MobileDevice#sikuliClick" locator1="MOBILE_DEVICE_SCREENSHOT" />
+		<execute function="#sikuliClick" locator1="MobileDevice#MOBILE_DEVICE_SCREENSHOT" />
 	</command>
 </definition>

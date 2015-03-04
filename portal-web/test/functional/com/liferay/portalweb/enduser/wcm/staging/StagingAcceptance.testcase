@@ -87,12 +87,12 @@
 
 		<execute macro="Staging#publishToLiveNowPG" />
 
-		<execute action="Staging#assertClick" locator1="LIVE_BUTTON" value1="Live" />
+		<execute function="#assertClick" locator1="Staging#LIVE_BUTTON" value1="Live" />
 
 		<var name="key_pageName" value="${pageName}" />
 
-		<execute action="Home#assertClick" locator1="PAGE" value1="${pageName}" />
-		<execute action="Home#assertElementPresent" locator1="PORTLET_1" />
+		<execute function="#assertClick" locator1="Home#PAGE" value1="${pageName}" />
+		<execute function="#assertElementPresent" locator1="Home#PORTLET_1" />
 	</command>
 
 	<command name="StagingPublishToLive" priority="5">

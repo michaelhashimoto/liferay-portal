@@ -1,47 +1,47 @@
 <definition>
 	<command name="addCP">
-		<execute action="CPSites#type" locator1="SEARCH_FIELD" value1="${siteName}" />
-		<execute action="CPSites#assertClick" locator1="SEARCH_BUTTON" value1="Search" />
-		<execute action="CPSites#assertTextEquals" locator1="SITE_TABLE_NAME" value1="${siteName}" />
-		<execute action="CPSites#assertClick" locator1="SITE_TABLE_ACTIONS" value1="Actions" />
-		<execute action="CPSites#assertClick" locator1="SITE_MENULIST_MANAGE_MEMBERSHIPS" value1="Manage Memberships" />
+		<execute function="#type" locator1="CPSites#SEARCH_FIELD" value1="${siteName}" />
+		<execute function="#assertClick" locator1="CPSites#SEARCH_BUTTON" value1="Search" />
+		<execute function="#assertTextEquals" locator1="CPSites#SITE_TABLE_NAME" value1="${siteName}" />
+		<execute function="#assertClick" locator1="CPSites#SITE_TABLE_ACTIONS" value1="Actions" />
+		<execute function="#assertClick" locator1="CPSites#SITE_MENULIST_MANAGE_MEMBERSHIPS" value1="Manage Memberships" />
 
-		<execute action="CPSitememberships#assertClick" locator1="TOOLBAR_VIEW_TEAMS" value1="View Teams" />
+		<execute function="#assertClick" locator1="CPSitememberships#TOOLBAR_VIEW_TEAMS" value1="View Teams" />
 
-		<execute action="CPSitemembershipsViewteams#assertClick" locator1="ADD_TEAM_BUTTON" value1="Add Team" />
+		<execute function="#assertClick" locator1="CPSitemembershipsViewteams#ADD_TEAM_BUTTON" value1="Add Team" />
 
-		<execute action="CPSitemembershipsViewteamsAddteam#type" locator1="NAME_FIELD" value1="${teamName}" />
-		<execute action="CPSitemembershipsViewteamsAddteam#type" locator1="DESCRIPTION_FIELD" value1="${teamDescription}" />
-		<execute action="CPSitemembershipsViewteamsAddteam#assertClick" locator1="SAVE_BUTTON" value1="Save" />
+		<execute function="#type" locator1="CPSitemembershipsViewteamsAddteam#NAME_FIELD" value1="${teamName}" />
+		<execute function="#type" locator1="CPSitemembershipsViewteamsAddteam#DESCRIPTION_FIELD" value1="${teamDescription}" />
+		<execute function="#assertClick" locator1="CPSitemembershipsViewteamsAddteam#SAVE_BUTTON" value1="Save" />
 
-		<execute action="CPSitemembershipsViewteams#assertTextEquals" locator1="SUCCESS_MESSAGE" value1="Your request completed successfully." />
-		<execute action="CPSitemembershipsViewteams#assertTextEquals" locator1="TEAM_TABLE_NAME_1" value1="${teamName}" />
-		<execute action="CPSitemembershipsViewteams#assertTextEquals" locator1="TEAM_TABLE_DESCRIPTION_1" value1="${teamDescription}" />
+		<execute function="#assertTextEquals" locator1="CPSitemembershipsViewteams#SUCCESS_MESSAGE" value1="Your request completed successfully." />
+		<execute function="#assertTextEquals" locator1="CPSitemembershipsViewteams#TEAM_TABLE_NAME_1" value1="${teamName}" />
+		<execute function="#assertTextEquals" locator1="CPSitemembershipsViewteams#TEAM_TABLE_DESCRIPTION_1" value1="${teamDescription}" />
 	</command>
 
 	<command name="assignMembersCP">
-		<execute action="CPSites#type" locator1="SEARCH_FIELD" value1="${siteName}" />
-		<execute action="CPSites#assertClick" locator1="SEARCH_BUTTON" value1="Search" />
-		<execute action="CPSites#assertTextEquals" locator1="SITE_TABLE_NAME" value1="${siteName}" />
-		<execute action="CPSites#assertClick" locator1="SITE_TABLE_ACTIONS" value1="Actions" />
-		<execute action="CPSites#assertClick" locator1="SITE_MENULIST_MANAGE_MEMBERSHIPS" value1="Manage Memberships" />
+		<execute function="#type" locator1="CPSites#SEARCH_FIELD" value1="${siteName}" />
+		<execute function="#assertClick" locator1="CPSites#SEARCH_BUTTON" value1="Search" />
+		<execute function="#assertTextEquals" locator1="CPSites#SITE_TABLE_NAME" value1="${siteName}" />
+		<execute function="#assertClick" locator1="CPSites#SITE_TABLE_ACTIONS" value1="Actions" />
+		<execute function="#assertClick" locator1="CPSites#SITE_MENULIST_MANAGE_MEMBERSHIPS" value1="Manage Memberships" />
 
-		<execute action="CPSitememberships#assertClick" locator1="TOOLBAR_VIEW_TEAMS" value1="View Teams" />
+		<execute function="#assertClick" locator1="CPSitememberships#TOOLBAR_VIEW_TEAMS" value1="View Teams" />
 
-		<execute action="CPSitemembershipsViewteams#type" locator1="SEARCH_FIELD" value1="${teamName}" />
-		<execute action="CPSitemembershipsViewteams#assertClick" locator1="SEARCH_BUTTON" value1="Search" />
-		<execute action="CPSitemembershipsViewteams#assertTextEquals" locator1="TEAM_TABLE_NAME_1" value1="${teamName}" />
-		<execute action="CPSitemembershipsViewteams#assertClick" locator1="TEAM_TABLE_ACTIONS_1" value1="Actions" />
-		<execute action="CPSitemembershipsViewteams#assertClick" locator1="TEAM_MENULIST_ASSIGN_MEMBERS" value1="Assign Members" />
+		<execute function="#type" locator1="CPSitemembershipsViewteams#SEARCH_FIELD" value1="${teamName}" />
+		<execute function="#assertClick" locator1="CPSitemembershipsViewteams#SEARCH_BUTTON" value1="Search" />
+		<execute function="#assertTextEquals" locator1="CPSitemembershipsViewteams#TEAM_TABLE_NAME_1" value1="${teamName}" />
+		<execute function="#assertClick" locator1="CPSitemembershipsViewteams#TEAM_TABLE_ACTIONS_1" value1="Actions" />
+		<execute function="#assertClick" locator1="CPSitemembershipsViewteams#TEAM_MENULIST_ASSIGN_MEMBERS" value1="Assign Members" />
 
-		<execute action="CPSitemembershipsViewteamsAssignMembers#assertClick" locator1="AVAILABLE" value1="Available" />
-		<execute action="CPSitemembershipsViewteamsAssignMembers#type" locator1="BASIC_SEARCH_FIELD" value1="${userScreenName}" />
-		<execute action="CPSitemembershipsViewteamsAssignMembers#assertClick" locator1="BASIC_SEARCH_BUTTON" value1="Search" />
-		<execute action="CPSitemembershipsViewteamsAssignMembers#assertTextEquals" locator1="SEARCH_RESULTS" value1="Showing 1 result." />
-		<execute action="CPSitemembershipsViewteamsAssignMembers#assertTextEquals" locator1="USER_TABLE_SCREEN_NAME_1" value1="${userScreenName}" />
-		<execute action="CPSitemembershipsViewteamsAssignMembers#check" locator1="USER_TABLE_CHECKBOX_1" />
-		<execute action="CPSitemembershipsViewteamsAssignMembers#assertClick" locator1="UPDATE_ASSOCIATIONS_BUTTON" value1="Update Associations" />
-		<execute action="CPSitemembershipsViewteamsAssignMembers#assertTextEquals" locator1="SUCCESS_MESSAGE" value1="Your request completed successfully." />
-		<execute action="CPSitemembershipsViewteamsAssignMembers#assertChecked" locator1="USER_TABLE_CHECKBOX_1" />
+		<execute function="#assertClick" locator1="CPSitemembershipsViewteamsAssignMembers#AVAILABLE" value1="Available" />
+		<execute function="#type" locator1="CPSitemembershipsViewteamsAssignMembers#BASIC_SEARCH_FIELD" value1="${userScreenName}" />
+		<execute function="#assertClick" locator1="CPSitemembershipsViewteamsAssignMembers#BASIC_SEARCH_BUTTON" value1="Search" />
+		<execute function="#assertTextEquals" locator1="CPSitemembershipsViewteamsAssignMembers#SEARCH_RESULTS" value1="Showing 1 result." />
+		<execute function="#assertTextEquals" locator1="CPSitemembershipsViewteamsAssignMembers#USER_TABLE_SCREEN_NAME_1" value1="${userScreenName}" />
+		<execute function="#check" locator1="CPSitemembershipsViewteamsAssignMembers#USER_TABLE_CHECKBOX_1" />
+		<execute function="#assertClick" locator1="CPSitemembershipsViewteamsAssignMembers#UPDATE_ASSOCIATIONS_BUTTON" value1="Update Associations" />
+		<execute function="#assertTextEquals" locator1="CPSitemembershipsViewteamsAssignMembers#SUCCESS_MESSAGE" value1="Your request completed successfully." />
+		<execute function="#assertChecked" locator1="CPSitemembershipsViewteamsAssignMembers#USER_TABLE_CHECKBOX_1" />
 	</command>
 </definition>

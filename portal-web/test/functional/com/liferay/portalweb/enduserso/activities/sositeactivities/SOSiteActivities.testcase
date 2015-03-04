@@ -73,7 +73,7 @@
 			<var name="userName" value="Joe" />
 		</execute>
 
-		<execute action="SOActivities#click" locator1="ACTIVITIES_DOCUMENT_TITLE_INCREMENT" value1="${dmDocumentTitle}${documentTitleRow}" />
+		<execute function="#click" locator1="SOActivities#ACTIVITIES_DOCUMENT_TITLE_INCREMENT" value1="${dmDocumentTitle}${documentTitleRow}" />
 
 		<execute macro="SODocuments#viewPGDocumentDetailView">
 			<var name="dmDocumentDescription" value="${dmDocumentDescription}${documentTitleRow}" />
@@ -89,7 +89,7 @@
 
 		<var name="documentTitleRow" value="${documentTitleRow?increment()}" />
 
-		<execute action="SOActivities#click" locator1="ACTIVITIES_DOCUMENT_TITLE_INCREMENT" value1="${dmDocumentTitle}${documentTitleRow}" />
+		<execute function="#click" locator1="SOActivities#ACTIVITIES_DOCUMENT_TITLE_INCREMENT" value1="${dmDocumentTitle}${documentTitleRow}" />
 
 		<execute macro="SODocuments#viewPGDocumentDetailView">
 			<var name="dmDocumentDescription" value="${dmDocumentDescription}${documentTitleRow}" />
@@ -357,9 +357,9 @@
 			<var name="userName" value="${userName}" />
 		</execute>
 
-		<execute action="SOActivities#assertTextEquals" locator1="NO_ACTIVITIES" value1="There are no activities." />
-		<execute action="SOActivities#click" locator1="NAVIGATION_ME" />
-		<execute action="SOActivities#assertTextEquals" locator1="NO_ACTIVITIES" value1="There are no activities." />
+		<execute function="#assertTextEquals" locator1="SOActivities#NO_ACTIVITIES" value1="There are no activities." />
+		<execute function="#click" locator1="SOActivities#NAVIGATION_ME" />
+		<execute function="#assertTextEquals" locator1="SOActivities#NO_ACTIVITIES" value1="There are no activities." />
 
 		<execute macro="SOActivities#addSiteContent">
 			<var name="number" value="02" />

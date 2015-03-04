@@ -1,46 +1,46 @@
 <definition>
 	<command name="blogsEntryPG">
-		<execute action="PGSearch#type" locator1="SEARCH_FIELD" value1="${entryTitle}" />
-		<execute action="PGSearch#click" locator1="SEARCH_ICON" />
+		<execute function="#type" locator1="PGSearch#SEARCH_FIELD" value1="${entryTitle}" />
+		<execute function="#click" locator1="PGSearch#SEARCH_ICON" />
 
-		<execute action="PGSearchResults#assertTextEquals" locator1="ASSET_ENTRY_TABLE_TITLE_1" value1="${entryTitle}" />
-		<execute action="PGSearchResults#assertTextEquals" locator1="ASSET_ENTRY_TABLE_TYPE_1" value1="Blogs Entry" />
-		<execute action="PGSearchResults#assertTextEquals" locator1="ASSET_ENTRY_TABLE_SUMMARY_1" value1="${entryContent}" />
-		<execute action="PGSearchResults#assertTextEquals" locator1="SEARCH_RESULTS" value1="Showing 1 - 1." />
+		<execute function="#assertTextEquals" locator1="PGSearchResults#ASSET_ENTRY_TABLE_TITLE_1" value1="${entryTitle}" />
+		<execute function="#assertTextEquals" locator1="PGSearchResults#ASSET_ENTRY_TABLE_TYPE_1" value1="Blogs Entry" />
+		<execute function="#assertTextEquals" locator1="PGSearchResults#ASSET_ENTRY_TABLE_SUMMARY_1" value1="${entryContent}" />
+		<execute function="#assertTextEquals" locator1="PGSearchResults#SEARCH_RESULTS" value1="Showing 1 - 1." />
 	</command>
 
 	<command name="messageboardsThreadPG">
-		<execute action="PGSearch#type" locator1="SEARCH_FIELD" value1="${threadSubject}" />
-		<execute action="PGSearch#click" locator1="SEARCH_ICON" />
+		<execute function="#type" locator1="PGSearch#SEARCH_FIELD" value1="${threadSubject}" />
+		<execute function="#click" locator1="PGSearch#SEARCH_ICON" />
 
-		<execute action="PGSearchResults#assertTextEquals" locator1="ASSET_ENTRY_TABLE_TITLE_1" value1="${threadSubject}" />
-		<execute action="PGSearchResults#assertTextEquals" locator1="ASSET_ENTRY_TABLE_TYPE_1" value1="Message Boards Message" />
-		<execute action="PGSearchResults#assertTextEquals" locator1="ASSET_ENTRY_TABLE_SUMMARY_1" value1="${threadBody}" />
-		<execute action="PGSearchResults#assertTextEquals" locator1="SEARCH_RESULTS" value1="Showing 1 - 1." />
+		<execute function="#assertTextEquals" locator1="PGSearchResults#ASSET_ENTRY_TABLE_TITLE_1" value1="${threadSubject}" />
+		<execute function="#assertTextEquals" locator1="PGSearchResults#ASSET_ENTRY_TABLE_TYPE_1" value1="Message Boards Message" />
+		<execute function="#assertTextEquals" locator1="PGSearchResults#ASSET_ENTRY_TABLE_SUMMARY_1" value1="${threadBody}" />
+		<execute function="#assertTextEquals" locator1="PGSearchResults#SEARCH_RESULTS" value1="Showing 1 - 1." />
 	</command>
 
 	<command name="userPG">
-		<execute action="PGSearch#type" locator1="SEARCH_FIELD" value1="users*" />
-		<execute action="PGSearch#click" locator1="SEARCH_ICON" />
+		<execute function="#type" locator1="PGSearch#SEARCH_FIELD" value1="users*" />
+		<execute function="#click" locator1="PGSearch#SEARCH_ICON" />
 
-		<execute action="PGSearchResults#assertTextEquals" locator1="ASSET_ENTRY_TABLE_TITLE_1" value1="${userFirstName} ${userLastName}" />
-		<execute action="PGSearchResults#assertTextEquals" locator1="ASSET_ENTRY_TABLE_TYPE_1" value1="User" />
-		<execute action="PGSearchResults#assertTextEquals" locator1="SEARCH_RESULTS" value1="Showing 1 - 1." />
+		<execute function="#assertTextEquals" locator1="PGSearchResults#ASSET_ENTRY_TABLE_TITLE_1" value1="${userFirstName} ${userLastName}" />
+		<execute function="#assertTextEquals" locator1="PGSearchResults#ASSET_ENTRY_TABLE_TYPE_1" value1="User" />
+		<execute function="#assertTextEquals" locator1="PGSearchResults#SEARCH_RESULTS" value1="Showing 1 - 1." />
 
-		<execute action="PGSearchResults#type" locator1="SEARCH_FIELD" value1="userf*" />
-		<execute action="PGSearchResults#click" locator1="SEARCH_ICON" />
-		<execute action="PGSearchResults#assertTextEquals" locator1="ASSET_ENTRY_TABLE_TITLE_1" value1="${userFirstName} ${userLastName}" />
-		<execute action="PGSearchResults#assertTextEquals" locator1="ASSET_ENTRY_TABLE_TYPE_1" value1="User" />
-		<execute action="PGSearchResults#assertTextEquals" locator1="SEARCH_RESULTS" value1="Showing 1 - 1." />
+		<execute function="#type" locator1="PGSearchResults#SEARCH_FIELD" value1="userf*" />
+		<execute function="#click" locator1="PGSearchResults#SEARCH_ICON" />
+		<execute function="#assertTextEquals" locator1="PGSearchResults#ASSET_ENTRY_TABLE_TITLE_1" value1="${userFirstName} ${userLastName}" />
+		<execute function="#assertTextEquals" locator1="PGSearchResults#ASSET_ENTRY_TABLE_TYPE_1" value1="User" />
+		<execute function="#assertTextEquals" locator1="PGSearchResults#SEARCH_RESULTS" value1="Showing 1 - 1." />
 	</command>
 
 	<command name="wikiPagePG">
-		<execute action="PGSearch#type" locator1="SEARCH_FIELD" value1="${wikiPageTitle}" />
-		<execute action="PGSearch#click" locator1="SEARCH_ICON" />
+		<execute function="#type" locator1="PGSearch#SEARCH_FIELD" value1="${wikiPageTitle}" />
+		<execute function="#click" locator1="PGSearch#SEARCH_ICON" />
 
-		<execute action="PGSearchResults#assertTextEquals" locator1="ASSET_ENTRY_TABLE_TITLE_1" value1="${wikiPageTitle}" />
-		<execute action="PGSearchResults#assertTextEquals" locator1="ASSET_ENTRY_TABLE_TYPE_1" value1="Wiki Page" />
-		<execute action="PGSearchResults#assertTextEquals" locator1="ASSET_ENTRY_TABLE_SUMMARY_1" value1="${wikiPageContent}" />
-		<execute action="PGSearchResults#assertTextEquals" locator1="SEARCH_RESULTS" value1="Showing 1 - 1." />
+		<execute function="#assertTextEquals" locator1="PGSearchResults#ASSET_ENTRY_TABLE_TITLE_1" value1="${wikiPageTitle}" />
+		<execute function="#assertTextEquals" locator1="PGSearchResults#ASSET_ENTRY_TABLE_TYPE_1" value1="Wiki Page" />
+		<execute function="#assertTextEquals" locator1="PGSearchResults#ASSET_ENTRY_TABLE_SUMMARY_1" value1="${wikiPageContent}" />
+		<execute function="#assertTextEquals" locator1="PGSearchResults#SEARCH_RESULTS" value1="Showing 1 - 1." />
 	</command>
 </definition>
