@@ -254,7 +254,7 @@
 	<command name="viewUpcomingTask">
 		<execute function="Click#textClickAtAndWait" locator1="SOUserBar#DASHBOARD" />
 
-		<var locator="PROFILE_NAME" name="currentUser" path="SODashboard" />
+		<var locator="SODashboard#PROFILE_NAME" name="currentUser" />
 
 		<if>
 			<equals arg1="${taskAssignee}" arg2="${currentUser}" />
