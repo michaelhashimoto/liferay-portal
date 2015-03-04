@@ -4,47 +4,47 @@
 	<command name="sendMessage">
 		<execute function="AssertClick#assertValueClickAt" locator1="SOMessages#NEW_MESSAGE_BUTTON" value1="New Message" />
 
-		<execute function="#click" locator1="SOMessagesAdd#TO_FIELD_DROPDOWN" />
+		<execute function="Click" locator1="SOMessagesAdd#TO_FIELD_DROPDOWN" />
 		<execute function="Type#sendKeys" locator1="SOMessagesAdd#TO_FIELD" value1="${recipientName}" />
 		<execute function="AssertClick#pauseAssertPartialTextClickAt" locator1="SOMessagesAdd#TO_FIELD_DROPDOWN_LIST" value1="${key_recipientName}" />
-		<execute function="#assertTextEquals" locator1="SOMessagesAdd#TO_FIELD" value1="${recipientName} &lt;${recipientScreenName}&gt;, " />
+		<execute function="AssertTextEquals" locator1="SOMessagesAdd#TO_FIELD" value1="${recipientName} &lt;${recipientScreenName}&gt;, " />
 
 		<if>
 			<isset var="number" />
 			<then>
-				<execute function="#type" locator1="SOMessagesAdd#SUBJECT_FIELD" value1="${messageSubject}${number}" />
-				<execute function="#type" locator1="SOMessagesAdd#BODY_FIELD" value1="${messageBody}${number}" />
+				<execute function="Type" locator1="SOMessagesAdd#SUBJECT_FIELD" value1="${messageSubject}${number}" />
+				<execute function="Type" locator1="SOMessagesAdd#BODY_FIELD" value1="${messageBody}${number}" />
 			</then>
 			<else>
-				<execute function="#type" locator1="SOMessagesAdd#SUBJECT_FIELD" value1="${messageSubject}" />
-				<execute function="#type" locator1="SOMessagesAdd#BODY_FIELD" value1="${messageBody}" />
+				<execute function="Type" locator1="SOMessagesAdd#SUBJECT_FIELD" value1="${messageSubject}" />
+				<execute function="Type" locator1="SOMessagesAdd#BODY_FIELD" value1="${messageBody}" />
 			</else>
 		</if>
 
 		<if>
 			<isset var="messageAttachmentFile" />
 			<then>
-				<execute function="#uploadCommonFile" locator1="SOMessagesAdd#ATTACHMENTS_FIELD" value1="${messageAttachmentFile}" />
+				<execute function="UploadCommonFile" locator1="SOMessagesAdd#ATTACHMENTS_FIELD" value1="${messageAttachmentFile}" />
 			</then>
 		</if>
 
-		<execute function="#click" locator1="SOMessagesAdd#SEND_BUTTON" />
+		<execute function="Click" locator1="SOMessagesAdd#SEND_BUTTON" />
 
-		<execute function="#assertTextEquals" locator1="SOMessagesAdd#SUCCESS_MESSAGE" value1="Your request completed successfully." />
+		<execute function="AssertTextEquals" locator1="SOMessagesAdd#SUCCESS_MESSAGE" value1="Your request completed successfully." />
 	</command>
 
 	<command name="sendReplyMessage">
-		<execute function="#type" locator1="SOMessagesMessage#PRIVATE_MESSAGE_REPLY_BODY_FIELD" value1="${messageReplyBody}" />
+		<execute function="Type" locator1="SOMessagesMessage#PRIVATE_MESSAGE_REPLY_BODY_FIELD" value1="${messageReplyBody}" />
 
 		<if>
 			<isset var="messageReplyAttachmentFile" />
 			<then>
-				<execute function="#uploadCommonFile" locator1="SOMessagesMessage#PRIVATE_MESSAGE_REPLY_ATTACHMENT_FIELD" value1="${messageReplyAttachmentFile}" />
+				<execute function="UploadCommonFile" locator1="SOMessagesMessage#PRIVATE_MESSAGE_REPLY_ATTACHMENT_FIELD" value1="${messageReplyAttachmentFile}" />
 			</then>
 		</if>
 
-		<execute function="#click" locator1="SOMessagesMessage#PRIVATE_MESSAGE_SEND_BUTTON" />
-		<execute function="#assertTextEquals" locator1="SOMessagesMessage#SUCCESS_MESSAGE" value1="Your request completed successfully." />
+		<execute function="Click" locator1="SOMessagesMessage#PRIVATE_MESSAGE_SEND_BUTTON" />
+		<execute function="AssertTextEquals" locator1="SOMessagesMessage#SUCCESS_MESSAGE" value1="Your request completed successfully." />
 	</command>
 
 	<command name="tearDownPG">
@@ -53,9 +53,9 @@
 		<execute function="Click#textClickAtAndWait" locator1="SOUserBar#DASHBOARD" />
 
 		<execute function="Click#textClickAtAndWait" locator1="SODashboard#NAVIGATION_MESSAGES" />
-		<execute function="#check" locator1="SOMessages#SELECT_ALL_CHECKBOX" />
-		<execute function="#click" locator1="SOMessages#DELETE_BUTTON" />
-		<execute function="#assertTextEquals" locator1="SOMessages#INFO_MESSAGE" value1="No messages found." />
+		<execute function="Check" locator1="SOMessages#SELECT_ALL_CHECKBOX" />
+		<execute function="Click" locator1="SOMessages#DELETE_BUTTON" />
+		<execute function="AssertTextEquals" locator1="SOMessages#INFO_MESSAGE" value1="No messages found." />
 	</command>
 
 	<command name="viewMessage">
@@ -63,19 +63,19 @@
 		<if>
 			<isset var="number" />
 			<then>
-				<execute function="#click" locator1="SOMessages#MESSAGE_SUBJECT_INCREMENT" />
+				<execute function="Click" locator1="SOMessages#MESSAGE_SUBJECT_INCREMENT" />
 
-				<execute function="#assertTextEquals" locator1="SOMessagesMessage#PRIVATE_MESSAGE_SUBJECT" value1="${messageSubject}${number}" />
-				<execute function="#assertTextEquals" locator1="SOMessagesMessage#PRIVATE_MESSAGE_USERS" value1="Between ${connectionName} And You" />
-				<execute function="#assertTextEquals" locator1="SOMessagesMessage#PRIVATE_MESSAGE_SENDER" value1="${senderName}" />
+				<execute function="AssertTextEquals" locator1="SOMessagesMessage#PRIVATE_MESSAGE_SUBJECT" value1="${messageSubject}${number}" />
+				<execute function="AssertTextEquals" locator1="SOMessagesMessage#PRIVATE_MESSAGE_USERS" value1="Between ${connectionName} And You" />
+				<execute function="AssertTextEquals" locator1="SOMessagesMessage#PRIVATE_MESSAGE_SENDER" value1="${senderName}" />
 				<execute function="AssertTextEquals#assertPartialText" locator1="SOMessagesMessage#PRIVATE_MESSAGE_BODY" value1="${messageBody}${number}" />
 			</then>
 			<else>
-				<execute function="#click" locator1="SOMessages#MESSAGE_SUBJECT" />
+				<execute function="Click" locator1="SOMessages#MESSAGE_SUBJECT" />
 
-				<execute function="#assertTextEquals" locator1="SOMessagesMessage#PRIVATE_MESSAGE_SUBJECT" value1="${messageSubject}" />
-				<execute function="#assertTextEquals" locator1="SOMessagesMessage#PRIVATE_MESSAGE_USERS" value1="Between ${connectionName} And You" />
-				<execute function="#assertTextEquals" locator1="SOMessagesMessage#PRIVATE_MESSAGE_SENDER" value1="${senderName}" />
+				<execute function="AssertTextEquals" locator1="SOMessagesMessage#PRIVATE_MESSAGE_SUBJECT" value1="${messageSubject}" />
+				<execute function="AssertTextEquals" locator1="SOMessagesMessage#PRIVATE_MESSAGE_USERS" value1="Between ${connectionName} And You" />
+				<execute function="AssertTextEquals" locator1="SOMessagesMessage#PRIVATE_MESSAGE_SENDER" value1="${senderName}" />
 				<execute function="AssertTextEquals#assertPartialText" locator1="SOMessagesMessage#PRIVATE_MESSAGE_BODY" value1="${messageBody}" />
 			</else>
 		</if>
@@ -83,8 +83,8 @@
 		<if>
 			<isset var="messageAttachmentFile" />
 			<then>
-				<execute function="#assertElementPresent" locator1="SOMessagesMessage#PRIVATE_MESSAGE_ATTACHMENT" />
-				<execute function="#assertTextEquals" locator1="SOMessagesMessage#PRIVATE_MESSAGE_ATTACHMENT_LINK" value1="${messageAttachmentFile}" />
+				<execute function="AssertElementPresent" locator1="SOMessagesMessage#PRIVATE_MESSAGE_ATTACHMENT" />
+				<execute function="AssertTextEquals" locator1="SOMessagesMessage#PRIVATE_MESSAGE_ATTACHMENT_LINK" value1="${messageAttachmentFile}" />
 			</then>
 		</if>
 	</command>
@@ -93,14 +93,14 @@
 		<if>
 			<isset var="number" />
 			<then>
-				<execute function="#assertTextEquals" locator1="SOMessages#MESSAGE_SENDER_INCREMENT" value1="${connectionName}" />
-				<execute function="#assertTextEquals" locator1="SOMessages#MESSAGE_SUBJECT_INCREMENT" value1="${messageSubject}${number}" />
-				<execute function="#assertTextEquals" locator1="SOMessages#MESSAGE_BODY_INCREMENT" value1="${messageBody}${number}" />
+				<execute function="AssertTextEquals" locator1="SOMessages#MESSAGE_SENDER_INCREMENT" value1="${connectionName}" />
+				<execute function="AssertTextEquals" locator1="SOMessages#MESSAGE_SUBJECT_INCREMENT" value1="${messageSubject}${number}" />
+				<execute function="AssertTextEquals" locator1="SOMessages#MESSAGE_BODY_INCREMENT" value1="${messageBody}${number}" />
 			</then>
 			<else>
-				<execute function="#assertTextEquals" locator1="SOMessages#MESSAGE_SENDER" value1="${connectionName}" />
-				<execute function="#assertTextEquals" locator1="SOMessages#MESSAGE_SUBJECT" value1="${messageSubject}" />
-				<execute function="#assertTextEquals" locator1="SOMessages#MESSAGE_BODY" value1="${messageBody}" />
+				<execute function="AssertTextEquals" locator1="SOMessages#MESSAGE_SENDER" value1="${connectionName}" />
+				<execute function="AssertTextEquals" locator1="SOMessages#MESSAGE_SUBJECT" value1="${messageSubject}" />
+				<execute function="AssertTextEquals" locator1="SOMessages#MESSAGE_BODY" value1="${messageBody}" />
 			</else>
 		</if>
 	</command>
@@ -108,41 +108,41 @@
 	<command name="viewMessageNotification">
 		<execute function="Click#textClickAtAndWait" locator1="SOUserBar#DASHBOARD" />
 		<execute function="AssertElementPresent#assertElementPresent" locator1="SOUserBar#NOTIFICATION" />
-		<execute function="#assertTextEquals" locator1="SOUserBar#NOTIFICATION_MENU_COUNT" value1="1" />
-		<execute function="#mouseOver" locator1="SOUserBar#NOTIFICATION" />
+		<execute function="AssertTextEquals" locator1="SOUserBar#NOTIFICATION_MENU_COUNT" value1="1" />
+		<execute function="MouseOver" locator1="SOUserBar#NOTIFICATION" />
 		<execute function="AssertTextEquals#assertPartialText" locator1="SOUserBar#NOTIFICATION_MENU_ENTRY_CONTENT" value1="${senderName} sent you a message." />
-		<execute function="#assertTextEquals" locator1="SOUserBar#NOTIFICATION_MENU_ENTRY_SUBCONTENT" value1="${messageBody}" />
-		<execute function="#assertClick" locator1="SOUserBar#NOTIFICATION_MENU_MARK_ALL_AS_READ" value1="Mark All as Read" />
-		<execute function="#assertTextEquals" locator1="SOUserBar#NOTIFICATION_MENU_COUNT" value1="0" />
+		<execute function="AssertTextEquals" locator1="SOUserBar#NOTIFICATION_MENU_ENTRY_SUBCONTENT" value1="${messageBody}" />
+		<execute function="AssertClick" locator1="SOUserBar#NOTIFICATION_MENU_MARK_ALL_AS_READ" value1="Mark All as Read" />
+		<execute function="AssertTextEquals" locator1="SOUserBar#NOTIFICATION_MENU_COUNT" value1="0" />
 	</command>
 
 	<command name="viewReplyMessage">
-		<execute function="#assertTextEquals" locator1="SOMessages#MESSAGE_SENDER" value1="${connectionName}" />
-		<execute function="#assertTextEquals" locator1="SOMessages#MESSAGE_SUBJECT" value1="${messageSubject}" />
-		<execute function="#assertTextEquals" locator1="SOMessages#MESSAGE_BODY" value1="${messageReplyBody}" />
-		<execute function="#click" locator1="SOMessages#MESSAGE_SUBJECT" />
+		<execute function="AssertTextEquals" locator1="SOMessages#MESSAGE_SENDER" value1="${connectionName}" />
+		<execute function="AssertTextEquals" locator1="SOMessages#MESSAGE_SUBJECT" value1="${messageSubject}" />
+		<execute function="AssertTextEquals" locator1="SOMessages#MESSAGE_BODY" value1="${messageReplyBody}" />
+		<execute function="Click" locator1="SOMessages#MESSAGE_SUBJECT" />
 
-		<execute function="#assertTextEquals" locator1="SOMessagesMessage#PRIVATE_MESSAGE_SUBJECT" value1="${messageSubject}" />
-		<execute function="#assertTextEquals" locator1="SOMessagesMessage#PRIVATE_MESSAGE_USERS" value1="Between ${connectionName} And You" />
-		<execute function="#assertTextEquals" locator1="SOMessagesMessage#PRIVATE_MESSAGE_SENDER" value1="${senderName}" />
+		<execute function="AssertTextEquals" locator1="SOMessagesMessage#PRIVATE_MESSAGE_SUBJECT" value1="${messageSubject}" />
+		<execute function="AssertTextEquals" locator1="SOMessagesMessage#PRIVATE_MESSAGE_USERS" value1="Between ${connectionName} And You" />
+		<execute function="AssertTextEquals" locator1="SOMessagesMessage#PRIVATE_MESSAGE_SENDER" value1="${senderName}" />
 		<execute function="AssertTextEquals#assertPartialText" locator1="SOMessagesMessage#PRIVATE_MESSAGE_BODY" value1="${messageBody}" />
 
 		<if>
 			<isset var="messageAttachmentFile" />
 			<then>
-				<execute function="#assertElementPresent" locator1="SOMessagesMessage#PRIVATE_MESSAGE_ATTACHMENT" />
-				<execute function="#assertTextEquals" locator1="SOMessagesMessage#PRIVATE_MESSAGE_ATTACHMENT_LINK" value1="${messageAttachmentFile}" />
+				<execute function="AssertElementPresent" locator1="SOMessagesMessage#PRIVATE_MESSAGE_ATTACHMENT" />
+				<execute function="AssertTextEquals" locator1="SOMessagesMessage#PRIVATE_MESSAGE_ATTACHMENT_LINK" value1="${messageAttachmentFile}" />
 			</then>
 		</if>
 
-		<execute function="#assertTextEquals" locator1="SOMessagesMessage#PRIVATE_MESSAGE_REPLY_SENDER" value1="${replySenderName}" />
+		<execute function="AssertTextEquals" locator1="SOMessagesMessage#PRIVATE_MESSAGE_REPLY_SENDER" value1="${replySenderName}" />
 		<execute function="AssertTextEquals#assertPartialText" locator1="SOMessagesMessage#PRIVATE_MESSAGE_REPLY_BODY" value1="${messageReplyBody}" />
 
 		<if>
 			<isset var="messageAttachmentFile" />
 			<then>
-				<execute function="#assertElementPresent" locator1="SOMessagesMessage#PRIVATE_MESSAGE_REPLY_ATTACHMENT" />
-				<execute function="#assertTextEquals" locator1="SOMessagesMessage#PRIVATE_MESSAGE_REPLY_ATTACHMENT_LINK" value1="${messageAttachmentFile}" />
+				<execute function="AssertElementPresent" locator1="SOMessagesMessage#PRIVATE_MESSAGE_REPLY_ATTACHMENT" />
+				<execute function="AssertTextEquals" locator1="SOMessagesMessage#PRIVATE_MESSAGE_REPLY_ATTACHMENT_LINK" value1="${messageAttachmentFile}" />
 			</then>
 		</if>
 	</command>

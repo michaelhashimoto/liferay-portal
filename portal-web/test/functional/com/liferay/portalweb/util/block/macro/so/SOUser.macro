@@ -38,16 +38,16 @@
 		<execute function="AssertClick#assertTextClickAtAndWait" locator1="CPUsersandorganizations#SEARCH_ALL_USERS" value1="Search All Users" />
 
 		<execute macro="CPUsersandorganizationsViewusers#showBasicSearch" />
-		<execute function="#type" locator1="CPUsersandorganizationsViewusers#BASIC_SEARCH_FIELD" value1="${userScreenName}" />
+		<execute function="Type" locator1="CPUsersandorganizationsViewusers#BASIC_SEARCH_FIELD" value1="${userScreenName}" />
 		<execute function="AssertClick#assertValueClickAtAndWait" locator1="CPUsersandorganizationsViewusers#BASIC_SEARCH_BUTTON" value1="Search" />
-		<execute function="#assertTextEquals" locator1="CPUsersandorganizationsViewusers#USER_TABLE_SCREEN_NAME_1" value1="${userScreenName}" />
-		<execute function="#click" locator1="CPUsersandorganizationsViewusers#USER_TABLE_SCREEN_NAME_1" value1="${userScreenName}" />
+		<execute function="AssertTextEquals" locator1="CPUsersandorganizationsViewusers#USER_TABLE_SCREEN_NAME_1" value1="${userScreenName}" />
+		<execute function="Click" locator1="CPUsersandorganizationsViewusers#USER_TABLE_SCREEN_NAME_1" value1="${userScreenName}" />
 
-		<execute function="#click" locator1="CPUsersandorganizationsUser#PASSWORD" />
-		<execute function="#type" locator1="CPUsersandorganizationsUser#PASSWORD_NEW_PASSWORD_FIELD" value1="password" />
-		<execute function="#type" locator1="CPUsersandorganizationsUser#PASSWORD_ENTER_AGAIN_FIELD" value1="password" />
-		<execute function="#click" locator1="CPUsersandorganizationsUser#SAVE_BUTTON" />
-		<execute function="#assertTextEquals" locator1="CPUsersandorganizationsUser#SUCCESS_MESSAGE" value1="Your request completed successfully." />
+		<execute function="Click" locator1="CPUsersandorganizationsUser#PASSWORD" />
+		<execute function="Type" locator1="CPUsersandorganizationsUser#PASSWORD_NEW_PASSWORD_FIELD" value1="password" />
+		<execute function="Type" locator1="CPUsersandorganizationsUser#PASSWORD_ENTER_AGAIN_FIELD" value1="password" />
+		<execute function="Click" locator1="CPUsersandorganizationsUser#SAVE_BUTTON" />
+		<execute function="AssertTextEquals" locator1="CPUsersandorganizationsUser#SUCCESS_MESSAGE" value1="Your request completed successfully." />
 
 		<execute macro="SOUser#logoutPG" />
 
@@ -66,10 +66,10 @@
 
 	<command name="firstLoginPG">
 		<if>
-			<condition function="#isElementPresent" locator1="SOUserBar#USER_NAME" />
+			<condition function="IsElementPresent" locator1="SOUserBar#USER_NAME" />
 			<then>
 				<if>
-					<condition function="#isTextNotEqual" locator1="SOUserBar#USER_NAME" value1="Joe Bloggs" />
+					<condition function="IsTextNotEqual" locator1="SOUserBar#USER_NAME" value1="Joe Bloggs" />
 					<then>
 						<execute macro="SOUser#logoutPG" />
 
@@ -81,10 +81,10 @@
 				</if>
 			</then>
 			<elseif>
-				<condition function="#isElementPresent" locator1="Dockbar#USER_NAME" />
+				<condition function="IsElementPresent" locator1="Dockbar#USER_NAME" />
 				<then>
 					<if>
-						<condition function="#isTextNotEqual" locator1="Dockbar#USER_NAME" value1="Joe Bloggs" />
+						<condition function="IsTextNotEqual" locator1="Dockbar#USER_NAME" value1="Joe Bloggs" />
 						<then>
 							<execute macro="User#logoutPG" />
 
@@ -105,7 +105,7 @@
 		</if>
 
 		<if>
-			<condition function="#isElementNotPresent" locator1="SOUserBar#USER_NAME" />
+			<condition function="IsElementNotPresent" locator1="SOUserBar#USER_NAME" />
 			<then>
 				<execute macro="Page#gotoCP">
 					<var name="portletName" value="Roles" />
@@ -120,35 +120,35 @@
 					<var name="userName" value="Joe Bloggs" />
 				</execute>
 
-				<execute function="#assertTextEquals" locator1="SODashboard#NAVIGATION_DASHBOARD" value1="Dashboard" />
-				<execute function="#assertTextEquals" locator1="SODashboard#NAVIGATION_CONTACTS_CENTER" value1="Contacts Center" />
-				<execute function="#assertTextEquals" locator1="SODashboard#NAVIGATION_MY_DOCUMENTS" value1="My Documents" />
-				<execute function="#assertTextEquals" locator1="SODashboard#NAVIGATION_MICROBLOGS" value1="Microblogs" />
-				<execute function="#assertTextEquals" locator1="SODashboard#NAVIGATION_MESSAGES" value1="Messages" />
-				<execute function="#assertTextEquals" locator1="SODashboard#NAVIGATION_TASKS" value1="Tasks" />
+				<execute function="AssertTextEquals" locator1="SODashboard#NAVIGATION_DASHBOARD" value1="Dashboard" />
+				<execute function="AssertTextEquals" locator1="SODashboard#NAVIGATION_CONTACTS_CENTER" value1="Contacts Center" />
+				<execute function="AssertTextEquals" locator1="SODashboard#NAVIGATION_MY_DOCUMENTS" value1="My Documents" />
+				<execute function="AssertTextEquals" locator1="SODashboard#NAVIGATION_MICROBLOGS" value1="Microblogs" />
+				<execute function="AssertTextEquals" locator1="SODashboard#NAVIGATION_MESSAGES" value1="Messages" />
+				<execute function="AssertTextEquals" locator1="SODashboard#NAVIGATION_TASKS" value1="Tasks" />
 			</then>
 		</if>
 	</command>
 
 	<command name="loginPG">
-		<execute function="#type" locator1="PGLogin#EMAIL_ADDRESS_FIELD" value1="${userEmailAddress}" />
-		<execute function="#type" locator1="PGLogin#PASSWORD_FIELD" value1="${password}" />
-		<execute function="#click" locator1="PGLogin#REMEMBER_ME_CHECKBOX" />
+		<execute function="Type" locator1="PGLogin#EMAIL_ADDRESS_FIELD" value1="${userEmailAddress}" />
+		<execute function="Type" locator1="PGLogin#PASSWORD_FIELD" value1="${password}" />
+		<execute function="Click" locator1="PGLogin#REMEMBER_ME_CHECKBOX" />
 		<execute function="AssertClick#assertValueClickAtAndWait" locator1="PGLogin#SIGN_IN_BUTTON" value1="Sign In" />
 
 		<if>
-			<condition function="#isElementPresent" locator1="PGLoginNewpassword#PASSWORD_FIELD" />
+			<condition function="IsElementPresent" locator1="PGLoginNewpassword#PASSWORD_FIELD" />
 			<then>
-				<execute function="#type" locator1="PGLoginNewpassword#PASSWORD_FIELD" value1="test" />
-				<execute function="#type" locator1="PGLoginNewpassword#ENTER_AGAIN_FIELD" value1="test" />
+				<execute function="Type" locator1="PGLoginNewpassword#PASSWORD_FIELD" value1="test" />
+				<execute function="Type" locator1="PGLoginNewpassword#ENTER_AGAIN_FIELD" value1="test" />
 				<execute function="AssertClick#assertValueClickAtAndWait" locator1="PGLoginNewpassword#SAVE_BUTTON" value1="Save" />
 			</then>
 		</if>
 
 		<if>
-			<condition function="#isElementPresent" locator1="PGLoginPasswordreminder#ANSWER_FIELD" />
+			<condition function="IsElementPresent" locator1="PGLoginPasswordreminder#ANSWER_FIELD" />
 			<then>
-				<execute function="#type" locator1="PGLoginPasswordreminder#ANSWER_FIELD" value1="test" />
+				<execute function="Type" locator1="PGLoginPasswordreminder#ANSWER_FIELD" value1="test" />
 				<execute function="AssertClick#assertValueClickAtAndWait" locator1="PGLoginPasswordreminder#SAVE_BUTTON" value1="Save" />
 			</then>
 		</if>
@@ -156,9 +156,9 @@
 
 	<command name="logoutPG">
 		<if>
-			<condition function="#isElementPresent" locator1="SOUserBar#USER_NAME" />
+			<condition function="IsElementPresent" locator1="SOUserBar#USER_NAME" />
 			<then>
-				<execute function="#click" locator1="SOUserBar#USER_NAME" />
+				<execute function="Click" locator1="SOUserBar#USER_NAME" />
 				<execute function="AssertClick#assertTextClickAtAndWait" locator1="SOUserBar#USER_MENU_SIGN_OUT" value1="Sign Out" />
 			</then>
 		</if>

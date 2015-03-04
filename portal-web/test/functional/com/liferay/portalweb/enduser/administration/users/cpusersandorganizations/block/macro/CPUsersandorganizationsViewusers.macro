@@ -7,7 +7,7 @@
 			</then>
 		</if>
 
-		<execute function="#assertElementPresent" locator1="CPUsersandorganizationsViewusers#ADVANCED_SEARCH_MATCH_SELECT" />
+		<execute function="AssertElementPresent" locator1="CPUsersandorganizationsViewusers#ADVANCED_SEARCH_MATCH_SELECT" />
 	</command>
 
 	<command name="showBasicSearch">
@@ -18,6 +18,6 @@
 			</then>
 		</if>
 
-		<execute function="#assertElementPresent" locator1="CPUsersandorganizationsViewusers#BASIC_SEARCH_FIELD" />
+		<execute function="AssertElementPresent" locator1="CPUsersandorganizationsViewusers#BASIC_SEARCH_FIELD" />
 	</command>
 </definition>

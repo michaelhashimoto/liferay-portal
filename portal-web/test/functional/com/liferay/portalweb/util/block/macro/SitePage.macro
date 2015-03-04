@@ -1,9 +1,9 @@
 <definition>
 	<command name="addChildCP">
-		<execute function="#type" locator1="CPSites#SEARCH_FIELD" value1="${siteName}" />
+		<execute function="Type" locator1="CPSites#SEARCH_FIELD" value1="${siteName}" />
 		<execute function="AssertClick#assertValueClickAtAndWait" locator1="CPSites#SEARCH_BUTTON" value1="Search" />
-		<execute function="#assertClick" locator1="CPSites#SITE_TABLE_ACTIONS" value1="Actions" />
-		<execute function="#assertClick" locator1="CPSites#SITE_MENULIST_MANAGE_PAGES" value1="Manage Pages" />
+		<execute function="AssertClick" locator1="CPSites#SITE_TABLE_ACTIONS" value1="Actions" />
+		<execute function="AssertClick" locator1="CPSites#SITE_MENULIST_MANAGE_PAGES" value1="Manage Pages" />
 
 		<if>
 			<equals arg1="${sitePageType}" arg2="Private" />
@@ -23,24 +23,24 @@
 
 		<execute macro="SitePage#expandRootCP" />
 
-		<execute function="#assertClick" locator1="CPSitepages#PAGE_TREE_PAGE_LINK_1" value1="${sitePageName}" />
+		<execute function="AssertClick" locator1="CPSitepages#PAGE_TREE_PAGE_LINK_1" value1="${sitePageName}" />
 
-		<execute function="#assertClick" locator1="CPSitepages#TOOLBAR_ADD_CHILD_PAGE" value1="Add Child Page" />
-		<execute function="#type" locator1="CPSitepages#ADD_PAGE_NAME_FIELD" value1="${siteChildPageName}" />
+		<execute function="AssertClick" locator1="CPSitepages#TOOLBAR_ADD_CHILD_PAGE" value1="Add Child Page" />
+		<execute function="Type" locator1="CPSitepages#ADD_PAGE_NAME_FIELD" value1="${siteChildPageName}" />
 		<execute function="AssertClick#assertValueClickAtAndWait" locator1="CPSitepages#ADD_PAGE_BUTTON" value1="Add Page" />
-		<execute function="#assertTextEquals" locator1="CPSitepages#SUCCESS_MESSAGE" value1="Your request completed successfully." />
+		<execute function="AssertTextEquals" locator1="CPSitepages#SUCCESS_MESSAGE" value1="Your request completed successfully." />
 
 		<execute macro="SitePage#expandTreeCP" />
 
-		<execute function="#assertTextEquals" locator1="CPSitepages#PAGE_TREE_PAGE_LINK_1" value1="${sitePageName}" />
-		<execute function="#assertTextEquals" locator1="CPSitepages#PAGE_TREE_PAGE_LINK_1_CHILD_PAGE_LINK_1" value1="${siteChildPageName}" />
+		<execute function="AssertTextEquals" locator1="CPSitepages#PAGE_TREE_PAGE_LINK_1" value1="${sitePageName}" />
+		<execute function="AssertTextEquals" locator1="CPSitepages#PAGE_TREE_PAGE_LINK_1_CHILD_PAGE_LINK_1" value1="${siteChildPageName}" />
 	</command>
 
 	<command name="addCP">
-		<execute function="#type" locator1="CPSites#SEARCH_FIELD" value1="${siteName}" />
+		<execute function="Type" locator1="CPSites#SEARCH_FIELD" value1="${siteName}" />
 		<execute function="AssertClick#assertValueClickAtAndWait" locator1="CPSites#SEARCH_BUTTON" value1="Search" />
-		<execute function="#assertClick" locator1="CPSites#SITE_TABLE_ACTIONS" value1="Actions" />
-		<execute function="#assertClick" locator1="CPSites#SITE_MENULIST_MANAGE_PAGES" value1="Manage Pages" />
+		<execute function="AssertClick" locator1="CPSites#SITE_TABLE_ACTIONS" value1="Actions" />
+		<execute function="AssertClick" locator1="CPSites#SITE_MENULIST_MANAGE_PAGES" value1="Manage Pages" />
 
 		<if>
 			<equals arg1="${sitePageType}" arg2="Private" />
@@ -58,85 +58,85 @@
 			</else>
 		</if>
 
-		<execute function="#assertClick" locator1="CPSitepages#TOOLBAR_ADD_PAGE" value1="Add Page" />
-		<execute function="#type" locator1="CPSitepages#ADD_PAGE_NAME_FIELD" value1="${sitePageName}" />
+		<execute function="AssertClick" locator1="CPSitepages#TOOLBAR_ADD_PAGE" value1="Add Page" />
+		<execute function="Type" locator1="CPSitepages#ADD_PAGE_NAME_FIELD" value1="${sitePageName}" />
 		<execute function="AssertClick#assertValueClickAtAndWait" locator1="CPSitepages#ADD_PAGE_BUTTON" value1="Add Page" />
-		<execute function="#assertTextEquals" locator1="CPSitepages#SUCCESS_MESSAGE" value1="Your request completed successfully." />
+		<execute function="AssertTextEquals" locator1="CPSitepages#SUCCESS_MESSAGE" value1="Your request completed successfully." />
 
 		<execute macro="SitePage#expandRootCP" />
 
-		<execute function="#assertTextEquals" locator1="CPSitepages#PAGE_TREE_PAGE_LINK_1" value1="${sitePageName}" />
+		<execute function="AssertTextEquals" locator1="CPSitepages#PAGE_TREE_PAGE_LINK_1" value1="${sitePageName}" />
 	</command>
 
 	<command name="expandRootCP">
-		<execute function="#click" locator1="CPSitepages#PAGE_TREE_ROOT_ARROW" />
+		<execute function="Click" locator1="CPSitepages#PAGE_TREE_ROOT_ARROW" />
 		<execute function="AssertElementPresent#assertElementPresent" locator1="CPSitepages#PAGE_TREE_PAGE_LINK_1" />
 
 		<if>
 			<condition function="IsElementNotPresent#isNotVisible" locator1="CPSitepages#PAGE_TREE_PAGE_LINK_1" />
 			<then>
-				<execute function="#click" locator1="CPSitepages#PAGE_TREE_ROOT_ARROW" />
+				<execute function="Click" locator1="CPSitepages#PAGE_TREE_ROOT_ARROW" />
 			</then>
 		</if>
 	</command>
 
 	<command name="expandTreeCP">
-		<execute function="#click" locator1="CPSitepages#PAGE_TREE_PAGE_ARROW_1" />
+		<execute function="Click" locator1="CPSitepages#PAGE_TREE_PAGE_ARROW_1" />
 
 		<if>
-			<condition function="#isElementNotPresent" locator1="CPSitepages#PAGE_TREE_PAGE_LINK_1_CHILD_PAGE_LINK_1" />
+			<condition function="IsElementNotPresent" locator1="CPSitepages#PAGE_TREE_PAGE_LINK_1_CHILD_PAGE_LINK_1" />
 			<then>
-				<execute function="#click" locator1="CPSitepages#PAGE_TREE_PAGE_ARROW_1" />
+				<execute function="Click" locator1="CPSitepages#PAGE_TREE_PAGE_ARROW_1" />
 			</then>
 		</if>
 
-		<execute function="#assertElementPresent" locator1="CPSitepages#PAGE_TREE_PAGE_LINK_1_CHILD_PAGE_LINK_1" />
+		<execute function="AssertElementPresent" locator1="CPSitepages#PAGE_TREE_PAGE_LINK_1_CHILD_PAGE_LINK_1" />
 	</command>
 
 	<command name="exportLarCP">
-		<execute function="#assertClick" locator1="CPSitepages#TOOLBAR_EXPORT" value1="Export" />
+		<execute function="AssertClick" locator1="CPSitepages#TOOLBAR_EXPORT" value1="Export" />
 
-		<execute function="#selectFrame" locator1="CPSitepagesExport#EXPORT_IFRAME" />
-		<execute function="#type" locator1="CPSitepagesExport#EXPORT_FILE_FIELD" value1="${file}" />
-		<execute function="#check" locator1="CPSitepagesExport#APPLICATIONS_MESSAGE_BOARDS_CHECKBOX" />
-		<execute function="#check" locator1="CPSitepagesExport#OTHER_PERMISSIONS_CHECKBOX" />
-		<execute function="#check" locator1="CPSitepagesExport#OTHER_CATEGORIES_CHECKBOX" />
-		<execute function="#assertClick" locator1="CPSitepagesExport#EXPORT_BUTTON" value1="Export" />
-		<execute function="#downloadTempFile" locator1="${file}" />
-		<execute function="#selectFrame" />
+		<execute function="SelectFrame" locator1="CPSitepagesExport#EXPORT_IFRAME" />
+		<execute function="Type" locator1="CPSitepagesExport#EXPORT_FILE_FIELD" value1="${file}" />
+		<execute function="Check" locator1="CPSitepagesExport#APPLICATIONS_MESSAGE_BOARDS_CHECKBOX" />
+		<execute function="Check" locator1="CPSitepagesExport#OTHER_PERMISSIONS_CHECKBOX" />
+		<execute function="Check" locator1="CPSitepagesExport#OTHER_CATEGORIES_CHECKBOX" />
+		<execute function="AssertClick" locator1="CPSitepagesExport#EXPORT_BUTTON" value1="Export" />
+		<execute function="DownloadTempFile" locator1="${file}" />
+		<execute function="SelectFrame" />
 	</command>
 
 	<command name="importLarCP">
-		<execute function="#assertClick" locator1="CPSitepages#TOOLBAR_IMPORT" value1="Import" />
+		<execute function="AssertClick" locator1="CPSitepages#TOOLBAR_IMPORT" value1="Import" />
 
-		<execute function="#selectFrame" locator1="CPSitepagesImport#IMPORT_IFRAME" />
-		<execute function="#uploadTempFile" locator1="CPSitepagesImport#FILE_UPLOAD_FIELD" value1="${file}" />
-		<execute function="#check" locator1="CPSitepagesImport#PAGES_DELETE_MISSING_PAGES_CHECKBOX" />
-		<execute function="#check" locator1="CPSitepagesImport#APPLICATIONS_DELETE_PORTLET_DATA_CHECKBOX" />
-		<execute function="#check" locator1="CPSitepagesImport#OTHER_PERMISSIONS_CHECKBOX" />
-		<execute function="#check" locator1="CPSitepagesImport#OTHER_CATEGORIES_CHECKBOX" />
+		<execute function="SelectFrame" locator1="CPSitepagesImport#IMPORT_IFRAME" />
+		<execute function="UploadTempFile" locator1="CPSitepagesImport#FILE_UPLOAD_FIELD" value1="${file}" />
+		<execute function="Check" locator1="CPSitepagesImport#PAGES_DELETE_MISSING_PAGES_CHECKBOX" />
+		<execute function="Check" locator1="CPSitepagesImport#APPLICATIONS_DELETE_PORTLET_DATA_CHECKBOX" />
+		<execute function="Check" locator1="CPSitepagesImport#OTHER_PERMISSIONS_CHECKBOX" />
+		<execute function="Check" locator1="CPSitepagesImport#OTHER_CATEGORIES_CHECKBOX" />
 		<execute function="AssertClick#assertValueClickAtAndWait" locator1="CPSitepagesImport#IMPORT_BUTTON" value1="Import" />
-		<execute function="#selectFrame" />
+		<execute function="SelectFrame" />
 
-		<execute function="#assertTextEquals" locator1="CPSitepages#SUCCESS_MESSAGE" value1="Your request completed successfully." />
+		<execute function="AssertTextEquals" locator1="CPSitepages#SUCCESS_MESSAGE" value1="Your request completed successfully." />
 	</command>
 
 	<command name="viewChildPG">
 		<execute function="MouseOver#mouseOverClickNavigation" locator1="Home#PAGE_1" value1="${sitePageName}" />
 		<execute function="AssertClick#assertTextClickAtAndWait" locator1="Home#PAGE_1_CHILD_PAGE_1" value1="${siteChildPageName}" />
-		<execute function="#assertTextEquals" locator1="Home#BREADCRUMB_1" value1="${siteGuestName}" />
-		<execute function="#assertTextEquals" locator1="Home#BREADCRUMB_2" value1="${siteName}" />
-		<execute function="#assertTextEquals" locator1="Home#BREADCRUMB_3" value1="${sitePageName}" />
-		<execute function="#assertTextEquals" locator1="Home#BREADCRUMB_4" value1="${siteChildPageName}" />
-		<execute function="#assertTextEquals" locator1="Home#SITE_NAME" value1="${siteName}" />
-		<execute function="#assertLocation" value1="${sitePageURL}" />
+		<execute function="AssertTextEquals" locator1="Home#BREADCRUMB_1" value1="${siteGuestName}" />
+		<execute function="AssertTextEquals" locator1="Home#BREADCRUMB_2" value1="${siteName}" />
+		<execute function="AssertTextEquals" locator1="Home#BREADCRUMB_3" value1="${sitePageName}" />
+		<execute function="AssertTextEquals" locator1="Home#BREADCRUMB_4" value1="${siteChildPageName}" />
+		<execute function="AssertTextEquals" locator1="Home#SITE_NAME" value1="${siteName}" />
+		<execute function="AssertLocation" value1="${sitePageURL}" />
 	</command>
 
 	<command name="viewPG">
-		<execute function="#assertTextEquals" locator1="Home#BREADCRUMB_1" value1="${siteGuestName}" />
-		<execute function="#assertTextEquals" locator1="Home#BREADCRUMB_2" value1="${siteName}" />
-		<execute function="#assertTextEquals" locator1="Home#BREADCRUMB_3" value1="${sitePageName}" />
-		<execute function="#assertTextEquals" locator1="Home#SITE_NAME" value1="${siteName}" />
-		<execute function="#assertLocation" value1="${sitePageURL}" />
+		<execute function="AssertTextEquals" locator1="Home#BREADCRUMB_1" value1="${siteGuestName}" />
+		<execute function="AssertTextEquals" locator1="Home#BREADCRUMB_2" value1="${siteName}" />
+		<execute function="AssertTextEquals" locator1="Home#BREADCRUMB_3" value1="${sitePageName}" />
+		<execute function="AssertTextEquals" locator1="Home#SITE_NAME" value1="${siteName}" />
+		<execute function="AssertLocation" value1="${sitePageURL}" />
 	</command>
 </definition>

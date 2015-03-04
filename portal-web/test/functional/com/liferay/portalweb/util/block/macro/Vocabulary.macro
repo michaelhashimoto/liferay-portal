@@ -1,40 +1,40 @@
 <definition>
 	<command name="addAssetTypeWikiPageCP">
-		<execute function="#assertClick" locator1="CPCategories#ADD_VOCABULARY_BUTTON" value1="Add Vocabulary" />
-		<execute function="#type" locator1="CPCategories#ADD_VOCABULARY_NAME_FIELD" value1="${vocabularyName}" />
-		<execute function="#assertClick" locator1="CPCategories#ADD_VOCABULARY_ASSOCIATED_ASSET_TYPES" value1="Associated Asset Types" />
-		<execute function="#select" locator1="CPCategories#ADD_VOCABULARY_CHOOSE_ASSET_TYPE_SELECT" value1="Wiki Page" />
-		<execute function="#assertClick" locator1="CPCategories#ADD_VOCABULARY_SAVE_BUTTON" value1="Save" />
+		<execute function="AssertClick" locator1="CPCategories#ADD_VOCABULARY_BUTTON" value1="Add Vocabulary" />
+		<execute function="Type" locator1="CPCategories#ADD_VOCABULARY_NAME_FIELD" value1="${vocabularyName}" />
+		<execute function="AssertClick" locator1="CPCategories#ADD_VOCABULARY_ASSOCIATED_ASSET_TYPES" value1="Associated Asset Types" />
+		<execute function="Select" locator1="CPCategories#ADD_VOCABULARY_CHOOSE_ASSET_TYPE_SELECT" value1="Wiki Page" />
+		<execute function="AssertClick" locator1="CPCategories#ADD_VOCABULARY_SAVE_BUTTON" value1="Save" />
 		<execute function="AssertTextEquals#assertTextNoWaitForText" locator1="CPCategories#SUCCESS_MESSAGE" value1="Your request processed successfully." />
-		<execute function="#assertTextEquals" locator1="CPCategories#VOCABULARY_ENTRY_2" value1="${vocabularyName}" />
+		<execute function="AssertTextEquals" locator1="CPCategories#VOCABULARY_ENTRY_2" value1="${vocabularyName}" />
 	</command>
 
 	<command name="addCP">
-		<execute function="#assertClick" locator1="CPCategories#ADD_VOCABULARY_BUTTON" value1="Add Vocabulary" />
-		<execute function="#type" locator1="CPCategories#ADD_VOCABULARY_NAME_FIELD" value1="${vocabularyName}" />
-		<execute function="#assertClick" locator1="CPCategories#ADD_VOCABULARY_SAVE_BUTTON" value1="Save" />
+		<execute function="AssertClick" locator1="CPCategories#ADD_VOCABULARY_BUTTON" value1="Add Vocabulary" />
+		<execute function="Type" locator1="CPCategories#ADD_VOCABULARY_NAME_FIELD" value1="${vocabularyName}" />
+		<execute function="AssertClick" locator1="CPCategories#ADD_VOCABULARY_SAVE_BUTTON" value1="Save" />
 		<execute function="AssertTextEquals#assertTextNoWaitForText" locator1="CPCategories#SUCCESS_MESSAGE" value1="Your request processed successfully." />
-		<execute function="#assertTextEquals" locator1="CPCategories#VOCABULARY_ENTRY_2" value1="${vocabularyName}" />
+		<execute function="AssertTextEquals" locator1="CPCategories#VOCABULARY_ENTRY_2" value1="${vocabularyName}" />
 	</command>
 
 	<command name="deleteCPByActions">
-		<execute function="#assertTextEquals" locator1="CPCategories#VOCABULARY_ENTRY_2" value1="${vocabularyName}" />
-		<execute function="#click" locator1="CPCategories#ALL_VOCABULARIES_CHECKBOX" />
-		<execute function="#assertClick" locator1="CPCategories#ACTIONS_BUTTON" value1="Actions" />
-		<execute function="#assertClickNoError" locator1="CPCategories#ACTIONS_MENULIST_DELETE" value1="Delete" />
-		<execute function="#confirm" locator1="CPCategories#CONFIRMATION" value1="Are you sure you want to delete the selected vocabularies?" />
+		<execute function="AssertTextEquals" locator1="CPCategories#VOCABULARY_ENTRY_2" value1="${vocabularyName}" />
+		<execute function="Click" locator1="CPCategories#ALL_VOCABULARIES_CHECKBOX" />
+		<execute function="AssertClick" locator1="CPCategories#ACTIONS_BUTTON" value1="Actions" />
+		<execute function="AssertClickNoError" locator1="CPCategories#ACTIONS_MENULIST_DELETE" value1="Delete" />
+		<execute function="Confirm" locator1="CPCategories#CONFIRMATION" value1="Are you sure you want to delete the selected vocabularies?" />
 		<execute function="AssertTextEquals#assertTextNoWaitForText" locator1="CPCategories#SUCCESS_MESSAGE" value1="Your request processed successfully." />
-		<execute function="#assertTextEquals" locator1="CPCategories#INFO_MESSAGE" value1="There are no categories." />
-		<execute function="#assertTextNotPresent" value1="${vocabularyName}" />
+		<execute function="AssertTextEquals" locator1="CPCategories#INFO_MESSAGE" value1="There are no categories." />
+		<execute function="AssertTextNotPresent" value1="${vocabularyName}" />
 	</command>
 
 	<command name="editCP">
-		<execute function="#assertTextEquals" locator1="CPCategories#VOCABULARY_ENTRY_2" value1="${vocabularyName}" />
-		<execute function="#click" locator1="CPCategories#EDIT_VOCABULARY_ICON" />
-		<execute function="#type" locator1="CPCategories#EDIT_VOCABULARY_NAME_FIELD" value1="${vocabularyNameEdit}" />
-		<execute function="#assertClick" locator1="CPCategories#EDIT_VOCABULARY_SAVE_BUTTON" value1="Save" />
+		<execute function="AssertTextEquals" locator1="CPCategories#VOCABULARY_ENTRY_2" value1="${vocabularyName}" />
+		<execute function="Click" locator1="CPCategories#EDIT_VOCABULARY_ICON" />
+		<execute function="Type" locator1="CPCategories#EDIT_VOCABULARY_NAME_FIELD" value1="${vocabularyNameEdit}" />
+		<execute function="AssertClick" locator1="CPCategories#EDIT_VOCABULARY_SAVE_BUTTON" value1="Save" />
 		<execute function="AssertTextEquals#assertTextNoWaitForText" locator1="CPCategories#SUCCESS_MESSAGE" value1="Your request processed successfully." />
-		<execute function="#assertTextEquals" locator1="CPCategories#VOCABULARY_ENTRY_2" value1="${vocabularyNameEdit}" />
+		<execute function="AssertTextEquals" locator1="CPCategories#VOCABULARY_ENTRY_2" value1="${vocabularyNameEdit}" />
 	</command>
 
 	<command name="tearDownCP">
@@ -43,14 +43,14 @@
 		</execute>
 
 		<if>
-			<condition function="#isElementPresent" locator1="CPCategories#VOCABULARY_ENTRY_1" />
+			<condition function="IsElementPresent" locator1="CPCategories#VOCABULARY_ENTRY_1" />
 			<then>
-				<execute function="#click" locator1="CPCategories#ALL_VOCABULARIES_CHECKBOX" />
-				<execute function="#assertClick" locator1="CPCategories#ACTIONS_BUTTON" value1="Actions" />
-				<execute function="#assertClickNoError" locator1="CPCategories#ACTIONS_MENULIST_DELETE" value1="Delete" />
-				<execute function="#confirm" locator1="CPCategories#CONFIRMATION" value1="Are you sure you want to delete the selected vocabularies?" />
+				<execute function="Click" locator1="CPCategories#ALL_VOCABULARIES_CHECKBOX" />
+				<execute function="AssertClick" locator1="CPCategories#ACTIONS_BUTTON" value1="Actions" />
+				<execute function="AssertClickNoError" locator1="CPCategories#ACTIONS_MENULIST_DELETE" value1="Delete" />
+				<execute function="Confirm" locator1="CPCategories#CONFIRMATION" value1="Are you sure you want to delete the selected vocabularies?" />
 				<execute function="AssertTextEquals#assertTextNoWaitForText" locator1="CPCategories#SUCCESS_MESSAGE" value1="Your request processed successfully." />
-				<execute function="#assertTextEquals" locator1="CPCategories#INFO_MESSAGE" value1="There are no categories." />
+				<execute function="AssertTextEquals" locator1="CPCategories#INFO_MESSAGE" value1="There are no categories." />
 			</then>
 		</if>
 	</command>

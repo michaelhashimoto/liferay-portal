@@ -76,7 +76,7 @@
 			<var name="pageType" value="Open Site" />
 		</execute>
 
-		<execute function="#click" locator1="PGDocumentsandmedia#ENTRIES_FOLDER" />
+		<execute function="Click" locator1="PGDocumentsandmedia#ENTRIES_FOLDER" />
 
 		<execute macro="DMFolderDocument#viewPG">
 			<var name="versionNumber" value="${dmDocumentVersionNumber}" />
@@ -111,7 +111,7 @@
 			<var name="pageType" value="Open Site" />
 		</execute>
 
-		<execute function="#click" locator1="PGDocumentsandmedia#ENTRIES_FOLDER" />
+		<execute function="Click" locator1="PGDocumentsandmedia#ENTRIES_FOLDER" />
 
 		<execute macro="DMFolderDocument#viewPG">
 			<var name="versionNumber" value="${dmDocumentVersionNumber}" />
@@ -187,7 +187,7 @@
 			<var name="pageType" value="Open Site" />
 		</execute>
 
-		<execute function="#click" locator1="PGDocumentsandmedia#ENTRIES_FOLDER" />
+		<execute function="Click" locator1="PGDocumentsandmedia#ENTRIES_FOLDER" />
 
 		<execute macro="DMFolderDocument#viewPG">
 			<var name="versionNumber" value="${dmDocumentVersionNumber}" />
@@ -237,7 +237,7 @@
 			<var name="pageType" value="Open Site" />
 		</execute>
 
-		<execute function="#click" locator1="PGDocumentsandmedia#ENTRIES_FOLDER" />
+		<execute function="Click" locator1="PGDocumentsandmedia#ENTRIES_FOLDER" />
 
 		<execute macro="SODocuments#viewPGDisplayView">
 			<var name=" dmDocumentUploader" value="${dmDocumentUploader}" />
@@ -288,7 +288,7 @@
 			<var name="pageType" value="Open Site" />
 		</execute>
 
-		<execute function="#click" locator1="PGDocumentsandmedia#ENTRIES_FOLDER" />
+		<execute function="Click" locator1="PGDocumentsandmedia#ENTRIES_FOLDER" />
 
 		<execute macro="SODocuments#viewPGDisplayView">
 			<var name=" dmDocumentUploader" value="${dmDocumentUploader}" />
@@ -331,7 +331,7 @@
 			<var name="pageType" value="Open Site" />
 		</execute>
 
-		<execute function="#click" locator1="PGDocumentsandmedia#ENTRIES_FOLDER" />
+		<execute function="Click" locator1="PGDocumentsandmedia#ENTRIES_FOLDER" />
 
 		<execute macro="SODocuments#viewPGDisplayView">
 			<var name="workflow" value="Checkedout" />
@@ -440,7 +440,7 @@
 			<var name="pageType" value="Open Site" />
 		</execute>
 
-		<execute function="#click" locator1="PGDocumentsandmedia#ENTRIES_FOLDER" />
+		<execute function="Click" locator1="PGDocumentsandmedia#ENTRIES_FOLDER" />
 
 		<execute macro="DMFolderDocument#viewPG">
 			<var name="dmDocumentDescription" value="${dmDocumentDescriptionEdit}" />
@@ -489,7 +489,7 @@
 			<var name="pageType" value="Open Site" />
 		</execute>
 
-		<execute function="#click" locator1="PGDocumentsandmedia#ENTRIES_FOLDER" />
+		<execute function="Click" locator1="PGDocumentsandmedia#ENTRIES_FOLDER" />
 
 		<execute macro="DMFolderDocument#viewPG">
 			<var name="dmDocumentDescription" value="${dmDocumentDescriptionEdit}" />
@@ -535,7 +535,7 @@
 			<var name="pageType" value="Open Site" />
 		</execute>
 
-		<execute function="#click" locator1="PGDocumentsandmedia#ENTRIES_FOLDER" />
+		<execute function="Click" locator1="PGDocumentsandmedia#ENTRIES_FOLDER" />
 
 		<execute macro="DMFolderDocument#viewPG">
 			<var name="versionNumber" value="${dmDocumentVersionNumber}" />
@@ -590,7 +590,7 @@
 			<var name="pageType" value="Open Site" />
 		</execute>
 
-		<execute function="#click" locator1="PGDocumentsandmedia#ENTRIES_FOLDER" />
+		<execute function="Click" locator1="PGDocumentsandmedia#ENTRIES_FOLDER" />
 
 		<execute macro="SODocuments#viewPGDisplayView">
 			<var name="dmDocumentDescription" value="${dmDocumentDescriptionEdit}" />
@@ -654,7 +654,7 @@
 			<var name="pageType" value="Open Site" />
 		</execute>
 
-		<execute function="#click" locator1="PGDocumentsandmedia#ENTRIES_FOLDER" />
+		<execute function="Click" locator1="PGDocumentsandmedia#ENTRIES_FOLDER" />
 
 		<execute macro="SODocuments#viewPGDisplayView">
 			<var name="dmDocumentDescription" value="${dmDocumentDescriptionEdit}" />
@@ -699,7 +699,7 @@
 			<var name="pageType" value="Open Site" />
 		</execute>
 
-		<execute function="#click" locator1="PGDocumentsandmedia#ENTRIES_FOLDER" />
+		<execute function="Click" locator1="PGDocumentsandmedia#ENTRIES_FOLDER" />
 
 		<execute macro="SODocuments#viewPGDisplayView">
 			<var name="workflow" value="Draft" />
@@ -745,7 +745,7 @@
 			<var name="pageType" value="Open Site" />
 		</execute>
 
-		<execute function="#click" locator1="PGDocumentsandmedia#ENTRIES_FOLDER" />
+		<execute function="Click" locator1="PGDocumentsandmedia#ENTRIES_FOLDER" />
 
 		<execute macro="DMFolderDocument#viewSaveAsDraftEditDMFolderDocumentPG">
 			<var name="versionNumber" value="${dmDocumentVersionNumberEdit}" />
@@ -817,7 +817,7 @@
 			<var name="pageType" value="Open Site" />
 		</execute>
 
-		<execute function="#click" locator1="PGDocumentsandmedia#ENTRIES_FOLDER" />
+		<execute function="Click" locator1="PGDocumentsandmedia#ENTRIES_FOLDER" />
 
 		<execute macro="SODocuments#viewPGDisplayView">
 			<var name="workflow" value="Locked" />
@@ -883,8 +883,8 @@
 			<var name="pageType" value="Open Site" />
 		</execute>
 
-		<execute function="#click" locator1="PGDocumentsandmedia#ENTRIES_FOLDER" />
-		<execute function="#assertTextEquals" locator1="PGDocumentsandmedia#PORTLET_INFO_MESSAGE" value1="There are no documents or media files in this folder." />
+		<execute function="Click" locator1="PGDocumentsandmedia#ENTRIES_FOLDER" />
+		<execute function="AssertTextEquals" locator1="PGDocumentsandmedia#PORTLET_INFO_MESSAGE" value1="There are no documents or media files in this folder." />
 	</command>
 
 	<command name="ViewDraftEditDMFolderDocumentSOUser" priority="5">
@@ -956,7 +956,7 @@
 			<var name="pageType" value="Open Site" />
 		</execute>
 
-		<execute function="#click" locator1="PGDocumentsandmedia#ENTRIES_FOLDER" />
+		<execute function="Click" locator1="PGDocumentsandmedia#ENTRIES_FOLDER" />
 
 		<execute macro="DMFolderDocument#viewPGUser">
 			<var name="versionNumber" value="${dmDocumentVersionNumber}" />

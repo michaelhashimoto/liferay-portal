@@ -85,9 +85,9 @@
 			<var name="messageSubject" value="${messageSubject}" />
 		</execute>
 
-		<execute function="#check" locator1="SOMessages#MESSAGE_CHECKBOX" />
+		<execute function="Check" locator1="SOMessages#MESSAGE_CHECKBOX" />
 		<execute function="AssertClick#assertValueClickAtAndWait" locator1="SOMessages#DELETE_BUTTON" value1="Delete" />
-		<execute function="#assertTextEquals" locator1="SOMessages#INFO_MESSAGE" value1="No messages found." />
+		<execute function="AssertTextEquals" locator1="SOMessages#INFO_MESSAGE" value1="No messages found." />
 	</command>
 
 	<command name="DeleteMessageBySOUser" priority="5">
@@ -124,9 +124,9 @@
 		</execute>
 
 		<execute function="AssertClick#assertValueClickAtAndWait" locator1="SOMessagesMessage#DELETE_BUTTON" value1="Delete" />
-		<execute function="#assertTextEquals" locator1="SOMessagesMessage#SUCCESS_MESSAGE" value1="Your request completed successfully." />
-		<execute function="#assertTextEquals" locator1="SOMessagesMessage#INFO_MESSAGE" value1="No messages found." />
-		<execute function="#assertTextNotPresent" value1="${messageSubject}" />
+		<execute function="AssertTextEquals" locator1="SOMessagesMessage#SUCCESS_MESSAGE" value1="Your request completed successfully." />
+		<execute function="AssertTextEquals" locator1="SOMessagesMessage#INFO_MESSAGE" value1="No messages found." />
+		<execute function="AssertTextNotPresent" value1="${messageSubject}" />
 	</command>
 
 	<command name="DeleteMessageBySOUser2" priority="5">
@@ -217,22 +217,22 @@
 
 		<var name="senderName" value="${userName}" />
 
-		<execute function="#check" locator1="SOMessages#MESSAGE_CHECKBOX" />
+		<execute function="Check" locator1="SOMessages#MESSAGE_CHECKBOX" />
 		<execute function="AssertClick#assertValueClickAtAndWait" locator1="SOMessages#DELETE_BUTTON" value1="Delete" />
-		<execute function="#assertTextEquals" locator1="SOMessages#INFO_MESSAGE" value1="No messages found." />
+		<execute function="AssertTextEquals" locator1="SOMessages#INFO_MESSAGE" value1="No messages found." />
 
 		<execute function="Click#textClickAtAndWait" locator1="SOUserBar#DASHBOARD" />
 
 		<execute function="Click#textClickAtAndWait" locator1="SODashboard#NAVIGATION_MESSAGES" />
 
-		<execute function="#assertTextEquals" locator1="SOMessages#INFO_MESSAGE" value1="No messages found." />
-		<execute function="#assertTextNotPresent" value1="Message Subject" />
-		<execute function="#assertTextNotPresent" value1="Message Body" />
+		<execute function="AssertTextEquals" locator1="SOMessages#INFO_MESSAGE" value1="No messages found." />
+		<execute function="AssertTextNotPresent" value1="Message Subject" />
+		<execute function="AssertTextNotPresent" value1="Message Body" />
 
 		<execute function="Click#textClickAtAndWait" locator1="SOUserBar#DASHBOARD" />
 		<execute function="AssertElementPresent#assertElementPresent" locator1="SOUserBar#NOTIFICATION" />
-		<execute function="#assertTextEquals" locator1="SOUserBar#NOTIFICATION_MENU_COUNT" value1="0" />
-		<execute function="#assertTextNotPresent" value1="${senderName} sent you a message." />
+		<execute function="AssertTextEquals" locator1="SOUserBar#NOTIFICATION_MENU_COUNT" value1="0" />
+		<execute function="AssertTextNotPresent" value1="${senderName} sent you a message." />
 
 		<execute macro="SOUser#logoutPG" />
 
@@ -281,9 +281,9 @@
 		</execute>
 
 		<execute function="AssertClick#assertValueClickAtAndWait" locator1="SOMessagesMessage#DELETE_BUTTON" value1="Delete" />
-		<execute function="#assertTextEquals" locator1="SOMessagesMessage#SUCCESS_MESSAGE" value1="Your request completed successfully." />
-		<execute function="#assertTextEquals" locator1="SOMessagesMessage#INFO_MESSAGE" value1="No messages found." />
-		<execute function="#assertTextNotPresent" value1="${messageSubject}" />
+		<execute function="AssertTextEquals" locator1="SOMessagesMessage#SUCCESS_MESSAGE" value1="Your request completed successfully." />
+		<execute function="AssertTextEquals" locator1="SOMessagesMessage#INFO_MESSAGE" value1="No messages found." />
+		<execute function="AssertTextNotPresent" value1="${messageSubject}" />
 	</command>
 
 	<command name="DeleteMessagesAll" priority="5">
@@ -354,9 +354,9 @@
 			<var name="number" value="03" />
 		</execute>
 
-		<execute function="#check" locator1="SOMessages#SELECT_ALL_CHECKBOX" />
+		<execute function="Check" locator1="SOMessages#SELECT_ALL_CHECKBOX" />
 		<execute function="AssertClick#assertValueClickAtAndWait" locator1="SOMessages#DELETE_BUTTON" value1="Delete" />
-		<execute function="#assertTextEquals" locator1="SOMessages#INFO_MESSAGE" value1="No messages found." />
+		<execute function="AssertTextEquals" locator1="SOMessages#INFO_MESSAGE" value1="No messages found." />
 	</command>
 
 	<command name="MarkAsUnreadMessage" priority="5">
@@ -390,9 +390,9 @@
 			<var name="messageSubject" value="${messageSubject}" />
 		</execute>
 
-		<execute function="#check" locator1="SOMessages#MESSAGE_CHECKBOX" />
+		<execute function="Check" locator1="SOMessages#MESSAGE_CHECKBOX" />
 		<execute function="AssertClick#assertValueClickAtAndWait" locator1="SOMessages#MARK_AS_UNREAD_BUTTON" value1="Mark as Unread" />
-		<execute function="#assertElementPresent" locator1="SOMessages#MESSAGE_UNREAD" />
+		<execute function="AssertElementPresent" locator1="SOMessages#MESSAGE_UNREAD" />
 	</command>
 
 	<command name="MarkAsUnreadMessageDetails" priority="5">
@@ -430,7 +430,7 @@
 
 		<execute function="AssertClick#assertValueClickAtAndWait" locator1="SOMessagesMessage#MARK_AS_UNREAD_BUTTON" value1="Mark as Unread" />
 
-		<execute function="#assertTextEquals" locator1="SOMessages#SUCCESS_MESSAGE" value1="Your request completed successfully." />
+		<execute function="AssertTextEquals" locator1="SOMessages#SUCCESS_MESSAGE" value1="Your request completed successfully." />
 
 		<execute macro="SOMessages#viewMessageList">
 			<var name="connectionName" value="${adminName}" />
@@ -438,7 +438,7 @@
 			<var name="messageSubject" value="${messageSubject}" />
 		</execute>
 
-		<execute function="#assertElementPresent" locator1="SOMessages#MESSAGE_UNREAD" />
+		<execute function="AssertElementPresent" locator1="SOMessages#MESSAGE_UNREAD" />
 	</command>
 
 	<command name="MarkAsUnreadMessagesAll" priority="5">
@@ -515,21 +515,21 @@
 			<var name="number" value="03" />
 		</execute>
 
-		<execute function="#check" locator1="SOMessages#SELECT_ALL_CHECKBOX" />
+		<execute function="Check" locator1="SOMessages#SELECT_ALL_CHECKBOX" />
 		<execute function="AssertClick#assertValueClickAtAndWait" locator1="SOMessages#MARK_AS_UNREAD_BUTTON" value1="Mark as Unread" />
 
 		<var name="messageBody" value="${messageBody}" />
 		<var name="number" value="01" />
 
-		<execute function="#assertElementPresent" locator1="SOMessages#MESSAGE_UNREAD_INCREMENT" />
+		<execute function="AssertElementPresent" locator1="SOMessages#MESSAGE_UNREAD_INCREMENT" />
 
 		<var name="number" value="02" />
 
-		<execute function="#assertElementPresent" locator1="SOMessages#MESSAGE_UNREAD_INCREMENT" />
+		<execute function="AssertElementPresent" locator1="SOMessages#MESSAGE_UNREAD_INCREMENT" />
 
 		<var name="number" value="03" />
 
-		<execute function="#assertElementPresent" locator1="SOMessages#MESSAGE_UNREAD_INCREMENT" />
+		<execute function="AssertElementPresent" locator1="SOMessages#MESSAGE_UNREAD_INCREMENT" />
 	</command>
 
 	<command name="SendMessage" priority="5">

@@ -118,9 +118,9 @@
 
 		<execute macro="SONavigation#gotoDashboardTasks" />
 
-		<execute function="#click" locator1="SOTasks#ADD_TASK_BUTTON" />
+		<execute function="Click" locator1="SOTasks#ADD_TASK_BUTTON" />
 
-		<execute function="#type" locator1="SOTasksAdd#TASK_DESCRIPTION_FIELD" value1="${taskDescription}" />
+		<execute function="Type" locator1="SOTasksAdd#TASK_DESCRIPTION_FIELD" value1="${taskDescription}" />
 		<execute function="AssertTextNotEquals#assertNotPartialText" locator1="SOTasksAdd#TASK_ASSIGNEE_SELECT_MENU" value1="${userName}" />
 	</command>
 
@@ -316,15 +316,15 @@
 
 		<execute macro="SONavigation#gotoDashboardTasks" />
 
-		<execute function="#assertClick" locator1="SOTasks#FILTER_BUTTON" value1="Filter" />
-		<execute function="#pause" value1="1000" />
-		<execute function="#assertTextEquals" locator1="SOTasks#FILTER_PLACE_HEADER" value1="Filter by Place" />
-		<execute function="#select" locator1="SOTasks#FILTER_PLACE_SELECT_MENU" value1="Liferay" />
+		<execute function="AssertClick" locator1="SOTasks#FILTER_BUTTON" value1="Filter" />
+		<execute function="Pause" value1="1000" />
+		<execute function="AssertTextEquals" locator1="SOTasks#FILTER_PLACE_HEADER" value1="Filter by Place" />
+		<execute function="Select" locator1="SOTasks#FILTER_PLACE_SELECT_MENU" value1="Liferay" />
 
 		<var name="number" value="02" />
 
-		<execute function="#assertTextEquals" locator1="SOTasks#TASK_DESCRIPTION_NORMAL_INCREMENT" value1="${taskDescription}02" />
-		<execute function="#assertTextNotPresent" value1="${taskDescription}01" />
+		<execute function="AssertTextEquals" locator1="SOTasks#TASK_DESCRIPTION_NORMAL_INCREMENT" value1="${taskDescription}02" />
+		<execute function="AssertTextNotPresent" value1="${taskDescription}01" />
 	</command>
 
 	<command name="FilterTasksByTag" priority="5">
@@ -361,29 +361,29 @@
 
 		<execute macro="SONavigation#gotoDashboardTasks" />
 
-		<execute function="#assertClick" locator1="SOTasks#FILTER_BUTTON" value1="Filter" />
-		<execute function="#pause" value1="1000" />
-		<execute function="#assertTextEquals" locator1="SOTasks#FILTER_TAG_HEADER" value1="Filter by Tags" />
+		<execute function="AssertClick" locator1="SOTasks#FILTER_BUTTON" value1="Filter" />
+		<execute function="Pause" value1="1000" />
+		<execute function="AssertTextEquals" locator1="SOTasks#FILTER_TAG_HEADER" value1="Filter by Tags" />
 
 		<var name="number" value="01" />
 
-		<execute function="#assertTextEquals" locator1="SOTasks#TASK_DESCRIPTION_NORMAL_INCREMENT" value1="${taskDescription}01" />
+		<execute function="AssertTextEquals" locator1="SOTasks#TASK_DESCRIPTION_NORMAL_INCREMENT" value1="${taskDescription}01" />
 
 		<var name="number" value="02" />
 		<var name="tagNumber" value="2" />
 
-		<execute function="#assertTextEquals" locator1="SOTasks#TASK_DESCRIPTION_NORMAL_INCREMENT" value1="${taskDescription}02" />
-		<execute function="#assertClick" locator1="SOTasks#FILTER_TAG_CHECKBOX" value1="tag2" />
-		<execute function="#assertTextEquals" locator1="SOTasks#TASK_DESCRIPTION_NORMAL_INCREMENT" value1="${taskDescription}02" />
-		<execute function="#assertTextNotPresent" value1="${taskDescription}01" />
-		<execute function="#assertClick" locator1="SOTasks#FILTER_TAG_CHECKBOX" value1="tag2" />
+		<execute function="AssertTextEquals" locator1="SOTasks#TASK_DESCRIPTION_NORMAL_INCREMENT" value1="${taskDescription}02" />
+		<execute function="AssertClick" locator1="SOTasks#FILTER_TAG_CHECKBOX" value1="tag2" />
+		<execute function="AssertTextEquals" locator1="SOTasks#TASK_DESCRIPTION_NORMAL_INCREMENT" value1="${taskDescription}02" />
+		<execute function="AssertTextNotPresent" value1="${taskDescription}01" />
+		<execute function="AssertClick" locator1="SOTasks#FILTER_TAG_CHECKBOX" value1="tag2" />
 
 		<var name="number" value="01" />
 		<var name="tagNumber" value="1" />
 
-		<execute function="#assertClick" locator1="SOTasks#FILTER_TAG_CHECKBOX" value1="tag1" />
-		<execute function="#assertTextEquals" locator1="SOTasks#TASK_DESCRIPTION_NORMAL_INCREMENT" value1="${taskDescription}01" />
-		<execute function="#assertTextNotPresent" value1="${taskDescription}02" />
+		<execute function="AssertClick" locator1="SOTasks#FILTER_TAG_CHECKBOX" value1="tag1" />
+		<execute function="AssertTextEquals" locator1="SOTasks#TASK_DESCRIPTION_NORMAL_INCREMENT" value1="${taskDescription}01" />
+		<execute function="AssertTextNotPresent" value1="${taskDescription}02" />
 	</command>
 
 	<command name="ResolveTaskAssignedToConnection" priority="5">

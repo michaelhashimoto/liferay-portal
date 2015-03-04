@@ -66,7 +66,7 @@
 
 		<execute function="Click#textClickAtAndWait" locator1="SODashboard#NAVIGATION_MY_DOCUMENTS" value1="My Documents" />
 
-		<execute function="#click" locator1="PGDocumentsandmedia#ENTRIES_FOLDER" />
+		<execute function="Click" locator1="PGDocumentsandmedia#ENTRIES_FOLDER" />
 
 		<execute macro="DMFolderDocument#viewPG">
 			<var name="versionNumber" value="${dmDocumentVersionNumber}" />
@@ -140,7 +140,7 @@
 
 		<execute function="Click#textClickAtAndWait" locator1="SODashboard#NAVIGATION_MY_DOCUMENTS" value1="My Documents" />
 
-		<execute function="#click" locator1="PGDocumentsandmedia#ENTRIES_FOLDER" />
+		<execute function="Click" locator1="PGDocumentsandmedia#ENTRIES_FOLDER" />
 
 		<execute macro="DMFolderDocument#viewPG">
 			<var name="versionNumber" value="${dmDocumentVersionNumber}" />
@@ -198,7 +198,7 @@
 
 		<execute function="Click#textClickAtAndWait" locator1="SODashboard#NAVIGATION_MY_DOCUMENTS" value1="My Documents" />
 
-		<execute function="#click" locator1="PGDocumentsandmedia#ENTRIES_FOLDER" />
+		<execute function="Click" locator1="PGDocumentsandmedia#ENTRIES_FOLDER" />
 
 		<execute macro="DMFolderDocument#viewPG">
 			<var name="versionNumber" value="${dmDocumentVersionNumber}" />
@@ -258,7 +258,7 @@
 
 		<execute function="Click#textClickAtAndWait" locator1="SODashboard#NAVIGATION_MY_DOCUMENTS" value1="My Documents" />
 
-		<execute function="#click" locator1="PGDocumentsandmedia#ENTRIES_FOLDER" />
+		<execute function="Click" locator1="PGDocumentsandmedia#ENTRIES_FOLDER" />
 
 		<execute macro="SODocuments#viewPGDisplayView">
 			<var name=" dmDocumentUploader" value="${dmDocumentUploader}" />
@@ -319,7 +319,7 @@
 
 		<execute function="Click#textClickAtAndWait" locator1="SODashboard#NAVIGATION_MY_DOCUMENTS" value1="My Documents" />
 
-		<execute function="#click" locator1="PGDocumentsandmedia#ENTRIES_FOLDER" />
+		<execute function="Click" locator1="PGDocumentsandmedia#ENTRIES_FOLDER" />
 
 		<execute macro="SODocuments#viewPGDisplayView">
 			<var name=" dmDocumentUploader" value="${dmDocumentUploader}" />
@@ -370,7 +370,7 @@
 
 		<execute function="Click#textClickAtAndWait" locator1="SODashboard#NAVIGATION_MY_DOCUMENTS" value1="My Documents" />
 
-		<execute function="#click" locator1="PGDocumentsandmedia#ENTRIES_FOLDER" />
+		<execute function="Click" locator1="PGDocumentsandmedia#ENTRIES_FOLDER" />
 
 		<execute macro="SODocuments#viewPGDisplayView">
 			<var name="workflow" value="Checkedout" />
@@ -499,7 +499,7 @@
 
 		<execute function="Click#textClickAtAndWait" locator1="SODashboard#NAVIGATION_MY_DOCUMENTS" value1="My Documents" />
 
-		<execute function="#click" locator1="PGDocumentsandmedia#ENTRIES_FOLDER" />
+		<execute function="Click" locator1="PGDocumentsandmedia#ENTRIES_FOLDER" />
 
 		<execute macro="DMFolderDocument#viewPG">
 			<var name="dmDocumentDescription" value="${dmDocumentDescriptionEdit}" />
@@ -553,7 +553,7 @@
 
 		<execute function="Click#textClickAtAndWait" locator1="SODashboard#NAVIGATION_MY_DOCUMENTS" value1="My Documents" />
 
-		<execute function="#click" locator1="PGDocumentsandmedia#ENTRIES_FOLDER" />
+		<execute function="Click" locator1="PGDocumentsandmedia#ENTRIES_FOLDER" />
 
 		<execute macro="DMFolderDocument#viewPG">
 			<var name="versionNumber" value="${dmDocumentVersionNumber}" />
@@ -613,7 +613,7 @@
 
 		<execute function="Click#textClickAtAndWait" locator1="SODashboard#NAVIGATION_MY_DOCUMENTS" value1="My Documents" />
 
-		<execute function="#click" locator1="PGDocumentsandmedia#ENTRIES_FOLDER" />
+		<execute function="Click" locator1="PGDocumentsandmedia#ENTRIES_FOLDER" />
 
 		<execute macro="SODocuments#viewPGDisplayView">
 			<var name="dmDocumentDescription" value="${dmDocumentDescriptionEdit}" />
@@ -682,7 +682,7 @@
 		</execute>
 
 		<execute function="Click#textClickAtAndWait" locator1="SODashboard#NAVIGATION_MY_DOCUMENTS" value1="My Documents" />
-		<execute function="#click" locator1="PGDocumentsandmedia#ENTRIES_FOLDER" />
+		<execute function="Click" locator1="PGDocumentsandmedia#ENTRIES_FOLDER" />
 
 		<execute macro="SODocuments#viewPGDisplayView">
 			<var name="dmDocumentDescription" value="${dmDocumentDescriptionEdit}" />
@@ -732,7 +732,7 @@
 
 		<execute function="Click#textClickAtAndWait" locator1="SODashboard#NAVIGATION_MY_DOCUMENTS" value1="My Documents" />
 
-		<execute function="#click" locator1="PGDocumentsandmedia#ENTRIES_FOLDER" />
+		<execute function="Click" locator1="PGDocumentsandmedia#ENTRIES_FOLDER" />
 
 		<execute macro="SODocuments#viewPGDisplayView">
 			<var name="workflow" value="Draft" />
@@ -786,7 +786,7 @@
 
 		<execute function="Click#textClickAtAndWait" locator1="SODashboard#NAVIGATION_MY_DOCUMENTS" value1="My Documents" />
 
-		<execute function="#click" locator1="PGDocumentsandmedia#ENTRIES_FOLDER" />
+		<execute function="Click" locator1="PGDocumentsandmedia#ENTRIES_FOLDER" />
 
 		<execute macro="DMFolderDocument#viewSaveAsDraftEditDMFolderDocumentPG">
 			<var name="versionNumber" value="${dmDocumentVersionNumberEdit}" />

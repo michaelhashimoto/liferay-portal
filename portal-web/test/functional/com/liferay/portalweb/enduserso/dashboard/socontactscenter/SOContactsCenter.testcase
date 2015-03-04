@@ -118,9 +118,9 @@
 
 		<execute function="Click#textClickAtAndWait" locator1="SODashboard#NAVIGATION_CONTACTS_CENTER" />
 
-		<execute function="#type" locator1="SOContactscenter#CONTACTS_LIST_SEARCH" value1="${userFirstName}" />
-		<execute function="#select" locator1="SOContactscenter#CONTACTS_LIST_FILTER" value1="Connections" />
-		<execute function="#assertTextEquals" locator1="SOContactscenter#CONTACTS_LIST_EMPTY" value1="There are no results." />
+		<execute function="Type" locator1="SOContactscenter#CONTACTS_LIST_SEARCH" value1="${userFirstName}" />
+		<execute function="Select" locator1="SOContactscenter#CONTACTS_LIST_FILTER" value1="Connections" />
+		<execute function="AssertTextEquals" locator1="SOContactscenter#CONTACTS_LIST_EMPTY" value1="There are no results." />
 
 		<execute macro="SOContactsCenter#requestToConnect">
 			<var name="userEmailAddress" value="${userEmailAddress}" />
@@ -152,24 +152,24 @@
 
 		<execute function="Click#textClickAtAndWait" locator1="SODashboard#NAVIGATION_CONTACTS_CENTER" />
 
-		<execute function="#type" locator1="SOContactscenter#CONTACTS_LIST_SEARCH" value1="${userFirstName}" />
-		<execute function="#select" locator1="SOContactscenter#CONTACTS_LIST_FILTER" value1="Connections" />
-		<execute function="#assertTextEquals" locator1="SOContactscenter#CONTACTS_LIST_EMPTY" value1="There are no results." />
+		<execute function="Type" locator1="SOContactscenter#CONTACTS_LIST_SEARCH" value1="${userFirstName}" />
+		<execute function="Select" locator1="SOContactscenter#CONTACTS_LIST_FILTER" value1="Connections" />
+		<execute function="AssertTextEquals" locator1="SOContactscenter#CONTACTS_LIST_EMPTY" value1="There are no results." />
 
 		<execute function="Click#textClickAtAndWait" locator1="SOUserBar#DASHBOARD" />
 
 		<execute function="Click#textClickAtAndWait" locator1="SODashboard#NAVIGATION_CONTACTS_CENTER" />
 
-		<execute function="#type" locator1="SOContactscenter#CONTACTS_LIST_SEARCH" value1="${userFirstName}" />
-		<execute function="#select" locator1="SOContactscenter#CONTACTS_LIST_FILTER" value1="All" />
-		<execute function="#assertTextEquals" locator1="SOContactscenter#CONTACTS_LIST_NAME" value1="${userListName}" />
-		<execute function="#assertTextEquals" locator1="SOContactscenter#CONTACTS_LIST_EMAIL" value1="${userEmailAddress}" />
-		<execute function="#assertTextEquals" locator1="SOContactscenter#CONNECTIONS_LINK" value1="You have 0 connections." />
-		<execute function="#pause" value1="1000" />
-		<execute function="#click" locator1="SOContactscenter#CONTACTS_LIST_NAME" value1="${userListName}" />
-		<execute function="#assertTextEquals" locator1="SOContactscenter#USER_DETAILS_NAME" value1="${userName}" />
-		<execute function="#assertTextEquals" locator1="SOContactscenter#USER_DETAILS_EMAIL" value1="${userEmailAddress}" />
-		<execute function="#assertTextEquals" locator1="SOContactscenter#CONNECT_BUTTON" value1="Connect" />
+		<execute function="Type" locator1="SOContactscenter#CONTACTS_LIST_SEARCH" value1="${userFirstName}" />
+		<execute function="Select" locator1="SOContactscenter#CONTACTS_LIST_FILTER" value1="All" />
+		<execute function="AssertTextEquals" locator1="SOContactscenter#CONTACTS_LIST_NAME" value1="${userListName}" />
+		<execute function="AssertTextEquals" locator1="SOContactscenter#CONTACTS_LIST_EMAIL" value1="${userEmailAddress}" />
+		<execute function="AssertTextEquals" locator1="SOContactscenter#CONNECTIONS_LINK" value1="You have 0 connections." />
+		<execute function="Pause" value1="1000" />
+		<execute function="Click" locator1="SOContactscenter#CONTACTS_LIST_NAME" value1="${userListName}" />
+		<execute function="AssertTextEquals" locator1="SOContactscenter#USER_DETAILS_NAME" value1="${userName}" />
+		<execute function="AssertTextEquals" locator1="SOContactscenter#USER_DETAILS_EMAIL" value1="${userEmailAddress}" />
+		<execute function="AssertTextEquals" locator1="SOContactscenter#CONNECT_BUTTON" value1="Connect" />
 		<execute function="AssertElementNotPresent#assertNotVisible" locator1="SOContactscenter#DISCONNECT_BUTTON" />
 
 		<execute macro="SOContactsCenter#requestToConnect">
@@ -202,16 +202,16 @@
 
 		<execute function="Click#textClickAtAndWait" locator1="SODashboard#NAVIGATION_CONTACTS_CENTER" />
 
-		<execute function="#type" locator1="SOContactscenter#CONTACTS_LIST_SEARCH" value1="${userFirstName}" />
-		<execute function="#select" locator1="SOContactscenter#CONTACTS_LIST_FILTER" value1="Connections" />
-		<execute function="#assertTextEquals" locator1="SOContactscenter#CONTACTS_LIST_NAME" value1="${userListName}" />
-		<execute function="#assertTextEquals" locator1="SOContactscenter#CONTACTS_LIST_EMAIL" value1="${userEmailAddress}" />
-		<execute function="#assertTextEquals" locator1="SOContactscenter#CONNECTIONS_LINK" value1="You have 1 connections." />
-		<execute function="#pause" value1="1000" />
-		<execute function="#click" locator1="SOContactscenter#CONTACTS_LIST_NAME" value1="${userListName}" />
-		<execute function="#assertTextEquals" locator1="SOContactscenter#USER_DETAILS_NAME" value1="${userName}" />
-		<execute function="#assertTextEquals" locator1="SOContactscenter#USER_DETAILS_EMAIL" value1="${userEmailAddress}" />
-		<execute function="#assertTextEquals" locator1="SOContactscenter#DISCONNECT_BUTTON" value1="Disconnect" />
+		<execute function="Type" locator1="SOContactscenter#CONTACTS_LIST_SEARCH" value1="${userFirstName}" />
+		<execute function="Select" locator1="SOContactscenter#CONTACTS_LIST_FILTER" value1="Connections" />
+		<execute function="AssertTextEquals" locator1="SOContactscenter#CONTACTS_LIST_NAME" value1="${userListName}" />
+		<execute function="AssertTextEquals" locator1="SOContactscenter#CONTACTS_LIST_EMAIL" value1="${userEmailAddress}" />
+		<execute function="AssertTextEquals" locator1="SOContactscenter#CONNECTIONS_LINK" value1="You have 1 connections." />
+		<execute function="Pause" value1="1000" />
+		<execute function="Click" locator1="SOContactscenter#CONTACTS_LIST_NAME" value1="${userListName}" />
+		<execute function="AssertTextEquals" locator1="SOContactscenter#USER_DETAILS_NAME" value1="${userName}" />
+		<execute function="AssertTextEquals" locator1="SOContactscenter#USER_DETAILS_EMAIL" value1="${userEmailAddress}" />
+		<execute function="AssertTextEquals" locator1="SOContactscenter#DISCONNECT_BUTTON" value1="Disconnect" />
 		<execute function="AssertElementNotPresent#assertNotVisible" locator1="SOContactscenter#CONNECT_BUTTON" />
 	</command>
 
@@ -237,9 +237,9 @@
 
 		<execute function="Click#textClickAtAndWait" locator1="SODashboard#NAVIGATION_CONTACTS_CENTER" />
 
-		<execute function="#type" locator1="SOContactscenter#CONTACTS_LIST_SEARCH" value1="${adminFirstName}" />
-		<execute function="#select" locator1="SOContactscenter#CONTACTS_LIST_FILTER" value1="Following" />
-		<execute function="#assertTextEquals" locator1="SOContactscenter#CONTACTS_LIST_EMPTY" value1="There are no results." />
+		<execute function="Type" locator1="SOContactscenter#CONTACTS_LIST_SEARCH" value1="${adminFirstName}" />
+		<execute function="Select" locator1="SOContactscenter#CONTACTS_LIST_FILTER" value1="Following" />
+		<execute function="AssertTextEquals" locator1="SOContactscenter#CONTACTS_LIST_EMPTY" value1="There are no results." />
 
 		<execute macro="SOContactsCenter#followUser">
 			<var name="adminEmailAddress" value="${adminEmailAddress}" />
@@ -251,15 +251,15 @@
 
 		<execute function="Click#textClickAtAndWait" locator1="SODashboard#NAVIGATION_CONTACTS_CENTER" />
 
-		<execute function="#type" locator1="SOContactscenter#CONTACTS_LIST_SEARCH" value1="${adminFirstName}" />
-		<execute function="#select" locator1="SOContactscenter#CONTACTS_LIST_FILTER" value1="Following" />
-		<execute function="#assertTextEquals" locator1="SOContactscenter#CONTACTS_LIST_NAME" value1="${adminListName}" />
-		<execute function="#assertTextEquals" locator1="SOContactscenter#CONTACTS_LIST_EMAIL" value1="${adminEmailAddress}" />
-		<execute function="#assertTextEquals" locator1="SOContactscenter#FOLLOWING_LINK" value1="You are following 1 people." />
-		<execute function="#pause" value1="1000" />
-		<execute function="#click" locator1="SOContactscenter#CONTACTS_LIST_NAME" value1="${adminListName}" />
-		<execute function="#assertTextEquals" locator1="SOContactscenter#USER_DETAILS_NAME" value1="${adminName}" />
-		<execute function="#assertTextEquals" locator1="SOContactscenter#USER_DETAILS_EMAIL" value1="${adminEmailAddress}" />
+		<execute function="Type" locator1="SOContactscenter#CONTACTS_LIST_SEARCH" value1="${adminFirstName}" />
+		<execute function="Select" locator1="SOContactscenter#CONTACTS_LIST_FILTER" value1="Following" />
+		<execute function="AssertTextEquals" locator1="SOContactscenter#CONTACTS_LIST_NAME" value1="${adminListName}" />
+		<execute function="AssertTextEquals" locator1="SOContactscenter#CONTACTS_LIST_EMAIL" value1="${adminEmailAddress}" />
+		<execute function="AssertTextEquals" locator1="SOContactscenter#FOLLOWING_LINK" value1="You are following 1 people." />
+		<execute function="Pause" value1="1000" />
+		<execute function="Click" locator1="SOContactscenter#CONTACTS_LIST_NAME" value1="${adminListName}" />
+		<execute function="AssertTextEquals" locator1="SOContactscenter#USER_DETAILS_NAME" value1="${adminName}" />
+		<execute function="AssertTextEquals" locator1="SOContactscenter#USER_DETAILS_EMAIL" value1="${adminEmailAddress}" />
 	</command>
 
 	<command name="SearchUser" priority="5">
@@ -277,14 +277,14 @@
 
 		<execute function="Click#textClickAtAndWait" locator1="SODashboard#NAVIGATION_CONTACTS_CENTER" />
 
-		<execute function="#pause" value1="1000" />
-		<execute function="#select" locator1="SOContactscenter#CONTACTS_LIST_FILTER" value1="All" />
-		<execute function="#type" locator1="SOContactscenter#CONTACTS_LIST_SEARCH" value1="${userFirstName}" />
-		<execute function="#assertTextEquals" locator1="SOContactscenter#CONTACTS_LIST_NAME" value1="${userListName}" />
-		<execute function="#assertTextEquals" locator1="SOContactscenter#CONTACTS_LIST_EMAIL" value1="${userEmailAddress}" />
-		<execute function="#click" locator1="SOContactscenter#CONTACTS_LIST_NAME" value1="${userListName}" />
-		<execute function="#assertTextEquals" locator1="SOContactscenter#USER_DETAILS_NAME" value1="${userName}" />
-		<execute function="#assertTextEquals" locator1="SOContactscenter#USER_DETAILS_EMAIL" value1="${userEmailAddress}" />
+		<execute function="Pause" value1="1000" />
+		<execute function="Select" locator1="SOContactscenter#CONTACTS_LIST_FILTER" value1="All" />
+		<execute function="Type" locator1="SOContactscenter#CONTACTS_LIST_SEARCH" value1="${userFirstName}" />
+		<execute function="AssertTextEquals" locator1="SOContactscenter#CONTACTS_LIST_NAME" value1="${userListName}" />
+		<execute function="AssertTextEquals" locator1="SOContactscenter#CONTACTS_LIST_EMAIL" value1="${userEmailAddress}" />
+		<execute function="Click" locator1="SOContactscenter#CONTACTS_LIST_NAME" value1="${userListName}" />
+		<execute function="AssertTextEquals" locator1="SOContactscenter#USER_DETAILS_NAME" value1="${userName}" />
+		<execute function="AssertTextEquals" locator1="SOContactscenter#USER_DETAILS_EMAIL" value1="${userEmailAddress}" />
 	</command>
 
 	<command name="ViewContactsCenterNotifications" priority="5">
@@ -396,8 +396,8 @@
 
 		<execute function="Click#textClickAtAndWait" locator1="SOUserBar#DASHBOARD" />
 		<execute function="AssertElementPresent#assertElementPresent" locator1="SOUserBar#NOTIFICATION" />
-		<execute function="#assertTextEquals" locator1="SOUserBar#NOTIFICATION_MENU_COUNT" value1="6" />
-		<execute function="#mouseOver" locator1="SOUserBar#NOTIFICATION" />
+		<execute function="AssertTextEquals" locator1="SOUserBar#NOTIFICATION_MENU_COUNT" value1="6" />
+		<execute function="MouseOver" locator1="SOUserBar#NOTIFICATION" />
 		<execute function="AssertClick#assertPartialTextClickAtAndWait" locator1="SOUserBar#NOTIFICATION_MENU_VIEW_ALL" value1="View All" />
 
 		<var name="row" value="1" />
@@ -423,8 +423,8 @@
 		<var name="row" value="6" />
 
 		<execute function="AssertTextEquals#assertPartialText" locator1="SONotifications#NOTIFICATIONS_ENTRY_INCREMENT" value1="${userName} would like to add you as a connection." />
-		<execute function="#select" locator1="SONotifications#NOTIFICATIONS_ENTRIES_PER_PAGE_SELECT" value1="5" />
-		<execute function="#assertTextEquals" locator1="SONotifications#SEARCH_RESULTS" value1="Showing 1 - 5 of 6 results." />
+		<execute function="Select" locator1="SONotifications#NOTIFICATIONS_ENTRIES_PER_PAGE_SELECT" value1="5" />
+		<execute function="AssertTextEquals" locator1="SONotifications#SEARCH_RESULTS" value1="Showing 1 - 5 of 6 results." />
 
 		<var name="row" value="1" />
 
@@ -448,9 +448,9 @@
 
 		<var name="row" value="6" />
 
-		<execute function="#assertElementNotPresent" locator1="SONotifications#NOTIFICATIONS_ENTRY_INCREMENT" />
-		<execute function="#click" locator1="SONotifications#NEXT_BUTTON" value1="Next" />
-		<execute function="#assertTextEquals" locator1="SONotifications#SEARCH_RESULTS" value1="Showing 6 - 6 of 6 results." />
+		<execute function="AssertElementNotPresent" locator1="SONotifications#NOTIFICATIONS_ENTRY_INCREMENT" />
+		<execute function="Click" locator1="SONotifications#NEXT_BUTTON" value1="Next" />
+		<execute function="AssertTextEquals" locator1="SONotifications#SEARCH_RESULTS" value1="Showing 6 - 6 of 6 results." />
 
 		<var name="row" value="1" />
 
@@ -458,7 +458,7 @@
 
 		<var name="row" value="2" />
 
-		<execute function="#assertElementNotPresent" locator1="SONotifications#NOTIFICATIONS_ENTRY_INCREMENT" />
+		<execute function="AssertElementNotPresent" locator1="SONotifications#NOTIFICATIONS_ENTRY_INCREMENT" />
 	</command>
 
 	<command name="ViewContactsCenterUserDetails" priority="5">

@@ -46,9 +46,9 @@
 			<var name="portletName" value="Tags" />
 		</execute>
 
-		<execute function="#assertTextEquals" locator1="CPTags#ENTRY_TAG_1" value1="${tagName1}" />
-		<execute function="#assertTextEquals" locator1="CPTags#ENTRY_TAG_2" value1="${tagName2}" />
-		<execute function="#assertTextEquals" locator1="CPTags#ENTRY_TAG_3" value1="${tagName3}" />
+		<execute function="AssertTextEquals" locator1="CPTags#ENTRY_TAG_1" value1="${tagName1}" />
+		<execute function="AssertTextEquals" locator1="CPTags#ENTRY_TAG_2" value1="${tagName2}" />
+		<execute function="AssertTextEquals" locator1="CPTags#ENTRY_TAG_3" value1="${tagName3}" />
 	</command>
 
 	<command name="DeleteTag" priority="5">

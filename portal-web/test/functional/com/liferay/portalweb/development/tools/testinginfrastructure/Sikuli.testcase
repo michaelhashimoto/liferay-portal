@@ -2,10 +2,10 @@
 	<property name="testray.main.component.name" value="Tools" />
 
 	<command name="Smoke" priority="5">
-		<execute function="#sikuliAssertElementPresent" locator1="Sikuli#EMAIL_ADDRESS" />
-		<execute function="#sikuliAssertElementNotPresent" locator1="Sikuli#AVERAGE_RATING_STAR_ICON_PNG" />
-		<execute function="#type" locator1="Sikuli#EMAIL_ADDRESS" value1="test@liferay.com" />
-		<execute function="#type" locator1="Sikuli#PASSWORD" value1="test" />
-		<execute function="#click" locator1="Sikuli#SIGN_IN" />
+		<execute function="SikuliAssertElementPresent" locator1="Sikuli#EMAIL_ADDRESS" />
+		<execute function="SikuliAssertElementNotPresent" locator1="Sikuli#AVERAGE_RATING_STAR_ICON_PNG" />
+		<execute function="Type" locator1="Sikuli#EMAIL_ADDRESS" value1="test@liferay.com" />
+		<execute function="Type" locator1="Sikuli#PASSWORD" value1="test" />
+		<execute function="Click" locator1="Sikuli#SIGN_IN" />
 	</command>
 </definition>

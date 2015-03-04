@@ -1,127 +1,127 @@
 <definition>
 	<command name="addAdditionalEmailAddressMyAccount">
-		<execute function="#click" locator1="SOUserBar#USER_NAME" />
+		<execute function="Click" locator1="SOUserBar#USER_NAME" />
 		<execute function="AssertClick#assertTextClickAt" locator1="SOUserBar#USER_MENU_MY_ACCOUNT" value1="My Account" />
 
-		<execute function="#click" locator1="CPMyAccount#ADDITIONAL_EMAIL_ADDRESSES" />
-		<execute function="#type" locator1="CPMyAccount#ADDITIONAL_EMAIL_ADDRESSES_EMAIL_ADDRESS_FIELD" value1="${userAdditionalEmailAddress}" />
-		<execute function="#select" locator1="CPMyAccount#ADDITIONAL_EMAIL_ADDRESSES_TYPE_SELECT" value1="Email Address" />
-		<execute function="#click" locator1="CPMyAccount#ADDITIONAL_EMAIL_ADDRESSES_PRIMARY_RADIO_BUTTON" />
-		<execute function="#click" locator1="CPMyAccount#SAVE_BUTTON" />
+		<execute function="Click" locator1="CPMyAccount#ADDITIONAL_EMAIL_ADDRESSES" />
+		<execute function="Type" locator1="CPMyAccount#ADDITIONAL_EMAIL_ADDRESSES_EMAIL_ADDRESS_FIELD" value1="${userAdditionalEmailAddress}" />
+		<execute function="Select" locator1="CPMyAccount#ADDITIONAL_EMAIL_ADDRESSES_TYPE_SELECT" value1="Email Address" />
+		<execute function="Click" locator1="CPMyAccount#ADDITIONAL_EMAIL_ADDRESSES_PRIMARY_RADIO_BUTTON" />
+		<execute function="Click" locator1="CPMyAccount#SAVE_BUTTON" />
 		<execute function="AssertTextEquals#assertText" locator1="CPMyAccount#SUCCESS_MESSAGE" value1="Your request completed successfully." />
 	</command>
 
 	<command name="addAdditionalEmailAddressProfile">
-		<execute function="#click" locator1="SOUserBar#USER_NAME" />
+		<execute function="Click" locator1="SOUserBar#USER_NAME" />
 		<execute function="AssertClick#assertTextClickAtAndWait" locator1="SOUserBar#USER_MENU_MY_PROFILE" value1="My Profile" />
 
-		<execute function="#click" locator1="SOProfile#ADD_EMAIL_ADDRESS" />
+		<execute function="Click" locator1="SOProfile#ADD_EMAIL_ADDRESS" />
 
-		<execute function="#type" locator1="SOProfileAddAdditionalEmailAddress#EMAIL_ADDRESS_FIELD" value1="${userAdditionalEmailAddress}" />
-		<execute function="#select" locator1="SOProfileAddAdditionalEmailAddress#TYPE_SELECT" value1="Email Address" />
-		<execute function="#click" locator1="SOProfileAddAdditionalEmailAddress#PRIMARY_RADIO_BUTTON" />
-		<execute function="#click" locator1="SOProfileAddAdditionalEmailAddress#SAVE_BUTTON" />
+		<execute function="Type" locator1="SOProfileAddAdditionalEmailAddress#EMAIL_ADDRESS_FIELD" value1="${userAdditionalEmailAddress}" />
+		<execute function="Select" locator1="SOProfileAddAdditionalEmailAddress#TYPE_SELECT" value1="Email Address" />
+		<execute function="Click" locator1="SOProfileAddAdditionalEmailAddress#PRIMARY_RADIO_BUTTON" />
+		<execute function="Click" locator1="SOProfileAddAdditionalEmailAddress#SAVE_BUTTON" />
 
 		<execute function="AssertTextEquals#assertText" locator1="SOProfile#PROFILE_INFO_EMAIL_ADDRESS_TITLE" value1="Additional Email Addresses:" />
-		<execute function="#assertTextEquals" locator1="SOProfile#PROFILE_INFO_EMAIL_ADDRESS_CONTENT" value1="Email Address ${userAdditionalEmailAddress}" />
+		<execute function="AssertTextEquals" locator1="SOProfile#PROFILE_INFO_EMAIL_ADDRESS_CONTENT" value1="Email Address ${userAdditionalEmailAddress}" />
 	</command>
 
 	<command name="addAddressMyAccount">
-		<execute function="#click" locator1="SOUserBar#USER_NAME" />
+		<execute function="Click" locator1="SOUserBar#USER_NAME" />
 		<execute function="AssertClick#assertTextClickAt" locator1="SOUserBar#USER_MENU_MY_ACCOUNT" value1="My Account" />
 
-		<execute function="#click" locator1="CPMyAccount#ADDRESSES" />
-		<execute function="#type" locator1="CPMyAccount#ADDRESSES_STREET_1_FIELD" value1="${userAddressStreet1}" />
+		<execute function="Click" locator1="CPMyAccount#ADDRESSES" />
+		<execute function="Type" locator1="CPMyAccount#ADDRESSES_STREET_1_FIELD" value1="${userAddressStreet1}" />
 
 		<if>
 			<isset var="userAddressCountry" />
 			<then>
-				<execute function="#select" locator1="CPMyAccount#ADDRESSES_COUNTRY_SELECT" value1="${userAddressCountry}" />
+				<execute function="Select" locator1="CPMyAccount#ADDRESSES_COUNTRY_SELECT" value1="${userAddressCountry}" />
 			</then>
 		</if>
 
 		<if>
 			<isset var="userAddressRegion" />
 			<then>
-				<execute function="#select" locator1="CPMyAccount#ADDRESSES_REGION_SELECT" value1="${userAddressRegion}" />
+				<execute function="Select" locator1="CPMyAccount#ADDRESSES_REGION_SELECT" value1="${userAddressRegion}" />
 			</then>
 		</if>
 
 		<if>
 			<isset var="userAddressPostalCode" />
 			<then>
-				<execute function="#type" locator1="CPMyAccount#ADDRESSES_POSTAL_CODE_FIELD" value1="${userAddressPostalCode}" />
+				<execute function="Type" locator1="CPMyAccount#ADDRESSES_POSTAL_CODE_FIELD" value1="${userAddressPostalCode}" />
 			</then>
 		</if>
 
 		<if>
 			<isset var="userAddressType" />
 			<then>
-				<execute function="#select" locator1="CPMyAccount#ADDRESSES_TYPE_SELECT" value1="${userAddressType}" />
+				<execute function="Select" locator1="CPMyAccount#ADDRESSES_TYPE_SELECT" value1="${userAddressType}" />
 			</then>
 		</if>
 
-		<execute function="#type" locator1="CPMyAccount#ADDRESSES_CITY_FIELD" value1="${userAddressCity}" />
-		<execute function="#click" locator1="CPMyAccount#ADDRESSES_PRIMARY_RADIO_BUTTON" />
-		<execute function="#check" locator1="CPMyAccount#ADDRESSES_MAILING_CHECKBOX" />
-		<execute function="#click" locator1="CPMyAccount#SAVE_BUTTON" />
+		<execute function="Type" locator1="CPMyAccount#ADDRESSES_CITY_FIELD" value1="${userAddressCity}" />
+		<execute function="Click" locator1="CPMyAccount#ADDRESSES_PRIMARY_RADIO_BUTTON" />
+		<execute function="Check" locator1="CPMyAccount#ADDRESSES_MAILING_CHECKBOX" />
+		<execute function="Click" locator1="CPMyAccount#SAVE_BUTTON" />
 		<execute function="AssertTextEquals#assertText" locator1="CPMyAccount#SUCCESS_MESSAGE" value1="Your request completed successfully." />
 	</command>
 
 	<command name="addAddressProfile">
-		<execute function="#click" locator1="SOUserBar#USER_NAME" />
+		<execute function="Click" locator1="SOUserBar#USER_NAME" />
 		<execute function="AssertClick#assertTextClickAtAndWait" locator1="SOUserBar#USER_MENU_MY_PROFILE" value1="My Profile" />
 
-		<execute function="#click" locator1="SOProfile#ADD_ADDRESSES" />
+		<execute function="Click" locator1="SOProfile#ADD_ADDRESSES" />
 
-		<execute function="#type" locator1="SOProfileAddAddress#STREET_1_FIELD" value1="${userAddressStreet1}" />
+		<execute function="Type" locator1="SOProfileAddAddress#STREET_1_FIELD" value1="${userAddressStreet1}" />
 
 		<if>
 			<isset var="userAddressPostalCode" />
 			<then>
-				<execute function="#type" locator1="SOProfileAddAddress#POSTAL_CODE_FIELD" value1="${userAddressPostalCode}" />
+				<execute function="Type" locator1="SOProfileAddAddress#POSTAL_CODE_FIELD" value1="${userAddressPostalCode}" />
 			</then>
 		</if>
 
-		<execute function="#type" locator1="SOProfileAddAddress#CITY_FIELD" value1="${userAddressCity}" />
+		<execute function="Type" locator1="SOProfileAddAddress#CITY_FIELD" value1="${userAddressCity}" />
 
 		<if>
 			<isset var="userAddressType" />
 			<then>
-				<execute function="#select" locator1="SOProfileAddAddress#TYPE_SELECT" value1="${userAddressType}" />
+				<execute function="Select" locator1="SOProfileAddAddress#TYPE_SELECT" value1="${userAddressType}" />
 			</then>
 		</if>
 
 		<if>
 			<isset var="userAddressCountry" />
 			<then>
-				<execute function="#select" locator1="SOProfileAddAddress#COUNTRY_SELECT" value1="${userAddressCountry}" />
+				<execute function="Select" locator1="SOProfileAddAddress#COUNTRY_SELECT" value1="${userAddressCountry}" />
 			</then>
 		</if>
 
-		<execute function="#click" locator1="SOProfileAddAddress#PRIMARY_RADIO_BUTTON" />
-		<execute function="#check" locator1="SOProfileAddAddress#MAILING_CHECKBOX" />
+		<execute function="Click" locator1="SOProfileAddAddress#PRIMARY_RADIO_BUTTON" />
+		<execute function="Check" locator1="SOProfileAddAddress#MAILING_CHECKBOX" />
 
 		<if>
 			<isset var="userAddressRegion" />
 			<then>
-				<execute function="#select" locator1="SOProfileAddAddress#REGION_SELECT" value1="${userAddressRegion}" />
+				<execute function="Select" locator1="SOProfileAddAddress#REGION_SELECT" value1="${userAddressRegion}" />
 			</then>
 		</if>
 
-		<execute function="#click" locator1="SOProfileAddAddress#SAVE_BUTTON" />
+		<execute function="Click" locator1="SOProfileAddAddress#SAVE_BUTTON" />
 
 		<execute function="AssertTextEquals#assertText" locator1="SOProfile#PROFILE_INFO_ADDRESS_TITLE" value1="Addresses:" />
-		<execute function="#assertTextEquals" locator1="SOProfile#PROFILE_INFO_ADDRESS_CONTENT" value1="${userAddressType} ${userAddressStreet1}, ${userAddressCity}, ${userAddressPostalCode}, ${userAddressRegion}, ${userAddressCountry} (Mailing)" />
+		<execute function="AssertTextEquals" locator1="SOProfile#PROFILE_INFO_ADDRESS_CONTENT" value1="${userAddressType} ${userAddressStreet1}, ${userAddressCity}, ${userAddressPostalCode}, ${userAddressRegion}, ${userAddressCountry} (Mailing)" />
 	</command>
 
 	<command name="addCommentsMyAccount">
-		<execute function="#click" locator1="SOUserBar#USER_NAME" />
+		<execute function="Click" locator1="SOUserBar#USER_NAME" />
 		<execute function="AssertClick#assertTextClickAt" locator1="SOUserBar#USER_MENU_MY_ACCOUNT" value1="My Account" />
 
-		<execute function="#click" locator1="CPMyAccount#COMMENTS" />
-		<execute function="#type" locator1="CPMyAccount#COMMENTS_FIELD" value1="${userIntroduction}" />
-		<execute function="#click" locator1="CPMyAccount#SAVE_BUTTON" />
+		<execute function="Click" locator1="CPMyAccount#COMMENTS" />
+		<execute function="Type" locator1="CPMyAccount#COMMENTS_FIELD" value1="${userIntroduction}" />
+		<execute function="Click" locator1="CPMyAccount#SAVE_BUTTON" />
 		<execute function="AssertTextEquals#assertText" locator1="CPMyAccount#SUCCESS_MESSAGE" value1="Your request completed successfully." />
 	</command>
 
@@ -147,385 +147,385 @@
 	</command>
 
 	<command name="addInstantMessengerMyAccount">
-		<execute function="#click" locator1="SOUserBar#USER_NAME" />
+		<execute function="Click" locator1="SOUserBar#USER_NAME" />
 		<execute function="AssertClick#assertTextClickAt" locator1="SOUserBar#USER_MENU_MY_ACCOUNT" value1="My Account" />
 
-		<execute function="#click" locator1="CPMyAccount#INSTANT_MESSENGER" />
+		<execute function="Click" locator1="CPMyAccount#INSTANT_MESSENGER" />
 
 		<if>
 			<isset var="userInstantMessengerAIM" />
 			<then>
-				<execute function="#type" locator1="CPMyAccount#INSTANT_MESSENGER_AIM_FIELD" value1="${userInstantMessengerAIM}" />
+				<execute function="Type" locator1="CPMyAccount#INSTANT_MESSENGER_AIM_FIELD" value1="${userInstantMessengerAIM}" />
 			</then>
 		</if>
 
 		<if>
 			<isset var="userInstantMessengerICQ" />
 			<then>
-				<execute function="#type" locator1="CPMyAccount#INSTANT_MESSENGER_ICQ_FIELD" value1="${userInstantMessengerICQ}" />
+				<execute function="Type" locator1="CPMyAccount#INSTANT_MESSENGER_ICQ_FIELD" value1="${userInstantMessengerICQ}" />
 			</then>
 		</if>
 
 		<if>
 			<isset var="userInstantMessengerJabber" />
 			<then>
-				<execute function="#type" locator1="CPMyAccount#INSTANT_MESSENGER_JABBER_FIELD" value1="${userInstantMessengerJabber}" />
+				<execute function="Type" locator1="CPMyAccount#INSTANT_MESSENGER_JABBER_FIELD" value1="${userInstantMessengerJabber}" />
 			</then>
 		</if>
 
 		<if>
 			<isset var="userInstantMessengerSkype" />
 			<then>
-				<execute function="#type" locator1="CPMyAccount#INSTANT_MESSENGER_SKYPE_FIELD" value1="${userInstantMessengerSkype}" />
+				<execute function="Type" locator1="CPMyAccount#INSTANT_MESSENGER_SKYPE_FIELD" value1="${userInstantMessengerSkype}" />
 			</then>
 		</if>
 
 		<if>
 			<isset var="userInstantMessengerWindowsLiveMessenger" />
 			<then>
-				<execute function="#type" locator1="CPMyAccount#INSTANT_MESSENGER_WINDOWS_LIVE_MESSENGER_FIELD" value1="${userInstantMessengerWindowsLiveMessenger}" />
+				<execute function="Type" locator1="CPMyAccount#INSTANT_MESSENGER_WINDOWS_LIVE_MESSENGER_FIELD" value1="${userInstantMessengerWindowsLiveMessenger}" />
 			</then>
 		</if>
 
 		<if>
 			<isset var="userInstantMessengerYM" />
 			<then>
-				<execute function="#type" locator1="CPMyAccount#INSTANT_MESSENGER_YM_FIELD" value1="${userInstantMessengerYM}" />
+				<execute function="Type" locator1="CPMyAccount#INSTANT_MESSENGER_YM_FIELD" value1="${userInstantMessengerYM}" />
 			</then>
 		</if>
 
-		<execute function="#click" locator1="CPMyAccount#SAVE_BUTTON" />
+		<execute function="Click" locator1="CPMyAccount#SAVE_BUTTON" />
 		<execute function="AssertTextEquals#assertText" locator1="CPMyAccount#SUCCESS_MESSAGE" value1="Your request completed successfully." />
 	</command>
 
 	<command name="addInstantMessengerProfile">
-		<execute function="#click" locator1="SOUserBar#USER_NAME" />
+		<execute function="Click" locator1="SOUserBar#USER_NAME" />
 		<execute function="AssertClick#assertTextClickAtAndWait" locator1="SOUserBar#USER_MENU_MY_PROFILE" value1="My Profile" />
 
-		<execute function="#click" locator1="SOProfile#ADD_INSTANT_MESSENGER" />
+		<execute function="Click" locator1="SOProfile#ADD_INSTANT_MESSENGER" />
 
 		<if>
 			<isset var="userInstantMessengerAIM" />
 			<then>
-				<execute function="#type" locator1="SOProfileAddInstantMessenger#AIM_FIELD" value1="${userInstantMessengerAIM}" />
+				<execute function="Type" locator1="SOProfileAddInstantMessenger#AIM_FIELD" value1="${userInstantMessengerAIM}" />
 			</then>
 		</if>
 
 		<if>
 			<isset var="userInstantMessengerICQ" />
 			<then>
-				<execute function="#type" locator1="SOProfileAddInstantMessenger#ICQ_FIELD" value1="${userInstantMessengerICQ}" />
+				<execute function="Type" locator1="SOProfileAddInstantMessenger#ICQ_FIELD" value1="${userInstantMessengerICQ}" />
 			</then>
 		</if>
 
 		<if>
 			<isset var="userInstantMessengerJabber" />
 			<then>
-				<execute function="#type" locator1="SOProfileAddInstantMessenger#JABBER_FIELD" value1="${userInstantMessengerJabber}" />
+				<execute function="Type" locator1="SOProfileAddInstantMessenger#JABBER_FIELD" value1="${userInstantMessengerJabber}" />
 			</then>
 		</if>
 
 		<if>
 			<isset var="userInstantMessengerSkype" />
 			<then>
-				<execute function="#type" locator1="SOProfileAddInstantMessenger#SKYPE_FIELD" value1="${userInstantMessengerSkype}" />
+				<execute function="Type" locator1="SOProfileAddInstantMessenger#SKYPE_FIELD" value1="${userInstantMessengerSkype}" />
 			</then>
 		</if>
 
 		<if>
 			<isset var="userInstantMessengerWindowsLiveMessenger" />
 			<then>
-				<execute function="#type" locator1="SOProfileAddInstantMessenger#WINDOWS_LIVE_MESSENGER_FIELD" value1="${userInstantMessengerWindowsLiveMessenger}" />
+				<execute function="Type" locator1="SOProfileAddInstantMessenger#WINDOWS_LIVE_MESSENGER_FIELD" value1="${userInstantMessengerWindowsLiveMessenger}" />
 			</then>
 		</if>
 
 		<if>
 			<isset var="userInstantMessengerYM" />
 			<then>
-				<execute function="#type" locator1="SOProfileAddInstantMessenger#YM_FIELD" value1="${userInstantMessengerYM}" />
+				<execute function="Type" locator1="SOProfileAddInstantMessenger#YM_FIELD" value1="${userInstantMessengerYM}" />
 			</then>
 		</if>
 
-		<execute function="#click" locator1="SOProfileAddAddress#SAVE_BUTTON" />
+		<execute function="Click" locator1="SOProfileAddAddress#SAVE_BUTTON" />
 
 		<execute function="AssertTextEquals#assertText" locator1="SOProfile#PROFILE_INFO_INSTANT_MESSENGER_TITLE" value1="Instant Messenger:" />
-		<execute function="#assertTextEquals" locator1="SOProfile#PROFILE_INFO_INSTANT_MESSENGER_AIM_CONTENT" value1="AIM ${userInstantMessengerAIM}" />
-		<execute function="#assertTextEquals" locator1="SOProfile#PROFILE_INFO_INSTANT_MESSENGER_ICQ_CONTENT" value1="ICQ ${userInstantMessengerICQ}" />
-		<execute function="#assertTextEquals" locator1="SOProfile#PROFILE_INFO_INSTANT_MESSENGER_JABBER_CONTENT" value1="Jabber ${userInstantMessengerJabber}" />
-		<execute function="#assertTextEquals" locator1="SOProfile#PROFILE_INFO_INSTANT_MESSENGER_MSN_CONTENT" value1="msn ${userInstantMessengerWindowsLiveMessenger}" />
-		<execute function="#assertTextEquals" locator1="SOProfile#PROFILE_INFO_INSTANT_MESSENGER_SKYPE_CONTENT" value1="Skype ${userInstantMessengerSkype}" />
-		<execute function="#assertTextEquals" locator1="SOProfile#PROFILE_INFO_INSTANT_MESSENGER_YM_CONTENT" value1="ym ${userInstantMessengerYM}" />
+		<execute function="AssertTextEquals" locator1="SOProfile#PROFILE_INFO_INSTANT_MESSENGER_AIM_CONTENT" value1="AIM ${userInstantMessengerAIM}" />
+		<execute function="AssertTextEquals" locator1="SOProfile#PROFILE_INFO_INSTANT_MESSENGER_ICQ_CONTENT" value1="ICQ ${userInstantMessengerICQ}" />
+		<execute function="AssertTextEquals" locator1="SOProfile#PROFILE_INFO_INSTANT_MESSENGER_JABBER_CONTENT" value1="Jabber ${userInstantMessengerJabber}" />
+		<execute function="AssertTextEquals" locator1="SOProfile#PROFILE_INFO_INSTANT_MESSENGER_MSN_CONTENT" value1="msn ${userInstantMessengerWindowsLiveMessenger}" />
+		<execute function="AssertTextEquals" locator1="SOProfile#PROFILE_INFO_INSTANT_MESSENGER_SKYPE_CONTENT" value1="Skype ${userInstantMessengerSkype}" />
+		<execute function="AssertTextEquals" locator1="SOProfile#PROFILE_INFO_INSTANT_MESSENGER_YM_CONTENT" value1="ym ${userInstantMessengerYM}" />
 	</command>
 
 	<command name="addIntroductionProfile">
-		<execute function="#click" locator1="SOUserBar#USER_NAME" />
+		<execute function="Click" locator1="SOUserBar#USER_NAME" />
 		<execute function="AssertClick#assertTextClickAtAndWait" locator1="SOUserBar#USER_MENU_MY_PROFILE" value1="My Profile" />
 
-		<execute function="#click" locator1="SOProfile#ADD_INTRODUCTION" />
+		<execute function="Click" locator1="SOProfile#ADD_INTRODUCTION" />
 
-		<execute function="#type" locator1="SOProfileAddIntroduction#INTRODUCTION_FIELD" value1="${userIntroduction}" />
-		<execute function="#click" locator1="SOProfileAddIntroduction#SAVE_BUTTON" />
+		<execute function="Type" locator1="SOProfileAddIntroduction#INTRODUCTION_FIELD" value1="${userIntroduction}" />
+		<execute function="Click" locator1="SOProfileAddIntroduction#SAVE_BUTTON" />
 
 		<execute function="AssertTextEquals#assertText" locator1="SOProfile#PROFILE_INFO_INTRODUCTION_TITLE" value1="Introduction:" />
-		<execute function="#assertTextEquals" locator1="SOProfile#PROFILE_INFO_INTRODUCTION_CONTENT" value1="${userIntroduction}"  />
+		<execute function="AssertTextEquals" locator1="SOProfile#PROFILE_INFO_INTRODUCTION_CONTENT" value1="${userIntroduction}"  />
 	</command>
 
 	<command name="addPhoneNumbersMyAccount">
-		<execute function="#click" locator1="SOUserBar#USER_NAME" />
+		<execute function="Click" locator1="SOUserBar#USER_NAME" />
 		<execute function="AssertClick#assertTextClickAt" locator1="SOUserBar#USER_MENU_MY_ACCOUNT" value1="My Account" />
 
-		<execute function="#click" locator1="CPMyAccount#PHONE_NUMBERS" />
-		<execute function="#type" locator1="CPMyAccount#PHONE_NUMBERS_NUMBER_FIELD" value1="${userPhoneNumberNumber}" />
+		<execute function="Click" locator1="CPMyAccount#PHONE_NUMBERS" />
+		<execute function="Type" locator1="CPMyAccount#PHONE_NUMBERS_NUMBER_FIELD" value1="${userPhoneNumberNumber}" />
 
 		<if>
 			<isset var="userPhoneNumberExtension" />
 			<then>
-				<execute function="#type" locator1="CPMyAccount#PHONE_NUMBERS_EXTENSION_FIELD" value1="${userPhoneNumberExtension}" />
+				<execute function="Type" locator1="CPMyAccount#PHONE_NUMBERS_EXTENSION_FIELD" value1="${userPhoneNumberExtension}" />
 			</then>
 		</if>
 
-		<execute function="#select" locator1="CPMyAccount#PHONE_NUMBERS_TYPE_SELECT" value1="${userPhoneNumberType}" />
+		<execute function="Select" locator1="CPMyAccount#PHONE_NUMBERS_TYPE_SELECT" value1="${userPhoneNumberType}" />
 
-		<execute function="#click" locator1="CPMyAccount#PHONE_NUMBERS_PRIMARY_RADIO_BUTTON" />
-		<execute function="#click" locator1="CPMyAccount#SAVE_BUTTON" />
+		<execute function="Click" locator1="CPMyAccount#PHONE_NUMBERS_PRIMARY_RADIO_BUTTON" />
+		<execute function="Click" locator1="CPMyAccount#SAVE_BUTTON" />
 		<execute function="AssertTextEquals#assertText" locator1="CPMyAccount#SUCCESS_MESSAGE" value1="Your request completed successfully." />
 	</command>
 
 	<command name="addPhoneNumbersProfile">
-		<execute function="#click" locator1="SOUserBar#USER_NAME" />
+		<execute function="Click" locator1="SOUserBar#USER_NAME" />
 		<execute function="AssertClick#assertTextClickAtAndWait" locator1="SOUserBar#USER_MENU_MY_PROFILE" value1="My Profile" />
 
-		<execute function="#click" locator1="SOProfile#ADD_PHONES" />
+		<execute function="Click" locator1="SOProfile#ADD_PHONES" />
 
-		<execute function="#type" locator1="SOProfileAddPhoneNumber#NUMBER_FIELD" value1="${userPhoneNumberNumber}" />
+		<execute function="Type" locator1="SOProfileAddPhoneNumber#NUMBER_FIELD" value1="${userPhoneNumberNumber}" />
 
 		<if>
 			<isset var="userPhoneNumberExtension" />
 			<then>
-				<execute function="#type" locator1="SOProfileAddPhoneNumber#EXTENSION_FIELD" value1="${userPhoneNumberExtension}" />
+				<execute function="Type" locator1="SOProfileAddPhoneNumber#EXTENSION_FIELD" value1="${userPhoneNumberExtension}" />
 			</then>
 		</if>
 
-		<execute function="#select" locator1="SOProfileAddPhoneNumber#TYPE_SELECT" value1="${userPhoneNumberType}" />
-		<execute function="#click" locator1="SOProfileAddPhoneNumber#PRIMARY_RADIO_BUTTON" />
-		<execute function="#click" locator1="SOProfileAddPhoneNumber#SAVE_BUTTON" />
+		<execute function="Select" locator1="SOProfileAddPhoneNumber#TYPE_SELECT" value1="${userPhoneNumberType}" />
+		<execute function="Click" locator1="SOProfileAddPhoneNumber#PRIMARY_RADIO_BUTTON" />
+		<execute function="Click" locator1="SOProfileAddPhoneNumber#SAVE_BUTTON" />
 
 		<execute function="AssertTextEquals#assertText" locator1="SOProfile#PROFILE_INFO_PHONE_NUMBERS_TITLE" value1="Phones:" />
 
 		<if>
 			<isset var="userPhoneNumberExtension" />
 			<then>
-				<execute function="#assertTextEquals" locator1="SOProfile#PROFILE_INFO_PHONE_NUMBERS_CONTENT" value1="${userPhoneNumberType} ${userPhoneNumberNumber} ${userPhoneNumberExtension}" />
+				<execute function="AssertTextEquals" locator1="SOProfile#PROFILE_INFO_PHONE_NUMBERS_CONTENT" value1="${userPhoneNumberType} ${userPhoneNumberNumber} ${userPhoneNumberExtension}" />
 			</then>
 			<else>
-				<execute function="#assertTextEquals" locator1="SOProfile#PROFILE_INFO_PHONE_NUMBERS_CONTENT" value1="${userPhoneNumberType} ${userPhoneNumberNumber}" />
+				<execute function="AssertTextEquals" locator1="SOProfile#PROFILE_INFO_PHONE_NUMBERS_CONTENT" value1="${userPhoneNumberType} ${userPhoneNumberNumber}" />
 			</else>
 		</if>
 	</command>
 
 	<command name="addProjectsMyAccount">
-		<execute function="#click" locator1="SOUserBar#USER_NAME" />
+		<execute function="Click" locator1="SOUserBar#USER_NAME" />
 		<execute function="AssertClick#assertTextClickAt" locator1="SOUserBar#USER_MENU_MY_ACCOUNT" value1="My Account" />
 
-		<execute function="#click" locator1="CPMyAccount#PROJECTS" />
-		<execute function="#type" locator1="CPMyAccount#PROJECTS_TITLE_FIELD" value1="${userProjectTitle}" />
-		<execute function="#select" locator1="CPMyAccount#PROJECTS_START_DATE_MONTH_SELECT" value1="January" />
-		<execute function="#select" locator1="CPMyAccount#PROJECTS_START_DATE_YEAR_SELECT" value1="2012" />
-		<execute function="#check" locator1="CPMyAccount#PROJECTS_CURRENT_CHECKBOX" />
+		<execute function="Click" locator1="CPMyAccount#PROJECTS" />
+		<execute function="Type" locator1="CPMyAccount#PROJECTS_TITLE_FIELD" value1="${userProjectTitle}" />
+		<execute function="Select" locator1="CPMyAccount#PROJECTS_START_DATE_MONTH_SELECT" value1="January" />
+		<execute function="Select" locator1="CPMyAccount#PROJECTS_START_DATE_YEAR_SELECT" value1="2012" />
+		<execute function="Check" locator1="CPMyAccount#PROJECTS_CURRENT_CHECKBOX" />
 
 		<if>
 			<isset var="userProjectDescription" />
 			<then>
-				<execute function="#type" locator1="CPMyAccount#PROJECTS_DESCRIPTION_FIELD" value1="${userProjectDescription}" />
+				<execute function="Type" locator1="CPMyAccount#PROJECTS_DESCRIPTION_FIELD" value1="${userProjectDescription}" />
 			</then>
 		</if>
 
-		<execute function="#click" locator1="CPMyAccount#SAVE_BUTTON" />
+		<execute function="Click" locator1="CPMyAccount#SAVE_BUTTON" />
 		<execute function="AssertTextEquals#assertText" locator1="CPMyAccount#SUCCESS_MESSAGE" value1="Your request completed successfully." />
 	</command>
 
 	<command name="addProjectsProfile">
-		<execute function="#click" locator1="SOUserBar#USER_NAME" />
+		<execute function="Click" locator1="SOUserBar#USER_NAME" />
 		<execute function="AssertClick#assertTextClickAtAndWait" locator1="SOUserBar#USER_MENU_MY_PROFILE" value1="My Profile" />
 
-		<execute function="#click" locator1="SOProfile#ADD_PROJECTS" />
+		<execute function="Click" locator1="SOProfile#ADD_PROJECTS" />
 
-		<execute function="#type" locator1="SOProfileAddExpertise#TITLE_FIELD" value1="${userProjectTitle}" />
-		<execute function="#select" locator1="SOProfileAddExpertise#START_DATE_MONTH_SELECT" value1="January" />
-		<execute function="#select" locator1="SOProfileAddExpertise#START_DATE_YEAR_SELECT" value1="2012" />
-		<execute function="#check" locator1="SOProfileAddExpertise#CURRENT_CHECKBOX" />
+		<execute function="Type" locator1="SOProfileAddExpertise#TITLE_FIELD" value1="${userProjectTitle}" />
+		<execute function="Select" locator1="SOProfileAddExpertise#START_DATE_MONTH_SELECT" value1="January" />
+		<execute function="Select" locator1="SOProfileAddExpertise#START_DATE_YEAR_SELECT" value1="2012" />
+		<execute function="Check" locator1="SOProfileAddExpertise#CURRENT_CHECKBOX" />
 
 		<if>
 			<isset var="userProjectDescription" />
 			<then>
-				<execute function="#type" locator1="SOProfileAddExpertise#DESCRIPTION_FIELD" value1="${userProjectDescription}" />
+				<execute function="Type" locator1="SOProfileAddExpertise#DESCRIPTION_FIELD" value1="${userProjectDescription}" />
 			</then>
 		</if>
 
-		<execute function="#click" locator1="SOProfileAddExpertise#SAVE_BUTTON" />
+		<execute function="Click" locator1="SOProfileAddExpertise#SAVE_BUTTON" />
 
 		<execute function="AssertTextEquals#assertText" locator1="SOProfile#PROFILE_INFO_PROJECTS_TITLE" value1="Expertise Title:" />
-		<execute function="#assertTextEquals" locator1="SOProfile#PROFILE_INFO_PROJECTS_DATES" value1="01 Jan 2012 - Current"  />
+		<execute function="AssertTextEquals" locator1="SOProfile#PROFILE_INFO_PROJECTS_DATES" value1="01 Jan 2012 - Current"  />
 
 		<if>
 			<isset var="userProjectDescription" />
 			<then>
-				<execute function="#assertTextEquals" locator1="SOProfile#PROFILE_INFO_PROJECTS_DESCRIPTION" value1="${userProjectDescription}" />
+				<execute function="AssertTextEquals" locator1="SOProfile#PROFILE_INFO_PROJECTS_DESCRIPTION" value1="${userProjectDescription}" />
 			</then>
 		</if>
 	</command>
 
 	<command name="addSMSMyAccount">
-		<execute function="#click" locator1="SOUserBar#USER_NAME" />
+		<execute function="Click" locator1="SOUserBar#USER_NAME" />
 		<execute function="AssertClick#assertTextClickAt" locator1="SOUserBar#USER_MENU_MY_ACCOUNT" value1="My Account" />
 
-		<execute function="#click" locator1="CPMyAccount#SMS" />
-		<execute function="#type" locator1="CPMyAccount#SMS_SMS_FIELD" value1="${userSMS}" />
-		<execute function="#click" locator1="CPMyAccount#SAVE_BUTTON" />
+		<execute function="Click" locator1="CPMyAccount#SMS" />
+		<execute function="Type" locator1="CPMyAccount#SMS_SMS_FIELD" value1="${userSMS}" />
+		<execute function="Click" locator1="CPMyAccount#SAVE_BUTTON" />
 		<execute function="AssertTextEquals#assertText" locator1="CPMyAccount#SUCCESS_MESSAGE" value1="Your request completed successfully." />
 	</command>
 
 	<command name="addSMSProfile">
-		<execute function="#click" locator1="SOUserBar#USER_NAME" />
+		<execute function="Click" locator1="SOUserBar#USER_NAME" />
 		<execute function="AssertClick#assertTextClickAtAndWait" locator1="SOUserBar#USER_MENU_MY_PROFILE" value1="My Profile" />
 
-		<execute function="#click" locator1="SOProfile#ADD_SMS" />
+		<execute function="Click" locator1="SOProfile#ADD_SMS" />
 
-		<execute function="#type" locator1="SOProfileAddSMS#SMS_FIELD" value1="${userSMS}" />
-		<execute function="#click" locator1="SOProfileAddSMS#SAVE_BUTTON" />
+		<execute function="Type" locator1="SOProfileAddSMS#SMS_FIELD" value1="${userSMS}" />
+		<execute function="Click" locator1="SOProfileAddSMS#SAVE_BUTTON" />
 
 		<execute function="AssertTextEquals#assertText" locator1="SOProfile#PROFILE_INFO_SMS_TITLE" value1="SMS:" />
-		<execute function="#assertTextEquals" locator1="SOProfile#PROFILE_INFO_SMS_CONTENT" value1="${userSMS}"  />
+		<execute function="AssertTextEquals" locator1="SOProfile#PROFILE_INFO_SMS_CONTENT" value1="${userSMS}"  />
 	</command>
 
 	<command name="addSocialNetworkMyAccount">
-		<execute function="#click" locator1="SOUserBar#USER_NAME" />
+		<execute function="Click" locator1="SOUserBar#USER_NAME" />
 		<execute function="AssertClick#assertTextClickAt" locator1="SOUserBar#USER_MENU_MY_ACCOUNT" value1="My Account" />
 
-		<execute function="#click" locator1="CPMyAccount#SOCIAL_NETWORK" />
+		<execute function="Click" locator1="CPMyAccount#SOCIAL_NETWORK" />
 
 		<if>
 			<isset var="userSocialNetworkFacebook" />
 			<then>
-				<execute function="#type" locator1="CPMyAccount#SOCIAL_NETWORK_FACEBOOK_FIELD" value1="${userSocialNetworkFacebook}" />
+				<execute function="Type" locator1="CPMyAccount#SOCIAL_NETWORK_FACEBOOK_FIELD" value1="${userSocialNetworkFacebook}" />
 			</then>
 		</if>
 
 		<if>
 			<isset var="userSocialNetworkMyspace" />
 			<then>
-				<execute function="#type" locator1="CPMyAccount#SOCIAL_NETWORK_MYSPACE_FIELD" value1="${userSocialNetworkMyspace}" />
+				<execute function="Type" locator1="CPMyAccount#SOCIAL_NETWORK_MYSPACE_FIELD" value1="${userSocialNetworkMyspace}" />
 			</then>
 		</if>
 
 		<if>
 			<isset var="userSocialNetworkTwitter" />
 			<then>
-				<execute function="#type" locator1="CPMyAccount#SOCIAL_NETWORK_TWITTER_FIELD" value1="${userSocialNetworkTwitter}" />
+				<execute function="Type" locator1="CPMyAccount#SOCIAL_NETWORK_TWITTER_FIELD" value1="${userSocialNetworkTwitter}" />
 			</then>
 		</if>
 
-		<execute function="#click" locator1="CPMyAccount#SAVE_BUTTON" />
+		<execute function="Click" locator1="CPMyAccount#SAVE_BUTTON" />
 		<execute function="AssertTextEquals#assertText" locator1="CPMyAccount#SUCCESS_MESSAGE" value1="Your request completed successfully." />
 	</command>
 
 	<command name="addSocialNetworkProfile">
-		<execute function="#click" locator1="SOUserBar#USER_NAME" />
+		<execute function="Click" locator1="SOUserBar#USER_NAME" />
 		<execute function="AssertClick#assertTextClickAtAndWait" locator1="SOUserBar#USER_MENU_MY_PROFILE" value1="My Profile" />
 
-		<execute function="#click" locator1="SOProfile#ADD_SOCIAL_NETWORK" />
+		<execute function="Click" locator1="SOProfile#ADD_SOCIAL_NETWORK" />
 
 		<if>
 			<isset var="userSocialNetworkFacebook" />
 			<then>
-				<execute function="#type" locator1="SOProfileAddSocialNetwork#FACEBOOK_FIELD" value1="${userSocialNetworkFacebook}" />
+				<execute function="Type" locator1="SOProfileAddSocialNetwork#FACEBOOK_FIELD" value1="${userSocialNetworkFacebook}" />
 			</then>
 		</if>
 
 		<if>
 			<isset var="userSocialNetworkMyspace" />
 			<then>
-				<execute function="#type" locator1="SOProfileAddSocialNetwork#MYSPACE_FIELD" value1="${userSocialNetworkMyspace}" />
+				<execute function="Type" locator1="SOProfileAddSocialNetwork#MYSPACE_FIELD" value1="${userSocialNetworkMyspace}" />
 			</then>
 		</if>
 
 		<if>
 			<isset var="userSocialNetworkTwitter" />
 			<then>
-				<execute function="#type" locator1="SOProfileAddSocialNetwork#TWITTER_FIELD" value1="${userSocialNetworkTwitter}" />
+				<execute function="Type" locator1="SOProfileAddSocialNetwork#TWITTER_FIELD" value1="${userSocialNetworkTwitter}" />
 			</then>
 		</if>
 
-		<execute function="#click" locator1="SOProfileAddSocialNetwork#SAVE_BUTTON" />
+		<execute function="Click" locator1="SOProfileAddSocialNetwork#SAVE_BUTTON" />
 
 		<execute function="AssertTextEquals#assertText" locator1="SOProfile#PROFILE_INFO_SOCIAL_NETWORK_TITLE" value1="Social Network:" />
-		<execute function="#assertTextEquals" locator1="SOProfile#PROFILE_INFO_SOCIAL_NETWORK_FACEBOOK_CONTENT" value1="Facebook ${userSocialNetworkFacebook}" />
-		<execute function="#assertTextEquals" locator1="SOProfile#PROFILE_INFO_SOCIAL_NETWORK_MYSPACE_CONTENT" value1="MySpace ${userSocialNetworkMyspace}" />
-		<execute function="#assertTextEquals" locator1="SOProfile#PROFILE_INFO_SOCIAL_NETWORK_TWITTER_CONTENT" value1="Twitter ${userSocialNetworkTwitter}" />
+		<execute function="AssertTextEquals" locator1="SOProfile#PROFILE_INFO_SOCIAL_NETWORK_FACEBOOK_CONTENT" value1="Facebook ${userSocialNetworkFacebook}" />
+		<execute function="AssertTextEquals" locator1="SOProfile#PROFILE_INFO_SOCIAL_NETWORK_MYSPACE_CONTENT" value1="MySpace ${userSocialNetworkMyspace}" />
+		<execute function="AssertTextEquals" locator1="SOProfile#PROFILE_INFO_SOCIAL_NETWORK_TWITTER_CONTENT" value1="Twitter ${userSocialNetworkTwitter}" />
 	</command>
 
 	<command name="addTagMyAccount">
-		<execute function="#click" locator1="SOUserBar#USER_NAME" />
+		<execute function="Click" locator1="SOUserBar#USER_NAME" />
 		<execute function="AssertClick#assertTextClickAt" locator1="SOUserBar#USER_MENU_MY_ACCOUNT" value1="My Account" />
 
-		<execute function="#click" locator1="CPMyAccount#CATEGORIZATION" />
-		<execute function="#type" locator1="CPMyAccount#CATEGORIZATION_TAGS_FIELD" value1="${userTag}" />
-		<execute function="#click" locator1="CPMyAccount#CATEGORIZATION_ADD_BUTTON" />
-		<execute function="#click" locator1="CPMyAccount#SAVE_BUTTON" />
+		<execute function="Click" locator1="CPMyAccount#CATEGORIZATION" />
+		<execute function="Type" locator1="CPMyAccount#CATEGORIZATION_TAGS_FIELD" value1="${userTag}" />
+		<execute function="Click" locator1="CPMyAccount#CATEGORIZATION_ADD_BUTTON" />
+		<execute function="Click" locator1="CPMyAccount#SAVE_BUTTON" />
 		<execute function="AssertTextEquals#assertText" locator1="CPMyAccount#SUCCESS_MESSAGE" value1="Your request completed successfully." />
 	</command>
 
 	<command name="addTagProfile">
-		<execute function="#click" locator1="SOUserBar#USER_NAME" />
+		<execute function="Click" locator1="SOUserBar#USER_NAME" />
 		<execute function="AssertClick#assertTextClickAtAndWait" locator1="SOUserBar#USER_MENU_MY_PROFILE" value1="My Profile" />
 
-		<execute function="#click" locator1="SOProfile#ADD_TAGS" />
+		<execute function="Click" locator1="SOProfile#ADD_TAGS" />
 
-		<execute function="#type" locator1="SOProfileAddTag#TAG_FIELD" value1="${userTag}" />
-		<execute function="#click" locator1="SOProfileAddTag#ADD_BUTTON" />
-		<execute function="#click" locator1="SOProfileAddTag#SAVE_BUTTON" />
+		<execute function="Type" locator1="SOProfileAddTag#TAG_FIELD" value1="${userTag}" />
+		<execute function="Click" locator1="SOProfileAddTag#ADD_BUTTON" />
+		<execute function="Click" locator1="SOProfileAddTag#SAVE_BUTTON" />
 
 		<execute function="AssertTextEquals#assertText" locator1="SOProfile#PROFILE_INFO_TAGS_TITLE" value1="Tags" />
-		<execute function="#assertTextEquals" locator1="SOProfile#PROFILE_INFO_TAGS_CONTENT" value1="${userTag}" />
+		<execute function="AssertTextEquals" locator1="SOProfile#PROFILE_INFO_TAGS_CONTENT" value1="${userTag}" />
 	</command>
 
 	<command name="addWebsiteMyAccount">
-		<execute function="#click" locator1="SOUserBar#USER_NAME" />
+		<execute function="Click" locator1="SOUserBar#USER_NAME" />
 		<execute function="AssertClick#assertTextClickAt" locator1="SOUserBar#USER_MENU_MY_ACCOUNT" value1="My Account" />
 
-		<execute function="#click" locator1="CPMyAccount#WEBSITES" />
-		<execute function="#type" locator1="CPMyAccount#WEBSITES_URL_FIELD" value1="${userWebsiteURL}" />
-		<execute function="#select" locator1="CPMyAccount#WEBSITES_TYPE_SELECT" value1="${userWebsiteType}" />
-		<execute function="#click" locator1="CPMyAccount#WEBSITES_PRIMARY_RADIO_BUTTON" />
-		<execute function="#click" locator1="CPMyAccount#SAVE_BUTTON" />
+		<execute function="Click" locator1="CPMyAccount#WEBSITES" />
+		<execute function="Type" locator1="CPMyAccount#WEBSITES_URL_FIELD" value1="${userWebsiteURL}" />
+		<execute function="Select" locator1="CPMyAccount#WEBSITES_TYPE_SELECT" value1="${userWebsiteType}" />
+		<execute function="Click" locator1="CPMyAccount#WEBSITES_PRIMARY_RADIO_BUTTON" />
+		<execute function="Click" locator1="CPMyAccount#SAVE_BUTTON" />
 		<execute function="AssertTextEquals#assertText" locator1="CPMyAccount#SUCCESS_MESSAGE" value1="Your request completed successfully." />
 	</command>
 
 	<command name="addWebsiteProfile">
-		<execute function="#click" locator1="SOUserBar#USER_NAME" />
+		<execute function="Click" locator1="SOUserBar#USER_NAME" />
 		<execute function="AssertClick#assertTextClickAtAndWait" locator1="SOUserBar#USER_MENU_MY_PROFILE" value1="My Profile" />
 
-		<execute function="#click" locator1="SOProfile#ADD_WEBSITES" />
+		<execute function="Click" locator1="SOProfile#ADD_WEBSITES" />
 
-		<execute function="#type" locator1="SOProfileAddWebsite#URL_FIELD" value1="${userWebsiteURL}" />
-		<execute function="#select" locator1="SOProfileAddWebsite#TYPE_SELECT" value1="${userWebsiteType}" />
-		<execute function="#click" locator1="SOProfileAddWebsite#PRIMARY_RADIO_BUTTON" />
-		<execute function="#click" locator1="SOProfileAddWebsite#SAVE_BUTTON" />
+		<execute function="Type" locator1="SOProfileAddWebsite#URL_FIELD" value1="${userWebsiteURL}" />
+		<execute function="Select" locator1="SOProfileAddWebsite#TYPE_SELECT" value1="${userWebsiteType}" />
+		<execute function="Click" locator1="SOProfileAddWebsite#PRIMARY_RADIO_BUTTON" />
+		<execute function="Click" locator1="SOProfileAddWebsite#SAVE_BUTTON" />
 
 		<execute function="AssertTextEquals#assertText" locator1="SOProfile#PROFILE_INFO_WEBSITES_TITLE" value1="Websites:" />
-		<execute function="#assertTextEquals" locator1="SOProfile#PROFILE_INFO_WEBSITES_CONTENT" value1="${userWebsiteType} ${userWebsiteURL}" />
+		<execute function="AssertTextEquals" locator1="SOProfile#PROFILE_INFO_WEBSITES_CONTENT" value1="${userWebsiteType} ${userWebsiteURL}" />
 	</command>
 
 	<command name="disconnectFromConnection">
-		<execute function="#select" locator1="SOContactscenter#CONTACTS_LIST_FILTER" value1="${filterType}" />
-		<execute function="#assertClick" locator1="SOContactscenter#CONTACTS_LIST_EMAIL" value1="${userEmailAddress}" />
+		<execute function="Select" locator1="SOContactscenter#CONTACTS_LIST_FILTER" value1="${filterType}" />
+		<execute function="AssertClick" locator1="SOContactscenter#CONTACTS_LIST_EMAIL" value1="${userEmailAddress}" />
 		<execute function="AssertClick#assertTextClickAtAndWait" locator1="SOContactscenter#USER_DETAILS_NAME" value1="${userName}" />
 
-		<execute function="#assertTextEquals" locator1="SOProfile#USER_NAME" value1="${userName}" />
-		<execute function="#assertTextEquals" locator1="SOProfile#USER_EMAIL" value1="${userEmailAddress}" />
-		<execute function="#assertClick" locator1="SOProfile#DISCONNECT_BUTTON" value1="Disconnect" />
-		<execute function="#assertElementPresent" locator1="SOProfile#CONNECT_BUTTON" />
-		<execute function="#assertElementNotPresent" locator1="SOProfile#DISCONNECT_BUTTON" />
+		<execute function="AssertTextEquals" locator1="SOProfile#USER_NAME" value1="${userName}" />
+		<execute function="AssertTextEquals" locator1="SOProfile#USER_EMAIL" value1="${userEmailAddress}" />
+		<execute function="AssertClick" locator1="SOProfile#DISCONNECT_BUTTON" value1="Disconnect" />
+		<execute function="AssertElementPresent" locator1="SOProfile#CONNECT_BUTTON" />
+		<execute function="AssertElementNotPresent" locator1="SOProfile#DISCONNECT_BUTTON" />
 	</command>
 
 	<command name="requestToConnect">
@@ -535,71 +535,71 @@
 
 		<execute function="Click#textClickAtAndWait" locator1="SODashboard#NAVIGATION_CONTACTS_CENTER" />
 
-		<execute function="#type" locator1="SOContactscenter#CONTACTS_LIST_SEARCH" value1="${userScreenName}" />
+		<execute function="Type" locator1="SOContactscenter#CONTACTS_LIST_SEARCH" value1="${userScreenName}" />
 		<execute function="AssertClick#pauseAssertTextClickAt" locator1="SOContactscenter#CONTACTS_LIST_NAME" value1="${userListName}" />
 		<execute function="AssertClick#pauseAssertTextClickAt" locator1="SOContactscenter#CONTACTS_LIST_NAME" value1="${userListName}" />
 		<execute function="AssertClick#assertTextClickAtAndWait" locator1="SOContactscenter#USER_DETAILS_NAME" value1="${userName}" />
 
-		<execute function="#assertTextEquals" locator1="SOProfile#USER_NAME" value1="${userName}" />
-		<execute function="#assertTextEquals" locator1="SOProfile#USER_EMAIL" value1="${userEmailAddress}" />
-		<execute function="#assertClick" locator1="SOProfile#CONNECT_BUTTON" value1="Connect" />
-		<execute function="#assertTextEquals" locator1="SOProfile#CONNECTION_REQUESTED_MESSAGE" value1="Connection Requested" />
-		<execute function="#assertElementNotPresent" locator1="SOProfile#CONNECT_BUTTON" />
+		<execute function="AssertTextEquals" locator1="SOProfile#USER_NAME" value1="${userName}" />
+		<execute function="AssertTextEquals" locator1="SOProfile#USER_EMAIL" value1="${userEmailAddress}" />
+		<execute function="AssertClick" locator1="SOProfile#CONNECT_BUTTON" value1="Connect" />
+		<execute function="AssertTextEquals" locator1="SOProfile#CONNECTION_REQUESTED_MESSAGE" value1="Connection Requested" />
+		<execute function="AssertElementNotPresent" locator1="SOProfile#CONNECT_BUTTON" />
 	</command>
 
 	<command name="viewAdditionalEmailAddressProfile">
 		<execute function="AssertTextEquals#assertText" locator1="SOProfile#PROFILE_INFO_EMAIL_ADDRESS_TITLE" value1="Additional Email Addresses:" />
-		<execute function="#assertTextEquals" locator1="SOProfile#PROFILE_INFO_EMAIL_ADDRESS_CONTENT" value1="Email Address ${userAdditionalEmailAddress}" />
+		<execute function="AssertTextEquals" locator1="SOProfile#PROFILE_INFO_EMAIL_ADDRESS_CONTENT" value1="Email Address ${userAdditionalEmailAddress}" />
 	</command>
 
 	<command name="viewAddressProfile">
 		<execute function="AssertTextEquals#assertText" locator1="SOProfile#PROFILE_INFO_ADDRESS_TITLE" value1="Addresses:" />
-		<execute function="#assertTextEquals" locator1="SOProfile#PROFILE_INFO_ADDRESS_CONTENT" value1="${userAddressType} ${userAddressStreet1}, ${userAddressCity}, ${userAddressPostalCode}, ${userAddressRegion}, ${userAddressCountry} (Mailing)" />
+		<execute function="AssertTextEquals" locator1="SOProfile#PROFILE_INFO_ADDRESS_CONTENT" value1="${userAddressType} ${userAddressStreet1}, ${userAddressCity}, ${userAddressPostalCode}, ${userAddressRegion}, ${userAddressCountry} (Mailing)" />
 	</command>
 
 	<command name="viewConnectionProfile">
-		<execute function="#assertClick" locator1="SOContactscenter#CONTACTS_LINK_CONNECTIONS" value1="You have ${filterTypeCount} connections." />
-		<execute function="#assertSelectedLabel" locator1="SOContactscenter#CONTACTS_LIST_FILTER" value1="Connections" />
-		<execute function="#assertTextEquals" locator1="SOContactscenter#CONTACTS_LIST_EMAIL" value1="${userEmailAddress}" />
+		<execute function="AssertClick" locator1="SOContactscenter#CONTACTS_LINK_CONNECTIONS" value1="You have ${filterTypeCount} connections." />
+		<execute function="AssertSelectedLabel" locator1="SOContactscenter#CONTACTS_LIST_FILTER" value1="Connections" />
+		<execute function="AssertTextEquals" locator1="SOContactscenter#CONTACTS_LIST_EMAIL" value1="${userEmailAddress}" />
 		<execute function="AssertClick#pauseAssertTextClickAt" locator1="SOContactscenter#CONTACTS_LIST_NAME" value1="${userListName}" />
 		<execute function="AssertClick#assertTextClickAtAndWait" locator1="SOContactscenter#USER_DETAILS_NAME" value1="${userName}" />
 
-		<execute function="#assertTextEquals" locator1="SOProfile#USER_NAME" value1="${userName}" />
-		<execute function="#assertTextEquals" locator1="SOProfile#USER_EMAIL" value1="${userEmailAddress}" />
-		<execute function="#assertElementPresent" locator1="SOProfile#DISCONNECT_BUTTON" />
-		<execute function="#assertElementPresent" locator1="SOProfile#FOLLOW_BUTTON" />
-		<execute function="#assertElementPresent" locator1="SOProfile#BLOCK_BUTTON" />
-		<execute function="#assertElementNotPresent" locator1="SOProfile#CONNECT_BUTTON" />
+		<execute function="AssertTextEquals" locator1="SOProfile#USER_NAME" value1="${userName}" />
+		<execute function="AssertTextEquals" locator1="SOProfile#USER_EMAIL" value1="${userEmailAddress}" />
+		<execute function="AssertElementPresent" locator1="SOProfile#DISCONNECT_BUTTON" />
+		<execute function="AssertElementPresent" locator1="SOProfile#FOLLOW_BUTTON" />
+		<execute function="AssertElementPresent" locator1="SOProfile#BLOCK_BUTTON" />
+		<execute function="AssertElementNotPresent" locator1="SOProfile#CONNECT_BUTTON" />
 	</command>
 
 	<command name="viewInstantMessengerProfile">
 		<execute function="AssertTextEquals#assertText" locator1="SOProfile#PROFILE_INFO_INSTANT_MESSENGER_TITLE" value1="Instant Messenger:" />
-		<execute function="#assertTextEquals" locator1="SOProfile#PROFILE_INFO_INSTANT_MESSENGER_AIM_CONTENT" value1="AIM ${userInstantMessengerAIM}" />
-		<execute function="#assertTextEquals" locator1="SOProfile#PROFILE_INFO_INSTANT_MESSENGER_ICQ_CONTENT" value1="ICQ ${userInstantMessengerICQ}" />
-		<execute function="#assertTextEquals" locator1="SOProfile#PROFILE_INFO_INSTANT_MESSENGER_JABBER_CONTENT" value1="Jabber ${userInstantMessengerJabber}" />
-		<execute function="#assertTextEquals" locator1="SOProfile#PROFILE_INFO_INSTANT_MESSENGER_MSN_CONTENT" value1="msn ${userInstantMessengerWindowsLiveMessenger}" />
-		<execute function="#assertTextEquals" locator1="SOProfile#PROFILE_INFO_INSTANT_MESSENGER_SKYPE_CONTENT" value1="Skype ${userInstantMessengerSkype}" />
-		<execute function="#assertTextEquals" locator1="SOProfile#PROFILE_INFO_INSTANT_MESSENGER_YM_CONTENT" value1="ym ${userInstantMessengerYM}" />
+		<execute function="AssertTextEquals" locator1="SOProfile#PROFILE_INFO_INSTANT_MESSENGER_AIM_CONTENT" value1="AIM ${userInstantMessengerAIM}" />
+		<execute function="AssertTextEquals" locator1="SOProfile#PROFILE_INFO_INSTANT_MESSENGER_ICQ_CONTENT" value1="ICQ ${userInstantMessengerICQ}" />
+		<execute function="AssertTextEquals" locator1="SOProfile#PROFILE_INFO_INSTANT_MESSENGER_JABBER_CONTENT" value1="Jabber ${userInstantMessengerJabber}" />
+		<execute function="AssertTextEquals" locator1="SOProfile#PROFILE_INFO_INSTANT_MESSENGER_MSN_CONTENT" value1="msn ${userInstantMessengerWindowsLiveMessenger}" />
+		<execute function="AssertTextEquals" locator1="SOProfile#PROFILE_INFO_INSTANT_MESSENGER_SKYPE_CONTENT" value1="Skype ${userInstantMessengerSkype}" />
+		<execute function="AssertTextEquals" locator1="SOProfile#PROFILE_INFO_INSTANT_MESSENGER_YM_CONTENT" value1="ym ${userInstantMessengerYM}" />
 	</command>
 
 	<command name="viewIntroductionProfile">
 		<execute function="AssertTextEquals#assertText" locator1="SOProfile#PROFILE_INFO_INTRODUCTION_TITLE" value1="Introduction:" />
-		<execute function="#assertTextEquals" locator1="SOProfile#PROFILE_INFO_INTRODUCTION_CONTENT" value1="${userIntroduction}"  />
+		<execute function="AssertTextEquals" locator1="SOProfile#PROFILE_INFO_INTRODUCTION_CONTENT" value1="${userIntroduction}"  />
 	</command>
 
 	<command name="viewNoConnection">
-		<execute function="#assertClick" locator1="SOContactscenter#CONTACTS_LINK_CONNECTIONS" value1="You have ${filterTypeCount} connections." />
-		<execute function="#assertSelectedLabel" locator1="SOContactscenter#CONTACTS_LIST_FILTER" value1="Connections" />
-		<execute function="#assertTextNotPresent" locator1="SOContactscenter#CONTACTS_LIST_EMAIL" value1="${adminEmailAddress}" />
-		<execute function="#select" locator1="SOContactscenter#CONTACTS_LIST_FILTER" value1="All" />
-		<execute function="#type" locator1="SOContactscenter#CONTACTS_LIST_SEARCH" value1="${adminName}" />
+		<execute function="AssertClick" locator1="SOContactscenter#CONTACTS_LINK_CONNECTIONS" value1="You have ${filterTypeCount} connections." />
+		<execute function="AssertSelectedLabel" locator1="SOContactscenter#CONTACTS_LIST_FILTER" value1="Connections" />
+		<execute function="AssertTextNotPresent" locator1="SOContactscenter#CONTACTS_LIST_EMAIL" value1="${adminEmailAddress}" />
+		<execute function="Select" locator1="SOContactscenter#CONTACTS_LIST_FILTER" value1="All" />
+		<execute function="Type" locator1="SOContactscenter#CONTACTS_LIST_SEARCH" value1="${adminName}" />
 		<execute function="AssertClick#pauseAssertTextClickAt" locator1="SOContactscenter#CONTACTS_LIST_NAME" value1="${adminListName}" />
 		<execute function="AssertClick#assertTextClickAtAndWait" locator1="SOContactscenter#USER_DETAILS_NAME" value1="${adminName}" />
 
-		<execute function="#assertTextEquals" locator1="SOProfile#USER_NAME" value1="${adminName}" />
-		<execute function="#assertTextEquals" locator1="SOProfile#USER_EMAIL" value1="${adminEmailAddress}" />
-		<execute function="#assertElementPresent" locator1="SOProfile#CONNECT_BUTTON" />
-		<execute function="#assertElementNotPresent" locator1="SOProfile#DISCONNECT_BUTTON" />
+		<execute function="AssertTextEquals" locator1="SOProfile#USER_NAME" value1="${adminName}" />
+		<execute function="AssertTextEquals" locator1="SOProfile#USER_EMAIL" value1="${adminEmailAddress}" />
+		<execute function="AssertElementPresent" locator1="SOProfile#CONNECT_BUTTON" />
+		<execute function="AssertElementNotPresent" locator1="SOProfile#DISCONNECT_BUTTON" />
 	</command>
 
 	<command name="viewPhoneNumbersProfile">
@@ -608,45 +608,45 @@
 		<if>
 			<isset var="userPhoneNumberExtension" />
 			<then>
-				<execute function="#assertTextEquals" locator1="SOProfile#PROFILE_INFO_PHONE_NUMBERS_CONTENT" value1="${userPhoneNumberType} ${userPhoneNumberNumber} ${userPhoneNumberExtension}" />
+				<execute function="AssertTextEquals" locator1="SOProfile#PROFILE_INFO_PHONE_NUMBERS_CONTENT" value1="${userPhoneNumberType} ${userPhoneNumberNumber} ${userPhoneNumberExtension}" />
 			</then>
 			<else>
-				<execute function="#assertTextEquals" locator1="SOProfile#PROFILE_INFO_PHONE_NUMBERS_CONTENT" value1="${userPhoneNumberType} ${userPhoneNumberNumber}" />
+				<execute function="AssertTextEquals" locator1="SOProfile#PROFILE_INFO_PHONE_NUMBERS_CONTENT" value1="${userPhoneNumberType} ${userPhoneNumberNumber}" />
 			</else>
 		</if>
 	</command>
 
 	<command name="viewProjectsProfile">
 		<execute function="AssertTextEquals#assertText" locator1="SOProfile#PROFILE_INFO_PROJECTS_TITLE" value1="Expertise Title:" />
-		<execute function="#assertTextEquals" locator1="SOProfile#PROFILE_INFO_PROJECTS_DATES" value1="01 Jan 2012 - Current"  />
+		<execute function="AssertTextEquals" locator1="SOProfile#PROFILE_INFO_PROJECTS_DATES" value1="01 Jan 2012 - Current"  />
 
 		<if>
 			<isset var="userProjectDescription" />
 			<then>
-				<execute function="#assertTextEquals" locator1="SOProfile#PROFILE_INFO_PROJECTS_DESCRIPTION" value1="${userProjectDescription}" />
+				<execute function="AssertTextEquals" locator1="SOProfile#PROFILE_INFO_PROJECTS_DESCRIPTION" value1="${userProjectDescription}" />
 			</then>
 		</if>
 	</command>
 
 	<command name="viewSMSProfile">
 		<execute function="AssertTextEquals#assertText" locator1="SOProfile#PROFILE_INFO_SMS_TITLE" value1="SMS:" />
-		<execute function="#assertTextEquals" locator1="SOProfile#PROFILE_INFO_SMS_CONTENT" value1="${userSMS}"  />
+		<execute function="AssertTextEquals" locator1="SOProfile#PROFILE_INFO_SMS_CONTENT" value1="${userSMS}"  />
 	</command>
 
 	<command name="viewSocialNetworkProfile">
 		<execute function="AssertTextEquals#assertText" locator1="SOProfile#PROFILE_INFO_SOCIAL_NETWORK_TITLE" value1="Social Network:" />
-		<execute function="#assertTextEquals" locator1="SOProfile#PROFILE_INFO_SOCIAL_NETWORK_FACEBOOK_CONTENT" value1="Facebook ${userSocialNetworkFacebook}" />
-		<execute function="#assertTextEquals" locator1="SOProfile#PROFILE_INFO_SOCIAL_NETWORK_MYSPACE_CONTENT" value1="MySpace ${userSocialNetworkMyspace}" />
-		<execute function="#assertTextEquals" locator1="SOProfile#PROFILE_INFO_SOCIAL_NETWORK_TWITTER_CONTENT" value1="Twitter ${userSocialNetworkTwitter}" />
+		<execute function="AssertTextEquals" locator1="SOProfile#PROFILE_INFO_SOCIAL_NETWORK_FACEBOOK_CONTENT" value1="Facebook ${userSocialNetworkFacebook}" />
+		<execute function="AssertTextEquals" locator1="SOProfile#PROFILE_INFO_SOCIAL_NETWORK_MYSPACE_CONTENT" value1="MySpace ${userSocialNetworkMyspace}" />
+		<execute function="AssertTextEquals" locator1="SOProfile#PROFILE_INFO_SOCIAL_NETWORK_TWITTER_CONTENT" value1="Twitter ${userSocialNetworkTwitter}" />
 	</command>
 
 	<command name="viewTagProfile">
 		<execute function="AssertTextEquals#assertText" locator1="SOProfile#PROFILE_INFO_TAGS_TITLE" value1="Tags" />
-		<execute function="#assertTextEquals" locator1="SOProfile#PROFILE_INFO_TAGS_CONTENT" value1="${userTag}" />
+		<execute function="AssertTextEquals" locator1="SOProfile#PROFILE_INFO_TAGS_CONTENT" value1="${userTag}" />
 	</command>
 
 	<command name="viewWebsiteProfile">
 		<execute function="AssertTextEquals#assertText" locator1="SOProfile#PROFILE_INFO_WEBSITES_TITLE" value1="Websites:" />
-		<execute function="#assertTextEquals" locator1="SOProfile#PROFILE_INFO_WEBSITES_CONTENT" value1="${userWebsiteType} ${userWebsiteURL}" />
+		<execute function="AssertTextEquals" locator1="SOProfile#PROFILE_INFO_WEBSITES_CONTENT" value1="${userWebsiteType} ${userWebsiteURL}" />
 	</command>
 </definition>

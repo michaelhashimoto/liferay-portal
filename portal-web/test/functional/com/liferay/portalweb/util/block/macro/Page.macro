@@ -5,12 +5,12 @@
 		<execute macro="Page#openURL" />
 
 		<if>
-			<condition function="#isElementPresent" locator1="SOUserBar#USER_BAR" />
+			<condition function="IsElementPresent" locator1="SOUserBar#USER_BAR" />
 			<then>
 				<if>
-					<condition function="#isElementNotPresent" locator1="SOUserBar#VISIBLE_DOCKBAR" />
+					<condition function="IsElementNotPresent" locator1="SOUserBar#VISIBLE_DOCKBAR" />
 					<then>
-						<execute function="#click" locator1="SOUserBar#TOGGLE_DOCKBAR" />
+						<execute function="Click" locator1="SOUserBar#TOGGLE_DOCKBAR" />
 					</then>
 				</if>
 			</then>
@@ -19,29 +19,29 @@
 		<execute function="MouseOver#textMouseOverClickDockbar" locator1="Dockbar#ADD" />
 		<execute function="AssertClick#assertTextClickAt" locator1="Dockbar#ADD_PAGE" value1="Page" />
 
-		<execute function="#type" locator1="Home#NEW_PAGE_FIELD" value1="${pageName}" />
-		<execute function="#click" locator1="Home#NEW_PAGE_SAVE" />
+		<execute function="Type" locator1="Home#NEW_PAGE_FIELD" value1="${pageName}" />
+		<execute function="Click" locator1="Home#NEW_PAGE_SAVE" />
 
 		<var name="key_pageName" value="${pageName}" />
 
-		<execute function="#click" locator1="Home#PAGE" value1="${pageName}" />
+		<execute function="Click" locator1="Home#PAGE" value1="${pageName}" />
 	</command>
 
 	<command name="addPGWithWorkflow">
 		<execute macro="Page#openURL" />
 
 		<execute function="MouseOver#textMouseOverClickDockbar" locator1="Dockbar#ADD" />
-		<execute function="#click" locator1="Dockbar#ADD_PAGE" />
+		<execute function="Click" locator1="Dockbar#ADD_PAGE" />
 
-		<execute function="#type" locator1="Home#NEW_PAGE_FIELD" value1="${pageName}" />
-		<execute function="#click" locator1="Home#NEW_PAGE_SAVE" />
+		<execute function="Type" locator1="Home#NEW_PAGE_FIELD" value1="${pageName}" />
+		<execute function="Click" locator1="Home#NEW_PAGE_SAVE" />
 
 		<var name="key_pageName" value="${pageName}" />
 
-		<execute function="#click" locator1="Home#PAGE" value1="${pageName}" />
+		<execute function="Click" locator1="Home#PAGE" value1="${pageName}" />
 
-		<execute function="#assertClick" locator1="Staging#LAYOUT_REVISION_SUBMIT_FOR_PUBLICATION_BUTTON" value1="Submit for Publication" />
-		<execute function="#assertTextEquals" locator1="Staging#LAYOUT_REVISION_WORKFLOW_STATUS" value1="Pending (Review)" />
+		<execute function="AssertClick" locator1="Staging#LAYOUT_REVISION_SUBMIT_FOR_PUBLICATION_BUTTON" value1="Submit for Publication" />
+		<execute function="AssertTextEquals" locator1="Staging#LAYOUT_REVISION_WORKFLOW_STATUS" value1="Pending (Review)" />
 	</command>
 
 	<command name="gotoCP">
@@ -55,21 +55,21 @@
 		<if>
 			<isset var="siteScopeName" />
 			<then>
-				<execute function="#click" locator1="Home#SCOPE_SELECTOR" />
+				<execute function="Click" locator1="Home#SCOPE_SELECTOR" />
 
 				<var name="key_siteScopeName" value="${siteScopeName}" />
 
-				<execute function="#click" locator1="Home#SCOPE_SELECTOR_MENULIST_ITEM" />
+				<execute function="Click" locator1="Home#SCOPE_SELECTOR_MENULIST_ITEM" />
 			</then>
 		</if>
 
 		<if>
 			<equals arg1="${portletName}" arg2="Workflow" />
 			<then>
-				<execute function="#click" locator1="xPath=(//ul[@class='category-portlets']/li/a[contains(.,'${portletName}')])[3]" />
+				<execute function="Click" locator1="xPath=(//ul[@class='category-portlets']/li/a[contains(.,'${portletName}')])[3]" />
 			</then>
 			<else>
-				<execute function="#click" locator1="//ul[@class='category-portlets']/li/a[contains(.,'${portletName}')]" />
+				<execute function="Click" locator1="//ul[@class='category-portlets']/li/a[contains(.,'${portletName}')]" />
 			</else>
 		</if>
 	</command>
@@ -79,7 +79,7 @@
 
 		<execute macro="Page#openURL" />
 
-		<execute function="#click" locator1="Home#PAGE" value1="${pageName}">
+		<execute function="Click" locator1="Home#PAGE" value1="${pageName}">
 			<var name="key_pageName" value="${pageName}" />
 		</execute>
 	</command>
@@ -89,7 +89,7 @@
 
 		<var name="key_pageName" value="${pageName}" />
 
-		<execute function="#isElementPresent" locator1="Home#PAGE" value1="${pageName}" />
+		<execute function="IsElementPresent" locator1="Home#PAGE" value1="${pageName}" />
 	</command>
 
 	<command name="openURL">
@@ -135,7 +135,7 @@
 			</else>
 		</if>
 
-		<execute function="#open" locator1="${pageAccessURL}${pageTypeURL}${pageStagingURL}" />
+		<execute function="Open" locator1="${pageAccessURL}${pageTypeURL}${pageStagingURL}" />
 	</command>
 
 	<command name="tearDownPG">
@@ -147,9 +147,9 @@
 			<condition function="IsElementPresent#isElementPresentClickNavigation" locator1="Home#PAGE_2" />
 			<then>
 				<execute function="MouseOver#mouseOverClickNavigation" locator1="Home#PAGE_2" />
-				<execute function="#assertClickNoError" locator1="Home#PAGE_DELETE_2" value1="X" />
+				<execute function="AssertClickNoError" locator1="Home#PAGE_DELETE_2" value1="X" />
 				<execute function="Confirm#waitForConfirmation" locator1="Home#PAGE_CONFIRM" value1="Are you sure you want to delete this page?" />
-				<execute function="#assertElementNotPresent" locator1="Home#PAGE_DELETE_2" />
+				<execute function="AssertElementNotPresent" locator1="Home#PAGE_DELETE_2" />
 			</then>
 		</while>
 	</command>
@@ -157,19 +157,19 @@
 	<command name="viewPG">
 		<execute macro="Page#gotoPG" />
 
-		<execute function="#assertTextEquals" locator1="Home#BREADCRUMB_3" value1="${pageName}" />
+		<execute function="AssertTextEquals" locator1="Home#BREADCRUMB_3" value1="${pageName}" />
 	</command>
 
 	<command name="viewPGWithWorkflow">
 		<execute macro="Page#gotoPG" />
 
-		<execute function="#assertTextEquals" locator1="Home#BREADCRUMB_3" value1="${pageName}" />
+		<execute function="AssertTextEquals" locator1="Home#BREADCRUMB_3" value1="${pageName}" />
 
-		<execute function="#assertTextEquals" locator1="Staging#LAYOUT_REVISION_WORKFLOW_STATUS" value1="${workflowStatus}" />
-		<execute function="#assertClick" locator1="Staging#LIVE_BUTTON" value1="Live" />
+		<execute function="AssertTextEquals" locator1="Staging#LAYOUT_REVISION_WORKFLOW_STATUS" value1="${workflowStatus}" />
+		<execute function="AssertClick" locator1="Staging#LIVE_BUTTON" value1="Live" />
 
 		<var name="key_pageName" value="${pageName}" />
 
-		<execute function="#assertElementNotPresent" locator1="Home#PAGE" value1="${pageName}" />
+		<execute function="AssertElementNotPresent" locator1="Home#PAGE" value1="${pageName}" />
 	</command>
 </definition>

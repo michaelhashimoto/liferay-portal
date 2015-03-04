@@ -293,7 +293,7 @@
 			<var name="siteName" value="${siteName}" />
 		</execute>
 
-		<execute function="#click" locator1="SOUserBar#GO_TO_SITE_NAME_LINK" />
+		<execute function="Click" locator1="SOUserBar#GO_TO_SITE_NAME_LINK" />
 
 		<execute function="Click#textClickAtAndWait" locator1="SOSiteHome#NAVIGATION_MEMBERS" value1="Members" />
 
@@ -354,7 +354,7 @@
 			<var name="siteName" value="${siteName}" />
 		</execute>
 
-		<execute function="#click" locator1="SOUserBar#GO_TO_SITE_NAME_LINK" />
+		<execute function="Click" locator1="SOUserBar#GO_TO_SITE_NAME_LINK" />
 
 		<execute function="Click#textClickAtAndWait" locator1="SOSiteHome#NAVIGATION_MEMBERS" value1="Members" />
 
@@ -415,7 +415,7 @@
 			<var name="siteName" value="${siteName}" />
 		</execute>
 
-		<execute function="#click" locator1="SOUserBar#GO_TO_SITE_NAME_LINK" />
+		<execute function="Click" locator1="SOUserBar#GO_TO_SITE_NAME_LINK" />
 
 		<execute function="Click#textClickAtAndWait" locator1="SOSiteHome#NAVIGATION_MEMBERS" value1="Members" />
 
@@ -476,7 +476,7 @@
 			<var name="siteName" value="${siteName}" />
 		</execute>
 
-		<execute function="#click" locator1="SOUserBar#GO_TO_SITE_NAME_LINK" />
+		<execute function="Click" locator1="SOUserBar#GO_TO_SITE_NAME_LINK" />
 
 		<execute function="Click#textClickAtAndWait" locator1="SOSiteHome#NAVIGATION_MEMBERS" value1="Members" />
 
@@ -791,7 +791,7 @@
 			<var name="siteName" value="${siteName}" />
 		</execute>
 
-		<execute function="#click" locator1="SOUserBar#GO_TO_SITE_NAME_LINK" />
+		<execute function="Click" locator1="SOUserBar#GO_TO_SITE_NAME_LINK" />
 
 		<execute function="Click#textClickAtAndWait" locator1="SOSiteHome#NAVIGATION_MEMBERS" value1="Members" />
 
@@ -1446,33 +1446,33 @@
 		<execute function="Click#pauseClickAt" locator1="SOUserBar#GO_TO" />
 		<execute function="Click#pauseClickAt" locator1="SOUserBar#GO_TO_SITES_DIRECTORY_BUTTON" />
 
-		<execute function="#select" locator1="SOUserBarSitesDirectory#SITE_CATEGORY_SELECT" value1="All Sites" />
-		<execute function="#assertTextEquals" locator1="SOUserBarSitesDirectory#SITE_NAME_LINK_1" value1="${siteName1}" />
-		<execute function="#assertTextEquals" locator1="SOUserBarSitesDirectory#SITE_DESCRIPTION_1" value1="${siteDescription1}" />
-		<execute function="#assertTextEquals" locator1="SOUserBarSitesDirectory#SITE_NAME_LINK_2" value1="${siteName2}" />
-		<execute function="#assertTextEquals" locator1="SOUserBarSitesDirectory#SITE_DESCRIPTION_2" value1="${siteDescription2}" />
-		<execute function="#assertElementNotPresent" locator1="SOUserBarSitesDirectory#SITE_NAME_LINK_3" value1="${siteName3}" />
-		<execute function="#assertElementNotPresent" locator1="SOUserBarSitesDirectory#SITE_DESCRIPTION_3" value1="${siteDescription3}" />
-		<execute function="#assertTextEquals" locator1="SOUserBarSitesDirectory#SITE_NAME_LINK_4" value1="${siteName4}" />
-		<execute function="#assertTextEquals" locator1="SOUserBarSitesDirectory#SITE_DESCRIPTION_4" value1="${siteDescription4}" />
-		<execute function="#select" locator1="SOUserBarSitesDirectory#SITE_CATEGORY_SELECT" value1="My Sites" />
-		<execute function="#assertTextEquals" locator1="SOUserBarSitesDirectory#SITE_NAME_LINK_1" value1="${siteName1}" />
-		<execute function="#assertTextEquals" locator1="SOUserBarSitesDirectory#SITE_DESCRIPTION_1" value1="${siteDescription1}" />
-		<execute function="#assertTextEquals" locator1="SOUserBarSitesDirectory#SITE_NAME_LINK_2" value1="${siteName2}" />
-		<execute function="#assertTextEquals" locator1="SOUserBarSitesDirectory#SITE_DESCRIPTION_2" value1="${siteDescription2}" />
-		<execute function="#assertTextEquals" locator1="SOUserBarSitesDirectory#SITE_NAME_LINK_3" value1="${siteName3}" />
-		<execute function="#assertTextEquals" locator1="SOUserBarSitesDirectory#SITE_DESCRIPTION_3" value1="${siteDescription3}" />
-		<execute function="#assertTextEquals" locator1="SOUserBarSitesDirectory#SITE_NAME_LINK_4" value1="${siteName4}" />
-		<execute function="#assertTextEquals" locator1="SOUserBarSitesDirectory#SITE_DESCRIPTION_4" value1="${siteDescription4}" />
+		<execute function="Select" locator1="SOUserBarSitesDirectory#SITE_CATEGORY_SELECT" value1="All Sites" />
+		<execute function="AssertTextEquals" locator1="SOUserBarSitesDirectory#SITE_NAME_LINK_1" value1="${siteName1}" />
+		<execute function="AssertTextEquals" locator1="SOUserBarSitesDirectory#SITE_DESCRIPTION_1" value1="${siteDescription1}" />
+		<execute function="AssertTextEquals" locator1="SOUserBarSitesDirectory#SITE_NAME_LINK_2" value1="${siteName2}" />
+		<execute function="AssertTextEquals" locator1="SOUserBarSitesDirectory#SITE_DESCRIPTION_2" value1="${siteDescription2}" />
+		<execute function="AssertElementNotPresent" locator1="SOUserBarSitesDirectory#SITE_NAME_LINK_3" value1="${siteName3}" />
+		<execute function="AssertElementNotPresent" locator1="SOUserBarSitesDirectory#SITE_DESCRIPTION_3" value1="${siteDescription3}" />
+		<execute function="AssertTextEquals" locator1="SOUserBarSitesDirectory#SITE_NAME_LINK_4" value1="${siteName4}" />
+		<execute function="AssertTextEquals" locator1="SOUserBarSitesDirectory#SITE_DESCRIPTION_4" value1="${siteDescription4}" />
+		<execute function="Select" locator1="SOUserBarSitesDirectory#SITE_CATEGORY_SELECT" value1="My Sites" />
+		<execute function="AssertTextEquals" locator1="SOUserBarSitesDirectory#SITE_NAME_LINK_1" value1="${siteName1}" />
+		<execute function="AssertTextEquals" locator1="SOUserBarSitesDirectory#SITE_DESCRIPTION_1" value1="${siteDescription1}" />
+		<execute function="AssertTextEquals" locator1="SOUserBarSitesDirectory#SITE_NAME_LINK_2" value1="${siteName2}" />
+		<execute function="AssertTextEquals" locator1="SOUserBarSitesDirectory#SITE_DESCRIPTION_2" value1="${siteDescription2}" />
+		<execute function="AssertTextEquals" locator1="SOUserBarSitesDirectory#SITE_NAME_LINK_3" value1="${siteName3}" />
+		<execute function="AssertTextEquals" locator1="SOUserBarSitesDirectory#SITE_DESCRIPTION_3" value1="${siteDescription3}" />
+		<execute function="AssertTextEquals" locator1="SOUserBarSitesDirectory#SITE_NAME_LINK_4" value1="${siteName4}" />
+		<execute function="AssertTextEquals" locator1="SOUserBarSitesDirectory#SITE_DESCRIPTION_4" value1="${siteDescription4}" />
 
 		<var name="siteName" value="${siteName1}" />
 
-		<execute function="#type" locator1="SOUserBarSitesDirectory#SITE_SEARCH_FIELD" value1="${siteName1}" />
-		<execute function="#assertTextEquals" locator1="SOUserBarSitesDirectory#SITE_NAME_LINK" value1="${siteName1}" />
-		<execute function="#assertTextEquals" locator1="SOUserBarSitesDirectory#SITE_DESCRIPTION" value1="${siteDescription1}" />
-		<execute function="#click" locator1="SOUserBarSitesDirectory#SITE_NAME_LINK" value1="${siteName1}" />
+		<execute function="Type" locator1="SOUserBarSitesDirectory#SITE_SEARCH_FIELD" value1="${siteName1}" />
+		<execute function="AssertTextEquals" locator1="SOUserBarSitesDirectory#SITE_NAME_LINK" value1="${siteName1}" />
+		<execute function="AssertTextEquals" locator1="SOUserBarSitesDirectory#SITE_DESCRIPTION" value1="${siteDescription1}" />
+		<execute function="Click" locator1="SOUserBarSitesDirectory#SITE_NAME_LINK" value1="${siteName1}" />
 
-		<execute function="#assertTextEquals" locator1="SOSiteHome#SITE_NAME" value1="${siteName1}" />
+		<execute function="AssertTextEquals" locator1="SOSiteHome#SITE_NAME" value1="${siteName1}" />
 
 		<var name="siteName" value="${siteName2}" />
 
@@ -1480,13 +1480,13 @@
 		<execute function="Click#pauseClickAt" locator1="SOUserBar#GO_TO" />
 		<execute function="Click#pauseClickAt" locator1="SOUserBar#GO_TO_SITES_DIRECTORY_BUTTON" />
 
-		<execute function="#select" locator1="SOUserBarSitesDirectory#SITE_CATEGORY_SELECT" value1="My Sites" />
-		<execute function="#type" locator1="SOUserBarSitesDirectory#SITE_SEARCH_FIELD" value1="${siteName2}" />
-		<execute function="#assertTextEquals" locator1="SOUserBarSitesDirectory#SITE_NAME_LINK" value1="${siteName2}" />
-		<execute function="#assertTextEquals" locator1="SOUserBarSitesDirectory#SITE_DESCRIPTION" value1="${siteDescription2}" />
-		<execute function="#click" locator1="SOUserBarSitesDirectory#SITE_NAME_LINK" value1="${siteName2}" />
+		<execute function="Select" locator1="SOUserBarSitesDirectory#SITE_CATEGORY_SELECT" value1="My Sites" />
+		<execute function="Type" locator1="SOUserBarSitesDirectory#SITE_SEARCH_FIELD" value1="${siteName2}" />
+		<execute function="AssertTextEquals" locator1="SOUserBarSitesDirectory#SITE_NAME_LINK" value1="${siteName2}" />
+		<execute function="AssertTextEquals" locator1="SOUserBarSitesDirectory#SITE_DESCRIPTION" value1="${siteDescription2}" />
+		<execute function="Click" locator1="SOUserBarSitesDirectory#SITE_NAME_LINK" value1="${siteName2}" />
 
-		<execute function="#assertTextEquals" locator1="SOSiteHome#SITE_NAME" value1="${siteName2}" />
+		<execute function="AssertTextEquals" locator1="SOSiteHome#SITE_NAME" value1="${siteName2}" />
 
 		<var name="siteName" value="${siteName3}" />
 
@@ -1494,13 +1494,13 @@
 		<execute function="Click#pauseClickAt" locator1="SOUserBar#GO_TO" />
 		<execute function="Click#pauseClickAt" locator1="SOUserBar#GO_TO_SITES_DIRECTORY_BUTTON" />
 
-		<execute function="#select" locator1="SOUserBarSitesDirectory#SITE_CATEGORY_SELECT" value1="My Sites" />
-		<execute function="#type" locator1="SOUserBarSitesDirectory#SITE_SEARCH_FIELD" value1="${siteName3}" />
-		<execute function="#assertTextEquals" locator1="SOUserBarSitesDirectory#SITE_NAME_LINK" value1="${siteName3}" />
-		<execute function="#assertTextEquals" locator1="SOUserBarSitesDirectory#SITE_DESCRIPTION" value1="${siteDescription3}" />
-		<execute function="#click" locator1="SOUserBarSitesDirectory#SITE_NAME_LINK" value1="${siteName3}" />
+		<execute function="Select" locator1="SOUserBarSitesDirectory#SITE_CATEGORY_SELECT" value1="My Sites" />
+		<execute function="Type" locator1="SOUserBarSitesDirectory#SITE_SEARCH_FIELD" value1="${siteName3}" />
+		<execute function="AssertTextEquals" locator1="SOUserBarSitesDirectory#SITE_NAME_LINK" value1="${siteName3}" />
+		<execute function="AssertTextEquals" locator1="SOUserBarSitesDirectory#SITE_DESCRIPTION" value1="${siteDescription3}" />
+		<execute function="Click" locator1="SOUserBarSitesDirectory#SITE_NAME_LINK" value1="${siteName3}" />
 
-		<execute function="#assertTextEquals" locator1="SOSiteHome#SITE_NAME" value1="${siteName3}" />
+		<execute function="AssertTextEquals" locator1="SOSiteHome#SITE_NAME" value1="${siteName3}" />
 
 		<var name="siteName" value="${siteName4}" />
 
@@ -1508,12 +1508,12 @@
 		<execute function="Click#pauseClickAt" locator1="SOUserBar#GO_TO" />
 		<execute function="Click#pauseClickAt" locator1="SOUserBar#GO_TO_SITES_DIRECTORY_BUTTON" />
 
-		<execute function="#select" locator1="SOUserBarSitesDirectory#SITE_CATEGORY_SELECT" value1="My Sites" />
-		<execute function="#type" locator1="SOUserBarSitesDirectory#SITE_SEARCH_FIELD" value1="${siteName4}" />
-		<execute function="#assertTextEquals" locator1="SOUserBarSitesDirectory#SITE_NAME_LINK" value1="${siteName4}" />
-		<execute function="#assertTextEquals" locator1="SOUserBarSitesDirectory#SITE_DESCRIPTION" value1="${siteDescription4}" />
-		<execute function="#click" locator1="SOUserBarSitesDirectory#SITE_NAME_LINK" value1="${siteName4}" />
+		<execute function="Select" locator1="SOUserBarSitesDirectory#SITE_CATEGORY_SELECT" value1="My Sites" />
+		<execute function="Type" locator1="SOUserBarSitesDirectory#SITE_SEARCH_FIELD" value1="${siteName4}" />
+		<execute function="AssertTextEquals" locator1="SOUserBarSitesDirectory#SITE_NAME_LINK" value1="${siteName4}" />
+		<execute function="AssertTextEquals" locator1="SOUserBarSitesDirectory#SITE_DESCRIPTION" value1="${siteDescription4}" />
+		<execute function="Click" locator1="SOUserBarSitesDirectory#SITE_NAME_LINK" value1="${siteName4}" />
 
-		<execute function="#assertTextEquals" locator1="SOSiteHome#SITE_NAME" value1="${siteName4}" />
+		<execute function="AssertTextEquals" locator1="SOSiteHome#SITE_NAME" value1="${siteName4}" />
 	</command>
 </definition>

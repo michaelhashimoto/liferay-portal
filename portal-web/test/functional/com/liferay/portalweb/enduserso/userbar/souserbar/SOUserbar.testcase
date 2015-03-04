@@ -13,7 +13,7 @@
 			<var name="userName" value="Joe Bloggs" />
 		</execute>
 
-		<execute function="#click" locator1="SOUserBar#CONTACT_CENTER" value1="Contacts Center" />
+		<execute function="Click" locator1="SOUserBar#CONTACT_CENTER" value1="Contacts Center" />
 
 		<execute macro="SODashboard#viewLinkContactscenter" />
 	</command>
@@ -31,7 +31,7 @@
 			<var name="userName" value="Joe Bloggs" />
 		</execute>
 
-		<execute function="#click" locator1="SOUserBar#MICROBLOGS" value1="Microblogs" />
+		<execute function="Click" locator1="SOUserBar#MICROBLOGS" value1="Microblogs" />
 
 		<execute macro="SODashboard#viewLinkMicroblogs" />
 	</command>
@@ -41,7 +41,7 @@
 			<var name="userName" value="Joe Bloggs" />
 		</execute>
 
-		<execute function="#click" locator1="SOUserBar#MY_DOCUMENTS" value1="My Documents" />
+		<execute function="Click" locator1="SOUserBar#MY_DOCUMENTS" value1="My Documents" />
 
 		<execute macro="SODashboard#viewLinkMydocuments" />
 	</command>
@@ -51,7 +51,7 @@
 			<var name="userName" value="Joe Bloggs" />
 		</execute>
 
-		<execute function="#click" locator1="SOUserBar#MESSAGES" value1="Messages" />
+		<execute function="Click" locator1="SOUserBar#MESSAGES" value1="Messages" />
 
 		<execute macro="SODashboard#viewLinkPrivateMessaging" />
 	</command>

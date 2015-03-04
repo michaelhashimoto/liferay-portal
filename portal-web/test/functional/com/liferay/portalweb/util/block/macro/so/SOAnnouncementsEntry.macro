@@ -1,85 +1,85 @@
 <definition>
 	<command name="addPG">
-		<execute function="#assertClick" locator1="SODashboard#ANNOUNCEMENTS_ADD_ENTRY_BUTTON" value1="Add Entry" />
+		<execute function="AssertClick" locator1="SODashboard#ANNOUNCEMENTS_ADD_ENTRY_BUTTON" value1="Add Entry" />
 
-		<execute function="#selectFrame" locator1="SODashboardAddAnnouncementsEntry#ADD_ENTRY_IFRAME" />
-		<execute function="#select" locator1="SODashboardAddAnnouncementsEntry#DISTRIBUTION_SCOPE_SELECT" value1="${distributionScope}" />
-		<execute function="#type" locator1="SODashboardAddAnnouncementsEntry#TITLE_FIELD" value1="${entryTitle}" />
+		<execute function="SelectFrame" locator1="SODashboardAddAnnouncementsEntry#ADD_ENTRY_IFRAME" />
+		<execute function="Select" locator1="SODashboardAddAnnouncementsEntry#DISTRIBUTION_SCOPE_SELECT" value1="${distributionScope}" />
+		<execute function="Type" locator1="SODashboardAddAnnouncementsEntry#TITLE_FIELD" value1="${entryTitle}" />
 		<execute function="Type#typeFrame" locator1="SODashboardAddAnnouncementsEntry#CONTENT_FIELD" value1="${entryContent}" />
-		<execute function="#selectFrameTop" />
-		<execute function="#selectFrame" locator1="SODashboardAddAnnouncementsEntry#ADD_ENTRY_IFRAME" />
-		<execute function="#type" locator1="SODashboardAddAnnouncementsEntry#URL_FIELD" value1="${entryURL}" />
+		<execute function="SelectFrameTop" />
+		<execute function="SelectFrame" locator1="SODashboardAddAnnouncementsEntry#ADD_ENTRY_IFRAME" />
+		<execute function="Type" locator1="SODashboardAddAnnouncementsEntry#URL_FIELD" value1="${entryURL}" />
 		<execute function="AssertClick#assertValueClickAtAndWait" locator1="SODashboardAddAnnouncementsEntry#SAVE_BUTTON" value1="Save" />
-		<execute function="#selectFrameTop" />
+		<execute function="SelectFrameTop" />
 
-		<execute function="#assertElementPresent" locator1="SODashboard#ANNOUNCEMENTS_ENTRY_TITLE" />
+		<execute function="AssertElementPresent" locator1="SODashboard#ANNOUNCEMENTS_ENTRY_TITLE" />
 	</command>
 
 	<command name="deletePG">
-		<execute function="#assertTextEquals" locator1="SODashboard#ANNOUNCEMENTS_ENTRY_TITLE" value1="${entryTitle}" />
+		<execute function="AssertTextEquals" locator1="SODashboard#ANNOUNCEMENTS_ENTRY_TITLE" value1="${entryTitle}" />
 		<execute function="AssertTextEquals#assertPartialText" locator1="SODashboard#ANNOUNCEMENTS_ENTRY_CONTENT" value1="${entryContent}" />
-		<execute function="#clickNoError" locator1="SODashboard#ANNOUNCEMENTS_ENTRY_DELETE_LINK" />
+		<execute function="ClickNoError" locator1="SODashboard#ANNOUNCEMENTS_ENTRY_DELETE_LINK" />
 		<execute function="Confirm#waitForConfirmation" locator1="SODashboard#CONFIRMATION" value1="Are you sure you want to delete the selected entry?" />
-		<execute function="#assertTextNotPresent" value1="{entryTitle}" />
-		<execute function="#assertTextNotPresent" value1="{entryContent}" />
+		<execute function="AssertTextNotPresent" value1="{entryTitle}" />
+		<execute function="AssertTextNotPresent" value1="{entryContent}" />
 	</command>
 
 	<command name="editPG">
-		<execute function="#assertTextEquals" locator1="SODashboard#ANNOUNCEMENTS_ENTRY_TITLE" value1="${entryTitle}" />
+		<execute function="AssertTextEquals" locator1="SODashboard#ANNOUNCEMENTS_ENTRY_TITLE" value1="${entryTitle}" />
 		<execute function="AssertTextEquals#assertPartialText" locator1="SODashboard#ANNOUNCEMENTS_ENTRY_CONTENT" value1="${entryContent}" />
-		<execute function="#click" locator1="SODashboard#ANNOUNCEMENTS_ENTRY_EDIT_LINK" />
+		<execute function="Click" locator1="SODashboard#ANNOUNCEMENTS_ENTRY_EDIT_LINK" />
 
-		<execute function="#selectFrame" locator1="SODashboardAddAnnouncementsEntry#ADD_ENTRY_IFRAME" />
-		<execute function="#type" locator1="SODashboardAddAnnouncementsEntry#TITLE_FIELD" value1="${entryTitleEdit}" />
+		<execute function="SelectFrame" locator1="SODashboardAddAnnouncementsEntry#ADD_ENTRY_IFRAME" />
+		<execute function="Type" locator1="SODashboardAddAnnouncementsEntry#TITLE_FIELD" value1="${entryTitleEdit}" />
 		<execute function="Type#typeFrame" locator1="SODashboardAddAnnouncementsEntry#CONTENT_FIELD" value1="${entryContentEdit}" />
-		<execute function="#selectFrameTop" />
-		<execute function="#selectFrame" locator1="SODashboardAddAnnouncementsEntry#ADD_ENTRY_IFRAME" />
-		<execute function="#type" locator1="SODashboardAddAnnouncementsEntry#URL_FIELD" value1="${entryURL}" />
+		<execute function="SelectFrameTop" />
+		<execute function="SelectFrame" locator1="SODashboardAddAnnouncementsEntry#ADD_ENTRY_IFRAME" />
+		<execute function="Type" locator1="SODashboardAddAnnouncementsEntry#URL_FIELD" value1="${entryURL}" />
 		<execute function="AssertClick#assertValueClickAtAndWait" locator1="SODashboardAddAnnouncementsEntry#SAVE_BUTTON" value1="Save" />
-		<execute function="#selectFrameTop" />
+		<execute function="SelectFrameTop" />
 
-		<execute function="#assertElementPresent" locator1="SODashboard#ANNOUNCEMENTS_ENTRY_TITLE" />
+		<execute function="AssertElementPresent" locator1="SODashboard#ANNOUNCEMENTS_ENTRY_TITLE" />
 	</command>
 
 	<command name="markAsReadPG">
-		<execute function="#assertTextEquals" locator1="SODashboard#ANNOUNCEMENTS_ENTRY_TITLE" value1="${entryTitle}" />
+		<execute function="AssertTextEquals" locator1="SODashboard#ANNOUNCEMENTS_ENTRY_TITLE" value1="${entryTitle}" />
 		<execute function="AssertTextEquals#assertPartialText" locator1="SODashboard#ANNOUNCEMENTS_ENTRY_CONTENT" value1="${entryContent}" />
-		<execute function="#assertClick" locator1="SODashboard#ANNOUNCEMENTS_ENTRY_MARK_LINK" value1="Mark as Read" />
-		<execute function="#assertElementPresent" locator1="SODashboard#ANNOUNCEMENTS_ENTRY_COLLAPSED" />
-		<execute function="#assertElementNotPresent" locator1="SODashboard#ANNOUNCEMENTS_ENTRY_EXPANDED" />
-		<execute function="#assertClick" locator1="SODashboard#ANNOUNCEMENTS_ENTRY_READ_ENTRIES_DROPDOWN" value1="Read Entries" />
-		<execute function="#assertElementPresent" locator1="SODashboard#ANNOUNCEMENTS_ENTRY_EXPANDED" />
-		<execute function="#assertElementNotPresent" locator1="SODashboard#ANNOUNCEMENTS_ENTRY_COLLAPSED" />
+		<execute function="AssertClick" locator1="SODashboard#ANNOUNCEMENTS_ENTRY_MARK_LINK" value1="Mark as Read" />
+		<execute function="AssertElementPresent" locator1="SODashboard#ANNOUNCEMENTS_ENTRY_COLLAPSED" />
+		<execute function="AssertElementNotPresent" locator1="SODashboard#ANNOUNCEMENTS_ENTRY_EXPANDED" />
+		<execute function="AssertClick" locator1="SODashboard#ANNOUNCEMENTS_ENTRY_READ_ENTRIES_DROPDOWN" value1="Read Entries" />
+		<execute function="AssertElementPresent" locator1="SODashboard#ANNOUNCEMENTS_ENTRY_EXPANDED" />
+		<execute function="AssertElementNotPresent" locator1="SODashboard#ANNOUNCEMENTS_ENTRY_COLLAPSED" />
 		<execute function="AssertTextEquals#assertPartialText" locator1="SODashboard#ANNOUNCEMENTS_ENTRY_ACTION" value1="${entryAuthor} to ${distributionScope}" />
-		<execute function="#assertTextEquals" locator1="SODashboard#ANNOUNCEMENTS_ENTRY_TITLE" value1="${entryTitle}" />
+		<execute function="AssertTextEquals" locator1="SODashboard#ANNOUNCEMENTS_ENTRY_TITLE" value1="${entryTitle}" />
 		<execute function="AssertTextEquals#assertPartialText" locator1="SODashboard#ANNOUNCEMENTS_ENTRY_CONTENT" value1="${entryContent}" />
-		<execute function="#assertTextEquals" locator1="SODashboard#ANNOUNCEMENTS_ENTRY_EDIT_LINK" value1="Edit" />
-		<execute function="#assertTextEquals" locator1="SODashboard#ANNOUNCEMENTS_ENTRY_DELETE_LINK" value1="Delete" />
-		<execute function="#assertTextEquals" locator1="SODashboard#ANNOUNCEMENTS_ENTRY_MARK_LINK" value1="Mark as Unread" />
-		<execute function="#assertClick" locator1="SODashboard#ANNOUNCEMENTS_ENTRY_READ_ENTRIES_DROPDOWN" value1="Read Entries" />
-		<execute function="#assertElementPresent" locator1="SODashboard#ANNOUNCEMENTS_ENTRY_COLLAPSED" />
-		<execute function="#assertElementNotPresent" locator1="SODashboard#ANNOUNCEMENTS_ENTRY_EXPANDED" />
+		<execute function="AssertTextEquals" locator1="SODashboard#ANNOUNCEMENTS_ENTRY_EDIT_LINK" value1="Edit" />
+		<execute function="AssertTextEquals" locator1="SODashboard#ANNOUNCEMENTS_ENTRY_DELETE_LINK" value1="Delete" />
+		<execute function="AssertTextEquals" locator1="SODashboard#ANNOUNCEMENTS_ENTRY_MARK_LINK" value1="Mark as Unread" />
+		<execute function="AssertClick" locator1="SODashboard#ANNOUNCEMENTS_ENTRY_READ_ENTRIES_DROPDOWN" value1="Read Entries" />
+		<execute function="AssertElementPresent" locator1="SODashboard#ANNOUNCEMENTS_ENTRY_COLLAPSED" />
+		<execute function="AssertElementNotPresent" locator1="SODashboard#ANNOUNCEMENTS_ENTRY_EXPANDED" />
 	</command>
 
 	<command name="markAsUnreadPG">
-		<execute function="#assertTextEquals" locator1="SODashboard#ANNOUNCEMENTS_ENTRY_TITLE" value1="${entryTitle}" />
+		<execute function="AssertTextEquals" locator1="SODashboard#ANNOUNCEMENTS_ENTRY_TITLE" value1="${entryTitle}" />
 		<execute function="AssertTextEquals#assertPartialText" locator1="SODashboard#ANNOUNCEMENTS_ENTRY_CONTENT" value1="${entryContent}" />
-		<execute function="#assertClick" locator1="SODashboard#ANNOUNCEMENTS_ENTRY_READ_ENTRIES_DROPDOWN" value1="Read Entries" />
-		<execute function="#assertElementPresent" locator1="SODashboard#ANNOUNCEMENTS_ENTRY_EXPANDED" />
-		<execute function="#assertElementNotPresent" locator1="SODashboard#ANNOUNCEMENTS_ENTRY_COLLAPSED" />
+		<execute function="AssertClick" locator1="SODashboard#ANNOUNCEMENTS_ENTRY_READ_ENTRIES_DROPDOWN" value1="Read Entries" />
+		<execute function="AssertElementPresent" locator1="SODashboard#ANNOUNCEMENTS_ENTRY_EXPANDED" />
+		<execute function="AssertElementNotPresent" locator1="SODashboard#ANNOUNCEMENTS_ENTRY_COLLAPSED" />
 		<execute function="AssertTextEquals#assertPartialText" locator1="SODashboard#ANNOUNCEMENTS_ENTRY_ACTION" value1="${entryAuthor} to ${distributionScope}" />
-		<execute function="#assertTextEquals" locator1="SODashboard#ANNOUNCEMENTS_ENTRY_TITLE" value1="${entryTitle}" />
+		<execute function="AssertTextEquals" locator1="SODashboard#ANNOUNCEMENTS_ENTRY_TITLE" value1="${entryTitle}" />
 		<execute function="AssertTextEquals#assertPartialText" locator1="SODashboard#ANNOUNCEMENTS_ENTRY_CONTENT" value1="${entryContent}" />
-		<execute function="#assertClick" locator1="SODashboard#ANNOUNCEMENTS_ENTRY_MARK_LINK" value1="Mark as Unread" />
-		<execute function="#assertElementNotPresent" locator1="SODashboard#ANNOUNCEMENTS_ENTRY_READ_ENTRIES_DROPDOWN" value1="Read Entries" />
-		<execute function="#assertElementNotPresent" locator1="SODashboard#ANNOUNCEMENTS_ENTRY_EXPANDED" />
-		<execute function="#assertElementNotPresent" locator1="SODashboard#ANNOUNCEMENTS_ENTRY_COLLAPSED" />
+		<execute function="AssertClick" locator1="SODashboard#ANNOUNCEMENTS_ENTRY_MARK_LINK" value1="Mark as Unread" />
+		<execute function="AssertElementNotPresent" locator1="SODashboard#ANNOUNCEMENTS_ENTRY_READ_ENTRIES_DROPDOWN" value1="Read Entries" />
+		<execute function="AssertElementNotPresent" locator1="SODashboard#ANNOUNCEMENTS_ENTRY_EXPANDED" />
+		<execute function="AssertElementNotPresent" locator1="SODashboard#ANNOUNCEMENTS_ENTRY_COLLAPSED" />
 		<execute function="AssertTextEquals#assertPartialText" locator1="SODashboard#ANNOUNCEMENTS_ENTRY_ACTION" value1="${entryAuthor} to ${distributionScope}" />
-		<execute function="#assertTextEquals" locator1="SODashboard#ANNOUNCEMENTS_ENTRY_TITLE" value1="${entryTitle}" />
+		<execute function="AssertTextEquals" locator1="SODashboard#ANNOUNCEMENTS_ENTRY_TITLE" value1="${entryTitle}" />
 		<execute function="AssertTextEquals#assertPartialText" locator1="SODashboard#ANNOUNCEMENTS_ENTRY_CONTENT" value1="${entryContent}" />
-		<execute function="#assertTextEquals" locator1="SODashboard#ANNOUNCEMENTS_ENTRY_EDIT_LINK" value1="Edit" />
-		<execute function="#assertTextEquals" locator1="SODashboard#ANNOUNCEMENTS_ENTRY_DELETE_LINK" value1="Delete" />
-		<execute function="#assertTextEquals" locator1="SODashboard#ANNOUNCEMENTS_ENTRY_MARK_LINK" value1="Mark as Read" />
+		<execute function="AssertTextEquals" locator1="SODashboard#ANNOUNCEMENTS_ENTRY_EDIT_LINK" value1="Edit" />
+		<execute function="AssertTextEquals" locator1="SODashboard#ANNOUNCEMENTS_ENTRY_DELETE_LINK" value1="Delete" />
+		<execute function="AssertTextEquals" locator1="SODashboard#ANNOUNCEMENTS_ENTRY_MARK_LINK" value1="Mark as Read" />
 	</command>
 
 	<command name="tearDownPG">
@@ -90,7 +90,7 @@
 		<while>
 			<condition function="IsElementPresent#pauseIsElementPresent" locator1="SODashboard#ANNOUNCEMENTS_ENTRY_DELETE_LINK" />
 			<then>
-				<execute function="#assertClickNoError" locator1="SODashboard#ANNOUNCEMENTS_ENTRY_DELETE_LINK" value1="Delete" />
+				<execute function="AssertClickNoError" locator1="SODashboard#ANNOUNCEMENTS_ENTRY_DELETE_LINK" value1="Delete" />
 				<execute function="Confirm#waitForConfirmation" locator1="SODashboard#CONFIRMATION" value1="Are you sure you want to delete the selected entry?" />
 			</then>
 		</while>
@@ -106,7 +106,7 @@
 		<while>
 			<condition function="IsElementPresent#pauseIsElementPresent" locator1="SODashboard#ANNOUNCEMENTS_ENTRY_DELETE_LINK" />
 			<then>
-				<execute function="#assertClickNoError" locator1="SODashboard#ANNOUNCEMENTS_ENTRY_DELETE_LINK" value1="Delete" />
+				<execute function="AssertClickNoError" locator1="SODashboard#ANNOUNCEMENTS_ENTRY_DELETE_LINK" value1="Delete" />
 				<execute function="Confirm#waitForConfirmation" locator1="SODashboard#CONFIRMATION" value1="Are you sure you want to delete the selected entry?" />
 			</then>
 		</while>
@@ -115,31 +115,31 @@
 	<command name="viewNotificationPG">
 		<execute function="Click#textClickAtAndWait" locator1="SOUserBar#DASHBOARD" />
 		<execute function="AssertElementPresent#assertElementPresent" locator1="SOUserBar#NOTIFICATION" />
-		<execute function="#assertTextEquals" locator1="SOUserBar#NOTIFICATION_MENU_COUNT" value1="1" />
-		<execute function="#mouseOver" locator1="SOUserBar#NOTIFICATION" />
+		<execute function="AssertTextEquals" locator1="SOUserBar#NOTIFICATION_MENU_COUNT" value1="1" />
+		<execute function="MouseOver" locator1="SOUserBar#NOTIFICATION" />
 		<execute function="AssertTextEquals#assertPartialText" locator1="SOUserBar#NOTIFICATION_MENU_ENTRY_CONTENT" value1="${entryAuthor} sent a new announcement." />
-		<execute function="#assertTextEquals" locator1="SOUserBar#NOTIFICATION_MENU_ENTRY_SUBCONTENT" value1="${entryTitle}" />
-		<execute function="#assertClick" locator1="SOUserBar#NOTIFICATION_MENU_MARK_ALL_AS_READ" value1="Mark All as Read" />
-		<execute function="#assertTextEquals" locator1="SOUserBar#NOTIFICATION_MENU_COUNT" value1="0" />
+		<execute function="AssertTextEquals" locator1="SOUserBar#NOTIFICATION_MENU_ENTRY_SUBCONTENT" value1="${entryTitle}" />
+		<execute function="AssertClick" locator1="SOUserBar#NOTIFICATION_MENU_MARK_ALL_AS_READ" value1="Mark All as Read" />
+		<execute function="AssertTextEquals" locator1="SOUserBar#NOTIFICATION_MENU_COUNT" value1="0" />
 	</command>
 
 	<command name="viewPG">
 		<execute function="AssertTextEquals#assertPartialText" locator1="SODashboard#ANNOUNCEMENTS_ENTRY_ACTION" value1="${entryAuthor} to ${distributionScope}" />
-		<execute function="#assertTextEquals" locator1="SODashboard#ANNOUNCEMENTS_ENTRY_TITLE" value1="${entryTitle}" />
+		<execute function="AssertTextEquals" locator1="SODashboard#ANNOUNCEMENTS_ENTRY_TITLE" value1="${entryTitle}" />
 		<execute function="AssertTextEquals#assertPartialText" locator1="SODashboard#ANNOUNCEMENTS_ENTRY_CONTENT" value1="${entryContent}" />
-		<execute function="#assertClick" locator1="SODashboard#ANNOUNCEMENTS_MANAGE_ENTRIES_BUTTON" value1="Manage Entries" />
+		<execute function="AssertClick" locator1="SODashboard#ANNOUNCEMENTS_MANAGE_ENTRIES_BUTTON" value1="Manage Entries" />
 
-		<execute function="#selectFrame" locator1="SODashboardManageAnnouncementsEntry#MANAGE_ENTRY_IFRAME" />
+		<execute function="SelectFrame" locator1="SODashboardManageAnnouncementsEntry#MANAGE_ENTRY_IFRAME" />
 
-		<execute function="#select" locator1="SODashboardManageAnnouncementsEntry#DISTRIBUTION_SCOPE_SELECT" value1="${distributionScope}" />
-		<execute function="#assertTextEquals" locator1="SODashboardManageAnnouncementsEntry#ANNOUNCEMENTS_ENTRY_TITLE" value1="${entryTitle}" />
-		<execute function="#assertTextEquals" locator1="SODashboardManageAnnouncementsEntry#ANNOUNCEMENTS_ENTRY_AUTHOR" value1="${entryAuthor}" />
-		<execute function="#assertTextEquals" locator1="SODashboardManageAnnouncementsEntry#ANNOUNCEMENTS_ENTRY_TYPE" value1="General" />
-		<execute function="#assertElementPresent" locator1="SODashboardManageAnnouncementsEntry#ANNOUNCEMENTS_ENTRY_MODIFIED_DATE" />
-		<execute function="#assertElementPresent" locator1="SODashboardManageAnnouncementsEntry#ANNOUNCEMENTS_ENTRY_DISPLAY_DATE" />
-		<execute function="#assertElementPresent" locator1="SODashboardManageAnnouncementsEntry#ANNOUNCEMENTS_ENTRY_EXPIRATION_DATE" />
-		<execute function="#assertTextEquals" locator1="SODashboardManageAnnouncementsEntry#ANNOUNCEMENTS_ENTRY_EDIT_LINK" value1="Edit"  />
-		<execute function="#assertTextEquals" locator1="SODashboardManageAnnouncementsEntry#ANNOUNCEMENTS_ENTRY_DELETE_LINK" value1="Delete"  />
-		<execute function="#selectFrameTop" />
+		<execute function="Select" locator1="SODashboardManageAnnouncementsEntry#DISTRIBUTION_SCOPE_SELECT" value1="${distributionScope}" />
+		<execute function="AssertTextEquals" locator1="SODashboardManageAnnouncementsEntry#ANNOUNCEMENTS_ENTRY_TITLE" value1="${entryTitle}" />
+		<execute function="AssertTextEquals" locator1="SODashboardManageAnnouncementsEntry#ANNOUNCEMENTS_ENTRY_AUTHOR" value1="${entryAuthor}" />
+		<execute function="AssertTextEquals" locator1="SODashboardManageAnnouncementsEntry#ANNOUNCEMENTS_ENTRY_TYPE" value1="General" />
+		<execute function="AssertElementPresent" locator1="SODashboardManageAnnouncementsEntry#ANNOUNCEMENTS_ENTRY_MODIFIED_DATE" />
+		<execute function="AssertElementPresent" locator1="SODashboardManageAnnouncementsEntry#ANNOUNCEMENTS_ENTRY_DISPLAY_DATE" />
+		<execute function="AssertElementPresent" locator1="SODashboardManageAnnouncementsEntry#ANNOUNCEMENTS_ENTRY_EXPIRATION_DATE" />
+		<execute function="AssertTextEquals" locator1="SODashboardManageAnnouncementsEntry#ANNOUNCEMENTS_ENTRY_EDIT_LINK" value1="Edit"  />
+		<execute function="AssertTextEquals" locator1="SODashboardManageAnnouncementsEntry#ANNOUNCEMENTS_ENTRY_DELETE_LINK" value1="Delete"  />
+		<execute function="SelectFrameTop" />
 	</command>
 </definition>

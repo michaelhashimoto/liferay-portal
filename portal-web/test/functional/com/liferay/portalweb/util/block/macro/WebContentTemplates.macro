@@ -4,39 +4,39 @@
 
 		<execute function="AssertClick#assertValueClickAtAndWait" locator1="CPWebcontentTemplates#ADD_TEMPLATE" value1="Add Template" />
 
-		<execute function="#type" locator1="CPWebcontentTemplatesAddtemplate#NAME_FIELD" value1="${templateName}" />
-		<execute function="#type" locator1="CPWebcontentTemplatesAddtemplate#DESCRIPTION_FIELD" value1="${templateDescription}" />
+		<execute function="Type" locator1="CPWebcontentTemplatesAddtemplate#NAME_FIELD" value1="${templateName}" />
+		<execute function="Type" locator1="CPWebcontentTemplatesAddtemplate#DESCRIPTION_FIELD" value1="${templateDescription}" />
 
 		<if>
 			<isset var="structureName" />
 			<then>
 				<execute function="AssertClick#assertValueClickAt" locator1="CPWebcontentTemplatesAddtemplate#SELECT_STRUCTURE_BUTTON" value1="Select" />
 
-				<execute function="#selectFrame" locator1="CPWebcontentTemplatesAddtemplateStructure#STRUCTURE_IFRAME" />
-				<execute function="#assertElementPresent" locator1="CPWebcontentTemplatesAddtemplateStructure#STRUCTURE_TABLE_ID_1" />
-				<execute function="#assertTextPresent" locator1="CPWebcontentTemplatesAddtemplateStructure#STRUCTURE_TABLE_NAME_1" value1="${structureName}" />
-				<execute function="#assertTextPresent" locator1="CPWebcontentTemplatesAddtemplateStructure#STRUCTURE_TABLE_DESCRIPTION_1" value1="${structureDescription}" />
-				<execute function="#assertClick" locator1="CPWebcontentTemplatesAddtemplateStructure#STRUCTURE_TABLE_NAME_1" value1="${structureName}" />
+				<execute function="SelectFrame" locator1="CPWebcontentTemplatesAddtemplateStructure#STRUCTURE_IFRAME" />
+				<execute function="AssertElementPresent" locator1="CPWebcontentTemplatesAddtemplateStructure#STRUCTURE_TABLE_ID_1" />
+				<execute function="AssertTextPresent" locator1="CPWebcontentTemplatesAddtemplateStructure#STRUCTURE_TABLE_NAME_1" value1="${structureName}" />
+				<execute function="AssertTextPresent" locator1="CPWebcontentTemplatesAddtemplateStructure#STRUCTURE_TABLE_DESCRIPTION_1" value1="${structureDescription}" />
+				<execute function="AssertClick" locator1="CPWebcontentTemplatesAddtemplateStructure#STRUCTURE_TABLE_NAME_1" value1="${structureName}" />
 
-				<execute function="#selectFrame" />
-				<execute function="#assertTextEquals" locator1="CPWebcontentTemplatesAddtemplate#STRUCTURE_NAME" value1="${structureName}" />
+				<execute function="SelectFrame" />
+				<execute function="AssertTextEquals" locator1="CPWebcontentTemplatesAddtemplate#STRUCTURE_NAME" value1="${structureName}" />
 			</then>
 		</if>
 
 		<execute function="AssertClick#assertValueClickAt" locator1="CPWebcontentTemplatesAddtemplate#LAUNCH_EDITOR_BUTTON" value1="Launch Editor" />
 
-		<execute function="#selectFrame" locator1="CPWebcontentTemplatesAddtemplateEditor#EDITOR_IFRAME" />
+		<execute function="SelectFrame" locator1="CPWebcontentTemplatesAddtemplateEditor#EDITOR_IFRAME" />
 		<execute function="Type#typeWaitForNotValueNull" locator1="CPWebcontentTemplatesAddtemplateEditor#EDITOR_FIELD" value1="$text.getData()" />
 		<execute function="AssertClick#assertValueClickAtAndWait" locator1="CPWebcontentTemplatesAddtemplateEditor#UPDATE_BUTTON" value1="Update" />
 
-		<execute function="#selectFrame" />
+		<execute function="SelectFrame" />
 
 		<execute function="AssertClick#assertValueClickAt" locator1="CPWebcontentTemplatesAddtemplate#SAVE_BUTTON" value1="Save" />
 
-		<execute function="#assertTextEquals" locator1="CPWebcontentTemplates#SUCCESS_MESSAGE" value1="Your request completed successfully." />
-		<execute function="#assertElementPresent" locator1="CPWebcontentTemplates#TEMPLATE_TABLE_ID_1" />
-		<execute function="#assertTextEquals" locator1="CPWebcontentTemplates#TEMPLATE_TABLE_NAME_1" value1="${templateName}" />
-		<execute function="#assertTextEquals" locator1="CPWebcontentTemplates#TEMPLATE_TABLE_DESCRIPTION_1" value1="${templateDescription}" />
+		<execute function="AssertTextEquals" locator1="CPWebcontentTemplates#SUCCESS_MESSAGE" value1="Your request completed successfully." />
+		<execute function="AssertElementPresent" locator1="CPWebcontentTemplates#TEMPLATE_TABLE_ID_1" />
+		<execute function="AssertTextEquals" locator1="CPWebcontentTemplates#TEMPLATE_TABLE_NAME_1" value1="${templateName}" />
+		<execute function="AssertTextEquals" locator1="CPWebcontentTemplates#TEMPLATE_TABLE_DESCRIPTION_1" value1="${templateDescription}" />
 	</command>
 
 	<command name="tearDownCP">
@@ -49,10 +49,10 @@
 		<if>
 			<condition function="IsElementPresent#isVisible" locator1="CPWebcontentTemplates#TEMPLATE_TABLE_ALL_CHECKBOX" />
 			<then>
-				<execute function="#check" locator1="CPWebcontentTemplates#TEMPLATE_TABLE_ALL_CHECKBOX" />
-				<execute function="#assertClickNoError" locator1="CPWebcontentTemplates#DELETE_BUTTON" value1="Delete" />
-				<execute function="#confirm" locator1="CPWebcontentTemplates#CONFIRMATION" value1="Are you sure you want to delete the selected templates?" />
-				<execute function="#assertTextEquals" locator1="CPWebcontentTemplates#SUCCESS_MESSAGE" value1="Your request completed successfully." />
+				<execute function="Check" locator1="CPWebcontentTemplates#TEMPLATE_TABLE_ALL_CHECKBOX" />
+				<execute function="AssertClickNoError" locator1="CPWebcontentTemplates#DELETE_BUTTON" value1="Delete" />
+				<execute function="Confirm" locator1="CPWebcontentTemplates#CONFIRMATION" value1="Are you sure you want to delete the selected templates?" />
+				<execute function="AssertTextEquals" locator1="CPWebcontentTemplates#SUCCESS_MESSAGE" value1="Your request completed successfully." />
 			</then>
 		</if>
 	</command>

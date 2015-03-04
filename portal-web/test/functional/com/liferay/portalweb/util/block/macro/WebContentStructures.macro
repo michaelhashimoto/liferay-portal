@@ -4,17 +4,17 @@
 
 		<execute function="AssertClick#assertValueClickAtAndWait" locator1="CPWebcontentStructures#ADD_STRUCTURE_BUTTON" value1="Add Structure" />
 
-		<execute function="#type" locator1="CPWebcontentStructuresAddstructure#NAME_FIELD" value1="${structureName}" />
-		<execute function="#type" locator1="CPWebcontentStructuresAddstructure#DESCRIPTION_FIELD" value1="${structureDescription}" />
+		<execute function="Type" locator1="CPWebcontentStructuresAddstructure#NAME_FIELD" value1="${structureName}" />
+		<execute function="Type" locator1="CPWebcontentStructuresAddstructure#DESCRIPTION_FIELD" value1="${structureDescription}" />
 		<execute function="AssertClick#assertValueClickAtAndWait" locator1="CPWebcontentStructuresAddstructure#ADD_ROW_BUTTON" value1="Add Row" />
-		<execute function="#type" locator1="CPWebcontentStructuresAddstructure#ROW_NAME_1" value1="text" />
-		<execute function="#select" locator1="CPWebcontentStructuresAddstructure#ROW_TYPE_SELECT_1" value1="Text" />
+		<execute function="Type" locator1="CPWebcontentStructuresAddstructure#ROW_NAME_1" value1="text" />
+		<execute function="Select" locator1="CPWebcontentStructuresAddstructure#ROW_TYPE_SELECT_1" value1="Text" />
 		<execute function="AssertClick#assertValueClickAtAndWait" locator1="CPWebcontentStructuresAddstructure#SAVE_BUTTON" value1="Save" />
 
-		<execute function="#assertTextEquals" locator1="CPWebcontentStructures#SUCCESS_MESSAGE" value1="Your request completed successfully." />
-		<execute function="#assertElementPresent" locator1="CPWebcontentStructures#STRUCTURE_TABLE_ID_1" />
-		<execute function="#assertTextEquals" locator1="CPWebcontentStructures#STRUCTURE_TABLE_NAME_1" value1="${structureName}" />
-		<execute function="#assertTextEquals" locator1="CPWebcontentStructures#STRUCTURE_TABLE_DESCRIPTION_1" value1="${structureDescription}" />
+		<execute function="AssertTextEquals" locator1="CPWebcontentStructures#SUCCESS_MESSAGE" value1="Your request completed successfully." />
+		<execute function="AssertElementPresent" locator1="CPWebcontentStructures#STRUCTURE_TABLE_ID_1" />
+		<execute function="AssertTextEquals" locator1="CPWebcontentStructures#STRUCTURE_TABLE_NAME_1" value1="${structureName}" />
+		<execute function="AssertTextEquals" locator1="CPWebcontentStructures#STRUCTURE_TABLE_DESCRIPTION_1" value1="${structureDescription}" />
 	</command>
 
 	<command name="tearDownCP">
@@ -27,13 +27,13 @@
 		<if>
 			<condition function="IsElementPresent#isVisible" locator1="CPWebcontentStructures#STRUCTURE_TABLE_ALL_CHECKBOX" />
 			<then>
-				<execute function="#check" locator1="CPWebcontentStructures#STRUCTURE_TABLE_ALL_CHECKBOX" />
-				<execute function="#assertClickNoError" locator1="CPWebcontentStructures#DELETE_BUTTON" value1="Delete" />
-				<execute function="#confirm" locator1="CPWebcontentStructures#CONFIRMATION" value1="Are you sure you want to delete the selected structures?" />
-				<execute function="#assertTextEquals" locator1="CPWebcontentStructures#SUCCESS_MESSAGE" value1="Your request completed successfully." />
+				<execute function="Check" locator1="CPWebcontentStructures#STRUCTURE_TABLE_ALL_CHECKBOX" />
+				<execute function="AssertClickNoError" locator1="CPWebcontentStructures#DELETE_BUTTON" value1="Delete" />
+				<execute function="Confirm" locator1="CPWebcontentStructures#CONFIRMATION" value1="Are you sure you want to delete the selected structures?" />
+				<execute function="AssertTextEquals" locator1="CPWebcontentStructures#SUCCESS_MESSAGE" value1="Your request completed successfully." />
 			</then>
 		</if>
 
-		<execute function="#assertTextEquals" locator1="CPWebcontentStructures#INFO_MESSAGE" value1="No structures were found." />
+		<execute function="AssertTextEquals" locator1="CPWebcontentStructures#INFO_MESSAGE" value1="No structures were found." />
 	</command>
 </definition>

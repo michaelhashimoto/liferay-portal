@@ -194,14 +194,14 @@
 			<var name="pageType" value="Open Site" />
 		</execute>
 
-		<execute function="#assertTextEquals" locator1="SOMembers#MEMBERS_LINK_ALL" value1="View all 2 users." />
-		<execute function="#assertClick" locator1="SOMembers#MEMBERS_LINK_CONNECTIONS" value1="You have 1 connections in this site." />
-		<execute function="#assertTextEquals" locator1="SOMembers#MEMBERS_LIST_NAME" value1="${userLastName}, ${userFirstName}" />
-		<execute function="#assertTextEquals" locator1="SOMembers#MEMBERS_LIST_EMAIL" value1="${userEmailAddress}" />
+		<execute function="AssertTextEquals" locator1="SOMembers#MEMBERS_LINK_ALL" value1="View all 2 users." />
+		<execute function="AssertClick" locator1="SOMembers#MEMBERS_LINK_CONNECTIONS" value1="You have 1 connections in this site." />
+		<execute function="AssertTextEquals" locator1="SOMembers#MEMBERS_LIST_NAME" value1="${userLastName}, ${userFirstName}" />
+		<execute function="AssertTextEquals" locator1="SOMembers#MEMBERS_LIST_EMAIL" value1="${userEmailAddress}" />
 		<execute function="Click#pauseTextClickAt" locator1="SOMembers#MEMBERS_LIST_NAME" value1="${userLastName}, ${userFirstName}" />
 
-		<execute function="#assertTextEquals" locator1="SOMembers#USER_DETAILS_NAME" value1="${userName}" />
-		<execute function="#assertTextEquals" locator1="SOMembers#USER_DETAILS_EMAIL" value1="${userEmailAddress}" />
+		<execute function="AssertTextEquals" locator1="SOMembers#USER_DETAILS_NAME" value1="${userName}" />
+		<execute function="AssertTextEquals" locator1="SOMembers#USER_DETAILS_EMAIL" value1="${userEmailAddress}" />
 	</command>
 
 	<command name="InviteMembersSiteRolesSiteTest" priority="5">
