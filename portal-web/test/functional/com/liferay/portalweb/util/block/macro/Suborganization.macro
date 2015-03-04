@@ -3,7 +3,7 @@
 		<execute function="#type" locator1="CPUsersandorganizations#SEARCH_FIELD" value1="${orgName}" />
 		<execute function="AssertClick#assertValueClickAtAndWait" locator1="CPUsersandorganizations#SEARCH_BUTTON" value1="Search" />
 		<execute function="#assertTextEquals" locator1="CPUsersandorganizations#ORGANIZATION_TABLE_NAME_1" value1="${orgName}" />
-		<execute function="#assertClick" locator1="CPUsersandorganizations#ORGANIZATION_TABLE_ACTIONS_1" value1="Actions" />
+		<execute function="AssertClick#pauseAssertTextClickAt" locator1="CPUsersandorganizations#ORGANIZATION_TABLE_ACTIONS_1" value1="Actions" />
 		<execute function="#assertClick" locator1="CPUsersandorganizations#ORGANIZATION_MENULIST_ADD_REGULAR_ORGANIZATION" value1="Add Regular Organization" />
 
 		<execute function="#type" locator1="CPUsersandorganizationsAddorganization#DETAILS_NAME_FIELD" value1="${suborgName}" />

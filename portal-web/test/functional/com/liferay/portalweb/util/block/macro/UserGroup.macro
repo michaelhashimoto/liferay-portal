@@ -34,7 +34,7 @@
 		</execute>
 
 		<while>
-			<condition function="#isElementPresent" locator1="CPUsergroups#USER_GROUP_TABLE_CHECKBOX_1" />
+			<condition function="IsElementPresent#pauseIsElementPresent" locator1="CPUsergroups#USER_GROUP_TABLE_CHECKBOX_1" />
 			<then>
 				<execute function="#click" locator1="CPUsergroups#USER_GROUP_TABLE_ALL_CHECKBOX" />
 				<execute function="#assertChecked" locator1="CPUsergroups#USER_GROUP_TABLE_ALL_CHECKBOX" />

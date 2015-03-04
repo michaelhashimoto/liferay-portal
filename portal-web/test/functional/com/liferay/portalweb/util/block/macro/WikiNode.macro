@@ -13,7 +13,7 @@
 
 	<command name="deleteCP">
 		<execute function="#assertTextEquals" locator1="CPWiki#WIKI_NODE_TABLE_WIKI_2" value1="${wikiNodeName}" />
-		<execute function="#assertClick" locator1="CPWiki#WIKI_NODE_TABLE_ACTIONS_2" value1="Actions" />
+		<execute function="AssertClick#pauseAssertTextClickAt" locator1="CPWiki#WIKI_NODE_TABLE_ACTIONS_2" value1="Actions" />
 		<execute function="#assertClickNoError" locator1="CPWiki#WIKI_NODE_MENULIST_DELETE" value1="Delete" />
 		<execute function="#confirm" locator1="CPWiki#CONFIRMATION" value1="Are you sure you want to delete this?" />
 		<execute function="#assertTextNotPresent" value1="${wikiNodeName}" />
@@ -21,7 +21,7 @@
 
 	<command name="editCP">
 		<execute function="#assertTextEquals" locator1="CPWiki#WIKI_NODE_TABLE_WIKI_2" value1="${wikiNodeName}" />
-		<execute function="#assertClick" locator1="CPWiki#WIKI_NODE_TABLE_ACTIONS_2" value1="Actions" />
+		<execute function="AssertClick#pauseAssertTextClickAt" locator1="CPWiki#WIKI_NODE_TABLE_ACTIONS_2" value1="Actions" />
 		<execute function="AssertClick#assertTextClickAtAndWait" locator1="CPWiki#WIKI_NODE_MENULIST_EDIT" value1="Edit" />
 
 		<execute function="#type" locator1="CPWikiAddwiki#NAME_FIELD" value1="${wikiNodeNameEdit}" />
@@ -39,9 +39,9 @@
 		</execute>
 
 		<while>
-			<condition function="#isElementPresent" locator1="CPWiki#WIKI_NODE_TABLE_ACTIONS_2" value1="Actions" />
+			<condition function="IsElementPresent#pauseIsElementPresent" locator1="CPWiki#WIKI_NODE_TABLE_ACTIONS_2" value1="Actions" />
 			<then>
-				<execute function="#assertClick" locator1="CPWiki#WIKI_NODE_TABLE_ACTIONS_2" value1="Actions" />
+				<execute function="AssertClick#pauseAssertTextClickAt" locator1="CPWiki#WIKI_NODE_TABLE_ACTIONS_2" value1="Actions" />
 				<execute function="#assertClickNoError" locator1="CPWiki#WIKI_NODE_MENULIST_DELETE" value1="Delete" />
 				<execute function="#confirm" locator1="CPWiki#CONFIRMATION" value1="Are you sure you want to delete this?" />
 			</then>

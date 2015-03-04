@@ -144,7 +144,7 @@
 		<execute macro="Page#openURL" />
 
 		<while>
-			<condition function="#isElementPresent" locator1="Home#PAGE_2" />
+			<condition function="IsElementPresent#isElementPresentClickNavigation" locator1="Home#PAGE_2" />
 			<then>
 				<execute function="MouseOver#mouseOverClickNavigation" locator1="Home#PAGE_2" />
 				<execute function="#assertClickNoError" locator1="Home#PAGE_DELETE_2" value1="X" />
