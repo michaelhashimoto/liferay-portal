@@ -114,13 +114,13 @@
 			<var name="userScreenName" value="${userScreenName}" />
 		</execute>
 
-		<execute action="SOUserBar#click" locator-key1="DASHBOARD" />
+		<execute action="SOUserBar#click" locator1="DASHBOARD" />
 
-		<execute action="SODashboard#click" locator-key1="NAVIGATION_CONTACTS_CENTER" />
+		<execute action="SODashboard#click" locator1="NAVIGATION_CONTACTS_CENTER" />
 
-		<execute action="SOContactscenter#type" locator-key1="CONTACTS_LIST_SEARCH" value1="${userFirstName}" />
-		<execute action="SOContactscenter#select" locator-key1="CONTACTS_LIST_FILTER" value1="Connections" />
-		<execute action="SOContactscenter#assertTextEquals" locator-key1="CONTACTS_LIST_EMPTY" value1="There are no results." />
+		<execute action="SOContactscenter#type" locator1="CONTACTS_LIST_SEARCH" value1="${userFirstName}" />
+		<execute action="SOContactscenter#select" locator1="CONTACTS_LIST_FILTER" value1="Connections" />
+		<execute action="SOContactscenter#assertTextEquals" locator1="CONTACTS_LIST_EMPTY" value1="There are no results." />
 
 		<execute macro="SOContactsCenter#requestToConnect">
 			<var name="userEmailAddress" value="${userEmailAddress}" />
@@ -148,29 +148,29 @@
 			<var name="userEmailAddress" value="${adminEmailAddress}" />
 		</execute>
 
-		<execute action="SOUserBar#click" locator-key1="DASHBOARD" />
+		<execute action="SOUserBar#click" locator1="DASHBOARD" />
 
-		<execute action="SODashboard#click" locator-key1="NAVIGATION_CONTACTS_CENTER" />
+		<execute action="SODashboard#click" locator1="NAVIGATION_CONTACTS_CENTER" />
 
-		<execute action="SOContactscenter#type" locator-key1="CONTACTS_LIST_SEARCH" value1="${userFirstName}" />
-		<execute action="SOContactscenter#select" locator-key1="CONTACTS_LIST_FILTER" value1="Connections" />
-		<execute action="SOContactscenter#assertTextEquals" locator-key1="CONTACTS_LIST_EMPTY" value1="There are no results." />
+		<execute action="SOContactscenter#type" locator1="CONTACTS_LIST_SEARCH" value1="${userFirstName}" />
+		<execute action="SOContactscenter#select" locator1="CONTACTS_LIST_FILTER" value1="Connections" />
+		<execute action="SOContactscenter#assertTextEquals" locator1="CONTACTS_LIST_EMPTY" value1="There are no results." />
 
-		<execute action="SOUserBar#click" locator-key1="DASHBOARD" />
+		<execute action="SOUserBar#click" locator1="DASHBOARD" />
 
-		<execute action="SODashboard#click" locator-key1="NAVIGATION_CONTACTS_CENTER" />
+		<execute action="SODashboard#click" locator1="NAVIGATION_CONTACTS_CENTER" />
 
-		<execute action="SOContactscenter#type" locator-key1="CONTACTS_LIST_SEARCH" value1="${userFirstName}" />
-		<execute action="SOContactscenter#select" locator-key1="CONTACTS_LIST_FILTER" value1="All" />
-		<execute action="SOContactscenter#assertTextEquals" locator-key1="CONTACTS_LIST_NAME" value1="${userListName}" />
-		<execute action="SOContactscenter#assertTextEquals" locator-key1="CONTACTS_LIST_EMAIL" value1="${userEmailAddress}" />
-		<execute action="SOContactscenter#assertTextEquals" locator-key1="CONNECTIONS_LINK" value1="You have 0 connections." />
+		<execute action="SOContactscenter#type" locator1="CONTACTS_LIST_SEARCH" value1="${userFirstName}" />
+		<execute action="SOContactscenter#select" locator1="CONTACTS_LIST_FILTER" value1="All" />
+		<execute action="SOContactscenter#assertTextEquals" locator1="CONTACTS_LIST_NAME" value1="${userListName}" />
+		<execute action="SOContactscenter#assertTextEquals" locator1="CONTACTS_LIST_EMAIL" value1="${userEmailAddress}" />
+		<execute action="SOContactscenter#assertTextEquals" locator1="CONNECTIONS_LINK" value1="You have 0 connections." />
 		<execute action="SOContactscenter#pause" value1="1000" />
-		<execute action="SOContactscenter#click" locator-key1="CONTACTS_LIST_NAME" value1="${userListName}" />
-		<execute action="SOContactscenter#assertTextEquals" locator-key1="USER_DETAILS_NAME" value1="${userName}" />
-		<execute action="SOContactscenter#assertTextEquals" locator-key1="USER_DETAILS_EMAIL" value1="${userEmailAddress}" />
-		<execute action="SOContactscenter#assertTextEquals" locator-key1="CONNECT_BUTTON" value1="Connect" />
-		<execute action="SOContactscenter#assertElementNotPresent" locator-key1="DISCONNECT_BUTTON" />
+		<execute action="SOContactscenter#click" locator1="CONTACTS_LIST_NAME" value1="${userListName}" />
+		<execute action="SOContactscenter#assertTextEquals" locator1="USER_DETAILS_NAME" value1="${userName}" />
+		<execute action="SOContactscenter#assertTextEquals" locator1="USER_DETAILS_EMAIL" value1="${userEmailAddress}" />
+		<execute action="SOContactscenter#assertTextEquals" locator1="CONNECT_BUTTON" value1="Connect" />
+		<execute action="SOContactscenter#assertElementNotPresent" locator1="DISCONNECT_BUTTON" />
 
 		<execute macro="SOContactsCenter#requestToConnect">
 			<var name="userEmailAddress" value="${userEmailAddress}" />
@@ -198,21 +198,21 @@
 			<var name="userEmailAddress" value="${adminEmailAddress}" />
 		</execute>
 
-		<execute action="SOUserBar#click" locator-key1="DASHBOARD" />
+		<execute action="SOUserBar#click" locator1="DASHBOARD" />
 
-		<execute action="SODashboard#click" locator-key1="NAVIGATION_CONTACTS_CENTER" />
+		<execute action="SODashboard#click" locator1="NAVIGATION_CONTACTS_CENTER" />
 
-		<execute action="SOContactscenter#type" locator-key1="CONTACTS_LIST_SEARCH" value1="${userFirstName}" />
-		<execute action="SOContactscenter#select" locator-key1="CONTACTS_LIST_FILTER" value1="Connections" />
-		<execute action="SOContactscenter#assertTextEquals" locator-key1="CONTACTS_LIST_NAME" value1="${userListName}" />
-		<execute action="SOContactscenter#assertTextEquals" locator-key1="CONTACTS_LIST_EMAIL" value1="${userEmailAddress}" />
-		<execute action="SOContactscenter#assertTextEquals" locator-key1="CONNECTIONS_LINK" value1="You have 1 connections." />
+		<execute action="SOContactscenter#type" locator1="CONTACTS_LIST_SEARCH" value1="${userFirstName}" />
+		<execute action="SOContactscenter#select" locator1="CONTACTS_LIST_FILTER" value1="Connections" />
+		<execute action="SOContactscenter#assertTextEquals" locator1="CONTACTS_LIST_NAME" value1="${userListName}" />
+		<execute action="SOContactscenter#assertTextEquals" locator1="CONTACTS_LIST_EMAIL" value1="${userEmailAddress}" />
+		<execute action="SOContactscenter#assertTextEquals" locator1="CONNECTIONS_LINK" value1="You have 1 connections." />
 		<execute action="SOContactscenter#pause" value1="1000" />
-		<execute action="SOContactscenter#click" locator-key1="CONTACTS_LIST_NAME" value1="${userListName}" />
-		<execute action="SOContactscenter#assertTextEquals" locator-key1="USER_DETAILS_NAME" value1="${userName}" />
-		<execute action="SOContactscenter#assertTextEquals" locator-key1="USER_DETAILS_EMAIL" value1="${userEmailAddress}" />
-		<execute action="SOContactscenter#assertTextEquals" locator-key1="DISCONNECT_BUTTON" value1="Disconnect" />
-		<execute action="SOContactscenter#assertElementNotPresent" locator-key1="CONNECT_BUTTON" />
+		<execute action="SOContactscenter#click" locator1="CONTACTS_LIST_NAME" value1="${userListName}" />
+		<execute action="SOContactscenter#assertTextEquals" locator1="USER_DETAILS_NAME" value1="${userName}" />
+		<execute action="SOContactscenter#assertTextEquals" locator1="USER_DETAILS_EMAIL" value1="${userEmailAddress}" />
+		<execute action="SOContactscenter#assertTextEquals" locator1="DISCONNECT_BUTTON" value1="Disconnect" />
+		<execute action="SOContactscenter#assertElementNotPresent" locator1="CONNECT_BUTTON" />
 	</command>
 
 	<command name="SearchFollowing" priority="5">
@@ -233,13 +233,13 @@
 			<var name="userEmailAddress" value="${userEmailAddress}" />
 		</execute>
 
-		<execute action="SOUserBar#click" locator-key1="DASHBOARD" />
+		<execute action="SOUserBar#click" locator1="DASHBOARD" />
 
-		<execute action="SODashboard#click" locator-key1="NAVIGATION_CONTACTS_CENTER" />
+		<execute action="SODashboard#click" locator1="NAVIGATION_CONTACTS_CENTER" />
 
-		<execute action="SOContactscenter#type" locator-key1="CONTACTS_LIST_SEARCH" value1="${adminFirstName}" />
-		<execute action="SOContactscenter#select" locator-key1="CONTACTS_LIST_FILTER" value1="Following" />
-		<execute action="SOContactscenter#assertTextEquals" locator-key1="CONTACTS_LIST_EMPTY" value1="There are no results." />
+		<execute action="SOContactscenter#type" locator1="CONTACTS_LIST_SEARCH" value1="${adminFirstName}" />
+		<execute action="SOContactscenter#select" locator1="CONTACTS_LIST_FILTER" value1="Following" />
+		<execute action="SOContactscenter#assertTextEquals" locator1="CONTACTS_LIST_EMPTY" value1="There are no results." />
 
 		<execute macro="SOContactsCenter#followUser">
 			<var name="adminEmailAddress" value="${adminEmailAddress}" />
@@ -247,19 +247,19 @@
 			<var name="adminName" value="${adminName}" />
 		</execute>
 
-		<execute action="SOUserBar#click" locator-key1="DASHBOARD" />
+		<execute action="SOUserBar#click" locator1="DASHBOARD" />
 
-		<execute action="SODashboard#click" locator-key1="NAVIGATION_CONTACTS_CENTER" />
+		<execute action="SODashboard#click" locator1="NAVIGATION_CONTACTS_CENTER" />
 
-		<execute action="SOContactscenter#type" locator-key1="CONTACTS_LIST_SEARCH" value1="${adminFirstName}" />
-		<execute action="SOContactscenter#select" locator-key1="CONTACTS_LIST_FILTER" value1="Following" />
-		<execute action="SOContactscenter#assertTextEquals" locator-key1="CONTACTS_LIST_NAME" value1="${adminListName}" />
-		<execute action="SOContactscenter#assertTextEquals" locator-key1="CONTACTS_LIST_EMAIL" value1="${adminEmailAddress}" />
-		<execute action="SOContactscenter#assertTextEquals" locator-key1="FOLLOWING_LINK" value1="You are following 1 people." />
+		<execute action="SOContactscenter#type" locator1="CONTACTS_LIST_SEARCH" value1="${adminFirstName}" />
+		<execute action="SOContactscenter#select" locator1="CONTACTS_LIST_FILTER" value1="Following" />
+		<execute action="SOContactscenter#assertTextEquals" locator1="CONTACTS_LIST_NAME" value1="${adminListName}" />
+		<execute action="SOContactscenter#assertTextEquals" locator1="CONTACTS_LIST_EMAIL" value1="${adminEmailAddress}" />
+		<execute action="SOContactscenter#assertTextEquals" locator1="FOLLOWING_LINK" value1="You are following 1 people." />
 		<execute action="SOContactscenter#pause" value1="1000" />
-		<execute action="SOContactscenter#click" locator-key1="CONTACTS_LIST_NAME" value1="${adminListName}" />
-		<execute action="SOContactscenter#assertTextEquals" locator-key1="USER_DETAILS_NAME" value1="${adminName}" />
-		<execute action="SOContactscenter#assertTextEquals" locator-key1="USER_DETAILS_EMAIL" value1="${adminEmailAddress}" />
+		<execute action="SOContactscenter#click" locator1="CONTACTS_LIST_NAME" value1="${adminListName}" />
+		<execute action="SOContactscenter#assertTextEquals" locator1="USER_DETAILS_NAME" value1="${adminName}" />
+		<execute action="SOContactscenter#assertTextEquals" locator1="USER_DETAILS_EMAIL" value1="${adminEmailAddress}" />
 	</command>
 
 	<command name="SearchUser" priority="5">
@@ -273,18 +273,18 @@
 			<var name="userScreenName" value="${userScreenName}" />
 		</execute>
 
-		<execute action="SOUserBar#click" locator-key1="DASHBOARD" />
+		<execute action="SOUserBar#click" locator1="DASHBOARD" />
 
-		<execute action="SODashboard#click" locator-key1="NAVIGATION_CONTACTS_CENTER" />
+		<execute action="SODashboard#click" locator1="NAVIGATION_CONTACTS_CENTER" />
 
 		<execute action="SOContactscenter#pause" value1="1000" />
-		<execute action="SOContactscenter#select" locator-key1="CONTACTS_LIST_FILTER" value1="All" />
-		<execute action="SOContactscenter#type" locator-key1="CONTACTS_LIST_SEARCH" value1="${userFirstName}" />
-		<execute action="SOContactscenter#assertTextEquals" locator-key1="CONTACTS_LIST_NAME" value1="${userListName}" />
-		<execute action="SOContactscenter#assertTextEquals" locator-key1="CONTACTS_LIST_EMAIL" value1="${userEmailAddress}" />
-		<execute action="SOContactscenter#click" locator-key1="CONTACTS_LIST_NAME" value1="${userListName}" />
-		<execute action="SOContactscenter#assertTextEquals" locator-key1="USER_DETAILS_NAME" value1="${userName}" />
-		<execute action="SOContactscenter#assertTextEquals" locator-key1="USER_DETAILS_EMAIL" value1="${userEmailAddress}" />
+		<execute action="SOContactscenter#select" locator1="CONTACTS_LIST_FILTER" value1="All" />
+		<execute action="SOContactscenter#type" locator1="CONTACTS_LIST_SEARCH" value1="${userFirstName}" />
+		<execute action="SOContactscenter#assertTextEquals" locator1="CONTACTS_LIST_NAME" value1="${userListName}" />
+		<execute action="SOContactscenter#assertTextEquals" locator1="CONTACTS_LIST_EMAIL" value1="${userEmailAddress}" />
+		<execute action="SOContactscenter#click" locator1="CONTACTS_LIST_NAME" value1="${userListName}" />
+		<execute action="SOContactscenter#assertTextEquals" locator1="USER_DETAILS_NAME" value1="${userName}" />
+		<execute action="SOContactscenter#assertTextEquals" locator1="USER_DETAILS_EMAIL" value1="${userEmailAddress}" />
 	</command>
 
 	<command name="ViewContactsCenterNotifications" priority="5">
@@ -394,71 +394,71 @@
 			<var name="userEmailAddress" value="${adminEmailAddress}" />
 		</execute>
 
-		<execute action="SOUserBar#click" locator-key1="DASHBOARD" />
-		<execute action="SOUserBar#assertElementPresent" locator-key1="NOTIFICATION" />
-		<execute action="SOUserBar#assertTextEquals" locator-key1="NOTIFICATION_MENU_COUNT" value1="6" />
-		<execute action="SOUserBar#mouseOver" locator-key1="NOTIFICATION" />
-		<execute action="SOUserBar#click" locator-key1="NOTIFICATION_MENU_VIEW_ALL" value1="View All" />
+		<execute action="SOUserBar#click" locator1="DASHBOARD" />
+		<execute action="SOUserBar#assertElementPresent" locator1="NOTIFICATION" />
+		<execute action="SOUserBar#assertTextEquals" locator1="NOTIFICATION_MENU_COUNT" value1="6" />
+		<execute action="SOUserBar#mouseOver" locator1="NOTIFICATION" />
+		<execute action="SOUserBar#click" locator1="NOTIFICATION_MENU_VIEW_ALL" value1="View All" />
 
 		<var name="row" value="1" />
 
-		<execute action="SONotifications#assertTextEquals" locator-key1="NOTIFICATIONS_ENTRY_INCREMENT" value1="${userName3} sent you a message." />
+		<execute action="SONotifications#assertTextEquals" locator1="NOTIFICATIONS_ENTRY_INCREMENT" value1="${userName3} sent you a message." />
 
 		<var name="row" value="2" />
 
-		<execute action="SONotifications#assertTextEquals" locator-key1="NOTIFICATIONS_ENTRY_INCREMENT" value1="${userName3} would like to add you as a connection." />
+		<execute action="SONotifications#assertTextEquals" locator1="NOTIFICATIONS_ENTRY_INCREMENT" value1="${userName3} would like to add you as a connection." />
 
 		<var name="row" value="3" />
 
-		<execute action="SONotifications#assertTextEquals" locator-key1="NOTIFICATIONS_ENTRY_INCREMENT" value1="${userName2} sent you a message." />
+		<execute action="SONotifications#assertTextEquals" locator1="NOTIFICATIONS_ENTRY_INCREMENT" value1="${userName2} sent you a message." />
 
 		<var name="row" value="4" />
 
-		<execute action="SONotifications#assertTextEquals" locator-key1="NOTIFICATIONS_ENTRY_INCREMENT" value1="${userName2} would like to add you as a connection." />
+		<execute action="SONotifications#assertTextEquals" locator1="NOTIFICATIONS_ENTRY_INCREMENT" value1="${userName2} would like to add you as a connection." />
 
 		<var name="row" value="5" />
 
-		<execute action="SONotifications#assertTextEquals" locator-key1="NOTIFICATIONS_ENTRY_INCREMENT" value1="${userName} sent you a message." />
+		<execute action="SONotifications#assertTextEquals" locator1="NOTIFICATIONS_ENTRY_INCREMENT" value1="${userName} sent you a message." />
 
 		<var name="row" value="6" />
 
-		<execute action="SONotifications#assertTextEquals" locator-key1="NOTIFICATIONS_ENTRY_INCREMENT" value1="${userName} would like to add you as a connection." />
-		<execute action="SONotifications#select" locator-key1="NOTIFICATIONS_ENTRIES_PER_PAGE_SELECT" value1="5" />
-		<execute action="SONotifications#assertTextEquals" locator-key1="SEARCH_RESULTS" value1="Showing 1 - 5 of 6 results." />
+		<execute action="SONotifications#assertTextEquals" locator1="NOTIFICATIONS_ENTRY_INCREMENT" value1="${userName} would like to add you as a connection." />
+		<execute action="SONotifications#select" locator1="NOTIFICATIONS_ENTRIES_PER_PAGE_SELECT" value1="5" />
+		<execute action="SONotifications#assertTextEquals" locator1="SEARCH_RESULTS" value1="Showing 1 - 5 of 6 results." />
 
 		<var name="row" value="1" />
 
-		<execute action="SONotifications#assertTextEquals" locator-key1="NOTIFICATIONS_ENTRY_INCREMENT" value1="${userName3} sent you a message." />
+		<execute action="SONotifications#assertTextEquals" locator1="NOTIFICATIONS_ENTRY_INCREMENT" value1="${userName3} sent you a message." />
 
 		<var name="row" value="2" />
 
-		<execute action="SONotifications#assertTextEquals" locator-key1="NOTIFICATIONS_ENTRY_INCREMENT" value1="${userName3} would like to add you as a connection." />
+		<execute action="SONotifications#assertTextEquals" locator1="NOTIFICATIONS_ENTRY_INCREMENT" value1="${userName3} would like to add you as a connection." />
 
 		<var name="row" value="3" />
 
-		<execute action="SONotifications#assertTextEquals" locator-key1="NOTIFICATIONS_ENTRY_INCREMENT" value1="${userName2} sent you a message." />
+		<execute action="SONotifications#assertTextEquals" locator1="NOTIFICATIONS_ENTRY_INCREMENT" value1="${userName2} sent you a message." />
 
 		<var name="row" value="4" />
 
-		<execute action="SONotifications#assertTextEquals" locator-key1="NOTIFICATIONS_ENTRY_INCREMENT" value1="${userName2} would like to add you as a connection." />
+		<execute action="SONotifications#assertTextEquals" locator1="NOTIFICATIONS_ENTRY_INCREMENT" value1="${userName2} would like to add you as a connection." />
 
 		<var name="row" value="5" />
 
-		<execute action="SONotifications#assertTextEquals" locator-key1="NOTIFICATIONS_ENTRY_INCREMENT" value1="${userName} sent you a message." />
+		<execute action="SONotifications#assertTextEquals" locator1="NOTIFICATIONS_ENTRY_INCREMENT" value1="${userName} sent you a message." />
 
 		<var name="row" value="6" />
 
-		<execute action="SONotifications#assertElementNotPresent" locator-key1="NOTIFICATIONS_ENTRY_INCREMENT" />
-		<execute action="SONotifications#click" locator-key1="NEXT_BUTTON" value1="Next" />
-		<execute action="SONotifications#assertTextEquals" locator-key1="SEARCH_RESULTS" value1="Showing 6 - 6 of 6 results." />
+		<execute action="SONotifications#assertElementNotPresent" locator1="NOTIFICATIONS_ENTRY_INCREMENT" />
+		<execute action="SONotifications#click" locator1="NEXT_BUTTON" value1="Next" />
+		<execute action="SONotifications#assertTextEquals" locator1="SEARCH_RESULTS" value1="Showing 6 - 6 of 6 results." />
 
 		<var name="row" value="1" />
 
-		<execute action="SONotifications#assertTextEquals" locator-key1="NOTIFICATIONS_ENTRY_INCREMENT" value1="${userName} would like to add you as a connection." />
+		<execute action="SONotifications#assertTextEquals" locator1="NOTIFICATIONS_ENTRY_INCREMENT" value1="${userName} would like to add you as a connection." />
 
 		<var name="row" value="2" />
 
-		<execute action="SONotifications#assertElementNotPresent" locator-key1="NOTIFICATIONS_ENTRY_INCREMENT" />
+		<execute action="SONotifications#assertElementNotPresent" locator1="NOTIFICATIONS_ENTRY_INCREMENT" />
 	</command>
 
 	<command name="ViewContactsCenterUserDetails" priority="5">

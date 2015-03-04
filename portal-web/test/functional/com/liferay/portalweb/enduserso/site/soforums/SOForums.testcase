@@ -121,13 +121,13 @@
 			<var name="pageType" value="Open Site" />
 		</execute>
 
-		<execute action="PGMessageboards#assertTextEquals" locator-key1="CATEGORY_TABLE_CATEGORY" value1="${categoryName}" />
-		<execute action="PGMessageboards#assertTextEquals" locator-key1="CATEGORY_TABLE_CATEGORIES" value1="0" />
-		<execute action="PGMessageboards#assertTextEquals" locator-key1="CATEGORY_TABLE_THREADS" value1="0" />
-		<execute action="PGMessageboards#assertTextEquals" locator-key1="CATEGORY_TABLE_POSTS" value1="0" />
-		<execute action="PGMessageboards#assertClick" locator-key1="CATEGORY_TABLE_CATEGORY" value1="${categoryName}" />
+		<execute action="PGMessageboards#assertTextEquals" locator1="CATEGORY_TABLE_CATEGORY" value1="${categoryName}" />
+		<execute action="PGMessageboards#assertTextEquals" locator1="CATEGORY_TABLE_CATEGORIES" value1="0" />
+		<execute action="PGMessageboards#assertTextEquals" locator1="CATEGORY_TABLE_THREADS" value1="0" />
+		<execute action="PGMessageboards#assertTextEquals" locator1="CATEGORY_TABLE_POSTS" value1="0" />
+		<execute action="PGMessageboards#assertClick" locator1="CATEGORY_TABLE_CATEGORY" value1="${categoryName}" />
 
-		<execute action="PGMessageboards#assertTextEquals" locator-key1="INFO_MESSAGE" value1="There are no threads in this category." />
+		<execute action="PGMessageboards#assertTextEquals" locator1="INFO_MESSAGE" value1="There are no threads in this category." />
 		<execute action="PGMessageboards#assertTextNotPresent" value1="${threadSubject}" />
 	</command>
 

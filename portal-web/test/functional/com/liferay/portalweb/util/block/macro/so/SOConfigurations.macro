@@ -4,19 +4,19 @@
 			<var name="portletName" value="Social Office Configurations" />
 		</execute>
 
-		<execute action="SOConfigurations#click" locator-key1="STATUS_AVAILABLE" />
-		<execute action="SOConfigurations#type" locator-key1="SEARCH_FIELD" value1="${userScreenName}" />
-		<execute action="SOConfigurations#click" locator-key1="SEARCH_BUTTON" />
+		<execute action="SOConfigurations#click" locator1="STATUS_AVAILABLE" />
+		<execute action="SOConfigurations#type" locator1="SEARCH_FIELD" value1="${userScreenName}" />
+		<execute action="SOConfigurations#click" locator1="SEARCH_BUTTON" />
 
-		<execute action="CPRolesAssignmembersUsers#assertTextEquals" locator-key1="SEARCH_RESULTS" value1="Showing 1 result." />
+		<execute action="CPRolesAssignmembersUsers#assertTextEquals" locator1="SEARCH_RESULTS" value1="Showing 1 result." />
 
-		<execute action="SOConfigurations#assertTextEquals" locator-key1="USER_TABLE_SCREEN_NAME_1" value1="${userScreenName}" />
-		<execute action="SOConfigurations#check" locator-key1="USER_TABLE_CHECKBOX_1" />
-		<execute action="SOConfigurations#click" locator-key1="SAVE_BUTTON" />
+		<execute action="SOConfigurations#assertTextEquals" locator1="USER_TABLE_SCREEN_NAME_1" value1="${userScreenName}" />
+		<execute action="SOConfigurations#check" locator1="USER_TABLE_CHECKBOX_1" />
+		<execute action="SOConfigurations#click" locator1="SAVE_BUTTON" />
 
-		<execute action="CPRolesAssignmembersUsers#assertTextEquals" locator-key1="SUCCESS_MESSAGE" />
+		<execute action="CPRolesAssignmembersUsers#assertTextEquals" locator1="SUCCESS_MESSAGE" />
 
-		<execute action="SOConfigurations#assertChecked" locator-key1="USER_TABLE_CHECKBOX_1" />
+		<execute action="SOConfigurations#assertChecked" locator1="USER_TABLE_CHECKBOX_1" />
 	</command>
 
 	<command name="unassignUserRoleCP">
@@ -24,16 +24,16 @@
 			<var name="portletName" value="Social Office Configurations" />
 		</execute>
 
-		<execute action="SOConfigurations#click" locator-key1="STATUS_CURRENT" />
-		<execute action="SOConfigurations#type" locator-key1="SEARCH_FIELD" value1="${userScreenName}" />
-		<execute action="SOConfigurations#click" locator-key1="SEARCH_BUTTON" />
+		<execute action="SOConfigurations#click" locator1="STATUS_CURRENT" />
+		<execute action="SOConfigurations#type" locator1="SEARCH_FIELD" value1="${userScreenName}" />
+		<execute action="SOConfigurations#click" locator1="SEARCH_BUTTON" />
 
-		<execute action="CPRolesAssignmembersUsers#assertTextEquals" locator-key1="SEARCH_RESULTS" value1="Showing 1 result." />
+		<execute action="CPRolesAssignmembersUsers#assertTextEquals" locator1="SEARCH_RESULTS" value1="Showing 1 result." />
 
-		<execute action="SOConfigurations#assertTextEquals" locator-key1="USER_TABLE_SCREEN_NAME_1" value1="${userScreenName}" />
-		<execute action="SOConfigurations#uncheck" locator-key1="USER_TABLE_CHECKBOX_1" />
-		<execute action="SOConfigurations#click" locator-key1="SAVE_BUTTON" />
+		<execute action="SOConfigurations#assertTextEquals" locator1="USER_TABLE_SCREEN_NAME_1" value1="${userScreenName}" />
+		<execute action="SOConfigurations#uncheck" locator1="USER_TABLE_CHECKBOX_1" />
+		<execute action="SOConfigurations#click" locator1="SAVE_BUTTON" />
 
-		<execute action="CPRolesAssignmembersUsers#assertTextEquals" locator-key1="SUCCESS_MESSAGE" />
+		<execute action="CPRolesAssignmembersUsers#assertTextEquals" locator1="SUCCESS_MESSAGE" />
 	</command>
 </definition>

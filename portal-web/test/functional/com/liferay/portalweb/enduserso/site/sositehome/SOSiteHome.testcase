@@ -713,16 +713,16 @@
 
 		<var name="key_number" value="02" />
 
-		<execute action="PGCalendar#assertClick" locator-key1="VIEW_EVENTS" value1="Events" />
-		<execute action="PGCalendar#assertElementPresent" locator-key1="EVENTS_EVENT_TABLE_DATE_INCREMENT" />
-		<execute action="PGCalendar#assertElementPresent" locator-key1="EVENTS_EVENT_TABLE_TIME_INCREMENT" />
-		<execute action="PGCalendar#assertTextEquals" locator-key1="EVENTS_EVENT_TABLE_TITLE_INCREMENT" value1="${eventTitle}02" />
-		<execute action="PGCalendar#assertTextEquals" locator-key1="EVENTS_EVENT_TABLE_TYPE_INCREMENT" value1="Anniversary" />
-		<execute action="PGCalendar#click" locator-key1="EVENTS_EVENT_TABLE_ACTIONS_INCREMENT" />
-		<execute action="PGCalendar#click" locator-key1="EVENT_MENULIST_PERMISSIONS" />
+		<execute action="PGCalendar#assertClick" locator1="VIEW_EVENTS" value1="Events" />
+		<execute action="PGCalendar#assertElementPresent" locator1="EVENTS_EVENT_TABLE_DATE_INCREMENT" />
+		<execute action="PGCalendar#assertElementPresent" locator1="EVENTS_EVENT_TABLE_TIME_INCREMENT" />
+		<execute action="PGCalendar#assertTextEquals" locator1="EVENTS_EVENT_TABLE_TITLE_INCREMENT" value1="${eventTitle}02" />
+		<execute action="PGCalendar#assertTextEquals" locator1="EVENTS_EVENT_TABLE_TYPE_INCREMENT" value1="Anniversary" />
+		<execute action="PGCalendar#click" locator1="EVENTS_EVENT_TABLE_ACTIONS_INCREMENT" />
+		<execute action="PGCalendar#click" locator1="EVENT_MENULIST_PERMISSIONS" />
 		<execute function="#uncheck" locator1="//input[@id='guest_ACTION_VIEW']" />
 		<execute function="#click" locator1="//input[@value='Save']" />
-		<execute action="PGCalendar#assertTextEquals" locator-key1="SUCCESS_MESSAGE" value1="Your request completed successfully." />
+		<execute action="PGCalendar#assertTextEquals" locator1="SUCCESS_MESSAGE" value1="Your request completed successfully." />
 
 		<execute macro="Page#openURL">
 			<var name="pageType" value="Open Site" />
@@ -734,24 +734,24 @@
 
 		<var name="number" value="01" />
 
-		<execute action="SOSiteHome#assertTextEquals" locator-key1="EVENTS_DISPLAY_TODAYS_EVENTS_EVENT_TITLE" value1="${eventTitle}" />
-		<execute action="SOSiteHome#assertElementPresent" locator-key1="EVENTS_DISPLAY_TODAYS_EVENTS_EVENT_TIME" />
-		<execute action="SOSiteHome#assertTextEquals" locator-key1="EVENTS_DISPLAY_UPCOMING_EVENTS_EVENT_TITLE_INCREMENT" value1="${eventTitle}01" />
-		<execute action="SOSiteHome#assertElementPresent" locator-key1="EVENTS_DISPLAY_UPCOMING_EVENTS_EVENT_TIME_INCREMENT" />
+		<execute action="SOSiteHome#assertTextEquals" locator1="EVENTS_DISPLAY_TODAYS_EVENTS_EVENT_TITLE" value1="${eventTitle}" />
+		<execute action="SOSiteHome#assertElementPresent" locator1="EVENTS_DISPLAY_TODAYS_EVENTS_EVENT_TIME" />
+		<execute action="SOSiteHome#assertTextEquals" locator1="EVENTS_DISPLAY_UPCOMING_EVENTS_EVENT_TITLE_INCREMENT" value1="${eventTitle}01" />
+		<execute action="SOSiteHome#assertElementPresent" locator1="EVENTS_DISPLAY_UPCOMING_EVENTS_EVENT_TIME_INCREMENT" />
 
 		<var name="number" value="02" />
 
-		<execute action="SOSiteHome#assertTextEquals" locator-key1="EVENTS_DISPLAY_UPCOMING_EVENTS_EVENT_TITLE_INCREMENT" value1="${eventTitle}02" />
-		<execute action="SOSiteHome#assertElementPresent" locator-key1="EVENTS_DISPLAY_UPCOMING_EVENTS_EVENT_TIME_INCREMENT" />
+		<execute action="SOSiteHome#assertTextEquals" locator1="EVENTS_DISPLAY_UPCOMING_EVENTS_EVENT_TITLE_INCREMENT" value1="${eventTitle}02" />
+		<execute action="SOSiteHome#assertElementPresent" locator1="EVENTS_DISPLAY_UPCOMING_EVENTS_EVENT_TIME_INCREMENT" />
 
 		<var name="number" value="03" />
 
-		<execute action="SOSiteHome#assertTextEquals" locator-key1="EVENTS_DISPLAY_UPCOMING_EVENTS_EVENT_TITLE_INCREMENT" value1="${eventTitle}03" />
-		<execute action="SOSiteHome#assertElementPresent" locator-key1="EVENTS_DISPLAY_UPCOMING_EVENTS_EVENT_TIME_INCREMENT" />
+		<execute action="SOSiteHome#assertTextEquals" locator1="EVENTS_DISPLAY_UPCOMING_EVENTS_EVENT_TITLE_INCREMENT" value1="${eventTitle}03" />
+		<execute action="SOSiteHome#assertElementPresent" locator1="EVENTS_DISPLAY_UPCOMING_EVENTS_EVENT_TIME_INCREMENT" />
 
 		<var name="number" value="02" />
 
-		<execute action="SOSiteHome#assertClick" locator-key1="EVENTS_DISPLAY_UPCOMING_EVENTS_EVENT_TITLE_INCREMENT" value1="${eventTitle}02" />
+		<execute action="SOSiteHome#assertClick" locator1="EVENTS_DISPLAY_UPCOMING_EVENTS_EVENT_TITLE_INCREMENT" value1="${eventTitle}02" />
 
 		<execute macro="Event#viewDetailsPG" />
 
@@ -768,17 +768,17 @@
 
 		<var name="number" value="01" />
 
-		<execute action="SOSiteHome#assertTextEquals" locator-key1="EVENTS_DISPLAY_TODAYS_EVENTS_EVENT_TITLE" value1="${eventTitle}" />
-		<execute action="SOSiteHome#assertElementPresent" locator-key1="EVENTS_DISPLAY_TODAYS_EVENTS_EVENT_TIME" />
-		<execute action="SOSiteHome#assertTextEquals" locator-key1="EVENTS_DISPLAY_UPCOMING_EVENTS_EVENT_TITLE_INCREMENT" value1="${eventTitle}01" />
-		<execute action="SOSiteHome#assertElementPresent" locator-key1="EVENTS_DISPLAY_UPCOMING_EVENTS_EVENT_TIME_INCREMENT" />
-		<execute action="SOSiteHome#assertTextNotEquals" locator-key1="EVENTS_DISPLAY_TODAYS_EVENTS" value1="${eventTitle}02" />
-		<execute action="SOSiteHome#assertTextNotEquals" locator-key1="EVENTS_DISPLAY_UPCOMING_EVENTS" value1="${eventTitle}02" />
+		<execute action="SOSiteHome#assertTextEquals" locator1="EVENTS_DISPLAY_TODAYS_EVENTS_EVENT_TITLE" value1="${eventTitle}" />
+		<execute action="SOSiteHome#assertElementPresent" locator1="EVENTS_DISPLAY_TODAYS_EVENTS_EVENT_TIME" />
+		<execute action="SOSiteHome#assertTextEquals" locator1="EVENTS_DISPLAY_UPCOMING_EVENTS_EVENT_TITLE_INCREMENT" value1="${eventTitle}01" />
+		<execute action="SOSiteHome#assertElementPresent" locator1="EVENTS_DISPLAY_UPCOMING_EVENTS_EVENT_TIME_INCREMENT" />
+		<execute action="SOSiteHome#assertTextNotEquals" locator1="EVENTS_DISPLAY_TODAYS_EVENTS" value1="${eventTitle}02" />
+		<execute action="SOSiteHome#assertTextNotEquals" locator1="EVENTS_DISPLAY_UPCOMING_EVENTS" value1="${eventTitle}02" />
 
 		<var name="number" value="03" />
 
-		<execute action="SOSiteHome#assertTextEquals" locator-key1="EVENTS_DISPLAY_UPCOMING_EVENTS_EVENT_TITLE_INCREMENT" value1="${eventTitle}03" />
-		<execute action="SOSiteHome#assertElementPresent" locator-key1="EVENTS_DISPLAY_UPCOMING_EVENTS_EVENT_TIME_INCREMENT" />
+		<execute action="SOSiteHome#assertTextEquals" locator1="EVENTS_DISPLAY_UPCOMING_EVENTS_EVENT_TITLE_INCREMENT" value1="${eventTitle}03" />
+		<execute action="SOSiteHome#assertElementPresent" locator1="EVENTS_DISPLAY_UPCOMING_EVENTS_EVENT_TIME_INCREMENT" />
 	</command>
 
 	<command name="ViewCalendarEventsEventsDisplay" priority="5">
@@ -853,11 +853,11 @@
 			<var name="pageType" value="Open Site" />
 		</execute>
 
-		<execute action="SOSiteHome#assertTextEquals" locator-key1="EVENTS_DISPLAY_TODAYS_EVENTS_EVENT_TITLE" value1="${eventTitle}" />
-		<execute action="SOSiteHome#assertElementPresent" locator-key1="EVENTS_DISPLAY_TODAYS_EVENTS_EVENT_TIME" />
-		<execute action="SOSiteHome#assertElementNotPresent" locator-key1="EVENTS_DISPLAY_UPCOMING_EVENTS_EVENT_TITLE" />
-		<execute action="SOSiteHome#assertElementNotPresent" locator-key1="EVENTS_DISPLAY_UPCOMING_EVENTS_EVENT_TIME" />
-		<execute action="SOSiteHome#assertClick" locator-key1="EVENTS_DISPLAY_TODAYS_EVENTS_EVENT_TITLE" value1="${eventTitle}" />
+		<execute action="SOSiteHome#assertTextEquals" locator1="EVENTS_DISPLAY_TODAYS_EVENTS_EVENT_TITLE" value1="${eventTitle}" />
+		<execute action="SOSiteHome#assertElementPresent" locator1="EVENTS_DISPLAY_TODAYS_EVENTS_EVENT_TIME" />
+		<execute action="SOSiteHome#assertElementNotPresent" locator1="EVENTS_DISPLAY_UPCOMING_EVENTS_EVENT_TITLE" />
+		<execute action="SOSiteHome#assertElementNotPresent" locator1="EVENTS_DISPLAY_UPCOMING_EVENTS_EVENT_TIME" />
+		<execute action="SOSiteHome#assertClick" locator1="EVENTS_DISPLAY_TODAYS_EVENTS_EVENT_TITLE" value1="${eventTitle}" />
 
 		<execute macro="Event#viewDetailsPG" />
 
@@ -871,13 +871,13 @@
 
 		<var name="number" value="01" />
 
-		<execute action="SOSiteHome#assertTextEquals" locator-key1="EVENTS_DISPLAY_TODAYS_EVENTS_EVENT_TITLE" value1="${eventTitle}" />
-		<execute action="SOSiteHome#assertElementPresent" locator-key1="EVENTS_DISPLAY_TODAYS_EVENTS_EVENT_TIME" />
-		<execute action="SOSiteHome#assertTextEquals" locator-key1="EVENTS_DISPLAY_UPCOMING_EVENTS_EVENT_TITLE_INCREMENT" value1="${eventTitle}01" />
-		<execute action="SOSiteHome#assertElementPresent" locator-key1="EVENTS_DISPLAY_UPCOMING_EVENTS_EVENT_TIME_INCREMENT" />
-		<execute action="SOSiteHome#assertTextNotEquals" locator-key1="EVENTS_DISPLAY_TODAYS_EVENTS" value1="${eventTitle}02" />
-		<execute action="SOSiteHome#assertTextNotEquals" locator-key1="EVENTS_DISPLAY_UPCOMING_EVENTS" value1="${eventTitle}02" />
-		<execute action="SOSiteHome#assertClick" locator-key1="EVENTS_DISPLAY_UPCOMING_EVENTS_EVENT_TITLE_INCREMENT" value1="${eventTitle}01" />
+		<execute action="SOSiteHome#assertTextEquals" locator1="EVENTS_DISPLAY_TODAYS_EVENTS_EVENT_TITLE" value1="${eventTitle}" />
+		<execute action="SOSiteHome#assertElementPresent" locator1="EVENTS_DISPLAY_TODAYS_EVENTS_EVENT_TIME" />
+		<execute action="SOSiteHome#assertTextEquals" locator1="EVENTS_DISPLAY_UPCOMING_EVENTS_EVENT_TITLE_INCREMENT" value1="${eventTitle}01" />
+		<execute action="SOSiteHome#assertElementPresent" locator1="EVENTS_DISPLAY_UPCOMING_EVENTS_EVENT_TIME_INCREMENT" />
+		<execute action="SOSiteHome#assertTextNotEquals" locator1="EVENTS_DISPLAY_TODAYS_EVENTS" value1="${eventTitle}02" />
+		<execute action="SOSiteHome#assertTextNotEquals" locator1="EVENTS_DISPLAY_UPCOMING_EVENTS" value1="${eventTitle}02" />
+		<execute action="SOSiteHome#assertClick" locator1="EVENTS_DISPLAY_UPCOMING_EVENTS_EVENT_TITLE_INCREMENT" value1="${eventTitle}01" />
 
 		<execute macro="Event#viewDetailsPG" />
 
@@ -891,18 +891,18 @@
 
 		<var name="number" value="01" />
 
-		<execute action="SOSiteHome#assertTextEquals" locator-key1="EVENTS_DISPLAY_TODAYS_EVENTS_EVENT_TITLE" value1="${eventTitle}" />
-		<execute action="SOSiteHome#assertElementPresent" locator-key1="EVENTS_DISPLAY_TODAYS_EVENTS_EVENT_TIME" />
-		<execute action="SOSiteHome#assertTextEquals" locator-key1="EVENTS_DISPLAY_UPCOMING_EVENTS_EVENT_TITLE_INCREMENT" value1="${eventTitle}01" />
-		<execute action="SOSiteHome#assertElementPresent" locator-key1="EVENTS_DISPLAY_UPCOMING_EVENTS_EVENT_TIME_INCREMENT" />
+		<execute action="SOSiteHome#assertTextEquals" locator1="EVENTS_DISPLAY_TODAYS_EVENTS_EVENT_TITLE" value1="${eventTitle}" />
+		<execute action="SOSiteHome#assertElementPresent" locator1="EVENTS_DISPLAY_TODAYS_EVENTS_EVENT_TIME" />
+		<execute action="SOSiteHome#assertTextEquals" locator1="EVENTS_DISPLAY_UPCOMING_EVENTS_EVENT_TITLE_INCREMENT" value1="${eventTitle}01" />
+		<execute action="SOSiteHome#assertElementPresent" locator1="EVENTS_DISPLAY_UPCOMING_EVENTS_EVENT_TIME_INCREMENT" />
 
 		<var name="number" value="02" />
 
-		<execute action="SOSiteHome#assertTextEquals" locator-key1="EVENTS_DISPLAY_UPCOMING_EVENTS_EVENT_TITLE_INCREMENT" value1="${eventTitle}02" />
-		<execute action="SOSiteHome#assertElementPresent" locator-key1="EVENTS_DISPLAY_UPCOMING_EVENTS_EVENT_TIME_INCREMENT" />
-		<execute action="SOSiteHome#assertTextNotEquals" locator-key1="EVENTS_DISPLAY_TODAYS_EVENTS" value1="${eventTitle}03" />
-		<execute action="SOSiteHome#assertTextNotEquals" locator-key1="EVENTS_DISPLAY_UPCOMING_EVENTS" value1="${eventTitle}03" />
-		<execute action="SOSiteHome#assertClick" locator-key1="EVENTS_DISPLAY_UPCOMING_EVENTS_EVENT_TITLE_INCREMENT" value1="${eventTitle}02" />
+		<execute action="SOSiteHome#assertTextEquals" locator1="EVENTS_DISPLAY_UPCOMING_EVENTS_EVENT_TITLE_INCREMENT" value1="${eventTitle}02" />
+		<execute action="SOSiteHome#assertElementPresent" locator1="EVENTS_DISPLAY_UPCOMING_EVENTS_EVENT_TIME_INCREMENT" />
+		<execute action="SOSiteHome#assertTextNotEquals" locator1="EVENTS_DISPLAY_TODAYS_EVENTS" value1="${eventTitle}03" />
+		<execute action="SOSiteHome#assertTextNotEquals" locator1="EVENTS_DISPLAY_UPCOMING_EVENTS" value1="${eventTitle}03" />
+		<execute action="SOSiteHome#assertClick" locator1="EVENTS_DISPLAY_UPCOMING_EVENTS_EVENT_TITLE_INCREMENT" value1="${eventTitle}02" />
 
 		<execute macro="Event#viewDetailsPG" />
 
@@ -916,23 +916,23 @@
 
 		<var name="number" value="01" />
 
-		<execute action="SOSiteHome#assertTextEquals" locator-key1="EVENTS_DISPLAY_TODAYS_EVENTS_EVENT_TITLE" value1="${eventTitle}" />
-		<execute action="SOSiteHome#assertElementPresent" locator-key1="EVENTS_DISPLAY_TODAYS_EVENTS_EVENT_TIME" />
-		<execute action="SOSiteHome#assertTextEquals" locator-key1="EVENTS_DISPLAY_UPCOMING_EVENTS_EVENT_TITLE_INCREMENT" value1="${eventTitle}01" />
-		<execute action="SOSiteHome#assertElementPresent" locator-key1="EVENTS_DISPLAY_UPCOMING_EVENTS_EVENT_TIME_INCREMENT" />
+		<execute action="SOSiteHome#assertTextEquals" locator1="EVENTS_DISPLAY_TODAYS_EVENTS_EVENT_TITLE" value1="${eventTitle}" />
+		<execute action="SOSiteHome#assertElementPresent" locator1="EVENTS_DISPLAY_TODAYS_EVENTS_EVENT_TIME" />
+		<execute action="SOSiteHome#assertTextEquals" locator1="EVENTS_DISPLAY_UPCOMING_EVENTS_EVENT_TITLE_INCREMENT" value1="${eventTitle}01" />
+		<execute action="SOSiteHome#assertElementPresent" locator1="EVENTS_DISPLAY_UPCOMING_EVENTS_EVENT_TIME_INCREMENT" />
 
 		<var name="number" value="02" />
 
-		<execute action="SOSiteHome#assertTextEquals" locator-key1="EVENTS_DISPLAY_UPCOMING_EVENTS_EVENT_TITLE_INCREMENT" value1="${eventTitle}02" />
-		<execute action="SOSiteHome#assertElementPresent" locator-key1="EVENTS_DISPLAY_UPCOMING_EVENTS_EVENT_TIME_INCREMENT" />
+		<execute action="SOSiteHome#assertTextEquals" locator1="EVENTS_DISPLAY_UPCOMING_EVENTS_EVENT_TITLE_INCREMENT" value1="${eventTitle}02" />
+		<execute action="SOSiteHome#assertElementPresent" locator1="EVENTS_DISPLAY_UPCOMING_EVENTS_EVENT_TIME_INCREMENT" />
 
 		<var name="number" value="03" />
 
-		<execute action="SOSiteHome#assertTextEquals" locator-key1="EVENTS_DISPLAY_UPCOMING_EVENTS_EVENT_TITLE_INCREMENT" value1="${eventTitle}03" />
-		<execute action="SOSiteHome#assertElementPresent" locator-key1="EVENTS_DISPLAY_UPCOMING_EVENTS_EVENT_TIME_INCREMENT" />
-		<execute action="SOSiteHome#assertTextNotEquals" locator-key1="EVENTS_DISPLAY_TODAYS_EVENTS" value1="${eventTitle}04" />
-		<execute action="SOSiteHome#assertTextNotEquals" locator-key1="EVENTS_DISPLAY_UPCOMING_EVENTS" value1="${eventTitle}04" />
-		<execute action="SOSiteHome#assertClick" locator-key1="EVENTS_DISPLAY_UPCOMING_EVENTS_EVENT_TITLE_INCREMENT" value1="${eventTitle}03" />
+		<execute action="SOSiteHome#assertTextEquals" locator1="EVENTS_DISPLAY_UPCOMING_EVENTS_EVENT_TITLE_INCREMENT" value1="${eventTitle}03" />
+		<execute action="SOSiteHome#assertElementPresent" locator1="EVENTS_DISPLAY_UPCOMING_EVENTS_EVENT_TIME_INCREMENT" />
+		<execute action="SOSiteHome#assertTextNotEquals" locator1="EVENTS_DISPLAY_TODAYS_EVENTS" value1="${eventTitle}04" />
+		<execute action="SOSiteHome#assertTextNotEquals" locator1="EVENTS_DISPLAY_UPCOMING_EVENTS" value1="${eventTitle}04" />
+		<execute action="SOSiteHome#assertClick" locator1="EVENTS_DISPLAY_UPCOMING_EVENTS_EVENT_TITLE_INCREMENT" value1="${eventTitle}03" />
 
 		<execute macro="Event#viewDetailsPG" />
 
@@ -946,26 +946,26 @@
 
 		<var name="number" value="01" />
 
-		<execute action="SOSiteHome#assertTextEquals" locator-key1="EVENTS_DISPLAY_TODAYS_EVENTS_EVENT_TITLE" value1="${eventTitle}" />
-		<execute action="SOSiteHome#assertElementPresent" locator-key1="EVENTS_DISPLAY_TODAYS_EVENTS_EVENT_TIME" />
-		<execute action="SOSiteHome#assertTextEquals" locator-key1="EVENTS_DISPLAY_UPCOMING_EVENTS_EVENT_TITLE_INCREMENT" value1="${eventTitle}01" />
-		<execute action="SOSiteHome#assertElementPresent" locator-key1="EVENTS_DISPLAY_UPCOMING_EVENTS_EVENT_TIME_INCREMENT" />
+		<execute action="SOSiteHome#assertTextEquals" locator1="EVENTS_DISPLAY_TODAYS_EVENTS_EVENT_TITLE" value1="${eventTitle}" />
+		<execute action="SOSiteHome#assertElementPresent" locator1="EVENTS_DISPLAY_TODAYS_EVENTS_EVENT_TIME" />
+		<execute action="SOSiteHome#assertTextEquals" locator1="EVENTS_DISPLAY_UPCOMING_EVENTS_EVENT_TITLE_INCREMENT" value1="${eventTitle}01" />
+		<execute action="SOSiteHome#assertElementPresent" locator1="EVENTS_DISPLAY_UPCOMING_EVENTS_EVENT_TIME_INCREMENT" />
 
 		<var name="number" value="02" />
 
-		<execute action="SOSiteHome#assertTextEquals" locator-key1="EVENTS_DISPLAY_UPCOMING_EVENTS_EVENT_TITLE_INCREMENT" value1="${eventTitle}02" />
-		<execute action="SOSiteHome#assertElementPresent" locator-key1="EVENTS_DISPLAY_UPCOMING_EVENTS_EVENT_TIME_INCREMENT" />
+		<execute action="SOSiteHome#assertTextEquals" locator1="EVENTS_DISPLAY_UPCOMING_EVENTS_EVENT_TITLE_INCREMENT" value1="${eventTitle}02" />
+		<execute action="SOSiteHome#assertElementPresent" locator1="EVENTS_DISPLAY_UPCOMING_EVENTS_EVENT_TIME_INCREMENT" />
 
 		<var name="number" value="03" />
 
-		<execute action="SOSiteHome#assertTextEquals" locator-key1="EVENTS_DISPLAY_UPCOMING_EVENTS_EVENT_TITLE_INCREMENT" value1="${eventTitle}03" />
-		<execute action="SOSiteHome#assertElementPresent" locator-key1="EVENTS_DISPLAY_UPCOMING_EVENTS_EVENT_TIME_INCREMENT" />
+		<execute action="SOSiteHome#assertTextEquals" locator1="EVENTS_DISPLAY_UPCOMING_EVENTS_EVENT_TITLE_INCREMENT" value1="${eventTitle}03" />
+		<execute action="SOSiteHome#assertElementPresent" locator1="EVENTS_DISPLAY_UPCOMING_EVENTS_EVENT_TIME_INCREMENT" />
 
 		<var name="number" value="04" />
 
-		<execute action="SOSiteHome#assertTextEquals" locator-key1="EVENTS_DISPLAY_UPCOMING_EVENTS_EVENT_TITLE_INCREMENT" value1="${eventTitle}04" />
-		<execute action="SOSiteHome#assertElementPresent" locator-key1="EVENTS_DISPLAY_UPCOMING_EVENTS_EVENT_TIME_INCREMENT" />
-		<execute action="SOSiteHome#assertClick" locator-key1="EVENTS_DISPLAY_UPCOMING_EVENTS_EVENT_TITLE_INCREMENT" value1="${eventTitle}04" />
+		<execute action="SOSiteHome#assertTextEquals" locator1="EVENTS_DISPLAY_UPCOMING_EVENTS_EVENT_TITLE_INCREMENT" value1="${eventTitle}04" />
+		<execute action="SOSiteHome#assertElementPresent" locator1="EVENTS_DISPLAY_UPCOMING_EVENTS_EVENT_TIME_INCREMENT" />
+		<execute action="SOSiteHome#assertClick" locator1="EVENTS_DISPLAY_UPCOMING_EVENTS_EVENT_TITLE_INCREMENT" value1="${eventTitle}04" />
 
 		<execute macro="Event#viewDetailsPG" />
 
@@ -982,26 +982,26 @@
 
 		<var name="number" value="01" />
 
-		<execute action="SOSiteHome#assertTextEquals" locator-key1="EVENTS_DISPLAY_TODAYS_EVENTS_EVENT_TITLE" value1="${eventTitle}" />
-		<execute action="SOSiteHome#assertElementPresent" locator-key1="EVENTS_DISPLAY_TODAYS_EVENTS_EVENT_TIME" />
-		<execute action="SOSiteHome#assertTextEquals" locator-key1="EVENTS_DISPLAY_UPCOMING_EVENTS_EVENT_TITLE_INCREMENT" value1="${eventTitle}01" />
-		<execute action="SOSiteHome#assertElementPresent" locator-key1="EVENTS_DISPLAY_UPCOMING_EVENTS_EVENT_TIME_INCREMENT" />
+		<execute action="SOSiteHome#assertTextEquals" locator1="EVENTS_DISPLAY_TODAYS_EVENTS_EVENT_TITLE" value1="${eventTitle}" />
+		<execute action="SOSiteHome#assertElementPresent" locator1="EVENTS_DISPLAY_TODAYS_EVENTS_EVENT_TIME" />
+		<execute action="SOSiteHome#assertTextEquals" locator1="EVENTS_DISPLAY_UPCOMING_EVENTS_EVENT_TITLE_INCREMENT" value1="${eventTitle}01" />
+		<execute action="SOSiteHome#assertElementPresent" locator1="EVENTS_DISPLAY_UPCOMING_EVENTS_EVENT_TIME_INCREMENT" />
 
 		<var name="number" value="02" />
 
-		<execute action="SOSiteHome#assertTextEquals" locator-key1="EVENTS_DISPLAY_UPCOMING_EVENTS_EVENT_TITLE_INCREMENT" value1="${eventTitle}02" />
-		<execute action="SOSiteHome#assertElementPresent" locator-key1="EVENTS_DISPLAY_UPCOMING_EVENTS_EVENT_TIME_INCREMENT" />
+		<execute action="SOSiteHome#assertTextEquals" locator1="EVENTS_DISPLAY_UPCOMING_EVENTS_EVENT_TITLE_INCREMENT" value1="${eventTitle}02" />
+		<execute action="SOSiteHome#assertElementPresent" locator1="EVENTS_DISPLAY_UPCOMING_EVENTS_EVENT_TIME_INCREMENT" />
 
 		<var name="number" value="03" />
 
-		<execute action="SOSiteHome#assertTextEquals" locator-key1="EVENTS_DISPLAY_UPCOMING_EVENTS_EVENT_TITLE_INCREMENT" value1="${eventTitle}03" />
-		<execute action="SOSiteHome#assertElementPresent" locator-key1="EVENTS_DISPLAY_UPCOMING_EVENTS_EVENT_TIME_INCREMENT" />
+		<execute action="SOSiteHome#assertTextEquals" locator1="EVENTS_DISPLAY_UPCOMING_EVENTS_EVENT_TITLE_INCREMENT" value1="${eventTitle}03" />
+		<execute action="SOSiteHome#assertElementPresent" locator1="EVENTS_DISPLAY_UPCOMING_EVENTS_EVENT_TIME_INCREMENT" />
 
 		<var name="number" value="04" />
 
-		<execute action="SOSiteHome#assertTextEquals" locator-key1="EVENTS_DISPLAY_UPCOMING_EVENTS_EVENT_TITLE_INCREMENT" value1="${eventTitle}04" />
-		<execute action="SOSiteHome#assertElementPresent" locator-key1="EVENTS_DISPLAY_UPCOMING_EVENTS_EVENT_TIME_INCREMENT" />
-		<execute action="SOSiteHome#assertClick" locator-key1="EVENTS_DISPLAY_UPCOMING_EVENTS_EVENT_TITLE_INCREMENT" value1="${eventTitle}04" />
+		<execute action="SOSiteHome#assertTextEquals" locator1="EVENTS_DISPLAY_UPCOMING_EVENTS_EVENT_TITLE_INCREMENT" value1="${eventTitle}04" />
+		<execute action="SOSiteHome#assertElementPresent" locator1="EVENTS_DISPLAY_UPCOMING_EVENTS_EVENT_TIME_INCREMENT" />
+		<execute action="SOSiteHome#assertClick" locator1="EVENTS_DISPLAY_UPCOMING_EVENTS_EVENT_TITLE_INCREMENT" value1="${eventTitle}04" />
 
 		<execute macro="Event#viewDetailsPG" />
 	</command>
@@ -1074,12 +1074,12 @@
 
 		<var name="entryAuthor" value="${adminName}" />
 
-		<execute action="SOUserBar#click" locator-key1="DASHBOARD" />
-		<execute action="SOUserBar#assertElementPresent" locator-key1="NOTIFICATION" />
-		<execute action="SOUserBar#assertTextEquals" locator-key1="NOTIFICATION_MENU_COUNT" value1="0" />
-		<execute action="SOUserBar#mouseOver" locator-key1="NOTIFICATION" />
-		<execute action="SOUserBar#assertTextEquals" locator-key1="NOTIFICATION_MENU_EMPTY" value1="You have no new notifications." />
+		<execute action="SOUserBar#click" locator1="DASHBOARD" />
+		<execute action="SOUserBar#assertElementPresent" locator1="NOTIFICATION" />
+		<execute action="SOUserBar#assertTextEquals" locator1="NOTIFICATION_MENU_COUNT" value1="0" />
+		<execute action="SOUserBar#mouseOver" locator1="NOTIFICATION" />
+		<execute action="SOUserBar#assertTextEquals" locator1="NOTIFICATION_MENU_EMPTY" value1="You have no new notifications." />
 		<execute action="SOUserBar#assertTextNotPresent" value1="${entryAuthor} sent a new announcement." />
-		<execute action="SOUserBar#assertElementNotPresent" locator-key1="NOTIFICATION_MENU_ENTRY_SUBCONTENT" value1="${entryTitle}" />
+		<execute action="SOUserBar#assertElementNotPresent" locator1="NOTIFICATION_MENU_ENTRY_SUBCONTENT" value1="${entryTitle}" />
 	</command>
 </definition>

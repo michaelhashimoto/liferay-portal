@@ -40,9 +40,9 @@
 			<var name="pageType" value="Open Site" />
 		</execute>
 
-		<execute action="SOSiteHome#assertTextEquals" locator-key1="EVENTS_DISPLAY_TODAYS_EVENTS_EVENT_TITLE" value1="${eventTitle}" />
-		<execute action="SODashboard#assertElementPresent" locator-key1="EVENTS_DISPLAY_TODAYS_EVENTS_EVENT_TIME" />
-		<execute action="SOSiteHome#click" locator-key1="EVENTS_DISPLAY_TODAYS_EVENTS_EVENT_TITLE" value1="${eventTitle}" />
+		<execute action="SOSiteHome#assertTextEquals" locator1="EVENTS_DISPLAY_TODAYS_EVENTS_EVENT_TITLE" value1="${eventTitle}" />
+		<execute action="SODashboard#assertElementPresent" locator1="EVENTS_DISPLAY_TODAYS_EVENTS_EVENT_TIME" />
+		<execute action="SOSiteHome#click" locator1="EVENTS_DISPLAY_TODAYS_EVENTS_EVENT_TITLE" value1="${eventTitle}" />
 
 		<execute macro="Event#viewDetailsPG" />
 
@@ -97,9 +97,9 @@
 			<var name="pageType" value="Open Site" />
 		</execute>
 
-		<execute action="SOSiteHome#assertTextEquals" locator-key1="EVENTS_DISPLAY_TODAYS_EVENTS_EVENT_TITLE" value1="${eventTitleEdit}" />
-		<execute action="SODashboard#assertElementPresent" locator-key1="EVENTS_DISPLAY_TODAYS_EVENTS_EVENT_TIME" />
-		<execute action="SOSiteHome#click" locator-key1="EVENTS_DISPLAY_TODAYS_EVENTS_EVENT_TITLE" />
+		<execute action="SOSiteHome#assertTextEquals" locator1="EVENTS_DISPLAY_TODAYS_EVENTS_EVENT_TITLE" value1="${eventTitleEdit}" />
+		<execute action="SODashboard#assertElementPresent" locator1="EVENTS_DISPLAY_TODAYS_EVENTS_EVENT_TIME" />
+		<execute action="SOSiteHome#click" locator1="EVENTS_DISPLAY_TODAYS_EVENTS_EVENT_TITLE" />
 
 		<execute macro="Event#viewDetailsPG">
 			<var name="eventDescription" value="${eventDescriptionEdit}" />

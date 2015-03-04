@@ -7,23 +7,23 @@
 		</execute>
 
 		<if>
-			<condition action="SOUserBar#isElementPresent" locator-key1="USER_BAR" />
+			<condition action="SOUserBar#isElementPresent" locator1="USER_BAR" />
 			<then>
 				<if>
-					<condition action="SOUserBar#isElementNotPresent" locator-key1="VISIBLE_DOCKBAR" />
+					<condition action="SOUserBar#isElementNotPresent" locator1="VISIBLE_DOCKBAR" />
 					<then>
-						<execute action="SOUserBar#click" locator-key1="TOGGLE_DOCKBAR" />
+						<execute action="SOUserBar#click" locator1="TOGGLE_DOCKBAR" />
 					</then>
 				</if>
 			</then>
 		</if>
 
-		<execute action="Dockbar#mouseOver" locator-key1="ADD" />
-		<execute action="Dockbar#click" locator-key1="ADD_APPLICATION" />
-		<execute action="Dockbar#type" locator-key1="ADD_APPLICATION_SEARCH_FIELD" value1="${portletName}" />
+		<execute action="Dockbar#mouseOver" locator1="ADD" />
+		<execute action="Dockbar#click" locator1="ADD_APPLICATION" />
+		<execute action="Dockbar#type" locator1="ADD_APPLICATION_SEARCH_FIELD" value1="${portletName}" />
 		<execute function="#click" locator1="//div[@title='${portletName}']/p/a" value1="Add" />
 
-		<execute action="Home#assertElementPresent" locator-key1="PORTLET_1" />
+		<execute action="Home#assertElementPresent" locator1="PORTLET_1" />
 	</command>
 
 	<command name="removePG">
@@ -31,8 +31,8 @@
 			<var name="pageName" value="${pageName}" />
 		</execute>
 
-		<execute action="Home#clickNoError" locator-key1="PORTLET_REMOVE_1" />
-		<execute action="Home#confirm" locator-key1="CONFIRMATION" value1="Are you sure you want to remove this component?" />
-		<execute action="Home#assertElementNotPresent" locator-key1="PORTLET_1" />
+		<execute action="Home#clickNoError" locator1="PORTLET_REMOVE_1" />
+		<execute action="Home#confirm" locator1="CONFIRMATION" value1="Are you sure you want to remove this component?" />
+		<execute action="Home#assertElementNotPresent" locator1="PORTLET_1" />
 	</command>
 </definition>
