@@ -7152,6 +7152,8 @@ cluster.link.bind.addr["cluster-link-udp"]=127.0.0.1
 			</else>
 		</if>
 
+		<property name="test.class" value="${test.simple.class.name}#${test.method.name}" />
+
 		<if>
 			<isset property="jenkins.shared.user.content.dir" />
 			<then>
@@ -7207,15 +7209,6 @@ cluster.link.bind.addr["cluster-link-udp"]=127.0.0.1
 				<if>
 					<available file="${jenkins.results.xml.file}" />
 					<then>
-						<if>
-							<not>
-								<isset property="test.class" />
-							</not>
-							<then>
-								<property name="test.class" value="${test.simple.class.name}#${test.method.name}" />
-							</then>
-						</if>
-
 						<copy
 							file="${jenkins.results.xml.file}"
 							tofile="${jenkins.shared.results.dir}/${env.BUILD_FLOW_JOB_NAME}/builds/${env.BUILD_FLOW_BUILD_NUMBER}/test-results/TEST-${env.BUILD_FLOW_JOB_NAME}_${env.BUILD_FLOW_BUILD_NUMBER}_${test.class}.xml"
