@@ -44,7 +44,7 @@
 	<var name="whatsHappeningEntryContent" value="Microblogs Post" />
 
 	<command name="AddSOAnnouncementsEntry" priority="5">
-		<execute function="Click#textClickAtAndWait" locator1="SOUserBar#DASHBOARD" />
+		<execute function="Click#textClickAtAndWait" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
 
 		<execute macro="SOAnnouncementsEntry#addPG">
 			<var name="distributionScope" value="${distributionScope}" />
@@ -54,7 +54,7 @@
 			<var name="entryURL" value="${entryURL}" />
 		</execute>
 
-		<execute function="Click#textClickAtAndWait" locator1="SOUserBar#DASHBOARD" />
+		<execute function="Click#textClickAtAndWait" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
 
 		<execute macro="SOAnnouncementsEntry#viewPG">
 			<var name="distributionScope" value="${distributionScope}" />
@@ -122,7 +122,7 @@
 			<var name="userName" value="${userName}" />
 		</execute>
 
-		<execute function="Click#textClickAtAndWait" locator1="SOUserBar#DASHBOARD" />
+		<execute function="Click#textClickAtAndWait" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
 
 		<execute function="AssertClick#assertTextClickAtAndWait" locator1="SOActivities#NAVIGATION_CONNECTIONS" value1="Connections" />
 
@@ -212,7 +212,7 @@
 			<var name="adminName" value="${adminName}" />
 		</execute>
 
-		<execute function="Click#textClickAtAndWait" locator1="SOUserBar#DASHBOARD" />
+		<execute function="Click#textClickAtAndWait" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
 
 		<execute function="AssertClick#assertTextClickAtAndWait" locator1="SOActivities#NAVIGATION_FOLLOWING" value1="Following" />
 
@@ -229,7 +229,7 @@
 	</command>
 
 	<command name="DeleteSOAnnouncementsEntry" priority="5">
-		<execute function="Click#textClickAtAndWait" locator1="SOUserBar#DASHBOARD" />
+		<execute function="Click#textClickAtAndWait" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
 
 		<execute macro="SOAnnouncementsEntry#addPG">
 			<var name="distributionScope" value="${distributionScope}" />
@@ -238,13 +238,13 @@
 			<var name="entryURL" value="${entryURL}" />
 		</execute>
 
-		<execute function="Click#textClickAtAndWait" locator1="SOUserBar#DASHBOARD" />
+		<execute function="Click#textClickAtAndWait" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
 
 		<execute macro="SOAnnouncementsEntry#deletePG" />
 	</command>
 
 	<command name="EditSOAnnouncementsEntry" priority="5">
-		<execute function="Click#textClickAtAndWait" locator1="SOUserBar#DASHBOARD" />
+		<execute function="Click#textClickAtAndWait" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
 
 		<execute macro="SOAnnouncementsEntry#addPG">
 			<var name="distributionScope" value="${distributionScope}" />
@@ -254,7 +254,7 @@
 			<var name="entryURL" value="${entryURL}" />
 		</execute>
 
-		<execute function="Click#textClickAtAndWait" locator1="SOUserBar#DASHBOARD" />
+		<execute function="Click#textClickAtAndWait" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
 
 		<execute macro="SOAnnouncementsEntry#editPG">
 			<var name="distributionScope" value="${distributionScope}" />
@@ -263,7 +263,7 @@
 			<var name="entryURL" value="${entryURL}" />
 		</execute>
 
-		<execute function="Click#textClickAtAndWait" locator1="SOUserBar#DASHBOARD" />
+		<execute function="Click#textClickAtAndWait" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
 
 		<execute macro="SOAnnouncementsEntry#viewPG">
 			<var name="distributionScope" value="${distributionScope}" />
@@ -275,7 +275,7 @@
 	</command>
 
 	<command name="MarkAsReadSOAnnouncementsEntry" priority="5">
-		<execute function="Click#textClickAtAndWait" locator1="SOUserBar#DASHBOARD" />
+		<execute function="Click#textClickAtAndWait" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
 
 		<execute macro="SOAnnouncementsEntry#addPG">
 			<var name="distributionScope" value="${distributionScope}" />
@@ -284,7 +284,7 @@
 			<var name="entryURL" value="${entryURL}" />
 		</execute>
 
-		<execute function="Click#textClickAtAndWait" locator1="SOUserBar#DASHBOARD" />
+		<execute function="Click#textClickAtAndWait" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
 
 		<execute macro="SOAnnouncementsEntry#markAsReadPG">
 			<var name="distributionScope" value="${distributionScope}" />
@@ -296,7 +296,7 @@
 	</command>
 
 	<command name="MarkAsUnreadSOAnnouncementsEntry" priority="5">
-		<execute function="Click#textClickAtAndWait" locator1="SOUserBar#DASHBOARD" />
+		<execute function="Click#textClickAtAndWait" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
 
 		<execute macro="SOAnnouncementsEntry#addPG">
 			<var name="distributionScope" value="${distributionScope}" />
@@ -305,7 +305,7 @@
 			<var name="entryURL" value="${entryURL}" />
 		</execute>
 
-		<execute function="Click#textClickAtAndWait" locator1="SOUserBar#DASHBOARD" />
+		<execute function="Click#textClickAtAndWait" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
 
 		<execute macro="SOAnnouncementsEntry#markAsReadPG">
 			<var name="distributionScope" value="${distributionScope}" />
@@ -315,7 +315,7 @@
 			<var name="entryURL" value="${entryURL}" />
 		</execute>
 
-		<execute function="Click#textClickAtAndWait" locator1="SOUserBar#DASHBOARD" />
+		<execute function="Click#textClickAtAndWait" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
 
 		<execute macro="SOAnnouncementsEntry#markAsUnreadPG">
 			<var name="distributionScope" value="${distributionScope}" />
@@ -327,7 +327,7 @@
 	</command>
 
 	<command name="ViewEventEventsDisplay" priority="5">
-		<execute function="Click#textClickAtAndWait" locator1="SOUserBar#DASHBOARD" />
+		<execute function="Click#textClickAtAndWait" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
 
 		<execute macro="SODashboard#addPage">
 			<var name="pageName" value="${pageName}" />
@@ -550,9 +550,9 @@
 			<var name="userEmailAddress" value="${userEmailAddress}" />
 		</execute>
 
-		<execute function="Click#textClickAtAndWait" locator1="SOUserBar#DASHBOARD" />
+		<execute function="Click#textClickAtAndWait" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
 
-		<execute function="Click#textClickAtAndWait" locator1="SODashboard#NAVIGATION_MICROBLOGS" />
+		<execute function="Click#textClickAtAndWait" locator1="SODashboard#NAVIGATION_MICROBLOGS" value1="Microblogs" />
 
 		<execute macro="SOMicroblogs#addMicroblogsEntryComment">
 			<var name="microblogsEntryAuthorFirstName" value="${microblogsEntryAuthorFirstName}" />
@@ -567,11 +567,11 @@
 			<var name="microblogsEntryContent" value="${microblogsEntryContent}" />
 		</execute>
 
-		<execute function="Click#textClickAtAndWait" locator1="SOUserBar#DASHBOARD" />
+		<execute function="Click#textClickAtAndWait" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
 
 		<execute function="AssertTextEquals" locator1="SODashboard#WHATS_HAPPENING_ENTRY_CONTENT" value1="${microblogsEntryContent}" />
 		<execute function="AssertTextNotPresent" value1="Microblogs Post Comment" />
-		<execute function="Click#textClickAtAndWait" locator1="SODashboard#NAVIGATION_MICROBLOGS" />
+		<execute function="Click#textClickAtAndWait" locator1="SODashboard#NAVIGATION_MICROBLOGS" value1="Microblogs" />
 
 		<execute macro="SOMicroblogs#viewMicroblogsEntryAuthor">
 			<var name="microblogsEntryAuthorFirstName" value="${userFirstName}" />

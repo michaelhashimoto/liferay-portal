@@ -18,7 +18,7 @@
 			</then>
 		</if>
 
-		<execute function="MouseOver#textMouseOverClickDockbar" locator1="Dockbar#ADD" />
+		<execute function="MouseOver#textMouseOverClickDockbar" locator1="Dockbar#ADD" value1="Add" />
 		<execute function="Click" locator1="Dockbar#ADD_APPLICATION" />
 		<execute function="Type#sendKeysApplicationSearch" locator1="Dockbar#ADD_APPLICATION_SEARCH_FIELD" value1="${portletName}" />
 		<execute function="Click" locator1="//div[@title='${portletName}']/p/a" value1="Add" />

@@ -1,6 +1,6 @@
 <definition>
 	<command name="tearDownCP">
-		<execute function="Click#textClickAtAndWait" locator1="SOUserBar#DASHBOARD" />
+		<execute function="Click#textClickAtAndWait" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
 		<execute function="Click" locator1="SOUserBar#USER_NAME" />
 		<execute function="AssertClick#assertTextClickAtAndWait" locator1="SOUserBar#USER_MENU_CONTROL_PANEL" value1="Control Panel" />
 

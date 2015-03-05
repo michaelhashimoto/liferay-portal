@@ -7,7 +7,7 @@
 			</then>
 		</if>
 
-		<execute function="MouseOver#textMouseOverClickDockbar" locator1="Dockbar#ADD" />
+		<execute function="MouseOver#textMouseOverClickDockbar" locator1="Dockbar#ADD" value1="Add" />
 		<execute function="AssertClick#assertTextClickAt" locator1="Dockbar#ADD_PAGE" value1="Page" />
 
 		<execute function="Type" locator1="Home#NEW_PAGE_FIELD" value1="${pageName}" />
@@ -23,7 +23,7 @@
 			</then>
 		</if>
 
-		<execute function="MouseOver#textMouseOverClickDockbar" locator1="Dockbar#ADD" />
+		<execute function="MouseOver#textMouseOverClickDockbar" locator1="Dockbar#ADD" value1="Add" />
 		<execute function="Click" locator1="Dockbar#ADD_APPLICATION" />
 		<execute function="Type#sendKeysApplicationSearch" locator1="Dockbar#ADD_APPLICATION_SEARCH_FIELD" value1="${portletName}" />
 		<execute function="Click" locator1="//div[@title='${portletName}']/p/a" value1="Add" />
@@ -32,7 +32,7 @@
 	</command>
 
 	<command name="addWhatsHappeningEntry">
-		<execute function="Click#textClickAtAndWait" locator1="SOUserBar#DASHBOARD" />
+		<execute function="Click#textClickAtAndWait" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
 
 		<if>
 			<condition function="IsElementNotPresent" locator1="SODashboard#WHATS_HAPPENING_ENTRY_CONTENT" />
@@ -67,7 +67,7 @@
 	</command>
 
 	<command name="tearDownPG">
-		<execute function="Click#textClickAtAndWait" locator1="SOUserBar#DASHBOARD" />
+		<execute function="Click#textClickAtAndWait" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
 
 		<if>
 			<condition function="IsElementNotPresent" locator1="SOUserBar#VISIBLE_DOCKBAR" />
@@ -231,7 +231,7 @@
 	</command>
 
 	<command name="viewTodaysEvent">
-		<execute function="Click#textClickAtAndWait" locator1="SOUserBar#DASHBOARD" />
+		<execute function="Click#textClickAtAndWait" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
 
 		<execute function="AssertTextEquals" locator1="SODashboard#EVENTS_DISPLAY_TODAYS_EVENTS_EVENT_TITLE" value1="${eventTitle}" />
 		<execute function="AssertTextEquals" locator1="SODashboard#EVENTS_DISPLAY_TODAYS_EVENTS_EVENT_CREATOR" value1="${userName}" />
@@ -242,7 +242,7 @@
 	</command>
 
 	<command name="viewTodaysEventSiteEvent">
-		<execute function="Click#textClickAtAndWait" locator1="SOUserBar#DASHBOARD" />
+		<execute function="Click#textClickAtAndWait" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
 
 		<execute function="AssertTextEquals" locator1="SODashboard#EVENTS_DISPLAY_TODAYS_EVENTS_EVENT_TITLE" value1="${eventTitle}" />
 		<execute function="AssertElementPresent" locator1="SODashboard#EVENTS_DISPLAY_TODAYS_EVENTS_EVENT_TIME" />
@@ -252,7 +252,7 @@
 	</command>
 
 	<command name="viewUpcomingTask">
-		<execute function="Click#textClickAtAndWait" locator1="SOUserBar#DASHBOARD" />
+		<execute function="Click#textClickAtAndWait" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
 
 		<var locator="SODashboard#PROFILE_NAME" name="currentUser" />
 
@@ -306,7 +306,7 @@
 			</else>
 		</if>
 
-		<execute function="Click#textClickAtAndWait" locator1="SOUserBar#DASHBOARD" />
+		<execute function="Click#textClickAtAndWait" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
 
 		<execute function="AssertClick#assertTextClickAtAndWait" locator1="SODashboard#VIEW_ALL_TASKS_LINK" value1="View All Tasks" />
 

@@ -99,7 +99,7 @@
 		<execute function="AssertTextEquals" locator1="SOSiteHome#NAVIGATION_WIKI" value1="Wiki" />
 		<execute function="AssertTextEquals" locator1="SOSiteHome#NAVIGATION_MEMBERS" value1="Members" />
 
-		<execute function="Click#textClickAtAndWait" locator1="SOUserBar#DASHBOARD" />
+		<execute function="Click#textClickAtAndWait" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
 		<execute function="Click#pauseClickAt" locator1="SOUserBar#GO_TO" />
 		<execute function="Click#pauseClickAt" locator1="SOUserBar#GO_TO_SITES_DIRECTORY_BUTTON" />
 
@@ -150,7 +150,7 @@
 	</command>
 
 	<command name="viewSOSiteFavorite">
-		<execute function="Click#textClickAtAndWait" locator1="SOUserBar#DASHBOARD" />
+		<execute function="Click#textClickAtAndWait" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
 		<execute function="Click#pauseClickAt" locator1="SOUserBar#GO_TO" />
 		<execute function="Select" locator1="SOUserBar#GO_TO_SITE_CATEGORY_SELECT" value1="My Favorites" />
 		<execute function="Click#pauseClickAt" locator1="SOUserBar#GO_TO" />
@@ -169,7 +169,7 @@
 		<execute function="AssertTextEquals" locator1="SOSiteHome#NAVIGATION_WIKI" value1="Wiki" />
 		<execute function="AssertTextEquals" locator1="SOSiteHome#NAVIGATION_MEMBERS" value1="Members" />
 
-		<execute function="Click#textClickAtAndWait" locator1="SOUserBar#DASHBOARD" />
+		<execute function="Click#textClickAtAndWait" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
 		<execute function="Click#pauseClickAt" locator1="SOUserBar#GO_TO" />
 		<execute function="Click#pauseClickAt" locator1="SOUserBar#GO_TO_SITES_DIRECTORY_BUTTON" />
 
@@ -191,7 +191,7 @@
 	</command>
 
 	<command name="viewSOSiteMembership">
-		<execute function="Click#textClickAtAndWait" locator1="SOUserBar#DASHBOARD" />
+		<execute function="Click#textClickAtAndWait" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
 		<execute function="Click#pauseClickAt" locator1="SOUserBar#GO_TO" />
 		<execute function="Select" locator1="SOUserBar#GO_TO_SITE_CATEGORY_SELECT" value1="My Sites" />
 		<execute function="Click#pauseClickAt" locator1="SOUserBar#GO_TO" />
@@ -210,7 +210,7 @@
 		<execute function="AssertTextEquals" locator1="SOSiteHome#NAVIGATION_WIKI" value1="Wiki" />
 		<execute function="AssertTextEquals" locator1="SOSiteHome#NAVIGATION_MEMBERS" value1="Members" />
 
-		<execute function="Click#textClickAtAndWait" locator1="SOUserBar#DASHBOARD" />
+		<execute function="Click#textClickAtAndWait" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
 		<execute function="Click#pauseClickAt" locator1="SOUserBar#GO_TO" />
 		<execute function="Click#pauseClickAt" locator1="SOUserBar#GO_TO_SITES_DIRECTORY_BUTTON" />
 
@@ -234,7 +234,7 @@
 	</command>
 
 	<command name="viewSOSiteNonMembership">
-		<execute function="Click#textClickAtAndWait" locator1="SOUserBar#DASHBOARD" />
+		<execute function="Click#textClickAtAndWait" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
 		<execute function="Click#pauseClickAt" locator1="SOUserBar#GO_TO" />
 		<execute function="Select" locator1="SOUserBar#GO_TO_SITE_CATEGORY_SELECT" value1="All Sites" />
 		<execute function="Click#pauseClickAt" locator1="SOUserBar#GO_TO" />
@@ -251,7 +251,7 @@
 			</else>
 		</if>
 
-		<execute function="Click#textClickAtAndWait" locator1="SOUserBar#DASHBOARD" />
+		<execute function="Click#textClickAtAndWait" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
 		<execute function="Click#pauseClickAt" locator1="SOUserBar#GO_TO" />
 		<execute function="Select" locator1="SOUserBar#GO_TO_SITE_CATEGORY_SELECT" value1="My Sites" />
 		<execute function="Click#pauseClickAt" locator1="SOUserBar#GO_TO" />

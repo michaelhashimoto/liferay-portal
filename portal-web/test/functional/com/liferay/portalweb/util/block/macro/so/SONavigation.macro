@@ -1,6 +1,6 @@
 <definition>
 	<command name="gotoDashboardTasks">
-		<execute function="Click#textClickAtAndWait" locator1="SOUserBar#DASHBOARD" />
+		<execute function="Click#textClickAtAndWait" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
 
 		<execute function="AssertClick" locator1="SODashboard#NAVIGATION_TASKS" value1="Tasks" />
 	</command>

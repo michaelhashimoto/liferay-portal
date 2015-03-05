@@ -481,7 +481,7 @@
 	<command name="IsTextPresent" priority="5">
 		<execute macro="Page#openURL" />
 
-		<execute function="MouseOver#textMouseOverClickDockbar" locator1="Dockbar#GO_TO" />
+		<execute function="MouseOver#textMouseOverClickDockbar" locator1="Dockbar#GO_TO" value1="Go to" />
 		<execute function="AssertClick#assertTextClickAtAndWait" locator1="Dockbar#GO_TO_CONTROL_PANEL" value1="Control Panel" />
 
 		<var method="selenium#isTextPresent('Please select a tool from the left menu.')" name="string" />

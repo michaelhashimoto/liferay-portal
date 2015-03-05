@@ -501,7 +501,7 @@
 
 		<var locator="CPMyAccount#USER_NAME_HEADER" name="currentUser" />
 
-		<execute function="Click#textClickAtAndWait" locator1="SOUserBar#DASHBOARD" />
+		<execute function="Click#textClickAtAndWait" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
 
 		<execute function="AssertElementPresent" locator1="SOActivities#NO_ACTIVITIES" />
 
