@@ -1,7 +1,0 @@
-<definition>
-	<command name="assertClick">
-		<case locator-key1="ADD_ATTACHMENTS_BUTTON">
-			<execute function="AssertClick#assertValueClickAtAndWait" />
-		</case>
-	</command>
-</definition>
