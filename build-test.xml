@@ -7394,9 +7394,7 @@ cluster.link.bind.addr["cluster-link-udp"]=127.0.0.1
 					<available file="${liferay.home}/logs" type="dir" />
 				</waitfor>
 
-				<antcall target="wait-for-plugins-deployment">
-					<param name="required.plugins.includes" value="marketplace-portlet" />
-				</antcall>
+				<antcall target="wait-for-plugins-deployment" />
 			</then>
 		</if>
 
