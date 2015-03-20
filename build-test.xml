@@ -27,18 +27,18 @@
 	<property name="pscp.executable" location="${project.dir}/tools/putty/pscp.exe" />
 
 	<if>
-		<os family="unix" />
+		<and>
+			<not>
+				<isset property="test.ip.address" />
+			</not>
+			<os family="unix" />
+		</and>
 		<then>
-			<exec executable="/bin/bash" os="${os.unix}" outputproperty="ip.address">
+			<exec executable="/bin/bash" os="${os.unix}" outputproperty="test.ip.address">
 				<arg value="-c" />
 				<arg value="ifconfig eth0 | grep 'inet addr:' | cut -d: -f2 | awk '{ print $1}'" />
 			</exec>
 		</then>
-		<else>
-			<hostinfo host="${env.COMPUTERNAME}.local" prefix="host.info" />
-
-			<property name="ip.address" value="${host.info.ADDR4}" />
-		</else>
 	</if>
 
 	<macrodef name="check-config">
@@ -2773,7 +2773,7 @@ portal.security.manager.strategy=liferay</echo>
 			<then>
 				<echo file="portal-impl/src/portal-ext.properties" append="true">
 
-virtual.hosts.valid.hosts=localhost,127.0.0.1,${ip.address}</echo>
+virtual.hosts.valid.hosts=localhost,127.0.0.1,${test.ip.address}</echo>
 			</then>
 		</if>
 
@@ -3455,7 +3455,7 @@ osb.lcs.portlet.oauth.consumer.secret=${osb.lcs.portlet.oauth.consumer.secret}</
 				<equals arg1="${mobile.device.enabled}" arg2="true" />
 				<then>
 					<echo file="portal-web/test/test-portal-web-ext.properties" append="true">
-						portal.url=http://${ip.address}:8080
+						portal.url=http://${test.ip.address}:8080
 					</echo>
 				</then>
 			</elseif>
