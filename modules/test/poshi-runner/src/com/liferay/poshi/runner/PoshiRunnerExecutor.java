@@ -255,8 +255,7 @@ public class PoshiRunnerExecutor {
 		PoshiRunnerVariablesUtil.pushCommandMap();
 
 		PoshiRunnerStackTraceUtil.pushFilePath(
-			actionClassCommandName, "action",
-			executeElement.attributeValue("line-number"));
+			actionClassCommandName, "action");
 
 		List<Element> caseElements = PoshiRunnerContext.getActionCaseElements(
 			actionClassCommandName);
@@ -413,9 +412,7 @@ public class PoshiRunnerExecutor {
 
 		PoshiRunnerVariablesUtil.pushCommandMap();
 
-		PoshiRunnerStackTraceUtil.pushFilePath(
-			classCommandName, "function",
-			executeElement.attributeValue("line-number"));
+		PoshiRunnerStackTraceUtil.pushFilePath(classCommandName, "function");
 
 		Element commandElement = PoshiRunnerContext.getFunctionCommandElement(
 			classCommandName);
@@ -497,9 +494,7 @@ public class PoshiRunnerExecutor {
 
 		PoshiRunnerVariablesUtil.pushCommandMap();
 
-		PoshiRunnerStackTraceUtil.pushFilePath(
-			classCommandName, "macro",
-			executeElement.attributeValue("line-number"));
+		PoshiRunnerStackTraceUtil.pushFilePath(classCommandName, "macro");
 
 		Element commandElement = PoshiRunnerContext.getMacroCommandElement(
 			classCommandName);
