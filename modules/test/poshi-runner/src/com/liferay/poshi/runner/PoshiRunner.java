@@ -53,8 +53,7 @@ public class PoshiRunner extends TestCase {
 
 		if (setUpElement != null) {
 			PoshiRunnerStackTraceUtil.pushFilePath(
-				_TEST_CLASS_NAME + "#set-up", "testcase",
-				setUpElement.attributeValue("line-number"));
+				_TEST_CLASS_NAME + "#set-up", "testcase");
 
 			PoshiRunnerExecutor.parseElement(setUpElement);
 
@@ -69,8 +68,7 @@ public class PoshiRunner extends TestCase {
 
 		if (tearDownElement != null) {
 			PoshiRunnerStackTraceUtil.pushFilePath(
-				_TEST_CLASS_NAME + "#tear-down", "testcase",
-				tearDownElement.attributeValue("line-number"));
+				_TEST_CLASS_NAME + "#tear-down", "testcase");
 
 			PoshiRunnerExecutor.parseElement(tearDownElement);
 
@@ -85,8 +83,7 @@ public class PoshiRunner extends TestCase {
 			_TEST_CLASS_COMMAND_NAME);
 
 		PoshiRunnerStackTraceUtil.pushFilePath(
-			_TEST_CLASS_COMMAND_NAME, "testcase",
-			commandElement.attributeValue("line-number"));
+			_TEST_CLASS_COMMAND_NAME, "testcase");
 
 		PoshiRunnerExecutor.parseElement(commandElement);
 
