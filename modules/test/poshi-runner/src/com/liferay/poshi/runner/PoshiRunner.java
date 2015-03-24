@@ -37,6 +37,8 @@ public class PoshiRunner {
 
 	@Parameters(name = "{0}")
 	public static List<String> getList() throws PoshiRunnerException {
+		PoshiRunnerValidation.validate();
+
 		List<String> classCommandNames = new ArrayList<>();
 
 		String testName = PropsValues.TEST_NAME;
@@ -105,8 +107,7 @@ public class PoshiRunner {
 
 		if (commandElement != null) {
 			PoshiRunnerStackTraceUtil.pushFilePath(
-				classCommandName, "testcase",
-				commandElement.attributeValue("line-number"));
+				classCommandName, "testcase");
 
 			PoshiRunnerExecutor.parseElement(commandElement);
 
