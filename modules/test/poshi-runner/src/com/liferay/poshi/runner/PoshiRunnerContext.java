@@ -75,10 +75,6 @@ public class PoshiRunnerContext {
 		return _rootElements.get("action#" + className);
 	}
 
-	public static Map<String, Element> getCommandElementsMap() {
-		return _commandElements;
-	}
-
 	public static String getFilePath(String fileName) {
 		return _filePaths.get(fileName);
 	}

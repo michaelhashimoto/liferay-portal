@@ -16,6 +16,7 @@ package com.liferay.poshi.runner;
 
 import java.util.Map;
 
+import org.apache.commons.lang.StringUtils;
 import org.dom4j.Element;
 
 /**
@@ -55,7 +56,7 @@ public class PoshiRunnerValidation {
 	private static void _validateRootElement(Element element, String filePath)
 		throws PoshiRunnerException {
 
-		if (!element.getName().equals("definition")) {
+		if (StringUtils.equals(element.getName(), "definition")) {
 			throw new PoshiRunnerException(
 				"\nBUILD FAILED: Root element is not \"definition\"\n" +
 				filePath + ":" + element.attributeValue("line-number"));
