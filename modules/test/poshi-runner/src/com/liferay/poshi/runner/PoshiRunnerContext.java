@@ -75,6 +75,10 @@ public class PoshiRunnerContext {
 		return _rootElements.get("action#" + className);
 	}
 
+	public static Map<String, Element> getCommandElementsMap() {
+		return _commandElements;
+	}
+
 	public static String getFilePath(String fileName) {
 		return _filePaths.get(fileName);
 	}
@@ -101,6 +105,10 @@ public class PoshiRunnerContext {
 
 	public static String getPathLocator(String pathLocatorKey) {
 		return _pathLocators.get(pathLocatorKey);
+	}
+
+	public static Map<String, Element> getRootElementsMap() {
+		return _rootElements;
 	}
 
 	public static int getSeleniumParameterCount(String commandName) {
