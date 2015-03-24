@@ -75,6 +75,10 @@ public class PoshiRunnerContext {
 		return _rootElements.get("action#" + className);
 	}
 
+	public static Map<String, Element> getCommandElementsMap() {
+		return _commandElements;
+	}
+
 	public static String getFilePath(String fileName) {
 		return _filePaths.get(fileName);
 	}
@@ -101,6 +105,10 @@ public class PoshiRunnerContext {
 
 	public static String getPathLocator(String pathLocatorKey) {
 		return _pathLocators.get(pathLocatorKey);
+	}
+
+	public static Map<String, Element> getRootElementsMap() {
+		return _rootElements;
 	}
 
 	public static int getSeleniumParameterCount(String commandName) {
@@ -248,11 +256,20 @@ public class PoshiRunnerContext {
 				List<Element> commandElements = rootElement.elements("command");
 
 				for (Element commandElement : commandElements) {
-					String classCommandName =
-						className + "#" + commandElement.attributeValue("name");
+					String name = commandElement.attributeValue("name");
 
-					_commandElements.put(
-						classType + "#" + classCommandName, commandElement);
+					if (name != null) {
+						String classCommandName = className + "#" + name;
+
+						_commandElements.put(
+							classType + "#" + classCommandName, commandElement);
+					}
+					else {
+						throw new PoshiRunnerException(
+							"\nBUILD FAILED: Missing command name attribute " +
+							"in\n" + filePath + ":" +
+							commandElement.attributeValue("line-number"));
+					}
 				}
 
 				if (classType.equals("function")) {
