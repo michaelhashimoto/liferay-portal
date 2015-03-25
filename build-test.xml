@@ -6009,22 +6009,14 @@ svn --username ${svn.username} --password ${svn.password} update -r ${svn.info.r
 		<get-test-url />
 
 		<if>
-			<equals arg1="${test.selenium.unit.enabled}" arg2="true" />
+			<equals arg1="${mobile.device.enabled}" arg2="true" />
 			<then>
+				<get-ip-address />
+
 				<echo file="portal-web/test/test-portal-web-ext.properties" append="true">
-					portal.url=file:///${basedir.unix}/portal-web/test/functional/com/liferay/portalweb/selenium/dependencies/Site.html
+					portal.url=http://${ip.address}:8080
 				</echo>
 			</then>
-			<elseif>
-				<equals arg1="${mobile.device.enabled}" arg2="true" />
-				<then>
-					<get-ip-address />
-
-					<echo file="portal-web/test/test-portal-web-ext.properties" append="true">
-						portal.url=http://${ip.address}:8080
-					</echo>
-				</then>
-			</elseif>
 			<elseif>
 				<isset property="test.url" />
 				<then>
