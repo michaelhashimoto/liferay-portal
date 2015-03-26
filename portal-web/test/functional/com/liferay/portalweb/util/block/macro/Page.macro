@@ -1,7 +1,5 @@
 <definition>
-	<command name="addPG">
-		<description message="Add a page called ${pageName}." />
-
+	<command name="addPG" summary="Add a page named '${pageName}'">
 		<execute macro="Page#openURL" />
 
 		<if>
@@ -44,9 +42,7 @@
 		<execute function="AssertTextEquals" locator1="Staging#LAYOUT_REVISION_WORKFLOW_STATUS" value1="Pending (Review)" />
 	</command>
 
-	<command name="gotoCP">
-		<description message="Navigate to Goto > Control Panel > ${portletName}." />
-
+	<command name="gotoCP" summary="Navigate to Go to > Control Panel > ${portletName}">
 		<execute macro="Page#openURL" />
 
 		<execute function="MouseOver#textMouseOverClickDockbar" locator1="Dockbar#GO_TO" value1="Go to" />
@@ -74,9 +70,7 @@
 		</if>
 	</command>
 
-	<command name="gotoPG">
-		<description message="Navigate to the page named ${pageName}." />
-
+	<command name="gotoPG" summary="Navigate to the page named '${pageName}'">
 		<execute macro="Page#openURL" />
 
 		<execute function="Click" locator1="Home#PAGE" value1="${pageName}">
