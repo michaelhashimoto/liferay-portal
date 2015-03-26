@@ -263,6 +263,17 @@
 	<td>xpath=(//section)[3]</td>
 	<td></td>
 </tr>
+<tr>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<!--CONTROL_PANEL-->
+<tr>
+	<td>CONTROL_PANEL_PORTLET_TITLE</td>
+	<td>//h1[@id='cpPortletTitle']/span[@class='portlet-title-text']</td>
+	<td></td>
+</tr>
 </tbody>
 </table>
 </body>
