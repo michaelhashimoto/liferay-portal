@@ -226,6 +226,174 @@ public class PoshiRunnerValidation {
 				"Missing child elements\n" + filePath + ":" +
 					element.attributeValue("line-number"));
 		}
+
+		String className = PoshiRunnerGetterUtil.getClassNameFromFilePath(
+			filePath);
+
+		for (Element childElement : childElements) {
+			if (StringUtils.equals(childElement.getName(), "body")) {
+				List<Element> tableElements = childElement.elements();
+
+				if (tableElements.isEmpty()) {
+					throw new PoshiRunnerException(
+						"Missing child elements\n" + filePath + ":" +
+							childElement.attributeValue("line-number"));
+				}
+
+				for (Element tableElement : tableElements) {
+					if (!StringUtils.equals(tableElement.getName(), "table") ||
+						(tableElement == null)) {
+
+						throw new PoshiRunnerException(
+							"Missing or invalid table element" + filePath +
+								":" +
+								childElement.attributeValue("line-number"));
+					}
+					else {
+						List<String> possibleTableAttributes = Arrays.asList(
+							"border", "cellpadding", "cellspacing",
+							"line-number");
+
+						_validateAttributes(
+							tableElement, possibleTableAttributes, filePath);
+
+						List<Element> tableChildElements =
+							tableElement.elements();
+
+						if (tableChildElements.isEmpty()) {
+							throw new PoshiRunnerException(
+								"Missing child elements\n" + filePath + ":" +
+									tableElement.attributeValue("line-number"));
+						}
+
+						Element tBodyElement = tableElement.element("tbody");
+
+						List<Element> trElements = tBodyElement.elements("tr");
+
+						for (Element trElement : trElements) {
+							List<Element> tdElements = trElement.elements();
+
+							if (tdElements.size() != 3) {
+								throw new PoshiRunnerException(
+									"<tr> must have 3 <td> following it\n" +
+										filePath + ":" +
+										trElement.attributeValue(
+											"line-number"));
+							}
+
+							Element descriptionElement = tdElements.get(2);
+							Element locatorKeyElement = tdElements.get(0);
+							Element locatorElement = tdElements.get(1);
+
+							String description = descriptionElement.getText();
+							String locator = locatorElement.getText();
+							String locatorKey = locatorKeyElement.getText();
+
+							if ((description == "") && (locator == "") &&
+								(locatorKey == "")) {
+
+								continue;
+							}
+							else if ((description != "") && (locator != "") &&
+									 (locatorKey != "")) {
+
+								continue;
+							}
+							else if ((description == "") && (locator != "") &&
+									 (locatorKey != "")) {
+
+								continue;
+							}
+							else {
+								throw new PoshiRunnerException(
+									"Invalid or missing locator text\n" +
+										filePath + ":" +
+										trElement.attributeValue(
+											"line-number"));
+							}
+						}
+
+						Element theadElement = tableElement.element("thead");
+
+						List<Element> theadChildElements =
+							theadElement.elements();
+
+						if (theadChildElements.size() > 1) {
+							throw new PoshiRunnerException(
+								"Too many child elements\n" + filePath + ":" +
+									theadElement.attributeValue("line-number"));
+						}
+						else {
+							Element theadChildElement = theadChildElements.get(
+								0);
+
+							List<Element> tdElements =
+								theadChildElement.elements();
+
+							if (tdElements.size() > 1) {
+								throw new PoshiRunnerException(
+									"Too many child elements\n" + filePath +
+										":" + theadChildElement.attributeValue(
+											"line-number"));
+							}
+							else {
+								Element tdElement = tdElements.get(0);
+
+								List<String> possibleTdAttributes =
+									Arrays.asList("colspan", "rowspan");
+
+								_validateAttributes(
+									tdElement, possibleTdAttributes, filePath);
+
+								String text = tdElement.getText();
+
+								if (Validator.isNull(text)) {
+									throw new PoshiRunnerException(
+										"Missing file name\n" + filePath + ":" +
+											theadChildElement.attributeValue(
+												"line-number"));
+								}
+								else if (!text.equals(className)) {
+									throw new PoshiRunnerException(
+										"File name and text are different\n" +
+											filePath + ":" +
+											theadChildElement.attributeValue(
+												"line-number"));
+								}
+							}
+						}
+					}
+				}
+			}
+			else if (StringUtils.equals(childElement.getName(), "head")) {
+				List<Element> headChildElements = childElement.elements();
+
+				if (headChildElements.size() > 1) {
+					throw new PoshiRunnerException(
+						"Too many child elements\n" + filePath +
+							":" + childElement.attributeValue("line-number"));
+				}
+
+				Element headChildElement = headChildElements.get(0);
+
+				String name = headChildElement.getName();
+
+				if (!StringUtils.equals(name, "title")) {
+					throw new PoshiRunnerException(
+						"Invalid " + name + " element\n"+
+							filePath + ":" +
+							childElement.attributeValue("line-number"));
+				}
+				else if (!StringUtils.equals(
+							headChildElement.getText(), className)) {
+
+					throw new PoshiRunnerException(
+						"File name and title are different\n" +
+							filePath + ":" +
+							headChildElement.attributeValue("line-number"));
+				}
+			}
+		}
 	}
 
 	private static void _validateTestcaseFile(Element element, String filePath)
