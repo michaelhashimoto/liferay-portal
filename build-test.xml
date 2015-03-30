@@ -1042,6 +1042,24 @@
 		</sequential>
 	</macrodef>
 
+	<macrodef name="start-appium">
+		<sequential>
+			<parallel>
+				<daemons>
+					<exec executable="/bin/bash" os="${os.unix}">
+						<arg value="-c" />
+						<arg value="${appium.unix.cmd}" />
+					</exec>
+
+					<exec dir="${appium.win32.dir}" executable="cmd.exe" os="${os.windows}">
+						<arg value="/c" />
+						<arg value="${appium.win32.cmd}" />
+					</exec>
+				</daemons>
+			</parallel>
+		</sequential>
+	</macrodef>
+
 	<macrodef name="start-app-server">
 		<attribute default="0" name="app.server.bundle.index" />
 
@@ -1159,6 +1177,25 @@
 					/>
 				</else>
 			</if>
+		</sequential>
+	</macrodef>
+
+	<macrodef name="stop-appium">
+		<sequential>
+			<exec executable="/bin/bash" os="${os.unix}" >
+				<arg value="-c" />
+				<arg value="killall node" />
+			</exec>
+
+			<exec executable="/bin/bash" os="${os.unix}" >
+				<arg value="-c" />
+				<arg value="fuser -k 9515/tcp" />
+			</exec>
+
+			<exec executable="cmd.exe" os="${os.windows}" >
+				<arg value="/c" />
+				<arg value="tskill node" />
+			</exec>
 		</sequential>
 	</macrodef>
 
@@ -7692,7 +7729,7 @@ cluster.link.bind.addr["cluster-link-udp"]=127.0.0.1
 			<then>
 				<start-android-device />
 
-				<antcall target="start-appium" />
+				<start-appium />
 			</then>
 		</if>
 
@@ -7953,7 +7990,7 @@ cluster.link.bind.addr["cluster-link-udp"]=127.0.0.1
 			<then>
 				<stop-android-device />
 
-				<antcall target="stop-appium" />
+				<stop-appium />
 			</then>
 		</if>
 
@@ -7974,22 +8011,6 @@ cluster.link.bind.addr["cluster-link-udp"]=127.0.0.1
 				<antcall target="stop-ie-driver" />
 			</then>
 		</if>
-	</target>
-
-	<target name="start-appium">
-		<parallel>
-			<daemons>
-				<exec executable="/bin/bash" os="${os.unix}">
-					<arg value="-c" />
-					<arg value="${appium.unix.cmd}" />
-				</exec>
-
-				<exec dir="${appium.win32.dir}" executable="cmd.exe" os="${os.windows}">
-					<arg value="/c" />
-					<arg value="${appium.win32.cmd}" />
-				</exec>
-			</daemons>
-		</parallel>
 	</target>
 
 	<target name="start-app-server">
@@ -8084,23 +8105,6 @@ Please set "ie.driver.zip" in test.properties to point to "IEDriverServer_x64_2.
 		>
 			<arg line="-port 14444 -singleWindow" />
 		</java>
-	</target>
-
-	<target name="stop-appium">
-		<exec executable="/bin/bash" os="${os.unix}" >
-			<arg value="-c" />
-			<arg value="killall node" />
-		</exec>
-
-		<exec executable="/bin/bash" os="${os.unix}" >
-			<arg value="-c" />
-			<arg value="fuser -k 9515/tcp" />
-		</exec>
-
-		<exec executable="cmd.exe" os="${os.windows}" >
-			<arg value="/c" />
-			<arg value="tskill node" />
-		</exec>
 	</target>
 
 	<target name="stop-app-server">
