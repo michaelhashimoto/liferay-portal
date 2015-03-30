@@ -9,11 +9,6 @@
 </thead>
 <tbody>
 <tr>
-	<td>PAGE_NAME</td>
-	<td></td>
-	<td>CPWebcontentEditwebcontent</td>
-</tr>
-<tr>
 	<td></td>
 	<td></td>
 	<td></td>
@@ -61,11 +56,6 @@
 <tr>
 	<td>TITLE_LOCALIZATION</td>
 	<td>//span[contains(@class,'translation-manager') and contains(.,'${key_localizedLanguage}')]</td>
-	<td></td>
-</tr>
-<tr>
-	<td>CONFIRMATION</td>
-	<td></td>
 	<td></td>
 </tr>
 <tr>

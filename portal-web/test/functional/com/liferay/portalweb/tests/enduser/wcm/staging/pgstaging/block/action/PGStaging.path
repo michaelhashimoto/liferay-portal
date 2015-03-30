@@ -9,11 +9,6 @@
 </thead>
 <tbody>
 <tr>
-	<td>PAGE_NAME</td>
-	<td></td>
-	<td>PGStaging</td>
-</tr>
-<tr>
 	<td></td>
 	<td></td>
 	<td></td>
@@ -81,11 +76,6 @@
 <tr>
 	<td>HISTORY_BUTTON</td>
 	<td>//a[@id='_170_viewHistoryLink']</td>
-	<td></td>
-</tr>
-<tr>
-	<td>CONFIRMATION</td>
-	<td></td>
 	<td></td>
 </tr>
 <tr>

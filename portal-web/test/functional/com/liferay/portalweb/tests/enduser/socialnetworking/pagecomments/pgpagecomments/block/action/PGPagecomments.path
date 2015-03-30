@@ -9,11 +9,6 @@
 </thead>
 <tbody>
 <tr>
-	<td>PAGE_NAME</td>
-	<td></td>
-	<td>PGPagecomments</td>
-</tr>
-<tr>
 	<td></td>
 	<td></td>
 	<td></td>
@@ -36,11 +31,6 @@
 <tr>
 	<td>SUBSCRIBE_TO_COMMENTS_LINK</td>
 	<td>//span[@class='subscribe-link']/a/span</td>
-	<td></td>
-</tr>
-<tr>
-	<td>CONFIRMATION</td>
-	<td></td>
 	<td></td>
 </tr>
 <tr>

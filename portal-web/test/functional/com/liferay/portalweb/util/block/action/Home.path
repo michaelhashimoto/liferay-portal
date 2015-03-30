@@ -9,11 +9,6 @@
 </thead>
 <tbody>
 <tr>
-	<td>PAGE_NAME</td>
-	<td></td>
-	<td>Home</td>
-</tr>
-<tr>
 	<td></td>
 	<td></td>
 	<td></td>
@@ -151,11 +146,6 @@
 <tr>
 	<td>URL_ERROR_MESSAGE</td>
 	<td>//code[@class='lfr-url-error']</td>
-	<td></td>
-</tr>
-<tr>
-	<td>CONFIRMATION</td>
-	<td></td>
 	<td></td>
 </tr>
 <tr>
@@ -309,11 +299,6 @@
 <tr>
 	<td>PAGE_TEMPLATE_7</td>
 	<td>//ul[@aria-label='Site Pages' and @role='menubar']/li[7]/a</td>
-	<td></td>
-</tr>
-<tr>
-	<td>PAGE_CONFIRM</td>
-	<td></td>
 	<td></td>
 </tr>
 <tr>

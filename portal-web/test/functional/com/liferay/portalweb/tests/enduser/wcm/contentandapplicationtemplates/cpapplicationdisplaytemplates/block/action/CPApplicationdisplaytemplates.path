@@ -9,11 +9,6 @@
 </thead>
 <tbody>
 <tr>
-	<td>PAGE_NAME</td>
-	<td></td>
-	<td>CPApplicationdisplaytemplates</td>
-</tr>
-<tr>
 	<td></td>
 	<td></td>
 	<td></td>
@@ -61,11 +56,6 @@
 <tr>
 	<td>DELETE_BUTTON</td>
 	<td>//button[contains(@class,'btn') and contains(@class,'delete-templates-button')]</td>
-	<td></td>
-</tr>
-<tr>
-	<td>CONFIRMATION</td>
-	<td></td>
 	<td></td>
 </tr>
 <tr>
