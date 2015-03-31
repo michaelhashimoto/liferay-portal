@@ -111,6 +111,8 @@ public class PoshiRunnerGetterUtil {
 
 		StringBuilder sb = new StringBuilder();
 
+		boolean isCDATA = false;
+
 		int lineNumber = 1;
 
 		try {
@@ -122,7 +124,43 @@ public class PoshiRunnerGetterUtil {
 			while ((line = bufferedReader.readLine()) != null) {
 				Matcher matcher = _tagPattern.matcher(line);
 
-				if (matcher.find()) {
+				if (line.length() == 0) {
+					lineNumber++;
+
+					sb.append(line);
+
+					continue;
+				}
+				else if (line.contains("<![CDATA[") || isCDATA) {
+					if (line.contains("]]>")) {
+						isCDATA = false;
+					}
+					else {
+						isCDATA = true;
+					}
+
+					if (matcher.find()) {
+						for (String reservedTag : _reservedTags) {
+							if (line.contains("<" + reservedTag)) {
+								line = StringUtil.replace(
+									line, matcher.group(),
+									matcher.group() + " line-number=\"" +
+									lineNumber + "\"");
+
+								break;
+							}
+						}
+					}
+
+					lineNumber++;
+
+					sb.append(line);
+
+					continue;
+				}
+				else if (matcher.find()) {
+					boolean tagFound = false;
+
 					for (String reservedTag : _reservedTags) {
 						if (line.contains("<" + reservedTag)) {
 							line = StringUtil.replace(
@@ -130,8 +168,28 @@ public class PoshiRunnerGetterUtil {
 								matcher.group() + " line-number=\"" +
 								lineNumber + "\"");
 
+							tagFound = true;
+
 							break;
 						}
+					}
+
+					if (!tagFound) {
+						PoshiRunnerStackTraceUtil.pushStackTrace(filePath);
+
+						int x = line.indexOf("<");
+						int y = line.indexOf(" ", x);
+
+						if (y == -1) {
+							y = line.indexOf(">");
+						}
+
+						String tagName = line.substring(x + 1, y);
+
+						String message =
+							"BUILD FAILED: Invaild tag \"" + tagName + "\".";
+
+						throw new PoshiRunnerException(message);
 					}
 				}
 
@@ -274,11 +332,12 @@ public class PoshiRunnerGetterUtil {
 
 	private static final List<String> _reservedTags = Arrays.asList(
 		new String[] {
-			"and", "case", "command", "condition", "contains", "default",
-			"definition", "delimiter", "description", "echo", "else", "elseif",
-			"equals", "execute", "fail", "for", "if", "isset", "not", "or",
-			"property", "set-up", "take-screenshot", "td", "tear-down", "then",
-			"tr", "while", "var"
+			"and", "body", "case", "command", "condition", "contains",
+			"default", "definition", "delimiter", "description", "echo", "else",
+			"elseif", "equals", "execute", "fail", "for", "if", "head", "html",
+			"isset", "not", "or", "property", "set-up", "table",
+			"take-screenshot", "tbody", "td", "tear-down", "thead", "then",
+			"title", "tr", "while", "var"
 		});
 	private static final Pattern _tagPattern = Pattern.compile("<[a-z\\-]+");
 
