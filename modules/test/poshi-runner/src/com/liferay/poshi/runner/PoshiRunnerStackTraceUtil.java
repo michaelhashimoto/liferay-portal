@@ -37,11 +37,11 @@ public final class PoshiRunnerStackTraceUtil {
 	public static String getStackTrace(String msg) {
 		StringBuilder sb = new StringBuilder();
 
-		sb.append("\nBUILD FAILED:");
-
 		if (Validator.isNotNull(msg)) {
-			sb.append(" ");
 			sb.append(msg);
+		}
+		else {
+			sb.append("\nBUILD FAILED:");
 		}
 
 		Stack<String> stackTrace = (Stack<String>)_stackTrace.clone();
