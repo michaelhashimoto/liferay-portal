@@ -5708,18 +5708,6 @@ svn --username ${svn.username} --password ${svn.password} update -r ${svn.info.r
 		<antcall target="prepare-selenium-testcase-properties" />
 
 		<if>
-			<isset property="selenium.output.dir" />
-			<then>
-				<echo file="portal-web/test/test-portal-web-ext.properties" append="true">
-					output.dir=${selenium.output.dir}
-				</echo>
-			</then>
-			<else>
-				<property name="selenium.output.dir" value="H:\\selenium-output\\" />
-			</else>
-		</if>
-
-		<if>
 			<isset property="ignore.errors.delimiter" />
 			<then>
 				<echo file="portal-web/test/test-portal-web-ext.properties" append="true">
@@ -5753,6 +5741,18 @@ svn --username ${svn.username} --password ${svn.password} update -r ${svn.info.r
 					theme.ids=${legacy.theme.ids}
 				</echo>
 			</then>
+		</if>
+
+		<if>
+			<isset property="selenium.output.dir" />
+			<then>
+				<echo file="portal-web/test/test-portal-web-ext.properties" append="true">
+					output.dir=${selenium.output.dir}
+				</echo>
+			</then>
+			<else>
+				<property name="selenium.output.dir" value="H:\\selenium-output\\" />
+			</else>
 		</if>
 
 		<if>
@@ -5818,6 +5818,15 @@ svn --username ${svn.username} --password ${svn.password} update -r ${svn.info.r
 		</if>
 
 		<if>
+			<equals arg1="${test.save.screenshot}" arg2="true" />
+			<then>
+				<echo file="portal-web/test/test-portal-web-ext.properties" append="true">
+					save.screenshot=true
+				</echo>
+			</then>
+		</if>
+
+		<if>
 			<equals arg1="${test.selenium.implementation}" arg2="selenium" />
 			<then>
 				<echo file="portal-web/test/test-portal-web-ext.properties" append="true">
@@ -5836,6 +5845,15 @@ svn --username ${svn.username} --password ${svn.password} update -r ${svn.info.r
 		</if>
 
 		<if>
+			<equals arg1="${test.skip.tear.down}" arg2="true" />
+			<then>
+				<echo file="portal-web/test/test-portal-web-ext.properties" append="true">
+					test.skip.tear.down=true
+				</echo>
+			</then>
+		</if>
+
+		<if>
 			<or>
 				<equals arg1="${database.create.suffix}" arg2="-bare" />
 				<equals arg1="${database.create.suffix}" arg2="-minimal" />
@@ -5847,24 +5865,6 @@ svn --username ${svn.username} --password ${svn.password} update -r ${svn.info.r
 					token="test.database.minimal=false"
 					value="test.database.minimal=true"
 				/>
-			</then>
-		</if>
-
-		<if>
-			<equals arg1="${test.save.screenshot}" arg2="true" />
-			<then>
-				<echo file="portal-web/test/test-portal-web-ext.properties" append="true">
-					save.screenshot=true
-				</echo>
-			</then>
-		</if>
-
-		<if>
-			<equals arg1="${test.skip.tear.down}" arg2="true" />
-			<then>
-				<echo file="portal-web/test/test-portal-web-ext.properties" append="true">
-					test.skip.tear.down=true
-				</echo>
 			</then>
 		</if>
 	</target>
