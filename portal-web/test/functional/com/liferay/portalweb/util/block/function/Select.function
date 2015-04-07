@@ -2,6 +2,8 @@
 	<command name="select">
 		<execute selenium="waitForVisible" />
 
+		<execute selenium="mouseOver" />
+
 		<execute selenium="select" />
 
 		<execute selenium="assertJavaScriptErrors" />

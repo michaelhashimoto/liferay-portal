@@ -235,6 +235,61 @@
 </tr>
 <!--SEO-->
 <!--LOOK_AND_FEEL-->
+<tr>
+	<td>LOOK_AND_FEEL_HEADER</td>
+	<td>//div[contains(@id,'lookAndFeel')]/h3</td>
+	<td></td>
+</tr>
+<tr>
+	<td>NAVIGATION_REGULAR_BROWSERS</td>
+	<td>//li[contains(@id,'156_tabs')]/span/a[contains(.,'Regular Browsers')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>NAVIGATION_MOBILE_DEVICES</td>
+	<td>//li[contains(@id,'156_tabs')]/span/a[contains(.,'Mobile Devices')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>CURRENT_THEME_HEADER</td>
+	<td>//div[contains(@class,'current-theme')]/h3</td>
+	<td></td>
+</tr>
+<tr>
+	<td>CURRENT_THEME_NAME</td>
+	<td>//label[contains(@for,'SelTheme')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>AVAILABLE_THEMES_HEADER</td>
+	<td>//div[contains(@id,'availableThemes')]/h3/span</td>
+	<td></td>
+</tr>
+<tr>
+	<td>AVAILABLE_THEME_NAME</td>
+	<td>//label[contains(@for,'regularThemeId0')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>AVAILABLE_THEME_RADIO</td>
+	<td>//label[contains(.,'${key_availableThemeName}')]/..//input</td>
+	<td></td>
+</tr>
+<tr>
+	<td>CSS_HEADER</td>
+	<td>//div[contains(@id,'TabsSection')]/h3</td>
+	<td></td>
+</tr>
+<tr>
+	<td>CUSTOM_CSS_FIELD</td>
+	<td>//textarea[contains(@id,'Css')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
 <!--LOGO-->
 <!--LAYOUT-->
 <!--JAVASCRIPT-->
