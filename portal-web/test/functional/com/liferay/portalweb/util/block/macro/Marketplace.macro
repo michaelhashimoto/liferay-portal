@@ -53,11 +53,11 @@
 		<var name="mbThreadBody" value="MB Category Thread Message Body" />
 		<var name="mbThreadSubject" value="MB Category Thread Message Subject" />
 		<var name="pageName1" value="Blogs Test Page" />
-		<var name="pageName2" value="Documents and Media Test Page" />
-		<var name="pageName3" value="Message Boards Test Page" />
-		<var name="pageName4" value="Wiki Test Page" />
-		<var name="pageName5" value="Calendar Test Page" />
-		<var name="pageName6" value="Bookmarks Test Page" />
+		<var name="pageName2" value="Bookmarks Test Page" />
+		<var name="pageName3" value="Calendar Test Page" />
+		<var name="pageName4" value="Documents and Media Test Page" />
+		<var name="pageName5" value="Message Boards Test Page" />
+		<var name="pageName6" value="Wiki Test Page" />
 		<var name="wikiChildPageContent1" value="Wiki Front Page Child Page Content 1" />
 		<var name="wikiChildPageContent2" value="Wiki Front Page Child Page Content 2" />
 		<var name="wikiChildPageContent3" value="Wiki Front Page Child Page Content 3" />
@@ -145,6 +145,141 @@
 
 		<execute macro="Portlet#addPG">
 			<var name="pageName" value="${pageName2}" />
+			<var name="portletName" value="Bookmarks" />
+		</execute>
+
+		<execute macro="Page#gotoPG">
+			<var name="pageName" value="${pageName2}" />
+		</execute>
+
+		<execute macro="BookmarksFolder#addPG">
+			<var name="bookmarkFolderDescription" value="${bookmarkFolderDescription}" />
+			<var name="bookmarkFolderName" value="${bookmarkFolderName}" />
+		</execute>
+
+		<execute macro="Page#gotoPG">
+			<var name="pageName" value="${pageName2}" />
+		</execute>
+
+		<execute macro="Bookmark#addToFolderPG">
+			<var name="bookmarkDescription" value="${bookmarkDescription1}" />
+			<var name="bookmarkFolderName" value="${bookmarkFolderName}" />
+			<var name="bookmarkName" value="${bookmarkName1}" />
+			<var name="bookmarkURL" value="${bookmarkURL1}" />
+		</execute>
+
+		<execute macro="Page#gotoPG">
+			<var name="pageName" value="${pageName2}" />
+		</execute>
+
+		<execute macro="Bookmark#viewInFolderPG">
+			<var name="bookmarkDescription" value="${bookmarkDescription1}" />
+			<var name="bookmarkFolderName" value="${bookmarkFolderName}" />
+			<var name="bookmarkName" value="${bookmarkName1}" />
+			<var name="bookmarkURL" value="${bookmarkURL1}" />
+		</execute>
+
+		<execute macro="Page#gotoPG">
+			<var name="pageName" value="${pageName2}" />
+		</execute>
+
+		<execute macro="Bookmark#addToFolderPG">
+			<var name="bookmarkDescription" value="${bookmarkDescription2}" />
+			<var name="bookmarkFolderName" value="${bookmarkFolderName}" />
+			<var name="bookmarkName" value="${bookmarkName2}" />
+			<var name="bookmarkURL" value="${bookmarkURL2}" />
+		</execute>
+
+		<execute macro="Page#gotoPG">
+			<var name="pageName" value="${pageName2}" />
+		</execute>
+
+		<execute macro="Bookmark#viewInFolderPG">
+			<var name="bookmarkDescription" value="${bookmarkDescription2}" />
+			<var name="bookmarkFolderName" value="${bookmarkFolderName}" />
+			<var name="bookmarkName" value="${bookmarkName2}" />
+			<var name="bookmarkURL" value="${bookmarkURL2}" />
+		</execute>
+
+		<execute macro="Page#gotoPG">
+			<var name="pageName" value="${pageName2}" />
+		</execute>
+
+		<execute macro="Bookmark#addToFolderPG">
+			<var name="bookmarkDescription" value="${bookmarkDescription3}" />
+			<var name="bookmarkFolderName" value="${bookmarkFolderName}" />
+			<var name="bookmarkName" value="${bookmarkName3}" />
+			<var name="bookmarkURL" value="${bookmarkURL3}" />
+		</execute>
+
+		<execute macro="Page#gotoPG">
+			<var name="pageName" value="${pageName2}" />
+		</execute>
+
+		<execute macro="Bookmark#viewInFolderPG">
+			<var name="bookmarkDescription" value="${bookmarkDescription3}" />
+			<var name="bookmarkFolderName" value="${bookmarkFolderName}" />
+			<var name="bookmarkName" value="${bookmarkName3}" />
+			<var name="bookmarkURL" value="${bookmarkURL3}" />
+		</execute>
+
+		<execute macro="Page#addPG">
+			<var name="pageName" value="${pageName3}" />
+		</execute>
+
+		<execute macro="Portlet#addPG">
+			<var name="pageName" value="${pageName3}" />
+			<var name="portletName" value="Calendar" />
+		</execute>
+
+		<execute macro="Page#gotoPG">
+			<var name="pageName" value="${pageName3}" />
+		</execute>
+
+		<execute macro="Event#addPG">
+			<var name="eventDescription" value="${eventDescription1}" />
+			<var name="eventTitle" value="${eventTitle1}" />
+			<var name="eventType" value="${eventType}" />
+		</execute>
+
+		<execute macro="Page#gotoPG">
+			<var name="pageName" value="${pageName3}" />
+		</execute>
+
+		<execute macro="Event#addRepeatWeeklyPG">
+			<var name="eventDescription" value="${eventDescription2}" />
+			<var name="eventEndDay" value="1" />
+			<var name="eventEndMonth" value="January" />
+			<var name="eventEndYear" value="2016" />
+			<var name="eventStartDay" value="1" />
+			<var name="eventStartMonth" value="January" />
+			<var name="eventStartYear" value="2015" />
+			<var name="eventTitle" value="${eventTitle2}" />
+			<var name="eventType" value="${eventType}" />
+		</execute>
+
+		<execute macro="Page#gotoPG">
+			<var name="pageName" value="${pageName3}" />
+		</execute>
+
+		<execute macro="Event#addRepeatMonthlyPG">
+			<var name="eventDescription" value="${eventDescription3}" />
+			<var name="eventEndDay" value="1" />
+			<var name="eventEndMonth" value="January" />
+			<var name="eventEndYear" value="2016" />
+			<var name="eventStartDay" value="1" />
+			<var name="eventStartMonth" value="January" />
+			<var name="eventStartYear" value="2015" />
+			<var name="eventTitle" value="${eventTitle3}" />
+			<var name="eventType" value="${eventType}" />
+		</execute>
+
+		<execute macro="Page#addPG">
+			<var name="pageName" value="${pageName4}" />
+		</execute>
+
+		<execute macro="Portlet#addPG">
+			<var name="pageName" value="${pageName4}" />
 			<var name="portletName" value="Documents and Media" />
 		</execute>
 
@@ -156,7 +291,7 @@
 		</execute>
 
 		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${pageName2}" />
+			<var name="pageName" value="${pageName4}" />
 		</execute>
 
 		<execute macro="DMFolder#addPG">
@@ -172,7 +307,7 @@
 		</execute>
 
 		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${pageName2}" />
+			<var name="pageName" value="${pageName4}" />
 		</execute>
 
 		<execute macro="DMFolderDocument#addPG">
@@ -183,7 +318,7 @@
 		</execute>
 
 		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${pageName2}" />
+			<var name="pageName" value="${pageName4}" />
 		</execute>
 
 		<execute macro="DMFolderDocument#addPG">
@@ -201,7 +336,7 @@
 		</execute>
 
 		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${pageName2}" />
+			<var name="pageName" value="${pageName4}" />
 		</execute>
 
 		<execute macro="DMFolderDocument#viewPG">
@@ -212,7 +347,7 @@
 		</execute>
 
 		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${pageName2}" />
+			<var name="pageName" value="${pageName4}" />
 		</execute>
 
 		<execute macro="DMFolderDocument#viewPG">
@@ -223,16 +358,16 @@
 		</execute>
 
 		<execute macro="Page#addPG">
-			<var name="pageName" value="${pageName3}" />
+			<var name="pageName" value="${pageName5}" />
 		</execute>
 
 		<execute macro="Portlet#addPG">
-			<var name="pageName" value="${pageName3}" />
+			<var name="pageName" value="${pageName5}" />
 			<var name="portletName" value="Message Boards" />
 		</execute>
 
 		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${pageName3}" />
+			<var name="pageName" value="${pageName5}" />
 		</execute>
 
 		<execute macro="MessageboardsCategory#addPG">
@@ -244,7 +379,7 @@
 		</execute>
 
 		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${pageName3}" />
+			<var name="pageName" value="${pageName5}" />
 		</execute>
 
 		<execute macro="MessageboardsThread#addInCategoryPG">
@@ -254,7 +389,7 @@
 		</execute>
 
 		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${pageName3}" />
+			<var name="pageName" value="${pageName5}" />
 		</execute>
 
 		<execute macro="MessageboardsThread#viewInCategoryPG">
@@ -264,11 +399,11 @@
 		</execute>
 
 		<execute macro="Page#addPG">
-			<var name="pageName" value="${pageName4}" />
+			<var name="pageName" value="${pageName6}" />
 		</execute>
 
 		<execute macro="Portlet#addPG">
-			<var name="pageName" value="${pageName4}" />
+			<var name="pageName" value="${pageName6}" />
 			<var name="portletName" value="Wiki" />
 		</execute>
 
@@ -277,7 +412,7 @@
 		</execute>
 
 		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${pageName4}" />
+			<var name="pageName" value="${pageName6}" />
 		</execute>
 
 		<execute macro="WikiPage#addChildPagePG">
@@ -288,7 +423,7 @@
 		</execute>
 
 		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${pageName4}" />
+			<var name="pageName" value="${pageName6}" />
 		</execute>
 
 		<execute macro="WikiPage#addChildPagePG">
@@ -299,7 +434,7 @@
 		</execute>
 
 		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${pageName4}" />
+			<var name="pageName" value="${pageName6}" />
 		</execute>
 
 		<execute macro="WikiPage#addChildPagePG">
@@ -307,141 +442,6 @@
 			<var name="wikiChildPageTitle" value="${wikiChildPageTitle3}" />
 			<var name="wikiPageContent" value="${wikiPageContent}" />
 			<var name="wikiPageTitle" value="${wikiPageTitle}" />
-		</execute>
-
-		<execute macro="Page#addPG">
-			<var name="pageName" value="${pageName5}" />
-		</execute>
-
-		<execute macro="Portlet#addPG">
-			<var name="pageName" value="${pageName5}" />
-			<var name="portletName" value="Calendar" />
-		</execute>
-
-		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${pageName5}" />
-		</execute>
-
-		<execute macro="Event#addPG">
-			<var name="eventDescription" value="${eventDescription1}" />
-			<var name="eventTitle" value="${eventTitle1}" />
-			<var name="eventType" value="${eventType}" />
-		</execute>
-
-		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${pageName5}" />
-		</execute>
-
-		<execute macro="Event#addRepeatWeeklyPG">
-			<var name="eventDescription" value="${eventDescription2}" />
-			<var name="eventEndDay" value="1" />
-			<var name="eventEndMonth" value="January" />
-			<var name="eventEndYear" value="2016" />
-			<var name="eventStartDay" value="1" />
-			<var name="eventStartMonth" value="January" />
-			<var name="eventStartYear" value="2015" />
-			<var name="eventTitle" value="${eventTitle2}" />
-			<var name="eventType" value="${eventType}" />
-		</execute>
-
-		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${pageName5}" />
-		</execute>
-
-		<execute macro="Event#addRepeatMonthlyPG">
-			<var name="eventDescription" value="${eventDescription3}" />
-			<var name="eventEndDay" value="1" />
-			<var name="eventEndMonth" value="January" />
-			<var name="eventEndYear" value="2016" />
-			<var name="eventStartDay" value="1" />
-			<var name="eventStartMonth" value="January" />
-			<var name="eventStartYear" value="2015" />
-			<var name="eventTitle" value="${eventTitle3}" />
-			<var name="eventType" value="${eventType}" />
-		</execute>
-
-		<execute macro="Page#addPG">
-			<var name="pageName" value="${pageName6}" />
-		</execute>
-
-		<execute macro="Portlet#addPG">
-			<var name="pageName" value="${pageName6}" />
-			<var name="portletName" value="Bookmarks" />
-		</execute>
-
-		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${pageName6}" />
-		</execute>
-
-		<execute macro="BookmarksFolder#addPG">
-			<var name="bookmarkFolderDescription" value="${bookmarkFolderDescription}" />
-			<var name="bookmarkFolderName" value="${bookmarkFolderName}" />
-		</execute>
-
-		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${pageName6}" />
-		</execute>
-
-		<execute macro="Bookmark#addToFolderPG">
-			<var name="bookmarkDescription" value="${bookmarkDescription1}" />
-			<var name="bookmarkFolderName" value="${bookmarkFolderName}" />
-			<var name="bookmarkName" value="${bookmarkName1}" />
-			<var name="bookmarkURL" value="${bookmarkURL1}" />
-		</execute>
-
-		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${pageName6}" />
-		</execute>
-
-		<execute macro="Bookmark#viewInFolderPG">
-			<var name="bookmarkDescription" value="${bookmarkDescription1}" />
-			<var name="bookmarkFolderName" value="${bookmarkFolderName}" />
-			<var name="bookmarkName" value="${bookmarkName1}" />
-			<var name="bookmarkURL" value="${bookmarkURL1}" />
-		</execute>
-
-		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${pageName6}" />
-		</execute>
-
-		<execute macro="Bookmark#addToFolderPG">
-			<var name="bookmarkDescription" value="${bookmarkDescription2}" />
-			<var name="bookmarkFolderName" value="${bookmarkFolderName}" />
-			<var name="bookmarkName" value="${bookmarkName2}" />
-			<var name="bookmarkURL" value="${bookmarkURL2}" />
-		</execute>
-
-		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${pageName6}" />
-		</execute>
-
-		<execute macro="Bookmark#viewInFolderPG">
-			<var name="bookmarkDescription" value="${bookmarkDescription2}" />
-			<var name="bookmarkFolderName" value="${bookmarkFolderName}" />
-			<var name="bookmarkName" value="${bookmarkName2}" />
-			<var name="bookmarkURL" value="${bookmarkURL2}" />
-		</execute>
-
-		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${pageName6}" />
-		</execute>
-
-		<execute macro="Bookmark#addToFolderPG">
-			<var name="bookmarkDescription" value="${bookmarkDescription3}" />
-			<var name="bookmarkFolderName" value="${bookmarkFolderName}" />
-			<var name="bookmarkName" value="${bookmarkName3}" />
-			<var name="bookmarkURL" value="${bookmarkURL3}" />
-		</execute>
-
-		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${pageName6}" />
-		</execute>
-
-		<execute macro="Bookmark#viewInFolderPG">
-			<var name="bookmarkDescription" value="${bookmarkDescription3}" />
-			<var name="bookmarkFolderName" value="${bookmarkFolderName}" />
-			<var name="bookmarkName" value="${bookmarkName3}" />
-			<var name="bookmarkURL" value="${bookmarkURL3}" />
 		</execute>
 	</command>
 </definition>

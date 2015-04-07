@@ -121,6 +121,35 @@
 		<execute function="AssertTextEquals" locator1="CPSitepages#SUCCESS_MESSAGE" value1="Your request completed successfully." />
 	</command>
 
+	<command name="selectTheme">
+		<execute macro="Page#gotoCP">
+			<var name="portletName" value="Site Pages" />
+		</execute>
+
+		<if>
+			<equals arg1="${liferayVersion}" arg2="6101" />
+			<then>
+				<execute function="AssertTextEquals" locator1="CPSitepages#HEADER" value1="liferay.com" />
+			</then>
+			<elseif>
+				<equals arg1="${liferayVersion}" arg2="6102" />
+				<then>
+					<execute function="AssertTextEquals" locator1="CPSitepages#HEADER" value1="Liferay" />
+				</then>
+			</elseif>
+		</if>
+
+		<execute function="AssertClick" locator1="CPSitepages#NAVIGATION_PUBLIC_PAGES" value1="Public Pages" />
+		<execute function="AssertClick" locator1="CPSitepages#NAVIGATION_REGULAR_BROWSERS" value1="Regular Browsers" />
+
+		<execute function="AssertTextNotEquals" locator1="CPSitepages#CURRENT_THEME_NAME" value1="${availableThemeName}" />
+		<execute function="AssertTextEquals" locator1="CPSitepages#AVAILABLE_THEME_NAME" value1="${availableThemeName}" />
+		<execute function="Check" locator1="CPSitepages#AVAILABLE_THEME_RADIO" />
+		<execute function="Click#clickAt" locator1="CPSitepages#SAVE_BUTTON" />
+		<execute function="AssertTextEquals" locator1="CPSitepages#SUCCESS_MESSAGE" value1="Your request completed successfully." />
+		<execute function="AssertTextEquals" locator1="CPSitepages#CURRENT_THEME_NAME" value1="${availableThemeName}" />
+	</command>
+
 	<command name="viewChildPG">
 		<execute function="MouseOver#mouseOverClickNavigation" locator1="Home#PAGE_1" value1="${sitePageName}" />
 		<execute function="AssertClick#assertTextClickAtAndWait" locator1="Home#PAGE_1_CHILD_PAGE_1" value1="${siteChildPageName}" />
