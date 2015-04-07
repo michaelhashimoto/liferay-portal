@@ -10,6 +10,12 @@
 	</set-up>
 
 	<tear-down>
+		<execute macro="SitePage#selectTheme">
+			<var name="availableThemeName" value="Classic" />
+			<var name="key_availableThemeName" value="${availableThemeName}" />
+			<var name="liferayVersion" value="6102" />
+		</execute>
+
 		<execute macro="Site#tearDownCP" />
 
 		<execute macro="BlogsEntry#tearDownCP" />
