@@ -140,12 +140,18 @@
 		</if>
 
 		<execute function="AssertClick" locator1="CPSitepages#NAVIGATION_PUBLIC_PAGES" value1="Public Pages" />
+
 		<execute function="AssertClick" locator1="CPSitepages#NAVIGATION_REGULAR_BROWSERS" value1="Regular Browsers" />
 
 		<execute function="AssertTextNotEquals" locator1="CPSitepages#CURRENT_THEME_NAME" value1="${availableThemeName}" />
 		<execute function="AssertTextEquals" locator1="CPSitepages#AVAILABLE_THEME_NAME" value1="${availableThemeName}" />
+
+		<var name="key_availableThemeName" value="${availableThemeName}" />
+
 		<execute function="Check" locator1="CPSitepages#AVAILABLE_THEME_RADIO" />
+
 		<execute function="Click#clickAt" locator1="CPSitepages#SAVE_BUTTON" />
+
 		<execute function="AssertTextEquals" locator1="CPSitepages#SUCCESS_MESSAGE" value1="Your request completed successfully." />
 		<execute function="AssertTextEquals" locator1="CPSitepages#CURRENT_THEME_NAME" value1="${availableThemeName}" />
 	</command>

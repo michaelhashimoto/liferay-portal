@@ -12,7 +12,6 @@
 	<tear-down>
 		<execute macro="SitePage#selectTheme">
 			<var name="availableThemeName" value="Classic" />
-			<var name="key_availableThemeName" value="${availableThemeName}" />
 			<var name="liferayVersion" value="6101" />
 		</execute>
 
