@@ -67,6 +67,12 @@ public class PoshiRunnerValidation {
 					"Invalid " + elementName + " element\n" + filePath + ":" +
 						childElement.attributeValue("line-number"));
 			}
+
+			if (elementName.equals("description") ||
+				elementName.equals("echo") || elementName.equals("fail")) {
+
+				_validateMessageElement(childElement, filePath);
+			}
 		}
 	}
 
@@ -205,6 +211,25 @@ public class PoshiRunnerValidation {
 			else if (childElementName.equals("var")) {
 				_validateVarElement(childElement, filePath);
 			}
+		}
+	}
+
+	private static void _validateMessageElement(
+			Element element, String filePath)
+		throws PoshiRunnerException {
+
+		List<String> possibleAttributes = Arrays.asList(
+			"line-number", "message");
+
+		_validateAttributes(element, possibleAttributes, filePath);
+
+		String message = element.attributeValue("message");
+		String text = element.getText();
+
+		if ((message == null) && (text == null)) {
+			throw new PoshiRunnerException(
+				"Missing message\n" + filePath + ":" +
+					element.attributeValue("line-number"));
 		}
 	}
 
