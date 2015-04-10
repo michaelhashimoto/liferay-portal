@@ -67,6 +67,13 @@ public class PoshiRunnerValidation {
 					"Invalid " + elementName + " element\n" + filePath + ":" +
 						childElement.attributeValue("line-number"));
 			}
+
+			if (elementName.equals("task")) {
+				_validateTaskElement(childElement, filePath);
+			}
+			else if (elementName.equals("var")) {
+				_validateVarElement(childElement, filePath);
+			}
 		}
 	}
 
@@ -228,6 +235,17 @@ public class PoshiRunnerValidation {
 		}
 	}
 
+	private static void _validateTaskElement(Element element, String filePath)
+		throws PoshiRunnerException {
+
+		List<String> possibleAttributes = Arrays.asList(
+			"line-number", "macro-summary", "summary");
+
+		_validateAttributes(element, possibleAttributes, filePath);
+
+		_parseElements(element, filePath);
+	}
+
 	private static void _validateTestcaseFile(Element element, String filePath)
 		throws PoshiRunnerException {
 
@@ -254,8 +272,8 @@ public class PoshiRunnerValidation {
 		}
 
 		List<String> possibleAttributes = Arrays.asList(
-			"attribute", "group", "line-number", "locator", "method", "name",
-			"pattern", "value");
+			"attribute", "group", "input", "line-number", "locator", "method",
+			"name", "pattern", "value");
 
 		_validateAttributes(element, possibleAttributes, filePath);
 	}
