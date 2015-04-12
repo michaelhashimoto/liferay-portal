@@ -9,11 +9,6 @@
 </thead>
 <tbody>
 <tr>
-	<td>PAGE_NAME</td>
-	<td></td>
-	<td>SOProfileMicroblogs</td>
-</tr>
-<tr>
 	<td>INFO_MESSAGE</td>
 	<td>//div[@class='portlet-msg-info']</td>
 	<td></td>
