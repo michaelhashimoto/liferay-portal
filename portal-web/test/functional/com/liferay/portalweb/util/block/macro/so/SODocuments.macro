@@ -27,7 +27,7 @@
 				<execute function="AssertClick" locator1="PGDocumentsandmedia#TOOLBAR_ACTIONS" value1="Actions" />
 				<execute function="AssertElementPresent" locator1="PGDocumentsandmedia#ACTIONS_MENULIST_DELETE" />
 				<execute function="AssertClickNoError" locator1="PGDocumentsandmedia#ACTIONS_MENULIST_DELETE" value1="Delete" />
-				<execute function="Confirm" locator1="PGDocumentsandmedia#CONFIRMATION" value1="Are you sure you want to delete the selected entries?" />
+				<execute function="Confirm" value1="Are you sure you want to delete the selected entries?" />
 				<execute function="AssertTextEquals" locator1="PGDocumentsandmedia#SUCCESS_MESSAGE" value1="Your request completed successfully." />
 			</then>
 		</if>

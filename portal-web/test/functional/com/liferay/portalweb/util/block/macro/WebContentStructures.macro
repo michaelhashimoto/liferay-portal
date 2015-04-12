@@ -29,7 +29,7 @@
 			<then>
 				<execute function="Check" locator1="CPWebcontentStructures#STRUCTURE_TABLE_ALL_CHECKBOX" />
 				<execute function="AssertClickNoError" locator1="CPWebcontentStructures#DELETE_BUTTON" value1="Delete" />
-				<execute function="Confirm" locator1="CPWebcontentStructures#CONFIRMATION" value1="Are you sure you want to delete the selected structures?" />
+				<execute function="Confirm" value1="Are you sure you want to delete the selected structures?" />
 				<execute function="AssertTextEquals" locator1="CPWebcontentStructures#SUCCESS_MESSAGE" value1="Your request completed successfully." />
 			</then>
 		</if>

@@ -75,11 +75,6 @@
 	<td>Success Message</td>
 </tr>
 <tr>
-	<td>CONFIRMATION</td>
-	<td></td>
-	<td>Confirmation Window</td>
-</tr>
-<tr>
 	<td></td>
 	<td></td>
 	<td></td>
@@ -454,11 +449,6 @@
 <tr>
 	<td>PAGINATION_PREVIOUS</td>
 	<td>//a[@class='aui-paginator-link aui-paginator-prev-link']</td>
-	<td></td>
-</tr>
-<tr>
-	<td>PAGINATION_CURRENT</td>
-	<td></td>
 	<td></td>
 </tr>
 <tr>

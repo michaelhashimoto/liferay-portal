@@ -12,7 +12,7 @@
 	<command name="deleteCP">
 		<execute function="AssertClick" locator1="CPUsergroups#USER_GROUP_TABLE_ACTIONS_1" value1="Actions" />
 		<execute function="AssertClickNoError" locator1="CPUsergroups#USER_GROUP_MENULIST_DELETE" value1="Delete" />
-		<execute function="Confirm" locator1="CPUsergroups#CONFIRMATION" value1="Are you sure you want to delete this?" />
+		<execute function="Confirm" value1="Are you sure you want to delete this?" />
 		<execute function="AssertTextEquals" locator1="CPUsergroups#SUCCESS_MESSAGE" value1="Your request completed successfully." />
 		<execute function="AssertElementNotPresent" locator1="CPUsergroups#USER_GROUP_TABLE_NAME_1" />
 	</command>
@@ -39,7 +39,7 @@
 				<execute function="Click" locator1="CPUsergroups#USER_GROUP_TABLE_ALL_CHECKBOX" />
 				<execute function="AssertChecked" locator1="CPUsergroups#USER_GROUP_TABLE_ALL_CHECKBOX" />
 				<execute function="AssertClickNoError" locator1="CPUsergroups#DELETE_BUTTON" value1="Delete" />
-				<execute function="Confirm" locator1="CPUsergroups#CONFIRMATION" value1="Are you sure you want to delete this?" />
+				<execute function="Confirm" value1="Are you sure you want to delete this?" />
 				<execute function="AssertTextEquals" locator1="CPUsergroups#SUCCESS_MESSAGE" value1="Your request completed successfully." />
 				<execute function="AssertTextEquals" locator1="CPUsergroups#INFO_MESSAGE" value1="No user groups were found." />
 			</then>

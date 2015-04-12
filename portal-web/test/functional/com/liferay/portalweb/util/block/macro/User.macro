@@ -48,7 +48,7 @@
 			<then>
 				<execute function="Check" locator1="CPUsersandorganizationsViewusers#USER_TABLE_ALL_CHECKBOX" value1="Check All" />
 				<execute function="AssertClickNoError" locator1="CPUsersandorganizationsViewusers#DEACTIVATE" value1="Deactivate" />
-				<execute function="Confirm" locator1="CPUsersandorganizationsViewusers#CONFIRMATION" value1="Are you sure you want to deactivate the selected users?" />
+				<execute function="Confirm" value1="Are you sure you want to deactivate the selected users?" />
 				<execute function="AssertTextEquals" locator1="CPUsersandorganizationsViewusers#SUCCESS_MESSAGE" value1="Your request completed successfully." />
 			</then>
 		</if>
@@ -71,7 +71,7 @@
 			<then>
 				<execute function="Check" locator1="CPUsersandorganizationsViewusers#USER_TABLE_ALL_CHECKBOX" value1="Check All" />
 				<execute function="AssertClickNoError" locator1="CPUsersandorganizationsViewusers#DELETE" value1="Delete" />
-				<execute function="Confirm" locator1="CPUsersandorganizationsViewusers#CONFIRMATION" value1="Are you sure you want to permanently delete the selected users?" />
+				<execute function="Confirm" value1="Are you sure you want to permanently delete the selected users?" />
 				<execute function="AssertTextEquals" locator1="CPUsersandorganizationsViewusers#SUCCESS_MESSAGE" value1="Your request completed successfully." />
 			</then>
 		</if>

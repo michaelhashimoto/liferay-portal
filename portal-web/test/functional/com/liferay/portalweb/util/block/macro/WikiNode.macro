@@ -15,7 +15,7 @@
 		<execute function="AssertTextEquals" locator1="CPWiki#WIKI_NODE_TABLE_WIKI_2" value1="${wikiNodeName}" />
 		<execute function="AssertClick#pauseAssertTextClickAt" locator1="CPWiki#WIKI_NODE_TABLE_ACTIONS_2" value1="Actions" />
 		<execute function="AssertClickNoError" locator1="CPWiki#WIKI_NODE_MENULIST_DELETE" value1="Delete" />
-		<execute function="Confirm" locator1="CPWiki#CONFIRMATION" value1="Are you sure you want to delete this?" />
+		<execute function="Confirm" value1="Are you sure you want to delete this?" />
 		<execute function="AssertTextNotPresent" value1="${wikiNodeName}" />
 	</command>
 
@@ -43,7 +43,7 @@
 			<then>
 				<execute function="AssertClick#pauseAssertTextClickAt" locator1="CPWiki#WIKI_NODE_TABLE_ACTIONS_2" value1="Actions" />
 				<execute function="AssertClickNoError" locator1="CPWiki#WIKI_NODE_MENULIST_DELETE" value1="Delete" />
-				<execute function="Confirm" locator1="CPWiki#CONFIRMATION" value1="Are you sure you want to delete this?" />
+				<execute function="Confirm" value1="Are you sure you want to delete this?" />
 			</then>
 		</while>
 	</command>

@@ -148,7 +148,7 @@
 		<execute function="AssertClick#assertValueClickAtAndWait" locator1="CPDynamicdatalistsDatadefinitions#BASIC_SEARCH_BUTTON" value1="Search" />
 		<execute function="AssertClick" locator1="CPDynamicdatalistsDatadefinitions#DATA_DEFINITION_TABLE_ACTIONS_1" value1="Actions" />
 		<execute function="AssertClickNoError" locator1="CPDynamicdatalistsDatadefinitions#DATA_DEFINITION_MENULIST_DELETE" value1="Delete" />
-		<execute function="Confirm" locator1="CPDynamicdatalistsDatadefinitions#CONFIRMATION" value1="Are you sure you want to delete this?" />
+		<execute function="Confirm" value1="Are you sure you want to delete this?" />
 		<execute function="AssertTextEquals" locator1="CPDynamicdatalistsDatadefinitions#SUCCESS_MESSAGE" value1="Your request completed successfully." />
 		<execute function="Type" locator1="CPDynamicdatalistsDatadefinitions#BASIC_SEARCH_FIELD" value1="${dataDefinitionName}" />
 		<execute function="AssertClick#assertValueClickAtAndWait" locator1="CPDynamicdatalistsDatadefinitions#BASIC_SEARCH_BUTTON" value1="Search" />
@@ -191,7 +191,7 @@
 			<then>
 				<execute function="AssertClick" locator1="CPDynamicdatalistsDatadefinitions#DATA_DEFINITION_TABLE_ACTIONS_1" value1="Actions" />
 				<execute function="AssertClickNoError" locator1="CPDynamicdatalistsDatadefinitions#DATA_DEFINITION_MENULIST_DELETE" value1="Delete" />
-				<execute function="Confirm" locator1="CPDynamicdatalistsDatadefinitions#CONFIRMATION" value1="Are you sure you want to delete this?" />
+				<execute function="Confirm" value1="Are you sure you want to delete this?" />
 				<execute function="AssertTextEquals" locator1="CPDynamicdatalistsDatadefinitions#SUCCESS_MESSAGE" value1="Your request completed successfully." />
 			</then>
 		</while>

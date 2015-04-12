@@ -60,7 +60,7 @@
 
 		<execute function="Check" locator1="PGStagingPublishToLiveNow#PUBLISH_RANGE_ALL" />
 		<execute function="AssertClickNoError" locator1="PGStagingPublishToLiveNow#PUBLISH_BUTTON" value1="Publish" />
-		<execute function="Confirm" locator1="PGStagingPublishToLiveNow#CONFIRMATION" value1="Are you sure you want to publish these pages?" />
+		<execute function="Confirm" value1="Are you sure you want to publish these pages?" />
 		<execute function="AssertTextEquals" locator1="PGStagingPublishToLiveNow#SUCCESS_MESSAGE" value1="Your request completed successfully." />
 		<execute function="Click" locator1="PGStagingPublishToLiveNow#CLOSE_BUTTON" value1="X" />
 	</command>

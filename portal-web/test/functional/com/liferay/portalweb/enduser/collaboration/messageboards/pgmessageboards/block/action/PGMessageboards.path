@@ -19,11 +19,6 @@
 	<td></td>
 </tr>
 <tr>
-	<td>CONFIRMATION</td>
-	<td></td>
-	<td></td>
-</tr>
-<tr>
 	<td>ADD_CATEGORY_BUTTON</td>
 	<td>//input[@value='Add Category']</td>
 	<td></td>

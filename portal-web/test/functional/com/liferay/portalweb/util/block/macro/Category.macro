@@ -14,7 +14,7 @@
 		<execute function="Click" locator1="CPCategories#ALL_CATEGORIES_CHECKBOX" />
 		<execute function="AssertClick" locator1="CPCategories#ACTIONS_BUTTON" value1="Actions" />
 		<execute function="AssertClickNoError" locator1="CPCategories#ACTIONS_MENULIST_DELETE" value1="Delete" />
-		<execute function="Confirm" locator1="CPCategories#CONFIRMATION" value1="Are you sure you want to delete the selected categories?" />
+		<execute function="Confirm" value1="Are you sure you want to delete the selected categories?" />
 		<execute function="AssertTextEquals#assertTextNoWaitForText" locator1="CPCategories#SUCCESS_MESSAGE" value1="Your request processed successfully." />
 		<execute function="AssertTextEquals" locator1="CPCategories#INFO_MESSAGE" value1="There are no categories." />
 		<execute function="AssertTextNotPresent" value1="${categoryName}" />

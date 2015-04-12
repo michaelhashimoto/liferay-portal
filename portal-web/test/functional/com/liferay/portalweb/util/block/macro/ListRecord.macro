@@ -121,7 +121,7 @@
 
 		<execute function="AssertClick" locator1="CPDynamicdatalistsList#RECORD_TABLE_ACTIONS_1" value1="Actions" />
 		<execute function="AssertClickNoError" locator1="CPDynamicdatalistsList#RECORD_MENULIST_DELETE" value1="Delete" />
-		<execute function="Confirm" locator1="CPDynamicdatalistsList#CONFIRMATION" value1="Are you sure you want to delete this?" />
+		<execute function="Confirm" value1="Are you sure you want to delete this?" />
 		<execute function="AssertTextEquals" locator1="CPDynamicdatalistsList#SUCCESS_MESSAGE" value1="Your request completed successfully." />
 		<execute function="AssertTextEquals" locator1="CPDynamicdatalistsList#INFO_MESSAGE" value1="No records were found." />
 	</command>
@@ -129,7 +129,7 @@
 	<command name="deletePG">
 		<execute function="AssertClick" locator1="PGDDLDisplay#RECORD_TABLE_ACTIONS_1" value1="Actions" />
 		<execute function="AssertClickNoError" locator1="PGDDLDisplay#RECORD_MENULIST_DELETE" value1="Delete" />
-		<execute function="Confirm" locator1="PGDDLDisplay#CONFIRMATION" value1="Are you sure you want to delete this?" />
+		<execute function="Confirm" value1="Are you sure you want to delete this?" />
 		<execute function="AssertTextEquals#assertText" locator1="PGDDLDisplay#SUCCESS_MESSAGE" value1="Your request completed successfully." />
 		<execute function="AssertTextEquals#assertText" locator1="PGDDLDisplay#INFO_MESSAGE" value1="No records were found." />
 	</command>

@@ -33,7 +33,7 @@
 			<condition function="IsElementPresent" locator1="PGPageComments#COMMENT_DELETE_GENERIC" />
 			<then>
 				<execute function="ClickNoError" locator1="PGPageComments#COMMENT_DELETE_GENERIC" />
-				<execute function="Confirm" locator1="PGPageComments#CONFIRMATION" value1="Are you sure you want to delete this?" />
+				<execute function="Confirm" value1="Are you sure you want to delete this?" />
 				<execute function="AssertTextEquals" locator1="PGPageComments#SUCCESS_MESSAGE" value1="Your request processed successfully." />
 				<execute function="AssertTextEquals" locator1="PGPageComments#BE_THE_FIRST_LINK" value1="Be the first." />
 			</then>

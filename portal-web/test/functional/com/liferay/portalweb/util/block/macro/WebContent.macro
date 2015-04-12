@@ -111,7 +111,7 @@
 			<then>
 				<execute function="Check" locator1="CPWebcontent#WEB_CONTENT_TABLE_ALL_CHECKBOX" />
 				<execute function="AssertClickNoError" locator1="CPWebcontent#DELETE_BUTTON" value1="Delete" />
-				<execute function="Confirm" locator1="CPWebcontent#CONFIRMATION" value1="Are you sure you want to delete the selected web content?" />
+				<execute function="Confirm" value1="Are you sure you want to delete the selected web content?" />
 				<execute function="AssertTextEquals" locator1="CPWebcontent#SUCCESS_MESSAGE" value1="Your request completed successfully." />
 			</then>
 		</if>

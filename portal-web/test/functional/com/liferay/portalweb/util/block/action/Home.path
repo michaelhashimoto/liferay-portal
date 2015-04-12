@@ -99,11 +99,6 @@
 	<td></td>
 </tr>
 <tr>
-	<td>CONFIRMATION</td>
-	<td></td>
-	<td></td>
-</tr>
-<tr>
 	<td></td>
 	<td></td>
 	<td></td>
@@ -159,11 +154,6 @@
 	<td>PAGE_3</td>
 	<td>//li[contains(@class,'lfr-nav-deletable')][3]/a</td>
 	<td>3rd Page</td>
-</tr>
-<tr>
-	<td>PAGE_CONFIRM</td>
-	<td></td>
-	<td></td>
 </tr>
 <tr>
 	<td>PAGE_DELETE_1</td>

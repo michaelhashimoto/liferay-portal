@@ -53,11 +53,6 @@
 	<td>//img[@title='Delete']</td>
 	<td></td>
 </tr>
-<tr>
-	<td>CONFIRMATION</td>
-	<td></td>
-	<td></td>
-</tr>
 </tbody>
 </table>
 </body>

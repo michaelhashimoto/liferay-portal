@@ -30,7 +30,7 @@
 		</execute>
 
 		<execute function="ClickNoError" locator1="Home#PORTLET_REMOVE_1" />
-		<execute function="Confirm" locator1="Home#CONFIRMATION" value1="Are you sure you want to remove this component?" />
+		<execute function="Confirm" value1="Are you sure you want to remove this component?" />
 		<execute function="AssertElementNotPresent" locator1="Home#PORTLET_1" />
 	</command>
 

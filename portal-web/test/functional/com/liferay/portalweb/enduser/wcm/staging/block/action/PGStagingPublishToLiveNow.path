@@ -39,11 +39,6 @@
 	<td></td>
 </tr>
 <tr>
-	<td>CONFIRMATION</td>
-	<td></td>
-	<td></td>
-</tr>
-<tr>
 	<td>APPLICATIONS_EXPAND</td>
 	<td>//a[@title='Expand']</td>
 	<td></td>
