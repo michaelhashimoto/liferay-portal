@@ -147,6 +147,14 @@ public class PoshiRunnerContext {
 		return _rootElements.get("testcase#" + className);
 	}
 
+	public static boolean isCommandElement(String commandElementKey) {
+		if (Validator.isNotNull(_commandElements.get(commandElementKey))) {
+			return true;
+		}
+
+		return false;
+	}
+
 	public static void readFiles() throws Exception {
 		_readPoshiFiles();
 		_readSeleniumFiles();
@@ -319,6 +327,15 @@ public class PoshiRunnerContext {
 				for (Element commandElement : commandElements) {
 					String classCommandName =
 						className + "#" + commandElement.attributeValue("name");
+
+					if (Validator.isNotNull(
+							_commandElements.get(
+								classType + "#" + classCommandName))) {
+
+						throw new Exception(
+							"Duplicate command name\n" + filePath + ":" +
+								commandElement.attributeValue("line-number"));
+					}
 
 					_commandElements.put(
 						classType + "#" + classCommandName, commandElement);
