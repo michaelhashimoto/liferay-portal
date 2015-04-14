@@ -40,13 +40,13 @@
 			<isset var="kbArticleFriendlyURL" />
 			<then>
 				<var name="kbArticleTitleFormatted" value="/${kbArticleFriendlyURL?lowercase()}" />
-				<var name="kbArticleTitleFormatted" value="${kbArticleTitleFormatted?replace(' ', '-')}" />
+				<var method="StringUtil#replace(${kbArticleTitleFormatted}, ' ', '-')" name="kbArticleTitleFormatted" />
 
 				<execute function="Type" locator1="CPKnowledgebaseadminAddarticle#FRIENDLY_URL_FIELD" value1="${kbArticleTitleFormatted}" />
 			</then>
 			<else>
 				<var name="kbArticleTitleFormatted" value="/${kbArticleTitle?lowercase()}" />
-				<var name="kbArticleTitleFormatted" value="${kbArticleTitleFormatted?replace(' ', '-')}" />
+				<var method="StringUtil#replace(${kbArticleTitleFormatted}, ' ', '-')" name="kbArticleTitleFormatted" />
 
 				<execute function="AssertTextEquals" locator1="CPKnowledgebaseadminAddarticle#FRIENDLY_URL_FIELD" value1="${kbArticleTitleFormatted}" />
 			</else>
