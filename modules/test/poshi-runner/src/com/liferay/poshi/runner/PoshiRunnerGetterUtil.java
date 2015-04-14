@@ -222,14 +222,24 @@ public class PoshiRunnerGetterUtil {
 		if (y > (x + 1)) {
 			String parameterString = classCommandName.substring(x + 1, y);
 
-			parameterString = parameterString.replaceAll("\"", "");
-
 			if (parameterString.contains("#")) {
 				parameters = new String[] {
 					PoshiRunnerContext.getPathLocator(parameterString)};
 			}
 			else {
 				parameters = parameterString.split(",");
+
+				if (parameterString.endsWith(",")) {
+					List<String> params = new ArrayList<>();
+
+					for (String parameter : parameters) {
+						params.add(parameter);
+					}
+
+					params.add("");
+
+					parameters = params.toArray(new String[params.size()]);
+				}
 			}
 		}
 
@@ -280,9 +290,9 @@ public class PoshiRunnerGetterUtil {
 					if (parameters[i].length() != 1) {
 						parameters[i] = parameters[i].trim();
 					}
-					else {
-						parameters[i] = parameters[i];
-					}
+
+					parameters[i] = parameters[i].replaceAll("\"", "");
+					parameters[i] = parameters[i].replaceAll("'", "");
 
 					parameterClasses.add(String.class);
 				}
