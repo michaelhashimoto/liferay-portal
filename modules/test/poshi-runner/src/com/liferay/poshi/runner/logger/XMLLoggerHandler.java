@@ -90,6 +90,24 @@ public final class XMLLoggerHandler {
 		return childContainerLoggerElement;
 	}
 
+	private static LoggerElement _getClosingLoggerElement(Element element) {
+		LoggerElement closingLoggerElement = new LoggerElement();
+
+		closingLoggerElement.setClassName("line-container");
+		closingLoggerElement.setName("div");
+
+		closingLoggerElement.addChildLoggerElement(
+			_getLineLoggerElement("misc", "&lt;/"));
+
+		closingLoggerElement.addChildLoggerElement(
+			_getLineLoggerElement("action-type", element.getName()));
+
+		closingLoggerElement.addChildLoggerElement(
+			_getLineLoggerElement("misc", "&gt;"));
+
+		return closingLoggerElement;
+	}
+
 	private static LoggerElement _getLineContainerLoggerElement(
 		Element element) {
 
