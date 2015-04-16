@@ -27,6 +27,8 @@ import java.lang.reflect.Method;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.dom4j.Element;
 
@@ -615,6 +617,26 @@ public class PoshiRunnerExecutor {
 		String varName = element.attributeValue("name");
 		String varValue = element.attributeValue("value");
 
+		Matcher matcher = _pattern.matcher(varValue);
+
+		if (matcher.find()) {
+			String variable = matcher.group(1);
+
+			if (PoshiRunnerVariablesUtil.containsKeyInCommandMap(variable)) {
+				variable = PoshiRunnerVariablesUtil.getValueFromCommandMap(
+					variable);
+			}
+			else {
+				throw new Exception("No such variable " + variable);
+			}
+
+			String method = matcher.group(2);
+
+			if (method.startsWith("length")) {
+				varValue = String.valueOf(variable.length());
+			}
+		}
+
 		if (varValue == null) {
 			if (element.attributeValue("method") != null) {
 				String classCommandName =
@@ -682,6 +704,8 @@ public class PoshiRunnerExecutor {
 		}
 	}
 
+	private static final Pattern _pattern = Pattern.compile(
+		"\\$\\{([\\S]*)\\?([\\S]*)\\}");
 	private static Object _returnObject;
 
 }
