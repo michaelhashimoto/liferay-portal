@@ -77,7 +77,7 @@
 						<equals arg1="${tagNumber}" arg2="${numberOfTags}" />
 					</not>
 					<then>
-						<var name="tagNumber" value="${tagNumber?increment()}" />
+						<var method="MathUtil#sum(${tagNumber}, 1)" name="tagNumber" />
 
 						<execute function="Type" locator1="SOTasksAdd#TASK_TAG_FIELD" value1="tag${tagNumber}" />
 						<execute function="Click" locator1="SOTasksAdd#TASK_ADD_TAG_BUTTON" />
@@ -637,7 +637,7 @@
 						<equals arg1="${tagNumber}" arg2="${numberOfTags}" />
 					</not>
 					<then>
-						<var name="tagNumber" value="${tagNumber?increment()}" />
+						<var method="MathUtil#sum(${tagNumber}, 1)" name="tagNumber" />
 
 						<execute function="AssertTextEquals" locator1="SOTasksTask#TASK_TAG" value1="tag${tagNumber}" />
 					</then>

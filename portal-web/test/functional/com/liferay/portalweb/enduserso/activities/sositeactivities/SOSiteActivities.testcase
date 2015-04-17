@@ -53,7 +53,7 @@
 			<var name="pageType" value="Open Site" />
 		</execute>
 
-		<var name="number" value="${number?increment()}" />
+		<var method="MathUtil#sum(${number}, 1)" name="number" />
 
 		<execute macro="DMDocument#addPG" >
 			<var name="dmDocumentDescription" value="${dmDocumentDescription}" />
@@ -87,7 +87,7 @@
 			<var name="pageType" value="Open Site" />
 		</execute>
 
-		<var name="documentTitleRow" value="${documentTitleRow?increment()}" />
+		<var method="MathUtil#sum(${documentTitleRow}, 1)" name="documentTitleRow" />
 
 		<execute function="Click" locator1="SOActivities#ACTIVITIES_DOCUMENT_TITLE_INCREMENT" value1="${dmDocumentTitle}${documentTitleRow}" />
 
@@ -139,7 +139,7 @@
 			<var name="number" value="${number}" />
 		</execute>
 
-		<var name="number" value="${number?increment()}" />
+		<var method="MathUtil#sum(${number}, 1)" name="number" />
 
 		<execute macro="Page#gotoPG">
 			<var name="pageName" value="Forums" />
