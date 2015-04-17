@@ -125,7 +125,7 @@
 	</command>
 
 	<command name="addField">
-		<var name="fieldNameLabel" value="${fieldName?replace(' ', '_')}" />
+		<var method="StringUtil#replace(${fieldName}, ' ', '_')" name="fieldNameLabel" />
 		<var name="fieldNameLabel" value="${fieldNameLabel?lowercase()}" />
 		<var name="key_fieldName" value="${fieldName}" />
 

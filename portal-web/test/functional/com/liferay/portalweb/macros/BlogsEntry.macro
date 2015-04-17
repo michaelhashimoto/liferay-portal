@@ -436,8 +436,8 @@
 		</if>
 
 		<var locator="PGBlogsAdd#DISPLAY_DATE_DATE_MERIDIAN" name="displayDateMeridian" />
-		<var name="displayDateMeridian" value="${displayDateMeridian?replace('0', 'AM')}" />
-		<var name="displayDateMeridian" value="${displayDateMeridian?replace('1', 'PM')}" />
+		<var method="StringUtil#replace(${displayDateMeridian}, '0', 'AM')" name="displayDateMeridian" />
+		<var method="StringUtil#replace(${displayDateMeridian}, '1', 'PM')" name="displayDateMeridian" />
 
 		<var name="displayDate" value="${displayDateHour}:${displayDateMinuteFuture} ${displayDateMeridian}" />
 
@@ -951,7 +951,7 @@
 
 	<command name="removeViewPermissionsPG">
 		<var name="key_entryTitle" value="${entryTitle}" />
-		<var name="key_roleName" value="${roleName?replace(' ', '-')}" />
+		<var method="StringUtil#replace(${roleName}, ' ', '-')" name="key_roleName" />
 		<var name="key_roleName" value="${key_roleName?lowercase()}" />
 
 		<execute function="AssertClick" locator1="PGBlogs#ENTRY_PERMISSIONS" value1="Permissions" />
@@ -1241,9 +1241,9 @@
 	</command>
 
 	<command name="viewFriendlyURLPG">
-		<var name="entryTitleURL" value="${entryTitle?replace(' ', '-')}" />
+		<var method="StringUtil#replace(${entryTitle}, ' ', '-')" name="entryTitleURL" />
 		<var name="entryTitleURL" value="${entryTitleURL?lowercase()}" />
-		<var name="pageNameURL" value="${pageName?replace(' ', '-')}" />
+		<var method="StringUtil#replace(${pageName}, ' ', '-')" name="pageNameURL" />
 		<var name="pageNameURL" value="${pageNameURL?lowercase()}" />
 
 		<var name="friendlyURL" value="http://localhost:8080/web/guest/${pageNameURL}/-/blogs/${entryTitleURL}" />
@@ -1255,9 +1255,9 @@
 	</command>
 
 	<command name="viewFriendlyURLViaRecentBloggersPG">
-		<var name="entryTitleURL" value="${entryTitle?replace(' ', '-')}" />
+		<var method="StringUtil#replace(${entryTitle}, ' ', '-')" name="entryTitleURL" />
 		<var name="entryTitleURL" value="${entryTitleURL?lowercase()}" />
-		<var name="pageNameURL" value="${pageName?replace(' ', '-')}" />
+		<var method="StringUtil#replace(${pageName}, ' ', '-')" name="pageNameURL" />
 		<var name="pageNameURL" value="${pageNameURL?lowercase()}" />
 
 		<var name="friendlyURL" value="http://localhost:8080/web/guest/${pageNameURL}/-/blogs/${entryTitleURL}" />
@@ -1541,7 +1541,7 @@
 
 	<command name="viewViewPermissionsPG">
 		<var name="key_entryTitle" value="${entryTitle}" />
-		<var name="key_roleName" value="${roleName?replace(' ', '-')}" />
+		<var method="StringUtil#replace(${roleName}, ' ', '-')" name="key_roleName" />
 		<var name="key_roleName" value="${key_roleName?lowercase()}" />
 
 		<execute function="AssertClick" locator1="PGBlogs#ENTRY_PERMISSIONS" value1="Permissions" />
