@@ -5008,6 +5008,10 @@ if (ppstate.equals("normal")) {
 					for (String pluginName : pluginNames) {
 						List pluginNameGroup = pluginNameGroups.get(i++ % groupsSize);
 
+						if (pluginName.equals("lcs-portlet")) {
+							pluginNameGroup.add("osb-lcs-portlet");
+						}
+
 						pluginNameGroup.add(pluginName);
 					}
 
