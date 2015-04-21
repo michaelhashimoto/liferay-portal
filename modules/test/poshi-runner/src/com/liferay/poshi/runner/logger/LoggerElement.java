@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -84,6 +85,30 @@ public class LoggerElement {
 		}
 	}
 
+	public void addClassName(String className) {
+		setClassName(_className + " " + className);
+	}
+
+	public LoggerElement copy() {
+		LoggerElement loggerElement = new LoggerElement();
+
+		loggerElement.setClassName(_className);
+		loggerElement.setName(_name);
+		loggerElement.setText(_text);
+
+		return loggerElement;
+	}
+
+	public LoggerElement copy(String id) {
+		LoggerElement loggerElement = new LoggerElement(id);
+
+		loggerElement.setClassName(_className);
+		loggerElement.setName(_name);
+		loggerElement.setText(_text);
+
+		return loggerElement;
+	}
+
 	public List<String> getAttributeNames() {
 		List<String> attributeNames = new ArrayList<>();
 
@@ -138,6 +163,10 @@ public class LoggerElement {
 		}
 
 		return childLoggerElements;
+	}
+
+	public void removeClassName(String className) {
+		setClassName(_className + " " + className);
 	}
 
 	public void setAttribute(String attributeName, String attributeValue) {
@@ -199,12 +228,26 @@ public class LoggerElement {
 			sb.append("\"");
 		}
 
+		Iterator iter = _attributes.entrySet().iterator();
+
+		while (iter.hasNext()) {
+			Map.Entry pair = (Map.Entry)iter.next();
+
+			sb.append(" ");
+			sb.append(pair.getKey());
+			sb.append("=\"");
+			sb.append(pair.getValue());
+			sb.append("\"");
+
+			iter.remove();
+		}
+
+		sb.append(">");
+
 		boolean hasChildren = _childLoggerElements.size() > 0;
 		boolean hasText = Validator.isNotNull(_text);
 
 		if (hasChildren || hasText) {
-			sb.append(">");
-
 			if (hasText) {
 				sb.append(_text);
 			}
@@ -214,14 +257,11 @@ public class LoggerElement {
 					sb.append(childLoggerElement.toString());
 				}
 			}
+		}
 
-			sb.append("</");
-			sb.append(_name);
-			sb.append(">");
-		}
-		else {
-			sb.append(" />");
-		}
+		sb.append("</");
+		sb.append(_name);
+		sb.append(">");
 
 		return sb.toString();
 	}

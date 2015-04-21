@@ -54,6 +54,22 @@ public final class PoshiRunnerStackTraceUtil {
 		return sb.toString();
 	}
 
+	public static String getUniqueID() {
+		Stack<String> stackTrace = (Stack<String>)_stackTrace.clone();
+
+		StringBuilder sb = new StringBuilder();
+
+		for (String filePath : _stackTrace) {
+			if (filePath.contains(".function:")) {
+				continue;
+			}
+
+			sb.append(PoshiRunnerGetterUtil.getFileNameFromFilePath(filePath));
+		}
+
+		return sb.toString();
+	}
+
 	public static String popFilePath() {
 		return _filePaths.pop();
 	}
