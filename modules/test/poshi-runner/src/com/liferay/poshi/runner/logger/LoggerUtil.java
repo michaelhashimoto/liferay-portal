@@ -14,8 +14,10 @@
 
 package com.liferay.poshi.runner.logger;
 
+import com.liferay.poshi.runner.PoshiRunnerContext;
 import com.liferay.poshi.runner.PoshiRunnerGetterUtil;
 import com.liferay.poshi.runner.util.FileUtil;
+import com.liferay.poshi.runner.util.PropsValues;
 import com.liferay.poshi.runner.util.Validator;
 
 import java.net.URL;
@@ -281,7 +283,7 @@ public final class LoggerUtil {
 	}
 
 	public static void startLogger() throws Exception {
-		if (isLoggerStarted()) {
+		if (isLoggerStarted() || PropsValues.HEADLESS_LOGGER_ENABLED) {
 			return;
 		}
 
@@ -296,19 +298,49 @@ public final class LoggerUtil {
 
 		_javascriptExecutor = (JavascriptExecutor)_webDriver;
 
-		_webDriver.get("file://" + _getResourcesDir() + "html/index.html");
-	}
-
-	public static void stopLogger() throws Exception {
 		FileUtil.copyDirectory(
 			_getResourcesDir() + "css", _CURRENT_DIR + "/test-results/css");
 
-		String content = (String)_javascriptExecutor.executeScript(
-			"return document.getElementsByTagName('html')[0].outerHTML;");
+		String testCaseCommandName =
+			PoshiRunnerContext.getTestCaseCommandName();
 
-		FileUtil.write(_CURRENT_DIR + "/test-results/html/index.html", content);
+		testCaseCommandName = testCaseCommandName.replaceAll("#", "_");
 
-		if (isLoggerStarted()) {
+		FileUtil.copyDirectory(
+			_getResourcesDir() + "html",
+			_CURRENT_DIR + "/test-results/" + testCaseCommandName);
+
+		_webDriver.get(
+			"file://" + _CURRENT_DIR + "/test-results/" + testCaseCommandName +
+				"/index.html");
+	}
+
+	public static void stopLogger() throws Exception {
+		String content = FileUtil.read(
+			"src/META-INF/resources/html/index.html");
+
+		String commandLogText = CommandLoggerHandler.getCommandLogText();
+
+		content = content.replace(
+			"<ul class=\"command-log\" data-logid=\"01\" id=\"commandLog\">",
+			"<ul class=\"command-log\" data-logid=\"01\" id=\"commandLog\">" +
+				commandLogText);
+
+		String testCaseCommandName =
+			PoshiRunnerContext.getTestCaseCommandName();
+
+		testCaseCommandName = testCaseCommandName.replaceAll("#", "_");
+
+		FileUtil.write(
+			_CURRENT_DIR + "/test-results/" + testCaseCommandName +
+				"/index.html", content);
+
+		if(PropsValues.HEADLESS_LOGGER_ENABLED) {
+			FileUtil.copyDirectory(
+				_getResourcesDir() + "css", _CURRENT_DIR + "/test-results/css");
+		}
+
+		if (isLoggerStarted() || !PropsValues.HEADLESS_LOGGER_ENABLED) {
 			_webDriver.quit();
 
 			_webDriver = null;
