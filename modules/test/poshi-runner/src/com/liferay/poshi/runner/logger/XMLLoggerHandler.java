@@ -14,7 +14,17 @@
 
 package com.liferay.poshi.runner.logger;
 
+import com.liferay.poshi.runner.PoshiRunnerContext;
+import com.liferay.poshi.runner.PoshiRunnerGetterUtil;
+import com.liferay.poshi.runner.PoshiRunnerStackTraceUtil;
+import com.liferay.poshi.runner.util.FileUtil;
+import com.liferay.poshi.runner.util.PropsValues;
+import com.liferay.poshi.runner.util.Validator;
+
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Stack;
 
 import org.dom4j.Attribute;
 import org.dom4j.Element;
@@ -24,105 +34,23 @@ import org.dom4j.Element;
  */
 public final class XMLLoggerHandler {
 
-	public static void generateXMLLog(String classCommandName) {
-		LoggerElement xmlLoggerElement = new LoggerElement();
+	public static void createXMLLogFile(String xmlLogContent) throws Exception {
+		String loggerContent = FileUtil.read(
+			"src/META-INF/resources/html/index.html");
 
-		xmlLoggerElement.setClassName("header");
-		xmlLoggerElement.setName("li");
+		loggerContent = loggerContent.replace(
+			"<ul class=\"xml-log-container\" id=\"xmlLogContainer\" />",
+			"<ul class=\"xml-log-container\" id=\"xmlLogContainer\">\n" +
+				xmlLogContent + "\n</ul>");
 
-		LoggerElement btnContainerLoggerElement = new LoggerElement();
-
-		btnContainerLoggerElement.setClassName("btn-container");
-		btnContainerLoggerElement.setName("div");
-
-		LoggerElement btnLoggerElement = new LoggerElement();
-
-		btnLoggerElement.setClassName("btn btn-collapse");
-		btnLoggerElement.setName("button");
-
-		btnContainerLoggerElement.addChildLoggerElement(btnLoggerElement);
-
-		xmlLoggerElement.addChildLoggerElement(btnContainerLoggerElement);
-
-		LoggerElement lineContainerLoggerElement = new LoggerElement();
-
-		lineContainerLoggerElement.setClassName("line-container");
-		lineContainerLoggerElement.setName("div");
-
-		LoggerElement lineLoggerElement = new LoggerElement();
-
-		lineLoggerElement.setClassName("test-case-command");
-		lineLoggerElement.setName("h3");
-		lineLoggerElement.setText(classCommandName);
-
-		lineContainerLoggerElement.addChildLoggerElement(lineLoggerElement);
-
-		xmlLoggerElement.addChildLoggerElement(lineContainerLoggerElement);
+		FileUtil.write("test-results/html/index.html", loggerContent);
 	}
 
-	private static LoggerElement _getBtnContainerLoggerElement(
-		Element element) {
+	public static LoggerElement generateAttributeElements(
+		List<Attribute> attributes, LoggerElement containerElement) {
 
-		LoggerElement btnContainerLoggerElement = new LoggerElement();
-
-		btnContainerLoggerElement.setClassName("btn-container");
-		btnContainerLoggerElement.setName("div");
-
-		LoggerElement lineNumberLoggerElement = new LoggerElement();
-
-		lineNumberLoggerElement.setClassName("line-number");
-		lineNumberLoggerElement.setName("div");
-		lineNumberLoggerElement.setText(element.attributeValue("line-number"));
-
-		btnContainerLoggerElement.addChildLoggerElement(
-			lineNumberLoggerElement);
-
-		return btnContainerLoggerElement;
-	}
-
-	private static LoggerElement _getChildContainerLoggerElement() {
-		LoggerElement childContainerLoggerElement = new LoggerElement();
-
-		childContainerLoggerElement.setClassName(
-			"child-container collapse collapsible");
-		childContainerLoggerElement.setName("ul");
-
-		return childContainerLoggerElement;
-	}
-
-	private static LoggerElement _getClosingLineContainerLoggerElement(
-		Element element) {
-
-		LoggerElement closingLineContainerLoggerElement = new LoggerElement();
-
-		closingLineContainerLoggerElement.setClassName("line-container");
-		closingLineContainerLoggerElement.setName("div");
-
-		StringBuilder sb = new StringBuilder();
-
-		sb.append(_getLineItemText("misc", "&lt;/"));
-		sb.append(_getLineItemText("action-type", element.getName()));
-		sb.append(_getLineItemText("misc", "&gt;"));
-
-		closingLineContainerLoggerElement.setText(sb.toString());
-
-		return closingLineContainerLoggerElement;
-	}
-
-	private static LoggerElement _getLineContainerLoggerElement(
-		Element element) {
-
-		LoggerElement lineContainerLoggerElement = new LoggerElement();
-
-		lineContainerLoggerElement.setClassName("line-container");
-		lineContainerLoggerElement.setName("div");
-
-		StringBuilder sb = new StringBuilder();
-
-		sb.append(_getLineItemText("misc", "&lt;"));
-		sb.append(_getLineItemText("action-type", element.getName()));
-
-		List<Attribute> attributes = element.attributes();
+		LoggerElement quoteElement = generateTextLoggerElement(
+			"misc quote", "\"");
 
 		for (Attribute attribute : attributes) {
 			String attributeName = attribute.getName();
@@ -131,36 +59,483 @@ public final class XMLLoggerHandler {
 				continue;
 			}
 
-			sb.append(_getLineItemText("tag-type", attributeName));
-			sb.append(_getLineItemText("misc", "="));
-			sb.append(_getLineItemText("misc quote", "\""));
-			sb.append(_getLineItemText("name", attribute.getValue()));
-			sb.append(_getLineItemText("misc quote", "\""));
+			containerElement.addChildLoggerElement(
+				generateTextLoggerElement("tag-type", attributeName));
+
+			containerElement.addChildLoggerElement(
+				generateTextLoggerElement("misc", "="));
+
+			containerElement.addChildLoggerElement(quoteElement);
+
+			containerElement.addChildLoggerElement(
+				generateTextLoggerElement("name", attribute.getValue()));
+
+			containerElement.addChildLoggerElement(quoteElement);
 		}
+
+		return containerElement;
+	}
+
+	public static LoggerElement generateBtnContainerElement(Element element) {
+		LoggerElement btnContainerElement = new LoggerElement();
+
+		btnContainerElement.setName("div");
+		btnContainerElement.setClassName("btn-container");
+
+		if (element.attributeValue("line-number") != null) {
+			LoggerElement lineNumberElement = new LoggerElement();
+
+			lineNumberElement.setName("div");
+			lineNumberElement.setClassName("line-number");
+			lineNumberElement.setText(element.attributeValue("line-number"));
+
+			btnContainerElement.addChildLoggerElement(lineNumberElement);
+		}
+
+		List<Element> childElements = element.elements();
+
+		//Modify in order to account for expanding if just macro
+
+		if (!childElements.isEmpty() ||
+			(element.attributeValue("macro") != null) ||
+			(element.attributeValue("macro-desktop") != null) ||
+			(element.attributeValue("macro-mobile") != null)) {
+
+			LoggerElement btnElement = new LoggerElement();
+
+			btnElement.setAttribute("data-btnlinkid", "xml-" + _buttonLinkId);
+			btnElement.setClassName("btn btn-collapse");
+			btnElement.setName("button");
+
+			_buttonIdStack.push(_buttonLinkId);
+
+			_buttonLinkId++;
+
+			btnContainerElement.addChildLoggerElement(btnElement);
+
+			if (!childElements.isEmpty() &&
+				(element.attributeValue("macro") != null) ||
+				(element.attributeValue("macro-desktop") != null) ||
+				(element.attributeValue("macro-mobile") != null)) {
+
+				LoggerElement varBtnElement = new LoggerElement();
+
+				varBtnElement.setAttribute(
+					"data-btnlinkid", "xml-" + _buttonLinkId);
+				varBtnElement.setClassName("btn btn-var");
+				varBtnElement.setName("button");
+
+				_buttonIdStack.push(_buttonLinkId);
+
+				_buttonLinkId++;
+
+				btnContainerElement.addChildLoggerElement(varBtnElement);
+			}
+		}
+
+		return btnContainerElement;
+	}
+
+	public static LoggerElement generateChildContainerElement() {
+		LoggerElement childContainerElement = new LoggerElement();
+
+		childContainerElement.setAttribute(
+			"data-btnlinkid", "xml-" + _buttonIdStack.pop());
+		childContainerElement.setClassName(
+			"child-container collapsible collapse");
+		childContainerElement.setName("ul");
+
+		return childContainerElement;
+	}
+
+	public static LoggerElement generateClosingElement(Element element) {
+		LoggerElement lineContainerElement = new LoggerElement();
+
+		lineContainerElement.setName("div");
+		lineContainerElement.setClassName("line-container");
+
+		lineContainerElement.addChildLoggerElement(
+			generateTextLoggerElement("misc", "&lt;/"));
+
+		lineContainerElement.addChildLoggerElement(
+			generateTextLoggerElement("action-type", element.getName()));
+
+		lineContainerElement.addChildLoggerElement(
+			generateTextLoggerElement("misc", "&gt;"));
+
+		return lineContainerElement;
+	}
+
+	public static LoggerElement generateIONOElements(Element element) {
+		LoggerElement testcaseElement = new LoggerElement();
+
+		_elementToLoggerElement.put(
+			PoshiRunnerStackTraceUtil.getUniqueID(), testcaseElement);
+
+		testcaseElement.setName("li");
+
+		String elementName = element.getName();
+
+		if (elementName.equals("echo")) {
+			testcaseElement.setClassName("echo line-group");
+		}
+		else if (elementName.equals("execute")) {
+			Attribute attribute = element.attribute(1);
+
+			testcaseElement.setClassName(attribute.getName() + " line-group");
+		}
+		else if (elementName.equals("if")) {
+			testcaseElement.setClassName("conditional line-group");
+		}
+		else {
+			testcaseElement.setClassName("line-group");
+		}
+
+		testcaseElement.addChildLoggerElement(
+			generateBtnContainerElement(element));
+		testcaseElement.addChildLoggerElement(
+			generateLineContainerElement(element));
+
+		List<Element> childElements = element.elements();
+
+		if ((element.attributeValue("macro") != null) ||
+			(element.attributeValue("macro-desktop") != null) ||
+			(element.attributeValue("macro-mobile") != null)) {
+
+			if (element.attributeValue("macro") != null) {
+				PoshiRunnerStackTraceUtil.pushFilePath(
+					element.attributeValue("macro"), "macro");
+
+				testcaseElement.addChildLoggerElement(
+					generateMacroElement(element, "macro"));
+
+				PoshiRunnerStackTraceUtil.popFilePath();
+			}
+			else if ((element.attributeValue("macro-desktop") != null) &&
+					 Validator.isNull(PropsValues.MOBILE_DEVICE_TYPE)) {
+
+				PoshiRunnerStackTraceUtil.pushFilePath(
+					element.attributeValue("macro-desktop"), "macro");
+
+				testcaseElement.addChildLoggerElement(
+					generateMacroElement(element, "macro-desktop"));
+
+				PoshiRunnerStackTraceUtil.popFilePath();
+			}
+			else if ((element.attributeValue("macro-mobile") != null) &&
+					 Validator.isNotNull(PropsValues.MOBILE_DEVICE_TYPE)) {
+
+				PoshiRunnerStackTraceUtil.pushFilePath(
+					element.attributeValue("macro-mobile"), "macro");
+
+				testcaseElement.addChildLoggerElement(
+					generateMacroElement(element, "macro-mobile"));
+
+				PoshiRunnerStackTraceUtil.popFilePath();
+			}
+
+			testcaseElement.addChildLoggerElement(
+				generateClosingElement(element));
+		}
+		else if (!childElements.isEmpty()) {
+			LoggerElement childContainerElement =
+				generateChildContainerElement();
+
+			for (Element childElement : childElements) {
+				PoshiRunnerStackTraceUtil.pushStackTrace(
+					childElement.attributeValue("line-number"));
+
+				childContainerElement.addChildLoggerElement(
+					generateIONOElements(childElement));
+
+				PoshiRunnerStackTraceUtil.popStackTrace();
+			}
+
+			testcaseElement.addChildLoggerElement(childContainerElement);
+			testcaseElement.addChildLoggerElement(
+				generateClosingElement(element));
+		}
+
+/*
+		if (classType.equals("test-case")) {
+			PoshiRunnerStackTraceUtil.pushFilePath(classCommandName, classType);
+
+			PoshiRunnerStackTraceUtil.pushStackTrace(
+				element.attributeValue("line-number"));
+		}
+		else if (classType.equals("macro")) {
+			PoshiRunnerStackTraceUtil.pushFilePath(classCommandName, classType);
+
+			PoshiRunnerStackTraceUtil.pushStackTrace(
+				element.attributeValue("line-number"));
+
+			System.out.println(PoshiRunnerStackTraceUtil.getUniqueID());
+		}
+
+		if (classType.equals("test-case")) {
+			PoshiRunnerStackTraceUtil.popStackTrace();
+			PoshiRunnerStackTraceUtil.popFilePath();
+		}
+		else if (classType.equals("macro")) {
+			PoshiRunnerStackTraceUtil.popStackTrace();
+			PoshiRunnerStackTraceUtil.popFilePath();
+		}*/
+
+		return testcaseElement;
+	}
+
+	public static LoggerElement generateLineContainerElement(Element element) {
+		LoggerElement lineContainerElement = new LoggerElement();
+
+		lineContainerElement.setName("div");
+		lineContainerElement.setClassName("line-container");
+
+		lineContainerElement.addChildLoggerElement(
+			generateTextLoggerElement("misc", "&lt;"));
+
+		lineContainerElement.addChildLoggerElement(
+			generateTextLoggerElement("action-type", element.getName()));
+
+		List<Attribute> attributes = element.attributes();
+
+		LoggerElement quoteElement = generateTextLoggerElement(
+			"misc quote", "\"");
+
+		for (Attribute attribute : attributes) {
+			String attributeName = attribute.getName();
+
+			if (attributeName.equals("line-number")) {
+				continue;
+			}
+
+			lineContainerElement.addChildLoggerElement(
+				generateTextLoggerElement("tag-type", attributeName));
+
+			lineContainerElement.addChildLoggerElement(
+				generateTextLoggerElement("misc", "="));
+
+			lineContainerElement.addChildLoggerElement(quoteElement);
+
+			lineContainerElement.addChildLoggerElement(
+				generateTextLoggerElement("name", attribute.getValue()));
+
+			lineContainerElement.addChildLoggerElement(quoteElement);
+		}
+
+		lineContainerElement.addChildLoggerElement(
+			generateTextLoggerElement("misc", "&gt;"));
 
 		List<Element> elements = element.elements();
 
-		if (elements.isEmpty()) {
-			sb.append(_getLineItemText("misc", "/&gt;"));
-		}
-		else {
-			sb.append(_getLineItemText("misc", "&gt;"));
+		if (!elements.isEmpty() && (element.attributeValue("macro") != null) ||
+			(element.attributeValue("macro-desktop") != null) ||
+			(element.attributeValue("macro-mobile") != null)) {
+
+			lineContainerElement.addChildLoggerElement(
+				generateParameterElements(elements));
 		}
 
-		lineContainerLoggerElement.setText(sb.toString());
-
-		return lineContainerLoggerElement;
+		return lineContainerElement;
 	}
 
-	private static String _getLineItemText(String className, String text) {
-		LoggerElement loggerElement = new LoggerElement();
+	public static LoggerElement generateMacroElement(
+		Element executeElement, String macroType) {
 
-		loggerElement.setClassName(className);
-		loggerElement.setID(null);
-		loggerElement.setName("span");
-		loggerElement.setText(text);
+		List<Element> elements = executeElement.elements();
 
-		return loggerElement.toString();
+		String classCommandName = executeElement.attributeValue(macroType);
+
+		String className =
+			PoshiRunnerGetterUtil.getClassNameFromClassCommandName(
+				classCommandName);
+
+		LoggerElement macroContainerElement = generateChildContainerElement();
+
+		Element rootElement = PoshiRunnerContext.getMacroRootElement(className);
+
+		List<Element> rootVarElements = rootElement.elements("var");
+
+		for (Element rootVarElement : rootVarElements) {
+			PoshiRunnerStackTraceUtil.pushStackTrace(
+				rootVarElement.attributeValue("line-number"));
+
+			macroContainerElement.addChildLoggerElement(
+				generateIONOElements(rootVarElement));
+
+			PoshiRunnerStackTraceUtil.popStackTrace();
+		}
+
+		Element commandElement = PoshiRunnerContext.getMacroCommandElement(
+			classCommandName);
+
+		List<Element> childElements = commandElement.elements();
+
+		for (Element childElement : childElements) {
+			PoshiRunnerStackTraceUtil.pushStackTrace(
+				childElement.attributeValue("line-number"));
+
+			macroContainerElement.addChildLoggerElement(
+				generateIONOElements(childElement));
+
+			PoshiRunnerStackTraceUtil.popStackTrace();
+		}
+
+		return macroContainerElement;
 	}
+
+	public static LoggerElement generateParameterElements(
+		List<Element> elements) {
+
+		LoggerElement parameterContainerElement = new LoggerElement();
+
+		parameterContainerElement.setAttribute(
+			"data-btnlinkid", "xml-" + _buttonIdStack.pop());
+		parameterContainerElement.setClassName(
+			"child-container parameter-container collapse");
+
+		parameterContainerElement.setName("div");
+
+		for (Element element : elements) {
+			LoggerElement parameterLineNumberElement = new LoggerElement();
+
+			parameterLineNumberElement.setName("div");
+			parameterLineNumberElement.setClassName("line-number");
+			parameterLineNumberElement.setText(
+				element.attributeValue("line-number"));
+
+			parameterContainerElement.addChildLoggerElement(
+				parameterLineNumberElement);
+
+			parameterContainerElement.addChildLoggerElement(
+				generateLineContainerElement(element));
+		}
+
+		return parameterContainerElement;
+	}
+
+	public static LoggerElement generateTextLoggerElement(
+		String className, String text) {
+
+		LoggerElement textLoggerElement = new LoggerElement();
+
+		textLoggerElement.setClassName(className);
+		textLoggerElement.setName("span");
+		textLoggerElement.setText(text);
+
+		return textLoggerElement;
+	}
+
+	public static void generateXMLLog(
+			String classCommandName, Element element, String testClassName)
+		throws Exception {
+
+		LoggerElement rootElement = new LoggerElement();
+
+		rootElement.setName("li");
+		rootElement.setClassName("header");
+		rootElement.setID("xml-logger-header");
+
+		LoggerElement btnContainerElement = new LoggerElement();
+
+		btnContainerElement.setName("div");
+		btnContainerElement.setClassName("btn-container");
+
+		LoggerElement btnElement = new LoggerElement();
+
+		btnElement.setAttribute("data-btnlinkid", "xml-" + _buttonLinkId);
+		btnElement.setClassName("btn btn-collapse toggle");
+		btnElement.setName("button");
+
+		_buttonIdStack.push(_buttonLinkId);
+		_buttonLinkId++;
+
+		btnContainerElement.addChildLoggerElement(btnElement);
+		rootElement.addChildLoggerElement(btnContainerElement);
+
+		LoggerElement lineContainerElement = new LoggerElement();
+
+		lineContainerElement.setName("div");
+		lineContainerElement.setClassName("line-container");
+
+		LoggerElement lineElement = new LoggerElement();
+
+		lineElement.setName("h3");
+		lineElement.setClassName("testCaseCommand");
+		lineElement.setText(classCommandName);
+
+		lineContainerElement.addChildLoggerElement(lineElement);
+		rootElement.addChildLoggerElement(lineContainerElement);
+
+		LoggerElement childContainerElement = new LoggerElement();
+
+		childContainerElement.setAttribute(
+			"data-btnlinkid", "xml-" + _buttonIdStack.pop());
+		childContainerElement.setClassName("child-container collapsible");
+		childContainerElement.setName("ul");
+
+		Element setupElement = getSetupElement(testClassName);
+
+		PoshiRunnerStackTraceUtil.pushFilePath(
+			testClassName + "#set-up", "test-case");
+		PoshiRunnerStackTraceUtil.pushStackTrace(
+			setupElement.attributeValue("line-number"));
+
+		childContainerElement.addChildLoggerElement(
+			generateIONOElements(setupElement));
+
+		PoshiRunnerStackTraceUtil.popStackTrace();
+		PoshiRunnerStackTraceUtil.popFilePath();
+
+		PoshiRunnerStackTraceUtil.pushFilePath(classCommandName, "test-case");
+		PoshiRunnerStackTraceUtil.pushStackTrace(
+			element.attributeValue("line-number"));
+
+		childContainerElement.addChildLoggerElement(
+			generateIONOElements(element));
+
+		PoshiRunnerStackTraceUtil.popStackTrace();
+		PoshiRunnerStackTraceUtil.popFilePath();
+
+		Element teardownElement = getTeardownElement(testClassName);
+
+		PoshiRunnerStackTraceUtil.pushFilePath(
+			testClassName + "#tear-down", "test-case");
+		PoshiRunnerStackTraceUtil.pushStackTrace(
+			teardownElement.attributeValue("line-number"));
+
+		childContainerElement.addChildLoggerElement(
+			generateIONOElements(teardownElement));
+
+		PoshiRunnerStackTraceUtil.popStackTrace();
+		PoshiRunnerStackTraceUtil.popFilePath();
+
+		rootElement.addChildLoggerElement(childContainerElement);
+
+		createXMLLogFile(rootElement.toString());
+	}
+
+	public static LoggerElement getLoggerElementFromElement(String uniqueID) {
+		return _elementToLoggerElement.get(uniqueID);
+	}
+
+	public static Element getSetupElement(String testClassName) {
+		String setupElementName = testClassName + "#set-up";
+
+		return PoshiRunnerContext.getTestCaseCommandElement(setupElementName);
+	}
+
+	public static Element getTeardownElement(String testClassName) {
+		String teardownElementName = testClassName + "#tear-down";
+
+		return PoshiRunnerContext.getTestCaseCommandElement(
+			teardownElementName);
+	}
+
+	private static final int _LEVEL = 0;
+
+	private static final Stack<Integer> _buttonIdStack = new Stack<>();
+	private static int _buttonLinkId = 0;
+	private static final Map<String, LoggerElement> _elementToLoggerElement =
+		new HashMap<>();
 
 }

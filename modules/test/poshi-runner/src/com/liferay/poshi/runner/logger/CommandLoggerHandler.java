@@ -14,10 +14,16 @@
 
 package com.liferay.poshi.runner.logger;
 
+import com.liferay.poshi.runner.PoshiRunner;
 import com.liferay.poshi.runner.PoshiRunnerContext;
 import com.liferay.poshi.runner.PoshiRunnerGetterUtil;
+import com.liferay.poshi.runner.PoshiRunnerStackTraceUtil;
 import com.liferay.poshi.runner.PoshiRunnerVariablesUtil;
+import com.liferay.poshi.runner.selenium.LiferaySeleniumHelper;
+import com.liferay.poshi.runner.util.StringUtil;
 import com.liferay.poshi.runner.util.Validator;
+
+import java.util.List;
 
 import org.dom4j.Element;
 
@@ -32,6 +38,22 @@ public final class CommandLoggerHandler {
 		}
 
 		_commandElement = null;
+
+		_commandLoggerElement.addChildLoggerElement(
+			_getErrorContainerLoggerElement());
+
+		_commandLoggerElement.addClassName("failed");
+		_runLineLoggerElement.addClassName("error-line");
+
+		LoggerElement xmlLoggerElement =
+			XMLLoggerHandler.getLoggerElementFromElement(
+				PoshiRunnerStackTraceUtil.getUniqueID());
+
+		xmlLoggerElement.setAttribute("data-status01", "fail");
+
+		LoggerUtil.executeJavaScript(
+			"loggerInterface.fire('command-complete', " +
+				xmlLoggerElement.getID() + ")");
 	}
 
 	public static void logClassCommandName(String classCommandName) {
@@ -50,6 +72,76 @@ public final class CommandLoggerHandler {
 		}
 
 		_commandElement = null;
+
+		LoggerElement xmlLoggerElement =
+			XMLLoggerHandler.getLoggerElementFromElement(
+				PoshiRunnerStackTraceUtil.getUniqueID());
+
+		xmlLoggerElement.setAttribute("data-status01", "pass");
+
+		LoggerUtil.executeJavaScript(
+			"loggerInterface.fire('command-complete', " + xmlLoggerElement.getID() + ")");
+	}
+
+	public static void sendRunLine(Element element, List<String> arguments) {
+		LoggerElement childContainerLoggerElement =
+			_commandLoggerElement.loggerElement("ul");
+
+		LoggerElement runLineLoggerElement = new LoggerElement();
+
+		runLineLoggerElement.setClassName("run-line");
+		runLineLoggerElement.setName("li");
+
+		StringBuilder sb = new StringBuilder();
+
+		sb.append(_getLineItemText("misc", "Running "));
+		sb.append(
+			_getLineItemText(
+				"command-name", element.attributeValue("selenium")));
+
+		if (!arguments.isEmpty()) {
+			sb.append(_getLineItemText("misc", " with parameters"));
+
+			for (String argument : arguments) {
+				sb.append(_getLineItemText("misc", "&nbsp;"));
+				sb.append(_getLineItemText("param-value", argument));
+			}
+		}
+
+		runLineLoggerElement.setText(sb.toString());
+
+		_runLineLoggerElement = runLineLoggerElement;
+
+		childContainerLoggerElement.addChildLoggerElement(runLineLoggerElement);
+	}
+
+	public static void setLineGroupStatus(String status) {
+		LoggerElement xmlLoggerElement =
+			XMLLoggerHandler.getLoggerElementFromElement(
+				PoshiRunnerStackTraceUtil.getUniqueID());
+
+		// String oldClass = xmlLoggerElement.getClassName();
+
+		// oldClass = oldClass.replace(" pending", "");
+		// oldClass = oldClass.replace(" fail", "");
+		// oldClass = oldClass.replace(" pass", "");
+
+		// String newClass = oldClass + " " + status;
+
+		// xmlLoggerElement.setClassName(newClass);
+
+		xmlLoggerElement.setAttribute("data-status01", status);
+
+		if (status.equals("pending")) {
+			LoggerUtil.executeJavaScript(
+				"loggerInterface.fire('line-started', '" +
+					xmlLoggerElement.getID() + "')");
+		}
+		else if (status.equals("pass") || status.equals("conditional-fail")) {
+			LoggerUtil.executeJavaScript(
+				"loggerInterface.fire('line-complete', '" +
+					xmlLoggerElement.getID() + "')");
+		}
 	}
 
 	public static void startCommand(Element element) throws Exception {
@@ -57,11 +149,53 @@ public final class CommandLoggerHandler {
 			return;
 		}
 
+		String testClassCommandName = PoshiRunner.getTestClassCommandName();
+
+		testClassCommandName = StringUtil.replace(
+			testClassCommandName, "#", "_");
+
+		LiferaySeleniumHelper.captureScreen(
+			_CURRENT_DIR + "/test-results/" + testClassCommandName +
+				"/screenshot/before" + _errorLinkId + ".jpg");
+
 		_commandElement = element;
 
 		_commandLoggerElement = _getCommandLoggerElement(element);
 
 		_commandLogLoggerElement.addChildLoggerElement(_commandLoggerElement);
+
+		LoggerElement xmlLoggerElement =
+			XMLLoggerHandler.getLoggerElementFromElement(
+				PoshiRunnerStackTraceUtil.getUniqueID());
+
+		String functionLinkID = xmlLoggerElement.getAttributeValue(
+			"data-functionlinkid");
+
+		if (functionLinkID != null) {
+			_functionLinkId = Integer.parseInt(functionLinkID.substring(15));
+		}
+
+		xmlLoggerElement.setAttribute("data-status01", "pending");
+
+		xmlLoggerElement.setAttribute(
+			"data-functionlinkid", "functionLinkId-" + _functionLinkId);
+
+		_commandLoggerElement.setAttribute(
+			"data-functionlinkid", "functionLinkId-" + _functionLinkId);
+
+		LoggerUtil.executeJavaScript(
+			"loggerInterface.fire('command-complete', " +
+				xmlLoggerElement.getID() + ")");
+
+		_functionLinkId++;
+	}
+
+	public static void startTest() {
+		_sidebarLoggerElement.setClassName("sidebar running");
+	}
+
+	public static void stopTest() {
+		_sidebarLoggerElement.setClassName("sidebar finished");
 	}
 
 	private static LoggerElement _getButtonLoggerElement(int btnLinkId) {
@@ -107,6 +241,58 @@ public final class CommandLoggerHandler {
 		_btnLinkId++;
 
 		return commandLoggerElement;
+	}
+
+	private static LoggerElement _getErrorConsoleLoggerElement() {
+		LoggerElement consoleLoggerElement = new LoggerElement();
+
+		consoleLoggerElement.setClassName("console");
+
+		LoggerElement stepsLoggerElement = new LoggerElement();
+
+		stepsLoggerElement.setClassName("steps");
+
+		LoggerElement stepsHeaderLoggerElement = new LoggerElement();
+
+		stepsHeaderLoggerElement.setClassName("steps-header");
+		stepsHeaderLoggerElement.setName("h4");
+		stepsHeaderLoggerElement.setText("Steps:");
+
+		stepsLoggerElement.addChildLoggerElement(stepsHeaderLoggerElement);
+		stepsLoggerElement.addChildLoggerElement(
+			SummaryLoggerHandler.getMajorStepsLoggerElement());
+
+		LoggerElement causeLoggerElement = new LoggerElement();
+
+		causeLoggerElement.setClassName("cause");
+
+		LoggerElement causeHeaderLoggerElement = new LoggerElement();
+
+		causeHeaderLoggerElement.setClassName("cause-header");
+		causeHeaderLoggerElement.setName("h4");
+		causeHeaderLoggerElement.setText("Cause:");
+
+		causeLoggerElement.addChildLoggerElement(causeHeaderLoggerElement);
+		causeLoggerElement.addChildLoggerElement(
+			SummaryLoggerHandler.getCauseBodyLoggerElement());
+
+		consoleLoggerElement.addChildLoggerElement(stepsLoggerElement);
+		consoleLoggerElement.addChildLoggerElement(causeLoggerElement);
+
+		return consoleLoggerElement;
+	}
+
+	private static LoggerElement _getErrorContainerLoggerElement() {
+		LoggerElement errorContainerLoggerElement = new LoggerElement();
+
+		errorContainerLoggerElement.setClassName("error-container hidden");
+
+		errorContainerLoggerElement.addChildLoggerElement(
+			_getErrorConsoleLoggerElement());
+		errorContainerLoggerElement.addChildLoggerElement(
+			_getScreenshotLoggerElement());
+
+		return errorContainerLoggerElement;
 	}
 
 	private static LoggerElement _getLineContainerLoggerElement(Element element)
@@ -180,6 +366,48 @@ public final class CommandLoggerHandler {
 		return loggerElement.toString();
 	}
 
+	private static LoggerElement _getScreenshotLoggerElement() {
+		LoggerElement errorScreenshotLoggerElement = new LoggerElement();
+
+		errorScreenshotLoggerElement.setClassName("screenshot");
+
+		String testClassCommandName = PoshiRunner.getTestClassCommandName();
+
+		testClassCommandName = StringUtil.replace(
+			testClassCommandName, "#", "_");
+
+		try {
+			LiferaySeleniumHelper.captureScreen(
+				_CURRENT_DIR + "/test-results/" + testClassCommandName +
+					"/screenshot/after" + _errorLinkId + ".jpg");
+		}
+		catch (Exception e) {
+		}
+
+		LoggerElement beforeLoggerElement = new LoggerElement();
+
+		beforeLoggerElement.setAttribute("alt", "before.jpg");
+		beforeLoggerElement.setAttribute(
+			"src", "screenshot/before" + _errorLinkId + ".jpg");
+		beforeLoggerElement.setClassName("before");
+		beforeLoggerElement.setName("img");
+
+		LoggerElement afterLoggerElement = new LoggerElement();
+
+		afterLoggerElement.setAttribute("alt", "after.jpg");
+		afterLoggerElement.setAttribute(
+			"src", "screenshot/after" + _errorLinkId + ".jpg");
+		afterLoggerElement.setClassName("after");
+		afterLoggerElement.setName("img");
+
+		_errorLinkId++;
+
+		errorScreenshotLoggerElement.addChildLoggerElement(beforeLoggerElement);
+		errorScreenshotLoggerElement.addChildLoggerElement(afterLoggerElement);
+
+		return errorScreenshotLoggerElement;
+	}
+
 	private static boolean _isCommand(Element element) {
 		if (!Validator.equals(element.getName(), "execute")) {
 			return false;
@@ -200,10 +428,18 @@ public final class CommandLoggerHandler {
 		return element.equals(_commandElement);
 	}
 
+	private static final String _CURRENT_DIR =
+		PoshiRunnerGetterUtil.getCanonicalPath(".");
+
 	private static int _btnLinkId;
 	private static Element _commandElement;
 	private static LoggerElement _commandLoggerElement;
 	private static final LoggerElement _commandLogLoggerElement =
 		new LoggerElement("commandLog");
+	private static int _errorLinkId;
+	private static int _functionLinkId;
+	private static LoggerElement _runLineLoggerElement;
+	private static final LoggerElement _sidebarLoggerElement =
+		new LoggerElement("sidebar");
 
 }

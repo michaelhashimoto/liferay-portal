@@ -24,6 +24,7 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -35,8 +36,7 @@ import java.util.Set;
 public class LoggerElement {
 
 	public LoggerElement() {
-		SimpleDateFormat simpleDateFormat = new SimpleDateFormat(
-			"yyyyMMddHHmmssSSS");
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HHmmssSSS");
 
 		long time = System.currentTimeMillis();
 
@@ -89,6 +89,26 @@ public class LoggerElement {
 
 	public void addClassName(String className) {
 		setClassName(_className + " " + className);
+	}
+
+	public LoggerElement copy() {
+		LoggerElement loggerElement = new LoggerElement();
+
+		loggerElement.setClassName(_className);
+		loggerElement.setName(_name);
+		loggerElement.setText(_text);
+
+		return loggerElement;
+	}
+
+	public LoggerElement copy(String id) {
+		LoggerElement loggerElement = new LoggerElement(id);
+
+		loggerElement.setClassName(_className);
+		loggerElement.setName(_name);
+		loggerElement.setText(_text);
+
+		return loggerElement;
 	}
 
 	public List<String> getAttributeNames() {
@@ -233,6 +253,20 @@ public class LoggerElement {
 			sb.append(" id=\"");
 			sb.append(_id);
 			sb.append("\"");
+		}
+
+		Iterator iter = _attributes.entrySet().iterator();
+
+		while (iter.hasNext()) {
+			Map.Entry pair = (Map.Entry)iter.next();
+
+			sb.append(" ");
+			sb.append(pair.getKey());
+			sb.append("=\"");
+			sb.append(pair.getValue());
+			sb.append("\"");
+
+			iter.remove();
 		}
 
 		sb.append(">");

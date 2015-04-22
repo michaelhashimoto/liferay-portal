@@ -15,7 +15,9 @@
 package com.liferay.poshi.runner;
 
 import com.liferay.poshi.runner.logger.CommandLoggerHandler;
+import com.liferay.poshi.runner.logger.LoggerElement;
 import com.liferay.poshi.runner.logger.LoggerUtil;
+import com.liferay.poshi.runner.logger.XMLLoggerHandler;
 import com.liferay.poshi.runner.selenium.SeleniumUtil;
 import com.liferay.poshi.runner.util.PropsValues;
 
@@ -68,6 +70,16 @@ public class PoshiRunner {
 	}
 
 	public PoshiRunner(String classCommandName) throws Exception {
+		_testClassCommandName = classCommandName;
+		_testClassName = PoshiRunnerGetterUtil.getClassNameFromClassCommandName(
+			_testClassCommandName);
+
+		Element commandElement = PoshiRunnerContext.getTestCaseCommandElement(
+			classCommandName);
+
+		XMLLoggerHandler.generateXMLLog(
+			classCommandName, commandElement, _testClassName);
+
 		LoggerUtil.startLogger();
 
 		SeleniumUtil.startSelenium();
@@ -78,22 +90,32 @@ public class PoshiRunner {
 		System.out.println("###");
 		System.out.println();
 
-		_testClassCommandName = classCommandName;
-		_testClassName = PoshiRunnerGetterUtil.getClassNameFromClassCommandName(
-			_testClassCommandName);
-
 		PoshiRunnerContext.setTestCaseCommandName(_testClassCommandName);
 		PoshiRunnerContext.setTestCaseName(_testClassName);
 	}
 
 	@Test
 	public void test() throws Exception {
+		LoggerElement loggerElement = new LoggerElement("xml-logger-header");
+
+		boolean failed = false;
+
 		try {
+			loggerElement.setAttribute("data-status01", "pending");
+
+			LoggerUtil.executeJavaScript(
+				"loggerInterface.fire('line-started', '" +
+					loggerElement.getID() + "')");
+
+			CommandLoggerHandler.startTest();
+
 			_runSetUp();
 
 			_runCommand();
 		}
 		catch (Exception e) {
+			failed = true;
+
 			throw new PoshiRunnerException(e.getMessage(), e);
 		}
 		finally {
@@ -101,9 +123,22 @@ public class PoshiRunner {
 				_runTearDown();
 			}
 			catch (Exception e) {
+				failed = true;
+
 				PoshiRunnerStackTraceUtil.printStackTrace(e.getMessage());
 
 				PoshiRunnerStackTraceUtil.emptyStackTrace();
+			}
+			finally {
+				if(!failed) {
+					loggerElement.setAttribute("data-status01", "pass");
+
+					LoggerUtil.executeJavaScript(
+						"loggerInterface.fire('line-started', '" +
+							loggerElement.getID() + "')");
+				}
+
+				CommandLoggerHandler.stopTest();
 			}
 		}
 	}
@@ -129,45 +164,57 @@ public class PoshiRunner {
 			classCommandName);
 
 		if (commandElement != null) {
+			CommandLoggerHandler.logClassCommandName(classCommandName);
+
 			PoshiRunnerStackTraceUtil.pushFilePath(
 				classCommandName, "test-case");
 
+			PoshiRunnerStackTraceUtil.pushStackTrace(
+				commandElement.attributeValue("line-number"));
+
+			CommandLoggerHandler.setLineGroupStatus("pending");
+
 			PoshiRunnerExecutor.parseElement(commandElement);
+
+			CommandLoggerHandler.setLineGroupStatus("pass");
+
+			PoshiRunnerStackTraceUtil.popStackTrace();
 
 			PoshiRunnerStackTraceUtil.popFilePath();
 		}
 	}
 
 	private void _runCommand() throws Exception {
-		CommandLoggerHandler.logClassCommandName(_testClassCommandName);
-
 		_runClassCommandName(_testClassCommandName);
 	}
 
 	private void _runSetUp() throws Exception {
-		CommandLoggerHandler.logClassCommandName(_testClassName + "#set-up");
-
 		_runClassCommandName(_testClassName + "#set-up");
+	}
+
+	public static String getTestClassCommandName() {
+		return _testClassCommandName;
+	}
+
+	public static String getTestClassName() {
+		return _testClassName;
 	}
 
 	private void _runTearDown() throws Exception {
 		try {
-			CommandLoggerHandler.logClassCommandName(
-				_testClassName + "#tear-down");
-
 			_runClassCommandName(_testClassName + "#tear-down");
 		}
 		catch (Exception e) {
 			throw e;
 		}
 		finally {
-			LoggerUtil.stopLogger();
+			LoggerUtil.stopLogger(_testClassCommandName);
 
 			SeleniumUtil.stopSelenium();
 		}
 	}
 
-	private final String _testClassCommandName;
-	private final String _testClassName;
+	private static String _testClassCommandName;
+	private static String _testClassName;
 
 }
