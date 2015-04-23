@@ -73,6 +73,18 @@ public final class XMLLoggerHandler {
 		sb.append(
 			_getLineNumberItemText(element.attributeValue("line-number")));
 
+		List<Element> childElements = element.elements();
+
+		boolean isExecutingMacro = _isExecutingMacro(element);
+
+		if (!childElements.isEmpty() || isExecutingMacro) {
+			sb.append(_getBtnItemText("btn-collapse"));
+
+			if (!childElements.isEmpty() && isExecutingMacro) {
+				sb.append(_getBtnItemText("btn-var"));
+			}
+		}
+
 		btnContainerLoggerElement.setText(sb.toString());
 
 		return btnContainerLoggerElement;
