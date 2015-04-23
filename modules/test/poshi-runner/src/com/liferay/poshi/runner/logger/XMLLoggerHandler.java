@@ -68,14 +68,12 @@ public final class XMLLoggerHandler {
 		btnContainerLoggerElement.setClassName("btn-container");
 		btnContainerLoggerElement.setName("div");
 
-		LoggerElement lineNumberLoggerElement = new LoggerElement();
+		StringBuilder sb = new StringBuilder();
 
-		lineNumberLoggerElement.setClassName("line-number");
-		lineNumberLoggerElement.setName("div");
-		lineNumberLoggerElement.setText(element.attributeValue("line-number"));
+		sb.append(
+			_getLineNumberItemText(element.attributeValue("line-number")));
 
-		btnContainerLoggerElement.addChildLoggerElement(
-			lineNumberLoggerElement);
+		btnContainerLoggerElement.setText(sb.toString());
 
 		return btnContainerLoggerElement;
 	}
