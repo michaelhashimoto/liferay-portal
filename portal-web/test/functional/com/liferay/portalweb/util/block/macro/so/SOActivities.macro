@@ -847,7 +847,7 @@
 		<execute function="AssertElementPresent" locator1="SOActivities#ACTIVITIES_TIME_STAMP" />
 		<execute function="AssertTextEquals" locator1="SOActivities#ACTIVITIES_ACTION" value1="${documentsAction}" />
 
-		<var method="MathUtil#sum(${number}, 1)" name="stopAtNumber" />
+		<var method="MathUtil#sum('${number}', '1')" name="stopAtNumber" />
 
 		<while>
 			<not>
@@ -857,7 +857,7 @@
 				<execute function="AssertTextEquals" locator1="SOActivities#ACTIVITIES_DOCUMENT_TITLE_INCREMENT" value1="${dmDocumentTitle}${documentTitleRow}" />
 				<execute function="AssertTextEquals" locator1="SOActivities#ACTIVITIES_DOCUMENT_DESCRIPTION_INCREMENT" value1="${dmDocumentDescription}${documentTitleRow}" />
 
-				<var method="MathUtil#sum(${documentTitleRow}, 1)" name="documentTitleRow" />
+				<var method="MathUtil#sum('${documentTitleRow}', '1')" name="documentTitleRow" />
 			</then>
 		</while>
 

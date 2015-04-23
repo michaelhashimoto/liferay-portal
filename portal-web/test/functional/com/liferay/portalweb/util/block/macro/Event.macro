@@ -28,7 +28,7 @@
 						<equals arg1="${dayNumber}" arg2="${daysIntoFuture}" />
 					</not>
 					<then>
-						<var method="MathUtil#sum(${dayNumber}, 1)" name="dayNumber" />
+						<var method="MathUtil#sum('${dayNumber}', '1')" name="dayNumber" />
 
 						<execute function="Click#clickAtAndWait" locator1="PGCalendar#NEXT_BUTTON" />
 					</then>
