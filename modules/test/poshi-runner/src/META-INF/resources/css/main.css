@@ -1,9 +1,3 @@
-/* ---------- DEV ONLY ---------- */
-
-.btn-command-log {
-	display: none;
-}
-
 /* ---------- Main ---------- */
 
 body {
@@ -37,6 +31,14 @@ li {
 .xml-log {
 	display: block;
 	position: relative;
+	width: 80%;
+}
+
+.command-logger .xml-log {
+	width: 60%;
+}
+
+.minimized-sidebar .xml-log {
 	width: 100%;
 }
 
@@ -216,7 +218,7 @@ li {
 
 /* ---------- Link run log ---------- */
 
-.link-run-log {
+.command-logger {
 	.pass {
 		&.conditional-failed > .line-container {
 			background: transparent;
@@ -240,7 +242,7 @@ li {
 		border: 2px dotted #FF8E24;
 	}
 
-	.scoped.pass.function {
+	.hover.pass.function {
 		background: transparent;
 		outline-width: 0;
 	}
@@ -250,7 +252,7 @@ li {
 		outline-width: 0;
 	}
 
-	.scoped {
+	.hover {
 		&.pass, &.pending {
 			> .line-container {
 				background-color: #FFFBF1;
@@ -263,6 +265,12 @@ li {
 			> .line-container {
 				background-color: #FFDBA2;
 			}
+		}
+	}
+
+	.running .pending.function {
+		> .line-container {
+			background-color: #FFB57C;
 		}
 	}
 }
@@ -286,17 +294,17 @@ li {
 	opacity: 0;
 }
 
-.scoped {
+.hover {
 	background-color: rgba(89, 61, 30, 0.12);
 	border: 2px dashed #FFF;
 	margin: -2px;
 }
 
-.pass.scoped > .btn-container, .fail.scoped > .btn-container {
+.pass.hover > .btn-container, .fail.hover > .btn-container {
 	margin: 1px 0;
 }
 
-.pending.scoped > .btn-container {
+.pending.hover > .btn-container {
 	margin: 0;
 }
 
@@ -304,7 +312,7 @@ li {
 	.line-number {
 		opacity: 0.8;
 	}
-	&.scoped {
+	&.hover {
 		.line-number {
 			opacity: 0.8;
 		}
@@ -319,7 +327,7 @@ li {
 	}
 }
 
-.scoped {
+.hover {
 	> {
 		.line-container .line-number, .btn-container .line-number {
 			opacity: 1;
@@ -337,7 +345,7 @@ li {
 }
 
 .current-scope {
-	&.scoped .macro .line-number {
+	&.hover .macro .line-number {
 		opacity: 0.2;
 	}
 	.macro {
@@ -352,15 +360,15 @@ li {
 	}
 }
 
-.scoped.macro > .child-container, .current-scope.macro > .child-container {
+.hover.macro > .child-container, .current-scope.macro > .child-container {
 	background: rgba(185, 185, 185, 0.3);
 }
 
-.current-scope, .scoped.current-scope {
+.current-scope, .hover.current-scope {
 	background-color: rgba(134, 134, 134, 0.5);
 }
 
-.current-scope.fail .line-container, .scoped.fail .line-container {
+.current-scope.fail .line-container, .hover.fail .line-container {
 	background-color: #EE6C39;
 }
 
@@ -497,6 +505,14 @@ li {
 
 /* ---------- Sidebar ---------- */
 
+.command-logger .sidebar {
+	width: 40%;
+}
+
+.minimized-sidebar .sidebar {
+	transform: translateX(100%);
+}
+
 .sidebar {
 	background: #565C61;
 	box-shadow: -5px 0 0 0 rgba(29, 60, 75, 0.3);
@@ -506,7 +522,7 @@ li {
 	height: 100%;
 	position: fixed;
 	right: 0;
-	transform: translateX(100%);
+	transform: translateX(0%);
 	transition: all 0.6s ease-out;
 	width: 20%;
 	z-index: 2;
@@ -558,7 +574,7 @@ li {
 	}
 }
 
-.global-btn-container {
+.sidebar-btn-container {
 	left: -60px;
 	margin-top: 10px;
 	position: absolute;
@@ -604,7 +620,11 @@ li {
 	}
 }
 
-.link-run-log .btn.btn-jump-to-error {
+.running .btn-command-log {
+	display: none;
+}
+
+.command-logger .btn.btn-jump-to-error {
 	display: block;
 }
 
@@ -758,13 +778,17 @@ li {
 	}
 }
 
+.misc, .action-type, .tag-type {
+	margin: 2px;
+}
+
 /* ---------- Extras ---------- */
 
 li {
 	transition: background 0.2s ease-in-out;
 }
 
-.link-run-log .pass.macro > .line-container {
+.command-logger .pass.macro > .line-container {
 	border-radius: 5px;
 }
 
@@ -845,7 +869,7 @@ li {
 
 .fullscreen-image {
 	&:before {
-		opacity: 0.7;
+		opacity: 0.9;
 		transition: opacity 0.5s ease;
 	}
 
@@ -870,6 +894,7 @@ li {
 
 .line-container {
 	display: block;
+	transition: all 0.2s ease;
 }
 
 .expand-toggle {
