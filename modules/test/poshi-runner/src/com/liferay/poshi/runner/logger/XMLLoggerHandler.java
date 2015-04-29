@@ -252,16 +252,17 @@ public final class XMLLoggerHandler {
 	}
 
 	private static LoggerElement _getLoggerElementFromElement(Element element) {
-		String elementName = element.getName();
+		LoggerElement loggerElement = _getLineGroupLoggerElement(element);
 
-		LoggerElement loggerElement = new LoggerElement();
+		LoggerElement childContainerLoggerElement =
+			_getChildContainerLoggerElement();
 
-		if (elementName.equals("description") || elementName.equals("echo")) {
-			loggerElement = _getEchoLoggerElement(element);
-		}
-		else if (elementName.equals("fail")) {
-			loggerElement = _getFailLoggerElement(element);
-		}
+		loggerElement.addChildLoggerElement(
+			_getChildContentLoggerElement(
+				childContainerLoggerElement, element));
+
+		loggerElement.addChildLoggerElement(
+			_getClosingLineContainerLoggerElement(element));
 
 		return loggerElement;
 	}
