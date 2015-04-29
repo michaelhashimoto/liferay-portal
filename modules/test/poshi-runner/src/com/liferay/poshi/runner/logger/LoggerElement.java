@@ -51,12 +51,18 @@ public class LoggerElement {
 				break;
 			}
 		}
+
+		if (!LoggerUtil.isLoggerStarted()) {
+			_writtenToLogger = true;
+		}
 	}
 
 	public LoggerElement(String id) {
 		_id = id;
 
-		if (Validator.isNotNull(id) && LoggerUtil.isWrittenToLogger(this)) {
+		if (!LoggerUtil.isLoggerStarted() ||
+			(Validator.isNotNull(id) && LoggerUtil.isWrittenToLogger(this))) {
+
 			_writtenToLogger = true;
 		}
 	}
