@@ -2833,6 +2833,13 @@ ${marketplace.portlet.properties}</echo>
 		/>
 
 		<echo message="A report with all the test results can be found at test-results/html/index.html." />
+
+		<if>
+			<isset property="env.TOP_LEVEL_JOB_SHARED_DIR" />
+			<then>
+				<echo file="${env.TOP_LEVEL_JOB_SHARED_DIR}/database.properties" append="true">${database.type},</echo>
+			</then>
+		</if>
 	</target>
 
 	<target name="move-file">
