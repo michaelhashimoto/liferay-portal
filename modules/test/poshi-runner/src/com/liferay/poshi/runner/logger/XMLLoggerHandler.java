@@ -112,6 +112,29 @@ public final class XMLLoggerHandler {
 		return childContainerLoggerElement;
 	}
 
+	private static LoggerElement _getChildContentLoggerElement(
+		LoggerElement childContainerLoggerElement, Element element) {
+
+		List<Element> childElements = element.elements();
+
+		for (Element childElement : childElements) {
+			String childElementName = childElement.getName();
+
+			if (childElementName.equals("description") ||
+				childElementName.equals("echo")) {
+
+				childContainerLoggerElement.addChildLoggerElement(
+					_getEchoLoggerElement(childElement));
+			}
+			else if (childElementName.equals("fail")) {
+				childContainerLoggerElement.addChildLoggerElement(
+					_getFailLoggerElement(childElement));
+			}
+		}
+
+		return childContainerLoggerElement;
+	}
+
 	private static LoggerElement _getClosingLineContainerLoggerElement(
 		Element element) {
 
@@ -229,16 +252,17 @@ public final class XMLLoggerHandler {
 	}
 
 	private static LoggerElement _getLoggerElementFromElement(Element element) {
-		String elementName = element.getName();
+		LoggerElement loggerElement = _getLineGroupLoggerElement(element);
 
-		LoggerElement loggerElement = new LoggerElement();
+		LoggerElement childContainerLoggerElement =
+			_getChildContainerLoggerElement();
 
-		if (elementName.equals("description") || elementName.equals("echo")) {
-			loggerElement = _getEchoLoggerElement(element);
-		}
-		else if (elementName.equals("fail")) {
-			loggerElement = _getFailLoggerElement(element);
-		}
+		loggerElement.addChildLoggerElement(
+			_getChildContentLoggerElement(
+				childContainerLoggerElement, element));
+
+		loggerElement.addChildLoggerElement(
+			_getClosingLineContainerLoggerElement(element));
 
 		return loggerElement;
 	}
