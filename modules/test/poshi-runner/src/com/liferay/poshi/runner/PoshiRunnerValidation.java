@@ -624,15 +624,10 @@ public class PoshiRunnerValidation {
 		throws Exception {
 
 		_validateDefinitionElement(element, filePath);
+		_validateHasChildElements(element, filePath);
 		_validateRequiredChildElement(element, "command", filePath);
 
 		List<Element> childElements = element.elements();
-
-		if (childElements.isEmpty()) {
-			throw new Exception(
-				"Missing child elements\n" + filePath + ":" +
-					element.attributeValue("line-number"));
-		}
 
 		List<String> possibleTagElementNames = Arrays.asList("command", "var");
 
