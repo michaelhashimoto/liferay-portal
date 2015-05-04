@@ -149,6 +149,14 @@ public class WebDriverHelper {
 		}
 	}
 
+	public void check(String locator) {
+		WebElement webElement = getWebElement(locator);
+
+		if (!webElement.isSelected()) {
+			webElement.click();
+		}
+	}
+
 	public static String getAttribute(
 		WebDriver webDriver, String attributeLocator) {
 
@@ -583,6 +591,14 @@ public class WebDriverHelper {
 		sb.append("\");");
 
 		javascriptExecutor.executeScript(sb.toString());
+	}
+
+	public void uncheck(String locator) {
+		WebElement webElement = getWebElement(locator);
+
+		if (webElement.isSelected()) {
+			webElement.click();
+		}
 	}
 
 	protected static WebElement getWebElement(
