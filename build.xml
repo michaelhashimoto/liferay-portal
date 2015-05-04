@@ -715,10 +715,6 @@ Portal: ${lp.source.dir}
 Plugins: ${lp.plugins.dir}</echo>
 	</target>
 
-	<target name="setup-testable-tomcat">
-		<setup-testable-tomcat />
-	</target>
-
 	<target name="start">
 		<antcall target="compile" />
 
