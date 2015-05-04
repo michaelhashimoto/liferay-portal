@@ -355,6 +355,12 @@ public class WebDriverHelper {
 		return !webElements.isEmpty();
 	}
 
+	public static boolean isElementNotPresent(
+		WebDriver webDriver, String locator) {
+
+		return !isElementPresent(webDriver, locator);
+	}
+
 	public static void makeVisible(WebDriver webDriver, String locator) {
 		WebElement bodyWebElement = getWebElement(webDriver, "//body");
 
