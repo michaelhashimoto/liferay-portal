@@ -12,22 +12,26 @@
  * details.
  */
 
-package com.liferay.portal.soap.extender.internal.configuration;
+package com.liferay.portlet.dynamicdatamapping.registry;
 
-import aQute.bnd.annotation.metatype.Meta;
+import com.liferay.portal.kernel.util.ParamUtil;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
- * @author Carlos Sierra Andrés
+ * @author Marcellus Tavares
  */
-@Meta.OCD(
-	id = "com.liferay.portal.soap.extender.internal.configuration.JaxWsApiConfiguration"
-)
-public interface JaxWsApiConfiguration {
+public class DefaultDDMFormFieldValueParameterSerializer
+	implements DDMFormFieldValueParameterSerializer {
 
-	@Meta.AD(required = true)
-	public String contextPath();
+	@Override
+	public String getParameterValue(
+		HttpServletRequest httpServletRequest, String ddmFormFieldParameterName,
+		String defaultDDMFormFieldParameterValue) {
 
-	@Meta.AD(deflt = "10000", required = true)
-	public long timeout();
+		return ParamUtil.getString(
+			httpServletRequest, ddmFormFieldParameterName,
+			defaultDDMFormFieldParameterValue);
+	}
 
 }
