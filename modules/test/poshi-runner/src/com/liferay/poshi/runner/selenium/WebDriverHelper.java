@@ -20,6 +20,7 @@ import com.liferay.poshi.runner.util.HtmlUtil;
 import com.liferay.poshi.runner.util.PropsValues;
 import com.liferay.poshi.runner.util.Validator;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 import java.util.Stack;
@@ -354,6 +355,45 @@ public class WebDriverHelper {
 		return GetterUtil.getInteger(pageYOffset);
 	}
 
+	public String getSelectedLabel(String selectLocator, String timeout) {
+		try {
+			WebElement selectLocatorWebElement = getWebElement(
+				selectLocator, timeout);
+
+			Select select = new Select(selectLocatorWebElement);
+
+			WebElement firstSelectedOptionWebElement =
+				select.getFirstSelectedOption();
+
+			return firstSelectedOptionWebElement.getText();
+		}
+		catch (Exception e) {
+			return null;
+		}
+	}
+
+	public String[] getSelectedLabels(String selectLocator) {
+		WebElement selectLocatorWebElement = getWebElement(selectLocator);
+
+		Select select = new Select(selectLocatorWebElement);
+
+		List<WebElement> allSelectedOptionsWebElements =
+			select.getAllSelectedOptions();
+
+		String[] selectedOptionsWebElements =
+			new String[allSelectedOptionsWebElements.size()];
+
+		for (int i = 0; i < allSelectedOptionsWebElements.size(); i++) {
+			WebElement webElement = allSelectedOptionsWebElements.get(i);
+
+			if (webElement != null) {
+				selectedOptionsWebElements[i] = webElement.getText();
+			}
+		}
+
+		return selectedOptionsWebElements;
+	}
+
 	public static int getViewportHeight(WebDriver webDriver) {
 		WebElement bodyWebElement = getWebElement(webDriver, "//body");
 
@@ -410,6 +450,26 @@ public class WebDriverHelper {
 		WebDriver webDriver, String locator) {
 
 		return !isElementPresent(webDriver, locator);
+	}
+
+	public boolean isNotSelectedLabel(String selectLocator, String pattern) {
+		if (isElementNotPresent(selectLocator)) {
+			return false;
+		}
+
+		String[] selectedLabels = getSelectedLabels(selectLocator);
+
+		List<String> selectedLabelsList = Arrays.asList(selectedLabels);
+
+		return !selectedLabelsList.contains(pattern);
+	}
+
+	public boolean isSelectedLabel(String selectLocator, String pattern) {
+		if (isElementNotPresent(selectLocator)) {
+			return false;
+		}
+
+		return pattern.equals(getSelectedLabel(selectLocator, "1"));
 	}
 
 	public static void makeVisible(WebDriver webDriver, String locator) {
