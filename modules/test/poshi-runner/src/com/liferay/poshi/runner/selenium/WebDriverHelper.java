@@ -470,6 +470,14 @@ public class WebDriverHelper {
 		return !selectedLabelsList.contains(pattern);
 	}
 
+	public boolean isPartialText(String locator, String value) {
+		WebElement webElement = getWebElement(locator, "1");
+
+		String text = webElement.getText();
+
+		return text.contains(value);
+	}
+
 	public boolean isSelectedLabel(String selectLocator, String pattern) {
 		if (isElementNotPresent(selectLocator)) {
 			return false;
