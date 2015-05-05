@@ -458,8 +458,10 @@ public class WebDriverHelper {
 		navigation.refresh();
 	}
 
-	public void select(String selectLocator, String optionLocator) {
-		WebElement webElement = getWebElement(selectLocator);
+	public static void select(
+		WebDriver webDriver, String selectLocator, String optionLocator) {
+
+		WebElement webElement = getWebElement(webDriver, selectLocator);
 
 		Select select = new Select(webElement);
 
@@ -478,7 +480,7 @@ public class WebDriverHelper {
 			if (value.startsWith("regexp:")) {
 				String regexp = value.substring(7);
 
-				selectByRegexpValue(selectLocator, regexp);
+				selectByRegexpValue(webDriver, selectLocator, regexp);
 			}
 			else {
 				List<WebElement> optionWebElements = select.getOptions();
@@ -505,7 +507,7 @@ public class WebDriverHelper {
 			if (label.startsWith("regexp:")) {
 				String regexp = label.substring(7);
 
-				selectByRegexpText(selectLocator, regexp);
+				selectByRegexpText(webDriver, selectLocator, regexp);
 			}
 			else {
 				select.selectByVisibleText(label);
@@ -753,8 +755,10 @@ public class WebDriverHelper {
 			"arguments[0].scrollIntoView();", webElement);
 	}
 
-	protected void selectByRegexpText(String selectLocator, String regexp) {
-		WebElement webElement = getWebElement(selectLocator);
+	protected static void selectByRegexpText(
+		WebDriver webDriver, String selectLocator, String regexp) {
+
+		WebElement webElement = getWebElement(webDriver, selectLocator);
 
 		Select select = new Select(webElement);
 
@@ -779,8 +783,10 @@ public class WebDriverHelper {
 		select.selectByIndex(index);
 	}
 
-	protected void selectByRegexpValue(String selectLocator, String regexp) {
-		WebElement webElement = getWebElement(selectLocator);
+	protected static void selectByRegexpValue(
+		WebDriver webDriver, String selectLocator, String regexp) {
+
+		WebElement webElement = getWebElement(webDriver, selectLocator);
 
 		Select select = new Select(webElement);
 
