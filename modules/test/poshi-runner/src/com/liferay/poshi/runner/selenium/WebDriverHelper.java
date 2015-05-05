@@ -50,8 +50,10 @@ import org.openqa.selenium.support.ui.WebDriverWait;
  */
 public class WebDriverHelper {
 
-	public void addSelection(String locator, String optionLocator) {
-		Select select = new Select(getWebElement(locator));
+	public static void addSelection(
+		WebDriver webDriver, String locator, String optionLocator) {
+
+		Select select = new Select(getWebElement(webDriver, locator));
 
 		if (optionLocator.startsWith("index=")) {
 			select.selectByIndex(
@@ -156,8 +158,8 @@ public class WebDriverHelper {
 		}
 	}
 
-	public void check(String locator) {
-		WebElement webElement = getWebElement(locator);
+	public static void check(WebDriver webDriver, String locator) {
+		WebElement webElement = getWebElement(webDriver, locator);
 
 		if (!webElement.isSelected()) {
 			webElement.click();
@@ -178,10 +180,10 @@ public class WebDriverHelper {
 		return webElement.getAttribute(attribute);
 	}
 
-	public String getConfirmation() {
-		switchTo();
+	public static String getConfirmation(WebDriver webDriver) {
+		webDriver.switchTo();
 
-		WebDriverWait webDriverWait = new WebDriverWait(this, 1);
+		WebDriverWait webDriverWait = new WebDriverWait(webDriver, 1);
 
 		try {
 			Alert alert = webDriverWait.until(
@@ -357,10 +359,12 @@ public class WebDriverHelper {
 		return GetterUtil.getInteger(pageYOffset);
 	}
 
-	public String getSelectedLabel(String selectLocator, String timeout) {
+	public static String getSelectedLabel(
+		WebDriver webDriver, String selectLocator, String timeout) {
+
 		try {
 			WebElement selectLocatorWebElement = getWebElement(
-				selectLocator, timeout);
+				webDriver, selectLocator, timeout);
 
 			Select select = new Select(selectLocatorWebElement);
 
@@ -374,8 +378,11 @@ public class WebDriverHelper {
 		}
 	}
 
-	public String[] getSelectedLabels(String selectLocator) {
-		WebElement selectLocatorWebElement = getWebElement(selectLocator);
+	public static String[] getSelectedLabels(
+		WebDriver webDriver, String selectLocator) {
+
+		WebElement selectLocatorWebElement = getWebElement(
+			webDriver, selectLocator);
 
 		Select select = new Select(selectLocatorWebElement);
 
@@ -440,8 +447,8 @@ public class WebDriverHelper {
 		return point.getY();
 	}
 
-	public void goBack() {
-		WebDriver.Navigation navigation = navigate();
+	public static void goBack(WebDriver webDriver) {
+		WebDriver.Navigation navigation = webDriver.navigate();
 
 		navigation.back();
 	}
@@ -460,32 +467,38 @@ public class WebDriverHelper {
 		return !isElementPresent(webDriver, locator);
 	}
 
-	public boolean isNotSelectedLabel(String selectLocator, String pattern) {
-		if (isElementNotPresent(selectLocator)) {
+	public static boolean isNotSelectedLabel(
+		WebDriver webDriver, String selectLocator, String pattern) {
+
+		if (isElementNotPresent(webDriver, selectLocator)) {
 			return false;
 		}
 
-		String[] selectedLabels = getSelectedLabels(selectLocator);
+		String[] selectedLabels = getSelectedLabels(webDriver, selectLocator);
 
 		List<String> selectedLabelsList = Arrays.asList(selectedLabels);
 
 		return !selectedLabelsList.contains(pattern);
 	}
 
-	public boolean isPartialText(String locator, String value) {
-		WebElement webElement = getWebElement(locator, "1");
+	public static boolean isPartialText(
+		WebDriver webDriver, String locator, String value) {
+
+		WebElement webElement = getWebElement(webDriver, locator, "1");
 
 		String text = webElement.getText();
 
 		return text.contains(value);
 	}
 
-	public boolean isSelectedLabel(String selectLocator, String pattern) {
-		if (isElementNotPresent(selectLocator)) {
+	public static boolean isSelectedLabel(
+		WebDriver webDriver, String selectLocator, String pattern) {
+
+		if (isElementNotPresent(webDriver, selectLocator)) {
 			return false;
 		}
 
-		return pattern.equals(getSelectedLabel(selectLocator, "1"));
+		return pattern.equals(getSelectedLabel(webDriver, selectLocator, "1"));
 	}
 
 	public static void makeVisible(WebDriver webDriver, String locator) {
@@ -554,8 +567,10 @@ public class WebDriverHelper {
 		navigation.refresh();
 	}
 
-	public void select(String selectLocator, String optionLocator) {
-		WebElement webElement = getWebElement(selectLocator);
+	public static void select(
+		WebDriver webDriver, String selectLocator, String optionLocator) {
+
+		WebElement webElement = getWebElement(webDriver, selectLocator);
 
 		Select select = new Select(webElement);
 
@@ -574,7 +589,7 @@ public class WebDriverHelper {
 			if (value.startsWith("regexp:")) {
 				String regexp = value.substring(7);
 
-				selectByRegexpValue(selectLocator, regexp);
+				selectByRegexpValue(webDriver, selectLocator, regexp);
 			}
 			else {
 				List<WebElement> optionWebElements = select.getOptions();
@@ -601,7 +616,7 @@ public class WebDriverHelper {
 			if (label.startsWith("regexp:")) {
 				String regexp = label.substring(7);
 
-				selectByRegexpText(selectLocator, regexp);
+				selectByRegexpText(webDriver, selectLocator, regexp);
 			}
 			else {
 				select.selectByVisibleText(label);
@@ -748,8 +763,8 @@ public class WebDriverHelper {
 		javascriptExecutor.executeScript(sb.toString());
 	}
 
-	public void uncheck(String locator) {
-		WebElement webElement = getWebElement(locator);
+	public static void uncheck(WebDriver webdDriver, String locator) {
+		WebElement webElement = getWebElement(webdDriver, locator);
 
 		if (webElement.isSelected()) {
 			webElement.click();
@@ -849,8 +864,10 @@ public class WebDriverHelper {
 			"arguments[0].scrollIntoView();", webElement);
 	}
 
-	protected void selectByRegexpText(String selectLocator, String regexp) {
-		WebElement webElement = getWebElement(selectLocator);
+	protected static void selectByRegexpText(
+		WebDriver webDriver, String selectLocator, String regexp) {
+
+		WebElement webElement = getWebElement(webDriver, selectLocator);
 
 		Select select = new Select(webElement);
 
@@ -875,8 +892,10 @@ public class WebDriverHelper {
 		select.selectByIndex(index);
 	}
 
-	protected void selectByRegexpValue(String selectLocator, String regexp) {
-		WebElement webElement = getWebElement(selectLocator);
+	protected static void selectByRegexpValue(
+		WebDriver webDriver, String selectLocator, String regexp) {
+
+		WebElement webElement = getWebElement(webDriver, selectLocator);
 
 		Select select = new Select(webElement);
 
