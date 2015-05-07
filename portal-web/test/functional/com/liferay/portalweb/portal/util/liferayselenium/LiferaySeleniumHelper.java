@@ -1251,9 +1251,7 @@ public class LiferaySeleniumHelper {
 
 		liferaySelenium.typeKeys(locator, "");
 
-		Pattern pattern = Pattern.compile("\\(|\\$\\{line\\.separator\\}");
-
-		Matcher matcher = pattern.matcher(value);
+		Matcher matcher = _aceEditorPattern.matcher(value);
 
 		int x = 0;
 
@@ -1624,6 +1622,8 @@ public class LiferaySeleniumHelper {
 		}
 	}
 
+	private static Pattern _aceEditorPattern = Pattern.compile(
+		"\\(|\\$\\{line\\.separator\\}");
 	private static List<Exception> _javaScriptExceptions =
 		new ArrayList<Exception>();
 	private static List<Exception> _liferayExceptions =
