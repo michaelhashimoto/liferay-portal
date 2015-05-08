@@ -27,6 +27,8 @@ import java.lang.reflect.Method;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.dom4j.Element;
 
@@ -565,6 +567,7 @@ public class PoshiRunnerExecutor {
 				sb.append(element.attributeValue("input"));
 				sb.append(StringPool.COMMA);
 				sb.append(element.attributeValue("pattern"));
+				sb.append(StringPool.COMMA);
 				sb.append(element.attributeValue("group"));
 				sb.append(StringPool.CLOSE_PARENTHESIS);
 
@@ -573,6 +576,29 @@ public class PoshiRunnerExecutor {
 			}
 			else {
 				varValue = element.getText();
+			}
+		}
+		else {
+			Matcher matcher = _pattern.matcher(varValue);
+
+			if (matcher.find()) {
+				String method = matcher.group(2);
+				String variable = matcher.group(1);
+
+				if (method.startsWith("length")) {
+					if (PoshiRunnerVariablesUtil.containsKeyInCommandMap(
+							variable)) {
+
+						variable =
+							PoshiRunnerVariablesUtil.getValueFromCommandMap(
+								variable);
+					}
+					else {
+						throw new Exception("No such variable " + variable);
+					}
+
+					varValue = String.valueOf(variable.length());
+				}
 			}
 		}
 
@@ -612,6 +638,8 @@ public class PoshiRunnerExecutor {
 		}
 	}
 
+	private static final Pattern _pattern = Pattern.compile(
+		"\\$\\{([\\S]*)\\?([\\S]*)\\}");
 	private static Object _returnObject;
 
 }
