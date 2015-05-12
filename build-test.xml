@@ -7432,6 +7432,10 @@ cluster.link.bind.addr["cluster-link-udp"]=127.0.0.1
 		<delete file="${liferay.home}/${database.type}.sql" />
 	</target>
 
+	<target name="record-database-type">
+		<echo file="database-type" append="true">${database.type},</echo>
+	</target>
+
 	<target name="record-test-class-file-names">
 		<script classpathref="project.classpath" language="beanshell">
 			<![CDATA[
