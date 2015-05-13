@@ -6,6 +6,12 @@
 
 	<import file="../../../tools/sdk/build-common-osgi-plugin.xml" />
 
+	<target name="generate-test-case-method-names-file" depends="jar">
+		<java classname="com.liferay.poshi.runner.PoshiRunnerContext" classpath="classes">
+			<classpath refid="plugin.classpath" />
+		</java>
+	</target>
+
 	<target name="prepare-poshi-runner" depends="jar">
 		<echo file="classes/poshi-runner-ext.properties">
 			test.basedir=../../../portal-web/test/functional/com/liferay/portalweb/
@@ -66,8 +72,8 @@
 	</target>
 
 	<target name="validate" depends="prepare-poshi-runner">
-	    <java classname="com.liferay.poshi.runner.PoshiRunnerValidation" classpath="classes">
-	    	<classpath refid="plugin.classpath" />
-	    </java>
+		<java classname="com.liferay.poshi.runner.PoshiRunnerValidation" classpath="classes">
+			<classpath refid="plugin.classpath" />
+		</java>
 	</target>
 </project>
