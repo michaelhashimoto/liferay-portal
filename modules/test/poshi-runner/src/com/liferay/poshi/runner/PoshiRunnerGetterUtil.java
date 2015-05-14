@@ -145,6 +145,18 @@ public class PoshiRunnerGetterUtil {
 		return className + "." + fileExtension;
 	}
 
+	public static String getPortalDir() {
+		String projectDir = getProjectDir();
+
+		int x = projectDir.lastIndexOf("/modules");
+
+		if (OSDetector.isWindows()) {
+			x = projectDir.lastIndexOf("\\modules");
+		}
+
+		return projectDir.substring(0, x);
+	}
+
 	public static String getProjectDir() {
 		File file = new File(StringPool.PERIOD);
 
