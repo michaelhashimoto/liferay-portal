@@ -171,7 +171,7 @@ public class PoshiRunnerExecutor {
 				runTaskElement(childElement);
 			}
 			else if (childElementName.equals("var")) {
-				runVarElement(childElement, true);
+				runVarElement(childElement, true, false);
 			}
 			else if (childElementName.equals("while")) {
 				runWhileElement(childElement);
@@ -254,7 +254,7 @@ public class PoshiRunnerExecutor {
 		List<Element> executeVarElements = executeElement.elements("var");
 
 		for (Element executeVarElement : executeVarElements) {
-			runVarElement(executeVarElement, false);
+			runVarElement(executeVarElement, false, true);
 		}
 
 		String classCommandName = executeElement.attributeValue("function");
@@ -421,13 +421,13 @@ public class PoshiRunnerExecutor {
 		List<Element> rootVarElements = rootElement.elements("var");
 
 		for (Element rootVarElement : rootVarElements) {
-			runVarElement(rootVarElement, false);
+			runVarElement(rootVarElement, false, false);
 		}
 
 		List<Element> executeVarElements = executeElement.elements("var");
 
 		for (Element executeVarElement : executeVarElements) {
-			runVarElement(executeVarElement, false);
+			runVarElement(executeVarElement, false, true);
 		}
 
 		SummaryLoggerHandler.startSummary(executeElement);
@@ -550,10 +550,15 @@ public class PoshiRunnerExecutor {
 		XMLLoggerHandler.updateStatus(element, "pass");
 	}
 
-	public static void runVarElement(Element element, boolean commandVar)
+	public static void runVarElement(
+			Element element, boolean commandVar, boolean paramVar)
 		throws Exception {
 
 		PoshiRunnerStackTraceUtil.setCurrentElement(element);
+
+		if (!paramVar) {
+			XMLLoggerHandler.updateStatus(element, "pending");
+		}
 
 		String varName = element.attributeValue("name");
 		String varValue = element.attributeValue("value");
@@ -626,6 +631,10 @@ public class PoshiRunnerExecutor {
 		Matcher matcher = _variablePattern.matcher(replacedVarValue);
 
 		if (matcher.matches() && replacedVarValue.equals(varValue)) {
+			if (!paramVar) {
+				XMLLoggerHandler.updateStatus(element, "pass");
+			}
+
 			return;
 		}
 
@@ -636,6 +645,10 @@ public class PoshiRunnerExecutor {
 		else {
 			PoshiRunnerVariablesUtil.putIntoExecuteMap(
 				varName, replacedVarValue);
+		}
+
+		if (!paramVar) {
+			XMLLoggerHandler.updateStatus(element, "pass");
 		}
 	}
 
