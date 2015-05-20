@@ -617,18 +617,27 @@ public class PoshiRunnerValidation {
 
 		boolean found = false;
 
+		String attributeName = null;
+
 		for (String primaryAttributeName : primaryAttributeNames) {
 			if (Validator.isNotNull(
 					element.attributeValue(primaryAttributeName))) {
 
 				if (!found) {
+					attributeName = primaryAttributeName;
+
 					found = true;
 				}
 				else {
-					_exceptions.add(
-						new Exception(
-							"Too many attributes: " + "\n" + filePath + ":" +
-								element.attributeValue("line-number")));
+					if (!(attributeName.equals("macro-desktop") &&
+						primaryAttributeName.equals("macro-mobile"))) {
+
+						_exceptions.add(
+							new Exception(
+								"Too many attributes: " + "\n" + filePath +
+									":" +
+										element.attributeValue("line-number")));
+					}
 				}
 			}
 		}
