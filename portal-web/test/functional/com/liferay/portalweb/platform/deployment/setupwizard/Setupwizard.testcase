@@ -1,4 +1,4 @@
-<definition component-name="portal-deployment">
+<definition component-name="portal-deployment-mysql">
 	<property name="testray.main.component.name" value="Deployment" />
 
 	<command name="SetupWizardDefaultConfigurationWithSampleData" priority="5">
