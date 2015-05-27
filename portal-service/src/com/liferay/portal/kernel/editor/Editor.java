@@ -12,27 +12,18 @@
  * details.
  */
 
-package com.liferay.frontend.editors.web;
+package com.liferay.portal.kernel.editor;
 
-import com.liferay.portal.kernel.editor.Editor;
-
-import org.osgi.service.component.annotations.Component;
+import javax.servlet.http.HttpServletRequest;
 
 /**
- * @author Raymond Augé
  * @author Roberto Díaz
  */
-@Component(service = Editor.class)
-public class TinyMCEEditor extends BaseEditor {
 
-	@Override
-	public String getName() {
-		return "tinymce";
-	}
+public interface Editor {
 
-	@Override
-	protected String getJspPath() {
-		return "/editors/tinymce.jsp";
-	}
+	public String getJspPath(HttpServletRequest request);
+
+	public String getName();
 
 }
