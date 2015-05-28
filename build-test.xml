@@ -6789,9 +6789,7 @@ plugins.includes=${plugins.includes}</echo>
 									app.server.tomcat.version=7.0.27
 								</echo>
 
-								<var name="test.app.server.bin.dir" unset="true" />
-
-								<var name="test.app.server.bin.dir" value="${app.server.parent.dir}/tomcat-7.0.27/bin" />
+								<var name="app.server.tomcat.bin.dir" value="${app.server.parent.dir}/tomcat-7.0.27/bin" />
 							</then>
 						</if>
 
