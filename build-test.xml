@@ -6783,10 +6783,7 @@ plugins.includes=${plugins.includes}</echo>
 					<matches pattern="http" string="${test.build.bundle.tomcat.zip.url}" />
 					<then>
 						<if>
-							<and>
-								<equals arg1="${app.server.type}" arg2="tomcat" />
-								<equals arg1="${liferay.portal.bundle}" arg2="6.1.20" />
-							</and>
+							<equals arg1="${liferay.portal.bundle}" arg2="6.1.20" />
 							<then>
 								<echo file="app.server.${user.name}.properties" append="true">
 									app.server.tomcat.version=7.0.27
