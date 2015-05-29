@@ -1014,6 +1014,23 @@
 		</sequential>
 	</macrodef>
 
+	<macrodef name="set-tomcat-version-number">
+		<attribute name="liferay.portal.bundle" />
+
+		<sequential>
+			<if>
+				<equals arg1="@{liferay.portal.bundle}" arg2="6.1.20" />
+				<then>
+					<echo file="app.server.${user.name}.properties" append="true">
+						app.server.tomcat.version=7.0.27
+					</echo>
+
+					<var name="app.server.tomcat.bin.dir" value="${app.server.parent.dir}/tomcat-7.0.27/bin" />
+				</then>
+			</if>
+		</sequential>
+	</macrodef>
+
 	<macrodef name="start-android-device">
 		<sequential>
 			<fail message="Please set the property ${mobile.android.home}." unless="mobile.android.home" />
