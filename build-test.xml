@@ -6602,10 +6602,6 @@ svn --username ${svn.username} --password ${svn.password} update -r ${svn.info.r
 
 		<property name="plugins.includes" value="so-portlet,${dependent-apps}" />
 
-		<ant dir="${lp.plugins.dir}" target="clean" />
-
-		<ant dir="${lp.plugins.dir}" target="compile" />
-
 		<ant antfile="build-test-plugins.xml" target="deploy-simple-server-plugins" />
 	</target>
 
