@@ -314,7 +314,7 @@
 		<execute function="AssertClick" locator1="PGDocumentsandmediaMovefiles#SELECT" value1="Select" />
 		<execute function="SelectWindow" locator1="PGDocumentsandmediaMovefiles#SELECT_POP_UP" />
 		<execute function="AssertClick" locator1="PGDocumentsandmediaMovefiles#SELECT_POP_UP_CHOOSE_2" value1="Choose" />
-		<execute function="SelectWindow" locator1="PGDocumentsandmediaMovefiles#SELECT_NULL_WINDOW" />
+		<execute function="SelectWindow" />
 		<execute function="AssertClick#assertValueClickAtAndWait" locator1="PGDocumentsandmediaMovefiles#MOVE" value1="Move" />
 
 		<execute function="AssertTextEquals" locator1="PGDocumentsandmedia#SUCCESS_MESSAGE" value1="Your request completed successfully." />

@@ -400,11 +400,6 @@
 	<td>//div[@class='entry-body']</td>
 	<td></td>
 </tr>
-<tr>
-	<td>SELECT_NULL_WINDOW</td>
-	<td>null</td>
-	<td></td>
-</tr>
 </tbody>
 </table>
 </body>
