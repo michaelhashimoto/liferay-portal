@@ -7855,6 +7855,17 @@ cluster.link.bind.addr["cluster-link-udp"]=127.0.0.1
 		</execute>
 	</target>
 
+	<target name="run-poshi-runner">
+		<get-poshi-test-name />
+
+		<gradle-execute failonerror="false" task="runPoshi">
+			<arg value="--build-file=portal-web/build-test.gradle" />
+			<arg value="-PposhiTestName=${poshi.test.name}" />
+			<arg value="-PseleniumLoggerEnabled=${test.selenium.logger.enabled}" />
+			<arg value="-PtestCaseAvailablePropertyNames=${test.case.available.property.names}" />
+		</gradle-execute>
+	</target>
+
 	<target name="run-selenium-smoke-test">
 		<antcall target="compile" />
 
@@ -7912,14 +7923,7 @@ jdbc.default.password=${database.mysql.password}</echo>
 		<if>
 			<equals arg1="${test.poshi.runner.enabled}" arg2="true" />
 			<then>
-				<get-poshi-test-name />
-
-				<gradle-execute failonerror="false" task="runPoshi">
-					<arg value="--build-file=portal-web/build-test.gradle" />
-					<arg value="-PposhiTestName=${poshi.test.name}" />
-					<arg value="-PseleniumLoggerEnabled=${test.selenium.logger.enabled}" />
-					<arg value="-PtestCaseAvailablePropertyNames=${test.case.available.property.names}" />
-				</gradle-execute>
+				<antcall target="run-poshi-runner" />
 			</then>
 			<else>
 				<if>
