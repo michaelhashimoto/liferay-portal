@@ -1072,6 +1072,11 @@
 		</sequential>
 	</macrodef>
 
+	<macrodef name="setup-testable-tomcat">
+		<sequential>
+		</sequential>
+	</macrodef>
+
 	<macrodef name="start-android-device">
 		<sequential>
 			<fail message="Please set the property ${mobile.android.home}." unless="mobile.android.home" />
@@ -6835,6 +6840,8 @@ svn --username ${svn.username} --password ${svn.password} update -r ${svn.info.r
 					</then>
 					<else>
 						<ant antfile="build-dist.xml" target="build-dist-tomcat" inheritAll="false" />
+
+						<setup-testable-tomcat />
 					</else>
 				</if>
 
