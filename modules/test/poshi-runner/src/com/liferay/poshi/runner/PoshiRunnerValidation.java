@@ -588,7 +588,7 @@ public class PoshiRunnerValidation {
 		if (childElements.isEmpty()) {
 			_exceptions.add(
 				new Exception(
-					"Missing child elements\n " + filePath + ":" +
+					"Missing child elements\n" + filePath + ":" +
 						element.attributeValue("line-number")));
 		}
 	}
@@ -851,12 +851,9 @@ public class PoshiRunnerValidation {
 
 		Element tBodyElement = tableElement.element("tbody");
 
-		if (!Validator.equals(className, "BaseLiferay")) {
-			_validateHasChildElements(tBodyElement, filePath);
-			_validateRequiredChildElementName(tBodyElement, "tr", filePath);
+		List<Element> trElements = tBodyElement.elements();
 
-			List<Element> trElements = tBodyElement.elements();
-
+		if (Validator.isNotNull(trElements)) {
 			for (Element trElement : trElements) {
 				_validateHasChildElements(trElement, filePath);
 				_validateNumberofChildElements(trElement, 3, filePath);
