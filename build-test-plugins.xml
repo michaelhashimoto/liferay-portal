@@ -366,24 +366,15 @@ auto.deploy.dir=${liferay.home}/deploy
 
 plugins.includes=${test.plugin}</echo>
 
-		<ant-execute
-			ant.dir="${lp.plugins.dir}/${test.plugin.type}/${test.plugin}"
-			ant.target="clean"
-		/>
+		<ant dir="${lp.plugins.dir}/${test.plugin.type}/${test.plugin}" target="clean" inheritAll="false" />
 
 		<if>
 			<contains string="${test.plugin}" substring="portlet" />
 			<then>
-				<ant-execute
-					ant.dir="${lp.plugins.dir}/${test.plugin.type}/${test.plugin}"
-					ant.target="compile-jsp"
-				/>
+				<ant dir="${lp.plugins.dir}/${test.plugin.type}/${test.plugin}" target="compile-jsp" inheritAll="false" />
 			</then>
 			<else>
-				<ant-execute
-					ant.dir="${lp.plugins.dir}/${test.plugin.type}/${test.plugin}"
-					ant.target="compile"
-				/>
+				<ant dir="${lp.plugins.dir}/${test.plugin.type}/${test.plugin}" target="compile" inheritAll="false" />
 			</else>
 		</if>
 	</target>
