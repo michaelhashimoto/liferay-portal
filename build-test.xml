@@ -8589,6 +8589,21 @@ Please set "ie.driver.zip" in test.properties to point to "IEDriverServer_x64_2.
 		<ant dir="portal-impl" target="test-class-group" inheritAll="false" />
 
 		<ant dir="util-java" target="test-class-group" inheritAll="false" />
+
+		<if>
+			<available file="/tmp/tomcat-gc.log" />
+			<then>
+				<loadfile property="tomcat-gc-log" srcFile="/tmp/tomcat-gc.log" />
+
+				<echo>
+Tomcat GC log:
+
+${tomcat-gc-log}</echo>
+			</then>
+			<else>
+				<echo>Unable to read /tmp/tomcat-gc.log</echo>
+			</else>
+		</if>
 	</target>
 
 	<target name="test-integration">
