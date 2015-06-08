@@ -139,7 +139,7 @@ work.dir=${basedir.unix}/tools/tck/work</echo>
 					<contains string="${os.name}" substring="Windows" casesensitive="false" />
 				</condition>
 
-				<exec dir="tools/tck/src/${test.directory}" executable="${basedir}/tools/tck/bin/tsant${tsant.file.suffix.bat}" newenvironment="true">
+				<exec dir="tools/tck/src/${test.directory}" executable="${basedir}/tools/tck/bin/tsant${tsant.file.suffix.bat}">
 					<arg line="runclient" />
 					<env key="ANT_OPTS" value="-verbose:gc -Xloggc:/tmp/tsant-gc.log -XX:+PrintGCCause -XX:+PrintGCDetails" />
 					<env key="TS_HOME" value="${basedir}/tools/tck" />
