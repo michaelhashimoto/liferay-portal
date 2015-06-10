@@ -1,5 +1,5 @@
 <definition component-name="portal-smoke">
-	<property name="testray.main.component.name" value="Smoke" />
+	<property name="testray.main.component.name" value="Util" />
 
 	<set-up>
 		<execute macro="SignIn#signInTestSetup" />
