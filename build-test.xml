@@ -8099,6 +8099,13 @@ cluster.link.bind.addr["cluster-link-udp"]=127.0.0.1
 		</gradle-execute>
 	</target>
 
+	<target name="run-poshi-validation">
+		<gradle-execute failonerror="false" task="validatePoshi">
+			<arg value="--build-file=portal-web/build-test.gradle" />
+			<arg value="-PtestCaseAvailablePropertyNames=${test.case.available.property.names}" />
+		</gradle-execute>
+	</target>
+
 	<target name="run-selenium-smoke-test">
 		<antcall target="compile" />
 
