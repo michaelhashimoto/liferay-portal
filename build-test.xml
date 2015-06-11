@@ -8095,6 +8095,7 @@ cluster.link.bind.addr["cluster-link-udp"]=127.0.0.1
 			<arg value="-PposhiTestName=${poshi.test.name}" />
 			<arg value="-PseleniumLoggerEnabled=${test.selenium.logger.enabled}" />
 			<arg value="-PtestCaseAvailablePropertyNames=${test.case.available.property.names}" />
+			<arg value="-PtestSkipTearDown=${test.skip.tear.down}" />
 		</gradle-execute>
 	</target>
 
