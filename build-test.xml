@@ -8846,6 +8846,10 @@ ANT_OPTS=${env.ANT_OPTS}</echo>
 			</test-action>
 		</database-test-run-test>
 
+		<exec executable="service" failonerror="true">
+			<arg line="${database.mysql.service.name} start" />
+		</exec>
+
 		<ant dir="util-java" target="test-class-group" inheritAll="false" />
 
 		<print-gc-logs if:set="env.JENKINS_HOME" />
