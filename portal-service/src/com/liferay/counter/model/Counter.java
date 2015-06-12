@@ -28,7 +28,7 @@ import com.liferay.portal.model.PersistedModel;
  * @generated
  */
 @ProviderType
-public interface Counter extends CounterModel, PersistedModel {
+public interface Counter extends CounterModel, PersistedModels {
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
