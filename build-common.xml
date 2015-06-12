@@ -1305,25 +1305,45 @@ rerun your task.
 
 		<propertycopy from="TEST_CLASS_GROUP_${test.class.group.index}" name="test.classes" />
 
-		<ant target="test-cmd">
-			<property name="junit.forkmode" value="once" />
-			<property name="test.includes" value="${test.classes}" />
-			<property name="test.type" value="integration" />
-		</ant>
+		<if>
+			<or>
+				<not>
+					<isset property="test.type" />
+				</not>
+				<equals arg1="${test.type}" arg2="integration" />
+			</or>
+			<then>
+				<ant target="test-cmd">
+					<property name="junit.forkmode" value="once" />
+					<property name="test.includes" value="${test.classes}" />
+					<property name="test.type" value="integration" />
+				</ant>
 
-		<antcall target="report-test-coverage">
-			<param name="test.type" value="integration" />
-		</antcall>
+				<antcall target="report-test-coverage">
+					<param name="test.type" value="integration" />
+				</antcall>
+			</then>
+		</if>
 
-		<ant target="test-cmd">
-			<property name="junit.forkmode" value="perTest" />
-			<property name="test.includes" value="${test.classes}" />
-			<property name="test.type" value="unit" />
-		</ant>
+		<if>
+			<or>
+				<not>
+					<isset property="test.type" />
+				</not>
+				<equals arg1="${test.type}" arg2="unit" />
+			</or>
+			<then>
+				<ant target="test-cmd">
+					<property name="junit.forkmode" value="perTest" />
+					<property name="test.includes" value="${test.classes}" />
+					<property name="test.type" value="unit" />
+				</ant>
 
-		<antcall target="report-test-coverage">
-			<param name="test.type" value="unit" />
-		</antcall>
+				<antcall target="report-test-coverage">
+					<param name="test.type" value="unit" />
+				</antcall>
+			</then>
+		</if>
 	</target>
 
 	<target name="test-cmd">
