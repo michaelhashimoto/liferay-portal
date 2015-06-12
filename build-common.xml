@@ -1369,6 +1369,34 @@ rerun your task.
 						</fileset>
 					</batchtest>
 				</junit>
+
+				<if>
+					<and>
+						<equals arg1="@{test.type}" arg2="integration" />
+						<isset property="database.type" />
+					</and>
+					<then>
+						<for param="test.results.file">
+							<path>
+								<fileset dir="test-results/@{test.type}">
+									<include name="TEST-*.xml" />
+									<exclude name="TEST-*-*.xml" />
+								</fileset>
+							</path>
+							<sequential>
+								<local name="test.results.file.class.name" />
+
+								<basename file="@{test.results.file}" property="test.results.file.class.name" suffix=".xml" />
+
+								<xmltask dest="test-results/@{test.type}/TEST-${test.results.file.class.name}-${database.type}.xml" source="@{test.results.file}">
+									<replace path="/testsuite/@name" withText="${test.results.file.class.name}-${database.type}" />
+								</xmltask>
+
+								<delete file="@{test.results.file}" />
+							</sequential>
+						</for>
+					</then>
+				</if>
 			</then>
 		</if>
 	</target>
