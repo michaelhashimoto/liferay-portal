@@ -1324,7 +1324,6 @@ rerun your task.
 		<antcall target="report-test-coverage">
 			<param name="test.type" value="unit" />
 		</antcall>
-
 	</target>
 
 	<target name="test-cmd">
