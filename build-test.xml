@@ -5350,7 +5350,7 @@ go]]></replacevalue>
 		</if>
 	</target>
 
-	<target name="get-license-xml">
+	<target name="deploy-license-xml">
 		<if>
 			<matches pattern="http" string="${test.build.license.xml.zip.url}" />
 			<then>
@@ -7285,7 +7285,7 @@ svn --username ${svn.username} --password ${svn.password} update -r ${svn.info.r
 					</elseif>
 				</if>
 
-				<antcall target="get-license-xml" />
+				<antcall target="deploy-license-xml" />
 
 				<if>
 					<matches pattern="http" string="${test.build.plugins.war.zip.url}" />
