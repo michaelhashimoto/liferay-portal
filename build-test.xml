@@ -6116,6 +6116,10 @@ auto.deploy.dest.dir=C:/WINDOWS/system32/config/systemprofile/liferay/websphere-
 			</then>
 		</if>
 
+		<echo file="portal-impl/src/portal-ext.properties" append="true">
+
+portlet.tck.bridge.handshake.port=${portlet.tck.bridge.handshake.port}</echo>
+
 		<if>
 			<isset property="set.permission.algorithm.5" />
 			<then>
