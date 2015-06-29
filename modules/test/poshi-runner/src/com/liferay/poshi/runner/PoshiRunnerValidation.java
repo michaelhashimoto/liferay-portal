@@ -15,7 +15,9 @@
 package com.liferay.poshi.runner;
 
 import com.liferay.poshi.runner.util.OSDetector;
+import com.liferay.poshi.runner.util.PropsUtil;
 import com.liferay.poshi.runner.util.PropsValues;
+import com.liferay.poshi.runner.util.StringUtil;
 import com.liferay.poshi.runner.util.Validator;
 
 import java.util.ArrayList;
@@ -1006,6 +1008,19 @@ public class PoshiRunnerValidation {
 		}
 	}
 
+	private static void _validatePossiblePropertyValues(
+		Element element, List<String> possiblePropertyValues, String filePath) {
+
+		String value = element.attributeValue("value");
+
+		if (!possiblePropertyValues.contains(value)) {
+			_exceptions.add(
+				new Exception(
+					"Invalid " + value + " property value\n" + filePath + ":" +
+						element.attributeValue("line-number")));
+		}
+	}
+
 	private static void _validatePropertyElement(
 		Element element, String filePath) {
 
@@ -1132,6 +1147,9 @@ public class PoshiRunnerValidation {
 				element, Arrays.asList("command"), filePath);
 		}
 
+		List<String> requiredPropertyNames = new ArrayList(
+			PoshiRunnerContext.getTestCaseRequiredPropertyNames());
+
 		List<String> possibleTagElementNames = Arrays.asList(
 			"command", "property", "set-up", "tear-down", "var");
 
@@ -1183,6 +1201,34 @@ public class PoshiRunnerValidation {
 								filePath + ":" +
 								childElement.attributeValue("line-number")));
 				}
+
+				if (requiredPropertyNames.contains(propertyName)) {
+					String testCaseAvailablePropertyValues = PropsUtil.get(
+						"test.case.available.property.values[" + propertyName +
+							"]");
+
+					if (Validator.isNull(testCaseAvailablePropertyValues)) {
+						_exceptions.add(
+							new Exception(
+								"Please set list of available property " +
+									"values for " + propertyName + "\n" +
+									filePath + ":" +
+									childElement.attributeValue(
+										"line-number")));
+
+						requiredPropertyNames.remove(propertyName);
+
+						continue;
+					}
+
+					List<String> possiblePropertyValues = Arrays.asList(
+						StringUtil.split(testCaseAvailablePropertyValues));
+
+					_validatePossiblePropertyValues(
+						childElement, possiblePropertyValues, filePath);
+
+					requiredPropertyNames.remove(propertyName);
+				}
 			}
 			else if (childElementName.equals("set-up") ||
 					 childElementName.equals("tear-down")) {
@@ -1195,6 +1241,13 @@ public class PoshiRunnerValidation {
 			else if (childElementName.equals("var")) {
 				_validateVarElement(childElement, filePath);
 			}
+		}
+
+		if (!requiredPropertyNames.isEmpty()) {
+			_exceptions.add(
+				new Exception(
+					"Missing required properties " +
+						requiredPropertyNames + "\n" + filePath));
 		}
 	}
 
