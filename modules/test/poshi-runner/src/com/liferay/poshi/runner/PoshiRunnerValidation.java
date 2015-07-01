@@ -15,7 +15,9 @@
 package com.liferay.poshi.runner;
 
 import com.liferay.poshi.runner.util.OSDetector;
+import com.liferay.poshi.runner.util.PropsUtil;
 import com.liferay.poshi.runner.util.PropsValues;
+import com.liferay.poshi.runner.util.StringUtil;
 import com.liferay.poshi.runner.util.Validator;
 
 import java.util.ArrayList;
@@ -697,6 +699,44 @@ public class PoshiRunnerValidation {
 			element, null, primaryAttributeNames, filePath);
 	}
 
+	private static void _validateHasRequiredPropertyElements(
+		Element element, String filePath) {
+
+		List<String> requiredPropertyNames = new ArrayList(
+			PoshiRunnerContext.getTestCaseRequiredPropertyNames());
+
+		List<Element> propertyElements = element.elements("property");
+
+		for (Element propertyElement : propertyElements) {
+			_validatePropertyElement(propertyElement, filePath);
+
+			String propertyName = propertyElement.attributeValue("name");
+
+			if (requiredPropertyNames.contains(propertyName)) {
+				String testCaseAvailablePropertyValues = PropsUtil.get(
+					"test.case.available.property.values[" + propertyName +
+						"]");
+
+				requiredPropertyNames.remove(propertyName);
+
+				if (Validator.isNotNull(testCaseAvailablePropertyValues)) {
+					List<String> possiblePropertyValues = Arrays.asList(
+						StringUtil.split(testCaseAvailablePropertyValues));
+
+					_validatePossiblePropertyValues(
+						propertyElement, possiblePropertyValues, filePath);
+				}
+			}
+		}
+
+		if (!requiredPropertyNames.isEmpty()) {
+			_exceptions.add(
+				new Exception(
+					"Missing required properties " +
+						requiredPropertyNames + "\n" + filePath));
+		}
+	}
+
 	private static void _validateIfElement(Element element, String filePath) {
 		_validateHasChildElements(element, filePath);
 		_validateHasNoAttributes(element, filePath);
@@ -1006,6 +1046,23 @@ public class PoshiRunnerValidation {
 		}
 	}
 
+	private static void _validatePossiblePropertyValues(
+		Element element, List<String> possiblePropertyValues, String filePath) {
+
+		List<String> propertyValues = Arrays.asList(
+			StringUtil.split(element.attributeValue("value")));
+
+		for (String propertyValue : propertyValues) {
+			if (!possiblePropertyValues.contains(propertyValue.trim())) {
+				_exceptions.add(
+					new Exception(
+						"Invalid " + propertyValue.trim() +
+							" property value\n" + filePath + ":" +
+							element.attributeValue("line-number")));
+			}
+		}
+	}
+
 	private static void _validatePropertyElement(
 		Element element, String filePath) {
 
@@ -1131,6 +1188,8 @@ public class PoshiRunnerValidation {
 			_validateRequiredChildElementNames(
 				element, Arrays.asList("command"), filePath);
 		}
+
+		_validateHasRequiredPropertyElements(element, filePath);
 
 		List<String> possibleTagElementNames = Arrays.asList(
 			"command", "property", "set-up", "tear-down", "var");
