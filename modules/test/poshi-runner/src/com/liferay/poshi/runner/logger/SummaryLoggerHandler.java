@@ -48,12 +48,12 @@ public final class SummaryLoggerHandler {
 		}
 	}
 
-	public static LoggerElement getCauseBodyLoggerElement() {
-		return _causeBodyLoggerElement;
+	public static LoggerElement getSummaryLogLoggerElement() {
+		return _summaryLogLoggerElement;
 	}
 
-	public static LoggerElement getMajorStepsLoggerElement() {
-		return _majorStepsLoggerElement;
+	public static String getSummaryLogText() {
+		return _summaryLogLoggerElement.toString();
 	}
 
 	public static void passSummary(Element element) {
@@ -73,6 +73,16 @@ public final class SummaryLoggerHandler {
 	public static void startMajorSteps() throws Exception {
 		_causeBodyLoggerElement = _getCauseBodyLoggerElement();
 		_majorStepsLoggerElement = _getMajorStepsLoggerElement();
+
+		_summaryLogLoggerElement = new LoggerElement();
+
+		_summaryLogLoggerElement.setClassName("summary-log");
+		_summaryLogLoggerElement.setName("div");
+
+		_summaryLogLoggerElement.addChildLoggerElement(
+			_getStepsLoggerElement());
+		_summaryLogLoggerElement.addChildLoggerElement(
+			_getCauseLoggerElement());
 	}
 
 	public static void startSummary(Element element) throws Exception {
@@ -112,6 +122,27 @@ public final class SummaryLoggerHandler {
 		LoggerElement loggerElement = new LoggerElement();
 
 		loggerElement.setClassName("cause-body");
+
+		return loggerElement;
+	}
+
+	private static LoggerElement _getCauseHeaderLoggerElement() {
+		LoggerElement loggerElement = new LoggerElement();
+
+		loggerElement.setClassName("cause-header");
+		loggerElement.setName("h4");
+		loggerElement.setText("Cause:");
+
+		return loggerElement;
+	}
+
+	private static LoggerElement _getCauseLoggerElement() {
+		LoggerElement loggerElement = new LoggerElement();
+
+		loggerElement.setClassName("cause");
+
+		loggerElement.addChildLoggerElement(_getCauseHeaderLoggerElement());
+		loggerElement.addChildLoggerElement(_causeBodyLoggerElement);
 
 		return loggerElement;
 	}
@@ -186,6 +217,27 @@ public final class SummaryLoggerHandler {
 
 		loggerElement.addChildLoggerElement(
 			_getStepDescriptionLoggerElement(element));
+
+		return loggerElement;
+	}
+
+	private static LoggerElement _getStepsHeaderLoggerElement() {
+		LoggerElement loggerElement = new LoggerElement();
+
+		loggerElement.setClassName("steps-header");
+		loggerElement.setName("h4");
+		loggerElement.setText("Steps:");
+
+		return loggerElement;
+	}
+
+	private static LoggerElement _getStepsLoggerElement() {
+		LoggerElement loggerElement = new LoggerElement();
+
+		loggerElement.setClassName("steps");
+
+		loggerElement.addChildLoggerElement(_getStepsHeaderLoggerElement());
+		loggerElement.addChildLoggerElement(_majorStepsLoggerElement);
 
 		return loggerElement;
 	}
@@ -382,5 +434,6 @@ public final class SummaryLoggerHandler {
 	private static LoggerElement _minorStepLoggerElement;
 	private static LoggerElement _minorStepsLoggerElement;
 	private static final Pattern _pattern = Pattern.compile("\\$\\{([^}]*)\\}");
+	private static LoggerElement _summaryLogLoggerElement;
 
 }
