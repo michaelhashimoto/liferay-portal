@@ -7,8 +7,53 @@
 		<isset property="env.AXIS_VARIABLE" />
 	</condition>
 
+	<macrodef name="check-deprecated-method">
+		<sequential>
+			<if>
+				<and>
+					<available file="javac.output.txt" />
+					<isset property="env.TOP_LEVEL_SHARED_DIR" />
+				</and>
+				<then>
+					<copy file="javac.output.txt" tofile="${env.TOP_LEVEL_SHARED_DIR}/javac.output.txt" />
+				</then>
+			</if>
+		</sequential>
+	</macrodef>
+
+	<macrodef name="merge-test-results">
+		<sequential>
+			<antcall target="merge-test-results" />
+
+			<mkdir dir="${env.WORKSPACE}/test-results" />
+
+			<copy file="test-results/TESTS-TestSuites.xml" tofile="${env.WORKSPACE}/test-results/TESTS-TestSuites.xml" />
+		</sequential>
+	</macrodef>
+
+	<macrodef name="prepare">
+		<sequential>
+			<if>
+				<not>
+					<equals arg1="${jenkins.axis.variable}" arg2="default" />
+				</not>
+				<then>
+					<antcall target="prepare-test-build" />
+				</then>
+			</if>
+		</sequential>
+	</macrodef>
+
 	<target name="integration-mysql">
-		<echo>${jenkins.axis.variable}</echo>
+		<prepare />
+
+		<antcall target="test-class-group">
+			<param name="test.class.group.index" value="${jenkins.axis.variable}" />
+		</antcall>
+
+		<merge-test-results />
+
+		<check-deprecated-method />
 	</target>
 
 	<target name="integration-oracle">
@@ -20,7 +65,11 @@
 	</target>
 
 	<target name="plugins">
-		<echo>${jenkins.axis.variable}</echo>
+		<prepare />
+
+		<ant antfile="build-test-plugins.xml" target="test-plugin-group">
+			<property name="test.plugin.group.index" value="${jenkins.axis.variable}" />
+		</ant>
 	</target>
 
 	<target name="unit">
