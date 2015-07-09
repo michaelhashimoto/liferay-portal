@@ -2129,29 +2129,12 @@ go]]></replacevalue>
 
 				<property name="testray.testcase.name" value="${poshi.test.name}" />
 
-				<get-testcase-property property.name="description" />
-
-				<condition property="testray.testcase.description" value="${description}" else="">
-					<isset property="description" />
-				</condition>
-
-				<get-testcase-property property.name="known.issues" />
-
-				<condition property="testray.case.defect" value="${known.issues}" else="">
-					<isset property="known.issues" />
-				</condition>
-
-				<get-testcase-property property.name="priority" />
-
-				<property name="testray.testcase.priority" value="${priority}" />
-
+				<get-testcase-property default="" output="testray.case.defect" property.name="known.issues" />
+				<get-testcase-property default="" output="testray.testcase.description" property.name="description" />
+				<get-testcase-property output="testray.testcase.priority" property.name="priority" />
 				<get-testcase-property property.name="testray.component.names" />
 				<get-testcase-property property.name="testray.main.component.name" />
-				<get-testcase-property property.name="testray.testcase.product.edition" />
-
-				<condition property="testray.testcase.product.edition" value="${testray.testcase.product.edition}" else="CE">
-					<isset property="testray.testcase.product.edition" />
-				</condition>
+				<get-testcase-property default="CE" property.name="testray.testcase.product.edition" />
 			</then>
 		</if>
 
