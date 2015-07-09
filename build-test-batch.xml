@@ -7,23 +7,39 @@
 		<isset property="env.AXIS_VARIABLE" />
 	</condition>
 
+	<macrodef name="prepare">
+		<sequential>
+			<antcall target="prepare-test-build" />
+		</sequential>
+	</macrodef>
+
 	<target name="integration-mysql">
+		<prepare />
+
 		<echo>${jenkins.axis.variable}</echo>
 	</target>
 
 	<target name="integration-oracle">
+		<prepare />
+
 		<echo>${jenkins.axis.variable}</echo>
 	</target>
 
 	<target name="integration-postgresql">
+		<prepare />
+
 		<echo>${jenkins.axis.variable}</echo>
 	</target>
 
 	<target name="plugins">
+		<prepare />
+
 		<echo>${jenkins.axis.variable}</echo>
 	</target>
 
 	<target name="unit">
+		<prepare />
+
 		<echo>${jenkins.axis.variable}</echo>
 	</target>
 </project>
