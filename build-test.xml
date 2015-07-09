@@ -642,16 +642,29 @@ jdbc.default.password=${database.password}]]></echo>
 	</macrodef>
 
 	<macrodef name="get-testcase-property">
+		<attribute default="null" name="default" />
+		<attribute default="" name="output" />
 		<attribute name="property.name" />
 
 		<sequential>
-			<var name="@{property.name}" unset="true" />
+			<if>
+				<equals arg1="@{output}" arg2="" />
+				<then>
+					<var name="output" value="@{property.name}" />
+				</then>
+				<else>
+					<var name="output" value="@{output}" />
+				</else>
+			</if>
+
+			<var name="${output}" unset="true" />
 
 			<if>
 				<isset property="test.class" />
 				<then>
 					<property file="${project.dir}/test.generated.properties" />
 
+					<var name="default" value="@{default}" />
 					<var name="property.name" value="@{property.name}" />
 
 					<get-test-method-name />
@@ -659,6 +672,8 @@ jdbc.default.password=${database.password}]]></echo>
 
 					<script classpathref="project.classpath" language="beanshell">
 						<![CDATA[
+							String defaultValue = project.getProperty("default");
+							String output = project.getProperty("output");
 							String propertyName = project.getProperty("property.name");
 							String testMethodName = project.getProperty("test.method.name");
 							String testSimpleClassName = project.getProperty("test.simple.class.name");
@@ -683,9 +698,13 @@ jdbc.default.password=${database.password}]]></echo>
 								sb.append(propertyName);
 
 								propertyValue = project.getProperty(sb.toString());
+
+								if (propertyValue == null && !defaultValue.equals("null")) {
+									propertyValue = defaultValue;
+								}
 							}
 
-							project.setProperty(propertyName, propertyValue);
+							project.setProperty(output, propertyValue);
 						]]>
 					</script>
 				</then>
@@ -3567,6 +3586,79 @@ ${custom.properties}</echo>
 					<replacetoken>jdbc.default.jndi.name=</replacetoken>
 					<replacevalue>jdbc.default.jndi.name=jdbc/LiferayPool</replacevalue>
 				</replace>
+			</then>
+		</if>
+
+		<get-testcase-property property.name="database.sharding" />
+
+		<if>
+			<and>
+				<equals arg1="${database.type}" arg2="mysql" />
+				<equals arg1="${database.sharding}" arg2="true" />
+			</and>
+			<then>
+				<get-database-property property.name="database.driver" />
+				<get-database-property property.name="database.host" />
+				<get-database-property property.name="database.password" />
+				<get-database-property property.name="database.username" />
+
+				<echo file="portal-impl/src/portal-ext.properties" append="true">
+					<![CDATA[
+						jdbc.one.driverClassName=${database.driver}
+						jdbc.one.url=jdbc:mysql://${database.host}/lportal1?useUnicode=true&characterEncoding=UTF-8&useFastDateParsing=false
+						jdbc.one.username=${database.username}
+						jdbc.one.password=${database.password}
+
+						jdbc.two.driverClassName=${database.driver}
+						jdbc.two.url=jdbc:mysql://${database.host}/lportal2?useUnicode=true&characterEncoding=UTF-8&useFastDateParsing=false
+						jdbc.two.username=${database.username}
+						jdbc.two.password=${database.password}
+
+						shard.default.name=default
+						shard.selector=com.liferay.portal.dao.shard.ManualShardSelector
+
+						spring.configs=\
+							META-INF/base-spring.xml,\
+							\
+							META-INF/hibernate-spring.xml,\
+							META-INF/infrastructure-spring.xml,\
+							META-INF/management-spring.xml,\
+							\
+							META-INF/util-spring.xml,\
+							\
+							META-INF/executor-spring.xml,\
+							\
+							META-INF/audit-spring.xml,\
+							META-INF/cluster-spring.xml,\
+							META-INF/comment-spring.xml,\
+							META-INF/form-navigator-spring.xml,\
+							META-INF/jcr-spring.xml,\
+							META-INF/ldap-spring.xml,\
+							META-INF/messaging-core-spring.xml,\
+							META-INF/messaging-misc-spring.xml,\
+							META-INF/mobile-device-spring.xml,\
+							META-INF/notifications-spring.xml,\
+							META-INF/poller-spring.xml,\
+							META-INF/rules-spring.xml,\
+							META-INF/scheduler-spring.xml,\
+							META-INF/search-spring.xml,\
+							META-INF/workflow-spring.xml,\
+							\
+							META-INF/counter-spring.xml,\
+							META-INF/mail-spring.xml,\
+							META-INF/portal-spring.xml,\
+							META-INF/portlet-container-spring.xml,\
+							META-INF/staging-spring.xml,\
+							META-INF/virtual-layouts-spring.xml,\
+							\
+							META-INF/monitoring-spring.xml,\
+							\
+							#META-INF/dynamic-data-source-spring.xml,\
+							META-INF/shard-data-source-spring.xml,\
+							\
+							classpath*:META-INF/ext-spring.xml
+					]]>
+				</echo>
 			</then>
 		</if>
 
