@@ -8376,7 +8376,7 @@ cluster.link.bind.addr["cluster-link-udp"]=127.0.0.1
 			<format property="current.date" pattern="yyyy-MM-dd" />
 		</tstamp>
 
-		<property name="test.console.log.path" value="${liferay.home}/logs/liferay.${current.date}.xml" />
+		<property name="test.console.log.file.name" value="${liferay.home}/logs/liferay.${current.date}.xml" />
 
 		<gradle-execute failonerror="false" task="runPoshi">
 			<arg value="--build-file=portal-web/build-test.gradle" />
@@ -8384,7 +8384,7 @@ cluster.link.bind.addr["cluster-link-udp"]=127.0.0.1
 			<arg value="-PsaveScreenshot=${test.save.screenshot}" />
 			<arg value="-PseleniumLoggerEnabled=${test.selenium.logger.enabled}" />
 			<arg value="-PtestCaseAvailablePropertyNames=${test.case.available.property.names}" />
-			<arg value="-PtestConsoleLogPath=${test.console.log.path}" />
+			<arg value="-PtestConsoleLogFileName=${test.console.log.file.name}" />
 			<arg value="-PtestSkipTearDown=${test.skip.tear.down}" />
 		</gradle-execute>
 	</target>
