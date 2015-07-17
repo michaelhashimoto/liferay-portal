@@ -109,10 +109,10 @@
 		<execute selenium="assertLiferayErrors" />
 	</command>
 
-	<command name="typeFrame">
+	<command name="typeCKEditor">
 		<execute selenium="waitForVisible" />
 
-		<execute selenium="typeFrame" />
+		<execute selenium="typeCKEditor" />
 
 		<execute selenium="assertJavaScriptErrors" />
 
@@ -124,7 +124,7 @@
 
 		<execute argument1="//a[@class='cke_button_cut cke_disabled']" selenium="waitForVisible" />
 
-		<execute selenium="typeFrame" />
+		<execute selenium="typeCKEditor" />
 
 		<execute selenium="assertJavaScriptErrors" />
 
