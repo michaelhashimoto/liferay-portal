@@ -9,7 +9,7 @@
 		<execute function="AssertClick#assertTextClickAtAndWait" locator1="PGWiki#ADD_CHILD_PAGE" value1="Add Child Page" />
 
 		<execute function="Type" locator1="PGWikiAddpage#TITLE_FIELD" value1="${wikiChildPageTitle}" />
-		<execute function="Type#typeFrameWaitForCKEditor" locator1="PGWikiAddpage#BODY_FIELD" value1="${wikiChildPageContent}" />
+		<execute function="Type#typeCKEditorWaitForCKEditor" locator1="PGWikiAddpage#BODY_FIELD" value1="${wikiChildPageContent}" />
 		<execute function="AssertClick#assertValueClickAtAndWaitCKEditor" locator1="PGWikiAddpage#PUBLISH_BUTTON" value1="Publish" />
 
 		<execute function="AssertTextEquals" locator1="PGWiki#SUCCESS_MESSAGE"  value1="Your request completed successfully." />
@@ -54,7 +54,7 @@
 	<command name="addFrontPagePG">
 		<execute function="AssertClick#assertTextClickAtAndWait" locator1="PGWiki#ADD_FRONTPAGE" value1="This page is empty. Edit it to add some text." />
 
-		<execute function="Type#typeFrameWaitForCKEditor" locator1="PGWikiAddpage#BODY_FIELD" value1="${wikiPageContent}" />
+		<execute function="Type#typeCKEditorWaitForCKEditor" locator1="PGWikiAddpage#BODY_FIELD" value1="${wikiPageContent}" />
 		<execute function="AssertClick#assertValueClickAtAndWaitCKEditor" locator1="PGWikiAddpage#PUBLISH_BUTTON" value1="Publish" />
 
 		<execute function="AssertTextEquals" locator1="PGWiki#SUCCESS_MESSAGE"  value1="Your request completed successfully." />
@@ -79,7 +79,7 @@
 		<execute function="AssertClick#assertValueClickAtAndWait" locator1="PGWikiAllpages#ADD_PAGE_BUTTON" value1="Add Page" />
 
 		<execute function="Type" locator1="PGWikiAddpage#TITLE_FIELD" value1="${wikiPageTitle}" />
-		<execute function="Type#typeFrameWaitForCKEditor" locator1="PGWikiAddpage#BODY_FIELD" value1="${wikiPageContent}" />
+		<execute function="Type#typeCKEditorWaitForCKEditor" locator1="PGWikiAddpage#BODY_FIELD" value1="${wikiPageContent}" />
 		<execute function="AssertClick#assertValueClickAtAndWaitCKEditor" locator1="PGWikiAddpage#PUBLISH_BUTTON" value1="Publish" />
 
 		<execute function="AssertTextEquals" locator1="PGWikiAllpages#SUCCESS_MESSAGE"  value1="Your request completed successfully." />
@@ -96,7 +96,7 @@
 		<execute function="AssertClick#assertValueClickAtAndWait" locator1="PGWikiAllpages#ADD_PAGE_BUTTON" value1="Add Page" />
 
 		<execute function="Type" locator1="PGWikiAddpage#TITLE_FIELD" value1="${wikiPageTitle}" />
-		<execute function="Type#typeFrameWaitForCKEditor" locator1="PGWikiAddpage#BODY_FIELD" value1="${wikiPageContent}" />
+		<execute function="Type#typeCKEditorWaitForCKEditor" locator1="PGWikiAddpage#BODY_FIELD" value1="${wikiPageContent}" />
 		<execute function="AssertClick#assertValueClickAtAndWait" locator1="PGWikiAddpage#SUBMIT_FOR_PUBLICATION_BUTTON" value1="Submit for Publication" />
 
 		<execute function="AssertTextEquals" locator1="PGWikiAllpages#SUCCESS_MESSAGE" value1="Your request completed successfully." />
@@ -128,7 +128,7 @@
 
 		<execute function="AssertClick#assertTextClickAtAndWait" locator1="PGWiki#PAGE_ACTIONS_EDIT" value1="Edit" />
 
-		<execute function="Type#typeFrameWaitForCKEditor" locator1="PGWikiAddpage#BODY_FIELD" value1="${wikiPageContentEdit}" />
+		<execute function="Type#typeCKEditorWaitForCKEditor" locator1="PGWikiAddpage#BODY_FIELD" value1="${wikiPageContentEdit}" />
 		<execute function="AssertClick#assertValueClickAtAndWaitCKEditor" locator1="PGWikiAddpage#PUBLISH_BUTTON" value1="Publish" />
 
 		<execute function="AssertTextEquals" locator1="PGWiki#SUCCESS_MESSAGE"  value1="Your request completed successfully." />
@@ -138,7 +138,7 @@
 	<command name="saveAsDraftFrontPagePG">
 		<execute function="AssertClick#assertTextClickAtAndWait" locator1="PGWiki#ADD_FRONTPAGE" value1="This page is empty. Edit it to add some text." />
 
-		<execute function="Type#typeFrameWaitForCKEditor" locator1="PGWikiAddpage#BODY_FIELD" value1="${wikiPageContent}" />
+		<execute function="Type#typeCKEditorWaitForCKEditor" locator1="PGWikiAddpage#BODY_FIELD" value1="${wikiPageContent}" />
 		<execute function="AssertClick#assertValueClickAtAndWaitCKEditor" locator1="PGWikiAddpage#SAVE_AS_DRAFT_BUTTON" value1="Save as Draft" />
 		<execute function="AssertTextEquals" locator1="PGWikiAddpage#SUCCESS_MESSAGE"  value1="Your request completed successfully." />
 		<execute function="AssertTextEquals" locator1="PGWikiAddpage#WORKFLOW_STATUS" value1="Status: Draft" />

@@ -5,7 +5,7 @@
 		<execute function="SelectFrame" locator1="SODashboardAddAnnouncementsEntry#ADD_ENTRY_IFRAME" />
 		<execute function="Select" locator1="SODashboardAddAnnouncementsEntry#DISTRIBUTION_SCOPE_SELECT" value1="${distributionScope}" />
 		<execute function="Type" locator1="SODashboardAddAnnouncementsEntry#TITLE_FIELD" value1="${entryTitle}" />
-		<execute function="Type#typeFrame" locator1="SODashboardAddAnnouncementsEntry#CONTENT_FIELD" value1="${entryContent}" />
+		<execute function="Type#typeCKEditor" locator1="SODashboardAddAnnouncementsEntry#CONTENT_FIELD" value1="${entryContent}" />
 		<execute function="SelectFrameTop" />
 		<execute function="SelectFrame" locator1="SODashboardAddAnnouncementsEntry#ADD_ENTRY_IFRAME" />
 		<execute function="Type" locator1="SODashboardAddAnnouncementsEntry#URL_FIELD" value1="${entryURL}" />
@@ -31,7 +31,7 @@
 
 		<execute function="SelectFrame" locator1="SODashboardAddAnnouncementsEntry#ADD_ENTRY_IFRAME" />
 		<execute function="Type" locator1="SODashboardAddAnnouncementsEntry#TITLE_FIELD" value1="${entryTitleEdit}" />
-		<execute function="Type#typeFrame" locator1="SODashboardAddAnnouncementsEntry#CONTENT_FIELD" value1="${entryContentEdit}" />
+		<execute function="Type#typeCKEditor" locator1="SODashboardAddAnnouncementsEntry#CONTENT_FIELD" value1="${entryContentEdit}" />
 		<execute function="SelectFrameTop" />
 		<execute function="SelectFrame" locator1="SODashboardAddAnnouncementsEntry#ADD_ENTRY_IFRAME" />
 		<execute function="Type" locator1="SODashboardAddAnnouncementsEntry#URL_FIELD" value1="${entryURL}" />

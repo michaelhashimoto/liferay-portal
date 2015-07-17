@@ -47,7 +47,7 @@
 				<var name="number" value="${number}" />
 
 				<execute function="Type" locator1="PGCalendarAddEvent#TITLE_FIELD" value1="${eventTitle}${number}" />
-				<execute function="Type#typeFrameWaitForCKEditor" locator1="PGCalendarAddEvent#DESCRIPTION_FIELD" value1="${eventDescription}${number}" />
+				<execute function="Type#typeCKEditorWaitForCKEditor" locator1="PGCalendarAddEvent#DESCRIPTION_FIELD" value1="${eventDescription}${number}" />
 				<execute function="AssertClick#assertValueClickAtAndWait" locator1="PGCalendarAddEvent#SAVE_BUTTON" value1="Save" />
 
 				<execute function="AssertTextEquals" locator1="PGCalendar#SUCCESS_MESSAGE" value1="Your request completed successfully." />
@@ -59,7 +59,7 @@
 			</then>
 			<else>
 				<execute function="Type" locator1="PGCalendarAddEvent#TITLE_FIELD" value1="${eventTitle}" />
-				<execute function="Type#typeFrameWaitForCKEditor" locator1="PGCalendarAddEvent#DESCRIPTION_FIELD" value1="${eventDescription}" />
+				<execute function="Type#typeCKEditorWaitForCKEditor" locator1="PGCalendarAddEvent#DESCRIPTION_FIELD" value1="${eventDescription}" />
 				<execute function="AssertClick#assertValueClickAtAndWait" locator1="PGCalendarAddEvent#SAVE_BUTTON" value1="Save" />
 
 				<execute function="AssertTextEquals" locator1="PGCalendar#SUCCESS_MESSAGE" value1="Your request completed successfully." />
@@ -81,7 +81,7 @@
 		<execute function="Select" locator1="PGCalendarAddEvent#START_DATE_DAY_SELECT" value1="${eventStartDay}" />
 		<execute function="Select" locator1="PGCalendarAddEvent#START_DATE_YEAR_SELECT" value1="${eventStartYear}" />
 		<execute function="Type" locator1="PGCalendarAddEvent#TITLE_FIELD" value1="${eventTitle}" />
-		<execute function="Type#typeFrameWaitForCKEditor" locator1="PGCalendarAddEvent#DESCRIPTION_FIELD" value1="${eventDescription}" />
+		<execute function="Type#typeCKEditorWaitForCKEditor" locator1="PGCalendarAddEvent#DESCRIPTION_FIELD" value1="${eventDescription}" />
 		<execute function="Select" locator1="PGCalendarAddEvent#TYPE_SELECT" value1="${eventType}" />
 		<execute function="Check" locator1="PGCalendarAddEvent#REPEAT_MONTHLY_CHECKBOX" value1="Monthly" />
 		<execute function="Check" locator1="PGCalendarAddEvent#REPEAT_END_DATE" value1="End By" />
@@ -107,7 +107,7 @@
 		<execute function="Select" locator1="PGCalendarAddEvent#START_DATE_DAY_SELECT" value1="${eventStartDay}" />
 		<execute function="Select" locator1="PGCalendarAddEvent#START_DATE_YEAR_SELECT" value1="${eventStartYear}" />
 		<execute function="Type" locator1="PGCalendarAddEvent#TITLE_FIELD" value1="${eventTitle}" />
-		<execute function="Type#typeFrameWaitForCKEditor" locator1="PGCalendarAddEvent#DESCRIPTION_FIELD" value1="${eventDescription}" />
+		<execute function="Type#typeCKEditorWaitForCKEditor" locator1="PGCalendarAddEvent#DESCRIPTION_FIELD" value1="${eventDescription}" />
 		<execute function="Select" locator1="PGCalendarAddEvent#TYPE_SELECT" value1="${eventType}" />
 		<execute function="Check" locator1="PGCalendarAddEvent#REPEAT_WEEKLY_CHECKBOX" value1="Repeat Weekly Checkbox" />
 		<execute function="Check" locator1="PGCalendarAddEvent#REPEAT_SUNDAY" value1="Sunday" />
@@ -170,7 +170,7 @@
 		<execute function="AssertClick" locator1="PGCalendar#EVENT_MENULIST_EDIT" value1="Edit" />
 
 		<execute function="Type" locator1="PGCalendarEditEvent#TITLE_FIELD" value1="${eventTitleEdit}" />
-		<execute function="Type#typeFrameWaitForCKEditor" locator1="PGCalendarEditEvent#DESCRIPTION_FIELD" value1="${eventDescriptionEdit}" />
+		<execute function="Type#typeCKEditorWaitForCKEditor" locator1="PGCalendarEditEvent#DESCRIPTION_FIELD" value1="${eventDescriptionEdit}" />
 		<execute function="AssertClick#assertValueClickAtAndWait" locator1="PGCalendarEditEvent#SAVE_BUTTON" value1="Save" />
 
 		<execute function="AssertTextEquals" locator1="PGCalendar#SUCCESS_MESSAGE" value1="Your request completed successfully." />

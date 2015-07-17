@@ -6,7 +6,7 @@
 		<execute function="AssertClick#assertValueClickAtAndWait" locator1="PGAnnouncementsManageentries#ADD_ENTRY_BUTTON" value1="Add Entry" />
 
 		<execute function="Type" locator1="PGAnnouncementsAddentry#TITLE_FIELD" value1="${entryTitle}" />
-		<execute function="Type#typeFrameWaitForCKEditor" locator1="PGAnnouncementsAddentry#CONTENT_FIELD" value1="${entryContent}" />
+		<execute function="Type#typeCKEditorWaitForCKEditor" locator1="PGAnnouncementsAddentry#CONTENT_FIELD" value1="${entryContent}" />
 		<execute function="Type" locator1="PGAnnouncementsAddentry#URL_FIELD" value1="${entryURL}" />
 		<execute function="AssertClick#assertValueClickAtAndWait" locator1="PGAnnouncementsAddentry#SAVE_BUTTON" value1="Save" />
 	</command>
@@ -27,7 +27,7 @@
 
 		<execute function="Type" locator1="PGAnnouncementsAddentry#TITLE_FIELD" value1="${entryTitleEdit}" />
 		<execute function="Type" locator1="PGAnnouncementsAddentry#URL_FIELD" value1="${entryURLEdit}" />
-		<execute function="Type#typeFrameWaitForCKEditor" locator1="PGAnnouncementsAddentry#CONTENT_FIELD" value1="${entryContentEdit}" />
+		<execute function="Type#typeCKEditorWaitForCKEditor" locator1="PGAnnouncementsAddentry#CONTENT_FIELD" value1="${entryContentEdit}" />
 		<execute function="AssertClick#assertValueClickAtAndWait" locator1="PGAnnouncementsAddentry#SAVE_BUTTON" value1="Save" />
 	</command>
 
