@@ -4938,6 +4938,14 @@ go]]></replacevalue>
 		<echo file="portal-web/test-ant-scripts/${ant.script.file.name}">${template.content}</echo>
 	</target>
 
+	<target name="curl-execute">
+		<fail message="Please set the property ${curl.args}." unless="curl.args" />
+
+		<exec executable="curl">
+			<arg line="${curl.args}" />
+		</exec>
+	</target>
+
 	<target name="delete-liferay-home">
 		<if>
 			<not>
@@ -5105,14 +5113,6 @@ go]]></replacevalue>
 				</ant>
 			</then>
 		</if>
-	</target>
-
-	<target name="execute-curl">
-		<fail message="Please set the property ${curl.args}." unless="curl.args" />
-
-		<exec executable="curl">
-			<arg line="${curl.args}" />
-		</exec>
 	</target>
 
 	<target name="evaluate-logs">
