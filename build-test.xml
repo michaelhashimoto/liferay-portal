@@ -6851,6 +6851,7 @@ svn --username ${svn.username} --password ${svn.password} update -r ${svn.info.r
 				<then>
 					<echo file="portal-web/test/test-portal-web-ext.properties" append="true">
 						browser.type=*googlechrome
+						selenium.chrome.driver.executable=${selenium.chrome.driver.executable}
 					</echo>
 				</then>
 			</elseif>
