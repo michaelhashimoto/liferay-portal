@@ -7763,6 +7763,23 @@ ANT_OPTS=${env.ANT_OPTS}</echo>
 		<antcall if:set="env.JENKINS_HOME" target="clean-up-java-processes" inheritAll="false" />
 	</target>
 
+	<target name="prepare-test-build-unit">
+		<record-git-commit-portal />
+
+		<antcall target="start" inheritAll="false" />
+
+		<antcall target="compile-test" inheritAll="false" />
+
+		<record-test-class-file-names />
+
+		<antcall target="record-test-plugin-names" inheritAll="false" />
+
+		<echo if:set="env.JENKINS_HOME">
+ANT_OPTS=${env.ANT_OPTS}</echo>
+
+		<antcall if:set="env.JENKINS_HOME" target="clean-up-java-processes" inheritAll="false" />
+	</target>
+
 	<target name="prepare-test-build-tomcat-dependents">
 		<if>
 			<equals arg1="${test.build.bundle.tcat}" arg2="true" />
