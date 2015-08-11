@@ -1,0 +1,21 @@
+<definition component-name="portal-smoke">
+	<property name="testray.main.component.name" value="Smoke" />
+
+	<command name="Test" priority="5">
+		<execute function="AntCommand" locator1="build.xml" value1="test" />
+	</command>
+
+	<command name="Restart" priority="5">
+		<execute macro="Portlet#shutdownServer" />
+
+		<execute macro="Portlet#startServer" />
+	</command>
+
+	<command name="Start" priority="5">
+		<execute macro="Portlet#startServer" />
+	</command>
+
+	<command name="Stop" priority="5">
+		<execute macro="Portlet#shutdownServer" />
+	</command>
+</definition>

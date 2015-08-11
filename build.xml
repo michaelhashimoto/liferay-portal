@@ -970,4 +970,8 @@ print AdminControl.invoke(appManager, 'startApplication', 'liferay-portal')
 			<xmlcatalog refid="dtd.catalog" />
 		</xmlvalidate>
 	</target>
+
+	<target name="test">
+		<echo>${user.dir}</echo>
+	</target>
 </project>
