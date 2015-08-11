@@ -5981,8 +5981,10 @@ if (ppstate.equals("normal")) {
 		<gradle-execute failonerror="false" task="runPoshi">
 			<arg value="--build-file=portal-web/build-test.gradle" />
 			<arg value="-PposhiTestName=${poshi.test.name}" />
+			<arg value="-PprojectDir=${project.dir}" />
 			<arg value="-PsaveScreenshot=${test.save.screenshot}" />
 			<arg value="-PseleniumLoggerEnabled=${test.selenium.logger.enabled}" />
+			<arg value="-PtestBaseDirName=${project.dir}/portal-web/test/functional" />
 			<arg value="-PtestCaseAvailablePropertyNames=${test.case.available.property.names}" />
 			<arg value="-PtestConsoleLogFileName=${test.console.log.file.name}" />
 			<arg value="-PtestSkipTearDown=${test.skip.tear.down}" />
@@ -6053,6 +6055,24 @@ jdbc.default.password=${database.mysql.password}</echo>
 		<if>
 			<equals arg1="${test.poshi.runner.enabled}" arg2="true" />
 			<then>
+				<!-- <get-poshi-test-name />
+
+				<tstamp>
+					<format property="current.date" pattern="yyyy-MM-dd" timezone="GMT" />
+				</tstamp>
+
+				<property name="test.console.log.file.name" value="${liferay.home}/logs/liferay.${current.date}.xml" />
+
+				<ant antfile="build.xml" dir="modules/test/poshi-runner" target="start-poshi-runner">
+					<property name="project.dir" value="${project.dir}" />
+					<property name="save.screenshot" value="${test.save.screenshot}" />
+					<property name="selenium.logger.enabled" value="${test.selenium.logger.enabled}" />
+					<property name="test.case.available.property.names" value="${test.case.available.property.names}" />
+					<property name="test.console.log.file.name" value="${test.console.log.file.name}" />
+					<property name="test.name" value="${poshi.test.name}" />
+					<property name="test.skip.tear.down" value="${test.skip.tear.down}" />
+				</ant> -->
+
 				<antcall target="run-poshi-runner" />
 			</then>
 			<else>
