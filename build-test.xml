@@ -8744,8 +8744,10 @@ cluster.link.bind.addr["cluster-link-udp"]=127.0.0.1
 		<gradle-execute failonerror="false" task="runPoshi">
 			<arg value="--build-file=portal-web/build-test.gradle" />
 			<arg value="-PposhiTestName=${poshi.test.name}" />
+			<arg value="-PprojectDir=${project.dir}" />
 			<arg value="-PsaveScreenshot=${test.save.screenshot}" />
 			<arg value="-PseleniumLoggerEnabled=${test.selenium.logger.enabled}" />
+			<arg value="-PtestBaseDirName=${project.dir}/portal-web/test/functional" />
 			<arg value="-PtestCaseAvailablePropertyNames=${test.case.available.property.names}" />
 			<arg value="-PtestConsoleLogFileName=${test.console.log.file.name}" />
 			<arg value="-PtestSkipTearDown=${test.skip.tear.down}" />
