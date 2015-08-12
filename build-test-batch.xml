@@ -469,6 +469,49 @@
 		</sequential>
 	</macrodef>
 
+	<macrodef name="prepare-testray-results">
+		<attribute name="job.failure.message" default="" />
+		<attribute name="test.results.dir" default="${default.test.results.dir}" />
+		<attribute name="test.results.suite.dir" default="${default.test.results.suite.dir}" />
+		<attribute name="test.results.suite.file.name" default="${default.test.results.suite.file.name}" />
+
+		<sequential>
+			<copy-test-results />
+
+			<if>
+				<resourcecount when="greater" count="0">
+					<fileset dir="@{test.results.dir}" erroronmissingdir="false" includes="TEST-*.xml" />
+				</resourcecount>
+				<then>
+					<build-testray-results />
+
+					<merge-testray-results />
+				</then>
+				<else>
+					<generate-backup-testray-results job.failure.message="@{job.failure.message}" />
+
+					<build-testray-results
+						test.results.dir="@{test.results.suite.dir}"
+						test.results.fileset="TESTS-*.xml"
+					/>
+				</else>
+			</if>
+
+			<if>
+				<isset property="env.WORKSPACE" />
+				<then>
+					<local name="test.results.suite.file" />
+
+					<property name="test.results.suite.file" value="@{test.results.suite.dir}/@{test.results.suite.file.name}" />
+
+					<mkdir dir="${env.WORKSPACE}/test-results" />
+
+					<copy file="${test.results.suite.file}" tofile="${env.WORKSPACE}/test-results/test-suite/@{test.results.suite.file.name}" />
+				</then>
+			</if>
+		</sequential>
+	</macrodef>
+
 	<macrodef name="print-test-class-group">
 		<attribute name="test.class.group.index" />
 		<sequential>
