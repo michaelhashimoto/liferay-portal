@@ -279,6 +279,10 @@
 	<macrodef name="run-integration-test">
 		<attribute name="database.type" />
 		<sequential>
+			<property name="testray.main.component.name" value="Integration" />
+			<property name="testray.testcase.priority" value="4" />
+			<property name="testray.team.name" value="Triage" />
+
 			<run-batch-test>
 				<test-action>
 					<database-test-run-test database.type="@{database.type}">
@@ -300,6 +304,10 @@
 	<macrodef name="run-modules-integration-test">
 		<attribute name="database.type" />
 		<sequential>
+			<property name="testray.main.component.name" value="Integration" />
+			<property name="testray.testcase.priority" value="4" />
+			<property name="testray.team.name" value="Triage" />
+
 			<run-batch-test tomcat.gc.log="true">
 				<test-action>
 					<database-test-run-test database.type="@{database.type}" stop.app.server="true">
@@ -372,6 +380,10 @@
 	</target>
 
 	<target name="modules-unit">
+		<property name="testray.main.component.name" value="Unit" />
+		<property name="testray.testcase.priority" value="4" />
+		<property name="testray.team.name" value="Triage" />
+
 		<run-batch-test>
 			<test-action>
 				<ant dir="modules" target="test-class-group" inheritAll="false">
@@ -383,6 +395,11 @@
 	</target>
 
 	<target name="plugins">
+		<property name="testray.main.component.name" value="Plugins" />
+		<property name="testray.testcase.name" value="Plugins#${axis.variable}" />
+		<property name="testray.testcase.priority" value="4" />
+		<property name="testray.team.name" value="Triage" />
+
 		<run-batch-test>
 			<test-action>
 				<ant antfile="build-test-plugins.xml" target="test-plugin-group">
@@ -393,6 +410,11 @@
 	</target>
 
 	<target name="portal-web">
+		<property name="testray.main.component.name" value="Portal Web" />
+		<property name="testray.testcase.name" value="PortalWeb#${axis.variable}" />
+		<property name="testray.testcase.priority" value="4" />
+		<property name="testray.team.name" value="Triage" />
+
 		<run-batch-test>
 			<test-action>
 				<database-test-run-test database.type="mysql">
@@ -412,6 +434,11 @@
 	</target>
 
 	<target name="service-builder">
+		<property name="testray.main.component.name" value="Service Builder" />
+		<property name="testray.testcase.name" value="ServiceBuilder#${axis.variable}" />
+		<property name="testray.testcase.priority" value="4" />
+		<property name="testray.team.name" value="Triage" />
+
 		<run-batch-test>
 			<test-action>
 				<ant dir="modules/util/portal-tools-service-builder" target="clean" />
@@ -424,6 +451,10 @@
 	</target>
 
 	<target name="tck">
+		<property name="testray.main.component.name" value="TCK" />
+		<property name="testray.testcase.priority" value="4" />
+		<property name="testray.team.name" value="Triage" />
+
 		<run-batch-test tomcat.gc.log="true" tsant.gc.log="true">
 			<test-action>
 				<database-test-run-test database.type="mysql" stop.app.server="true">
@@ -442,6 +473,10 @@
 	</target>
 
 	<target name="unit">
+		<property name="testray.main.component.name" value="Unit" />
+		<property name="testray.testcase.priority" value="4" />
+		<property name="testray.team.name" value="Triage" />
+
 		<run-batch-test unit.test="true">
 			<test-action>
 				<ant dir="portal-service" target="test-class-group" inheritAll="false">
