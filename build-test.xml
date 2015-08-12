@@ -816,14 +816,12 @@ counter.jdbc.prefix=jdbc.counter.]]></echo>
 
 	<macrodef name="get-testray-testcase-priority">
 		<sequential>
-			<var name="testray.testcase.priority" unset="true" />
-
 			<if>
 				<isset property="test.class" />
 				<then>
 					<get-testcase-property property.name="priority" />
 
-					<property name="testray.testcase.priority" value="${priority}" />
+					<var name="testray.testcase.priority" value="${priority}" />
 				</then>
 			</if>
 		</sequential>
