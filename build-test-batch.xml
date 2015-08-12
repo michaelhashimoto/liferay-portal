@@ -624,20 +624,35 @@
 
 			<prepare-test-build-unit if:true="@{unit.test}" />
 
-			<test-action />
+			<trycatch property="job.failure.message">
+				<try>
+					<test-action />
+				</try>
 
-			<record-test-environment-properties />
+				<finally>
+					<property name="job.failure.message" value="" />
 
-			<merge-test-results />
+					<prepare-testray-results job.failure.message="${job.failure.message}" />
 
-			<check-deprecated-method />
+					<if>
+						<isset property="testray.results.dir" />
+						<then>
+							<send-testray-results testray.results.dir="${testray.results.dir}" />
+						</then>
+					</if>
 
-			<clean-up />
+					<merge-test-results />
 
-			<print-gc-logs
-				tomcat.gc.log="@{tomcat.gc.log}"
-				tsant.gc.log="@{tsant.gc.log}"
-			/>
+					<check-deprecated-method />
+
+					<clean-up />
+
+					<print-gc-logs
+						tomcat.gc.log="@{tomcat.gc.log}"
+						tsant.gc.log="@{tsant.gc.log}"
+					/>
+				</finally>
+			</trycatch>
 		</sequential>
 	</macrodef>
 
