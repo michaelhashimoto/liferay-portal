@@ -363,6 +363,54 @@
 		</sequential>
 	</macrodef>
 
+	<macrodef name="generate-backup-testray-results">
+		<attribute name="job.failure.message" default="" />
+		<attribute name="test.results.dir" default="${default.test.results.dir}" />
+		<attribute name="test.results.suite.dir" default="${default.test.results.suite.dir}" />
+		<attribute name="test.results.suite.file.name" default="${default.test.results.suite.file.name}" />
+
+		<sequential>
+			<local name="test.results.suite.file" />
+
+			<property name="test.results.suite.file" value="@{test.results.suite.dir}/@{test.results.suite.file.name}" />
+
+			<echo>Generate backup result ${test.results.suite.file}</echo>
+
+			<var name="build.name" value="${env.JOB_NAME}" />
+
+			<if>
+				<isset property="env.JOB_VARIANT" />
+				<then>
+					<var name="build.name" value="${env.JOB_NAME}_${env.JOB_VARIANT}" />
+				</then>
+			</if>
+
+			<var name="job.failure.report" unset="true" />
+
+			<if>
+				<equals arg1="@{job.failure.message}" arg2="" />
+				<then>
+					<property name="job.failure.report" value="" />
+				</then>
+				<else>
+					<property name="job.failure.report"><![CDATA[<failure message="@{job.failure.message}">@{job.failure.message}</failure>]]></property>
+				</else>
+			</if>
+
+			<echo file="${test.results.suite.file}">
+				<![CDATA[
+					<testsuite errors="0" failures="0" name="com.liferay.jenkins.Jenkins" skipped="0" tests="1" time="0">
+						<testcase classname="com.liferay.jenkins.Jenkins" name="${build.name}" time="0">
+							${job.failure.report}
+						</testcase>
+						<system-out></system-out>
+						<system-err></system-err>
+					</testsuite>
+				]]>
+			</echo>
+		</sequential>
+	</macrodef>
+
 	<macrodef name="merge-test-results">
 		<sequential>
 			<antcall target="merge-test-results" />
