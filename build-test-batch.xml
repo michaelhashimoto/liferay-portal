@@ -762,6 +762,22 @@
 		</sequential>
 	</macrodef>
 
+	<macrodef name="send-testray-results">
+		<attribute name="test.results.suite.dir" default="${default.test.results.suite.dir}" />
+		<attribute name="test.results.suite.file.name" default="${default.test.results.suite.file.name}" />
+		<attribute name="testray.results.dir" />
+
+		<sequential>
+			<local name="test.results.suite.file" />
+
+			<property name="test.results.suite.file" value="@{test.results.suite.dir}/@{test.results.suite.file.name}" />
+
+			<echo>Sending testray results to @{testray.results.dir}</echo>
+
+			<copy failonerror="false" file="${test.results.suite.file}" todir="@{testray.results.dir}" />
+		</sequential>
+	</macrodef>
+
 	<target name="functional-tomcat-mysql">
 		<run-functional-test app.server.type="tomcat" database.type="mysql" />
 	</target>
