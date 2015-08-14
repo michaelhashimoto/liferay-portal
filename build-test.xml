@@ -801,14 +801,12 @@ counter.jdbc.prefix=jdbc.counter.]]></echo>
 
 	<macrodef name="get-testray-testcase-name">
 		<sequential>
-			<var name="testray.testcase.name" unset="true" />
-
 			<if>
 				<isset property="test.class" />
 				<then>
 					<get-poshi-test-name />
 
-					<property name="testray.testcase.name" value="${poshi.test.name}" />
+					<var name="testray.testcase.name" value="${poshi.test.name}" />
 				</then>
 			</if>
 		</sequential>
