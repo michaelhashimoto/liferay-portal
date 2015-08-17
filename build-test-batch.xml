@@ -615,14 +615,12 @@
 	<macrodef name="run-batch-test">
 		<attribute name="tomcat.gc.log" default="false" />
 		<attribute name="tsant.gc.log" default="false" />
-		<attribute name="unit.test" default="false" />
 		<element name="clean-up" optional="true" />
+		<element name="prepare-test" />
 		<element name="test-action" />
 
 		<sequential>
-			<prepare-test-build unless:true="@{unit.test}" />
-
-			<prepare-test-build-unit if:true="@{unit.test}" />
+			<prepare-test />
 
 			<trycatch property="job.failure.message">
 				<try>
@@ -675,7 +673,7 @@
 			<property name="test.class" value="${axis.variable}" />
 
 			<run-batch-test tomcat.gc.log="@{tomcat.gc.log}" tsant.gc.log="@{tsant.gc.log}">
-				<test-action>
+				<prepare-test>
 					<antcall target="compile" />
 
 					<ant antfile="build-dist.xml" target="build-dist-@{app.server.type}" />
@@ -685,7 +683,9 @@
 					<echo if:set="env.JENKINS_HOME">ANT_OPTS=${env.ANT_OPTS}</echo>
 
 					<antcall if:set="env.JENKINS_HOME" inheritAll="false" target="clean-up-java-processes" />
+				</prepare-test>
 
+				<test-action>
 					<database-test-run-test database.type="@{database.type}">
 						<test-action>
 							<ant antfile="build-test-@{app.server.type}.xml" inheritAll="false" target="run-selenium-@{app.server.type}">
@@ -718,6 +718,10 @@
 			<property name="testray.team.name" value="Triage" />
 
 			<run-batch-test>
+				<prepare-test>
+					<prepare-test-build />
+				</prepare-test>
+
 				<test-action>
 					<database-test-run-test database.type="@{database.type}">
 						<test-action>
@@ -743,6 +747,10 @@
 			<property name="testray.team.name" value="Triage" />
 
 			<run-batch-test tomcat.gc.log="true">
+				<prepare-test>
+					<prepare-test-build />
+				</prepare-test>
+
 				<test-action>
 					<database-test-run-test database.type="@{database.type}" stop.app.server="true">
 						<test-action>
@@ -835,6 +843,10 @@
 		<property name="testray.team.name" value="Triage" />
 
 		<run-batch-test>
+			<prepare-test>
+				<prepare-test-build />
+			</prepare-test>
+
 			<test-action>
 				<ant dir="modules" target="test-class-group" inheritAll="false">
 					<property name="test.class.group.index" value="${axis.variable}" />
@@ -851,6 +863,10 @@
 		<property name="testray.team.name" value="Triage" />
 
 		<run-batch-test>
+			<prepare-test>
+				<prepare-test-build />
+			</prepare-test>
+
 			<test-action>
 				<ant antfile="build-test-plugins.xml" target="test-plugin-group">
 					<property name="test.plugin.group.index" value="${axis.variable}" />
@@ -866,6 +882,10 @@
 		<property name="testray.team.name" value="Triage" />
 
 		<run-batch-test>
+			<prepare-test>
+				<prepare-test-build />
+			</prepare-test>
+
 			<test-action>
 				<database-test-run-test database.type="mysql">
 					<test-action>
@@ -890,6 +910,10 @@
 		<property name="testray.team.name" value="Triage" />
 
 		<run-batch-test>
+			<prepare-test>
+				<prepare-test-build />
+			</prepare-test>
+
 			<test-action>
 				<ant dir="modules/util/portal-tools-service-builder" target="clean" />
 
@@ -906,6 +930,10 @@
 		<property name="testray.team.name" value="Triage" />
 
 		<run-batch-test tomcat.gc.log="true" tsant.gc.log="true">
+			<prepare-test>
+				<prepare-test-build />
+			</prepare-test>
+
 			<test-action>
 				<database-test-run-test database.type="mysql" stop.app.server="true">
 					<test-action>
@@ -927,7 +955,11 @@
 		<property name="testray.testcase.priority" value="4" />
 		<property name="testray.team.name" value="Triage" />
 
-		<run-batch-test unit.test="true">
+		<run-batch-test>
+			<prepare-test>
+				<prepare-test-build-unit />
+			</prepare-test>
+
 			<test-action>
 				<ant dir="portal-service" target="test-class-group" inheritAll="false">
 					<property name="test.class.group.index" value="${axis.variable}" />
