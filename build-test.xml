@@ -8507,8 +8507,18 @@ cluster.link.bind.addr["cluster-link-udp"]=127.0.0.1
 	</target>
 
 	<target name="record-test-case-method-names">
+		<if>
+			<not>
+				<equals arg1="test.poshi.runner.local.release" arg2="true" />
+			</not>
+			<then>
+				<property name="test.poshi.runner.local.release" value="false" />
+			</then>
+		</if>
+
 		<gradle-execute failonerror="false" task="writePoshiProperties">
 			<arg value="--build-file=portal-web/build-test.gradle" />
+			<arg value="-Plocal=${test.poshi.runner.local.release}" />
 			<arg value="-PcomponentNames=${component.names}" />
 			<arg value="-PproductNames=${product.names}" />
 			<arg value="-PtestCaseAvailablePropertyNames=${test.case.available.property.names}" />
@@ -8524,11 +8534,21 @@ cluster.link.bind.addr["cluster-link-udp"]=127.0.0.1
 	<target name="record-test-generated-properties">
 		<fail message="Please set the property ${test.class}." unless="test.class" />
 
+		<if>
+			<not>
+				<equals arg1="test.poshi.runner.local.release" arg2="true" />
+			</not>
+			<then>
+				<property name="test.poshi.runner.local.release" value="false" />
+			</then>
+		</if>
+
 		<get-poshi-test-name />
 
 		<gradle-execute failonerror="false" task="writePoshiProperties">
 			<arg value="--build-file=portal-web/build-test.gradle" />
 			<arg value="-PcomponentNames=${component.names}" />
+			<arg value="-Plocal=${test.poshi.runner.local.release}" />
 			<arg value="-PposhiTestName=${poshi.test.name}" />
 			<arg value="-PproductNames=${product.names}" />
 			<arg value="-PtestCaseAvailablePropertyNames=${test.case.available.property.names}" />
@@ -8786,8 +8806,18 @@ cluster.link.bind.addr["cluster-link-udp"]=127.0.0.1
 
 		<property name="test.console.log.file.name" value="${liferay.home}/logs/liferay.${current.date}.xml" />
 
+		<if>
+			<not>
+				<equals arg1="test.poshi.runner.local.release" arg2="true" />
+			</not>
+			<then>
+				<property name="test.poshi.runner.local.release" value="false" />
+			</then>
+		</if>
+
 		<gradle-execute failonerror="false" task="runPoshi">
 			<arg value="--build-file=portal-web/build-test.gradle" />
+			<arg value="-Plocal=${test.poshi.runner.local.release}" />
 			<arg value="-PposhiTestName=${poshi.test.name}" />
 			<arg value="-PprojectDir=${project.dir}" />
 			<arg value="-PsaveScreenshot=${test.save.screenshot}" />
@@ -8800,8 +8830,18 @@ cluster.link.bind.addr["cluster-link-udp"]=127.0.0.1
 	</target>
 
 	<target name="run-poshi-validation">
+		<if>
+			<not>
+				<equals arg1="test.poshi.runner.local.release" arg2="true" />
+			</not>
+			<then>
+				<property name="test.poshi.runner.local.release" value="false" />
+			</then>
+		</if>
+
 		<gradle-execute failonerror="false" task="validatePoshi">
 			<arg value="--build-file=portal-web/build-test.gradle" />
+			<arg value="-Plocal=${test.poshi.runner.local.release}" />
 			<arg value="-PtestCaseAvailablePropertyNames=${test.case.available.property.names}" />
 		</gradle-execute>
 	</target>
