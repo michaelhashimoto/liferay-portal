@@ -1495,6 +1495,8 @@ public class WebDriverToSeleniumBridge
 			return;
 		}
 
+		webElement.clear();
+
 		if (value.contains("line-number=")) {
 			value = value.replaceAll("line-number=\"\\d+\"", "");
 		}
@@ -1506,12 +1508,13 @@ public class WebDriverToSeleniumBridge
 		for (int specialCharIndex : specialCharIndexes) {
 			webElement.sendKeys(value.substring(i, specialCharIndex));
 
-			webElement.sendKeys(Keys.ESCAPE);
-
 			String specialChar = String.valueOf(value.charAt(specialCharIndex));
 
 			if (specialChar.equals("-")) {
 				webElement.sendKeys(Keys.SUBTRACT);
+			}
+			else if (specialChar.equals("\t")) {
+				webElement.sendKeys(Keys.TAB);
 			}
 			else {
 				webElement.sendKeys(
@@ -1635,6 +1638,12 @@ public class WebDriverToSeleniumBridge
 			specialCharIndexes.add(value.indexOf("-"));
 
 			value = StringUtil.replaceFirst(value, "-", " ");
+		}
+
+		while (value.contains("\t")) {
+			specialCharIndexes.add(value.indexOf("\t"));
+
+			value = StringUtil.replaceFirst(value, "\t", " ");
 		}
 
 		for (String specialChar : _keysSpecialChars.keySet()) {
