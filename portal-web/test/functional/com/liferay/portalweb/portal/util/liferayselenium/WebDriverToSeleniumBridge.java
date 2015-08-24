@@ -1495,6 +1495,8 @@ public class WebDriverToSeleniumBridge
 			return;
 		}
 
+		webElement.clear();
+
 		if (value.contains("line-number=")) {
 			value = value.replaceAll("line-number=\"\\d+\"", "");
 		}
