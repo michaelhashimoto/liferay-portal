@@ -7896,6 +7896,8 @@ svn --username ${svn.username} --password ${svn.password} update -r ${svn.info.r
 				<if>
 					<equals arg1="${test.poshi.runner.enabled}" arg2="true" />
 					<then>
+						<antcall target="record-test-case-method-names" />
+
 						<antcall target="record-test-generated-properties" />
 					</then>
 					<else>
