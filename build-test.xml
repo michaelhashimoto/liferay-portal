@@ -6837,7 +6837,7 @@ svn --username ${svn.username} --password ${svn.password} update -r ${svn.info.r
 	</target>
 
 	<target name="prepare-selenium">
-		<delete file="portal-web/test/test-portal-web-ext.properties" />
+		<delete file="${test.ext.properties.file}" />
 
 		<antcall target="prepare-selenium-app-server-properties" />
 		<antcall target="prepare-selenium-browser-properties" />
@@ -6849,7 +6849,7 @@ svn --username ${svn.username} --password ${svn.password} update -r ${svn.info.r
 		<if>
 			<isset property="legacy.theme.ids" />
 			<then>
-				<echo file="portal-web/test/test-portal-web-ext.properties" append="true">
+				<echo file="${test.ext.properties.file}" append="true">
 					theme.ids=${legacy.theme.ids}
 				</echo>
 			</then>
@@ -6858,7 +6858,7 @@ svn --username ${svn.username} --password ${svn.password} update -r ${svn.info.r
 		<if>
 			<isset property="liferay.portal.branch" />
 			<then>
-				<echo file="portal-web/test/test-portal-web-ext.properties" append="true">
+				<echo file="${test.ext.properties.file}" append="true">
 					liferay.portal.branch=${liferay.portal.branch}
 				</echo>
 			</then>
@@ -6867,7 +6867,7 @@ svn --username ${svn.username} --password ${svn.password} update -r ${svn.info.r
 		<if>
 			<isset property="liferay.portal.bundle" />
 			<then>
-				<echo file="portal-web/test/test-portal-web-ext.properties" append="true">
+				<echo file="${test.ext.properties.file}" append="true">
 					liferay.portal.bundle=${liferay.portal.bundle}
 				</echo>
 			</then>
@@ -6876,7 +6876,7 @@ svn --username ${svn.username} --password ${svn.password} update -r ${svn.info.r
 		<if>
 			<isset property="mobile.android.home" />
 			<then>
-				<echo file="portal-web/test/test-portal-web-ext.properties" append="true">
+				<echo file="${test.ext.properties.file}" append="true">
 					mobile.android.home=${mobile.android.home}
 				</echo>
 			</then>
@@ -6885,7 +6885,7 @@ svn --username ${svn.username} --password ${svn.password} update -r ${svn.info.r
 		<if>
 			<isset property="osb.lcs.portlet.host.name" />
 			<then>
-				<echo file="portal-web/test/test-portal-web-ext.properties" append="true">
+				<echo file="${test.ext.properties.file}" append="true">
 					osb.lcs.portlet.host.name=${osb.lcs.portlet.host.name}
 				</echo>
 			</then>
@@ -6894,7 +6894,7 @@ svn --username ${svn.username} --password ${svn.password} update -r ${svn.info.r
 		<if>
 			<isset property="selenium.output.dir" />
 			<then>
-				<echo file="portal-web/test/test-portal-web-ext.properties" append="true">
+				<echo file="${test.ext.properties.file}" append="true">
 					output.dir=${selenium.output.dir}
 				</echo>
 			</then>
@@ -6903,7 +6903,7 @@ svn --username ${svn.username} --password ${svn.password} update -r ${svn.info.r
 		<if>
 			<equals arg1="${tcat.enabled}" arg2="true" />
 			<then>
-				<echo file="portal-web/test/test-portal-web-ext.properties" append="true">
+				<echo file="${test.ext.properties.file}" append="true">
 					tcat.admin.repository=${app.server.tcat.admin.dir}/tcat_init/webapps/${lp.version.dtd}
 					tcat.enabled=true
 				</echo>
@@ -6913,7 +6913,7 @@ svn --username ${svn.username} --password ${svn.password} update -r ${svn.info.r
 		<if>
 			<equals arg1="${tear.down.before.test}" arg2="true" />
 			<then>
-				<echo file="portal-web/test/test-portal-web-ext.properties" append="true">
+				<echo file="${test.ext.properties.file}" append="true">
 					tear.down.before.test=true
 				</echo>
 			</then>
@@ -6922,7 +6922,7 @@ svn --username ${svn.username} --password ${svn.password} update -r ${svn.info.r
 		<if>
 			<equals arg1="${test.assert.liferay.errors}" arg2="false" />
 			<then>
-				<echo file="portal-web/test/test-portal-web-ext.properties" append="true">
+				<echo file="${test.ext.properties.file}" append="true">
 					test.assert.liferay.errors=false
 				</echo>
 			</then>
@@ -6931,12 +6931,12 @@ svn --username ${svn.username} --password ${svn.password} update -r ${svn.info.r
 		<if>
 			<isset property="test.basedir" />
 			<then>
-				<echo file="portal-web/test/test-portal-web-ext.properties" append="true">
+				<echo file="${test.ext.properties.file}" append="true">
 					test.basedir=${test.basedir}
 				</echo>
 			</then>
 			<else>
-				<echo file="portal-web/test/test-portal-web-ext.properties" append="true">
+				<echo file="${test.ext.properties.file}" append="true">
 					test.basedir=${basedir.unix}/portal-web
 				</echo>
 			</else>
@@ -6945,7 +6945,7 @@ svn --username ${svn.username} --password ${svn.password} update -r ${svn.info.r
 		<if>
 			<contains string="${test.class}" substring="#" />
 			<then>
-				<echo file="portal-web/test/test-portal-web-ext.properties" append="true">
+				<echo file="${test.ext.properties.file}" append="true">
 					testing.class.method=true
 				</echo>
 			</then>
@@ -6954,7 +6954,7 @@ svn --username ${svn.username} --password ${svn.password} update -r ${svn.info.r
 		<if>
 			<equals arg1="${test.save.screenshot}" arg2="true" />
 			<then>
-				<echo file="portal-web/test/test-portal-web-ext.properties" append="true">
+				<echo file="${test.ext.properties.file}" append="true">
 					save.screenshot=true
 				</echo>
 			</then>
@@ -6963,7 +6963,7 @@ svn --username ${svn.username} --password ${svn.password} update -r ${svn.info.r
 		<if>
 			<equals arg1="${test.selenium.implementation}" arg2="selenium" />
 			<then>
-				<echo file="portal-web/test/test-portal-web-ext.properties" append="true">
+				<echo file="${test.ext.properties.file}" append="true">
 					selenium.implementation=com.thoughtworks.selenium.Selenium
 				</echo>
 			</then>
@@ -6972,7 +6972,7 @@ svn --username ${svn.username} --password ${svn.password} update -r ${svn.info.r
 		<if>
 			<equals arg1="${test.selenium.logger.enabled}" arg2="false" />
 			<then>
-				<echo file="portal-web/test/test-portal-web-ext.properties" append="true">
+				<echo file="${test.ext.properties.file}" append="true">
 					selenium.logger.enabled=false
 				</echo>
 			</then>
@@ -6981,7 +6981,7 @@ svn --username ${svn.username} --password ${svn.password} update -r ${svn.info.r
 		<if>
 			<equals arg1="${test.skip.tear.down}" arg2="true" />
 			<then>
-				<echo file="portal-web/test/test-portal-web-ext.properties" append="true">
+				<echo file="${test.ext.properties.file}" append="true">
 					test.skip.tear.down=true
 				</echo>
 			</then>
@@ -7007,7 +7007,7 @@ svn --username ${svn.username} --password ${svn.password} update -r ${svn.info.r
 		<if>
 			<isset property="app.server.type" />
 			<then>
-				<echo file="portal-web/test/test-portal-web-ext.properties" append="true">
+				<echo file="${test.ext.properties.file}" append="true">
 					app.server.type=${app.server.type}
 				</echo>
 			</then>
@@ -7041,14 +7041,14 @@ svn --username ${svn.username} --password ${svn.password} update -r ${svn.info.r
 		<if>
 			<equals arg1="${browser.type}" arg2="firefox" />
 			<then>
-				<echo file="portal-web/test/test-portal-web-ext.properties" append="true">
+				<echo file="${test.ext.properties.file}" append="true">
 					browser.type=*chrome
 				</echo>
 			</then>
 			<elseif>
 				<equals arg1="${browser.type}" arg2="googlechrome" />
 				<then>
-					<echo file="portal-web/test/test-portal-web-ext.properties" append="true">
+					<echo file="${test.ext.properties.file}" append="true">
 						browser.type=*googlechrome
 						selenium.chrome.driver.executable=${selenium.chrome.driver.executable}
 					</echo>
@@ -7057,7 +7057,7 @@ svn --username ${svn.username} --password ${svn.password} update -r ${svn.info.r
 			<elseif>
 				<equals arg1="${browser.type}" arg2="ie" />
 				<then>
-					<echo file="portal-web/test/test-portal-web-ext.properties" append="true">
+					<echo file="${test.ext.properties.file}" append="true">
 						browser.type=*iehta
 						selenium.ie.driver.executable=${selenium.ie.driver.executable}
 					</echo>
@@ -7070,7 +7070,7 @@ svn --username ${svn.username} --password ${svn.password} update -r ${svn.info.r
 		<if>
 			<isset property="database.db2.driver" />
 			<then>
-				<echo file="portal-web/test/test-portal-web-ext.properties" append="true">
+				<echo file="${test.ext.properties.file}" append="true">
 					database.db2.driver=${database.db2.driver}
 				</echo>
 			</then>
@@ -7079,7 +7079,7 @@ svn --username ${svn.username} --password ${svn.password} update -r ${svn.info.r
 		<if>
 			<isset property="database.db2.password" />
 			<then>
-				<echo file="portal-web/test/test-portal-web-ext.properties" append="true">
+				<echo file="${test.ext.properties.file}" append="true">
 					database.db2.password=${database.db2.password}
 				</echo>
 			</then>
@@ -7088,7 +7088,7 @@ svn --username ${svn.username} --password ${svn.password} update -r ${svn.info.r
 		<if>
 			<isset property="database.db2.url" />
 			<then>
-				<echo file="portal-web/test/test-portal-web-ext.properties" append="true">
+				<echo file="${test.ext.properties.file}" append="true">
 					database.db2.url=${database.db2.url}
 				</echo>
 			</then>
@@ -7097,7 +7097,7 @@ svn --username ${svn.username} --password ${svn.password} update -r ${svn.info.r
 		<if>
 			<isset property="database.db2.username" />
 			<then>
-				<echo file="portal-web/test/test-portal-web-ext.properties" append="true">
+				<echo file="${test.ext.properties.file}" append="true">
 					database.db2.username=${database.db2.username}
 				</echo>
 			</then>
@@ -7106,7 +7106,7 @@ svn --username ${svn.username} --password ${svn.password} update -r ${svn.info.r
 		<if>
 			<isset property="database.hsql.driver" />
 			<then>
-				<echo file="portal-web/test/test-portal-web-ext.properties" append="true">
+				<echo file="${test.ext.properties.file}" append="true">
 					database.hsql.driver=${database.hsql.driver}
 				</echo>
 			</then>
@@ -7115,7 +7115,7 @@ svn --username ${svn.username} --password ${svn.password} update -r ${svn.info.r
 		<if>
 			<isset property="database.hsql.password" />
 			<then>
-				<echo file="portal-web/test/test-portal-web-ext.properties" append="true">
+				<echo file="${test.ext.properties.file}" append="true">
 					database.hsql.password=${database.hsql.password}
 				</echo>
 			</then>
@@ -7124,7 +7124,7 @@ svn --username ${svn.username} --password ${svn.password} update -r ${svn.info.r
 		<if>
 			<isset property="database.hsql.url" />
 			<then>
-				<echo file="portal-web/test/test-portal-web-ext.properties" append="true">
+				<echo file="${test.ext.properties.file}" append="true">
 					database.hsql.url=${database.hsql.url}
 				</echo>
 			</then>
@@ -7133,7 +7133,7 @@ svn --username ${svn.username} --password ${svn.password} update -r ${svn.info.r
 		<if>
 			<isset property="database.hsql.username" />
 			<then>
-				<echo file="portal-web/test/test-portal-web-ext.properties" append="true">
+				<echo file="${test.ext.properties.file}" append="true">
 					database.hsql.username=${database.hsql.username}
 				</echo>
 			</then>
@@ -7142,7 +7142,7 @@ svn --username ${svn.username} --password ${svn.password} update -r ${svn.info.r
 		<if>
 			<isset property="database.mysql.driver" />
 			<then>
-				<echo file="portal-web/test/test-portal-web-ext.properties" append="true">
+				<echo file="${test.ext.properties.file}" append="true">
 					database.mysql.driver=${database.mysql.driver}
 				</echo>
 			</then>
@@ -7151,7 +7151,7 @@ svn --username ${svn.username} --password ${svn.password} update -r ${svn.info.r
 		<if>
 			<isset property="database.mysql.password" />
 			<then>
-				<echo file="portal-web/test/test-portal-web-ext.properties" append="true">
+				<echo file="${test.ext.properties.file}" append="true">
 					database.mysql.password=${database.mysql.password}
 				</echo>
 			</then>
@@ -7160,7 +7160,7 @@ svn --username ${svn.username} --password ${svn.password} update -r ${svn.info.r
 		<if>
 			<isset property="database.mysql.url" />
 			<then>
-				<echo file="portal-web/test/test-portal-web-ext.properties" append="true">
+				<echo file="${test.ext.properties.file}" append="true">
 					database.mysql.url=${database.mysql.url}
 				</echo>
 			</then>
@@ -7169,7 +7169,7 @@ svn --username ${svn.username} --password ${svn.password} update -r ${svn.info.r
 		<if>
 			<isset property="database.mysql.username" />
 			<then>
-				<echo file="portal-web/test/test-portal-web-ext.properties" append="true">
+				<echo file="${test.ext.properties.file}" append="true">
 					database.mysql.username=${database.mysql.username}
 				</echo>
 			</then>
@@ -7178,7 +7178,7 @@ svn --username ${svn.username} --password ${svn.password} update -r ${svn.info.r
 		<if>
 			<isset property="database.oracle.driver" />
 			<then>
-				<echo file="portal-web/test/test-portal-web-ext.properties" append="true">
+				<echo file="${test.ext.properties.file}" append="true">
 					database.oracle.driver=${database.oracle.driver}
 				</echo>
 			</then>
@@ -7187,7 +7187,7 @@ svn --username ${svn.username} --password ${svn.password} update -r ${svn.info.r
 		<if>
 			<isset property="database.oracle.password" />
 			<then>
-				<echo file="portal-web/test/test-portal-web-ext.properties" append="true">
+				<echo file="${test.ext.properties.file}" append="true">
 					database.oracle.password=${database.oracle.password}
 				</echo>
 			</then>
@@ -7196,7 +7196,7 @@ svn --username ${svn.username} --password ${svn.password} update -r ${svn.info.r
 		<if>
 			<isset property="database.oracle.url" />
 			<then>
-				<echo file="portal-web/test/test-portal-web-ext.properties" append="true">
+				<echo file="${test.ext.properties.file}" append="true">
 					database.oracle.url=${database.oracle.url}
 				</echo>
 			</then>
@@ -7205,7 +7205,7 @@ svn --username ${svn.username} --password ${svn.password} update -r ${svn.info.r
 		<if>
 			<isset property="database.oracle.username" />
 			<then>
-				<echo file="portal-web/test/test-portal-web-ext.properties" append="true">
+				<echo file="${test.ext.properties.file}" append="true">
 					database.oracle.username=${database.oracle.username}
 				</echo>
 			</then>
@@ -7214,7 +7214,7 @@ svn --username ${svn.username} --password ${svn.password} update -r ${svn.info.r
 		<if>
 			<isset property="database.postgresql.driver" />
 			<then>
-				<echo file="portal-web/test/test-portal-web-ext.properties" append="true">
+				<echo file="${test.ext.properties.file}" append="true">
 					database.postgresql.driver=${database.postgresql.driver}
 				</echo>
 			</then>
@@ -7223,7 +7223,7 @@ svn --username ${svn.username} --password ${svn.password} update -r ${svn.info.r
 		<if>
 			<isset property="database.postgresql.password" />
 			<then>
-				<echo file="portal-web/test/test-portal-web-ext.properties" append="true">
+				<echo file="${test.ext.properties.file}" append="true">
 					database.postgresql.password=${database.postgresql.password}
 				</echo>
 			</then>
@@ -7232,7 +7232,7 @@ svn --username ${svn.username} --password ${svn.password} update -r ${svn.info.r
 		<if>
 			<isset property="database.postgresql.url" />
 			<then>
-				<echo file="portal-web/test/test-portal-web-ext.properties" append="true">
+				<echo file="${test.ext.properties.file}" append="true">
 					database.postgresql.url=${database.postgresql.url}
 				</echo>
 			</then>
@@ -7241,7 +7241,7 @@ svn --username ${svn.username} --password ${svn.password} update -r ${svn.info.r
 		<if>
 			<isset property="database.postgresql.username" />
 			<then>
-				<echo file="portal-web/test/test-portal-web-ext.properties" append="true">
+				<echo file="${test.ext.properties.file}" append="true">
 					database.postgresql.username=${database.postgresql.username}
 				</echo>
 			</then>
@@ -7250,7 +7250,7 @@ svn --username ${svn.username} --password ${svn.password} update -r ${svn.info.r
 		<if>
 			<isset property="database.sybase.driver" />
 			<then>
-				<echo file="portal-web/test/test-portal-web-ext.properties" append="true">
+				<echo file="${test.ext.properties.file}" append="true">
 					database.sybase.driver=${database.sybase.driver}
 				</echo>
 			</then>
@@ -7259,7 +7259,7 @@ svn --username ${svn.username} --password ${svn.password} update -r ${svn.info.r
 		<if>
 			<isset property="database.sybase.password" />
 			<then>
-				<echo file="portal-web/test/test-portal-web-ext.properties" append="true">
+				<echo file="${test.ext.properties.file}" append="true">
 					database.sybase.password=${database.sybase.password}
 				</echo>
 			</then>
@@ -7268,7 +7268,7 @@ svn --username ${svn.username} --password ${svn.password} update -r ${svn.info.r
 		<if>
 			<isset property="database.sybase.url" />
 			<then>
-				<echo file="portal-web/test/test-portal-web-ext.properties" append="true">
+				<echo file="${test.ext.properties.file}" append="true">
 					database.sybase.url=${database.sybase.url}
 				</echo>
 			</then>
@@ -7277,7 +7277,7 @@ svn --username ${svn.username} --password ${svn.password} update -r ${svn.info.r
 		<if>
 			<isset property="database.sybase.username" />
 			<then>
-				<echo file="portal-web/test/test-portal-web-ext.properties" append="true">
+				<echo file="${test.ext.properties.file}" append="true">
 					database.sybase.username=${database.sybase.username}
 				</echo>
 			</then>
@@ -7286,7 +7286,7 @@ svn --username ${svn.username} --password ${svn.password} update -r ${svn.info.r
 		<if>
 			<isset property="database.type" />
 			<then>
-				<echo file="portal-web/test/test-portal-web-ext.properties" append="true">
+				<echo file="${test.ext.properties.file}" append="true">
 					database.type=${database.type}
 				</echo>
 			</then>
@@ -7297,7 +7297,7 @@ svn --username ${svn.username} --password ${svn.password} update -r ${svn.info.r
 		<if>
 			<isset property="email.address.1" />
 			<then>
-				<echo file="portal-web/test/test-portal-web-ext.properties" append="true">
+				<echo file="${test.ext.properties.file}" append="true">
 					email.address.1=${email.address.1}
 				</echo>
 			</then>
@@ -7306,7 +7306,7 @@ svn --username ${svn.username} --password ${svn.password} update -r ${svn.info.r
 		<if>
 			<isset property="email.address.2" />
 			<then>
-				<echo file="portal-web/test/test-portal-web-ext.properties" append="true">
+				<echo file="${test.ext.properties.file}" append="true">
 					email.address.2=${email.address.2}
 				</echo>
 			</then>
@@ -7315,7 +7315,7 @@ svn --username ${svn.username} --password ${svn.password} update -r ${svn.info.r
 		<if>
 			<isset property="email.address.3" />
 			<then>
-				<echo file="portal-web/test/test-portal-web-ext.properties" append="true">
+				<echo file="${test.ext.properties.file}" append="true">
 					email.address.3=${email.address.3}
 				</echo>
 			</then>
@@ -7324,7 +7324,7 @@ svn --username ${svn.username} --password ${svn.password} update -r ${svn.info.r
 		<if>
 			<isset property="email.address.4" />
 			<then>
-				<echo file="portal-web/test/test-portal-web-ext.properties" append="true">
+				<echo file="${test.ext.properties.file}" append="true">
 					email.address.4=${email.address.4}
 				</echo>
 			</then>
@@ -7333,7 +7333,7 @@ svn --username ${svn.username} --password ${svn.password} update -r ${svn.info.r
 		<if>
 			<isset property="email.address.5" />
 			<then>
-				<echo file="portal-web/test/test-portal-web-ext.properties" append="true">
+				<echo file="${test.ext.properties.file}" append="true">
 					email.address.5=${email.address.5}
 				</echo>
 			</then>
@@ -7342,7 +7342,7 @@ svn --username ${svn.username} --password ${svn.password} update -r ${svn.info.r
 		<if>
 			<isset property="email.password.1" />
 			<then>
-				<echo file="portal-web/test/test-portal-web-ext.properties" append="true">
+				<echo file="${test.ext.properties.file}" append="true">
 					email.password.1=${email.password.1}
 				</echo>
 			</then>
@@ -7351,7 +7351,7 @@ svn --username ${svn.username} --password ${svn.password} update -r ${svn.info.r
 		<if>
 			<isset property="email.password.2" />
 			<then>
-				<echo file="portal-web/test/test-portal-web-ext.properties" append="true">
+				<echo file="${test.ext.properties.file}" append="true">
 					email.password.2=${email.password.2}
 				</echo>
 			</then>
@@ -7360,7 +7360,7 @@ svn --username ${svn.username} --password ${svn.password} update -r ${svn.info.r
 		<if>
 			<isset property="email.password.3" />
 			<then>
-				<echo file="portal-web/test/test-portal-web-ext.properties" append="true">
+				<echo file="${test.ext.properties.file}" append="true">
 					email.password.3=${email.password.3}
 				</echo>
 			</then>
@@ -7369,7 +7369,7 @@ svn --username ${svn.username} --password ${svn.password} update -r ${svn.info.r
 		<if>
 			<isset property="email.password.4" />
 			<then>
-				<echo file="portal-web/test/test-portal-web-ext.properties" append="true">
+				<echo file="${test.ext.properties.file}" append="true">
 					email.password.4=${email.password.4}
 				</echo>
 			</then>
@@ -7378,7 +7378,7 @@ svn --username ${svn.username} --password ${svn.password} update -r ${svn.info.r
 		<if>
 			<isset property="email.password.5" />
 			<then>
-				<echo file="portal-web/test/test-portal-web-ext.properties" append="true">
+				<echo file="${test.ext.properties.file}" append="true">
 					email.password.5=${email.password.5}
 				</echo>
 			</then>
@@ -7387,7 +7387,7 @@ svn --username ${svn.username} --password ${svn.password} update -r ${svn.info.r
 		<if>
 			<isset property="lcs.email.address.1" />
 			<then>
-				<echo file="portal-web/test/test-portal-web-ext.properties" append="true">
+				<echo file="${test.ext.properties.file}" append="true">
 					lcs.email.address.1=${lcs.email.address.1}
 				</echo>
 			</then>
@@ -7396,7 +7396,7 @@ svn --username ${svn.username} --password ${svn.password} update -r ${svn.info.r
 		<if>
 			<isset property="lcs.email.address.2" />
 			<then>
-				<echo file="portal-web/test/test-portal-web-ext.properties" append="true">
+				<echo file="${test.ext.properties.file}" append="true">
 					lcs.email.address.2=${lcs.email.address.2}
 				</echo>
 			</then>
@@ -7405,7 +7405,7 @@ svn --username ${svn.username} --password ${svn.password} update -r ${svn.info.r
 		<if>
 			<isset property="lcs.email.address.3" />
 			<then>
-				<echo file="portal-web/test/test-portal-web-ext.properties" append="true">
+				<echo file="${test.ext.properties.file}" append="true">
 					lcs.email.address.3=${lcs.email.address.3}
 				</echo>
 			</then>
@@ -7414,7 +7414,7 @@ svn --username ${svn.username} --password ${svn.password} update -r ${svn.info.r
 		<if>
 			<isset property="lcs.email.id.1" />
 			<then>
-				<echo file="portal-web/test/test-portal-web-ext.properties" append="true">
+				<echo file="${test.ext.properties.file}" append="true">
 					lcs.email.id.1=${lcs.email.id.1}
 				</echo>
 			</then>
@@ -7423,7 +7423,7 @@ svn --username ${svn.username} --password ${svn.password} update -r ${svn.info.r
 		<if>
 			<isset property="lcs.email.id.2" />
 			<then>
-				<echo file="portal-web/test/test-portal-web-ext.properties" append="true">
+				<echo file="${test.ext.properties.file}" append="true">
 					lcs.email.id.2=${lcs.email.id.2}
 				</echo>
 			</then>
@@ -7432,7 +7432,7 @@ svn --username ${svn.username} --password ${svn.password} update -r ${svn.info.r
 		<if>
 			<isset property="lcs.email.id.3" />
 			<then>
-				<echo file="portal-web/test/test-portal-web-ext.properties" append="true">
+				<echo file="${test.ext.properties.file}" append="true">
 					lcs.email.id.3=${lcs.email.id.3}
 				</echo>
 			</then>
@@ -7441,7 +7441,7 @@ svn --username ${svn.username} --password ${svn.password} update -r ${svn.info.r
 		<if>
 			<isset property="lcs.email.password.1" />
 			<then>
-				<echo file="portal-web/test/test-portal-web-ext.properties" append="true">
+				<echo file="${test.ext.properties.file}" append="true">
 					lcs.email.password.1=${lcs.email.password.1}
 				</echo>
 			</then>
@@ -7450,7 +7450,7 @@ svn --username ${svn.username} --password ${svn.password} update -r ${svn.info.r
 		<if>
 			<isset property="lcs.email.password.2" />
 			<then>
-				<echo file="portal-web/test/test-portal-web-ext.properties" append="true">
+				<echo file="${test.ext.properties.file}" append="true">
 					lcs.email.password.2=${lcs.email.password.2}
 				</echo>
 			</then>
@@ -7459,7 +7459,7 @@ svn --username ${svn.username} --password ${svn.password} update -r ${svn.info.r
 		<if>
 			<isset property="lcs.email.password.3" />
 			<then>
-				<echo file="portal-web/test/test-portal-web-ext.properties" append="true">
+				<echo file="${test.ext.properties.file}" append="true">
 					lcs.email.password.3=${lcs.email.password.3}
 				</echo>
 			</then>
@@ -7468,7 +7468,7 @@ svn --username ${svn.username} --password ${svn.password} update -r ${svn.info.r
 		<if>
 			<isset property="marketplace.email.address.1" />
 			<then>
-				<echo file="portal-web/test/test-portal-web-ext.properties" append="true">
+				<echo file="${test.ext.properties.file}" append="true">
 					marketplace.email.address.1=${marketplace.email.address.1}
 				</echo>
 			</then>
@@ -7477,7 +7477,7 @@ svn --username ${svn.username} --password ${svn.password} update -r ${svn.info.r
 		<if>
 			<isset property="marketplace.email.address.2" />
 			<then>
-				<echo file="portal-web/test/test-portal-web-ext.properties" append="true">
+				<echo file="${test.ext.properties.file}" append="true">
 					marketplace.email.address.2=${marketplace.email.address.2}
 				</echo>
 			</then>
@@ -7486,7 +7486,7 @@ svn --username ${svn.username} --password ${svn.password} update -r ${svn.info.r
 		<if>
 			<isset property="marketplace.email.address.3" />
 			<then>
-				<echo file="portal-web/test/test-portal-web-ext.properties" append="true">
+				<echo file="${test.ext.properties.file}" append="true">
 					marketplace.email.address.3=${marketplace.email.address.3}
 				</echo>
 			</then>
@@ -7495,7 +7495,7 @@ svn --username ${svn.username} --password ${svn.password} update -r ${svn.info.r
 		<if>
 			<isset property="marketplace.email.address.4" />
 			<then>
-				<echo file="portal-web/test/test-portal-web-ext.properties" append="true">
+				<echo file="${test.ext.properties.file}" append="true">
 					marketplace.email.address.4=${marketplace.email.address.4}
 				</echo>
 			</then>
@@ -7504,7 +7504,7 @@ svn --username ${svn.username} --password ${svn.password} update -r ${svn.info.r
 		<if>
 			<isset property="marketplace.email.address.5" />
 			<then>
-				<echo file="portal-web/test/test-portal-web-ext.properties" append="true">
+				<echo file="${test.ext.properties.file}" append="true">
 					marketplace.email.address.5=${marketplace.email.address.5}
 				</echo>
 			</then>
@@ -7513,7 +7513,7 @@ svn --username ${svn.username} --password ${svn.password} update -r ${svn.info.r
 		<if>
 			<isset property="marketplace.email.password.1" />
 			<then>
-				<echo file="portal-web/test/test-portal-web-ext.properties" append="true">
+				<echo file="${test.ext.properties.file}" append="true">
 					marketplace.email.password.1=${marketplace.email.password.1}
 				</echo>
 			</then>
@@ -7522,7 +7522,7 @@ svn --username ${svn.username} --password ${svn.password} update -r ${svn.info.r
 		<if>
 			<isset property="marketplace.email.password.2" />
 			<then>
-				<echo file="portal-web/test/test-portal-web-ext.properties" append="true">
+				<echo file="${test.ext.properties.file}" append="true">
 					marketplace.email.password.2=${marketplace.email.password.2}
 				</echo>
 			</then>
@@ -7531,7 +7531,7 @@ svn --username ${svn.username} --password ${svn.password} update -r ${svn.info.r
 		<if>
 			<isset property="marketplace.email.password.3" />
 			<then>
-				<echo file="portal-web/test/test-portal-web-ext.properties" append="true">
+				<echo file="${test.ext.properties.file}" append="true">
 					marketplace.email.password.3=${marketplace.email.password.3}
 				</echo>
 			</then>
@@ -7540,7 +7540,7 @@ svn --username ${svn.username} --password ${svn.password} update -r ${svn.info.r
 		<if>
 			<isset property="marketplace.email.password.4" />
 			<then>
-				<echo file="portal-web/test/test-portal-web-ext.properties" append="true">
+				<echo file="${test.ext.properties.file}" append="true">
 					marketplace.email.password.4=${marketplace.email.password.4}
 				</echo>
 			</then>
@@ -7549,7 +7549,7 @@ svn --username ${svn.username} --password ${svn.password} update -r ${svn.info.r
 		<if>
 			<isset property="marketplace.email.password.5" />
 			<then>
-				<echo file="portal-web/test/test-portal-web-ext.properties" append="true">
+				<echo file="${test.ext.properties.file}" append="true">
 					marketplace.email.password.5=${marketplace.email.password.5}
 				</echo>
 			</then>
@@ -7557,17 +7557,17 @@ svn --username ${svn.username} --password ${svn.password} update -r ${svn.info.r
 	</target>
 
 	<target name="prepare-selenium-required-properties">
-		<echo file="portal-web/test/test-portal-web-ext.properties" append="true">
+		<echo file="${test.ext.properties.file}" append="true">
 			selenium.executable.dir=${basedir.unix}/tools/selenium/
 		</echo>
 
-		<echo file="portal-web/test/test-portal-web-ext.properties" append="true">
+		<echo file="${test.ext.properties.file}" append="true">
 			test.class.command.name=${test.class}
 		</echo>
 
 		<get-test-url />
 
-		<echo file="portal-web/test/test-portal-web-ext.properties" append="true">
+		<echo file="${test.ext.properties.file}" append="true">
 			portal.url=${test.url}
 		</echo>
 	</target>
@@ -7578,7 +7578,7 @@ svn --username ${svn.username} --password ${svn.password} update -r ${svn.info.r
 		<if>
 			<isset property="ignore.errors" />
 			<then>
-				<echo file="portal-web/test/test-portal-web-ext.properties" append="true">
+				<echo file="${test.ext.properties.file}" append="true">
 					ignore.errors=${ignore.errors}
 				</echo>
 			</then>
@@ -7589,7 +7589,7 @@ svn --username ${svn.username} --password ${svn.password} update -r ${svn.info.r
 		<if>
 			<isset property="ignore.errors.delimiter" />
 			<then>
-				<echo file="portal-web/test/test-portal-web-ext.properties" append="true">
+				<echo file="${test.ext.properties.file}" append="true">
 					ignore.errors.delimiter=${ignore.errors.delimiter}
 				</echo>
 			</then>
@@ -7600,7 +7600,7 @@ svn --username ${svn.username} --password ${svn.password} update -r ${svn.info.r
 		<if>
 			<equals arg1="${mobile.device.enabled}" arg2="true" />
 			<then>
-				<echo file="portal-web/test/test-portal-web-ext.properties" append="true">
+				<echo file="${test.ext.properties.file}" append="true">
 					mobile.device.enabled=${mobile.device.enabled}
 				</echo>
 			</then>
@@ -7614,7 +7614,7 @@ svn --username ${svn.username} --password ${svn.password} update -r ${svn.info.r
 				<equals arg1="${cmis.repository.type}" arg2="sharepoint2010" />
 			</or>
 			<then>
-				<echo file="portal-web/test/test-portal-web-ext.properties" append="true">
+				<echo file="${test.ext.properties.file}" append="true">
 					cmis.repository.vm.host.name=${cmis.repository.vm.host.name}
 				</echo>
 			</then>
@@ -7625,7 +7625,7 @@ svn --username ${svn.username} --password ${svn.password} update -r ${svn.info.r
 		<if>
 			<equals arg1="${test.assert.javascript.errors}" arg2="false" />
 			<then>
-				<echo file="portal-web/test/test-portal-web-ext.properties" append="true">
+				<echo file="${test.ext.properties.file}" append="true">
 					test.assert.javascript.errors=false
 				</echo>
 			</then>
@@ -7636,7 +7636,7 @@ svn --username ${svn.username} --password ${svn.password} update -r ${svn.info.r
 		<if>
 			<isset property="timeout.explicit.wait" />
 			<then>
-				<echo file="portal-web/test/test-portal-web-ext.properties" append="true">
+				<echo file="${test.ext.properties.file}" append="true">
 					timeout.explicit.wait=${timeout.explicit.wait}
 				</echo>
 			</then>
@@ -8244,7 +8244,7 @@ database.version=9.7</echo>
 					portal.url=www.${virtual.host.name}.com:8080
 				</echo>
 
-				<echo file="portal-web/test/test-portal-web-ext.properties" append="true">
+				<echo file="${test.ext.properties.file}" append="true">
 					portal.url=www.${virtual.host.name}.com:8080
 				</echo>
 			</then>
@@ -9264,7 +9264,7 @@ jdbc.default.password=${database.mysql.password}</echo>
 				<equals arg1="${cmis.repository.type}" arg2="sharepoint2010" />
 			</or>
 			<then>
-				<property file="${project.dir}/portal-web/test/test-portal-web-ext.properties" />
+				<property file="${project.dir}/${test.ext.properties.file}" />
 
 				<if>
 					<os family="unix" />
