@@ -2358,7 +2358,7 @@ org.apache.catalina.startup.ClassLoaderFactory.level=INFO]]>
 				<then>
 					<antcall target="clean-up-logs" />
 
-					<record action="start" name="${project.dir}/log" />
+					<record action="start" name="${project.dir}/console-shut-down" />
 				</then>
 			</if>
 
@@ -2402,7 +2402,7 @@ org.apache.catalina.startup.ClassLoaderFactory.level=INFO]]>
 					</not>
 				</and>
 				<then>
-					<record action="stop" name="${project.dir}/log" />
+					<record action="stop" name="${project.dir}/console-shut-down" />
 				</then>
 			</if>
 		</sequential>
@@ -3357,13 +3357,6 @@ go]]></replacevalue>
 
 	<target name="evaluate-logs">
 		<if>
-			<available file="portal-web/test-ant-scripts/log" />
-			<then>
-				<move file="portal-web/test-ant-scripts/log" todir="." />
-			</then>
-		</if>
-
-		<if>
 			<isset property="print.logs" />
 			<then>
 				<loadfile property="log.content" srcfile="log">
@@ -3383,14 +3376,22 @@ go]]></replacevalue>
 		<get-test-simple-class-name />
 
 		<if>
-			<isset property="test.evaluate.logs" />
+			<equals arg1="${test.poshi.runner.enabled}" arg2="true" />
 			<then>
-				<var name="test.class" unset="true" />
-
-				<ant dir="portal-web" target="test-class">
-					<property name="test.class" value="EvaluateLogTestSuite" />
-				</ant>
+				<antcall target="run-poshi-evaluate-console" />
 			</then>
+			<elseif>
+				<isset property="test.evaluate.logs" />
+				<then>
+					<copy file="${project.dir}/console-shut-down" tofile="${project.dir}/log" />
+
+					<var name="test.class" unset="true" />
+
+					<ant dir="portal-web" target="test-class">
+						<property name="test.class" value="EvaluateLogTestSuite" />
+					</ant>
+				</then>
+			</elseif>
 		</if>
 
 		<if>
@@ -6087,6 +6088,16 @@ if (ppstate.equals("normal")) {
 		<execute>
 			<![CDATA[git checkout -- portal-web/test/test-portal-web.properties]]>
 		</execute>
+	</target>
+
+	<target name="run-poshi-evaluate-console">
+		<gradle-execute failonerror="false" task="evaluatePoshiConsole">
+			<arg value="--build-file=portal-web/build-test.gradle" />
+			<arg value="-PignoreErrorsFileName=${project.dir}/portal-web/test-ignorable-error-lines.xml" />
+			<arg value="-Plocal=${test.poshi.runner.local.release}" />
+			<arg value="-PtestConsoleShutDownFileName=${project.dir}/console-shut-down" />
+			<arg value="-PtestPoshiWarningsFileName=${project.dir}/poshi-warnings.xml" />
+		</gradle-execute>
 	</target>
 
 	<target name="run-poshi-runner">
