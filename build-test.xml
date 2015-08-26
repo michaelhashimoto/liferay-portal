@@ -526,8 +526,8 @@ counter.jdbc.prefix=jdbc.counter.]]></echo>
 					try {
 						DirectoryScanner directoryScanner = new DirectoryScanner();
 
-						if (project.getProperty("test.basedir") != null) {
-							directoryScanner.setBasedir(project.getProperty("test.basedir"));
+						if (project.getProperty("test.base.dir.name") != null) {
+							directoryScanner.setBasedir(project.getProperty("test.base.dir.name"));
 						}
 						else {
 							directoryScanner.setBasedir(project.getBaseDir());
@@ -6929,15 +6929,15 @@ svn --username ${svn.username} --password ${svn.password} update -r ${svn.info.r
 		</if>
 
 		<if>
-			<isset property="test.basedir" />
+			<isset property="test.base.dir.name" />
 			<then>
 				<echo file="${test.ext.properties.file}" append="true">
-					test.basedir=${test.basedir}
+					test.base.dir.name=${test.base.dir.name}
 				</echo>
 			</then>
 			<else>
 				<echo file="${test.ext.properties.file}" append="true">
-					test.basedir=${basedir.unix}/portal-web
+					test.base.dir.name=${basedir.unix}/portal-web
 				</echo>
 			</else>
 		</if>
