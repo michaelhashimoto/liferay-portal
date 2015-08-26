@@ -8691,7 +8691,7 @@ cluster.link.bind.addr["cluster-link-udp"]=127.0.0.1
 							<antelope:replace regex="," replacement="_" />
 						</antelope:stringutil>
 
-						<property name="testray.logs.dir" value="${jenkins.testray.results.path}/logs/${job.name}/builds/${env.TOP_LEVEL_BUILD_NUMBER}" />
+						<property name="testray.logs.dir" value="@{jenkins.testray.results.path}/logs/${job.name}/builds/${env.TOP_LEVEL_BUILD_NUMBER}" />
 
 						<var name="result.file" value="portal-web/test-results/functional/report.html" />
 						<var name="screenshot.dir" value="portal-web/test-results/functional/screenshots" />
