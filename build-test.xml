@@ -6836,6 +6836,35 @@ svn --username ${svn.username} --password ${svn.password} update -r ${svn.info.r
 </Context>]]></echo>
 	</target>
 
+	<target name="prepare-poshi-runner-properties">
+		<tstamp>
+			<format property="current.date" pattern="yyyy-MM-dd" timezone="GMT" />
+		</tstamp>
+
+		<echo file="${test.ext.properties.file}" append="true">
+			component.names=${component.names}
+			ignore.errors.file.name=${project.dir}/portal-web/test-ignorable-error-lines.xml
+			product.names=${product.names}
+			project.dir=${project.dir}
+			test.case.available.property.names=${test.case.available.property.names}
+			test.console.log.file.name=${liferay.home}/logs/liferay.${current.date}.xml
+			test.console.shut.down.file.name=${project.dir}/console-shut-down
+			test.dependencies.dir.name=com/liferay/portalweb/dependencies
+			test.poshi.warnings.file.name=${project.dir}/poshi-warnings.xml
+		</echo>
+
+		<if>
+			<isset property="test.class" />
+			<then>
+				<get-poshi-test-name />
+
+				<echo file="${test.ext.properties.file}" append="true">
+					test.name=${poshi.test.name}
+				</echo>
+			</then>
+		</if>
+	</target>
+
 	<target name="prepare-selenium">
 		<delete file="${test.ext.properties.file}" />
 
@@ -6847,7 +6876,7 @@ svn --username ${svn.username} --password ${svn.password} update -r ${svn.info.r
 		<if>
 			<equals arg1="${test.poshi.runner.enabled}" arg2="true" />
 			<then>
-				<antcall target="prepare-selenium-poshi-runner-properties" />
+				<antcall target="prepare-poshi-runner-properties" />
 			</then>
 		</if>
 
@@ -7569,35 +7598,6 @@ svn --username ${svn.username} --password ${svn.password} update -r ${svn.info.r
 			<then>
 				<echo file="${test.ext.properties.file}" append="true">
 					marketplace.email.password.5=${marketplace.email.password.5}
-				</echo>
-			</then>
-		</if>
-	</target>
-
-	<target name="prepare-selenium-poshi-runner-properties">
-		<tstamp>
-			<format property="current.date" pattern="yyyy-MM-dd" timezone="GMT" />
-		</tstamp>
-
-		<echo file="${test.ext.properties.file}" append="true">
-			component.names=${component.names}
-			ignore.errors.file.name=${project.dir}/portal-web/test-ignorable-error-lines.xml
-			product.names=${product.names}
-			project.dir=${project.dir}
-			test.case.available.property.names=${test.case.available.property.names}
-			test.console.log.file.name=${liferay.home}/logs/liferay.${current.date}.xml
-			test.console.shut.down.file.name=${project.dir}/console-shut-down
-			test.dependencies.dir.name=com/liferay/portalweb/dependencies
-			test.poshi.warnings.file.name=${project.dir}/poshi-warnings.xml
-		</echo>
-
-		<if>
-			<isset property="test.class" />
-			<then>
-				<get-poshi-test-name />
-
-				<echo file="${test.ext.properties.file}" append="true">
-					test.name=${poshi.test.name}
 				</echo>
 			</then>
 		</if>
@@ -8576,7 +8576,7 @@ cluster.link.bind.addr["cluster-link-udp"]=127.0.0.1
 	<target name="record-test-case-method-names">
 		<delete file="portal-web/poshi-runner-ext.properties" failonerror="false" />
 
-		<antcall target="prepare-selenium-poshi-runner-properties" inheritall="false">
+		<antcall target="prepare-poshi-runner-properties" inheritall="false">
 			<param name="test.ext.properties.file" value="portal-web/poshi-runner-ext.properties" />
 		</antcall>
 
@@ -8597,7 +8597,7 @@ cluster.link.bind.addr["cluster-link-udp"]=127.0.0.1
 
 		<delete file="portal-web/poshi-runner-ext.properties" failonerror="false" />
 
-		<antcall target="prepare-selenium-poshi-runner-properties" inheritall="false">
+		<antcall target="prepare-poshi-runner-properties" inheritall="false">
 			<param name="test.ext.properties.file" value="portal-web/poshi-runner-ext.properties" />
 		</antcall>
 
@@ -8865,7 +8865,7 @@ cluster.link.bind.addr["cluster-link-udp"]=127.0.0.1
 	<target name="run-poshi-validation">
 		<delete file="portal-web/poshi-runner-ext.properties" failonerror="false" />
 
-		<antcall target="prepare-selenium-poshi-runner-properties" inheritall="false">
+		<antcall target="prepare-poshi-runner-properties" inheritall="false">
 			<param name="test.ext.properties.file" value="portal-web/poshi-runner-ext.properties" />
 		</antcall>
 
