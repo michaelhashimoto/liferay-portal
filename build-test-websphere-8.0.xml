@@ -269,10 +269,5 @@ print AdminControl.invoke(appManager, 'startApplication', 'liferay-portal')</ech
 		<exec executable="${pscp.executable}">
 			<arg line="-pw ${vm.password} ${vm.username}@${vm.host}:/WINDOWS/system32/config/systemprofile/liferay/logs/liferay.${log.tstamp.value}.log log" />
 		</exec>
-
-		<antcall target="evaluate-logs">
-			<param name="print.logs" value="true" />
-			<param name="test.evaluate.logs" value="true" />
-		</antcall>
 	</target>
 </project>

@@ -55,7 +55,5 @@
 			<param name="simple.server.stop.executable" value="stopServer.bat" />
 			<param name="simple.server.stop.executable.arg.line" value="server1" />
 		</antcall>
-
-		<antcall target="evaluate-logs" />
 	</target>
 </project>
