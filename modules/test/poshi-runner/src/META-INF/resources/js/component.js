@@ -111,15 +111,13 @@ YUI.add(
 						var instance = this;
 
 						var sidebar = instance.get(STR_SIDEBAR);
-						var xmlLog = instance.get(STR_XML_LOG);
-
-						xmlLog.toggleClass(STR_RUNNING);
+						var contentBox = instance.get(STR_CONTENT_BOX);
 
 						var commandLog = sidebar.one('.command-log');
 
 						instance._toggleCommandLog(commandLog);
 
-						if (!xmlLog.hasClass(STR_RUNNING)) {
+						if (!contentBox.hasClass(STR_RUNNING)) {
 							instance._minimizeSidebar();
 						}
 					},
