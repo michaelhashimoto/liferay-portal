@@ -103,11 +103,11 @@ public final class CommandLoggerHandler {
 	}
 
 	public static void startRunning() throws Exception {
-		_xmlLogLoggerElement.addClassName("running");
+		_poshiLoggerLoggerElement.addClassName("running");
 	}
 
 	public static void stopRunning() throws Exception {
-		_xmlLogLoggerElement.removeClassName("running");
+		_poshiLoggerLoggerElement.removeClassName("running");
 	}
 
 	public static void warnCommand(Element element) throws Exception {
@@ -459,8 +459,14 @@ public final class CommandLoggerHandler {
 	private static int _errorLinkId;
 	private static int _functionLinkId;
 	private static LoggerElement _lineGroupLoggerElement;
-	private static final LoggerElement _xmlLogLoggerElement = new LoggerElement(
-		"xml-log");
+	private static final LoggerElement _poshiLoggerLoggerElement =
+		new LoggerElement("poshiLogger");
+
+	static {
+		_poshiLoggerLoggerElement.setClassName("poshi-logger");
+		_poshiLoggerLoggerElement.setName("div");
+		_poshiLoggerLoggerElement.setWrittenToLogger(true);
+	}
 
 	static {
 		_commandLogLoggerElement.setAttribute("data-logid", "01");
