@@ -6765,7 +6765,7 @@ svn --username ${svn.username} --password ${svn.password} update -r ${svn.info.r
 			test.case.available.property.names=${test.case.available.property.names}
 			test.console.log.file.name=${liferay.home}/logs/liferay.${current.date}.xml
 			test.console.shut.down.file.name=${project.dir}/console-shut-down
-			test.dependencies.dir.name=com/liferay/portalweb/dependencies
+			test.dependencies.dir.name=dependencies
 			test.poshi.warnings.file.name=${project.dir}/poshi-warnings.xml
 		</echo>
 
