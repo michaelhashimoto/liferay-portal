@@ -6875,7 +6875,9 @@ svn --username ${svn.username} --password ${svn.password} update -r ${svn.info.r
 		<antcall target="prepare-selenium-app-server-properties" />
 		<antcall target="prepare-selenium-browser-properties" />
 		<antcall target="prepare-selenium-database-properties" />
+		<antcall target="prepare-selenium-driver" />
 		<antcall target="prepare-selenium-email-properties" />
+		<antcall target="prepare-selenium-mobile-properties" />
 		<antcall target="prepare-selenium-required-properties" />
 		<antcall target="prepare-selenium-testcase-properties" />
 
@@ -8892,6 +8894,8 @@ cluster.link.bind.addr["cluster-link-udp"]=127.0.0.1
 	</target>
 
 	<target name="run-selenium-test" depends="prepare-selenium">
+		<antcall target="prepare-mobile-device" />
+
 		<if>
 			<and>
 				<equals arg1="${test.class}" arg2="PortalWebTestSuite" />
@@ -9361,6 +9365,10 @@ jdbc.default.password=${database.mysql.password}</echo>
 				<stop-appium />
 			</then>
 		</if>
+
+		<antcall target="clean-up-mobile-device" />
+
+		<antcall target="clean-up-selenium-driver" />
 
 		<antcall target="clean-up-sikuli-temp-files" />
 
