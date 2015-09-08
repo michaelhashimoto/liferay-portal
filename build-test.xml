@@ -4574,7 +4574,9 @@ module.framework.properties.osgi.console=11312</echo>
 		<antcall target="prepare-selenium-app-server-properties" />
 		<antcall target="prepare-selenium-browser-properties" />
 		<antcall target="prepare-selenium-database-properties" />
+		<antcall target="prepare-selenium-driver" />
 		<antcall target="prepare-selenium-email-properties" />
+		<antcall target="prepare-selenium-mobile-properties" />
 		<antcall target="prepare-selenium-required-properties" />
 		<antcall target="prepare-selenium-testcase-properties" />
 
@@ -6211,6 +6213,8 @@ jdbc.default.password=${database.mysql.password}</echo>
 			</then>
 		</if>
 
+		<antcall target="prepare-mobile-device" />
+
 		<if>
 			<equals arg1="${test.poshi.runner.enabled}" arg2="true" />
 			<then>
@@ -6248,6 +6252,9 @@ jdbc.default.password=${database.mysql.password}</echo>
 				</if>
 			</else>
 		</if>
+
+		<antcall target="clean-up-mobile-device" />
+		<antcall target="clean-up-selenium-driver" />
 
 		<property name="test.class" value="${test.simple.class.name}#${test.method.name}" />
 
