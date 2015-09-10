@@ -47,7 +47,7 @@ public class SeleniumBuilderTest {
 		test(
 			"ActionCaseElementInvalidAttributeName.action",
 			"Error 1005: Invalid fail attribute in " + _DIR_NAME +
-				"/ActionCaseElementInvalidAttributeName.action:3");
+				"/ActionCaseElementInvalidAttributeNames.action:3");
 	}
 
 	@Test
