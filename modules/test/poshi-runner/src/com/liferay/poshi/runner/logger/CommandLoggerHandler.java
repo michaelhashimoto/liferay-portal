@@ -103,11 +103,13 @@ public final class CommandLoggerHandler {
 	}
 
 	public static void startRunning() throws Exception {
-		_xmlLogLoggerElement.addClassName("running");
+		LoggerUtil.executeJavaScript(
+			"loggerInterface.fire('toggle-running', true)");
 	}
 
 	public static void stopRunning() throws Exception {
-		_xmlLogLoggerElement.removeClassName("running");
+		LoggerUtil.executeJavaScript(
+			"loggerInterface.fire('toggle-running', false)");
 	}
 
 	public static void warnCommand(Element element) throws Exception {
@@ -456,8 +458,6 @@ public final class CommandLoggerHandler {
 	private static int _errorLinkId;
 	private static int _functionLinkId;
 	private static LoggerElement _lineGroupLoggerElement;
-	private static final LoggerElement _xmlLogLoggerElement = new LoggerElement(
-		"xml-log");
 
 	static {
 		_commandLogLoggerElement.setAttribute("data-logid", "01");
