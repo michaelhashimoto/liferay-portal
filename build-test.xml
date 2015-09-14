@@ -556,7 +556,7 @@ counter.jdbc.prefix=jdbc.counter.]]></echo>
 
 	<macrodef name="get-test-url">
 		<sequential>
-			<get-testcase-property property.name="mobile.device.enabled" />
+			<get-testcase-property property.name="mobile.device.type" />
 
 			<get-testcase-property property.name="testcase.url" />
 
@@ -566,7 +566,7 @@ counter.jdbc.prefix=jdbc.counter.]]></echo>
 					<var name="test.url" value="${test.url}" />
 				</then>
 				<elseif>
-					<equals arg1="${mobile.device.enabled}" arg2="true" />
+					<isset property="${mobile.device.type}" />
 					<then>
 						<get-ip-address />
 
@@ -2125,7 +2125,7 @@ org.apache.catalina.startup.ClassLoaderFactory.level=INFO]]>
 				hw.keyboard=yes
 			</echo>
 
-			<exec executable="/bin/bash" os="${os.unix}" spawn="true">
+			<exec executable="/bin/bash" os="${os.apple},${os.unix}" spawn="true">
 				<arg value="-c" />
 				<arg value="${mobile.android.home}/tools/emulator -avd deviceName -no-boot-anim" />
 			</exec>
@@ -2272,23 +2272,43 @@ org.apache.catalina.startup.ClassLoaderFactory.level=INFO]]>
 
 	<macrodef name="start-appium">
 		<sequential>
-			<fail message="Please set the property ${mobile.android.home}." unless="mobile.android.home" />
+			<if>
+				<equals arg1="${mobile.device.type}" arg2="android" />
+				<then>
+					<fail message="Please set the property ${mobile.android.home}." unless="mobile.android.home" />
 
-			<parallel>
-				<daemons>
-					<exec executable="/bin/bash" os="${os.unix}">
-						<env key="PATH" value="${env.PATH}:${mobile.android.home}/tools:${mobile.android.home}/platform-tools" />
-						<arg value="-c" />
-						<arg value="${appium.unix.cmd}" />
-					</exec>
+					<parallel>
+						<daemons>
+							<exec executable="/bin/bash" os="${os.apple},${os.unix}">
+								<env key="ANDROID_HOME" value="${mobile.android.home}" />
+								<env key="PATH" value="${env.PATH}:${mobile.android.home}/tools:${mobile.android.home}/platform-tools" />
+								<arg value="-c" />
+								<arg value="${appium.unix.cmd}" />
+							</exec>
 
-					<exec dir="${appium.win32.dir}" executable="cmd.exe" os="${os.windows}">
-						<env key="Path" value="${env.Path}:${mobile.android.home}/tools:${mobile.android.home}/platform-tools" />
-						<arg value="/c" />
-						<arg value="${appium.win32.cmd}" />
-					</exec>
-				</daemons>
-			</parallel>
+							<exec dir="${appium.win32.dir}" executable="cmd.exe" os="${os.windows}">
+								<env key="ANDROID_HOME" value="${mobile.android.home}" />
+								<env key="Path" value="${env.Path}:${mobile.android.home}/tools:${mobile.android.home}/platform-tools" />
+								<arg value="/c" />
+								<arg value="${appium.win32.cmd}" />
+							</exec>
+						</daemons>
+					</parallel>
+				</then>
+				<elseif>
+					<equals arg1="${mobile.device.type}" arg2="ios" />
+					<then>
+						<parallel>
+							<daemons>
+								<exec executable="/bin/bash" os="${os.apple}">
+									<arg value="-c" />
+									<arg value="${appium.unix.cmd}" />
+								</exec>
+							</daemons>
+						</parallel>
+					</then>
+				</elseif>
+			</if>
 		</sequential>
 	</macrodef>
 
@@ -2429,7 +2449,7 @@ org.apache.catalina.startup.ClassLoaderFactory.level=INFO]]>
 
 	<macrodef name="stop-appium">
 		<sequential>
-			<exec executable="/bin/bash" os="${os.unix}" >
+			<exec executable="/bin/bash" os="${os.apple},${os.unix}" >
 				<arg value="-c" />
 				<arg value="killall node" />
 			</exec>
@@ -3064,6 +3084,24 @@ go]]></replacevalue>
 
 	<target name="clean-up-logs">
 		<delete failonerror="false" file="${project.dir}/console-shut-down" />
+	</target>
+
+	<target name="clean-up-mobile-device">
+		<if>
+			<equals arg1="${mobile.device.type}" arg2="android" />
+			<then>
+				<stop-android-device />
+			</then>
+		</if>
+	</target>
+
+	<target name="clean-up-selenium-driver">
+		<if>
+			<isset property="${mobile.device.type}" />
+			<then>
+				<stop-appium />
+			</then>
+		</if>
 	</target>
 
 	<target name="clean-up-sikuli-temp-files">
@@ -4076,6 +4114,15 @@ osb.lcs.portlet.oauth.consumer.secret=${osb.lcs.portlet.oauth.consumer.secret}</
 		</copy>
 	</target>
 
+	<target name="prepare-mobile-device">
+		<if>
+			<equals arg1="${mobile.device.type}" arg2="android" />
+			<then>
+				<start-android-device />
+			</then>
+		</if>
+	</target>
+
 	<target name="prepare-portal-ext-properties">
 		<prepare-fix-pack-bundle />
 
@@ -4200,10 +4247,10 @@ javascript.fast.load=false</echo>
 			</then>
 		</if>
 
-		<get-testcase-property property.name="mobile.device.enabled" />
+		<get-testcase-property property.name="mobile.device.type" />
 
 		<if>
-			<equals arg1="${mobile.device.enabled}" arg2="true" />
+			<isset property="${mobile.device.type}" />
 			<then>
 				<get-ip-address />
 
@@ -4590,7 +4637,9 @@ module.framework.properties.osgi.console=11312</echo>
 		<antcall target="prepare-selenium-app-server-properties" />
 		<antcall target="prepare-selenium-browser-properties" />
 		<antcall target="prepare-selenium-database-properties" />
+		<antcall target="prepare-selenium-driver" />
 		<antcall target="prepare-selenium-email-properties" />
+		<antcall target="prepare-selenium-mobile-properties" />
 		<antcall target="prepare-selenium-required-properties" />
 		<antcall target="prepare-selenium-testcase-properties" />
 
@@ -4617,15 +4666,6 @@ module.framework.properties.osgi.console=11312</echo>
 			<then>
 				<echo append="true" file="${test.ext.properties.file}">
 					liferay.portal.bundle=${liferay.portal.bundle}
-				</echo>
-			</then>
-		</if>
-
-		<if>
-			<isset property="mobile.android.home" />
-			<then>
-				<echo append="true" file="${test.ext.properties.file}">
-					mobile.android.home=${mobile.android.home}
 				</echo>
 			</then>
 		</if>
@@ -5044,6 +5084,15 @@ module.framework.properties.osgi.console=11312</echo>
 		</if>
 	</target>
 
+	<target name="prepare-selenium-driver">
+		<if>
+			<isset property="mobile.device.type" />
+			<then>
+				<start-appium />
+			</then>
+		</if>
+	</target>
+
 	<target name="prepare-selenium-email-properties">
 		<if>
 			<isset property="email.address.1" />
@@ -5307,6 +5356,18 @@ module.framework.properties.osgi.console=11312</echo>
 		</if>
 	</target>
 
+	<target name="prepare-selenium-mobile-properties">
+		<if>
+			<isset property="mobile.device.type" />
+			<then>
+				<echo append="true" file="${test.ext.properties.file}">
+					mobile.android.home=${mobile.android.home}
+					mobile.device.type=${mobile.device.type}
+				</echo>
+			</then>
+		</if>
+	</target>
+
 	<target name="prepare-selenium-required-properties">
 		<get-test-url />
 
@@ -5341,13 +5402,13 @@ module.framework.properties.osgi.console=11312</echo>
 			</then>
 		</if>
 
-		<get-testcase-property property.name="mobile.device.enabled" />
+		<get-testcase-property property.name="mobile.device.type" />
 
 		<if>
-			<equals arg1="${mobile.device.enabled}" arg2="true" />
+			<isset property="${mobile.device.type}" />
 			<then>
 				<echo append="true" file="${test.ext.properties.file}">
-					mobile.device.enabled=${mobile.device.enabled}
+					mobile.device.type=${mobile.device.type}
 				</echo>
 			</then>
 		</if>
@@ -6205,6 +6266,8 @@ jdbc.default.password=${database.mysql.password}</echo>
 			</then>
 		</if>
 
+		<antcall target="prepare-mobile-device" />
+
 		<if>
 			<equals arg1="${test.poshi.runner.enabled}" arg2="true" />
 			<then>
@@ -6242,6 +6305,9 @@ jdbc.default.password=${database.mysql.password}</echo>
 				</if>
 			</else>
 		</if>
+
+		<antcall target="clean-up-mobile-device" />
+		<antcall target="clean-up-selenium-driver" />
 
 		<property name="test.class" value="${test.simple.class.name}#${test.method.name}" />
 
@@ -6352,17 +6418,6 @@ jdbc.default.password=${database.mysql.password}</echo>
 			<equals arg1="${database.jndi.enabled}" arg2="true" />
 			<then>
 				<prepare-database-jndi />
-			</then>
-		</if>
-
-		<get-testcase-property property.name="mobile.device.enabled" />
-
-		<if>
-			<equals arg1="${mobile.device.enabled}" arg2="true" />
-			<then>
-				<start-android-device />
-
-				<start-appium />
 			</then>
 		</if>
 
@@ -6615,17 +6670,6 @@ jdbc.default.password=${database.mysql.password}</echo>
 				</antelope:repeat>
 
 				<var name="app.server.bundle.index" unset="true" />
-			</then>
-		</if>
-
-		<get-testcase-property property.name="mobile.device.enabled" />
-
-		<if>
-			<equals arg1="${mobile.device.enabled}" arg2="true" />
-			<then>
-				<stop-android-device />
-
-				<stop-appium />
 			</then>
 		</if>
 
