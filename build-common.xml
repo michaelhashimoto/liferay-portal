@@ -3,7 +3,7 @@
 <project name="build-common" xmlns:antelope="antlib:ise.antelope.tasks">
 	<dirname file="${ant.file.build-common}" property="project.dir" />
 
-	<pathconvert pathsep="/" property="project.dir.unix">
+	<pathconvert dirsep="/" property="project.dir.unix">
 		<path location="${project.dir.native}" />
 	</pathconvert>
 
