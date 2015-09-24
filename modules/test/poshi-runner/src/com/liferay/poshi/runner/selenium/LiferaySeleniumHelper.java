@@ -234,6 +234,10 @@ public class LiferaySeleniumHelper {
 	}
 
 	public static void assertLiferayErrors() throws Exception {
+		if (Validator.isNull(PropsValues.TEST_CONSOLE_LOG_FILE_NAME)) {
+			return;
+		}
+
 		String fileName = PropsValues.TEST_CONSOLE_LOG_FILE_NAME;
 
 		if (!FileUtil.exists(fileName)) {
