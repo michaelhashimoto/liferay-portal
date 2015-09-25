@@ -7154,6 +7154,7 @@ svn --username ${svn.username} --password ${svn.password} update -r ${svn.info.r
 	<target name="prepare-selenium-browser-properties">
 		<echo append="true" file="${test.ext.properties.file}">
 			browser.type=${browser.type}
+			mobile.android.home=${mobile.android.home}
 			selenium.chrome.driver.executable=${selenium.chrome.driver.executable}
 			selenium.chrome.driver.version=${selenium.chrome.driver.version}
 			selenium.executable.dir.name=${selenium.executable.dir.name}
@@ -7172,19 +7173,8 @@ svn --username ${svn.username} --password ${svn.password} update -r ${svn.info.r
 				</exec>
 
 				<propertyregex input="${mobile.device.name}" override="true" property="mobile.device.name" regexp=".*\n([A-z0-9]*)" select="\1" />
-			</then>
-		</if>
 
-		<if>
-			<or>
-				<equals arg1="${browser.type}" arg2="android" />
-				<equals arg1="${browser.type}" arg2="androidchrome" />
-				<equals arg1="${browser.type}" arg2="iossafari" />
-			</or>
-			<then>
 				<echo append="true" file="${test.ext.properties.file}">
-					browser.type=${browser.type}
-					mobile.android.home=${mobile.android.home}
 					mobile.device.name=${mobile.device.name}
 				</echo>
 			</then>
