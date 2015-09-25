@@ -7165,6 +7165,19 @@ svn --username ${svn.username} --password ${svn.password} update -r ${svn.info.r
 		</echo>
 
 		<if>
+			<or>
+				<equals arg1="${browser.type}" arg2="android" />
+				<equals arg1="${browser.type}" arg2="androidchrome" />
+				<equals arg1="${browser.type}" arg2="iossafari" />
+			</or>
+			<then>
+				<echo append="true" file="${test.ext.properties.file}">
+					mobile.browser=true
+				</echo>
+			</then>
+		</if>
+
+		<if>
 			<equals arg1="${browser.type}" arg2="androidchrome" />
 			<then>
 				<exec executable="/bin/bash" outputproperty="mobile.device.name" os="${os.apple},${os.unix}">
@@ -7749,7 +7762,7 @@ svn --username ${svn.username} --password ${svn.password} update -r ${svn.info.r
 			</or>
 			<then>
 				<echo append="true" file="${test.ext.properties.file}">
-					browser.type=${browser.type}
+					mobile.browser=true
 				</echo>
 			</then>
 		</if>
