@@ -1411,10 +1411,6 @@ tell application "Safari" to quit
 							<prepare-elasticsearch-configuration />
 						</else>
 					</if>
-
-					<antcall target="prepare-portal-ext-properties" />
-
-					<antcall target="prepare-system-ext-properties" />
 				</else>
 			</if>
 
@@ -1850,7 +1846,7 @@ ${tomcat-gc-log}
 			<generate-jdbc-properties properties.file="portal-impl/test/portal-test-ext.properties">
 				<post-action>
 					<echo file="@{properties.file}" append="true"><![CDATA[
-module.framework.base.dir=${project.dir}/osgi]]></echo>
+module.framework.base.dir=${liferay.home}/osgi]]></echo>
 				</post-action>
 			</generate-jdbc-properties>
 		</sequential>
@@ -6497,7 +6493,18 @@ jdbc.default.password=${database.mysql.password}</echo>
 		</if>
 	</target>
 
-	<target name="run-simple-server" depends="prepare-portal-properties,prepare-portal-ext-properties,prepare-system-ext-properties">
+	<target name="run-simple-server">
+		<if>
+			<equals arg1="${test.prepare.bundle.properties}" arg2="true" />
+			<then>
+				<antcall target="prepare-portal-properties" />
+
+				<antcall target="prepare-portal-ext-properties" />
+
+				<antcall target="prepare-system-ext-properties" />
+			</then>
+		</if>
+
 		<if>
 			<equals arg1="${app.server.type}" arg2="tomcat" />
 			<then>
