@@ -2155,7 +2155,7 @@ org.apache.catalina.startup.ClassLoaderFactory.level=INFO]]>
 					</execute>
 				</then>
 			</if>
-			
+
 			<if>
 				<equals arg1="${tcat.enabled}" arg2="true" />
 				<then>
@@ -6507,8 +6507,12 @@ jdbc.default.password=${database.mysql.password}</echo>
 	</target>
 
 	<target name="run-simple-server">
+		<get-testcase-property property.name="test.prepare.bundle.properties" />
+
 		<if>
-			<equals arg1="${test.prepare.bundle.properties}" arg2="true" />
+			<not>
+				<equals arg1="${test.prepare.bundle.properties}" arg2="false" />
+			</not>
 			<then>
 				<antcall target="prepare-portal-properties" />
 
