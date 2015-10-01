@@ -834,6 +834,8 @@
 
 					<ant antfile="build-dist.xml" target="build-dist-@{app.server.type}" />
 
+					<antcall target="prepare-poshi-runner-properties" />
+
 					<antcall target="record-test-generated-properties" />
 
 					<echo if:set="env.JENKINS_HOME">ANT_OPTS=${env.ANT_OPTS}</echo>
