@@ -2144,6 +2144,16 @@ org.apache.catalina.startup.ClassLoaderFactory.level=INFO]]>
 
 		<sequential>
 			<if>
+				<available file="/opt/dev/projects/github/liferay-portal/bundles/tomcat-7.0.62/webapps/ROOT/WEB-INF/classes/portal-ext.properties" />
+				<execute>
+					echo LOOK HERE
+					echo /opt/dev/projects/github/liferay-portal/bundles/tomcat-7.0.62/webapps/ROOT/WEB-INF/classes/portal-ext.properties
+
+					cat /opt/dev/projects/github/liferay-portal/bundles/tomcat-7.0.62/webapps/ROOT/WEB-INF/classes/portal-ext.properties
+				</execute>
+			</if>
+			
+			<if>
 				<equals arg1="${tcat.enabled}" arg2="true" />
 				<then>
 					<start-app-server-cmd
