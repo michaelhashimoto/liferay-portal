@@ -9187,7 +9187,18 @@ jdbc.default.password=${database.mysql.password}</echo>
 		</if>
 	</target>
 
-	<target name="run-simple-server" depends="prepare-portal-properties,prepare-portal-ext-properties">
+	<target name="run-simple-server">
+		<if>
+			<not>
+				<equals arg1="${test.prepare.bundle.properties}" arg2="false" />
+			</not>
+			<then>
+				<antcall target="prepare-portal-properties" />
+
+				<antcall target="prepare-portal-ext-properties" />
+			</then>
+		</if>
+
 		<antcall target="check-inet-address" />
 
 		<get-testcase-property property.name="database.jndi.enabled" />
