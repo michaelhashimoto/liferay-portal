@@ -9188,15 +9188,18 @@ jdbc.default.password=${database.mysql.password}</echo>
 	</target>
 
 	<target name="run-simple-server">
+		<get-testcase-property property.name="test.prepare.bundle.properties" />
+
 		<if>
-			<not>
-				<equals arg1="${test.prepare.bundle.properties}" arg2="false" />
-			</not>
+			<equals arg1="${test.prepare.bundle.properties}" arg2="false" />
 			<then>
+				<delete file="${app.server.classes.portal.dir}/portal-ext.properties" failonerror="false" />
+			</then>
+			<else>
 				<antcall target="prepare-portal-properties" />
 
 				<antcall target="prepare-portal-ext-properties" />
-			</then>
+			</else>
 		</if>
 
 		<antcall target="check-inet-address" />
