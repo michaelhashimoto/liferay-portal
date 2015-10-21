@@ -7211,10 +7211,13 @@ svn --username ${svn.username} --password ${svn.password} update -r ${svn.info.r
 		</if>
 
 		<if>
-			<equals arg1="${test.skip.tear.down}" arg2="true" />
+			<or>
+				<equals arg1="${test.skip.tear.down}" arg2="false" />
+				<equals arg1="${test.skip.tear.down}" arg2="true" />
+			</or>
 			<then>
 				<echo append="true" file="${test.ext.properties.file}">
-					test.skip.tear.down=true
+					test.skip.tear.down=${test.skip.tear.down}
 				</echo>
 			</then>
 		</if>
