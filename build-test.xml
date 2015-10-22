@@ -7066,6 +7066,8 @@ svn --username ${svn.username} --password ${svn.password} update -r ${svn.info.r
 	<target name="prepare-selenium">
 		<delete file="${test.ext.properties.file}" />
 
+		<get-testcase-property property.name="browser.type" />
+
 		<if>
 			<equals arg1="${test.poshi.runner.enabled}" arg2="true" />
 			<then>
