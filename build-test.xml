@@ -7039,10 +7039,10 @@ svn --username ${svn.username} --password ${svn.password} update -r ${svn.info.r
 		</if>
 
 		<if>
-			<equals arg1="${test.portal.instance}" arg2="true" />
+			<isset property="test.portal.instance" />
 			<then>
 				<echo append="true" file="${test.ext.properties.file}">
-					test.portal.instance=true
+					test.portal.instance=${test.portal.instance}
 				</echo>
 			</then>
 		</if>
