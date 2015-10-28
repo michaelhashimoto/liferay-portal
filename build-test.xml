@@ -6997,6 +6997,11 @@ svn --username ${svn.username} --password ${svn.password} update -r ${svn.info.r
 					test.base.dir.name=${test.base.dir.name}
 				</echo>
 			</then>
+			<else>
+				<echo append="true" file="${test.ext.properties.file}">
+					test.base.dir.name=test/
+				</echo>
+			</else>
 		</if>
 
 		<if>
