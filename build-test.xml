@@ -8876,7 +8876,7 @@ cluster.link.bind.addr["cluster-link-udp"]=127.0.0.1
 					</then>
 				</if>
 
-				<beanshell>
+				<script classpathref="project.classpath" language="beanshell">
 					<![CDATA[
 						import java.util.regex.Matcher;
 						import java.util.regex.Pattern;
@@ -8913,7 +8913,7 @@ cluster.link.bind.addr["cluster-link-udp"]=127.0.0.1
 
 						project.setProperty("test.generated.properties.content", sb.toString());
 					]]>
-				</beanshell>
+				</script>
 
 				<echo>##</echo>
 				<echo>## test.generated.properties</echo>
