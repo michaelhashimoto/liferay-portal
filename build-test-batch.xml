@@ -1029,6 +1029,10 @@
 		/>
 	</target>
 
+	<target name="functional-jboss-eap-6.4-postgresql">
+		<run-functional-test app.server.name="jboss-eap-6.4" app.server.type="jboss" database.type="postgresql" />
+	</target>
+
 	<target name="functional-tomcat-hypersonic">
 		<run-functional-test app.server.type="tomcat" database.type="hypersonic" />
 	</target>
