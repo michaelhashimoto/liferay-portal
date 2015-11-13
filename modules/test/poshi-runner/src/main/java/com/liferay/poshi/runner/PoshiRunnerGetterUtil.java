@@ -390,7 +390,7 @@ public class PoshiRunnerGetterUtil {
 			"and", "body", "case", "command", "condition", "contains",
 			"default", "definition", "description", "echo", "else", "elseif",
 			"equals", "execute", "fail", "for", "if", "head", "html", "isset",
-			"not", "or", "property", "set-up", "table", "take-screenshot",
+			"not", "or", "property", "return", "set-up", "table", "take-screenshot",
 			"task", "tbody", "td", "tear-down", "thead", "then", "title", "tr",
 			"var", "while"
 		});
