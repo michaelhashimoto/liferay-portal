@@ -929,7 +929,7 @@
 		</sequential>
 	</macrodef>
 
-	<target name="functional-release-tomcat-mysql">
+	<target name="functional-bundle-tomcat-mysql">
 		<set-tomcat-version-number liferay.portal.bundle="${test.portal.bundle.version}" />
 
 		<run-functional-test
@@ -978,7 +978,7 @@
 		</run-batch-test>
 	</target>
 
-	<target name="plugins-functional-release-tomcat-mysql">
+	<target name="plugins-functional-bundle-tomcat-mysql">
 		<set-tomcat-version-number liferay.portal.bundle="${test.portal.bundle.version}" />
 
 		<run-functional-test
