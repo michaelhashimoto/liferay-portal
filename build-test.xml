@@ -5501,29 +5501,6 @@ go]]></replacevalue>
 		</copy>
 	</target>
 
-	<target name="deploy-sql-zip">
-		<if>
-			<matches pattern="http" string="${test.sql.zip.url}" />
-			<then>
-				<mirrors-get
-					dest="sql/release-sql.zip"
-					src="${test.sql.zip.url}"
-				/>
-
-				<unzip dest="sql/" src="sql/release-sql.zip">
-					<patternset
-						includes="liferay-*/**"
-					/>
-					<mapper
-						from="[^/]+/(create.*)"
-						to="\1"
-						type="regexp"
-					/>
-				</unzip>
-			</then>
-		</if>
-	</target>
-
 	<target name="deploy-license-xml">
 		<if>
 			<matches pattern="http" string="${test.build.license.xml.zip.url}" />
@@ -5646,6 +5623,29 @@ go]]></replacevalue>
 					<property name="plugin.types" value="hooks" />
 					<property name="plugins.includes" value="portal-compat-hook" />
 				</ant>
+			</then>
+		</if>
+	</target>
+
+	<target name="deploy-sql-zip">
+		<if>
+			<matches pattern="http" string="${test.sql.zip.url}" />
+			<then>
+				<mirrors-get
+					dest="sql/release-sql.zip"
+					src="${test.sql.zip.url}"
+				/>
+
+				<unzip dest="sql/" src="sql/release-sql.zip">
+					<patternset
+						includes="liferay-*/**"
+					/>
+					<mapper
+						from="[^/]+/(create.*)"
+						to="\1"
+						type="regexp"
+					/>
+				</unzip>
 			</then>
 		</if>
 	</target>
