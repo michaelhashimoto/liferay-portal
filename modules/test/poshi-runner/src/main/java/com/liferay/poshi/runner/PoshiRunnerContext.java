@@ -961,8 +961,16 @@ public class PoshiRunnerContext {
 						propertyNames[i], propertyValues[i]));
 			}
 
-			Map<Integer, List<String>> classCommandNameGroups =
-				_getClassCommandNameGroups(classCommandNames);
+			Map<Integer, List<String>> classCommandNameGroups = new HashMap<>();
+
+			if (PropsValues.TEST_BATCH_PORTAL_INSTANCE) {
+				classCommandNameGroups = _getClassCommandNamePropertyGroups(
+					classCommandNames);
+			}
+			else {
+				classCommandNameGroups = _getClassCommandNameGroups(
+					classCommandNames);
+			}
 
 			for (int i = 0; i < classCommandNameGroups.size(); i++) {
 				sb.append("RUN_TEST_CASE_METHOD_GROUP_");
