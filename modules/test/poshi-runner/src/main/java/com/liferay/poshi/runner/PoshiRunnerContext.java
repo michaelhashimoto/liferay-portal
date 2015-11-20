@@ -987,7 +987,17 @@ public class PoshiRunnerContext {
 					sb.append(testCaseClassCommandName);
 
 					if (j < (classCommandNameGroup.size() - 1)) {
-						sb.append(" ");
+						if (PropsValues.TEST_BATCH_PORTAL_INSTANCE) {
+							if (((j + 1) % 4) == 0) {
+								sb.append(" ");
+							}
+							else {
+								sb.append(",");
+							}
+						}
+						else {
+							sb.append(" ");
+						}
 					}
 				}
 
