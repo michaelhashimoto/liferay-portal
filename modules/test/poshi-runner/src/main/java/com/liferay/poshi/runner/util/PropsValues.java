@@ -166,6 +166,9 @@ public class PropsValues {
 	public static final int TEST_BATCH_MAX_GROUP_SIZE = GetterUtil.getInteger(
 		PropsUtil.get("test.batch.max.group.size"));
 
+	public static final boolean TEST_BATCH_PORTAL_INSTANCE =
+		GetterUtil.getBoolean(PropsUtil.get("test.batch.portal.instance"));
+
 	public static final String[] TEST_BATCH_PROPERTY_NAMES = StringUtil.split(
 		PropsUtil.get("test.batch.property.names"));
 
