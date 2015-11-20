@@ -4876,6 +4876,15 @@ module.framework.properties.osgi.console=11312</echo>
 		</if>
 
 		<if>
+			<isset property="test.batch.portal.instance" />
+			<then>
+				<echo append="true" file="${test.ext.properties.file}">
+					test.batch.portal.instance=${test.batch.portal.instance}
+				</echo>
+			</then>
+		</if>
+
+		<if>
 			<isset property="test.case.required.property.names" />
 			<then>
 				<echo append="true" file="${test.ext.properties.file}">
