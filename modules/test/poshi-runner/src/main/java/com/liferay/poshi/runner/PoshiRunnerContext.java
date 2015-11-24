@@ -14,7 +14,9 @@
 
 package com.liferay.poshi.runner;
 
+import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Multimap;
 
 import com.liferay.poshi.runner.selenium.LiferaySelenium;
 import com.liferay.poshi.runner.util.FileUtil;
@@ -27,6 +29,8 @@ import java.lang.reflect.Method;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -283,6 +287,80 @@ public class PoshiRunnerContext {
 		return classCommandNameGroups;
 	}
 
+	private static Map<Integer, List<String>> _getClassCommandNamePropertyGroups(
+			List<String> classCommandNames)
+		throws Exception {
+
+		Map<String, Set<String>> classCommandNameMap = new HashMap<>();
+
+		for (String classCommandName : classCommandNames) {
+			Set<String> classCommandProperties = new TreeSet<>();
+			String className =
+				PoshiRunnerGetterUtil.getClassNameFromClassCommandName(
+					classCommandName);
+
+			List<String> classProperties = _getTestCaseClassProperties(
+				className);
+
+			for (String classProperty : classProperties) {
+				if (!classProperty.contains("testray.")) {
+					classCommandProperties.add(classProperty);
+				}
+			}
+
+			Set<String> commandNames = _getTestCaseCommandNames(className);
+
+			for (String commandName : commandNames) {
+				List<String> commandProperties = _getTestCaseCommandProperties(
+					classCommandName);
+
+				for (String commandProperty : commandProperties) {
+					if (!commandProperty.contains("portal.acceptance")) {
+						classCommandProperties.add(commandProperty);
+					}
+				}
+			}
+
+			classCommandNameMap.put(classCommandName, classCommandProperties);
+		}
+
+		Multimap<Set<String>, String> multimap = HashMultimap.create();
+
+		for (Map.Entry<String, Set<String>> entry :
+				classCommandNameMap.entrySet()) {
+
+			multimap.put(entry.getValue(), entry.getKey());
+		}
+
+		Map<Integer, List<String>> classCommandNameGroups = new HashMap<>();
+		int classCommandNameIndex = 0;
+		int maxGroupSize = PropsValues.TEST_BATCH_MAX_GROUP_SIZE;
+
+		for (Map.Entry<Set<String>, Collection<String>> entry :
+				multimap.asMap().entrySet()) {
+
+			List<String> classCommandNameSubGroup = new ArrayList(
+				entry.getValue());
+
+			Collections.sort(classCommandNameSubGroup);
+
+			double subGroupTestCount = classCommandNameSubGroup.size();
+
+			double subGroupCount = Math.ceil(subGroupTestCount / maxGroupSize);
+
+			double groupSize = Math.ceil(subGroupTestCount / subGroupCount);
+
+			for (List<String> partition : Lists.partition(
+					classCommandNameSubGroup, (int)groupSize)) {
+
+				classCommandNameGroups.put(classCommandNameIndex, partition);
+				classCommandNameIndex++;
+			}
+		}
+
+		return classCommandNameGroups;
+	}
+
 	private static List<String> _getCommandReturns(Element commandElement) {
 		String returns = commandElement.attributeValue("returns");
 
@@ -292,6 +370,7 @@ public class PoshiRunnerContext {
 
 		return Arrays.asList(StringUtil.split(returns));
 	}
+
 
 	private static String _getCommandSummary(
 		String classCommandName, String classType, Element commandElement) {
@@ -882,8 +961,16 @@ public class PoshiRunnerContext {
 						propertyNames[i], propertyValues[i]));
 			}
 
-			Map<Integer, List<String>> classCommandNameGroups =
-				_getClassCommandNameGroups(classCommandNames);
+			Map<Integer, List<String>> classCommandNameGroups = new HashMap<>();
+
+			if (PropsValues.TEST_BATCH_PORTAL_INSTANCE) {
+				classCommandNameGroups = _getClassCommandNamePropertyGroups(
+					classCommandNames);
+			}
+			else {
+				classCommandNameGroups = _getClassCommandNameGroups(
+					classCommandNames);
+			}
 
 			for (int i = 0; i < classCommandNameGroups.size(); i++) {
 				sb.append("RUN_TEST_CASE_METHOD_GROUP_");
@@ -900,7 +987,17 @@ public class PoshiRunnerContext {
 					sb.append(testCaseClassCommandName);
 
 					if (j < (classCommandNameGroup.size() - 1)) {
-						sb.append(" ");
+						if (PropsValues.TEST_BATCH_PORTAL_INSTANCE) {
+							if (((j + 1) % 4) == 0) {
+								sb.append(" ");
+							}
+							else {
+								sb.append(",");
+							}
+						}
+						else {
+							sb.append(" ");
+						}
 					}
 				}
 
