@@ -3,6 +3,8 @@ AUI.add(
 	function(A) {
 		var AArray = A.Array;
 
+		var DateMath = A.DataType.DateMath;
+
 		var Lang = A.Lang;
 
 		var INSTANCE_ID_PREFIX = '_INSTANCE_';
@@ -147,6 +149,8 @@ AUI.add(
 			_getField: function(fieldNode) {
 				var instance = this;
 
+				var displayLocale = instance.get('displayLocale');
+
 				var fieldInstanceId = instance.extractInstanceId(fieldNode);
 
 				var fieldName = fieldNode.getData('fieldName');
@@ -164,7 +168,7 @@ AUI.add(
 							container: fieldNode,
 							dataType: fieldDefinition.dataType,
 							definition: definition,
-							displayLocale: instance.get('displayLocale'),
+							displayLocale: displayLocale,
 							instanceId: fieldInstanceId,
 							name: fieldName,
 							parent: instance,
@@ -211,7 +215,7 @@ AUI.add(
 				portletURL.setDoAsGroupId(instance.get('doAsGroupId'));
 				portletURL.setParameter('fieldName', instance.get('name'));
 				portletURL.setParameter('mode', instance.get('mode'));
-				portletURL.setParameter('namespace', instance.get('namespace'));
+				portletURL.setParameter('namespace', instance.get('fieldsNamespace'));
 				portletURL.setParameter('p_p_isolated', true);
 				portletURL.setParameter('portletNamespace', instance.get('portletNamespace'));
 				portletURL.setParameter('readOnly', instance.get('readOnly'));
@@ -356,6 +360,20 @@ AUI.add(
 						return field;
 					},
 
+					getDefaulLocale: function() {
+						var instance = this;
+
+						var defaultLocale = themeDisplay.getDefaultLanguageId();
+
+						var definition = instance.get('definition');
+
+						if (definition) {
+							defaultLocale = definition.defaultLanguageId;
+						}
+
+						return defaultLocale;
+					},
+
 					getFieldDefinition: function() {
 						var instance = this;
 
@@ -482,8 +500,26 @@ AUI.add(
 
 						var labelNode = instance.getLabelNode();
 
+						var tipNode = labelNode.one('.taglib-icon-help');
+
 						if (Lang.isValue(label) && Lang.isNode(labelNode)) {
 							labelNode.html(A.Escape.html(label));
+						}
+
+						if (tipNode) {
+							var defaultLocale = instance.getDefaulLocale();
+
+							var fieldDefinition = instance.getFieldDefinition();
+
+							var tipsMap = fieldDefinition.tip;
+
+							if (Lang.isObject(tipsMap)) {
+								var tip = tipsMap[instance.get('displayLocale')] || tipsMap[defaultLocale];
+
+								tipNode.one('.tooltip-text').html(A.Escape.html(tip));
+							}
+
+							labelNode.append(tipNode);
 						}
 					},
 
@@ -502,17 +538,11 @@ AUI.add(
 					syncLabelUI: function() {
 						var instance = this;
 
+						var defaultLocale = instance.getDefaulLocale();
+
 						var fieldDefinition = instance.getFieldDefinition();
 
 						var labelsMap = fieldDefinition.label;
-
-						var definition = instance.get('definition');
-
-						var defaultLocale = themeDisplay.getDefaultLanguageId();
-
-						if (definition) {
-							defaultLocale = definition.defaultLanguageId;
-						}
 
 						var label = labelsMap[instance.get('displayLocale')] || labelsMap[defaultLocale];
 
@@ -814,11 +844,13 @@ AUI.add(
 
 						var datePicker = instance.getDatePicker();
 
-						var timestamp = datePicker.getDate().getTime();
+						var selectedDate = datePicker.getDate();
+
+						var formattedDate = A.DataType.Date.format(selectedDate);
 
 						var inputNode = instance.getInputNode();
 
-						return inputNode.val() ? String(timestamp) : '';
+						return inputNode.val() ? formattedDate : '';
 					},
 
 					repeat: function() {
@@ -852,7 +884,11 @@ AUI.add(
 						datePicker.deselectDates();
 
 						if (value) {
-							datePicker.selectDates(new Date(Lang.toInt(value)));
+							var date = A.DataType.Date.parse(value);
+
+							date = DateMath.add(date, DateMath.MINUTES, date.getTimezoneOffset());
+
+							datePicker.selectDates(date);
 						}
 					}
 				}
