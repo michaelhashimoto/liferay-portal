@@ -7273,6 +7273,15 @@ svn --username ${svn.username} --password ${svn.password} update -r ${svn.info.r
 		</if>
 
 		<if>
+			<equals arg1="${test.save.web.page}" arg2="true" />
+			<then>
+				<echo append="true" file="${test.ext.properties.file}">
+					save.web.page=true
+				</echo>
+			</then>
+		</if>
+
+		<if>
 			<equals arg1="${test.selenium.implementation}" arg2="selenium" />
 			<then>
 				<echo append="true" file="${test.ext.properties.file}">
