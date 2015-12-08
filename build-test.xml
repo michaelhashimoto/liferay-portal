@@ -7329,6 +7329,7 @@ svn --username ${svn.username} --password ${svn.password} update -r ${svn.info.r
 	<target name="prepare-selenium-browser">
 		<echo append="true" file="${test.ext.properties.file}">
 			browser.type=${browser.type}
+			browser.version=${browser.version}
 		</echo>
 
 		<if>
@@ -7403,7 +7404,6 @@ svn --username ${svn.username} --password ${svn.password} update -r ${svn.info.r
 			<then>
 				<echo append="true" file="${test.ext.properties.file}">
 					selenium.desired.capabilities.platform=${selenium.desired.capabilities.platform}
-					selenium.desired.capabilities.version=${selenium.desired.capabilities.version}
 					selenium.remote.driver.enabled=${selenium.remote.driver.enabled}
 					selenium.remote.driver.hub=${selenium.remote.driver.hub}
 				</echo>
