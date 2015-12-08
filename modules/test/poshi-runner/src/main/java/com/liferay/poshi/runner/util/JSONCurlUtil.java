@@ -32,6 +32,9 @@ public class JSONCurlUtil {
 
 		Process process = runtime.exec("curl " + curlOptions);
 
+		System.out.println("Running this CURL:");
+		System.out.println("curl " + curlOptions);
+
 		InputStreamReader inputStreamReader = new InputStreamReader(
 			process.getInputStream());
 
@@ -46,9 +49,17 @@ public class JSONCurlUtil {
 			sb.append(line);
 		}
 
+		System.out.println("This is what is returned:");
+		System.out.println(sb.toString());
+
 		DocumentContext documentContext = JsonPath.parse(sb.toString());
 
+		System.out.println("Completed!");
+
 		Object object = documentContext.read(jsonPath);
+
+		System.out.println(object.toString());
+		System.out.println();
 
 		return object.toString();
 	}
