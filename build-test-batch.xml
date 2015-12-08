@@ -1083,9 +1083,13 @@
 	</target>
 
 	<target name="modules-functional">
-		<antcall target="run-selenium-test">
-			<param name="test.class" value="${axis.variable}" />
-		</antcall>
+		<run-batch-test>
+			<test-action>
+				<antcall target="run-selenium-test">
+					<param name="test.class" value="${axis.variable}" />
+				</antcall>
+			</test-action>
+		</run-batch-test>
 	</target>
 
 	<target name="modules-functional-tomcat-mysql">
