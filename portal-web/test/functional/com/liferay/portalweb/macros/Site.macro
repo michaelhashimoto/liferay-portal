@@ -278,12 +278,12 @@
 	<command name="approveJoinSiteRestrictedViaMySitesPG">
 		<var name="key_userScreenName" value="${userScreenName}" />
 
-		<execute function="AssertTextEquals" locator1="SiteMemberships#MEMBERSHIP_TYPE" value1="Membership Type: Restricted" />
-		<execute function="AssertTextEquals" locator1="SiteMemberships#REQUEST_MESSAGE" value1="There are 1 membership requests pending." />
+		<execute function="AssertTextEquals#assertPartialText" locator1="SiteMemberships#MEMBERSHIP_TYPE" value1="Membership Type, Restricted" />
+		<execute function="AssertTextEquals#assertPartialText" locator1="SiteMemberships#REQUEST_MESSAGE" value1="There are 1 membership requests pending." />
 
 		<execute function="Click" locator1="Icon#HEADER_VERTICAL_ELLIPSIS" />
 
-		<execute function="AssertClick" locator1="MenuItem#VIEW_MEMBERSHIP_REQUESTS" value1="View Membership Requests" />
+		<execute function="Click" locator1="SiteMemberships#REQUEST_MESSAGE" />
 
 		<execute function="SelectFrame" locator1="IFrame#DIALOG" />
 
@@ -661,41 +661,62 @@
 	<command name="joinViaMySitesPG">
 		<var name="key_siteName" value="${siteName}" />
 
-		<execute function="AssertTextEquals" locator1="Message#INFO" value1="No sites were found." />
-		<execute function="AssertClick" locator1="MySites#NAVIGATION_AVAILABLE_SITES" value1="Available Sites" />
+		<execute function="AssertTextEquals" locator1="Message#EMPTY_INFO" value1="No sites were found." />
+		<execute function="AssertClick" locator1="NavBar#AVAILABLE_SITES" value1="Available Sites" />
 
 		<execute function="Pause" locator1="3000" />
 
 		<execute function="Type" locator1="NavBar#BASIC_SEARCH_FIELD" value1="${siteName}" />
-		<execute function="AssertClick" locator1="NavBar#BASIC_SEARCH_BUTTON" value1="Search" />
+		<execute function="Click" locator1="Icon#BASIC_SEARCH" />
 
 		<if>
 			<equals arg1="${membershipType}" arg2="Private" />
 			<then>
-				<execute function="AssertTextEquals" locator1="Message#INFO" value1="No sites were found." />
+				<execute function="AssertTextEquals" locator1="Message#EMPTY_INFO" value1="No sites were found." />
 			</then>
 			<elseif>
 				<equals arg1="${membershipType}" arg2="Restricted" />
 				<then>
 					<execute function="AssertTextEquals" locator1="MySites#SITE_TABLE_SITE_NAME" value1="${siteName}" />
 					<execute function="AssertTextEquals" locator1="MySites#SITE_TABLE_SITE_NAME_MEMBERS" value1="1" />
-					<execute function="AssertClick" locator1="MySitesAvailableSites#SITE_TABLE_REQUEST_MEMBERSHIP" value1="Request Membership" />
+
+					<var name="key_listEntry" value="${siteName}" />
+
+					<execute function="Click" locator1="Icon#LIST_VERTICAL_ELLIPSIS" />
+
+					<execute function="AssertClick" locator1="MenuItem#REQUEST_MEMBERSHIP" value1="Request Membership" />
+
 					<execute function="Type" locator1="TextArea#COMMENTS" value1="Please allow me to join the Restricted Site." />
+
 					<execute function="AssertClick" locator1="Button#SAVE" value1="Save" />
 
 					<execute function="AssertTextEquals" locator1="Message#SUCCESS" value1="Your request completed successfully." />
 					<execute function="AssertTextEquals" locator1="Message#SUCCESS_1" value1="Your request was sent. You will receive a reply by email." />
-					<execute function="AssertTextEquals" locator1="MySitesAvailableSites#SITE_TABLE_MEMBERSHIP_REQUESTED" value1="Membership Requested" />
+
+					<execute function="Click" locator1="Icon#BODY_VERTICAL_ELLIPSIS_2" />
+
+					<var name="key_menuItem" value="Membership Requested" />
+
+					<execute function="AssertTextEquals" locator1="MenuItem#ANY_MENU_ITEM" value1="Membership Requested" />
 				</then>
 			</elseif>
 			<else>
 				<execute function="AssertTextEquals" locator1="MySites#SITE_TABLE_SITE_NAME" value1="${siteName}" />
 				<execute function="AssertTextEquals" locator1="MySites#SITE_TABLE_SITE_NAME_MEMBERS" value1="1" />
-				<execute function="AssertClick" locator1="MySitesAvailableSites#SITE_TABLE_JOIN_SITE_NAME" value1="Join" />
+
+				<var name="key_listEntry" value="${siteName}" />
+
+				<execute function="Click" locator1="Icon#LIST_VERTICAL_ELLIPSIS" />
+
+				<execute function="AssertClick" locator1="MenuItem#JOIN" value1="Join" />
+
 				<execute function="AssertTextEquals" locator1="Message#SUCCESS" value1="Your request completed successfully." />
 				<execute function="AssertTextEquals" locator1="MySites#SITE_TABLE_SITE_NAME" value1="${siteName}" />
 				<execute function="AssertTextEquals" locator1="MySites#SITE_TABLE_SITE_NAME_MEMBERS" value1="2" />
-				<execute function="AssertTextEquals" locator1="MySitesAvailableSites#SITE_TABLE_LEAVE_SITE_NAME" value1="Leave" />
+
+				<execute function="Click" locator1="Icon#LIST_VERTICAL_ELLIPSIS" />
+
+				<execute function="AssertVisible" locator1="MenuItem#LEAVE" />
 			</else>
 		</if>
 	</command>
@@ -705,16 +726,29 @@
 
 		<execute function="AssertTextEquals" locator1="MySites#SITE_TABLE_SITE_NAME" value1="${siteName}" />
 		<execute function="AssertTextEquals" locator1="MySites#SITE_TABLE_SITE_NAME_MEMBERS" value1="2" />
-		<execute function="AssertClick" locator1="MySites#NAVIGATION_AVAILABLE_SITES" value1="Available Sites" />
+
+		<execute function="AssertClick" locator1="NavBar#AVAILABLE_SITES" value1="Available Sites" />
+
 		<execute function="Type" locator1="NavBar#BASIC_SEARCH_FIELD" value1="${siteName}" />
-		<execute function="AssertClick" locator1="NavBar#BASIC_SEARCH_BUTTON" value1="Search" />
+
+		<execute function="Click" locator1="Icon#BASIC_SEARCH" />
+
 		<execute function="AssertTextEquals" locator1="MySites#SITE_TABLE_SITE_NAME" value1="${siteName}" />
 		<execute function="AssertTextEquals" locator1="MySites#SITE_TABLE_SITE_NAME_MEMBERS" value1="2" />
-		<execute function="AssertClick" locator1="MySitesAvailableSites#SITE_TABLE_LEAVE_SITE_NAME" value1="Leave" />
+
+		<var name="key_listEntry" value="${siteName}" />
+
+		<execute function="Click" locator1="Icon#LIST_VERTICAL_ELLIPSIS" />
+
+		<execute function="AssertClick" locator1="MenuItem#LEAVE" value1="Leave" />
+
 		<execute function="AssertTextEquals" locator1="Message#SUCCESS" value1="Your request completed successfully." />
 		<execute function="AssertTextEquals" locator1="MySites#SITE_TABLE_SITE_NAME" value1="${siteName}" />
 		<execute function="AssertTextEquals" locator1="MySites#SITE_TABLE_SITE_NAME_MEMBERS" value1="1" />
-		<execute function="AssertTextEquals" locator1="MySitesAvailableSites#SITE_TABLE_JOIN_SITE_NAME" value1="Join" />
+
+		<execute function="Click" locator1="Icon#LIST_VERTICAL_ELLIPSIS" />
+
+		<execute function="AssertVisible" locator1="MenuItem#JOIN" />
 	</command>
 
 	<command name="manageMembershipOptions">
@@ -765,7 +799,7 @@
 
 		<execute function="AssertTextEquals" locator1="Card#SPECIFIC_TEXT" value1="${userScreenName}" />
 
-		<var name="cardEntry" value="${key_cardText}" />
+		<var name="key_cardEntry" value="${key_cardText}" />
 
 		<execute function="Click" locator1="Icon#CARD_VERTICAL_ELLIPSIS" />
 
@@ -845,7 +879,7 @@
 			</else>
 		</if>
 
-		<execute function="AssertClick" locator1="Button#SEARCH" value1="Search" />
+		<execute function="Click" locator1="Icon#BASIC_SEARCH" />
 
 		<execute macro="Site#viewMemberCP">
 			<var name="userFirstName" value="${userFirstName}" />
@@ -1084,7 +1118,7 @@
 		<execute function="AssertTextEquals#assertPartialText" locator1="Card#SPECIFIC_LARGE_TEXT" value1="${userFirstName} ${userLastName}" />
 		<execute function="AssertTextEquals" locator1="Card#SPECIFIC_TEXT" value1="${userScreenName}" />
 
-		<var name="cardEntry" value="${key_cardText}" />
+		<var name="key_cardEntry" value="${key_cardText}" />
 
 		<execute function="AssertVisible" locator1="Icon#CARD_VERTICAL_ELLIPSIS" />
 	</command>
@@ -1123,7 +1157,6 @@
 		<execute function="AssertTextEquals" locator1="MySites#NAVIGATION_MY_SITES" value1="My Sites" />
 		<execute function="AssertTextEquals" locator1="MySites#SITE_TABLE_SITE_NAME" value1="${siteName}" />
 		<execute function="AssertTextEquals" locator1="MySites#SITE_TABLE_SITE_NAME_MEMBERS" value1="${memberCount}" />
-		<execute function="AssertElementPresent" locator1="MySites#SITE_TABLE_SITE_ACTIONS" />
 	</command>
 
 	<command name="viewNoMySitesViaMySitesPG">
