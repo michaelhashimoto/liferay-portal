@@ -15,6 +15,7 @@
 package com.liferay.marketplace.app.manager.web.util;
 
 import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.kernel.util.Validator;
 
 import javax.portlet.MimeResponse;
 import javax.portlet.PortletURL;
@@ -33,7 +34,13 @@ public class SimpleAppDisplay extends BaseAppDisplay {
 	}
 
 	public SimpleAppDisplay(String title, String description, Version version) {
-		_title = title;
+		if (Validator.isNull(title)) {
+			_title = APP_TITLE_UNCATEGORIZED;
+		}
+		else {
+			_title = title;
+		}
+
 		_description = description;
 		_version = version;
 	}
