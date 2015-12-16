@@ -1934,6 +1934,8 @@
 	</command>
 
 	<command name="DeleteCalendarEventRepeatingAllFollowing" priority="5">
+		<property name="portal.acceptance" value="true" />
+
 		<var name="eventTitle" value="Calendar Event Repeating Title" />
 		<var name="eventType" value="Repeating" />
 
@@ -3821,7 +3823,7 @@
 			<var name="userLoginFullName" value="${userLoginFullName}" />
 		</execute>
 
-		<execute macro="Page#gotoMyProfile" />
+		<execute macro="UserBar#gotoMyProfile" />
 
 		<execute macro="Portlet#addPG">
 			<var name="portletName" value="Calendar" />
@@ -4663,13 +4665,13 @@
 			<var name="userScreenName" value="usersn" />
 		</execute>
 
-		<execute macro="Page#gotoMyDashboard" />
+		<execute macro="UserBar#gotoMyDashboard" />
 
 		<execute macro="Portlet#addPG">
 			<var name="portletName" value="Calendar" />
 		</execute>
 
-		<execute macro="Page#gotoMyDashboard" />
+		<execute macro="UserBar#gotoMyDashboard" />
 
 		<execute macro="Calendar#searchOtherCalendars">
 			<var name="searchValue" value="site" />

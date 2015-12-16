@@ -117,7 +117,7 @@
 		<if>
 			<equals arg1="${userEmailAddressVariation}" arg2="Invalid" />
 			<then>
-				<execute function="AssertTextEquals" locator1="UsersAndOrganizationsEditUser#EMAIL_ADDRESS_FIELD_ALERT" value1="Please enter a valid email address." />
+				<execute function="AssertTextEquals" locator1="UsersAndOrganizationsEditUser#EMAIL_ADDRESS_FIELD_ALERT" value1="This field is required." />
 			</then>
 			<elseif>
 				<equals arg1="${userEmailAddressVariation}" arg2="Root" />
@@ -206,8 +206,6 @@
 
 		<var name="key_userScreenName" value="${userScreenName}" />
 
-		<execute function="Type" locator1="NavBar#BASIC_SEARCH_FIELD" value1="${userScreenName}" />
-		<execute function="AssertClick" locator1="NavBar#BASIC_SEARCH_BUTTON" value1="Search" />
 		<execute function="AssertTextEquals" locator1="UsersAndOrganizations#USER_TABLE_SCREEN_NAME" value1="${userScreenName}" />
 		<execute function="AssertClick" locator1="UsersAndOrganizations#USER_TABLE_SCREEN_NAME" value1="${userScreenName}" />
 
@@ -1105,8 +1103,6 @@
 
 		<execute function="Pause" locator1="5000" />
 
-		<execute function="Type" locator1="NavBar#BASIC_SEARCH_FIELD" value1="${userScreenName}" />
-		<execute function="AssertClick" locator1="NavBar#BASIC_SEARCH_BUTTON" value1="Search" />
 		<execute function="AssertTextEquals" locator1="UsersAndOrganizations#USER_TABLE_SCREEN_NAME" value1="${userScreenName}" />
 		<execute function="AssertClick" locator1="UsersAndOrganizations#USER_TABLE_SCREEN_NAME" value1="${userScreenName}" />
 
@@ -1154,8 +1150,7 @@
 		<var name="key_userScreenName" value="${userScreenName}" />
 
 		<execute function="Pause" locator1="1000" />
-		<execute function="Type" locator1="NavBar#BASIC_SEARCH_FIELD" value1="${userScreenName}" />
-		<execute function="AssertClick" locator1="NavBar#BASIC_SEARCH_BUTTON" value1="Search" />
+
 		<execute function="AssertTextEquals" locator1="UsersAndOrganizations#USER_TABLE_SCREEN_NAME" value1="${userScreenName}" />
 		<execute function="AssertClick" locator1="UsersAndOrganizations#USER_TABLE_SCREEN_NAME" value1="${userScreenName}" />
 
@@ -1210,8 +1205,7 @@
 		<var name="key_userScreenName" value="${userScreenName}" />
 
 		<execute function="Pause" locator1="1000" />
-		<execute function="Type" locator1="NavBar#BASIC_SEARCH_FIELD" value1="${userScreenName}" />
-		<execute function="AssertClick" locator1="NavBar#BASIC_SEARCH_BUTTON" value1="Search" />
+
 		<execute function="AssertTextEquals" locator1="UsersAndOrganizations#USER_TABLE_SCREEN_NAME" value1="${userScreenName}" />
 		<execute function="AssertClick" locator1="UsersAndOrganizations#USER_TABLE_SCREEN_NAME" value1="${userScreenName}" />
 
@@ -1250,8 +1244,6 @@
 
 		<var name="key_userScreenName" value="${userScreenName}" />
 
-		<execute function="Type" locator1="NavBar#BASIC_SEARCH_FIELD" value1="${userScreenName}" />
-		<execute function="AssertClick" locator1="NavBar#BASIC_SEARCH_BUTTON" value1="Search" />
 		<execute function="AssertTextEquals" locator1="UsersAndOrganizations#USER_TABLE_SCREEN_NAME" value1="${userScreenName}" />
 		<execute function="AssertClick" locator1="UsersAndOrganizations#USER_TABLE_SCREEN_NAME" value1="${userScreenName}" />
 
@@ -1267,8 +1259,7 @@
 		<var name="key_userScreenName" value="${userScreenName}" />
 
 		<execute function="Pause" locator1="1000" />
-		<execute function="Type" locator1="NavBar#BASIC_SEARCH_FIELD" value1="${userScreenName}" />
-		<execute function="AssertClick" locator1="NavBar#BASIC_SEARCH_BUTTON" value1="Search" />
+
 		<execute function="AssertTextEquals" locator1="UsersAndOrganizations#USER_TABLE_SCREEN_NAME" value1="${userScreenName}" />
 		<execute function="AssertClick" locator1="UsersAndOrganizations#USER_TABLE_SCREEN_NAME" value1="${userScreenName}" />
 
@@ -1283,8 +1274,7 @@
 		<var name="key_userScreenName" value="${userScreenName}" />
 
 		<execute function="Pause" locator1="1000" />
-		<execute function="Type" locator1="NavBar#BASIC_SEARCH_FIELD" value1="${userScreenName}" />
-		<execute function="AssertClick" locator1="NavBar#BASIC_SEARCH_BUTTON" value1="Search" />
+
 		<execute function="AssertTextEquals" locator1="UsersAndOrganizations#USER_TABLE_SCREEN_NAME" value1="${userScreenName}" />
 		<execute function="AssertClick" locator1="UsersAndOrganizations#USER_TABLE_SCREEN_NAME" value1="${userScreenName}" />
 
@@ -1312,8 +1302,7 @@
 		<var name="key_userScreenName" value="${userScreenName}" />
 
 		<execute function="Pause" locator1="1000" />
-		<execute function="Type" locator1="NavBar#BASIC_SEARCH_FIELD" value1="${userScreenName}" />
-		<execute function="AssertClick" locator1="NavBar#BASIC_SEARCH_BUTTON" value1="Search" />
+
 		<execute function="AssertTextEquals" locator1="UsersAndOrganizations#USER_TABLE_SCREEN_NAME" value1="${userScreenName}" />
 		<execute function="AssertClick" locator1="UsersAndOrganizations#USER_TABLE_SCREEN_NAME" value1="${userScreenName}" />
 
@@ -1373,12 +1362,12 @@
 		<if>
 			<isset var="loginViaDockbar" />
 			<then>
-				<execute function="AssertClick" locator1="ControlMenu#USER_SIGN_IN" value1="Sign In" />
+				<execute function="AssertClick" locator1="UserBar#USER_SIGN_IN" value1="Sign In" />
 			</then>
 		</if>
 
 		<if>
-			<condition function="IsElementPresent" locator1="ControlMenu#USER_AVATAR_IMAGE" />
+			<condition function="IsElementPresent" locator1="UserBar#USER_AVATAR_IMAGE" />
 			<then>
 				<execute macro="User#logoutPG" />
 				<execute macro="User#loginPG">
@@ -1396,10 +1385,6 @@
 
 	<command name="gotoEditCP">
 		<execute function="AssertClick" locator1="NavTab#ALL_USERS" value1="All Users" />
-
-		<execute macro="User#searchCP">
-			<var name="searchToken" value="${userScreenName}" />
-		</execute>
 
 		<var name="key_userScreenName" value="${userScreenName}" />
 
@@ -1429,8 +1414,8 @@
 
 		<execute function="SelectWindow" locator1="title=Welcome - Liferay" />
 
-		<execute function="AssertElementPresent" locator1="ControlMenu#USER_AVATAR_IMAGE" />
-		<execute function="Click" locator1="ControlMenu#USER_AVATAR_IMAGE" />
+		<execute function="AssertElementPresent" locator1="UserBar#USER_AVATAR_IMAGE" />
+		<execute function="Click" locator1="UserBar#USER_AVATAR_IMAGE" />
 		<execute function="AssertElementPresent" locator1="Message#INFO" />
 	</command>
 
@@ -1457,7 +1442,7 @@
 		<if>
 			<isset var="loginViaDockbar" />
 			<then>
-				<execute function="AssertClick" locator1="ControlMenu#USER_SIGN_IN" value1="Sign In" />
+				<execute function="AssertClick" locator1="UserBar#USER_SIGN_IN" value1="Sign In" />
 			</then>
 		</if>
 
@@ -1617,13 +1602,7 @@
 			</else>
 		</if>
 
-		<if>
-			<condition function="IsElementPresent" locator1="ControlMenu#USER_AVATAR_IMAGE" />
-			<then>
-				<execute function="Click" locator1="ControlMenu#USER_AVATAR_IMAGE" />
-				<execute function="Click" locator1="ControlMenu#USER_SIGN_OUT" />
-			</then>
-		</if>
+		<execute macro="UserBar#signOut" />
 	</command>
 
 	<command name="logoutUserPG">
@@ -1640,13 +1619,7 @@
 			<var name="virtualHostsURL" value="${virtualHostsURL}" />
 		</execute>
 
-		<if>
-			<condition function="IsElementPresent" locator1="ControlMenu#USER_AVATAR_IMAGE" />
-			<then>
-				<execute function="Click" locator1="ControlMenu#USER_AVATAR_IMAGE" />
-				<execute function="Click" locator1="ControlMenu#USER_SIGN_OUT" />
-			</then>
-		</if>
+		<execute macro="UserBar#signOut" />
 	</command>
 
 	<command name="searchCP">
@@ -1656,7 +1629,7 @@
 	</command>
 
 	<command name="signInPG">
-		<execute function="AssertClick" locator1="ControlMenu#USER_SIGN_IN" value1="Sign In" />
+		<execute function="AssertClick" locator1="UserBar#USER_SIGN_IN" value1="Sign In" />
 
 		<execute function="Type" locator1="TextInput#EMAIL_ADDRESS" value1="${userEmailAddress}" />
 		<execute function="Type" locator1="TextInput#PASSWORD" value1="${emailPassword}" />
@@ -1749,8 +1722,7 @@
 		<var name="key_userScreenName" value="${userScreenName}" />
 
 		<execute function="Pause" locator1="1000" />
-		<execute function="Type" locator1="NavBar#BASIC_SEARCH_FIELD" value1="${userScreenName}" />
-		<execute function="AssertClick" locator1="NavBar#BASIC_SEARCH_BUTTON" value1="Search" />
+
 		<execute function="AssertTextEquals" locator1="UsersAndOrganizations#USER_TABLE_SCREEN_NAME" value1="${userScreenName}" />
 		<execute function="AssertClick" locator1="UsersAndOrganizations#USER_TABLE_SCREEN_NAME" value1="${userScreenName}" />
 
@@ -1793,8 +1765,7 @@
 				<var name="key_userScreenName" value="${userScreenName}" />
 
 				<execute function="Pause" locator1="1000" />
-				<execute function="Type" locator1="NavBar#BASIC_SEARCH_FIELD" value1="${userScreenName}" />
-				<execute function="AssertClick" locator1="NavBar#BASIC_SEARCH_BUTTON" value1="Search" />
+
 				<execute function="AssertTextEquals" locator1="UsersAndOrganizations#USER_TABLE_FIRST_NAME" value1="${userFirstName}" />
 				<execute function="AssertTextEquals" locator1="UsersAndOrganizations#USER_TABLE_LAST_NAME" value1="${userLastName}" />
 				<execute function="AssertTextEquals" locator1="UsersAndOrganizations#USER_TABLE_SCREEN_NAME" value1="${userScreenName}" />

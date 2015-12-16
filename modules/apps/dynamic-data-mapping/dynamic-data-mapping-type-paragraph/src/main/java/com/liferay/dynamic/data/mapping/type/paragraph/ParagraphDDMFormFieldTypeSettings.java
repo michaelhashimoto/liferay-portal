@@ -16,6 +16,10 @@ package com.liferay.dynamic.data.mapping.type.paragraph;
 
 import com.liferay.dynamic.data.mapping.annotations.DDMForm;
 import com.liferay.dynamic.data.mapping.annotations.DDMFormField;
+import com.liferay.dynamic.data.mapping.annotations.DDMFormLayout;
+import com.liferay.dynamic.data.mapping.annotations.DDMFormLayoutColumn;
+import com.liferay.dynamic.data.mapping.annotations.DDMFormLayoutPage;
+import com.liferay.dynamic.data.mapping.annotations.DDMFormLayoutRow;
 import com.liferay.dynamic.data.mapping.form.field.type.DefaultDDMFormFieldTypeSettings;
 import com.liferay.dynamic.data.mapping.model.DDMFormFieldValidation;
 import com.liferay.dynamic.data.mapping.model.LocalizedValue;
@@ -24,16 +28,52 @@ import com.liferay.dynamic.data.mapping.model.LocalizedValue;
  * @author Bruno Basto
  */
 @DDMForm
+@DDMFormLayout(
+		{
+			@DDMFormLayoutPage(
+				title = "basic",
+				value = {
+					@DDMFormLayoutRow(
+						{
+							@DDMFormLayoutColumn(
+								size = 12,
+								value = {"label", "text", "tip", "required"}
+							)
+						}
+					)
+				}
+			),
+			@DDMFormLayoutPage(
+				title = "advanced",
+				value = {
+					@DDMFormLayoutRow(
+						{
+							@DDMFormLayoutColumn(
+								size = 12,
+								value = {
+									"validation", "showLabel", "repeatable",
+									"predefinedValue", "visibilityExpression",
+									"fieldNamespace", "indexType",
+									"localizable", "readOnly", "dataType",
+									"type", "name"
+								}
+							)
+						}
+					)
+				}
+			)
+		}
+	)
 public interface ParagraphDDMFormFieldTypeSettings
 	extends DefaultDDMFormFieldTypeSettings {
 
 	@DDMFormField(
 		label = "%title",
 		properties = {
-			"placeholder=%enter-title-sentence", "setting.category=basic",
+			"placeholder=%enter-title", "setting.category=basic",
 			"setting.weight=4"
 		},
-		required = true, tip = "%enter-title-sentence", type = "key-value"
+		required = true, tip = "%enter-title", type = "key-value"
 	)
 	public LocalizedValue label();
 
