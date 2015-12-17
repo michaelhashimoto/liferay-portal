@@ -644,7 +644,7 @@
 			<var name="siteScopeSelected" value="true" />
 		</execute>
 
-		<execute macro="ProductMenu#gotoControlPanelSystem">
+		<execute macro="ProductMenu#gotoControlPanelConfiguration">
 			<var name="portlet" value="Server Administration" />
 		</execute>
 
@@ -806,7 +806,7 @@
 			<var name="userEmailAddress" value="userea@liferay.com" />
 		</execute>
 
-		<execute macro="Page#gotoMyDashboard" />
+		<execute macro="UserBar#gotoMyDashboard" />
 
 		<execute function="AssertLocation" value1="http://localhost:8080/user/usersn" />
 
