@@ -30,7 +30,6 @@
 	</tear-down>
 
 	<command name="AddPageTemplate" priority="5">
-		<property name="portal.acceptance" value="true" />
 
 		<execute macro="ProductMenu#gotoControlPanelSites">
 			<var name="portlet" value="Page Templates" />
@@ -43,7 +42,6 @@
 	</command>
 
 	<command name="AddSitePageTemplate" priority="5">
-		<property name="portal.acceptance" value="true" />
 
 		<execute macro="ProductMenu#gotoControlPanelSites">
 			<var name="portlet" value="Page Templates" />
@@ -159,7 +157,6 @@
 	</command>
 
 	<command name="DeletePageTemplate" priority="5">
-		<property name="portal.acceptance" value="true" />
 
 		<execute macro="ProductMenu#gotoControlPanelSites">
 			<var name="portlet" value="Page Templates" />
@@ -188,7 +185,6 @@
 	</command>
 
 	<command name="EditPageTemplate" priority="5">
-		<property name="portal.acceptance" value="true" />
 
 		<execute macro="ProductMenu#gotoControlPanelSites">
 			<var name="portlet" value="Page Templates" />

@@ -33,7 +33,6 @@
 	</tear-down>
 
 	<command name="AddFolder" priority="5">
-		<property name="portal.acceptance" value="true" />
 
 		<execute macro="Navigator#openURL" />
 
@@ -406,7 +405,6 @@
 	</command>
 
 	<command name="AddTemplateWithStructure" priority="5">
-		<property name="portal.acceptance" value="true" />
 
 		<execute macro="Navigator#openURL" />
 
@@ -497,7 +495,6 @@
 	</command>
 
 	<command name="AddWebContent" priority="5">
-		<property name="portal.acceptance" value="true" />
 
 		<execute macro="Navigator#openURL" />
 
@@ -957,7 +954,6 @@
 	</command>
 
 	<command name="DeleteWebContent" priority="5">
-		<property name="portal.acceptance" value="true" />
 
 		<execute macro="Navigator#openURL" />
 
@@ -1132,7 +1128,6 @@
 	</command>
 
 	<command name="EditWebContent" priority="5">
-		<property name="portal.acceptance" value="true" />
 
 		<execute macro="Navigator#openURL" />
 
@@ -1645,7 +1640,6 @@
 	</command>
 
 	<command name="SearchWebContent" priority="5">
-		<property name="portal.acceptance" value="true" />
 
 		<execute macro="Navigator#openURL" />
 

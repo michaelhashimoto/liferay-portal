@@ -262,7 +262,6 @@
 	</command>
 
 	<command name="DisableShowCurrentSite" priority="5">
-		<property name="portal.acceptance" value="true" />
 
 		<execute macro="ProductMenu#gotoControlPanelSites">
 			<var name="portlet" value="Sites" />
@@ -367,7 +366,6 @@
 	</command>
 
 	<command name="DisableShowPage" priority="5">
-		<property name="portal.acceptance" value="true" />
 
 		<execute macro="ProductMenu#gotoSitesPages">
 			<var name="page" value="Public Pages" />

@@ -71,7 +71,6 @@
 	</command>
 
 	<command name="AddChildSite" priority="5">
-		<property name="portal.acceptance" value="true" />
 
 		<execute macro="ProductMenu#gotoControlPanelSites">
 			<var name="portlet" value="Sites" />
@@ -142,7 +141,6 @@
 	</command>
 
 	<command description="Ensure that the super admin can add a Blank Site" name="AddSite" priority="5">
-		<property name="portal.acceptance" value="true" />
 
 		<execute macro="ProductMenu#gotoControlPanelSites">
 			<var name="portlet" value="Sites" />
@@ -273,7 +271,6 @@
 	</command>
 
 	<command name="DeleteSite" priority="5">
-		<property name="portal.acceptance" value="true" />
 
 		<execute macro="ProductMenu#gotoControlPanelSites">
 			<var name="portlet" value="Sites" />
@@ -293,7 +290,6 @@
 	</command>
 
 	<command name="EditSite" priority="5">
-		<property name="portal.acceptance" value="true" />
 
 		<execute macro="ProductMenu#gotoControlPanelSites">
 			<var name="portlet" value="Sites" />
@@ -422,7 +418,6 @@
 	</command>
 
 	<command name="SearchSite" priority="5">
-		<property name="portal.acceptance" value="true" />
 
 		<execute macro="ProductMenu#gotoControlPanelSites">
 			<var name="portlet" value="Sites" />

@@ -54,7 +54,6 @@
 	</tear-down>
 
 	<command name="AddRSSADTViaPortletConfiguration" priority="5">
-		<property name="portal.acceptance" value="true" />
 
 		<execute macro="Page#gotoPG">
 			<var name="pageName" value="ADT Test Page" />
@@ -271,7 +270,6 @@
 	</command>
 
 	<command name="ADTBreadcrumb" priority="5">
-		<property name="portal.acceptance" value="true" />
 
 		<execute macro="Page#gotoPG">
 			<var name="pageName" value="ADT Test Page" />
@@ -308,7 +306,6 @@
 	</command>
 
 	<command name="ADTCategoriesNavigation" priority="5">
-		<property name="portal.acceptance" value="true" />
 
 		<var name="siteName" value="${siteName}" />
 
@@ -651,7 +648,6 @@
 	</command>
 
 	<command name="ADTTagsNavigationPortlet" priority="5">
-		<property name="portal.acceptance" value="true" />
 
 		<var name="siteName" value="${siteName}" />
 

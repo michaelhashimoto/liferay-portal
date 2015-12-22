@@ -213,7 +213,6 @@
 	</command>
 
 	<command name="AddSitePublicChildPage" priority="5">
-		<property name="portal.acceptance" value="true" />
 
 		<execute macro="ProductMenu#gotoControlPanelSites">
 			<var name="portlet" value="Sites" />
@@ -256,7 +255,6 @@
 	</command>
 
 	<command name="AddSitePublicPage" priority="5">
-		<property name="portal.acceptance" value="true" />
 
 		<execute macro="ProductMenu#gotoControlPanelSites">
 			<var name="portlet" value="Sites" />
@@ -385,7 +383,6 @@
 	</command>
 
 	<command name="DeleteSitePages" priority="5">
-		<property name="portal.acceptance" value="true" />
 
 		<execute macro="ProductMenu#gotoControlPanelSites">
 			<var name="portlet" value="Sites" />
@@ -419,7 +416,6 @@
 	</command>
 
 	<command name="EditSitePage" priority="5">
-		<property name="portal.acceptance" value="true" />
 
 		<execute macro="ProductMenu#gotoSitesPages" >
 			<var name="page" value="Public Pages" />
