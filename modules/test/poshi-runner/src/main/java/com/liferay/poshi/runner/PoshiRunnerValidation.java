@@ -20,6 +20,8 @@ import com.liferay.poshi.runner.util.PropsValues;
 import com.liferay.poshi.runner.util.StringUtil;
 import com.liferay.poshi.runner.util.Validator;
 
+import java.lang.reflect.Method;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -181,6 +183,13 @@ public class PoshiRunnerValidation {
 				validateWhileElement(childElement, filePath);
 			}
 		}
+	}
+
+	protected static void validateArgElement(Element element, String filePath) {
+		List<String> attributes = Arrays.asList("line-number", "value");
+
+		validatePossibleAttributeNames(element, attributes, filePath);
+		validateRequiredAttributeNames(element, attributes, filePath);
 	}
 
 	protected static void validateClassCommandName(
@@ -474,8 +483,8 @@ public class PoshiRunnerValidation {
 		List<String> multiplePrimaryAttributeNames = null;
 
 		List<String> primaryAttributeNames = Arrays.asList(
-			"function", "macro", "macro-desktop", "macro-mobile", "selenium",
-			"test-case");
+			"function", "macro", "macro-desktop", "macro-mobile", "method",
+			"selenium", "test-case");
 
 		if (filePath.endsWith(".function")) {
 			primaryAttributeNames = Arrays.asList("function", "selenium");
@@ -492,7 +501,7 @@ public class PoshiRunnerValidation {
 				"macro-desktop", "macro-mobile");
 
 			primaryAttributeNames = Arrays.asList(
-				"function", "macro", "macro-desktop", "macro-mobile",
+				"function", "macro", "macro-desktop", "macro-mobile", "method",
 				"test-case");
 		}
 
@@ -562,7 +571,7 @@ public class PoshiRunnerValidation {
 
 		if (!childElements.isEmpty()) {
 			primaryAttributeNames = Arrays.asList(
-				"function", "macro", "macro-desktop", "macro-mobile",
+				"function", "macro", "macro-desktop", "macro-mobile", "method",
 				"selenium", "test-case");
 
 			validateHasPrimaryAttributeName(
@@ -570,7 +579,7 @@ public class PoshiRunnerValidation {
 				filePath);
 
 			List<String> possibleChildElementNames = Arrays.asList(
-				"var", "return");
+				"arg", "return", "var");
 
 			for (Element childElement : childElements) {
 				String childElementName = childElement.getName();
@@ -583,30 +592,53 @@ public class PoshiRunnerValidation {
 				}
 			}
 
-			List<Element> varElements = element.elements("var");
+			List<Element> argElements = element.elements("arg");
 
-			for (Element varElement : varElements) {
-				validateVarElement(varElement, filePath);
+			for (Element argElement : argElements) {
+				validateArgElement(argElement, filePath);
 			}
 
 			List<Element> returnElements = element.elements("return");
 
 			for (Element returnElement : returnElements) {
-				validateExecuteReturnElement(returnElement, filePath);
-
 				if (primaryAttributeName.equals("macro")) {
-					validateMacroReturns(
+					validateExecuteReturnMacroElement(returnElement, filePath);
+
+					validateMacroReturnsAttribute(
 						element, "macro", returnElement, filePath);
 				}
+				else if (primaryAttributeName.equals("method")) {
+					validateExecuteReturnMethodElement(returnElement, filePath);
+				}
 			}
+
+			List<Element> varElements = element.elements("var");
+
+			for (Element varElement : varElements) {
+				validateVarElement(varElement, filePath);
+			}
+		}
+
+		if (primaryAttributeName.equals("method")) {
+			validateMethodExecuteElement(element, filePath);
 		}
 	}
 
-	protected static void validateExecuteReturnElement(
+	protected static void validateExecuteReturnMacroElement(
 		Element element, String filePath) {
 
 		List<String> attributeNames = Arrays.asList(
 			"from", "line-number", "name");
+
+		validateHasNoChildElements(element, filePath);
+		validatePossibleAttributeNames(element, attributeNames, filePath);
+		validateRequiredAttributeNames(element, attributeNames, filePath);
+	}
+
+	protected static void validateExecuteReturnMethodElement(
+		Element element, String filePath) {
+
+		List<String> attributeNames = Arrays.asList("line-number", "name");
 
 		validateHasNoChildElements(element, filePath);
 		validatePossibleAttributeNames(element, attributeNames, filePath);
@@ -928,7 +960,7 @@ public class PoshiRunnerValidation {
 		}
 	}
 
-	protected static void validateMacroReturns(
+	protected static void validateMacroReturnsAttribute(
 		Element element, String macroType, Element returnElement,
 		String filePath) {
 
@@ -965,6 +997,69 @@ public class PoshiRunnerValidation {
 				new Exception(
 					"Missing message attribute\n" + filePath + ":" +
 						element.attributeValue("line-number")));
+		}
+	}
+
+	protected static void validateMethodExecuteElement(
+		Element element, String filePath) {
+
+		String className = element.attributeValue("class");
+		String packageName = "com.liferay.poshi.runner.util";
+
+		Class<?> clazz = null;
+
+		try {
+			clazz = Class.forName(packageName + "." + className);
+		}
+		catch (Exception e) {
+			_exceptions.add(
+				new Exception(
+					"Cannot find class " + packageName + "." + className +
+						"\n" + filePath + ":" +
+							element.attributeValue("line-number")));
+
+			return;
+		}
+
+		String methodName = element.attributeValue("method");
+
+		List<Method> completeMethodsList = Arrays.asList(clazz.getMethods());
+		List<Method> possibleMethodsList = new ArrayList<>();
+
+		for (Method possibleMethod : completeMethodsList) {
+			String possibleMethodName = possibleMethod.getName();
+
+			if (methodName.equals(possibleMethodName)) {
+				possibleMethodsList.add(possibleMethod);
+			}
+		}
+
+		if (possibleMethodsList.isEmpty()) {
+			_exceptions.add(
+				new Exception(
+					"Cannot find method " + packageName + "." + className +
+						"." + methodName + "\n" + filePath +
+						":" + element.attributeValue("line-number")));
+
+			return;
+		}
+
+		List<Element> argElements = new ArrayList<>(element.elements("arg"));
+		Class<?>[] parameterTypes = new Class<?>[argElements.size()];
+
+		for (int i = 0; i < argElements.size(); i++) {
+			parameterTypes[i] = String.class;
+		}
+
+		try {
+			clazz.getMethod(methodName, parameterTypes);
+		}
+		catch (Exception e) {
+			_exceptions.add(
+				new Exception(
+					"Argument mismatch in method " + packageName + "." +
+						className + "." + methodName + "\n" + filePath + ":" +
+							element.attributeValue("line-number")));
 		}
 	}
 
