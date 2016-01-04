@@ -19,7 +19,6 @@ import com.liferay.portal.kernel.concurrent.ConcurrentReferenceValueHashMap;
 import com.liferay.portal.kernel.memory.FinalizeManager;
 import com.liferay.portal.kernel.util.CharPool;
 import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.URLCodec;
 import com.liferay.portal.kernel.util.Validator;
 
@@ -129,18 +128,6 @@ public class JspJavaFileObjectResolver implements JavaFileObjectResolver {
 		return javaFileObjects;
 	}
 
-	protected String decodePath(String path) {
-		path = StringUtil.replace(
-			path, StringPool.SLASH, "_LIFERAY_TEMP_SLASH_");
-
-		path = URLCodec.decodeURL(path, StringPool.UTF8);
-
-		path = StringUtil.replace(
-			path, "_LIFERAY_TEMP_SLASH_", StringPool.SLASH);
-
-		return path;
-	}
-
 	protected Collection<JavaFileObject> doResolveClasses(
 		BundleWiring bundleWiring, String path, int options) {
 
@@ -154,12 +141,11 @@ public class JspJavaFileObjectResolver implements JavaFileObjectResolver {
 			bundle, bundleWiring.listResources(path, "*.class", options));
 	}
 
-	protected String getClassName(String resourceName) {
-		if (resourceName.endsWith(".class")) {
-			resourceName = resourceName.substring(0, resourceName.length() - 6);
-		}
+	protected String getClassName(String classResourceName) {
+		classResourceName = classResourceName.substring(
+			0, classResourceName.length() - 6);
 
-		return resourceName.replace(CharPool.SLASH, CharPool.PERIOD);
+		return classResourceName.replace(CharPool.SLASH, CharPool.PERIOD);
 	}
 
 	protected File getFile(URL url) throws IOException {
@@ -219,7 +205,7 @@ public class JspJavaFileObjectResolver implements JavaFileObjectResolver {
 			}
 		}
 
-		return new File(decodePath(fileName));
+		return new File(URLCodec.decodeURL(fileName, StringPool.UTF8));
 	}
 
 	protected JavaFileObject getJavaFileObject(
