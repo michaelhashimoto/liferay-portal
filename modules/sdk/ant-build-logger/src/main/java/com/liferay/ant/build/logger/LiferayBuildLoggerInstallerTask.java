@@ -15,6 +15,7 @@
 package com.liferay.ant.build.logger;
 
 import com.liferay.ant.build.logger.LiferayBuildLogger;
+import com.liferay.ant.build.logger.LiferayPerformanceLogger;
 
 import java.lang.reflect.Field;
 
@@ -44,6 +45,11 @@ public class LiferayBuildLoggerInstallerTask extends Task {
 
 						currentProject.addBuildListener(
 							new LiferayBuildLogger(buildListener));
+
+						if (isPerformanceLoggingEnabled()) {
+							currentProject.addBuildListener(
+								new LiferayPerformanceLogger());
+						}
 					}
 				}
 			}
@@ -52,6 +58,20 @@ public class LiferayBuildLoggerInstallerTask extends Task {
 			throw new BuildException(
 				"Unable to access listenersLock field of " + currentProject,
 				iae);
+		}
+	}
+
+	private boolean isPerformanceLoggingEnabled() {
+		Project currentProject = getProject();
+
+		Object performanceLoggingEnabled = currentProject.getProperty(
+			PERFORMANCE_LOGGING_ENABLED);
+
+		if (performanceLoggingEnabled.equals("true")) {
+			return true;
+		}
+		else {
+			return false;
 		}
 	}
 
@@ -68,5 +88,8 @@ public class LiferayBuildLoggerInstallerTask extends Task {
 			throw new ExceptionInInitializerError(roe);
 		}
 	}
+
+	private static final String PERFORMANCE_LOGGING_ENABLED =
+		"performance.logging.enabled";
 
 }
