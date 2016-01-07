@@ -217,7 +217,7 @@
 
 			<sleep if:true="@{retry}" seconds="10" />
 
-			<antcall target="clean-up-sybase-processes" />
+			<clean-up-sybase-processes />
 
 			<if if:true="@{retry}">
 				<available file="/opt/sybase.tar.gz" />
@@ -290,6 +290,34 @@
 				match="&lt;testcase[^&lt;]*?&lt;skipped[\s\S]*?testcase&gt;"
 				replace=""
 			/>
+		</sequential>
+	</macrodef>
+
+	<macrodef name="clean-up-sybase-processes">
+		<sequential>
+			<if>
+				<os family="unix" />
+				<then>
+					<echo file="clean_up_sybase_processes.sh">
+						<![CDATA[
+							#!/bin/bash
+
+							for i in `ps -o pid,args -e | grep /opt/sybase | grep -v grep | cut -c1-5`
+							do
+								echo "Killing $i"
+
+								kill -9 $i
+							done
+						]]>
+					</echo>
+
+					<chmod file="clean_up_sybase_processes.sh" perm="a+x" />
+
+					<exec executable="${basedir}/clean_up_sybase_processes.sh" />
+
+					<delete file="clean_up_sybase_processes.sh" />
+				</then>
+			</if>
 		</sequential>
 	</macrodef>
 
@@ -1412,7 +1440,7 @@ ${output.content}</echo>
 			</not>
 		</waitfor>
 
-		<antcall target="clean-up-sybase-processes" />
+		<clean-up-sybase-processes />
 	</target>
 
 	<target name="tck">
