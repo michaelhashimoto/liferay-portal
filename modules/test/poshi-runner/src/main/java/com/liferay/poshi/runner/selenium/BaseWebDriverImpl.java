@@ -572,7 +572,7 @@ public abstract class BaseWebDriverImpl
 
 	@Override
 	public boolean isTestName(String testName) {
-		throw new UnsupportedOperationException();
+		return LiferaySeleniumHelper.isTestName(testName);
 	}
 
 	@Override
