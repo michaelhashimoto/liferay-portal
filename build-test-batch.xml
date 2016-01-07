@@ -405,9 +405,9 @@
 			<var name="database.type" value="@{database.type}" />
 			<var name="database.version" value="@{database.version}" />
 
-			<antcall target="database-service-stop">
-				<param name="database.type" value="@{database.type}" />
-			</antcall>
+			<check-config />
+
+			<antcall target="database-service-stop-@{database.type}" />
 
 			<set-portal-impl-portal-ext-properties />
 
@@ -415,9 +415,7 @@
 
 			<set-portal-impl-system-ext-properties />
 
-			<antcall target="database-service-start">
-				<param name="database.type" value="@{database.type}" />
-			</antcall>
+			<antcall target="database-service-start-@{database.type}" />
 
 			<antcall target="copy-optional-jars" inheritall="false" >
 				<param name="database.type" value="@{database.type}" />
@@ -444,9 +442,7 @@
 				</then>
 			</if>
 
-			<antcall target="database-service-stop">
-				<param name="database.type" value="@{database.type}" />
-			</antcall>
+			<antcall target="database-service-stop-@{database.type}" />
 		</sequential>
 	</macrodef>
 
@@ -1083,28 +1079,6 @@
 		</sequential>
 	</macrodef>
 
-	<target name="database-service-start">
-		<fail message="Please set the property ${database.type}." unless="database.type" />
-
-		<if>
-			<or>
-				<equals arg1="${database.type}" arg2="db2" />
-				<equals arg1="${database.type}" arg2="hypersonic" />
-				<equals arg1="${database.type}" arg2="mysql" />
-				<equals arg1="${database.type}" arg2="oracle" />
-				<equals arg1="${database.type}" arg2="postgresql" />
-				<equals arg1="${database.type}" arg2="sybase" />
-				<equals arg1="${database.type}" arg2="sqlserver" />
-			</or>
-			<then>
-				<antcall target="database-service-start-${database.type}" />
-			</then>
-			<else>
-				<fail message="Invalid 'database.type': ${database.type}." />
-			</else>
-		</if>
-	</target>
-
 	<target name="database-service-start-db2">
 		<database-service-start-generic database.type="db2" />
 	</target>
@@ -1239,28 +1213,6 @@ ${output.content}</echo>
 		</retry>
 
 		<delete file="create-header.sql" />
-	</target>
-
-	<target name="database-service-stop">
-		<fail message="Please set the property ${database.type}." unless="database.type" />
-
-		<if>
-			<or>
-				<equals arg1="${database.type}" arg2="db2" />
-				<equals arg1="${database.type}" arg2="hypersonic" />
-				<equals arg1="${database.type}" arg2="mysql" />
-				<equals arg1="${database.type}" arg2="oracle" />
-				<equals arg1="${database.type}" arg2="postgresql" />
-				<equals arg1="${database.type}" arg2="sybase" />
-				<equals arg1="${database.type}" arg2="sqlserver" />
-			</or>
-			<then>
-				<antcall target="database-service-stop-${database.type}" />
-			</then>
-			<else>
-				<fail message="Invalid 'database.type': ${database.type}." />
-			</else>
-		</if>
 	</target>
 
 	<target name="database-service-stop-db2">
