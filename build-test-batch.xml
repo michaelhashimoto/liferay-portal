@@ -205,9 +205,7 @@
 	<macrodef name="clean-restart-sybase">
 		<attribute name="retry" default="false" />
 		<sequential>
-			<exec executable="service">
-				<arg line="sybase stop" />
-			</exec>
+			<database-service-stop-generic database.type="sybase" />
 
 			<waitfor maxwait="60" maxwaitunit="second">
 				<not>
@@ -217,7 +215,7 @@
 
 			<sleep if:true="@{retry}" seconds="10" />
 
-			<antcall target="clean-up-sybase-processes" />
+			<clean-up-sybase-processes />
 
 			<if if:true="@{retry}">
 				<available file="/opt/sybase.tar.gz" />
@@ -240,9 +238,7 @@
 				</else>
 			</if>
 
-			<exec executable="service" failonerror="true">
-				<arg line="sybase start" />
-			</exec>
+			<database-service-start-generic database.type="sybase" />
 
 			<waitfor maxwait="60" maxwaitunit="second">
 				<socket server="localhost" port="5000" />
@@ -293,6 +289,34 @@
 		</sequential>
 	</macrodef>
 
+	<macrodef name="clean-up-sybase-processes">
+		<sequential>
+			<if>
+				<os family="unix" />
+				<then>
+					<echo file="clean_up_sybase_processes.sh">
+						<![CDATA[
+							#!/bin/bash
+
+							for i in `ps -o pid,args -e | grep /opt/sybase | grep -v grep | cut -c1-5`
+							do
+								echo "Killing $i"
+
+								kill -9 $i
+							done
+						]]>
+					</echo>
+
+					<chmod file="clean_up_sybase_processes.sh" perm="a+x" />
+
+					<exec executable="${basedir}/clean_up_sybase_processes.sh" />
+
+					<delete file="clean_up_sybase_processes.sh" />
+				</then>
+			</if>
+		</sequential>
+	</macrodef>
+
 	<macrodef name="copy-testray-results">
 		<attribute default="${default.test.results.dir}" name="test.results.dest.dir" />
 		<attribute default="**/TEST-*.xml" name="test.results.fileset" />
@@ -315,6 +339,34 @@
 					<include name="@{test.results.fileset}" />
 				</fileset>
 			</copy>
+		</sequential>
+	</macrodef>
+
+	<macrodef name="database-service-start-generic">
+		<attribute name="database.type" />
+
+		<sequential>
+			<database-test-action database.type="@{database.type}">
+				<action>
+					<exec executable="${database.service.executable}">
+						<arg line="${database.service.cmd.start}" />
+					</exec>
+				</action>
+			</database-test-action>
+		</sequential>
+	</macrodef>
+
+	<macrodef name="database-service-stop-generic">
+		<attribute name="database.type" />
+
+		<sequential>
+			<database-test-action database.type="@{database.type}">
+				<action>
+					<exec executable="${database.service.executable}">
+						<arg line="${database.service.cmd.stop}" />
+					</exec>
+				</action>
+			</database-test-action>
 		</sequential>
 	</macrodef>
 
@@ -353,56 +405,48 @@
 			<var name="database.type" value="@{database.type}" />
 			<var name="database.version" value="@{database.version}" />
 
-			<database-test-action database.type="@{database.type}">
-				<action>
-					<exec executable="${database.service.executable}">
-						<arg line="${database.service.cmd.stop}" />
-					</exec>
-				</action>
-			</database-test-action>
+			<antcall target="database-service-stop">
+				<param name="database.type" value="@{database.type}" />
+			</antcall>
 
-			<database-test-action database.type="@{database.type}">
-				<action>
-					<set-portal-impl-portal-ext-properties />
+			<set-portal-impl-portal-ext-properties />
 
-					<set-portal-impl-portal-test-ext-properties />
+			<set-portal-impl-portal-test-ext-properties />
 
-					<set-portal-impl-system-ext-properties />
+			<set-portal-impl-system-ext-properties />
 
-					<exec executable="${database.service.executable}" failonerror="true">
-						<arg line="${database.service.cmd.start}" />
-					</exec>
+			<antcall target="database-service-start">
+				<param name="database.type" value="@{database.type}" />
+			</antcall>
 
-					<antcall target="copy-optional-jars" inheritall="false" >
-						<param name="database.type" value="@{database.type}" />
-						<param name="todir" value="lib/development" />
-					</antcall>
+			<antcall target="copy-optional-jars" inheritall="false" >
+				<param name="database.type" value="@{database.type}" />
+				<param name="todir" value="lib/development" />
+			</antcall>
 
-					<antcall target="copy-optional-jars" inheritall="false" >
-						<param name="database.type" value="@{database.type}" />
-						<param name="todir" value="${app.server.lib.global.dir}" />
-					</antcall>
+			<antcall target="copy-optional-jars" inheritall="false" >
+				<param name="database.type" value="@{database.type}" />
+				<param name="todir" value="${app.server.lib.global.dir}" />
+			</antcall>
 
-					<antcall target="rebuild-database" inheritall="false" >
-						<param name="database.type" value="@{database.type}" />
-					</antcall>
+			<antcall target="rebuild-database" inheritall="false" >
+				<param name="database.type" value="@{database.type}" />
+			</antcall>
 
-					<test-action />
+			<test-action />
 
-					<if if:true="@{stop.app.server}">
-						<available file=".testable.portal.started" />
-						<then>
-							<antcall target="stop-app-server" />
+			<if if:true="@{stop.app.server}">
+				<available file=".testable.portal.started" />
+				<then>
+					<antcall target="stop-app-server" />
 
-							<delete file=".testable.portal.started" failonerror="false" />
-						</then>
-					</if>
+					<delete file=".testable.portal.started" failonerror="false" />
+				</then>
+			</if>
 
-					<exec executable="${database.service.executable}" failonerror="true">
-						<arg line="${database.service.cmd.stop}" />
-					</exec>
-				</action>
-			</database-test-action>
+			<antcall target="database-service-stop">
+				<param name="database.type" value="@{database.type}" />
+			</antcall>
 		</sequential>
 	</macrodef>
 
@@ -1039,6 +1083,222 @@
 		</sequential>
 	</macrodef>
 
+	<target name="database-service-start">
+		<fail message="Please set the property ${database.type}." unless="database.type" />
+
+		<if>
+			<or>
+				<equals arg1="${database.type}" arg2="db2" />
+				<equals arg1="${database.type}" arg2="hypersonic" />
+				<equals arg1="${database.type}" arg2="mysql" />
+				<equals arg1="${database.type}" arg2="oracle" />
+				<equals arg1="${database.type}" arg2="postgresql" />
+				<equals arg1="${database.type}" arg2="sybase" />
+				<equals arg1="${database.type}" arg2="sqlserver" />
+			</or>
+			<then>
+				<antcall target="database-service-start-${database.type}" />
+			</then>
+			<else>
+				<fail message="Invalid 'database.type': ${database.type}." />
+			</else>
+		</if>
+	</target>
+
+	<target name="database-service-start-db2">
+		<database-service-start-generic database.type="db2" />
+	</target>
+
+	<target name="database-service-start-hypersonic">
+		<database-service-start-generic database.type="hypersonic" />
+	</target>
+
+	<target name="database-service-start-mysql">
+		<database-service-start-generic database.type="mysql" />
+	</target>
+
+	<target name="database-service-start-oracle">
+		<database-service-start-generic database.type="oracle" />
+
+		<retry retrycount="60">
+			<sequential>
+				<local name="output.content" />
+				<local name="return.code" />
+
+				<exec executable="${oracle.lsnrctl.executable}" outputproperty="output.content">
+					<arg value="services" />
+				</exec>
+
+				<echo>Output:
+${output.content}</echo>
+
+				<if>
+					<or>
+						<contains string="${output.content}" substring="The listener supports no services" />
+					</or>
+					<then>
+						<sleep seconds="5" />
+
+						<fail message="Output: ${output.content}" />
+					</then>
+				</if>
+			</sequential>
+		</retry>
+	</target>
+
+	<target name="database-service-start-postgresql">
+		<database-service-start-generic database.type="postgresql" />
+	</target>
+
+	<target name="database-service-start-sqlserver">
+		<database-service-start-generic database.type="sqlserver" />
+	</target>
+
+	<target name="database-service-start-sybase">
+		<local name="database.type" />
+
+		<property name="database.type" value="sybase" />
+
+		<get-database-property property.name="database.password" />
+		<get-database-property property.name="database.schema" />
+		<get-database-property property.name="database.username" />
+
+		<clean-restart-sybase />
+
+		<echo file="create-header.sql">use master
+dump transaction master with no_log
+go
+alter database master on master=232
+go
+drop database lportal
+go
+exec sp_configure 'lock scheme', 0, datarows
+go
+create database lportal on master = "250m"
+go
+exec sp_dboption 'lportal', 'allow nulls by default' , true
+go
+exec sp_dboption 'lportal', 'select into/bulkcopy/pllsort' , true
+go</echo>
+
+		<retry retrycount="10">
+			<sequential>
+				<if>
+					<not>
+						<available file="/opt/sybase/charsets" />
+					</not>
+					<then>
+						<clean-restart-sybase retry="true" />
+
+						<fail message="Missing /opt/sybase/charsets." />
+					</then>
+				</if>
+
+				<local name="output.content" />
+				<local name="return.code" />
+
+				<exec executable="${sybase.executable}" outputproperty="output.content" resultproperty="return.code">
+					<arg value="-i" />
+					<arg value="create-header.sql" />
+					<arg value="-P" />
+					<arg value="${database.password}" />
+					<arg value="-S" />
+					<arg value="${database.schema}" />
+					<arg value="-U" />
+					<arg value="${database.username}" />
+				</exec>
+
+				<echo>Return code: ${return.code}
+Output:
+${output.content}</echo>
+
+				<if>
+					<or>
+						<contains string="${output.content}" substring="Database 'lportal' already exists" />
+						<contains string="${output.content}" substring="sp_dboption" />
+						<contains string="${output.content}" substring="The model database is unavailable. It is being used to create a new database." />
+					</or>
+					<then>
+						<clean-restart-sybase retry="true" />
+
+						<fail message="Output: ${output.content}" />
+					</then>
+				</if>
+
+				<if>
+					<not>
+						<equals arg1="${return.code}" arg2="0" />
+					</not>
+					<then>
+						<clean-restart-sybase retry="true" />
+
+						<fail message="Return code: ${return.code}"  />
+					</then>
+				</if>
+			</sequential>
+		</retry>
+
+		<delete file="create-header.sql" />
+	</target>
+
+	<target name="database-service-stop">
+		<fail message="Please set the property ${database.type}." unless="database.type" />
+
+		<if>
+			<or>
+				<equals arg1="${database.type}" arg2="db2" />
+				<equals arg1="${database.type}" arg2="hypersonic" />
+				<equals arg1="${database.type}" arg2="mysql" />
+				<equals arg1="${database.type}" arg2="oracle" />
+				<equals arg1="${database.type}" arg2="postgresql" />
+				<equals arg1="${database.type}" arg2="sybase" />
+				<equals arg1="${database.type}" arg2="sqlserver" />
+			</or>
+			<then>
+				<antcall target="database-service-stop-${database.type}" />
+			</then>
+			<else>
+				<fail message="Invalid 'database.type': ${database.type}." />
+			</else>
+		</if>
+	</target>
+
+	<target name="database-service-stop-db2">
+		<database-service-stop-generic database.type="db2" />
+	</target>
+
+	<target name="database-service-stop-hypersonic">
+		<database-service-stop-generic database.type="hypersonic" />
+	</target>
+
+	<target name="database-service-stop-mysql">
+		<database-service-stop-generic database.type="mysql" />
+	</target>
+
+	<target name="database-service-stop-oracle">
+		<database-service-stop-generic database.type="oracle" />
+	</target>
+
+	<target name="database-service-stop-postgresql">
+		<database-service-stop-generic database.type="postgresql" />
+	</target>
+
+	<target name="database-service-stop-sqlserver">
+		<database-service-stop-generic database.type="sqlserver" />
+	</target>
+
+	<target name="database-service-stop-sybase">
+		<database-service-stop-generic database.type="sybase" />
+
+		<waitfor maxwait="60" maxwaitunit="second">
+			<not>
+				<socket server="localhost" port="5000" />
+			</not>
+		</waitfor>
+
+		<clean-up-sybase-processes />
+	</target>
+
 	<target name="functional-bundle-tomcat-mysql">
 		<set-tomcat-version-number liferay.portal.bundle="${test.portal.bundle.version}" />
 
@@ -1144,43 +1404,6 @@
 				<prepare-test-build />
 			</test-set-up>
 		</run-batch-test>
-	</target>
-
-	<target name="oracle-service-start">
-		<exec executable="service" failonerror="true">
-			<arg line="oracledb start" />
-		</exec>
-
-		<retry retrycount="60">
-			<sequential>
-				<local name="output.content" />
-				<local name="return.code" />
-
-				<exec executable="${oracle.lsnrctl.executable}" outputproperty="output.content">
-					<arg value="services" />
-				</exec>
-
-				<echo>Output:
-${output.content}</echo>
-
-				<if>
-					<or>
-						<contains string="${output.content}" substring="The listener supports no services" />
-					</or>
-					<then>
-						<sleep seconds="5" />
-
-						<fail message="Output: ${output.content}" />
-					</then>
-				</if>
-			</sequential>
-		</retry>
-	</target>
-
-	<target name="oracle-service-stop">
-		<exec executable="service">
-			<arg line="oracledb stop" />
-		</exec>
 	</target>
 
 	<target name="plugins-compile">
@@ -1312,107 +1535,6 @@ information. Make sure to commit in all build services results.
 				<prepare-test-build />
 			</test-set-up>
 		</run-batch-test>
-	</target>
-
-	<target name="sybase-service-start">
-		<local name="database.type" />
-
-		<property name="database.type" value="sybase" />
-
-		<get-database-property property.name="database.password" />
-		<get-database-property property.name="database.schema" />
-		<get-database-property property.name="database.username" />
-
-		<clean-restart-sybase />
-
-		<echo file="create-header.sql">use master
-dump transaction master with no_log
-go
-alter database master on master=232
-go
-drop database lportal
-go
-exec sp_configure 'lock scheme', 0, datarows
-go
-create database lportal on master = "250m"
-go
-exec sp_dboption 'lportal', 'allow nulls by default' , true
-go
-exec sp_dboption 'lportal', 'select into/bulkcopy/pllsort' , true
-go</echo>
-
-		<retry retrycount="10">
-			<sequential>
-				<if>
-					<not>
-						<available file="/opt/sybase/charsets" />
-					</not>
-					<then>
-						<clean-restart-sybase retry="true" />
-
-						<fail message="Missing /opt/sybase/charsets." />
-					</then>
-				</if>
-
-				<local name="output.content" />
-				<local name="return.code" />
-
-				<exec executable="${sybase.executable}" outputproperty="output.content" resultproperty="return.code">
-					<arg value="-i" />
-					<arg value="create-header.sql" />
-					<arg value="-P" />
-					<arg value="${database.password}" />
-					<arg value="-S" />
-					<arg value="${database.schema}" />
-					<arg value="-U" />
-					<arg value="${database.username}" />
-				</exec>
-
-				<echo>Return code: ${return.code}
-Output:
-${output.content}</echo>
-
-				<if>
-					<or>
-						<contains string="${output.content}" substring="Database 'lportal' already exists" />
-						<contains string="${output.content}" substring="sp_dboption" />
-						<contains string="${output.content}" substring="The model database is unavailable. It is being used to create a new database." />
-					</or>
-					<then>
-						<clean-restart-sybase retry="true" />
-
-						<fail message="Output: ${output.content}" />
-					</then>
-				</if>
-
-				<if>
-					<not>
-						<equals arg1="${return.code}" arg2="0" />
-					</not>
-					<then>
-						<clean-restart-sybase retry="true" />
-
-						<fail message="Return code: ${return.code}"  />
-					</then>
-				</if>
-			</sequential>
-		</retry>
-
-		<delete file="create-header.sql" />
-	</target>
-
-	<target name="sybase-service-stop">
-		<exec executable="service">
-			<arg line="sybase stop" />
-		</exec>
-
-		<waitfor maxwait="60" maxwaitunit="second">
-			<not>
-				<socket server="localhost" port="5000" />
-			</not>
-		</waitfor>
-
-		<antcall target="clean-up-sybase-processes" />
 	</target>
 
 	<target name="tck">
