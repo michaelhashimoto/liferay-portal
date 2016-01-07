@@ -187,6 +187,8 @@ public interface LiferaySelenium extends Selenium {
 
 	public boolean isTCatEnabled();
 
+	public boolean isTestName(String testName);
+
 	public boolean isText(String locator, String value) throws Exception;
 
 	public boolean isTextNotPresent(String pattern);
