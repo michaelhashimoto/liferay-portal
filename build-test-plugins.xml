@@ -22,6 +22,8 @@ app.server.jboss.dir=${app.server.dir}
 
 auto.deploy.dir=${liferay.home}/deploy
 
+liferay.home=${liferay.home}
+
 plugins.includes=${plugins.includes}</echo>
 			</then>
 			<else>
@@ -29,6 +31,8 @@ plugins.includes=${plugins.includes}</echo>
 app.server.type=${app.server.type}
 
 auto.deploy.dir=${liferay.home}/deploy
+
+liferay.home=${liferay.home}
 
 plugins.includes=${plugins.includes}</echo>
 			</else>
@@ -211,6 +215,8 @@ app.server.tomcat.dir=${app.server.parent.dir}/tomcat-7.0.27</echo>
 app.server.lib.global.dir=${app.server.tomcat.lib.global.dir}
 app.server.portal.dir=${app.server.tomcat.portal.dir}
 
+liferay.home=${liferay.home}
+
 plugins.includes=${plugins.includes}</echo>
 
 		<ant dir="${lp.plugins.dir}/${plugin.types}" inheritAll="false">
@@ -258,6 +264,8 @@ $AdminConfig save</echo>
 		<echo file="${lp.plugins.dir}/build.${user.name}.properties">app.server.dir=${app.server.tomcat.dir}
 app.server.lib.global.dir=${app.server.tomcat.lib.global.dir}
 app.server.portal.dir=${app.server.tomcat.portal.dir}
+
+liferay.home=${liferay.home}
 
 plugins.includes=${plugins.includes}</echo>
 
@@ -307,7 +315,9 @@ print AdminConfig.save()</echo>
 
 		<ant dir="${lp.plugins.dir}" target="build-summary" inheritAll="false" />
 
-		<echo file="${lp.plugins.dir}/build.${user.name}.properties">plugins.includes=</echo>
+		<echo file="${lp.plugins.dir}/build.${user.name}.properties">plugins.includes=
+
+liferay.home=${liferay.home}</echo>
 
 		<xmltask source="${lp.plugins.dir}/summary.xml">
 			<call path="plugins-summary/plugin">
@@ -330,7 +340,9 @@ print AdminConfig.save()</echo>
 	</target>
 
 	<target name="test-create">
-		<echo file="${lp.plugins.dir}/build.${user.name}.properties">app.server.dir=${app.server.tomcat.dir}</echo>
+		<echo file="${lp.plugins.dir}/build.${user.name}.properties">app.server.dir=${app.server.tomcat.dir}
+
+liferay.home=${liferay.home}</echo>
 
 		<for list="ext,hooks,layouttpl,portlets,themes" param="plugin.type">
 			<sequential>
@@ -408,6 +420,8 @@ app.server.type=${app.server.type}
 
 auto.deploy.dir=${liferay.home}/deploy
 
+liferay.home=${liferay.home}
+
 plugins.includes=${test.plugin}</echo>
 
 		<ant dir="${lp.plugins.dir}/${test.plugin.type}/${test.plugin}" target="clean" inheritAll="false" />
@@ -447,7 +461,9 @@ plugins.includes=${test.plugin}</echo>
 	</target>
 
 	<target name="test-service-builder">
-		<echo file="${lp.plugins.dir}/build.${user.name}.properties">app.server.dir=${app.server.tomcat.dir}</echo>
+		<echo file="${lp.plugins.dir}/build.${user.name}.properties">app.server.dir=${app.server.tomcat.dir}
+
+liferay.home=${liferay.home}</echo>
 
 		<delete dir="${lp.plugins.dir}/portlets/sample-service-builder-portlet/docroot/WEB-INF/service" />
 		<delete dir="${lp.plugins.dir}/portlets/sample-service-builder-portlet/docroot/WEB-INF/src/META-INF" />
