@@ -1077,6 +1077,10 @@
 		<run-functional-test app.server.type="tomcat" database.type="mysql" />
 	</target>
 
+	<target name="functional-tomcat-mysql55">
+		<run-functional-test app.server.type="tomcat" database.type="mysql" />
+	</target>
+
 	<target name="integration-db2">
 		<run-integration-test database.type="db2" />
 	</target>
