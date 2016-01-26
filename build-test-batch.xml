@@ -1128,6 +1128,8 @@
 				<ant dir="portal-web" target="compile-tomcat" />
 
 				<gradle-execute dir="modules" task="compileJSP" />
+
+				<echo>!MESSAGE error</echo>
 			</test-action>
 
 			<test-set-up>
