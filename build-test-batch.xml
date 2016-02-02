@@ -214,6 +214,18 @@
 				</then>
 			</if>
 
+			<var name="file.content" unset="true" />
+
+			<echo></echo>
+			<echo>##</echo>
+			<echo>## test.${env.HOSTNAME}.properties</echo>
+			<echo>##</echo>
+			<echo></echo>
+
+			<loadfile property="file.content" srcFile="test.${env.HOSTNAME}.properties" />
+
+			<echo>${file.content}</echo>
+
 			<database-test-action database.type="@{database.type}">
 				<action>
 					<echo>database.mysql.service.cmd.start: ${database.mysql.service.cmd.start}</echo>
