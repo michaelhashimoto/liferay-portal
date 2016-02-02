@@ -190,9 +190,21 @@
 					<equals arg1="@{database.version}" arg2="5.5" />
 				</and>
 				<then>
-					<var name="database.mysql.service.cmd.start" value="mysql55 start" />
+					<var name="database.mysql.service.cmd.start" unset="true" />
+					<var name="database.mysql.service.cmd.stop" unset="true" />
+					<var name="database.mysql.version" unset="true" />
 
-					<var name="database.mysql.service.cmd.stop" value="mysql55 stop" />
+					<property name="database.mysql.service.cmd.start" value="mysql55 start" />
+					<property name="database.mysql.service.cmd.stop" value="mysql55 stop" />
+					<property name="database.mysql.version" value="5.5" />
+
+					<echo append="true" file="test.${env.HOSTNAME}.properties">
+						<![CDATA[
+						    database.mysql.service.cmd.start=${database.mysql.service.cmd.start}
+						    database.mysql.service.cmd.stop=${database.mysql.service.cmd.stop}
+						    database.mysql.version=${database.mysql.version}
+						]]>
+					</echo>
 				</then>
 			</if>
 
