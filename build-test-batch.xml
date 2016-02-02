@@ -184,8 +184,23 @@
 			<var name="database.type" value="@{database.type}" />
 			<var name="database.version" value="@{database.version}" />
 
+			<if>
+				<and>
+					<equals arg1="@{database.type}" arg2="mysql" />
+					<equals arg1="@{database.version}" arg2="5.5" />
+				</and>
+				<then>
+					<var name="database.mysql.service.cmd.start" value="mysql55 start" />
+
+					<var name="database.mysql.service.cmd.stop" value="mysql55 stop" />
+				</then>
+			</if>
+
 			<database-test-action database.type="@{database.type}">
 				<action>
+					<echo>database.mysql.service.cmd.start: ${database.mysql.service.cmd.start}</echo>
+					<echo>database.mysql.service.cmd.stop: ${database.mysql.service.cmd.stop}</echo>
+
 					<exec executable="${database.service.executable}">
 						<arg line="${database.service.cmd.stop}" />
 					</exec>
@@ -194,6 +209,9 @@
 
 			<database-test-action database.type="@{database.type}">
 				<action>
+					<echo>database.mysql.service.cmd.start: ${database.mysql.service.cmd.start}</echo>
+					<echo>database.mysql.service.cmd.stop: ${database.mysql.service.cmd.stop}</echo>
+
 					<set-portal-impl-portal-ext-properties />
 
 					<set-portal-impl-portal-test-ext-properties />
@@ -525,6 +543,10 @@
 
 	<target name="functional-tomcat-mysql">
 		<run-functional-test app.server.type="tomcat" database.type="mysql" />
+	</target>
+
+	<target name="functional-tomcat-mysql55">
+		<run-functional-test app.server.type="tomcat" database.type="mysql" database.version="5.5" />
 	</target>
 
 	<target name="integration-db2">
