@@ -196,21 +196,20 @@
 					<var name="database.mysql.service.cmd.start" unset="true" />
 					<var name="database.mysql.service.cmd.stop" unset="true" />
 					<var name="database.mysql.version" unset="true" />
+					<var name="mysql.executable" unset="true" />
 
 					<property name="database.mysql.service.cmd.start" value="mysql55 start" />
 					<property name="database.mysql.service.cmd.stop" value="mysql55 stop" />
 					<property name="database.mysql.version" value="5.5" />
+					<property name="mysql.executable" value="mysql55" />
 
-					<echo append="true" file="test.${env.HOSTNAME}.properties">
-						<![CDATA[
-						    database.mysql.service.cmd.start=${database.mysql.service.cmd.start}
-						    database.mysql.service.cmd.stop=${database.mysql.service.cmd.stop}
-						    database.mysql.version=${database.mysql.version}
-						]]>
-					</echo>
+					<echo append="true" file="test.${env.HOSTNAME}.properties"><![CDATA[
+database.mysql.service.cmd.start=${database.mysql.service.cmd.start}
+database.mysql.service.cmd.stop=${database.mysql.service.cmd.stop}
+database.mysql.version=${database.mysql.version}]]></echo>
 
-					<echo>database.mysql.service.cmd.start: ${database.mysql.service.cmd.start}</echo>
-					<echo>database.mysql.service.cmd.stop: ${database.mysql.service.cmd.stop}</echo>
+					<echo append="true" file="sql/sql.${env.HOSTNAME}.properties"><![CDATA[
+mysql.executable=${mysql.executable}]]></echo>
 				</then>
 			</if>
 
@@ -226,11 +225,18 @@
 
 			<echo>${file.content}</echo>
 
+			<echo></echo>
+			<echo>##</echo>
+			<echo>## sql/sql.${env.HOSTNAME}.properties</echo>
+			<echo>##</echo>
+			<echo></echo>
+
+			<loadfile property="file.content" srcFile="sql/sql.${env.HOSTNAME}.properties" />
+
+			<echo>${file.content}</echo>
+
 			<database-test-action database.type="@{database.type}">
 				<action>
-					<echo>database.mysql.service.cmd.start: ${database.mysql.service.cmd.start}</echo>
-					<echo>database.mysql.service.cmd.stop: ${database.mysql.service.cmd.stop}</echo>
-
 					<exec executable="${database.service.executable}">
 						<arg line="${database.service.cmd.stop}" />
 					</exec>
@@ -239,9 +245,6 @@
 
 			<database-test-action database.type="@{database.type}">
 				<action>
-					<echo>database.mysql.service.cmd.start: ${database.mysql.service.cmd.start}</echo>
-					<echo>database.mysql.service.cmd.stop: ${database.mysql.service.cmd.stop}</echo>
-
 					<set-portal-impl-portal-ext-properties />
 
 					<set-portal-impl-portal-test-ext-properties />
