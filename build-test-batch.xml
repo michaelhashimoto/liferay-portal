@@ -184,6 +184,9 @@
 			<var name="database.type" value="@{database.type}" />
 			<var name="database.version" value="@{database.version}" />
 
+			<echo>database.type: @{database.type}</echo>
+			<echo>database.version: @{database.version}</echo>
+
 			<if>
 				<and>
 					<equals arg1="@{database.type}" arg2="mysql" />
@@ -205,6 +208,9 @@
 						    database.mysql.version=${database.mysql.version}
 						]]>
 					</echo>
+
+					<echo>database.mysql.service.cmd.start: ${database.mysql.service.cmd.start}</echo>
+					<echo>database.mysql.service.cmd.stop: ${database.mysql.service.cmd.stop}</echo>
 				</then>
 			</if>
 
