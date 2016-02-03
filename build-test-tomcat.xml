@@ -128,8 +128,6 @@ web.server.display.node=true</echo>
 
 		<antcall target="prepare-virtual-host-name-properties" />
 
-		<antcall target="start-selenium" />
-
 		<if>
 			<isset property="test.base.dir.name" />
 			<then>
@@ -144,8 +142,6 @@ web.server.display.node=true</echo>
 				</antcall>
 			</else>
 		</if>
-
-		<antcall target="stop-selenium" />
 	</target>
 
 	<target name="run-selenium-versioned-tomcat">
