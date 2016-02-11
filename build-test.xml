@@ -9421,6 +9421,7 @@ cluster.link.bind.addr["cluster-link-udp"]=127.0.0.1
 				<antcall target="rebuild-database" inheritAll="false">
 					<param name="database.type" value="mysql" />
 					<param name="delete.liferay.home" value="false" />
+					<param name="test.class" value="${test.class}" />
 				</antcall>
 
 				<echo file="portal-impl/classes/portal-ext.properties">liferay.home=${liferay.home}
