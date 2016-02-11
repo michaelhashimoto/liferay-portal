@@ -370,7 +370,6 @@ mysql.executable=${mysql.executable}]]></echo>
 						<test-action>
 							<ant antfile="build-test-${app.server.type}.xml" inheritAll="false" target="run-selenium-${app.server.type}">
 								<property name="database.type" value="@{database.type}" />
-								<property name="print.java.process.on.fail" value="Bootstrap" />
 								<property name="test.class" value="${test.class}" />
 							</ant>
 						</test-action>
