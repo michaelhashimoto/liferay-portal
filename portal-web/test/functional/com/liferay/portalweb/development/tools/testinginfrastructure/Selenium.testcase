@@ -197,7 +197,7 @@
 	</command>
 
 	<command name="GetText" priority="5">
-		<var method="selenium#getElementText('//li[@id=\'_145_adminLinks\']')" name="string" />
+		<var method="selenium#getText('//li[@id=\'_145_adminLinks\']')" name="string" />
 
 		<execute macro="TestUtils#assertEquals">
 			<var name="actual" value="${string}" />
