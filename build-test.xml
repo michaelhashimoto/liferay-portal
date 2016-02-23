@@ -9290,6 +9290,13 @@ cluster.link.bind.addr["cluster-link-udp"]=127.0.0.1
 				<copy todir="testray-logs/${testray.logs.dir.name}">
 					<fileset dir="portal-web/test-results/${poshi.dir.name}" erroronmissingdir="false" />
 				</copy>
+
+				<replaceregexp
+					file="testray-logs/${testray.logs.dir.name}/index.html"
+					flags="g"
+					match="\.jpg"
+					replace=".jpg.gz"
+				/>
 			</then>
 		</if>
 	</target>
