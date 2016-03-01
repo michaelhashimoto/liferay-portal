@@ -6636,7 +6636,18 @@ mail.session.jndi.name=
 
 axis.servlet.hosts.allowed=
 
-tunnel.servlet.hosts.allowed=</echo>
+tunnel.servlet.hosts.allowed=
+
+portlet.tck.bridge.handshake.port=${portlet.tck.bridge.handshake.port}</echo>
+
+		<get-testcase-property property.name="captcha.max.challenges" />
+
+		<if>
+			<isset property="captcha.max.challenges" />
+			<then>
+				<replace file="portal-impl/src/portal-ext.properties" token="captcha.max.challenges=-1" value="captcha.max.challenges=${captcha.max.challenges}" />
+			</then>
+		</if>
 
 		<get-testcase-property property.name="cluster.enabled" />
 
@@ -6667,27 +6678,6 @@ web.server.display.node=true</echo>
 			</then>
 		</if>
 
-		<if>
-			<equals arg1="${database.type}" arg2="db2" />
-			<then>
-				<echo file="portal-impl/src/portal-ext.properties" append="true">
-
-hibernate.dialect=com.liferay.portal.dao.orm.hibernate.DB2Dialect
-custom.sql.function.isnull=CAST(? AS VARCHAR(32672)) IS NULL
-custom.sql.function.isnotnull=CAST(? AS VARCHAR(32672)) IS NOT NULL</echo>
-			</then>
-			<elseif>
-				<equals arg1="${database.type}" arg2="sybase" />
-				<then>
-					<echo file="portal-impl/src/portal-ext.properties" append="true">
-
-hibernate.dialect=org.hibernate.dialect.SybaseDialect
-custom.sql.function.isnull=CONVERT(VARCHAR,?) IS NULL
-custom.sql.function.isnotnull=CONVERT(VARCHAR,?) IS NOT NULL</echo>
-				</then>
-			</elseif>
-		</if>
-
 		<get-testcase-property property.name="custom.properties" />
 
 		<if>
@@ -6715,8 +6705,8 @@ ${custom.properties}</echo>
 
 		<if>
 			<and>
-				<equals arg1="${database.type}" arg2="mysql" />
 				<equals arg1="${database.sharding}" arg2="true" />
+				<equals arg1="${database.type}" arg2="mysql" />
 			</and>
 			<then>
 				<get-database-property property.name="database.driver" />
@@ -6784,6 +6774,27 @@ ${custom.properties}</echo>
 		</if>
 
 		<if>
+			<equals arg1="${database.type}" arg2="db2" />
+			<then>
+				<echo file="portal-impl/src/portal-ext.properties" append="true">
+
+hibernate.dialect=com.liferay.portal.dao.orm.hibernate.DB2Dialect
+custom.sql.function.isnull=CAST(? AS VARCHAR(32672)) IS NULL
+custom.sql.function.isnotnull=CAST(? AS VARCHAR(32672)) IS NOT NULL</echo>
+			</then>
+			<elseif>
+				<equals arg1="${database.type}" arg2="sybase" />
+				<then>
+					<echo file="portal-impl/src/portal-ext.properties" append="true">
+
+hibernate.dialect=org.hibernate.dialect.SybaseDialect
+custom.sql.function.isnull=CONVERT(VARCHAR,?) IS NULL
+custom.sql.function.isnotnull=CONVERT(VARCHAR,?) IS NOT NULL</echo>
+				</then>
+			</elseif>
+		</if>
+
+		<if>
 			<equals arg1="${javascript.fast.load}" arg2="false" />
 			<then>
 				<echo file="portal-impl/src/portal-ext.properties" append="true">
@@ -6830,38 +6841,6 @@ javascript.fast.load=false</echo>
 		</if>
 
 		<if>
-			<or>
-				<equals arg1="${vm.vmdk.suffix}" arg2="websphere-6.1.0.27" />
-				<equals arg1="${vm.vmdk.suffix}" arg2="websphere-7.0.0.7" />
-				<equals arg1="${vm.vmdk.suffix}" arg2="websphere-8.0.0.0" />
-			</or>
-			<then>
-				<replace
-					file="portal-impl/src/portal-ext.properties"
-					token="liferay.home=${liferay.home}"
-					value="liferay.home=C:/WINDOWS/system32/config/systemprofile/liferay"
-				/>
-
-				<echo file="portal-impl/src/portal-ext.properties" append="true">
-
-auto.deploy.dest.dir=C:/WINDOWS/system32/config/systemprofile/liferay/websphere-deploy</echo>
-			</then>
-		</if>
-
-		<get-testcase-property property.name="captcha.max.challenges" />
-
-		<if>
-			<isset property="captcha.max.challenges" />
-			<then>
-				<replace file="portal-impl/src/portal-ext.properties" token="captcha.max.challenges=-1" value="captcha.max.challenges=${captcha.max.challenges}" />
-			</then>
-		</if>
-
-		<echo file="portal-impl/src/portal-ext.properties" append="true">
-
-portlet.tck.bridge.handshake.port=${portlet.tck.bridge.handshake.port}</echo>
-
-		<if>
 			<isset property="set.permission.algorithm.5" />
 			<then>
 				<replace file="portal-impl/src/portal-ext.properties" token="#permissions.user.check.algorithm=5" value="permissions.user.check.algorithm=5" />
@@ -6874,17 +6853,6 @@ portlet.tck.bridge.handshake.port=${portlet.tck.bridge.handshake.port}</echo>
 			<then>
 				<replace file="portal-impl/src/portal-ext.properties" token="permissions.user.check.algorithm=5" value="" />
 				<replace file="portal-impl/src/portal-ext.properties" token="permissions.view.dynamic.inheritance=false" value="" />
-			</then>
-		</if>
-
-		<get-testcase-property property.name="test.smtp.server.enabled" />
-
-		<if>
-			<isset property="test.smtp.server.enabled" />
-			<then>
-				<echo file="portal-impl/src/portal-ext.properties" append="true">
-
-mail.session.mail.smtp.port=25000</echo>
 			</then>
 		</if>
 
@@ -6914,6 +6882,36 @@ tck.url=true</echo>
 			<isset property="test.set.default.portal.properties" />
 			<then>
 				<echo file="portal-impl/src/portal-ext.properties">liferay.home=${liferay.home}</echo>
+			</then>
+		</if>
+
+		<get-testcase-property property.name="test.smtp.server.enabled" />
+
+		<if>
+			<isset property="test.smtp.server.enabled" />
+			<then>
+				<echo file="portal-impl/src/portal-ext.properties" append="true">
+
+mail.session.mail.smtp.port=25000</echo>
+			</then>
+		</if>
+
+		<if>
+			<or>
+				<equals arg1="${vm.vmdk.suffix}" arg2="websphere-6.1.0.27" />
+				<equals arg1="${vm.vmdk.suffix}" arg2="websphere-7.0.0.7" />
+				<equals arg1="${vm.vmdk.suffix}" arg2="websphere-8.0.0.0" />
+			</or>
+			<then>
+				<replace
+					file="portal-impl/src/portal-ext.properties"
+					token="liferay.home=${liferay.home}"
+					value="liferay.home=C:/WINDOWS/system32/config/systemprofile/liferay"
+				/>
+
+				<echo file="portal-impl/src/portal-ext.properties" append="true">
+
+auto.deploy.dest.dir=C:/WINDOWS/system32/config/systemprofile/liferay/websphere-deploy</echo>
 			</then>
 		</if>
 
@@ -7193,6 +7191,21 @@ svn --username ${svn.username} --password ${svn.password} update -r ${svn.info.r
 		<antcall target="prepare-selenium-testcase-properties" />
 
 		<if>
+			<or>
+				<equals arg1="${database.create.suffix}" arg2="-bare" />
+				<equals arg1="${database.create.suffix}" arg2="-minimal" />
+				<isset property="test.database.minimal" />
+			</or>
+			<then>
+				<replace
+					file="portal-web/test/test-portal-web.properties"
+					token="test.database.minimal=false"
+					value="test.database.minimal=true"
+				/>
+			</then>
+		</if>
+
+		<if>
 			<isset property="legacy.theme.ids" />
 			<then>
 				<echo append="true" file="${test.ext.properties.file}">
@@ -7311,6 +7324,23 @@ svn --username ${svn.username} --password ${svn.password} update -r ${svn.info.r
 		</if>
 
 		<if>
+			<equals arg1="${test.batch.run.type}" arg2="sequential" />
+			<then>
+				<echo append="true" file="${test.ext.properties.file}">
+					test.skip.tear.down=false
+				</echo>
+			</then>
+			<elseif>
+				<isset property="test.skip.tear.down" />
+				<then>
+					<echo append="true" file="${test.ext.properties.file}">
+						test.skip.tear.down=${test.skip.tear.down}
+					</echo>
+				</then>
+			</elseif>
+		</if>
+
+		<if>
 			<contains string="${test.class}" substring="#" />
 			<then>
 				<echo append="true" file="${test.ext.properties.file}">
@@ -7343,38 +7373,6 @@ svn --username ${svn.username} --password ${svn.password} update -r ${svn.info.r
 				<echo append="true" file="${test.ext.properties.file}">
 					selenium.implementation=com.thoughtworks.selenium.Selenium
 				</echo>
-			</then>
-		</if>
-
-		<if>
-			<equals arg1="${test.batch.run.type}" arg2="sequential" />
-			<then>
-				<echo append="true" file="${test.ext.properties.file}">
-					test.skip.tear.down=false
-				</echo>
-			</then>
-			<elseif>
-				<isset property="test.skip.tear.down" />
-				<then>
-					<echo append="true" file="${test.ext.properties.file}">
-						test.skip.tear.down=${test.skip.tear.down}
-					</echo>
-				</then>
-			</elseif>
-		</if>
-
-		<if>
-			<or>
-				<equals arg1="${database.create.suffix}" arg2="-bare" />
-				<equals arg1="${database.create.suffix}" arg2="-minimal" />
-				<isset property="test.database.minimal" />
-			</or>
-			<then>
-				<replace
-					file="portal-web/test/test-portal-web.properties"
-					token="test.database.minimal=false"
-					value="test.database.minimal=true"
-				/>
 			</then>
 		</if>
 	</target>
