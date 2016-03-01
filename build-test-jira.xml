@@ -1,0 +1,115 @@
+<?xml version="1.0"?>
+
+<project name="portal-test" basedir="." default="test" xmlns:antelope="antlib:ise.antelope.tasks" xmlns:if="ant:if" xmlns:unless="ant:unless">
+	<import file="build-test.xml" />
+
+	<target name="print-information">
+		<property name="jql"><![CDATA[project = "INTERNAL - Liferay QA" AND component = Engineering AND type = Task AND (Sprint != 1826 OR Sprint is EMPTY) AND status != Closed ORDER BY Rank ASC]]></property>
+
+		<beanshell>
+			<![CDATA[
+				import org.json.JSONArray;
+				import org.json.JSONObject;
+
+				import java.io.BufferedReader;
+				import java.io.InputStreamReader;
+
+				public class Issue {
+
+					public Issue(JSONObject jsonObject) {
+						_key = jsonObject.get("key");
+
+						JSONObject fieldsJSONObject = jsonObject.get("fields");
+
+						_summary = fieldsJSONObject.get("summary");
+
+						Object object = fieldsJSONObject.get("description");
+
+						if (!object.equals(JSONObject.NULL)) {
+							_description = fieldsJSONObject.get("description");
+						}
+						else {
+							_description = "";
+						}
+
+						_initBusinessValue();
+					}
+
+					private void _initBusinessValue() {
+						if (_description.contains("Build more confidence in the PR Tester")) {
+							_businessValue++;
+						}
+					}
+
+					public String getKey() {
+						return _key;
+					}
+
+					public String getSummary() {
+						return _summary;
+					}
+
+					public String getDescription() {
+						return _description;
+					}
+
+					public int getBusinessValue() {
+						return _businessValue;
+					}
+
+					private String _key;
+					private String _summary;
+					private String _description;
+					private int _businessValue;
+
+				}
+
+				public String getJQL() {
+					return project.getProperty("jql").replaceAll(" ", "%20");
+				}
+
+				public JSONObject getJSONObject(String curlOptions) throws Exception {
+					Runtime runtime = Runtime.getRuntime();
+
+					Process process = runtime.exec("curl " + curlOptions);
+
+					InputStreamReader inputStreamReader = new InputStreamReader(
+						process.getInputStream());
+
+					BufferedReader inputBufferedReader = new BufferedReader(
+						inputStreamReader);
+
+					String line = null;
+
+					StringBuilder sb = new StringBuilder();
+
+					while ((line = inputBufferedReader.readLine()) != null) {
+						sb.append(line);
+					}
+
+					return new JSONObject(sb.toString());
+				}
+
+				JSONObject jsonObject = getJSONObject(" -u michael.hashimoto:Cr38Cl3an https://issues.liferay.com/rest/api/latest/search?jql=" + getJQL());
+
+				JSONArray jsonArray = jsonObject.getJSONArray("issues");
+
+				for (int i = 0; i < jsonArray.length(); i++) {
+					Object object = jsonArray.get(i);
+
+					if (object.equals(JSONObject.NULL)) {
+						continue;
+					}
+
+					JSONObject issueJSONObject = jsonArray.get(i);
+
+					JSONObject jiraJSONObject = getJSONObject(" -u michael.hashimoto:Cr38Cl3an https://issues.liferay.com/rest/api/latest/issue/" + issueJSONObject.get("key"));
+
+					Issue issue = new Issue(jiraJSONObject);
+
+					System.out.println(issue.getKey() + "\t" + issue.getBusinessValue());
+				}
+			]]>
+		</beanshell>
+	</target>
+</project>
