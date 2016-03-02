@@ -1,18 +1,27 @@
 <?xml version="1.0"?>
 
-<project name="portal-test" basedir="." default="test" xmlns:antelope="antlib:ise.antelope.tasks" xmlns:if="ant:if" xmlns:unless="ant:unless">
+<project name="portal-test-jira" basedir="." default="print" xmlns:antelope="antlib:ise.antelope.tasks" xmlns:if="ant:if" xmlns:unless="ant:unless">
 	<import file="build-test.xml" />
 
-	<target name="print-information">
-		<property name="jql"><![CDATA[project = "INTERNAL - Liferay QA" AND component = Engineering AND type = Task AND (Sprint != 1826 OR Sprint is EMPTY) AND status != Closed ORDER BY Rank ASC]]></property>
+	<property file="${project.dir}/jira.${user.name}.properties" />
+	<property file="${project.dir}/jira.${env.COMPUTERNAME}.properties" />
+	<property file="${project.dir}/jira.${env.HOST}.properties" />
+	<property file="${project.dir}/jira.${env.HOSTNAME}.properties" />
+	<property file="${project.dir}/jira.properties" />
+
+	<target name="print">
+		<fail message="Please set the property ${business.values}." unless="business.values" />
+		<fail message="Please set the property ${jql.query}." unless="jql.query" />
 
 		<beanshell>
 			<![CDATA[
-				import org.json.JSONArray;
-				import org.json.JSONObject;
-
 				import java.io.BufferedReader;
 				import java.io.InputStreamReader;
+
+				import org.apache.commons.io.FileUtils;
+
+				import org.json.JSONArray;
+				import org.json.JSONObject;
 
 				public class Issue {
 
@@ -32,13 +41,47 @@
 							_description = "";
 						}
 
-						_initBusinessValue();
+						_initBusinessValues();
+
+						_id = _businessValue + _summary;
 					}
 
-					private void _initBusinessValue() {
-						if (_description.contains("Build more confidence in the PR Tester")) {
-							_businessValue++;
+					private void _blah(String number) {
+						String businessValueNumber = project.getProperty("business.value." + number);
+
+						if (businessValueNumber != null) {
+							List businessValues = new ArrayList();
+
+							String descriptionLowerCase = _description.toLowerCase();
+
+							for (String businessValue : businessValueNumber.split(",")) {
+								businessValue = businessValue.trim();
+
+								String businessValueLowerCase = businessValue.toLowerCase();
+
+								if (descriptionLowerCase.matches("[\\S\\s]*\\* " + businessValueLowerCase + "[\\S\\s]*")) {
+									businessValues.add(businessValue);
+
+									_businessValues.add(businessValue);
+
+									_businessValue += Integer.parseInt(number);
+
+									_map.put(number, businessValues);
+								}
+							}
 						}
+					}
+
+					private void _initBusinessValues() {
+						_businessValueNumbers = project.getProperty("business.values").split(",");
+
+						for (String number : _businessValueNumbers) {
+							_blah(number);
+						}
+					}
+
+					public String getID() {
+						return _id;
 					}
 
 					public String getKey() {
@@ -57,15 +100,36 @@
 						return _businessValue;
 					}
 
+					public List getBusinessValues() {
+						return _businessValues;
+					}
+
+					public String getBusinessValueBreakdown() {
+						StringBuilder sb = new StringBuilder();
+
+						for (String number : _businessValueNumbers) {
+							if (_map.containsKey(number)) {
+								sb.append(number + " " + _map.get(number));
+								sb.append("\n");
+							}
+						}
+
+						return sb.toString();
+					}
+
+					private String _id;
 					private String _key;
 					private String _summary;
 					private String _description;
 					private int _businessValue;
+					private List _businessValues = new ArrayList();
+					private String[] _businessValueNumbers;
+					private Map _map = new HashMap();
 
 				}
 
 				public String getJQL() {
-					return project.getProperty("jql").replaceAll(" ", "%20");
+					return project.getProperty("jql.query").replaceAll(" ", "%20");
 				}
 
 				public JSONObject getJSONObject(String curlOptions) throws Exception {
@@ -90,9 +154,13 @@
 					return new JSONObject(sb.toString());
 				}
 
-				JSONObject jsonObject = getJSONObject(" -u michael.hashimoto:Cr38Cl3an https://issues.liferay.com/rest/api/latest/search?jql=" + getJQL());
+				JSONObject jsonObject = getJSONObject(" -u michael.hashimoto:Cr38Cl3an https://issues.liferay.com/rest/api/latest/search?jql=" + getJQL() + "&maxResults=200");
 
 				JSONArray jsonArray = jsonObject.getJSONArray("issues");
+
+				StringBuilder sb = new StringBuilder();
+
+				Map mapper = new TreeMap();
 
 				for (int i = 0; i < jsonArray.length(); i++) {
 					Object object = jsonArray.get(i);
@@ -105,10 +173,26 @@
 
 					JSONObject jiraJSONObject = getJSONObject(" -u michael.hashimoto:Cr38Cl3an https://issues.liferay.com/rest/api/latest/issue/" + issueJSONObject.get("key"));
 
+					System.out.println("Reading https://issues.liferay.com/browse/" + issueJSONObject.get("key"));
+
 					Issue issue = new Issue(jiraJSONObject);
 
-					System.out.println(issue.getKey() + "\t" + issue.getBusinessValue());
+					mapper.put(issue.getID(), issue);
 				}
+
+				Set set = mapper.keySet();
+
+				System.out.println("\nOrder by Business Value:\n");
+
+				for (String key : set) {
+					Issue issue = mapper.get(key);
+
+					System.out.println(issue.getBusinessValue() + " - " + issue.getKey() + " - " + issue.getBusinessValues());
+				}
+
+				File file = new File("hello.txt");
+
+				FileUtils.write(file, sb.toString());
 			]]>
 		</beanshell>
 	</target>
