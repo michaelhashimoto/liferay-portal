@@ -9,7 +9,69 @@
 	<property file="${project.dir}/jira.${env.HOSTNAME}.properties" />
 	<property file="${project.dir}/jira.properties" />
 
+	<macrodef name="backup-property">
+		<attribute name="property.name" />
+		<attribute name="property.name.backup" />
+
+		<sequential>
+			<if>
+				<not>
+					<isset property="@{property.name}" />
+				</not>
+				<then>
+					<if>
+						<isset property="@{property.name.backup}" />
+						<then>
+							<propertycopy name="@{property.name}" from="@{property.name.backup}" />
+						</then>
+					</if>
+				</then>
+			</if>
+
+			<fail message="Please set the property ${@{property.name}}." unless="@{property.name}" />
+		</sequential>
+	</macrodef>
+
 	<target name="print">
+		<property name="real-1" value="AAA" />
+		<property name="backup-1" value="BBB" />
+
+		<backup-property
+			property.name="real-1"
+			property.name.backup="backup-1"
+		/>
+
+		<!-- <property name="real-2" value="CCC" /> -->
+		<property name="backup-2" value="DDD" />
+
+		<backup-property
+			property.name="real-2"
+			property.name.backup="backup-2"
+		/>
+
+		<property name="real-3" value="EEE" />
+		<!-- <property name="backup-3" value="FFF" /> -->
+
+		<backup-property
+			property.name="real-3"
+			property.name.backup="backup-3"
+		/>
+
+		<!-- <property name="real-4" value="AAA" />
+		<property name="backup-4" value="BBB" /> -->
+
+		<backup-property
+			property.name="real-4"
+			property.name.backup="backup-4"
+		/>
+
+		<fail>
+${real-1}
+${real-2}
+${real-3}
+${real-4}
+</fail>
+
 		<fail message="Please set the property ${business.values}." unless="business.values" />
 		<fail message="Please set the property ${jql.query}." unless="jql.query" />
 
