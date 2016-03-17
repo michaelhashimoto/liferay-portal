@@ -7551,6 +7551,17 @@ svn --username ${svn.username} --password ${svn.password} update -r ${svn.info.r
 		</if>
 
 		<if>
+			<equals arg1="${browser.type}" arg2="edge" />
+			<then>
+				<prepare-edge-driver />
+
+				<echo append="true" file="${test.ext.properties.file}">
+					selenium.executable.dir.name=${selenium.executable.dir.name}
+				</echo>
+			</then>
+		</if>
+
+		<if>
 			<equals arg1="${browser.type}" arg2="internetexplorer" />
 			<then>
 				<prepare-ie-driver />
