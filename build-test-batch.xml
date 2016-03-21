@@ -1062,19 +1062,26 @@ ${output.content}</echo>
 				<prepare-test-build />
 
 				<if>
-					<isset property="modules.base.dir.names.with.changes" />
+					<available file="${env.TOP_LEVEL_SHARED_DIR}/modules.base.dir.names.properties" />
 					<then>
-						<for list="${modules.base.dir.names.with.changes}" param="modules.base.dir.name">
-							<sequential>
-								<echo>Executing 'baseline' on '@{modules.base.dir.name}'</echo>
+						<property file="${env.TOP_LEVEL_SHARED_DIR}/modules.base.dir.names.properties" />
 
-								<execute>
-									cd @{modules.base.dir.name}
+						<if>
+							<isset property="modules.base.dir.names.with.changes" />
+							<then>
+								<for list="${modules.base.dir.names.with.changes}" param="modules.base.dir.name">
+									<sequential>
+										<echo>Executing 'baseline' on '@{modules.base.dir.name}'</echo>
 
-									${project.dir}/gradlew baseline
-								</execute>
-							</sequential>
-						</for>
+										<execute>
+											cd @{modules.base.dir.name}
+
+											${project.dir}/gradlew baseline
+										</execute>
+									</sequential>
+								</for>
+							</then>
+						</if>
 					</then>
 				</if>
 			</test-set-up>
