@@ -1034,8 +1034,9 @@ ${output.content}</echo>
 	<target name="semantic-versioning-jdk7">
 		<run-batch-test>
 			<test-action>
-				<fileset dir="${project.dir}/baseline-reports" id="log.files">
-					<include name="*.log" />
+				<fileset dir="${project.dir}" id="log.files">
+					<include name="baseline-reports/*.log" />
+					<include name="modules/**/baseline.log" />
 				</fileset>
 
 				<pathconvert pathsep="," property="log.files" refid="log.files" />
@@ -1073,22 +1074,17 @@ ${output.content}</echo>
 									<sequential>
 										<echo>Executing 'baseline' on '@{modules.base.dir.name}'</echo>
 
-										<echo file="quick.sh">
-											set -x
-
-											echo '1 ~ ${project.dir}'
-											echo '2 ~ @{modules.base.dir.name}'
-
+										<echo file="baseline.sh">
 											cd @{modules.base.dir.name}
 
 											${project.dir}/gradlew baseline
 										</echo>
 
 										<execute>
-											sh quick.sh
+											sh baseline.sh
 										</execute>
 
-										<delete file="quick.sh" />
+										<delete file="baseline.sh" />
 									</sequential>
 								</for>
 							</then>
@@ -1097,33 +1093,6 @@ ${output.content}</echo>
 				</if>
 			</test-set-up>
 		</run-batch-test>
-	</target>
-
-	<target name="semantic-versioning-jdk7-1">
-		<property name="modules.base.dir.names.with.changes" value="\git\liferay-portal\modules\test\poshi-runner" />
-
-		<for list="${modules.base.dir.names.with.changes}" param="modules.base.dir.name">
-			<sequential>
-				<echo>Executing 'baseline' on '@{modules.base.dir.name}'</echo>
-
-				<echo file="quick.sh">
-					set -x
-
-					echo '1 ~ ${project.dir}'
-					echo '2 ~ @{modules.base.dir.name}'
-
-					cd @{modules.base.dir.name}
-
-					${project.dir}/gradlew baseline
-				</echo>
-
-				<execute>
-					sh quick.sh
-				</execute>
-
-				<delete file="quick.sh" />
-			</sequential>
-		</for>
 	</target>
 
 	<target name="service-builder-jdk7">
