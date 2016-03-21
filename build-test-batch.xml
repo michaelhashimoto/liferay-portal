@@ -1074,7 +1074,7 @@ ${output.content}</echo>
 										<echo>Executing 'baseline' on '@{modules.base.dir.name}'</echo>
 
 										<execute>
-											cd @{modules.base.dir.name}
+											cd ${project.dir}/modules/@{modules.base.dir.name}
 
 											${project.dir}/gradlew baseline
 										</execute>
