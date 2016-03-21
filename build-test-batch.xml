@@ -1060,6 +1060,23 @@ ${output.content}</echo>
 				<echo file="build.${user.name}.properties">baseline.jar.report.level=persist</echo>
 
 				<prepare-test-build />
+
+				<if>
+					<isset property="modules.base.dir.names.with.changes" />
+					<then>
+						<for list="${modules.base.dir.names.with.changes}" param="modules.base.dir.name">
+							<sequential>
+								<var name="modules.base.dir.name" value="@{modules.base.dir.name}" />
+
+								<execute>
+									cd ${modules.base.dir.names.with.changes}
+
+									${project.dir}/gradlew baseline
+								</execute>
+							</sequential>
+						</for>
+					</then>
+				</if>
 			</test-set-up>
 		</run-batch-test>
 	</target>
