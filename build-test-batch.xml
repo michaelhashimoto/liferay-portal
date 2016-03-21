@@ -1066,10 +1066,10 @@ ${output.content}</echo>
 					<then>
 						<for list="${modules.base.dir.names.with.changes}" param="modules.base.dir.name">
 							<sequential>
-								<var name="modules.base.dir.name" value="@{modules.base.dir.name}" />
+								<echo>Executing 'baseline' on '@{modules.base.dir.name}'</echo>
 
 								<execute>
-									cd ${modules.base.dir.names.with.changes}
+									cd @{modules.base.dir.name}
 
 									${project.dir}/gradlew baseline
 								</execute>
