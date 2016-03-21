@@ -18,6 +18,7 @@ import org.osgi.framework.Bundle;
 
 /**
  * @author Amos Fong
+ * @author Tammy Fong
  */
 public interface AppLicenseVerifier {
 

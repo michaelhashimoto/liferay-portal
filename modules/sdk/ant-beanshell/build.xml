@@ -3,4 +3,8 @@
 
 <project>
 	<import file="../../build-module.xml" />
+
+	<target name="hashi">
+		<echo>hello</echo>
+	</target>
 </project>
