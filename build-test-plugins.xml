@@ -386,6 +386,8 @@ liferay.home=${liferay.home}</echo>
 	</target>
 
 	<target name="test-plugin">
+		<echo>Compiling ${test.plugin}</echo>
+
 		<if>
 			<or>
 				<contains string="${test.plugin}" substring="layouttpl" />
