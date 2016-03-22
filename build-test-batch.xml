@@ -1074,17 +1074,7 @@ ${output.content}</echo>
 									<sequential>
 										<echo>Executing 'baseline' on '@{modules.base.dir.name}'</echo>
 
-										<echo file="baseline.sh">
-											cd @{modules.base.dir.name}
-
-											${project.dir}/gradlew baseline
-										</echo>
-
-										<execute>
-											sh baseline.sh
-										</execute>
-
-										<delete file="baseline.sh" />
+										<gradle-execute dir="@{modules.base.dir.name}" task="baseline" />
 									</sequential>
 								</for>
 							</then>
