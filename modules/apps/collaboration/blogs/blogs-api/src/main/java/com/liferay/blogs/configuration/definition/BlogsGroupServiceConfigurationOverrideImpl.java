@@ -39,6 +39,9 @@ public class BlogsGroupServiceConfigurationOverrideImpl
 		return _typedSettings.getBooleanValue("enableRss");
 	}
 
+	public void hashi() {
+	}
+
 	private final TypedSettings _typedSettings;
 
 }
