@@ -186,6 +186,12 @@ public class PoshiRunner {
 		_runClassCommandName(_testClassCommandName);
 	}
 
+	private void _runCommand(String s) throws Exception {
+		CommandLoggerHandler.logClassCommandName(_testClassCommandName);
+
+		_runClassCommandName(_testClassCommandName);
+	}
+
 	private void _runSetUp() throws Exception {
 		CommandLoggerHandler.logClassCommandName(_testClassName + "#set-up");
 
