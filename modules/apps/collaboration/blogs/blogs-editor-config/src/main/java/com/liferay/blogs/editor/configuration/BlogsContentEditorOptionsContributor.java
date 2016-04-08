@@ -68,4 +68,7 @@ public class BlogsContentEditorOptionsContributor
 	public void hashi() {
 	}
 
+	public void hashi2() {
+	}
+
 }
