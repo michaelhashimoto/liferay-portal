@@ -92,4 +92,19 @@
 			<var name="expected" value="${expected}" />
 		</execute>
 	</command>
+
+	<command name="GetTestCase" priority="5">
+		<var name="expected" value="ExternalMethod#GetTestCase" />
+
+		<var name="returnVariable" value="actual" />
+
+		<execute class="com.liferay.poshi.runner.PoshiRunnerContext" method="getTestCaseName">
+			<return name="actual" />
+		</execute>
+
+		<execute macro="ExternalMethod#validateMatch">
+			<var name="actual" value="${actual}" />
+			<var name="expected" value="${expected}" />
+		</execute>
+	</command>
 </definition>
