@@ -265,6 +265,8 @@ mariadb.executable=${mariadb.executable}]]></echo>
 							<record action="stop" name="${project.dir}/database.log" />
 						</try>
 						<catch>
+							<echo>${database.error}</echo>
+
 							<if>
 								<resourcecontains resource="${project.dir}/database.log" substring="ERROR 1010" />
 								<then>
