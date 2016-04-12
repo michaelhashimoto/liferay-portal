@@ -256,6 +256,8 @@ mariadb.executable=${mariadb.executable}]]></echo>
 						<try>
 							<record action="start" name="${project.dir}/database.log" />
 
+							<echo>Rebuilding a '@{database.type}' database.</echo>
+
 							<antcall target="rebuild-database" inheritall="false" >
 								<param name="database.type" value="@{database.type}" />
 							</antcall>
