@@ -150,6 +150,7 @@
 	</command>
 
 	<command name="ViewBlogsPortletRegRole" priority="4">
+		<property name="portal.acceptance" value="true" />
 		<property name="portal.smoke" value="true" />
 
 		<execute macro="Permissions#setUpRegRoleLoginUserCP">
