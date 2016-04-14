@@ -72,6 +72,8 @@
 
 		<echo>## Adding a 'User' with the following info using JSONWS:</echo>
 
+		<echo>## * Company ID: ${companyId}</echo>
+
 		<echo>## * Email Address: ${userEmailAddress}</echo>
 
 		<echo>## * First Name: ${userFirstName}</echo>
