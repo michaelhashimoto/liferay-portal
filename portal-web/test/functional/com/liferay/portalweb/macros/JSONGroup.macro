@@ -1,0 +1,175 @@
+<definition>
+	<command name="_addGroup">
+		<if>
+			<not>
+				<isset var="groupName" />
+			</not>
+			<then>
+				<fail message="Please set 'groupName'." />
+			</then>
+		</if>
+
+		<var name="curl">
+			http://localhost:8080/api/jsonws/group/add-group \
+				-u test@liferay.com:test \
+				-d parentGroupId=0 \
+				-d liveGroupId=0 \
+				-d nameMap="{\"en_US\": \"${groupName}\"}" \
+				-d descriptionMap="{\"en_US\": \"\"}" \
+				-d type=1 \
+				-d manualMembership=true \
+				-d membershipRestriction=0 \
+				-d friendlyURL="" \
+				-d site=true \
+				-d inheritContent=false \
+				-d active=true</var>
+
+		<echo>## Adding a 'Group' with the following info using JSONWS:</echo>
+		<echo>## * Group Name: ${groupName}</echo>
+
+		<execute class="com.liferay.poshi.runner.util.JSONCurlUtil" method="get">
+			<arg value="${curl}" />
+			<arg value="$['groupId']" />
+			<return name="groupId" />
+		</execute>
+	</command>
+
+	<command name="_deleteGroup">
+		<if>
+			<not>
+				<isset var="groupId" />
+			</not>
+			<then>
+				<fail message="Please set 'groupId'." />
+			</then>
+		</if>
+
+		<execute macro="JSONGroup#getGroupName">
+			<var name="groupId" value="${groupId}" />
+			<return from="groupName" name="groupName" />
+		</execute>
+
+		<echo>## Deleting a 'Group' with the following info using JSONWS:</echo>
+		<echo>## * Group Name: ${groupName}</echo>
+
+		<var name="curl">
+			http://localhost:8080/api/jsonws/group/delete-group \
+				-u test@liferay.com:test \
+				-d groupId=${groupId}</var>
+
+		<execute class="com.liferay.poshi.runner.util.JSONCurlUtil" method="get">
+			<arg value="${curl}" />
+			<arg value="$" />
+			<return name="temp" />
+		</execute>
+	</command>
+
+	<command name="addGroup">
+		<if>
+			<not>
+				<isset var="groupName" />
+			</not>
+			<then>
+				<fail message="Please set 'groupName'." />
+			</then>
+		</if>
+
+		<execute macro="JSONGroup#_addGroup">
+			<var name="groupId" value="${groupId}" />
+		</execute>
+	</command>
+
+	<command name="deleteGroupByName">
+		<if>
+			<not>
+				<isset var="groupName" />
+			</not>
+			<then>
+				<fail message="Please set 'groupName'." />
+			</then>
+		</if>
+
+		<execute macro="JSONGroup#getGroupIdByName">
+			<var name="groupName" value="${groupName}" />
+			<return from="groupId" name="groupId" />
+		</execute>
+
+		<execute macro="JSONGroup#_deleteGroup">
+			<var name="groupId" value="${groupId}" />
+		</execute>
+	</command>
+
+	<command name="getGroupIdByName" returns="groupId">
+		<if>
+			<not>
+				<isset var="groupName" />
+			</not>
+			<then>
+				<fail message="Please set 'groupName'." />
+			</then>
+		</if>
+
+		<execute macro="JSONCompany#getCompanyId">
+			<return from="companyId" name="companyId" />
+		</execute>
+
+		<var name="curl">
+			http://localhost:8080/api/jsonws/group/get-groups \
+				-u test@liferay.com:test \
+				-d companyId=${companyId} \
+				-d parentGroupId=0 \
+				-d site=true</var>
+
+		<execute class="com.liferay.poshi.runner.util.JSONCurlUtil" method="get">
+			<arg value="${curl}" />
+			<arg value="$.[?(@['nameCurrentValue'] == '${groupName}')]['groupId']" />
+			<return name="groupId" />
+		</execute>
+
+		<execute class="com.liferay.poshi.runner.util.StringUtil" method="replace">
+			<arg value="${groupId}" />
+			<arg value="[&quot;" />
+			<arg value="" />
+			<return name="groupId" />
+		</execute>
+
+		<execute class="com.liferay.poshi.runner.util.StringUtil" method="replace">
+			<arg value="${groupId}" />
+			<arg value="&quot;]" />
+			<arg value="" />
+			<return name="groupId" />
+		</execute>
+
+		<return name="groupId" value="${groupId}" />
+	</command>
+
+	<command name="getGroupName" returns="groupName">
+		<if>
+			<not>
+				<isset var="groupId" />
+			</not>
+			<then>
+				<fail message="Please set 'groupName'." />
+			</then>
+		</if>
+
+		<execute macro="JSONCompany#getCompanyId">
+			<return from="companyId" name="companyId" />
+		</execute>
+
+		<var name="curl">
+			http://localhost:8080/api/jsonws/group/get-group \
+				-u test@liferay.com:test \
+				-d companyId=${companyId} \
+				-d parentGroupId=0 \
+				-d site=true</var>
+
+		<execute class="com.liferay.poshi.runner.util.JSONCurlUtil" method="get">
+			<arg value="${curl}" />
+			<arg value="$['groupName']" />
+			<return name="groupName" />
+		</execute>
+
+		<return name="groupName" value="${groupName}" />
+	</command>
+</definition>
