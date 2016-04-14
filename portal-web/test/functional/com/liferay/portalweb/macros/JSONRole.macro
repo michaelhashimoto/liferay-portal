@@ -40,7 +40,7 @@
 				-u test@liferay.com:test \
 				-d className="com.liferay.portal.kernel.model.Role" \
 				-d classPK=0 \
-				-d name="${roleName}" \
+				-d name=${roleName} \
 				-d titleMap="{}" \
 				-d descriptionMap="{}" \
 				-d type=${roleTypeId} \
@@ -218,7 +218,7 @@
 			${portalURL}/api/jsonws/role/get-role \
 				-u test@liferay.com:test \
 				-d companyId=${companyId} \
-				-d name="${roleName}"
+				-d name=${roleName}
 		</var>
 
 		<execute class="com.liferay.poshi.runner.util.JSONCurlUtil" method="get">

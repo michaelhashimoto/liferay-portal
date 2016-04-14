@@ -52,14 +52,14 @@
 				-d password1=test \
 				-d password2=test \
 				-d autoScreenName=false \
-				-d screenName="${userScreenName}" \
-				-d emailAddress="${userEmailAddress}" \
+				-d screenName=${userScreenName} \
+				-d emailAddress=${userEmailAddress} \
 				-d facebookId=0 \
 				-d openId=0 \
 				-d locale= \
-				-d firstName="${userFirstName}" \
+				-d firstName=${userFirstName} \
 				-d middleName= \
-				-d lastName="${userLastName}" \
+				-d lastName=${userLastName} \
 				-d prefixId=0 \
 				-d suffixId=0 \
 				-d male=true \
@@ -265,7 +265,7 @@
 			${portalURL}/api/jsonws/user/get-user-by-email-address \
 				-u test@liferay.com:test \
 				-d companyId=${companyId} \
-				-d emailAddress="${userEmailAddress}"
+				-d emailAddress=${userEmailAddress}
 		</var>
 
 		<execute class="com.liferay.poshi.runner.util.JSONCurlUtil" method="get">
