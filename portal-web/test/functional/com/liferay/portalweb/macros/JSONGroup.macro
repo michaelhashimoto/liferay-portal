@@ -9,8 +9,12 @@
 			</then>
 		</if>
 
+		<execute macro="JSONCompany#getPortalURL">
+			<return from="portalURL" name="portalURL" />
+		</execute>
+
 		<var name="curl">
-			http://localhost:8080/api/jsonws/group/add-group \
+			${portalURL}/api/jsonws/group/add-group \
 				-u test@liferay.com:test \
 				-d parentGroupId=0 \
 				-d liveGroupId=0 \
@@ -55,8 +59,12 @@
 
 		<echo>## * Group Name: ${groupName}</echo>
 
+		<execute macro="JSONCompany#getPortalURL">
+			<return from="portalURL" name="portalURL" />
+		</execute>
+
 		<var name="curl">
-			http://localhost:8080/api/jsonws/group/delete-group \
+			${portalURL}/api/jsonws/group/delete-group \
 				-u test@liferay.com:test \
 				-d groupId=${groupId}
 		</var>
@@ -117,8 +125,12 @@
 			<return from="companyId" name="companyId" />
 		</execute>
 
+		<execute macro="JSONCompany#getPortalURL">
+			<return from="portalURL" name="portalURL" />
+		</execute>
+
 		<var name="curl">
-			http://localhost:8080/api/jsonws/group/get-groups \
+			${portalURL}/api/jsonws/group/get-groups \
 				-u test@liferay.com:test \
 				-d companyId=${companyId} \
 				-d parentGroupId=0 \
@@ -162,8 +174,12 @@
 			<return from="companyId" name="companyId" />
 		</execute>
 
+		<execute macro="JSONCompany#getPortalURL">
+			<return from="portalURL" name="portalURL" />
+		</execute>
+
 		<var name="curl">
-			http://localhost:8080/api/jsonws/group/get-group \
+			${portalURL}/api/jsonws/group/get-group \
 				-u test@liferay.com:test \
 				-d companyId=${companyId} \
 				-d parentGroupId=0 \

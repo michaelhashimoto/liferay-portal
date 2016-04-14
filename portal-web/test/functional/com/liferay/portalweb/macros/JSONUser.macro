@@ -40,8 +40,12 @@
 			<return from="companyId" name="companyId" />
 		</execute>
 
+		<execute macro="JSONCompany#getPortalURL">
+			<return from="portalURL" name="portalURL" />
+		</execute>
+
 		<var name="curl">
-			http://localhost:8080/api/jsonws/user/add-user \
+			${portalURL}/api/jsonws/user/add-user \
 				-u test@liferay.com:test \
 				-d companyId=${companyId} \
 				-d autoPassword=true \
@@ -104,8 +108,12 @@
 			<return from="userEmailAddress" name="userEmailAddress" />
 		</execute>
 
+		<execute macro="JSONCompany#getPortalURL">
+			<return from="portalURL" name="portalURL" />
+		</execute>
+
 		<var name="curl">
-			http://localhost:8080/api/jsonws/user/delete-user \
+			${portalURL}/api/jsonws/user/delete-user \
 				-u test@liferay.com:test \
 				-d userId=${userId}
 		</var>
@@ -215,8 +223,12 @@
 			<return from="companyId" name="companyId" />
 		</execute>
 
+		<execute macro="JSONCompany#getPortalURL">
+			<return from="portalURL" name="portalURL" />
+		</execute>
+
 		<var name="curl">
-			http://localhost:8080/api/jsonws/user/get-user-by-id \
+			${portalURL}/api/jsonws/user/get-user-by-id \
 				-u test@liferay.com:test \
 				-d companyId=${companyId} \
 				-d userId=${userId}
@@ -245,8 +257,12 @@
 			<return from="companyId" name="companyId" />
 		</execute>
 
+		<execute macro="JSONCompany#getPortalURL">
+			<return from="portalURL" name="portalURL" />
+		</execute>
+
 		<var name="curl">
-			http://localhost:8080/api/jsonws/user/get-user-by-email-address \
+			${portalURL}/api/jsonws/user/get-user-by-email-address \
 				-u test@liferay.com:test \
 				-d companyId=${companyId} \
 				-d emailAddress=${userEmailAddress}

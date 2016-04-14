@@ -27,4 +27,10 @@
 
 		<return name="portalInstanceName" value="${portalInstanceName}" />
 	</command>
+
+	<command name="getPortalURL" returns="portalURL">
+		<var method="TestPropsUtil#get('portal.url')" name="portalURL" />
+
+		<return name="portalURL" value="${portalURL}" />
+	</command>
 </definition>

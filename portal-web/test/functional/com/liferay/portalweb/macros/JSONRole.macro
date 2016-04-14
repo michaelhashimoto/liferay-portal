@@ -31,8 +31,12 @@
 			</else>
 		</if>
 
+		<execute macro="JSONCompany#getPortalURL">
+			<return from="portalURL" name="portalURL" />
+		</execute>
+
 		<var name="curl">
-			http://localhost:8080/api/jsonws/role/add-role \
+			${portalURL}/api/jsonws/role/add-role \
 				-u test@liferay.com:test \
 				-d className="com.liferay.portal.kernel.model.Role" \
 				-d classPK=0 \
@@ -85,8 +89,12 @@
 			<return from="userEmailAddress" name="userEmailAddress" />
 		</execute>
 
+		<execute macro="JSONCompany#getPortalURL">
+			<return from="portalURL" name="portalURL" />
+		</execute>
+
 		<var name="curl">
-			http://localhost:8080/api/jsonws/user/add-role-users \
+			${portalURL}/api/jsonws/user/add-role-users \
 				-u test@liferay.com:test \
 				-d roleId=${roleId} \
 				-d userIds=${userId}
@@ -202,8 +210,12 @@
 			<return from="companyId" name="companyId" />
 		</execute>
 
+		<execute macro="JSONCompany#getPortalURL">
+			<return from="portalURL" name="portalURL" />
+		</execute>
+
 		<var name="curl">
-			http://localhost:8080/api/jsonws/role/get-role \
+			${portalURL}/api/jsonws/role/get-role \
 				-u test@liferay.com:test \
 				-d companyId=${companyId} \
 				-d name=${roleName}
@@ -228,8 +240,12 @@
 			</then>
 		</if>
 
+		<execute macro="JSONCompany#getPortalURL">
+			<return from="portalURL" name="portalURL" />
+		</execute>
+
 		<var name="curl">
-			http://localhost:8080/api/jsonws/role/get-role \
+			${portalURL}/api/jsonws/role/get-role \
 				-u test@liferay.com:test \
 				-d roleId=${roleId}
 		</var>
