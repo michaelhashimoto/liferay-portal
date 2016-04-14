@@ -67,12 +67,17 @@
 				-d organizationIds= \
 				-d roleIds= \
 				-d userGroupIds= \
-				-d sendEmail=true</var>
+				-d sendEmail=true
+		</var>
 
 		<echo>## Adding a 'User' with the following info using JSONWS:</echo>
+
 		<echo>## * Email Address: ${userEmailAddress}</echo>
+
 		<echo>## * First Name: ${userFirstName}</echo>
+
 		<echo>## * Last Name: ${userLastName}</echo>
+
 		<echo>## * Screen Name: ${userScreenName}</echo>
 
 		<execute class="com.liferay.poshi.runner.util.JSONCurlUtil" method="get">
@@ -100,9 +105,11 @@
 		<var name="curl">
 			http://localhost:8080/api/jsonws/user/delete-user \
 				-u test@liferay.com:test \
-				-d userId=${userId}</var>
+				-d userId=${userId}
+		</var>
 
 		<echo>## Deleting a 'User' with the following info using JSONWS:</echo>
+
 		<echo>## * Email Address: ${userEmailAddress}</echo>
 
 		<execute class="com.liferay.poshi.runner.util.JSONCurlUtil" method="get">
@@ -210,7 +217,8 @@
 			http://localhost:8080/api/jsonws/user/get-user-by-id \
 				-u test@liferay.com:test \
 				-d companyId=${companyId} \
-				-d userId=${userId}</var>
+				-d userId=${userId}
+		</var>
 
 		<execute class="com.liferay.poshi.runner.util.JSONCurlUtil" method="get">
 			<arg value="${curl}" />
@@ -239,7 +247,8 @@
 			http://localhost:8080/api/jsonws/user/get-user-by-email-address \
 				-u test@liferay.com:test \
 				-d companyId=${companyId} \
-				-d emailAddress=${userEmailAddress}</var>
+				-d emailAddress=${userEmailAddress}
+		</var>
 
 		<execute class="com.liferay.poshi.runner.util.JSONCurlUtil" method="get">
 			<arg value="${curl}" />

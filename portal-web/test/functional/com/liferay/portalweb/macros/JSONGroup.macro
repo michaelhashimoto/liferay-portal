@@ -22,9 +22,11 @@
 				-d friendlyURL="" \
 				-d site=true \
 				-d inheritContent=false \
-				-d active=true</var>
+				-d active=true
+		</var>
 
 		<echo>## Adding a 'Group' with the following info using JSONWS:</echo>
+
 		<echo>## * Group Name: ${groupName}</echo>
 
 		<execute class="com.liferay.poshi.runner.util.JSONCurlUtil" method="get">
@@ -50,12 +52,14 @@
 		</execute>
 
 		<echo>## Deleting a 'Group' with the following info using JSONWS:</echo>
+
 		<echo>## * Group Name: ${groupName}</echo>
 
 		<var name="curl">
 			http://localhost:8080/api/jsonws/group/delete-group \
 				-u test@liferay.com:test \
-				-d groupId=${groupId}</var>
+				-d groupId=${groupId}
+		</var>
 
 		<execute class="com.liferay.poshi.runner.util.JSONCurlUtil" method="get">
 			<arg value="${curl}" />
@@ -118,7 +122,8 @@
 				-u test@liferay.com:test \
 				-d companyId=${companyId} \
 				-d parentGroupId=0 \
-				-d site=true</var>
+				-d site=true
+		</var>
 
 		<execute class="com.liferay.poshi.runner.util.JSONCurlUtil" method="get">
 			<arg value="${curl}" />
@@ -162,7 +167,8 @@
 				-u test@liferay.com:test \
 				-d companyId=${companyId} \
 				-d parentGroupId=0 \
-				-d site=true</var>
+				-d site=true
+		</var>
 
 		<execute class="com.liferay.poshi.runner.util.JSONCurlUtil" method="get">
 			<arg value="${curl}" />

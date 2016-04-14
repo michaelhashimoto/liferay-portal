@@ -40,10 +40,13 @@
 				-d titleMap="{}" \
 				-d descriptionMap="{}" \
 				-d type=${roleTypeId} \
-				-d subtype=""</var>
+				-d subtype=""
+		</var>
 
 		<echo>## Adding a 'Role' with the following info using JSONWS:</echo>
+
 		<echo>## * Role Name: ${roleName}</echo>
+
 		<echo>## * Role Type: ${roleType}</echo>
 
 		<execute class="com.liferay.poshi.runner.util.JSONCurlUtil" method="get">
@@ -86,10 +89,13 @@
 			http://localhost:8080/api/jsonws/user/add-role-users \
 				-u test@liferay.com:test \
 				-d roleId=${roleId} \
-				-d userIds=${userId}</var>
+				-d userIds=${userId}
+		</var>
 
 		<echo>## Assigning a 'User' to a 'Role' with the following info using JSONWS:</echo>
+
 		<echo>## * Role Name: ${roleName}</echo>
+
 		<echo>## * User Email Address: ${userEmailAddress}</echo>
 
 		<execute class="com.liferay.poshi.runner.util.JSONCurlUtil" method="get">
@@ -200,7 +206,8 @@
 			http://localhost:8080/api/jsonws/role/get-role \
 				-u test@liferay.com:test \
 				-d companyId=${companyId} \
-				-d name=${roleName}</var>
+				-d name=${roleName}
+		</var>
 
 		<execute class="com.liferay.poshi.runner.util.JSONCurlUtil" method="get">
 			<arg value="${curl}" />
@@ -224,7 +231,8 @@
 		<var name="curl">
 			http://localhost:8080/api/jsonws/role/get-role \
 				-u test@liferay.com:test \
-				-d roleId=${roleId}</var>
+				-d roleId=${roleId}
+		</var>
 
 		<execute class="com.liferay.poshi.runner.util.JSONCurlUtil" method="get">
 			<arg value="${curl}" />
