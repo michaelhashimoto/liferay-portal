@@ -35,21 +35,45 @@
 			<return from="portalURL" name="portalURL" />
 		</execute>
 
+		<if>
+			<isset var="roleTitle" />
+			<then>
+				<var name="roleTitleMap" value="{\&quot;en_US\&quot;:\&quot;${roleTitle}\&quot;}" />
+			</then>
+			<else>
+				<var name="roleTitleMap" value="{}" />
+			</else>
+		</if>
+
+		<if>
+			<isset var="roleDescription" />
+			<then>
+				<var name="roleDescriptionMap" value="{\&quot;en_US\&quot;:\&quot;${roleDescription}\&quot;}" />
+			</then>
+			<else>
+				<var name="roleDescriptionMap" value="{}" />
+			</else>
+		</if>
+
 		<var name="curl">
 			${portalURL}/api/jsonws/role/add-role \
 				-u test@liferay.com:test \
-				-d className="com.liferay.portal.kernel.model.Role" \
+				-d className=com.liferay.portal.kernel.model.Role \
 				-d classPK=0 \
 				-d name=${roleName} \
-				-d titleMap="{}" \
-				-d descriptionMap="{}" \
+				-d titleMap=${roleTitleMap} \
+				-d descriptionMap=${roleDescriptionMap} \
 				-d type=${roleTypeId} \
-				-d subtype=""
+				-d subtype=
 		</var>
 
 		<echo>## Adding a 'Role' with the following info using JSONWS:</echo>
 
 		<echo>## * Role Name: ${roleName}</echo>
+
+		<echo>## * Role Title: ${roleTitle}</echo>
+
+		<echo>## * Role Description: ${roleDescription}</echo>
 
 		<echo>## * Role Type: ${roleType}</echo>
 
