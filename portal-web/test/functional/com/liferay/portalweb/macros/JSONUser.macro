@@ -51,7 +51,7 @@
 				-d autoPassword=true \
 				-d password1=test \
 				-d password2=test \
-				-d autoScreenName=true \
+				-d autoScreenName=false \
 				-d screenName="${userScreenName}" \
 				-d emailAddress="${userEmailAddress}" \
 				-d facebookId=0 \
