@@ -74,8 +74,8 @@
 				-d className=com.liferay.portal.kernel.model.Role \
 				-d classPK=0 \
 				-d name=${roleName} \
-				-d titleMap={\"en_US\":\"${roleTitle}\"} \
-				-d descriptionMap={\"en_US\":\"${roleDescription}\"} \
+				-d titleMap={"en_US":"${roleTitle}"} \
+				-d descriptionMap={"en_US":"${roleDescription}"} \
 				-d type=${roleTypeId} \
 				-d subtype=
 		</var>
