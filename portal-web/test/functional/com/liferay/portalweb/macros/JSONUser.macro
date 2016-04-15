@@ -12,12 +12,11 @@
 		<if>
 			<isset var="userFirstName" />
 			<then>
-				<if>
-					<contains string="${userFirstName}" substring=" " />
-					<then>
-						<var name="userFirstName" value="&quot;${userFirstName}&quot;" />
-					</then>
-				</if>
+				<execute class="java.net.URLEncoder" method="encode">
+					<arg value="${userFirstName}" />
+					<arg value="UTF-8" />
+					<return name="userFirstName" />
+				</execute>
 			</then>
 			<else>
 				<fail message="Please set 'userFirstName'." />
@@ -27,12 +26,11 @@
 		<if>
 			<isset var="userLastName" />
 			<then>
-				<if>
-					<contains string="${userLastName}" substring=" " />
-					<then>
-						<var name="userLastName" value="&quot;${userLastName}&quot;" />
-					</then>
-				</if>
+				<execute class="java.net.URLEncoder" method="encode">
+					<arg value="${userLastName}" />
+					<arg value="UTF-8" />
+					<return name="userLastName" />
+				</execute>
 			</then>
 			<else>
 				<fail message="Please set 'userLastName'." />

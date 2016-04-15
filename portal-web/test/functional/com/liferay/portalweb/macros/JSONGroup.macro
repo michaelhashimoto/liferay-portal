@@ -13,13 +13,33 @@
 			<return from="portalURL" name="portalURL" />
 		</execute>
 
+		<if>
+			<isset var="groupDescription" />
+			<then>
+				<execute class="java.net.URLEncoder" method="encode">
+					<arg value="${groupDescription}" />
+					<arg value="UTF-8" />
+					<return name="groupDescription" />
+				</execute>
+			</then>
+			<else>
+				<var name="groupDescription" value="" />
+			</else>
+		</if>
+
+		<execute class="java.net.URLEncoder" method="encode">
+			<arg value="${groupName}" />
+			<arg value="UTF-8" />
+			<return name="groupName" />
+		</execute>
+
 		<var name="curl">
 			${portalURL}/api/jsonws/group/add-group \
 				-u test@liferay.com:test \
 				-d parentGroupId=0 \
 				-d liveGroupId=0 \
 				-d nameMap="{\"en_US\": \"${groupName}\"}" \
-				-d descriptionMap="{\"en_US\": \"\"}" \
+				-d descriptionMap="{\"en_US\": \"${groupDescription}\"}" \
 				-d type=1 \
 				-d manualMembership=true \
 				-d membershipRestriction=0 \
@@ -53,6 +73,12 @@
 		<execute macro="JSONGroup#getGroupName">
 			<var name="groupId" value="${groupId}" />
 			<return from="groupName" name="groupName" />
+		</execute>
+
+		<execute class="java.net.URLEncoder" method="encode">
+			<arg value="${groupName}" />
+			<arg value="UTF-8" />
+			<return name="groupName" />
 		</execute>
 
 		<echo>## Deleting a 'Group' with the following info using JSONWS:</echo>

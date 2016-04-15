@@ -3,24 +3,11 @@
 		<if>
 			<isset var="roleName" />
 			<then>
-				<execute class="com.liferay.poshi.runner.util.OSDetector" method="isWindows">
-					<return name="isWindows" />
+				<execute class="java.net.URLEncoder" method="encode">
+					<arg value="${roleName}" />
+					<arg value="UTF-8" />
+					<return name="roleName" />
 				</execute>
-
-				<if>
-					<contains string="${roleName}" substring=" " />
-					<then>
-						<if>
-							<equals arg1="${isWindows}" arg2="true" />
-							<then>
-								<var name="roleName" value="&quot;${roleName}&quot;" />
-							</then>
-							<else>
-								<var name="roleName" value="'${roleName}'" />
-							</else>
-						</if>
-					</then>
-				</if>
 			</then>
 			<else>
 				<fail message="Please set 'roleName'." />
@@ -56,20 +43,28 @@
 		<if>
 			<isset var="roleTitle" />
 			<then>
-				<var name="roleTitleMap" value="{\&quot;en_US\&quot;:\&quot;${roleTitle}\&quot;}" />
+				<execute class="java.net.URLEncoder" method="encode">
+					<arg value="${roleTitle}" />
+					<arg value="UTF-8" />
+					<return name="roleTitle" />
+				</execute>
 			</then>
 			<else>
-				<var name="roleTitleMap" value="{}" />
+				<var name="roleTitle" value="" />
 			</else>
 		</if>
 
 		<if>
 			<isset var="roleDescription" />
 			<then>
-				<var name="roleDescriptionMap" value="{\&quot;en_US\&quot;:\&quot;${roleDescription}\&quot;}" />
+				<execute class="java.net.URLEncoder" method="encode">
+					<arg value="${roleDescription}" />
+					<arg value="UTF-8" />
+					<return name="roleDescription" />
+				</execute>
 			</then>
 			<else>
-				<var name="roleDescriptionMap" value="{}" />
+				<var name="roleDescription" value="" />
 			</else>
 		</if>
 
@@ -79,8 +74,8 @@
 				-d className=com.liferay.portal.kernel.model.Role \
 				-d classPK=0 \
 				-d name=${roleName} \
-				-d titleMap=${roleTitleMap} \
-				-d descriptionMap=${roleDescriptionMap} \
+				-d titleMap={\"en_US\":\"${roleTitle}\"} \
+				-d descriptionMap={\"en_US\":\"${roleDescription}\"} \
 				-d type=${roleTypeId} \
 				-d subtype=
 		</var>
@@ -242,24 +237,11 @@
 		<if>
 			<isset var="roleName" />
 			<then>
-				<execute class="com.liferay.poshi.runner.util.OSDetector" method="isWindows">
-					<return name="isWindows" />
+				<execute class="java.net.URLEncoder" method="encode">
+					<arg value="${roleName}" />
+					<arg value="UTF-8" />
+					<return name="roleName" />
 				</execute>
-
-				<if>
-					<contains string="${roleName}" substring=" " />
-					<then>
-						<if>
-							<equals arg1="${isWindows}" arg2="true" />
-							<then>
-								<var name="roleName" value="&quot;${roleName}&quot;" />
-							</then>
-							<else>
-								<var name="roleName" value="'${roleName}'" />
-							</else>
-						</if>
-					</then>
-				</if>
 			</then>
 			<else>
 				<fail message="Please set 'roleName'." />
