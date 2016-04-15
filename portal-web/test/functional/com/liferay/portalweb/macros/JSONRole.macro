@@ -3,10 +3,22 @@
 		<if>
 			<isset var="roleName" />
 			<then>
+				<execute class="com.liferay.poshi.runner.util.OSDetector" method="isWindows">
+					<return name="isWindows" />
+				</execute>
+
 				<if>
 					<contains string="${roleName}" substring=" " />
 					<then>
-						<var name="roleName" value="&quot;${roleName}&quot;" />
+						<if>
+							<equals arg1="${isWindows}" arg2="true" />
+							<then>
+								<var name="roleName" value="&quot;${roleName}&quot;" />
+							</then>
+							<else>
+								<var name="roleName" value="'${roleName}'" />
+							</else>
+						</if>
 					</then>
 				</if>
 			</then>
@@ -230,10 +242,22 @@
 		<if>
 			<isset var="roleName" />
 			<then>
+				<execute class="com.liferay.poshi.runner.util.OSDetector" method="isWindows">
+					<return name="isWindows" />
+				</execute>
+
 				<if>
 					<contains string="${roleName}" substring=" " />
 					<then>
-						<var name="roleName" value="&quot;${roleName}&quot;" />
+						<if>
+							<equals arg1="${isWindows}" arg2="true" />
+							<then>
+								<var name="roleName" value="&quot;${roleName}&quot;" />
+							</then>
+							<else>
+								<var name="roleName" value="'${roleName}'" />
+							</else>
+						</if>
 					</then>
 				</if>
 			</then>
