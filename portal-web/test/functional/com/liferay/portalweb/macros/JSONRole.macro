@@ -1,12 +1,18 @@
 <definition>
 	<command name="_addRole">
 		<if>
-			<not>
-				<isset var="roleName" />
-			</not>
+			<isset var="roleName" />
 			<then>
-				<fail message="Please set 'roleName'." />
+				<if>
+					<contains string="${roleName}" substring=" " />
+					<then>
+						<var name="roleName" value="&quot;${roleName}&quot;" />
+					</then>
+				</if>
 			</then>
+			<else>
+				<fail message="Please set 'roleName'." />
+			</else>
 		</if>
 
 		<if>
@@ -222,12 +228,18 @@
 
 	<command name="getRoleIdByName" returns="roleId">
 		<if>
-			<not>
-				<isset var="roleName" />
-			</not>
+			<isset var="roleName" />
 			<then>
-				<fail message="Please set 'roleName'." />
+				<if>
+					<contains string="${roleName}" substring=" " />
+					<then>
+						<var name="roleName" value="&quot;${roleName}&quot;" />
+					</then>
+				</if>
 			</then>
+			<else>
+				<fail message="Please set 'roleName'." />
+			</else>
 		</if>
 
 		<execute macro="JSONCompany#getCompanyId">

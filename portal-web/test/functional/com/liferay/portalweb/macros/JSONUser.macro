@@ -10,21 +10,33 @@
 		</if>
 
 		<if>
-			<not>
-				<isset var="userFirstName" />
-			</not>
+			<isset var="userFirstName" />
 			<then>
-				<fail message="Please set 'userFirstName'." />
+				<if>
+					<contains string="${userFirstName}" substring=" " />
+					<then>
+						<var name="userFirstName" value="&quot;${userFirstName}&quot;" />
+					</then>
+				</if>
 			</then>
+			<else>
+				<fail message="Please set 'userFirstName'." />
+			</else>
 		</if>
 
 		<if>
-			<not>
-				<isset var="userLastName" />
-			</not>
+			<isset var="userLastName" />
 			<then>
-				<fail message="Please set 'userLastName'." />
+				<if>
+					<contains string="${userLastName}" substring=" " />
+					<then>
+						<var name="userLastName" value="&quot;${userLastName}&quot;" />
+					</then>
+				</if>
 			</then>
+			<else>
+				<fail message="Please set 'userLastName'." />
+			</else>
 		</if>
 
 		<if>
