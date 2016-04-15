@@ -38,8 +38,8 @@
 				-u test@liferay.com:test \
 				-d parentGroupId=0 \
 				-d liveGroupId=0 \
-				-d nameMap="{\"en_US\": \"${groupName}\"}" \
-				-d descriptionMap="{\"en_US\": \"${groupDescription}\"}" \
+				-d nameMap={"en_US" : "${groupName}"} \
+				-d descriptionMap={"en_US" : "${groupDescription}"} \
 				-d type=1 \
 				-d manualMembership=true \
 				-d membershipRestriction=0 \
