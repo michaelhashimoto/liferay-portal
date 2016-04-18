@@ -49,7 +49,7 @@
 					<return name="roleTitle" />
 				</execute>
 
-				<var name="roleTitleMap">{"en_US":"${roleTitle}"}</var>
+				<var name="roleTitleMap">"{\"en_US\":\"${roleTitle}\"}"</var>
 			</then>
 			<else>
 				<var name="roleTitleMap" value="{}" />
@@ -65,7 +65,7 @@
 					<return name="roleDescription" />
 				</execute>
 
-				<var name="roleDescriptionMap">{"en_US":"${roleDescription}"}</var>
+				<var name="roleDescriptionMap">"{\"en_US\":\"${roleDescription}\"}"</var>
 			</then>
 			<else>
 				<var name="roleDescriptionMap" value="{}" />

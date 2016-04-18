@@ -1,12 +1,19 @@
 <definition>
 	<command name="_addGroup">
 		<if>
-			<not>
-				<isset var="groupName" />
-			</not>
+			<isset var="groupName" />
 			<then>
-				<fail message="Please set 'groupName'." />
+				<execute class="java.net.URLEncoder" method="encode">
+					<arg value="${groupName}" />
+					<arg value="UTF-8" />
+					<return name="groupName" />
+				</execute>
+
+				<var name="groupNameMap">"{\"en_US\" : \"${groupName}\"}"</var>
 			</then>
+			<else>
+				<fail message="Please set 'groupName'." />
+			</else>
 		</if>
 
 		<execute macro="JSONCompany#getPortalURL">
@@ -22,30 +29,24 @@
 					<return name="groupDescription" />
 				</execute>
 
-				<var name="groupDescriptionMap">{"en_US" : "${groupDescription}"}</var>
+				<var name="groupDescriptionMap">"{\"en_US\" : \"${groupDescription}\"}"</var>
 			</then>
 			<else>
 				<var name="groupDescriptionMap" value="{}" />
 			</else>
 		</if>
 
-		<execute class="java.net.URLEncoder" method="encode">
-			<arg value="${groupName}" />
-			<arg value="UTF-8" />
-			<return name="groupName" />
-		</execute>
-
 		<var name="curl">
 			${portalURL}/api/jsonws/group/add-group \
 				-u test@liferay.com:test \
 				-d parentGroupId=0 \
 				-d liveGroupId=0 \
-				-d nameMap={"en_US" : "${groupName}"} \
+				-d nameMap=${groupNameMap} \
 				-d descriptionMap=${groupDescriptionMap} \
 				-d type=1 \
 				-d manualMembership=true \
 				-d membershipRestriction=0 \
-				-d friendlyURL="" \
+				-d friendlyURL= \
 				-d site=true \
 				-d inheritContent=false \
 				-d active=true
