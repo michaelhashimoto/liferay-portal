@@ -109,6 +109,59 @@
 		</execute>
 	</command>
 
+	<command name="_assignUserToGroup">
+		<if>
+			<not>
+				<isset var="groupId" />
+			</not>
+			<then>
+				<fail message="Please set 'groupId'." />
+			</then>
+		</if>
+
+		<if>
+			<not>
+				<isset var="userId" />
+			</not>
+			<then>
+				<fail message="Please set 'userId'." />
+			</then>
+		</if>
+
+		<execute macro="JSONCompany#getPortalURL">
+			<return from="portalURL" name="portalURL" />
+		</execute>
+
+		<var name="curl">
+			${portalURL}/api/jsonws/user/add-group-users \
+				-u test@liferay.com:test \
+				-d groupId=${groupId} \
+				-d userIds=${userId}
+		</var>
+
+		<execute macro="JSONGroup#getGroupName">
+			<var name="groupId" value="${groupId}" />
+			<return from="groupName" name="groupName" />
+		</execute>
+
+		<execute macro="JSONUser#getUserEmailAddress">
+			<var name="userId" value="${userId}" />
+			<return from="userEmailAddress" name="userEmailAddress" />
+		</execute>
+
+		<echo>## Assigning a 'User' to an 'Group' with the following info using JSONWS:</echo>
+
+		<echo>## * Group Name: ${groupName}</echo>
+
+		<echo>## * User Email Address: ${userEmailAddress}</echo>
+
+		<execute class="com.liferay.poshi.runner.util.JSONCurlUtil" method="get">
+			<arg value="${curl}" />
+			<arg value="$" />
+			<return name="temp" />
+		</execute>
+	</command>
+
 	<command name="_deleteGroup">
 		<if>
 			<not>
@@ -212,6 +265,41 @@
 		<execute macro="JSONGroup#_assignGroupRoleToUser">
 			<var name="groupId" value="${groupId}" />
 			<var name="roleId" value="${roleId}" />
+			<var name="userId" value="${userId}" />
+		</execute>
+	</command>
+
+	<command name="assignUserToGroup">
+		<if>
+			<not>
+				<isset var="groupName" />
+			</not>
+			<then>
+				<fail message="Please set 'groupName'." />
+			</then>
+		</if>
+
+		<if>
+			<not>
+				<isset var="userEmailAddress" />
+			</not>
+			<then>
+				<fail message="Please set 'userEmailAddress'." />
+			</then>
+		</if>
+
+		<execute macro="JSONGroup#getGroupIdByName">
+			<var name="groupName" value="${groupName}" />
+			<return from="groupId" name="groupId" />
+		</execute>
+
+		<execute macro="JSONUser#getUserIdByEmailAddress">
+			<var name="userEmailAddress" value="${userEmailAddress}" />
+			<return from="userId" name="userId" />
+		</execute>
+
+		<execute macro="JSONGroup#_assignUserToGroup">
+			<var name="groupId" value="${groupId}" />
 			<var name="userId" value="${userId}" />
 		</execute>
 	</command>
