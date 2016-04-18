@@ -215,7 +215,7 @@
 		</if>
 
 		<execute macro="JSONGroup#_addGroup">
-			<var name="groupId" value="${groupId}" />
+			<var name="groupName" value="${groupName}" />
 		</execute>
 	</command>
 
