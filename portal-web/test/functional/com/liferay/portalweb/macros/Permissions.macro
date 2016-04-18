@@ -168,18 +168,10 @@
 			<var name="roleName" value="${roleName}" />
 		</execute>
 
-		<execute macro="ProductMenu#gotoControlPanelUsers">
-			<var name="portlet" value="Users and Organizations" />
-		</execute>
-
-		<execute macro="UsersAndOrganizationsNavigator#gotoOrganizations" />
-
-		<execute macro="Organization#assignOrgRoleCP">
-			<var name="orgName" value="${orgName}" />
+		<execute macro="JSONGroup#assignGroupRoleToUser">
+			<var name="groupName" value="${orgName}" />
 			<var name="roleName" value="${roleName}" />
-			<var name="userFirstName" value="${userFirstName}" />
-			<var name="userLastName" value="${userLastName}" />
-			<var name="userScreenName" value="${userScreenName}" />
+			<var name="userEmailAddress" value="${userEmailAddress}" />
 		</execute>
 
 		<execute macro="User#logoutAndLoginPG">
