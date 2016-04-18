@@ -66,10 +66,10 @@
 
 		<if>
 			<not>
-				<isset var="layoutId" />
+				<isset var="layoutName" />
 			</not>
 			<then>
-				<fail message="Please set 'layoutId'." />
+				<fail message="Please set 'layoutName'." />
 			</then>
 		</if>
 

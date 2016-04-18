@@ -161,7 +161,7 @@
 		</if>
 
 		<execute macro="JSONRole#_addRole">
-			<var name="roleId" value="${roleId}" />
+			<var name="roleName" value="${roleName}" />
 			<var name="roleType" value="organization" />
 		</execute>
 	</command>
@@ -193,7 +193,7 @@
 		</if>
 
 		<execute macro="JSONRole#_addRole">
-			<var name="roleId" value="${roleId}" />
+			<var name="roleName" value="${roleName}" />
 			<var name="roleType" value="site" />
 		</execute>
 	</command>
