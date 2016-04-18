@@ -209,7 +209,7 @@
 			<return from="userId" name="userId" />
 		</execute>
 
-		<execute macro="JSONRole#_assignGroupRoleToUser">
+		<execute macro="JSONGroup#_assignGroupRoleToUser">
 			<var name="groupId" value="${groupId}" />
 			<var name="roleId" value="${roleId}" />
 			<var name="userId" value="${userId}" />
