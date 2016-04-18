@@ -23,8 +23,12 @@
 			</else>
 		</if>
 
+		<execute macro="JSONCompany#getPortalURL">
+			<return from="portalURL" name="portalURL" />
+		</execute>
+
 		<var name="curl">
-			http://localhost:8080/api/jsonws/layout/add-layout \
+			${portalURL}/api/jsonws/layout/add-layout \
 				-u test@liferay.com:test \
 				-d groupId=${groupId} \
 				-d privateLayout=false \
