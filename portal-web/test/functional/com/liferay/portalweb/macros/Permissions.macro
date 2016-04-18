@@ -151,6 +151,11 @@
 			<var name="layoutName" value="${pageName}" />
 		</execute>
 
+		<execute macro="Navigator#gotoSitePage">
+			<var name="pageName" value="${pageName}" />
+			<var name="siteName" value="Organization Name" />
+		</execute>
+
 		<execute macro="Portlet#addPG">
 			<var name="i" value="${i}" />
 			<var name="pageName" value="${pageName}" />

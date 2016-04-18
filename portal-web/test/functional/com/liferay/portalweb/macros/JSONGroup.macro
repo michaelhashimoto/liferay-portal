@@ -21,9 +21,11 @@
 					<arg value="UTF-8" />
 					<return name="groupDescription" />
 				</execute>
+
+				<var name="groupDescriptionMap">{"en_US" : "${groupDescription}"}</var>
 			</then>
 			<else>
-				<var name="groupDescription" value="" />
+				<var name="groupDescriptionMap" value="{}" />
 			</else>
 		</if>
 
@@ -39,7 +41,7 @@
 				-d parentGroupId=0 \
 				-d liveGroupId=0 \
 				-d nameMap={"en_US" : "${groupName}"} \
-				-d descriptionMap={"en_US" : "${groupDescription}"} \
+				-d descriptionMap=${groupDescriptionMap} \
 				-d type=1 \
 				-d manualMembership=true \
 				-d membershipRestriction=0 \

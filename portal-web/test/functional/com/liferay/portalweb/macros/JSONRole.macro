@@ -48,9 +48,11 @@
 					<arg value="UTF-8" />
 					<return name="roleTitle" />
 				</execute>
+
+				<var name="roleTitleMap">{"en_US":"${roleTitle}"}</var>
 			</then>
 			<else>
-				<var name="roleTitle" value="" />
+				<var name="roleTitleMap" value="{}" />
 			</else>
 		</if>
 
@@ -62,9 +64,11 @@
 					<arg value="UTF-8" />
 					<return name="roleDescription" />
 				</execute>
+
+				<var name="roleDescriptionMap">{"en_US":"${roleDescription}"}</var>
 			</then>
 			<else>
-				<var name="roleDescription" value="" />
+				<var name="roleDescriptionMap" value="{}" />
 			</else>
 		</if>
 
@@ -74,8 +78,8 @@
 				-d className=com.liferay.portal.kernel.model.Role \
 				-d classPK=0 \
 				-d name=${roleName} \
-				-d titleMap={"en_US":"${roleTitle}"} \
-				-d descriptionMap={"en_US":"${roleDescription}"} \
+				-d titleMap=${roleTitleMap} \
+				-d descriptionMap=${roleDescriptionMap} \
 				-d type=${roleTypeId} \
 				-d subtype=
 		</var>
