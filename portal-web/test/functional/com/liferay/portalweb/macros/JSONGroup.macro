@@ -6,10 +6,10 @@
 				<execute class="java.net.URLEncoder" method="encode">
 					<arg value="${groupName}" />
 					<arg value="UTF-8" />
-					<return name="groupName" />
+					<return name="groupNameEncoded" />
 				</execute>
 
-				<var name="groupNameMap">"{\"en_US\" : \"${groupName}\"}"</var>
+				<var name="groupNameMap">"{\"en_US\" : \"${groupNameEncoded}\"}"</var>
 			</then>
 			<else>
 				<fail message="Please set 'groupName'." />
@@ -26,10 +26,10 @@
 				<execute class="java.net.URLEncoder" method="encode">
 					<arg value="${groupDescription}" />
 					<arg value="UTF-8" />
-					<return name="groupDescription" />
+					<return name="groupDescriptionEncoded" />
 				</execute>
 
-				<var name="groupDescriptionMap">"{\"en_US\" : \"${groupDescription}\"}"</var>
+				<var name="groupDescriptionMap">"{\"en_US\" : \"${groupDescriptionEncoded}\"}"</var>
 			</then>
 			<else>
 				<var name="groupDescriptionMap" value="{}" />
@@ -176,12 +176,6 @@
 		<execute macro="JSONGroup#getGroupName">
 			<var name="groupId" value="${groupId}" />
 			<return from="groupName" name="groupName" />
-		</execute>
-
-		<execute class="java.net.URLEncoder" method="encode">
-			<arg value="${groupName}" />
-			<arg value="UTF-8" />
-			<return name="groupName" />
 		</execute>
 
 		<echo>## Deleting a 'Group' with the following info using JSONWS:</echo>

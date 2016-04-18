@@ -15,7 +15,7 @@
 				<execute class="java.net.URLEncoder" method="encode">
 					<arg value="${layoutName}" />
 					<arg value="UTF-8" />
-					<return name="layoutName" />
+					<return name="layoutNameEncoded" />
 				</execute>
 			</then>
 			<else>
@@ -33,7 +33,7 @@
 				-d groupId=${groupId} \
 				-d privateLayout=false \
 				-d parentLayoutId=0 \
-				-d name=${layoutName} \
+				-d name=${layoutNameEncoded} \
 				-d title= \
 				-d description= \
 				-d type=portlet \

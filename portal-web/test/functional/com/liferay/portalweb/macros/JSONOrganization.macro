@@ -110,7 +110,7 @@
 		<execute class="java.net.URLEncoder" method="encode">
 			<arg value="${organizationName}" />
 			<arg value="UTF-8" />
-			<return name="organizationName" />
+			<return name="organizationNameEncoded" />
 		</execute>
 
 		<execute macro="JSONCompany#getPortalURL">
@@ -121,7 +121,7 @@
 			${portalURL}/api/jsonws/organization/add-organization \
 				-u test@liferay.com:test \
 				-d parentOrganizationId=0 \
-				-d name=${organizationName} \
+				-d name=${organizationNameEncoded} \
 				-d type=organization \
 				-d regionId=0 \
 				-d countryId=0 \
