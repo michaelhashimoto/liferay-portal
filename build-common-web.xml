@@ -69,6 +69,7 @@
 						<equals arg1="${app.server.type}" arg2="glassfish" />
 						<equals arg1="${app.server.type}" arg2="jboss" />
 						<equals arg1="${app.server.type}" arg2="jonas" />
+						<equals arg1="${app.server.type}" arg2="wildfly" />
 					</or>
 					<then>
 						<property name="war.file.dest" value="${app.server.deploy.dir}/${war.file}.war" />
@@ -119,10 +120,10 @@
 		</if>
 
 		<if>
-			<and>
-				<equals arg1="${app.server.major.version}" arg2="7" />
+			<or>
 				<equals arg1="${app.server.type}" arg2="jboss" />
-			</and>
+				<equals arg1="${app.server.type}" arg2="wildfly" />
+			</or>
 			<then>
 				<echo file="${war.file.dest}.dodeploy" />
 			</then>
