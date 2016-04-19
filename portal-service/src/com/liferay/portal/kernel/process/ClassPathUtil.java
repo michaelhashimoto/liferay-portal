@@ -172,7 +172,7 @@ public class ClassPathUtil {
 			path = "file:".concat(path);
 		}
 
-		if (ServerDetector.isJBoss() &&
+		if ((ServerDetector.isJBoss() && ServerDetector.isWildfly()) &&
 			(protocol.equals("vfs") || protocol.equals("vfsfile"))) {
 
 			int pos = path.indexOf(".jar/");

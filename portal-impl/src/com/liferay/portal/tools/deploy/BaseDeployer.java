@@ -131,6 +131,8 @@ public class BaseDeployer implements AutoDeployer, Deployer {
 		jbossPrefix = GetterUtil.getString(
 			System.getProperty("deployer.jboss.prefix"));
 		tomcatLibDir = System.getProperty("deployer.tomcat.lib.dir");
+		wildflyPrefix = GetterUtil.getString(
+			System.getProperty("deployer.wildfly.prefix"));
 		this.wars = wars;
 		this.jars = jars;
 
@@ -236,7 +238,8 @@ public class BaseDeployer implements AutoDeployer, Deployer {
 			!appServerType.equals(ServerDetector.RESIN_ID) &&
 			!appServerType.equals(ServerDetector.TOMCAT_ID) &&
 			!appServerType.equals(ServerDetector.WEBLOGIC_ID) &&
-			!appServerType.equals(ServerDetector.WEBSPHERE_ID)) {
+			!appServerType.equals(ServerDetector.WEBSPHERE_ID) &&
+			!appServerType.equals(ServerDetector.WILDFLY_ID)) {
 
 			throw new IllegalArgumentException(
 				appServerType + " is not a valid application server type");
@@ -252,6 +255,12 @@ public class BaseDeployer implements AutoDeployer, Deployer {
 			!Validator.isNumber(jbossPrefix)) {
 
 			jbossPrefix = "1";
+		}
+
+		if (Validator.isNotNull(wildflyPrefix) &&
+			!Validator.isNumber(wildflyPrefix)) {
+
+			wildflyPrefix = "1";
 		}
 	}
 
@@ -554,6 +563,10 @@ public class BaseDeployer implements AutoDeployer, Deployer {
 		else if (appServerType.equals(ServerDetector.WEBSPHERE_ID)) {
 			copyDependencyXml("ibm-web-ext.xmi", srcFile + "/WEB-INF");
 		}
+		else if (appServerType.equals(ServerDetector.WILDFLY_ID)) {
+			copyDependencyXml(
+				"jboss-deployment-structure.xml", srcFile + "/WEB-INF");
+		}
 
 		copyDependencyXml("web.xml", srcFile + "/WEB-INF");
 	}
@@ -662,7 +675,9 @@ public class BaseDeployer implements AutoDeployer, Deployer {
 
 		String excludes = StringPool.BLANK;
 
-		if (appServerType.equals(ServerDetector.JBOSS_ID)) {
+		if (appServerType.equals(ServerDetector.JBOSS_ID) ||
+			appServerType.equals(ServerDetector.WILDFLY_ID)) {
+
 			excludes += "**/WEB-INF/lib/log4j.jar,";
 		}
 		else if (appServerType.equals(ServerDetector.TOMCAT_ID)) {
@@ -881,6 +896,9 @@ public class BaseDeployer implements AutoDeployer, Deployer {
 		if (appServerType.equals(ServerDetector.JBOSS_ID)) {
 			deployDir = jbossPrefix + deployDir;
 		}
+		else if (appServerType.equals(ServerDetector.WILDFLY_ID)) {
+			deployDir = wildflyPrefix + deployDir;
+		}
 		else if (appServerType.equals(ServerDetector.GERONIMO_ID) ||
 				 appServerType.equals(ServerDetector.GLASSFISH_ID) ||
 				 appServerType.equals(ServerDetector.JETTY_ID) ||
@@ -1072,9 +1090,12 @@ public class BaseDeployer implements AutoDeployer, Deployer {
 			displayName = displayName.substring(0, displayName.length() - 4);
 		}
 
-		if (appServerType.equals(ServerDetector.JBOSS_ID) &&
-			Validator.isNotNull(jbossPrefix) &&
-			displayName.startsWith(jbossPrefix)) {
+		if ((appServerType.equals(ServerDetector.JBOSS_ID) &&
+			 Validator.isNotNull(jbossPrefix) &&
+			 displayName.startsWith(jbossPrefix)) ||
+			(appServerType.equals(ServerDetector.WILDFLY_ID) &&
+			 Validator.isNotNull(wildflyPrefix) &&
+			 displayName.startsWith(wildflyPrefix))) {
 
 			displayName = displayName.substring(1);
 		}
@@ -1502,6 +1523,9 @@ public class BaseDeployer implements AutoDeployer, Deployer {
 		else if (appServerType.equals(ServerDetector.WEBSPHERE_ID)) {
 			postDeployWebSphere(destDir, deployDir);
 		}
+		else if (appServerType.equals(ServerDetector.WILDFLY_ID)) {
+			postDeployWildfly(destDir, deployDir);
+		}
 	}
 
 	public void postDeployGlassfish(String destDir, String deployDir)
@@ -1638,6 +1662,13 @@ public class BaseDeployer implements AutoDeployer, Deployer {
 		}
 
 		FileUtil.delete(wsadminFileName);
+	}
+
+	public void postDeployWildfly(String destDir, String deployDir)
+		throws Exception {
+
+		FileUtil.write(
+			destDir + "/" + deployDir + ".dodeploy", StringPool.BLANK);
 	}
 
 	@Override
@@ -2008,6 +2039,11 @@ public class BaseDeployer implements AutoDeployer, Deployer {
 		this.wars = wars;
 	}
 
+	@Override
+	public void setWildflyPrefix(String wildflyPrefix) {
+		this.wildflyPrefix = wildflyPrefix;
+	}
+
 	public void updateDeployDirectory(File srcFile) throws Exception {
 	}
 
@@ -2250,6 +2286,7 @@ public class BaseDeployer implements AutoDeployer, Deployer {
 	protected boolean unpackWar;
 	protected String utilTaglibDTD;
 	protected List<String> wars;
+	protected String wildflyPrefix;
 
 	private static final String _PORTAL_CLASS_LOADER =
 		"com.liferay.support.tomcat.loader.PortalClassLoader";

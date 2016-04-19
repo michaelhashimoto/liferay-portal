@@ -49,6 +49,8 @@ public class ServerDetector {
 
 	public static final String WEBSPHERE_ID = "websphere";
 
+	public static final String WILDFLY_ID = "wildfly";
+
 	public static ServerDetector getInstance() {
 		if (_instance == null) {
 			_instance = new ServerDetector();
@@ -97,6 +99,9 @@ public class ServerDetector {
 		}
 		else if (serverId.equals(WEBSPHERE_ID)) {
 			serverDetector._webSphere = true;
+		}
+		else if (serverId.equals(WILDFLY_ID)) {
+			serverDetector._wildfly = true;
 		}
 		else {
 			serverDetector._init();
@@ -159,6 +164,10 @@ public class ServerDetector {
 
 	public static boolean isWebSphere() {
 		return getInstance()._webSphere;
+	}
+
+	public static boolean isWildfly() {
+		return getInstance()._wildfly;
 	}
 
 	public static void setSupportsHotDeploy(boolean supportsHotDeploy) {
@@ -244,6 +253,10 @@ public class ServerDetector {
 		else if (_isWebSphere()) {
 			_serverId = WEBSPHERE_ID;
 			_webSphere = true;
+		}
+		else if (_isWildfly()) {
+			_serverId = WILDFLY_ID;
+			_wildfly = true;
 		}
 
 		if (_serverId == null) {
@@ -347,6 +360,10 @@ public class ServerDetector {
 		return _detect("/com/ibm/websphere/product/VersionInfo.class");
 	}
 
+	private boolean _isWildfly() {
+		return _hasSystemProperty("jboss.home.dir");
+	}
+
 	private static Log _log = LogFactoryUtil.getLog(ServerDetector.class);
 
 	private static ServerDetector _instance;
@@ -366,5 +383,6 @@ public class ServerDetector {
 	private boolean _tomcat;
 	private boolean _webLogic;
 	private boolean _webSphere;
+	private boolean _wildfly;
 
 }
