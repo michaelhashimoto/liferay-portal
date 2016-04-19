@@ -49,7 +49,7 @@
 					<return name="roleTitleEncoded" />
 				</execute>
 
-				<var name="roleTitleMap" value="&quot;{\&quot;en_US\&quot;:\&quot;${roleTitleEncoded}\&quot;}&quot;" />
+				<var name="roleTitleMap">"{\"en_US\":\"${roleTitleEncoded}\"}"</var>
 			</then>
 			<else>
 				<var name="roleTitleMap" value="{}" />
@@ -65,7 +65,7 @@
 					<return name="roleDescriptionEncoded" />
 				</execute>
 
-				<var name="roleDescriptionMap" value="&quot;{\&quot;en_US\&quot;:\&quot;${roleDescriptionEncoded}\&quot;}&quot;" />
+				<var name="roleDescriptionMap">"{\"en_US\":\"${roleDescriptionEncoded}\"}"</var>
 			</then>
 			<else>
 				<var name="roleDescriptionMap" value="{}" />
@@ -93,10 +93,6 @@
 		<echo>## * Role Description: ${roleDescription}</echo>
 
 		<echo>## * Role Type: ${roleType}</echo>
-
-		<echo>${roleTitleMap}</echo>
-		<echo>${roleDescriptionMap}</echo>
-		<echo>${curl}</echo>
 
 		<execute class="com.liferay.poshi.runner.util.JSONCurlUtil" method="get">
 			<arg value="${curl}" />

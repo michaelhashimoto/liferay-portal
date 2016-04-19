@@ -9,7 +9,7 @@
 					<return name="groupNameEncoded" />
 				</execute>
 
-				<var name="groupNameMap" value="&quot;{\&quot;en_US\&quot;:\&quot;${groupNameEncoded}\&quot;}&quot;" />
+				<var name="groupNameMap">"{\"en_US\":\"${groupNameEncoded}\"}"</var>
 			</then>
 			<else>
 				<fail message="Please set 'groupName'." />
@@ -29,7 +29,7 @@
 					<return name="groupDescriptionEncoded" />
 				</execute>
 
-				<var name="groupDescriptionMap" value="&quot;{\&quot;en_US\&quot;:\&quot;${groupDescriptionEncoded}\&quot;}&quot;" />
+				<var name="groupDescriptionMap">"{\"en_US\":\"${groupDescriptionEncoded}\"}"</var>
 			</then>
 			<else>
 				<var name="groupDescriptionMap" value="{}" />
@@ -55,10 +55,6 @@
 		<echo>## Adding a 'Group' with the following info using JSONWS:</echo>
 
 		<echo>## * Group Name: ${groupName}</echo>
-
-		<echo>${groupNameMap}</echo>
-		<echo>${groupDescriptionMap}</echo>
-		<echo>${curl}</echo>
 
 		<execute class="com.liferay.poshi.runner.util.JSONCurlUtil" method="get">
 			<arg value="${curl}" />
