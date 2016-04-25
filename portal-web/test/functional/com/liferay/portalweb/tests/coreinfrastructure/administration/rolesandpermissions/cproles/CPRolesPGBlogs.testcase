@@ -35,7 +35,7 @@
 	</tear-down>
 
 	<command name="AddBlogsEntryNoGuestRole" priority="5">
-		<property name="portal.acceptance" value="false" />
+		<property name="portal.smoke" value="true" />
 
 		<execute macro="Page#add">
 			<var name="pageName" value="Blogs Page" />
@@ -214,7 +214,7 @@
 	</command>
 
 	<command name="AddBlogsEntryRegRole" priority="5">
-		<property name="portal.acceptance" value="false" />
+		<property name="portal.smoke" value="true" />
 
 		<execute macro="Permissions#setUpRegRoleLoginUserPG">
 			<var name="pageName" value="Blogs Page" />
@@ -627,100 +627,6 @@
 		</execute>
 	</command>
 
-	<command name="DeleteBlogsEntryOrgRole" priority="5">
-		<property name="portal.acceptance" value="false" />
-
-		<execute macro="Permissions#setUpOrgRoleLoginUserPG">
-			<var name="orgName" value="Organization Name" />
-			<var name="orgType" value="Organization" />
-			<var name="page" value="Public Pages" />
-			<var name="pageName" value="Blogs Page" />
-			<var name="portletName" value="Blogs" />
-			<var name="roleName" value="Roles Orgrole Name" />
-			<var name="roleType" value="Organization" />
-			<var name="siteName" value="Organization Name" />
-			<var name="siteURL" value="true" />
-			<var name="userEmailAddress" value="userea@liferay.com" />
-			<var name="userFirstName" value="userfn" />
-			<var name="userLastName" value="userln" />
-			<var name="userLoginEmailAddress" value="test@liferay.com" />
-			<var name="userLoginFullName" value="Test Test" />
-			<var name="userScreenName" value="usersn" />
-		</execute>
-
-		<execute macro="Permissions#addBlogsEntryLoginUserPG">
-			<var name="entryContent" value="Blogs Entry Content" />
-			<var name="entryTitle" value="Blogs Entry Title" />
-			<var name="pageName" value="Blogs Page" />
-			<var name="siteName" value="Organization Name" />
-			<var name="siteURLTemp" value="true" />
-			<var name="userLoginEmailAddress" value="userea@liferay.com" />
-			<var name="userLoginFullName" value="userfn userln" />
-		</execute>
-
-		<execute macro="Navigator#gotoSitePage">
-			<var name="pageName" value="Blogs Page" />
-			<var name="siteName" value="Organization Name" />
-		</execute>
-
-		<execute macro="BlogsEntry#moveToRecycleBinNoPermissionPG">
-			<var name="entryTitle" value="Blogs Entry Title" />
-		</execute>
-
-		<execute macro="Permissions#definePermissionLoginUserCP">
-			<var name="permissionDefinitionKey" value="SITE_ADMIN_CONTENT_BLOGS_RESOURCE_PERMISSIONS_BLOGS_ENTRY_DELETE_CHECKBOX" />
-			<var name="permissionDefinitionValue" value="Delete" />
-			<var name="roleName" value="Roles Orgrole Name" />
-			<var name="roleType" value="Organization" />
-			<var name="userLoginEmailAddress" value="userea@liferay.com" />
-			<var name="userLoginFullName" value="userfn userln" />
-		</execute>
-
-		<execute macro="Navigator#gotoSitePage">
-			<var name="pageName" value="Blogs Page" />
-			<var name="siteName" value="Organization Name" />
-		</execute>
-
-		<execute macro="BlogsEntry#moveToRecycleBinPG">
-			<var name="assetType" value="Blogs Entry" />
-			<var name="entryContent" value="Blogs Entry Content" />
-			<var name="entryTitle" value="Blogs Entry Title" />
-		</execute>
-
-		<execute macro="Permissions#removePermissionLoginUserCP">
-			<var name="permissionDefinitionKey" value="SITE_ADMIN_CONTENT_BLOGS_RESOURCE_PERMISSIONS_BLOGS_ENTRY_DELETE_CHECKBOX" />
-			<var name="permissionDefinitionValue" value="Delete" />
-			<var name="roleName" value="Roles Orgrole Name" />
-			<var name="roleType" value="Organization" />
-			<var name="userLoginEmailAddress" value="test@liferay.com" />
-			<var name="userLoginFullName" value="Test Test" />
-		</execute>
-
-		<execute macro="Permissions#addBlogsEntryLoginUserPG">
-			<var name="entryContent" value="Blogs Entry Content" />
-			<var name="entryTitle" value="Blogs Entry Title" />
-			<var name="pageName" value="Blogs Page" />
-			<var name="siteName" value="Organization Name" />
-			<var name="siteURLTemp" value="true" />
-			<var name="userLoginEmailAddress" value="userea@liferay.com" />
-			<var name="userLoginFullName" value="userfn userln" />
-		</execute>
-
-		<execute macro="Navigator#gotoSitePage">
-			<var name="pageName" value="Blogs Page" />
-			<var name="siteName" value="Organization Name" />
-		</execute>
-
-		<execute macro="BlogsEntry#moveToRecycleBinNoPermissionPG">
-			<var name="entryTitle" value="Blogs Entry Title" />
-		</execute>
-
-		<execute macro="User#logoutAndLoginPG">
-			<var name="userLoginEmailAddress" value="test@liferay.com" />
-			<var name="userLoginFullName" value="Test Test" />
-		</execute>
-	</command>
-
 	<command name="DeleteBlogsEntryOrgRoleInline" priority="4">
 		<execute macro="Permissions#setUpOrgRoleLoginUserPG">
 			<var name="orgName" value="Organization Name" />
@@ -824,6 +730,137 @@
 		</execute>
 
 		<execute macro="User#logoutAndLoginPG">
+			<var name="userLoginEmailAddress" value="userea@liferay.com" />
+			<var name="userLoginFullName" value="userfn userln" />
+		</execute>
+
+		<execute macro="Navigator#gotoSitePage">
+			<var name="pageName" value="Blogs Page" />
+			<var name="siteName" value="Organization Name" />
+		</execute>
+
+		<execute macro="BlogsEntry#moveToRecycleBinNoPermissionPG">
+			<var name="entryTitle" value="Blogs Entry Title" />
+		</execute>
+
+		<execute macro="User#logoutAndLoginPG">
+			<var name="userLoginEmailAddress" value="test@liferay.com" />
+			<var name="userLoginFullName" value="Test Test" />
+		</execute>
+	</command>
+
+	<command name="DeleteBlogsEntryOrgRoleDefinePermission" priority="5">
+		<property name="portal.smoke" value="true" />
+
+		<execute macro="Permissions#setUpOrgRoleLoginUserPG">
+			<var name="orgName" value="Organization Name" />
+			<var name="orgType" value="Organization" />
+			<var name="page" value="Public Pages" />
+			<var name="pageName" value="Blogs Page" />
+			<var name="portletName" value="Blogs" />
+			<var name="roleName" value="Roles Orgrole Name" />
+			<var name="roleType" value="Organization" />
+			<var name="siteName" value="Organization Name" />
+			<var name="siteURL" value="true" />
+			<var name="userEmailAddress" value="userea@liferay.com" />
+			<var name="userFirstName" value="userfn" />
+			<var name="userLastName" value="userln" />
+			<var name="userLoginEmailAddress" value="test@liferay.com" />
+			<var name="userLoginFullName" value="Test Test" />
+			<var name="userScreenName" value="usersn" />
+		</execute>
+
+		<execute macro="Permissions#addBlogsEntryLoginUserPG">
+			<var name="entryContent" value="Blogs Entry Content" />
+			<var name="entryTitle" value="Blogs Entry Title" />
+			<var name="pageName" value="Blogs Page" />
+			<var name="siteName" value="Organization Name" />
+			<var name="siteURLTemp" value="true" />
+			<var name="userLoginEmailAddress" value="userea@liferay.com" />
+			<var name="userLoginFullName" value="userfn userln" />
+		</execute>
+
+		<execute macro="Permissions#definePermissionLoginUserCP">
+			<var name="permissionDefinitionKey" value="SITE_ADMIN_CONTENT_BLOGS_RESOURCE_PERMISSIONS_BLOGS_ENTRY_DELETE_CHECKBOX" />
+			<var name="permissionDefinitionValue" value="Delete" />
+			<var name="roleName" value="Roles Orgrole Name" />
+			<var name="roleType" value="Organization" />
+			<var name="userLoginEmailAddress" value="userea@liferay.com" />
+			<var name="userLoginFullName" value="userfn userln" />
+		</execute>
+
+		<execute macro="Navigator#gotoSitePage">
+			<var name="pageName" value="Blogs Page" />
+			<var name="siteName" value="Organization Name" />
+		</execute>
+
+		<execute macro="BlogsEntry#moveToRecycleBinPG">
+			<var name="assetType" value="Blogs Entry" />
+			<var name="entryContent" value="Blogs Entry Content" />
+			<var name="entryTitle" value="Blogs Entry Title" />
+		</execute>
+
+		<execute macro="Permissions#removePermissionLoginUserCP">
+			<var name="permissionDefinitionKey" value="SITE_ADMIN_CONTENT_BLOGS_RESOURCE_PERMISSIONS_BLOGS_ENTRY_DELETE_CHECKBOX" />
+			<var name="permissionDefinitionValue" value="Delete" />
+			<var name="roleName" value="Roles Orgrole Name" />
+			<var name="roleType" value="Organization" />
+			<var name="userLoginEmailAddress" value="test@liferay.com" />
+			<var name="userLoginFullName" value="Test Test" />
+		</execute>
+
+		<execute macro="Permissions#addBlogsEntryLoginUserPG">
+			<var name="entryContent" value="Blogs Entry Content" />
+			<var name="entryTitle" value="Blogs Entry Title" />
+			<var name="pageName" value="Blogs Page" />
+			<var name="siteName" value="Organization Name" />
+			<var name="siteURLTemp" value="true" />
+			<var name="userLoginEmailAddress" value="userea@liferay.com" />
+			<var name="userLoginFullName" value="userfn userln" />
+		</execute>
+
+		<execute macro="Navigator#gotoSitePage">
+			<var name="pageName" value="Blogs Page" />
+			<var name="siteName" value="Organization Name" />
+		</execute>
+
+		<execute macro="BlogsEntry#moveToRecycleBinNoPermissionPG">
+			<var name="entryTitle" value="Blogs Entry Title" />
+		</execute>
+
+		<execute macro="User#logoutAndLoginPG">
+			<var name="userLoginEmailAddress" value="test@liferay.com" />
+			<var name="userLoginFullName" value="Test Test" />
+		</execute>
+	</command>
+
+	<command name="DeleteBlogsEntryOrgRoleDefaultPermission" priority="5">
+		<property name="portal.smoke" value="true" />
+
+		<execute macro="Permissions#setUpOrgRoleLoginUserPG">
+			<var name="orgName" value="Organization Name" />
+			<var name="orgType" value="Organization" />
+			<var name="page" value="Public Pages" />
+			<var name="pageName" value="Blogs Page" />
+			<var name="portletName" value="Blogs" />
+			<var name="roleName" value="Roles Orgrole Name" />
+			<var name="roleType" value="Organization" />
+			<var name="siteName" value="Organization Name" />
+			<var name="siteURL" value="true" />
+			<var name="userEmailAddress" value="userea@liferay.com" />
+			<var name="userFirstName" value="userfn" />
+			<var name="userLastName" value="userln" />
+			<var name="userLoginEmailAddress" value="test@liferay.com" />
+			<var name="userLoginFullName" value="Test Test" />
+			<var name="userScreenName" value="usersn" />
+		</execute>
+
+		<execute macro="Permissions#addBlogsEntryLoginUserPG">
+			<var name="entryContent" value="Blogs Entry Content" />
+			<var name="entryTitle" value="Blogs Entry Title" />
+			<var name="pageName" value="Blogs Page" />
+			<var name="siteName" value="Organization Name" />
+			<var name="siteURLTemp" value="true" />
 			<var name="userLoginEmailAddress" value="userea@liferay.com" />
 			<var name="userLoginFullName" value="userfn userln" />
 		</execute>
@@ -1546,7 +1583,7 @@
 	</command>
 
 	<command name="SubscribeBlogsRegRole" priority="5">
-		<property name="portal.acceptance" value="false" />
+		<property name="portal.smoke" value="true" />
 
 		<execute macro="Permissions#setUpRegRoleLoginUserPG">
 			<var name="pageName" value="Blogs Page" />
@@ -1842,7 +1879,7 @@
 	</command>
 
 	<command name="ViewBlogsPermissionsRegRole" priority="5">
-		<property name="portal.acceptance" value="false" />
+		<property name="portal.smoke" value="true" />
 
 		<execute macro="Permissions#setUpRegRoleLoginUserPG">
 			<var name="pageName" value="Blogs Page" />

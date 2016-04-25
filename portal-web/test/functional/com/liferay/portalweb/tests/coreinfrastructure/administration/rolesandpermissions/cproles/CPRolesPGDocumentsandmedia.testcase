@@ -37,7 +37,7 @@
 	</tear-down>
 
 	<command name="AddDMDocumentRegRole" priority="5">
-		<property name="portal.acceptance" value="false" />
+		<property name="portal.smoke" value="true" />
 
 		<execute macro="Permissions#setUpRegRoleLoginUserPG">
 			<var name="pageName" value="Documents and Media Page" />
