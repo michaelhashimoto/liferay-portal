@@ -588,7 +588,35 @@ app.server.type=@{app.server.type}]]></echo>
 								<else>
 									<antcall target="compile" />
 
-									<ant antfile="build-dist.xml" target="build-dist-${app.server.type}" />
+									<if>
+										<equals arg1="${app.server.type}" arg2="weblogic" />
+										<then>
+											<app-server-properties-update>
+												app.server.type=weblogic
+											</app-server-properties-update>
+
+											<antcall target="update-sdk-properties" inheritAll="false" />
+
+											<antcall target="unzip-weblogic-custom" />
+
+											<delete dir="${project.dir}/portal-web/classes" />
+
+											<ant target="deploy" inheritAll="false" />
+
+											<antcall target="resolve-dynamic-jars" inheritAll="false" />
+
+											<app-server-properties-reset />
+
+											<chmod perm="a+x">
+												<fileset dir="${app.server.weblogic.instance.dir}">
+													<include name="**/*.sh" />
+												</fileset>
+											</chmod>
+										</then>
+										<else>
+											<ant antfile="build-dist.xml" target="build-dist-${app.server.type}" />
+										</else>
+									</if>
 								</else>
 							</if>
 
