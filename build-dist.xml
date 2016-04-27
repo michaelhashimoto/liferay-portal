@@ -2231,7 +2231,7 @@ closeTemplate()
 				<trycatch>
 					<try>
 						<mirrors-get
-							dest="${app.server.parent.dir}"
+							dest="${app.server.parent.dir}/${app.server.weblogic.custom.zip.name}"
 							src="http://mirrors.lax.liferay.com/files.liferay.com/private/apps/oracle/weblogicas/12/${app.server.weblogic.custom.zip.name}"
 							verbose="true"
 						/>
