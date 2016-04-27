@@ -603,7 +603,7 @@ app.server.type=@{app.server.type}]]></echo>
 
 											<ant target="deploy" inheritAll="false" />
 
-											<antcall target="resolve-dynamic-jars" inheritAll="false" />
+											<ant antfile="build-dist.xml" target="resolve-dynamic-jars" inheritAll="false" />
 
 											<chmod perm="a+x">
 												<fileset dir="${app.server.weblogic.bin.dir}">
