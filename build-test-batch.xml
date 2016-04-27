@@ -597,7 +597,7 @@ app.server.type=@{app.server.type}]]></echo>
 
 											<antcall target="update-sdk-properties" inheritAll="false" />
 
-											<antcall target="unzip-weblogic-custom" />
+											<ant antfile="build-dist.xml" target="unzip-weblogic-custom" />
 
 											<delete dir="${project.dir}/portal-web/classes" />
 
