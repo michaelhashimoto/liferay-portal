@@ -754,7 +754,6 @@
 
 		<antcall target="build-dist-geronimo" />
 		<antcall target="build-dist-glassfish" />
-		<antcall target="build-dist-jboss" />
 		<antcall target="build-dist-jetty" />
 		<antcall target="build-dist-jonas" />
 		<antcall target="build-dist-resin" />
