@@ -605,6 +605,13 @@ app.server.type=@{app.server.type}]]></echo>
 
 											<ant antfile="build-dist.xml" target="resolve-dynamic-jars" inheritAll="false" />
 
+											<replaceregexp
+												file="${app.server.weblogic.bin.dir}/stopWebLogic.sh"
+												flags="g"
+												match="(t3:\/\/)[^\:]*(\:\d+)"
+												replace="\1${env.HOSTNAME}\2"
+											/>
+
 											<chmod perm="a+x">
 												<fileset dir="${app.server.weblogic.bin.dir}">
 													<include name="**/*.sh" />
