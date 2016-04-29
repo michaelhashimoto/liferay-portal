@@ -82,7 +82,7 @@
 			app.server.jboss.zip.name=jboss-eap-6.0.1.zip
 		</app-server-properties-update>
 
-		<antcall target="unzip-jboss-eap" inheritAll="false" />
+		<antcall target="unzip-jboss" inheritAll="false" />
 
 		<delete dir="${project.dir}/portal-web/classes" />
 
@@ -1019,7 +1019,7 @@ release was successful.</echo>
 		</chmod>
 	</target>
 
-	<target name="unzip-jboss-eap">
+	<target name="unzip-jboss">
 		<if>
 			<not>
 				<available file="${app.server.parent.dir}/${app.server.jboss.zip.name}" />
