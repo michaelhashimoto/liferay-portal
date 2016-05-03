@@ -736,27 +736,7 @@ app.server.type=@{app.server.type}]]></echo>
 	</macrodef>
 
 	<target name="compile-jsp-jdk7">
-		<run-batch-test>
-			<test-action>
-				<ant dir="portal-web" target="compile-tomcat" />
-
-				<gradle-execute dir="modules" task="compileJSP">
-					<arg value="-Dmodules.only.build=true" />
-				</gradle-execute>
-			</test-action>
-
-			<test-set-up>
-				<if>
-					<isset property="env.DIST_PATH" />
-					<then>
-						<prepare-test-environment />
-					</then>
-					<else>
-						<prepare-test-build />
-					</else>
-				</if>
-			</test-set-up>
-		</run-batch-test>
+		<echo>start</echo>
 	</target>
 
 	<target name="dist-jdk7">
