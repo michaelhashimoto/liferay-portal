@@ -243,6 +243,23 @@
 	</command>
 
 	<command name="setUpRegRoleLoginUserPG">
+		<execute macro="Permissions#setUpRegRolePG">
+			<var name="pageName" value="Documents and Media Page" />
+			<var name="portletName" value="Documents and Media" />
+			<var name="roleName" value="Regrole Name" />
+			<var name="userEmailAddress" value="userea@liferay.com" />
+			<var name="userFirstName" value="userfn" />
+			<var name="userLastName" value="userln" />
+			<var name="userScreenName" value="usersn" />
+		</execute>
+
+		<execute macro="User#logoutAndLoginPG">
+			<var name="userLoginEmailAddress" value="${userLoginEmailAddress}" />
+			<var name="userLoginFullName" value="${userLoginFullName}" />
+		</execute>
+	</command>
+
+	<command name="setUpRegRolePG">
 		<execute macro="Page#add">
 			<var name="defaultURL" value="${defaultURL}" />
 			<var name="nodePort" value="${nodePort}" />
@@ -282,11 +299,6 @@
 		<execute macro="JSONRole#assignRoleToUser">
 			<var name="roleName" value="${roleName}" />
 			<var name="userEmailAddress" value="${userEmailAddress}" />
-		</execute>
-
-		<execute macro="User#logoutAndLoginPG">
-			<var name="userLoginEmailAddress" value="${userLoginEmailAddress}" />
-			<var name="userLoginFullName" value="${userLoginFullName}" />
 		</execute>
 	</command>
 
