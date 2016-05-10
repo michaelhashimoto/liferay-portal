@@ -1020,6 +1020,8 @@ release was successful.</echo>
 	</target>
 
 	<target name="unzip-jboss">
+		<delete dir="${app.server.jboss.dir}" />
+
 		<if>
 			<not>
 				<available file="${app.server.parent.dir}/${app.server.jboss.zip.name}" />
@@ -1027,15 +1029,37 @@ release was successful.</echo>
 			<then>
 				<mkdir dir="${app.server.parent.dir}" />
 
-				<mirrors-get
-					dest="${app.server.parent.dir}/${app.server.jboss.zip.name}"
-					src="${app.server.jboss.zip.url}"
-					verbose="true"
-				/>
+				<trycatch>
+					<try>
+						<mirrors-get
+							dest="${app.server.parent.dir}/${app.server.jboss.zip.name}"
+							src="${app.server.jboss.zip.url}"
+							verbose="true"
+						/>
+					</try>
+					<catch>
+						<fail>
+.
+
+Please download the JBoss zip file from ${app.server.jboss.zip.url} and
+place it here: ${app.server.parent.dir}/${app.server.jboss.zip.name}. Then rerun
+this task.
+						</fail>
+					</catch>
+				</trycatch>
 			</then>
 		</if>
 
-		<unzip dest="${app.server.parent.dir}" src="${app.server.parent.dir}/${app.server.jboss.zip.name}" />
+		<unzip
+			dest="${app.server.parent.dir}"
+			src="${app.server.parent.dir}/${app.server.jboss.zip.name}"
+		>
+			<mapper
+				from="(jboss-eap-)\d\.\d[\.]?[\d]?(/.*)"
+				to="\1${app.server.jboss.version}\2"
+				type="regexp"
+			 />
+		</unzip>
 
 		<mkdir dir="${app.server.jboss.dir}/modules/com/liferay/portal/main" />
 
