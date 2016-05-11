@@ -1153,6 +1153,12 @@ this task.
 					<path name="com/sun/crypto/provider"/>]]>
 			</replacevalue>
 		</replace>
+
+		<chmod perm="a+x">
+			<fileset dir="${app.server.jboss.bin.dir}">
+				<include name="*.sh" />
+			</fileset>
+		</chmod>
 	</target>
 
 	<target name="unzip-jetty">
