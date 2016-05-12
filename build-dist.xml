@@ -2203,6 +2203,34 @@ them in ${app.server.parent.dir}. Then rerun this task.
 			</else>
 		</if>
 
+		<mkdir dir="${app.server.wildfly.dir}/modules/com/liferay/portal/main" />
+
+		<echo file="${app.server.wildfly.dir}/modules/com/liferay/portal/main/module.xml"><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
+			<module xmlns="urn:jboss:module:1.1" name="com.liferay.portal">
+				<resources>
+					<resource-root path="hsql.jar" />
+					<resource-root path="mysql.jar" />
+					<resource-root path="portal-service.jar" />
+					<resource-root path="portlet.jar" />
+				</resources>
+				<dependencies>
+					<module name="javax.api" />
+					<module name="javax.mail.api" />
+					<module name="javax.servlet.api" />
+					<module name="javax.servlet.jsp.api" />
+					<module name="javax.transaction.api" />
+				</dependencies>
+			</module>]]>
+		</echo>
+
+		<copy file="lib/development/hsql.jar" tofile="${app.server.wildfly.dir}/modules/com/liferay/portal/main/hsql.jar" />
+
+		<copy file="lib/development/mysql.jar" tofile="${app.server.wildfly.dir}/modules/com/liferay/portal/main/mysql.jar" />
+
+		<copy file="lib/global/portlet.jar" tofile="${app.server.wildfly.dir}/modules/com/liferay/portal/main/portlet.jar" />
+
+		<copy file="portal-service/portal-service.jar" tofile="${app.server.wildfly.dir}/modules/com/liferay/portal/main/portal-service.jar" />
+
 		<chmod perm="a+x">
 			<fileset dir="${app.server.wildfly.bin.dir}">
 				<include name="*.sh" />
