@@ -19,7 +19,9 @@
 			<else>
 				<execute macro="User#firstLoginPG" />
 
-				<execute macro="User#tearDownCP" />
+				<execute macro="JSONUser#tearDownByFirstName">
+					<var name="userFirstName" value="userfn" />
+				</execute>
 
 				<execute macro="Role#tearDownCP" />
 
