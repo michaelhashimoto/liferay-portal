@@ -8501,7 +8501,6 @@ svn --username ${svn.username} --password ${svn.password} update -r ${svn.info.r
 					<matches pattern="http" string="${test.build.bundle.geronimo.zip.url}" />
 					<then>
 						<antcall target="prepare-test-bundle" inheritAll="false">
-							<param name="app.server.name" value="geronimo" />
 							<param name="app.server.type" value="geronimo" />
 							<param name="test.app.server.bin.dir" value="${app.server.geronimo.bin.dir}" />
 							<param name="test.build.bundle.zip.url" value="${test.build.bundle.geronimo.zip.url}" />
@@ -8519,7 +8518,6 @@ svn --username ${svn.username} --password ${svn.password} update -r ${svn.info.r
 					<matches pattern="http" string="${test.build.bundle.glassfish.zip.url}" />
 					<then>
 						<antcall target="prepare-test-bundle" inheritAll="false">
-							<param name="app.server.name" value="glassfish" />
 							<param name="app.server.type" value="glassfish" />
 							<param name="test.app.server.bin.dir" value="${app.server.glassfish.bin.dir}" />
 							<param name="test.build.bundle.zip.url" value="${test.build.bundle.glassfish.zip.url}" />
@@ -8587,7 +8585,6 @@ svn --username ${svn.username} --password ${svn.password} update -r ${svn.info.r
 					<matches pattern="http" string="${test.build.bundle.jetty.zip.url}" />
 					<then>
 						<antcall target="prepare-test-bundle" inheritAll="false">
-							<param name="app.server.name" value="jetty" />
 							<param name="app.server.type" value="jetty" />
 							<param name="test.app.server.bin.dir" value="${app.server.jetty.bin.dir}" />
 							<param name="test.build.bundle.zip.url" value="${test.build.bundle.jetty.zip.url}" />
@@ -8605,7 +8602,6 @@ svn --username ${svn.username} --password ${svn.password} update -r ${svn.info.r
 					<matches pattern="http" string="${test.build.bundle.jonas.zip.url}" />
 					<then>
 						<antcall target="prepare-test-bundle" inheritAll="false">
-							<param name="app.server.name" value="jonas" />
 							<param name="app.server.type" value="jonas" />
 							<param name="test.app.server.bin.dir" value="${app.server.jonas.bin.dir}" />
 							<param name="test.build.bundle.zip.url" value="${test.build.bundle.jonas.zip.url}" />
@@ -8623,7 +8619,6 @@ svn --username ${svn.username} --password ${svn.password} update -r ${svn.info.r
 					<matches pattern="http" string="${test.build.bundle.resin.zip.url}" />
 					<then>
 						<antcall target="prepare-test-bundle" inheritAll="false">
-							<param name="app.server.name" value="resin" />
 							<param name="app.server.type" value="resin" />
 							<param name="test.app.server.bin.dir" value="${app.server.resin.bin.dir}" />
 							<param name="test.build.bundle.zip.url" value="${test.build.bundle.resin.zip.url}" />
@@ -8663,7 +8658,6 @@ svn --username ${svn.username} --password ${svn.password} update -r ${svn.info.r
 						<set-tomcat-version-number liferay.portal.bundle="${liferay.portal.bundle}" />
 
 						<antcall target="prepare-test-bundle" inheritAll="false">
-							<param name="app.server.name" value="tomcat" />
 							<param name="app.server.type" value="tomcat" />
 							<param name="test.app.server.bin.dir" value="${app.server.tomcat.bin.dir}" />
 							<param name="test.build.bundle.zip.url" value="${test.build.bundle.tomcat.zip.url}" />
@@ -8839,6 +8833,15 @@ ANT_OPTS=${env.ANT_OPTS}</echo>
 	</target>
 
 	<target name="prepare-test-bundle">
+		<if>
+			<not>
+				<isset property="app.server.name" />
+			</not>
+			<then>
+				<property name="app.server.name" value="${app.server.type}" />
+			</then>
+		</if>
+
 		<if>
 			<matches pattern="http" string="${test.build.bundle.zip.url}" />
 			<then>
