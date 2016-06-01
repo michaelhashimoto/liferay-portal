@@ -162,7 +162,7 @@
 			<var name="userScreenName" value="usersn" />
 		</execute>
 
-		<!-- <execute macro="Navigator#openURL" />
+		<execute macro="Navigator#openURL" />
 
 		<execute macro="Permissions#definePermissionLoginUserCP">
 			<var name="permissionDefinitionKey" value="SITE_ADMIN_CONTENT_BLOGS_GENERAL_PERMISSIONS_ACCESS_IN_SITE_ADMINISTRATION_CHECKBOX" />
@@ -194,7 +194,7 @@
 			<var name="roleName" value="Regrole Name" />
 			<var name="userLoginEmailAddress" value="userea@liferay.com" />
 			<var name="userLoginFullName" value="userfn userln" />
-		</execute> -->
+		</execute>
 	</command>
 
 	<command name="ViewBlogsPortletSiteRole" priority="4">
