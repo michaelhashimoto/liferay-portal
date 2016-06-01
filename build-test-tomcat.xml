@@ -4,6 +4,9 @@
 	<import file="build-test.xml" />
 
 	<target name="run-selenium-tomcat">
+		<echo>test.portal.instance=${test.portal.instance}</echo>
+		<echo>test.url=${test.url}</echo>
+
 		<app-server-properties-update>
 			app.server.type=tomcat
 		</app-server-properties-update>
