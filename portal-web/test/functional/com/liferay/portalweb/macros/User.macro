@@ -1243,6 +1243,8 @@
 			</then>
 		</if>
 
+		<echo message="newPassword=${newPassword}" />
+
 		<execute macro="Panel#expandPanel">
 			<var name="panelHeading" value="Password" />
 		</execute>
