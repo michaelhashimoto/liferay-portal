@@ -448,6 +448,7 @@
 
 	<command name="AddWebContentSiteRoleDefinePermission" priority="5">
 		<property name="portal.smoke" value="true" />
+		<property name="test.name.skip.portal.instance" value="CPRolesCPWebcontent#AddWebContentSiteRoleDefinePermission" />
 
 		<execute macro="Permissions#setUpSiteRoleLoginUserCP">
 			<var name="page" value="Public Pages" />
