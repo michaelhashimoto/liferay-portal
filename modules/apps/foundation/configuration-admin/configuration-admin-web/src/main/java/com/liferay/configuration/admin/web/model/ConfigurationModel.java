@@ -56,6 +56,8 @@ public class ConfigurationModel implements ExtendedObjectClassDefinition {
 		_bundleSymbolicName = bundleSymbolicName;
 		_bundleLocation = bundleLocation;
 		_factory = factory;
+
+		System.out.println("Michael");
 	}
 
 	@Override
