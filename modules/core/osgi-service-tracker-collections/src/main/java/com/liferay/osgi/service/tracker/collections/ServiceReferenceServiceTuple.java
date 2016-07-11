@@ -25,6 +25,8 @@ public class ServiceReferenceServiceTuple<S, T>
 	public ServiceReferenceServiceTuple(
 		ServiceReference<S> serviceReference, T service) {
 
+		System.out.println("Michael Hashimoto");
+
 		_serviceReference = serviceReference;
 		_service = service;
 	}
