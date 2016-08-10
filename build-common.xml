@@ -544,6 +544,7 @@ Please set the environment variable ANT_OPTS to the recommended value of
 
 	<macrodef name="execute">
 		<attribute default="." name="dir" />
+		<attribute default="true" name="failonerror" />
 
 		<text name="commands" />
 
@@ -599,12 +600,12 @@ Please set the environment variable ANT_OPTS to the recommended value of
 									<if>
 										<contains string="${command.executable}" substring=".sh" />
 										<then>
-											<exec dir="@{dir}" executable="/bin/bash" output="${command.output}">
+											<exec dir="@{dir}" executable="/bin/bash" failonerror="@{failonerror}" output="${command.output}">
 												<arg line="${command.executable} ${command.arg.line}" />
 											</exec>
 										</then>
 										<else>
-											<exec dir="@{dir}" executable="/bin/bash" output="${command.output}">
+											<exec dir="@{dir}" executable="/bin/bash" failonerror="@{failonerror}" output="${command.output}">
 												<arg value="-c" />
 												<arg value="${command.executable} ${command.arg.line}" />
 											</exec>
@@ -612,7 +613,7 @@ Please set the environment variable ANT_OPTS to the recommended value of
 									</if>
 								</then>
 								<else>
-									<exec dir="@{dir}" executable="cmd.exe" output="${command.output}">
+									<exec dir="@{dir}" executable="cmd.exe" failonerror="@{failonerror}" output="${command.output}">
 										<arg line="/c ${command.executable} ${command.arg.line}" />
 									</exec>
 								</else>
@@ -643,12 +644,12 @@ Please set the environment variable ANT_OPTS to the recommended value of
 										<if>
 											<contains string="${command.executable}" substring=".sh" />
 											<then>
-												<exec append="true" dir="@{dir}" executable="/bin/bash" output="${command.output}">
+												<exec append="true" dir="@{dir}" executable="/bin/bash" failonerror="@{failonerror}" output="${command.output}">
 													<arg line="${command.executable} ${command.arg.line}" />
 												</exec>
 											</then>
 											<else>
-												<exec append="true" dir="@{dir}" executable="/bin/bash" output="${command.output}">
+												<exec append="true" dir="@{dir}" executable="/bin/bash" failonerror="@{failonerror}" output="${command.output}">
 													<arg value="-c" />
 													<arg value="${command.executable} ${command.arg.line}" />
 												</exec>
@@ -656,7 +657,7 @@ Please set the environment variable ANT_OPTS to the recommended value of
 										</if>
 									</then>
 									<else>
-										<exec append="true" dir="@{dir}" executable="cmd.exe" output="${command.output}">
+										<exec append="true" dir="@{dir}" executable="cmd.exe" failonerror="@{failonerror}" output="${command.output}">
 											<arg line="/c ${command.executable} ${command.arg.line}" />
 										</exec>
 									</else>
@@ -670,12 +671,12 @@ Please set the environment variable ANT_OPTS to the recommended value of
 									<if>
 										<contains string="${command.executable}" substring=".sh" />
 										<then>
-											<exec dir="@{dir}" executable="/bin/bash">
+											<exec dir="@{dir}" executable="/bin/bash" failonerror="@{failonerror}">
 												<arg line="${command.executable} ${command.arg.line}" />
 											</exec>
 										</then>
 										<else>
-											<exec dir="@{dir}" executable="/bin/bash">
+											<exec dir="@{dir}" executable="/bin/bash" failonerror="@{failonerror}">
 												<arg value="-c" />
 												<arg value="${command.executable} ${command.arg.line}" />
 											</exec>
@@ -683,7 +684,7 @@ Please set the environment variable ANT_OPTS to the recommended value of
 									</if>
 								</then>
 								<else>
-									<exec dir="@{dir}" executable="cmd.exe">
+									<exec dir="@{dir}" executable="cmd.exe" failonerror="@{failonerror}">
 										<arg line="/c @{command}" />
 									</exec>
 								</else>
