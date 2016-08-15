@@ -27,12 +27,12 @@ public class PQLEntityFactoryTest extends TestCase {
 
 	@Test
 	public void testPQLValueGetPQLResult() throws Exception {
-		_validateGetPQLResult("false", Boolean.valueOf(false));
-		_validateGetPQLResult("'false'", Boolean.valueOf(false));
-		_validateGetPQLResult("\"false\"", Boolean.valueOf(false));
-		_validateGetPQLResult("true", Boolean.valueOf(true));
-		_validateGetPQLResult("'true'", Boolean.valueOf(true));
-		_validateGetPQLResult("\"true\"", Boolean.valueOf(true));
+		_validateGetPQLResult("false", Boolean.FALSE);
+		_validateGetPQLResult("'false'", Boolean.FALSE);
+		_validateGetPQLResult("\"false\"", Boolean.FALSE);
+		_validateGetPQLResult("true", Boolean.TRUE);
+		_validateGetPQLResult("'true'", Boolean.TRUE);
+		_validateGetPQLResult("\"true\"", Boolean.TRUE);
 
 		_validateGetPQLResult("3.2", Double.valueOf(3.2));
 		_validateGetPQLResult("'3.2'", Double.valueOf(3.2));
@@ -55,12 +55,12 @@ public class PQLEntityFactoryTest extends TestCase {
 
 	@Test
 	public void testPQLVariableGetPQLResult() throws Exception {
-		_validateGetPQLResultFromVariable("false", Boolean.valueOf(false));
-		_validateGetPQLResultFromVariable("'false'", Boolean.valueOf(false));
-		_validateGetPQLResultFromVariable("\"false\"", Boolean.valueOf(false));
-		_validateGetPQLResultFromVariable("true", Boolean.valueOf(true));
-		_validateGetPQLResultFromVariable("'true'", Boolean.valueOf(true));
-		_validateGetPQLResultFromVariable("\"true\"", Boolean.valueOf(true));
+		_validateGetPQLResultFromVariable("false", Boolean.FALSE);
+		_validateGetPQLResultFromVariable("'false'", Boolean.FALSE);
+		_validateGetPQLResultFromVariable("\"false\"", Boolean.FALSE);
+		_validateGetPQLResultFromVariable("true", Boolean.TRUE);
+		_validateGetPQLResultFromVariable("'true'", Boolean.TRUE);
+		_validateGetPQLResultFromVariable("\"true\"", Boolean.TRUE);
 
 		_validateGetPQLResultFromVariable("3.2", Double.valueOf(3.2));
 		_validateGetPQLResultFromVariable("'3.2'", Double.valueOf(3.2));

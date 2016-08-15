@@ -29,12 +29,12 @@ public class PQLValueTest extends TestCase {
 
 	@Test
 	public void testGetPQLResult() throws Exception {
-		_validateGetPQLResult("false", Boolean.valueOf(false));
-		_validateGetPQLResult("'false'", Boolean.valueOf(false));
-		_validateGetPQLResult("\"false\"", Boolean.valueOf(false));
-		_validateGetPQLResult("true", Boolean.valueOf(true));
-		_validateGetPQLResult("'true'", Boolean.valueOf(true));
-		_validateGetPQLResult("\"true\"", Boolean.valueOf(true));
+		_validateGetPQLResult("false", Boolean.FALSE);
+		_validateGetPQLResult("'false'", Boolean.FALSE);
+		_validateGetPQLResult("\"false\"", Boolean.FALSE);
+		_validateGetPQLResult("true", Boolean.TRUE);
+		_validateGetPQLResult("'true'", Boolean.TRUE);
+		_validateGetPQLResult("\"true\"", Boolean.TRUE);
 
 		_validateGetPQLResult("3.2", Double.valueOf(3.2));
 		_validateGetPQLResult("'3.2'", Double.valueOf(3.2));
