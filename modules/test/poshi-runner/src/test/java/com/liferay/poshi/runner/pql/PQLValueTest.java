@@ -112,7 +112,7 @@ public class PQLValueTest extends TestCase {
 		try {
 			PQLValue pqlValue = new PQLValue(pql);
 
-			Object valueObject = pqlValue.getPQLResult(new Properties());
+			pqlValue.getPQLResult(new Properties());
 		}
 		catch (Exception e) {
 			actualError = e.getMessage();

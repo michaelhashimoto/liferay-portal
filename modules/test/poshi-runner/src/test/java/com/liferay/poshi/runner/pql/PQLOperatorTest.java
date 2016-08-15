@@ -335,8 +335,7 @@ public class PQLOperatorTest extends TestCase {
 		String actualError = null;
 
 		try {
-			Object pqlResult = pqlOperator.getPQLResult(
-				pqlEntity1, pqlEntity2, new Properties());
+			pqlOperator.getPQLResult(pqlEntity1, pqlEntity2, new Properties());
 		}
 		catch (Exception e) {
 			actualError = e.getMessage();
