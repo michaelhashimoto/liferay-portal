@@ -88,8 +88,6 @@ web.server.display.node=true</echo>
 	<target name="prepare-zip-tomcat">
 		<ant antfile="build-dist.xml" target="build-dist-tomcat" />
 
-		<antcall target="revert-test-properties" />
-
 		<mkdir dir="dist" />
 
 		<ant antfile="build-dist.xml" target="zip-tomcat" />
@@ -110,8 +108,6 @@ web.server.display.node=true</echo>
 				<ant antfile="build-dist.xml" target="build-dist-tomcat" />
 			</then>
 		</if>
-
-		<antcall target="revert-test-properties" />
 
 		<antcall target="record-test-generated-properties" />
 
@@ -181,8 +177,6 @@ web.server.display.node=true</echo>
 		<app-server-properties-update>
 			app.server.tomcat.dir=${app.server.parent.dir}/${bundled.dir.name}
 		</app-server-properties-update>
-
-		<antcall target="revert-test-properties" />
 
 		<if>
 			<isset property="jdbc.drivers.optional.dir" />

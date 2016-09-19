@@ -200,8 +200,6 @@ JkShmFile logs/jk-runtime-status</echo>
 
 		<sleep seconds="60" />
 
-		<antcall target="revert-test-properties" />
-
 		<replace
 			file="portal-web/test/test-portal-web.properties"
 			token="localhost:8080"

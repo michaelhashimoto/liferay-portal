@@ -21,8 +21,6 @@
 			</then>
 		</if>
 
-		<antcall target="revert-test-properties" />
-
 		<antcall target="record-test-generated-properties" />
 
 		<antcall target="prepare-virtual-host-name-properties" />
@@ -70,8 +68,6 @@
 			app.server.type=jboss
 			app.server.jboss.dir=${app.server.parent.dir}/${bundled.dir.name}
 		</app-server-properties-update>
-
-		<antcall target="revert-test-properties" />
 
 		<ant dir="portal-impl" target="deploy-properties" inheritAll="false" />
 

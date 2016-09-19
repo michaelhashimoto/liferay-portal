@@ -58,8 +58,6 @@
 			<param name="test.database.minimal" value="true" />
 		</antcall>
 
-		<antcall target="revert-test-properties" />
-
 		<antcall target="prepare-test-properties">
 			<param name="database" value="${database}" />
 		</antcall>

@@ -6798,8 +6798,6 @@ go]]></replacevalue>
 
 		<antcall target="prepare-portal-ext-properties" inheritAll="false" />
 
-		<antcall target="revert-test-properties" />
-
 		<liferay-format
 			arguments="portal-web/docroot/WEB-INF/web.xml"
 			message="${scm.revert.command}"
@@ -9961,22 +9959,6 @@ go</echo>
 		<delete file="${tstamp.value}" />
 	</target>
 
-	<target name="revert-test-properties">
-		<execute>
-			<![CDATA[git checkout -- portal-impl/test/portal-test.properties]]>
-		</execute>
-
-		<delete file="portal-impl/test/portal-test-ext.properties" failonerror="false" />
-
-		<execute>
-			<![CDATA[git checkout -- portal-impl/test/test-portal-impl.properties]]>
-		</execute>
-
-		<execute>
-			<![CDATA[git checkout -- portal-web/test/test-portal-web.properties]]>
-		</execute>
-	</target>
-
 	<target name="run-poshi-evaluate-console">
 		<if>
 			<isset property="test.base.dir.name" />
@@ -10604,8 +10586,6 @@ jdbc.default.password=${database.mysql.password}</echo>
 		<antcall target="rebuild-database" inheritAll="false">
 			<param name="test.database.minimal" value="true" />
 		</antcall>
-
-		<antcall target="revert-test-properties" />
 
 		<antcall target="test-integration" inheritAll="false" />
 
