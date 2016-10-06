@@ -1,4 +1,5 @@
 <definition component-name="marketplace">
+	<property name="portal.release" value="true" />
 	<property name="testray.main.component.name" value="Marketplace" />
 
 	<set-up>

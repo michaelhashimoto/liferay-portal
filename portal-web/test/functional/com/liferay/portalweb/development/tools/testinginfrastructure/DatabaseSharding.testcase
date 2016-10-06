@@ -1,6 +1,7 @@
 <definition component-name="portal-tools">
 	<property name="database.sharding" value="true" />
 	<property name="databases.size" value="2" />
+	<property name="portal.release" value="true" />
 	<property name="testray.main.component.name" value="Tools" />
 
 	<command name="Smoke" priority="5">
