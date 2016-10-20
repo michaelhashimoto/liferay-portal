@@ -195,6 +195,12 @@ lportal_BS
 database.type=@{database.type}
 database.@{database.type}.version=@{database.version}]]></echo>
 
+			<echo>database.type=@{database.type}</echo>
+			<echo>database.type=${database.type}</echo>
+			<echo>database.version=@{database.version}</echo>
+			<echo>database.version=${database.version}</echo>
+			<echo>database.@{database.type}.version=${database.@{database.type}.version}</echo>
+
 			<if>
 				<and>
 					<equals arg1="@{database.type}" arg2="mysql" />
