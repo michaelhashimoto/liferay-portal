@@ -180,20 +180,31 @@ lportal_BS
 
 	<macrodef name="database-test-run-test">
 		<attribute name="database.type" />
-		<attribute default="${database.@{database.type}.version}" name="database.version" />
+		<attribute default="" name="database.version" />
 		<attribute default="false" name="stop.app.server" />
 		<element name="test-action" />
 
 		<sequential>
 			<var name="database.type" unset="true" />
-			<var name="database.@{database.type}.version" unset="true" />
 
 			<property name="database.type" value="@{database.version}" />
-			<property name="database.@{database.type}.version" value="@{database.version}" />
 
 			<echo append="true" file="test.${env.HOSTNAME}.properties"><![CDATA[
-database.type=@{database.type}
+database.type=@{database.type}]]></echo>
+
+			<if>
+				<not>
+					<equals arg1="@{database.version}" arg2="" />
+				</not>
+				<then>
+					<var name="database.@{database.type}.version" unset="true" />
+
+					<property name="database.@{database.type}.version" value="@{database.version}" />
+
+					<echo append="true" file="test.${env.HOSTNAME}.properties"><![CDATA[
 database.@{database.type}.version=@{database.version}]]></echo>
+				</then>
+			</if>
 
 			<if>
 				<and>
