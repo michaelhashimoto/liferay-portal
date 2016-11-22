@@ -172,7 +172,7 @@ public class DLFileVersionTest {
 
 		fileEntry = DLAppServiceUtil.getFileEntry(fileEntry.getFileEntryId());
 
-		Assert.assertEquals("2.0", fileEntry.getVersion());
+		Assert.assertEquals("2.1", fileEntry.getVersion());
 	}
 
 	@Test
