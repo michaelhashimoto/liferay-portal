@@ -715,7 +715,7 @@ app.server.type=@{app.server.type}]]></echo>
 		<prepare-test-build-dist app.server.type="${axis.variable}" />
 	</target>
 
-	<target name="functional-bundle-tomcat7-mysql55-jdk7">
+	<target name="functional-bundle-tomcat70-mysql55-jdk7">
 		<set-tomcat-version-number liferay.portal.bundle="${test.portal.bundle.version}" />
 
 		<run-functional-test
@@ -747,15 +747,15 @@ app.server.type=@{app.server.type}]]></echo>
 		/>
 	</target>
 
-	<target name="functional-tomcat7-hypersonic20-jdk7">
+	<target name="functional-tomcat70-hypersonic20-jdk7">
 		<run-functional-test app.server.type="tomcat" database.type="hypersonic" />
 	</target>
 
-	<target name="functional-tomcat7-mysql55-jdk7">
+	<target name="functional-tomcat70-mysql55-jdk7">
 		<run-functional-test app.server.type="tomcat" database.type="mysql" database.version="5.5" />
 	</target>
 
-	<target name="functional-tomcat7-mysql56-jdk7">
+	<target name="functional-tomcat70-mysql56-jdk7">
 		<run-functional-test app.server.type="tomcat" database.type="mysql" />
 	</target>
 
@@ -816,7 +816,7 @@ app.server.type=@{app.server.type}]]></echo>
 		/>
 	</target>
 
-	<target name="plugins-functional-tomcat7-mysql55-jdk7">
+	<target name="plugins-functional-tomcat70-mysql55-jdk7">
 		<run-functional-test app.server.type="tomcat" database.type="mysql" database.version="5.5" />
 	</target>
 
