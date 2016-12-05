@@ -87,6 +87,18 @@ public class MissingOverrideCheck extends AbstractCheck {
 			javaClass, new ArrayList<Tuple>());
 
 		for (JavaMethod javaMethod : javaClass.getMethods()) {
+			String javaClassName = javaClass.toString();
+			String javaMethodName = javaMethod.toString();
+
+			if (javaClassName.contains("BaseWebDriverImpl") &&
+				(javaMethodName.contains("assertPartialTextAceEditor") ||
+				javaMethodName.contains("isNotPartialTextAceEditor") ||
+				javaMethodName.contains("isPartialTextAceEditor") ||
+				javaMethodName.contains("waitForPartialTextAceEditor"))) {
+
+				System.out.println(javaClassName + "#" + javaMethod.toString());
+			}
+
 			if (!_hasAnnotation(javaMethod, "Override") &&
 				_isOverrideMethod(
 					javaClass, javaMethod, ancestorJavaClassTuples)) {
