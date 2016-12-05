@@ -1354,6 +1354,12 @@ public class JavaSourceProcessor extends BaseSourceProcessor {
 		if (portalSource) {
 			fileNames = getPortalJavaFiles();
 
+			for (String fileName : fileNames) {
+				if (fileName.contains("BaseWebDriverImpl")) {
+					System.out.println("##\n## " + fileName + "\n##");
+				}
+			}
+
 			_checkRegistryInTestClasses = GetterUtil.getBoolean(
 				System.getProperty(
 					"source.formatter.check.registry.in.test.classes"));
