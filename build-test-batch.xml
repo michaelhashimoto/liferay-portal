@@ -1257,6 +1257,12 @@ app.server.type=@{app.server.type}]]></echo>
 
 							<antcall inheritAll="false" target="prepare-system-ext-properties" />
 
+							<gradle-execute dir="modules/test" task="compileJava">
+								<arg value="-Ddatabase.type=@{database.type}" />
+								<arg value="-Dbuild.exclude.ant.plugin=true" />
+								<arg value="-Dtest.class.group.index=${axis.variable}" />
+							</gradle-execute>
+
 							<if>
 								<equals arg1="@{subrepository.name}" arg2="" />
 								<then>
@@ -1670,6 +1676,12 @@ app.server.type=@{app.server.type}]]></echo>
 	<target name="modules-unit-jdk8">
 		<run-batch-test>
 			<test-action>
+				<gradle-execute dir="modules/test" task="compileJava">
+					<arg value="-Ddatabase.type=@{database.type}" />
+					<arg value="-Dbuild.exclude.ant.plugin=true" />
+					<arg value="-Dtest.class.group.index=${axis.variable}" />
+				</gradle-execute>
+
 				<gradle-execute dir="modules" task="test">
 					<arg value="-Dbuild.exclude.ant.plugin=true" />
 					<arg value="-Dtest.class.group.index=${axis.variable}" />
