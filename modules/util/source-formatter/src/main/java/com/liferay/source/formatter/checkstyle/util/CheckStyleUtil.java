@@ -71,6 +71,8 @@ public class CheckStyleUtil {
 		checker.setModuleClassLoader(classLoader);
 
 		for (File suppressionsFile : suppressionsFiles) {
+			System.out.println(suppressionsFile);
+
 			checker.addFilter(
 				SuppressionsLoader.loadSuppressions(
 					suppressionsFile.getAbsolutePath()));
