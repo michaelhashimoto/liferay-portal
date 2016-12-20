@@ -1,5 +1,6 @@
 <definition component-name="marketplace">
 	<property name="portal.release" value="true" />
+	<property name="portal.upstream" value="true" />
 	<property name="testray.main.component.name" value="Marketplace" />
 	<property name="theme.plugins.includes" value="welcome-theme" />
 	<property name="web.plugins.includes" value="resource-importer-web" />

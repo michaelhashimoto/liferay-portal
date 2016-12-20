@@ -1,6 +1,7 @@
 <definition component-name="portal-tools">
 	<property name="database.bare.enabled" value="true" />
 	<property name="portal.release" value="true" />
+	<property name="portal.upstream" value="true" />
 	<property name="testray.main.component.name" value="Tools" />
 
 	<command name="Smoke" priority="5">
