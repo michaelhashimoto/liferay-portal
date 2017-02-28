@@ -223,6 +223,14 @@ public class GitWorkingDirectory {
 		return _workingDirectory;
 	}
 
+	public Boolean isCentralPullRequestCandidate() throws IOException {
+		if (_centralPullRequestCandidate == null) {
+			_centralPullRequestCandidate = _isCentralPullRequestCandidate();
+		}
+
+		return _centralPullRequestCandidate;
+	}
+
 	public void pushBranchToOrigin(String branchName, String origin)
 		throws GitAPIException {
 
@@ -420,6 +428,66 @@ public class GitWorkingDirectory {
 		return objectJSONObject.getString("sha");
 	}
 
+	private Boolean _isCentralPullRequestCandidate() throws IOException {
+		if (_gitrepoFile == null) {
+			return false;
+		}
+
+		Properties properties = new Properties();
+
+		properties.load(new FileInputStream(_gitrepoFile));
+
+		String mode = properties.getProperty("mode", "push");
+
+		if (!mode.equals("pull")) {
+			return false;
+		}
+
+		String autopull = properties.getProperty("autopull", "false");
+
+		if (!autopull.equals("true")) {
+			return false;
+		}
+
+		String mergedCommit = properties.getProperty("commit", "");
+
+		String upstreamCommit = getUpstreamCommit();
+
+		if (mergedCommit.equals(upstreamCommit)) {
+			StringBuilder sb = new StringBuilder();
+
+			sb.append("SKIPPED: ");
+			sb.append(_repositoryName);
+			sb.append(" already has merged commit https://github.com/");
+			sb.append(_repositoryUsername);
+			sb.append("/");
+			sb.append(_repositoryName);
+			sb.append("/commit/");
+			sb.append(upstreamCommit);
+
+			System.out.println(sb.toString());
+
+			return false;
+		}
+
+		String centralPullRequestURL = getCentralPullRequestURL();
+
+		if (centralPullRequestURL != null) {
+			StringBuilder sb = new StringBuilder();
+
+			sb.append("SKIPPED: ");
+			sb.append(_repositoryName);
+			sb.append(" already has open central pull request ");
+			sb.append(centralPullRequestURL);
+
+			System.out.println(sb.toString());
+
+			return false;
+		}
+
+		return true;
+	}
+
 	private void _setWorkingDirectory(String workingDirectory)
 		throws GitAPIException, IOException {
 
@@ -472,6 +540,7 @@ public class GitWorkingDirectory {
 		SshSessionFactory.setInstance(jschConfigSessionFactory);
 	}
 
+	private Boolean _centralPullRequestCandidate;
 	private String _centralPullRequestURL;
 	private final Git _git;
 	private File _gitDirectory;
