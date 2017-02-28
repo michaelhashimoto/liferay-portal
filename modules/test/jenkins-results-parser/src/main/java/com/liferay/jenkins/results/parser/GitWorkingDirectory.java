@@ -39,6 +39,7 @@ import org.eclipse.jgit.transport.JschConfigSessionFactory;
 import org.eclipse.jgit.transport.OpenSshConfig;
 import org.eclipse.jgit.transport.SshSessionFactory;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 /**
@@ -169,6 +170,14 @@ public class GitWorkingDirectory {
 		deleteBranchCommand.call();
 	}
 
+	public String getCentralPullRequestURL() throws IOException {
+		if (_centralPullRequestURL == null) {
+			_centralPullRequestURL = _getCentralPullRequestURL();
+		}
+
+		return _centralPullRequestURL;
+	}
+
 	public String getCurrentBranch() throws InterruptedException, IOException {
 		_waitForIndexLock();
 
@@ -248,6 +257,38 @@ public class GitWorkingDirectory {
 		addCommand.addFilepattern(fileName);
 
 		addCommand.call();
+	}
+
+	private String _getCentralPullRequestURL() throws IOException {
+		String upstreamCommit = getUpstreamCommit();
+
+		StringBuilder sb = new StringBuilder();
+
+		sb.append("https://api.github.com/repos/");
+		sb.append(_repositoryUsername);
+		sb.append("/");
+		sb.append(_repositoryName);
+		sb.append("/commits/");
+		sb.append(upstreamCommit);
+		sb.append("/statuses");
+
+		JSONArray statusesJSONArray = new JSONArray(
+			JenkinsResultsParserUtil.toString(sb.toString(), true));
+
+		if (statusesJSONArray != null) {
+			for (int i = 0; i < statusesJSONArray.length(); i++) {
+				JSONObject statusesJSONObject = statusesJSONArray.getJSONObject(
+					i);
+
+				String context = statusesJSONObject.getString("context");
+
+				if (context.equals("liferay/central-pull-request")) {
+					return statusesJSONObject.getString("target_url");
+				}
+			}
+		}
+
+		return null;
 	}
 
 	private String _getRepositoryName(
@@ -431,6 +472,7 @@ public class GitWorkingDirectory {
 		SshSessionFactory.setInstance(jschConfigSessionFactory);
 	}
 
+	private String _centralPullRequestURL;
 	private final Git _git;
 	private File _gitDirectory;
 	private final File _gitrepoFile;
