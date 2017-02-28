@@ -17,8 +17,13 @@ package com.liferay.jenkins.results.parser;
 import com.jcraft.jsch.Session;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Properties;
 
 import org.eclipse.jgit.api.AddCommand;
 import org.eclipse.jgit.api.CommitCommand;
@@ -172,6 +177,17 @@ public class GitWorkingDirectory {
 		return _repositoryUsername;
 	}
 
+	public List<GitWorkingDirectory> getSubrepositoryGitWorkingDirectories()
+		throws GitAPIException, InterruptedException, IOException {
+
+		if (_subrepositoryGitWorkingDirectories == null) {
+			_subrepositoryGitWorkingDirectories =
+				_getSubrepositoryGitWorkingDirectories();
+		}
+
+		return _subrepositoryGitWorkingDirectories;
+	}
+
 	public String getUpstreamCommit() throws IOException {
 		if (_upstreamCommit == null) {
 			_upstreamCommit = _getUpstreamCommit();
@@ -253,6 +269,83 @@ public class GitWorkingDirectory {
 		return remote.substring(x, y);
 	}
 
+	private String _getSubrepositoryBranchName() {
+		String subrepositoryBranchName = "master";
+
+		if (subrepositoryBranchName.contains("7.0")) {
+			subrepositoryBranchName = "7.0.x";
+		}
+
+		if (_repositoryBranchName.contains("ee-") ||
+			_repositoryBranchName.contains("-private")) {
+
+			subrepositoryBranchName += "-private";
+		}
+
+		return subrepositoryBranchName;
+	}
+
+	private List<GitWorkingDirectory> _getSubrepositoryGitWorkingDirectories()
+		throws GitAPIException, InterruptedException, IOException {
+
+		List<GitWorkingDirectory> subrepositoryGitWorkingDirectories =
+			new ArrayList<>();
+
+		File modulesDir = new File(_workingDirectory, "modules");
+
+		if (modulesDir.exists()) {
+			List<File> gitrepoFiles = JenkinsResultsParserUtil.findFiles(
+				modulesDir, ".gitrepo");
+
+			for (File gitrepoFile : gitrepoFiles) {
+				String subrepositoryBranchName = _getSubrepositoryBranchName();
+				String subrepositoryName = _getSubrepositoryName(gitrepoFile);
+
+				String subrepositoryPath = _getSubrepositoryPath(
+					subrepositoryName);
+
+				File subrepositoryDir = new File(subrepositoryPath);
+
+				if (subrepositoryDir.exists()) {
+					subrepositoryGitWorkingDirectories.add(
+						new GitWorkingDirectory(
+							subrepositoryPath, subrepositoryBranchName));
+				}
+				else {
+					System.out.println(
+						subrepositoryDir + " is unavailable for " +
+							subrepositoryName);
+				}
+			}
+		}
+
+		return subrepositoryGitWorkingDirectories;
+	}
+
+	private String _getSubrepositoryName(File gitrepoFile) throws IOException {
+		Properties properties = new Properties();
+
+		properties.load(new FileInputStream(gitrepoFile));
+
+		String remote = properties.getProperty("remote");
+
+		int x = remote.indexOf("/") + 1;
+		int y = remote.indexOf(".git");
+
+		return remote.substring(x, y);
+	}
+
+	private String _getSubrepositoryPath(String subrepositoryName) {
+		String subrepositoryPath =
+			_workingDirectory.getParent() + File.separator + subrepositoryName;
+
+		if (!subrepositoryPath.contains("-private")) {
+			subrepositoryPath += "-private";
+		}
+
+		return subrepositoryPath;
+	}
+
 	private String _getUpstreamCommit() throws IOException {
 		StringBuilder sb = new StringBuilder();
 
@@ -329,6 +422,7 @@ public class GitWorkingDirectory {
 	private final String _repositoryBranchName;
 	private final String _repositoryName;
 	private final String _repositoryUsername;
+	private List<GitWorkingDirectory> _subrepositoryGitWorkingDirectories;
 	private String _upstreamCommit;
 	private File _workingDirectory;
 
