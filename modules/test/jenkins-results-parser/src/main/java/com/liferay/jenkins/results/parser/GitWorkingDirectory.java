@@ -49,16 +49,26 @@ public class GitWorkingDirectory {
 	public GitWorkingDirectory(String workingDirectory)
 		throws GitAPIException, InterruptedException, IOException {
 
-		this(workingDirectory, "master");
+		this(workingDirectory, "master", null);
 	}
 
 	public GitWorkingDirectory(
 			String workingDirectory, String repositoryBranchName)
 		throws GitAPIException, InterruptedException, IOException {
 
+		this(workingDirectory, repositoryBranchName, null);
+	}
+
+	public GitWorkingDirectory(
+			String workingDirectory, String repositoryBranchName,
+			File gitrepoFile)
+		throws GitAPIException, InterruptedException, IOException {
+
 		_repositoryBranchName = repositoryBranchName;
 
 		_setWorkingDirectory(workingDirectory);
+
+		_gitrepoFile = gitrepoFile;
 
 		_waitForIndexLock();
 
@@ -163,6 +173,10 @@ public class GitWorkingDirectory {
 		_waitForIndexLock();
 
 		return _repository.getBranch();
+	}
+
+	public File getGitrepoFile() {
+		return _gitrepoFile;
 	}
 
 	public String getRepositoryBranchName() {
@@ -309,7 +323,8 @@ public class GitWorkingDirectory {
 				if (subrepositoryDir.exists()) {
 					subrepositoryGitWorkingDirectories.add(
 						new GitWorkingDirectory(
-							subrepositoryPath, subrepositoryBranchName));
+							subrepositoryPath, subrepositoryBranchName,
+							gitrepoFile));
 				}
 				else {
 					System.out.println(
@@ -418,6 +433,7 @@ public class GitWorkingDirectory {
 
 	private final Git _git;
 	private File _gitDirectory;
+	private final File _gitrepoFile;
 	private final Repository _repository;
 	private final String _repositoryBranchName;
 	private final String _repositoryName;
