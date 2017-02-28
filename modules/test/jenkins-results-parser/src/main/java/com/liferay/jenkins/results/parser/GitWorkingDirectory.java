@@ -34,6 +34,8 @@ import org.eclipse.jgit.transport.JschConfigSessionFactory;
 import org.eclipse.jgit.transport.OpenSshConfig;
 import org.eclipse.jgit.transport.SshSessionFactory;
 
+import org.json.JSONObject;
+
 /**
  * @author Michael Hashimoto
  */
@@ -170,6 +172,14 @@ public class GitWorkingDirectory {
 		return _repositoryUsername;
 	}
 
+	public String getUpstreamCommit() throws IOException {
+		if (_upstreamCommit == null) {
+			_upstreamCommit = _getUpstreamCommit();
+		}
+
+		return _upstreamCommit;
+	}
+
 	public File getWorkingDirectory() {
 		return _workingDirectory;
 	}
@@ -243,6 +253,24 @@ public class GitWorkingDirectory {
 		return remote.substring(x, y);
 	}
 
+	private String _getUpstreamCommit() throws IOException {
+		StringBuilder sb = new StringBuilder();
+
+		sb.append("https://api.github.com/repos/");
+		sb.append(_repositoryUsername);
+		sb.append("/");
+		sb.append(_repositoryName);
+		sb.append("/git/refs/heads/");
+		sb.append(_repositoryBranchName);
+
+		JSONObject branchJSONObject = JenkinsResultsParserUtil.toJSONObject(
+			sb.toString());
+
+		JSONObject objectJSONObject = branchJSONObject.getJSONObject("object");
+
+		return objectJSONObject.getString("sha");
+	}
+
 	private void _setWorkingDirectory(String workingDirectory)
 		throws GitAPIException, IOException {
 
@@ -301,6 +329,7 @@ public class GitWorkingDirectory {
 	private final String _repositoryBranchName;
 	private final String _repositoryName;
 	private final String _repositoryUsername;
+	private String _upstreamCommit;
 	private File _workingDirectory;
 
 }
