@@ -17,8 +17,13 @@ package com.liferay.jenkins.results.parser;
 import com.jcraft.jsch.Session;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Properties;
 
 import org.eclipse.jgit.api.AddCommand;
 import org.eclipse.jgit.api.CommitCommand;
@@ -28,10 +33,14 @@ import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.PushCommand;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.lib.Repository;
+import org.eclipse.jgit.lib.StoredConfig;
 import org.eclipse.jgit.storage.file.FileRepositoryBuilder;
 import org.eclipse.jgit.transport.JschConfigSessionFactory;
 import org.eclipse.jgit.transport.OpenSshConfig;
 import org.eclipse.jgit.transport.SshSessionFactory;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 /**
  * @author Michael Hashimoto
@@ -41,7 +50,26 @@ public class GitWorkingDirectory {
 	public GitWorkingDirectory(String workingDirectory)
 		throws GitAPIException, InterruptedException, IOException {
 
+		this(workingDirectory, "master", null);
+	}
+
+	public GitWorkingDirectory(
+			String workingDirectory, String repositoryBranchName)
+		throws GitAPIException, InterruptedException, IOException {
+
+		this(workingDirectory, repositoryBranchName, null);
+	}
+
+	public GitWorkingDirectory(
+			String workingDirectory, String repositoryBranchName,
+			File gitrepoFile)
+		throws GitAPIException, InterruptedException, IOException {
+
+		_repositoryBranchName = repositoryBranchName;
+
 		_setWorkingDirectory(workingDirectory);
+
+		_gitrepoFile = gitrepoFile;
 
 		_waitForIndexLock();
 
@@ -54,6 +82,10 @@ public class GitWorkingDirectory {
 		_repository = fileRepositoryBuilder.build();
 
 		_git = new Git(_repository);
+
+		_repositoryName = _getRepositoryName(
+			_repositoryBranchName, _repository);
+		_repositoryUsername = _getRepositoryUsername(_repository);
 	}
 
 	public void checkoutBranch(String branchName)
@@ -127,6 +159,34 @@ public class GitWorkingDirectory {
 		createBranchCommand.call();
 	}
 
+	public void createPullRequest(
+			String receiverUserName, String pullRequestBranchName, String title,
+			String body)
+		throws IOException {
+
+		StringBuilder sb = new StringBuilder();
+
+		sb.append("https://api.github.com/repos/");
+		sb.append(receiverUserName);
+		sb.append("/");
+		sb.append(_repositoryName);
+		sb.append("/pulls");
+
+		JSONObject requestJSONObject = new JSONObject();
+
+		requestJSONObject.put("base", _repositoryBranchName);
+		requestJSONObject.put("body", body);
+		requestJSONObject.put(
+			"head", receiverUserName + ":" + pullRequestBranchName);
+		requestJSONObject.put("title", title);
+
+		JSONObject responseJSONObject = JenkinsResultsParserUtil.toJSONObject(
+			sb.toString(), requestJSONObject.toString());
+
+		System.out.println(
+			"Created a pull request at " + responseJSONObject.getString("url"));
+	}
+
 	public void deleteBranch(String branchName) throws GitAPIException {
 		System.out.println("Delete branch " + branchName);
 
@@ -138,14 +198,65 @@ public class GitWorkingDirectory {
 		deleteBranchCommand.call();
 	}
 
+	public String getCentralPullRequestURL() throws IOException {
+		if (_centralPullRequestURL == null) {
+			_centralPullRequestURL = _getCentralPullRequestURL();
+		}
+
+		return _centralPullRequestURL;
+	}
+
 	public String getCurrentBranch() throws InterruptedException, IOException {
 		_waitForIndexLock();
 
 		return _repository.getBranch();
 	}
 
+	public File getGitrepoFile() {
+		return _gitrepoFile;
+	}
+
+	public String getRepositoryBranchName() {
+		return _repositoryBranchName;
+	}
+
+	public String getRepositoryName() {
+		return _repositoryName;
+	}
+
+	public String getRepositoryUsername() {
+		return _repositoryUsername;
+	}
+
+	public List<GitWorkingDirectory> getSubrepositoryGitWorkingDirectories()
+		throws GitAPIException, InterruptedException, IOException {
+
+		if (_subrepositoryGitWorkingDirectories == null) {
+			_subrepositoryGitWorkingDirectories =
+				_getSubrepositoryGitWorkingDirectories();
+		}
+
+		return _subrepositoryGitWorkingDirectories;
+	}
+
+	public String getUpstreamCommit() throws IOException {
+		if (_upstreamCommit == null) {
+			_upstreamCommit = _getUpstreamCommit();
+		}
+
+		return _upstreamCommit;
+	}
+
 	public File getWorkingDirectory() {
 		return _workingDirectory;
+	}
+
+	public Boolean isCentralPullRequestCandidate() throws IOException {
+		if (_centralPullRequestCandidate == null) {
+			_centralPullRequestCandidate = _isCentralPullRequestCandidate();
+		}
+
+		return _centralPullRequestCandidate;
 	}
 
 	public void pushBranchToOrigin(String branchName, String origin)
@@ -182,6 +293,227 @@ public class GitWorkingDirectory {
 		addCommand.addFilepattern(fileName);
 
 		addCommand.call();
+	}
+
+	private String _getCentralPullRequestURL() throws IOException {
+		String upstreamCommit = getUpstreamCommit();
+
+		StringBuilder sb = new StringBuilder();
+
+		sb.append("https://api.github.com/repos/");
+		sb.append(_repositoryUsername);
+		sb.append("/");
+		sb.append(_repositoryName);
+		sb.append("/commits/");
+		sb.append(upstreamCommit);
+		sb.append("/statuses");
+
+		JSONArray statusesJSONArray = new JSONArray(
+			JenkinsResultsParserUtil.toString(sb.toString(), true));
+
+		if (statusesJSONArray != null) {
+			for (int i = 0; i < statusesJSONArray.length(); i++) {
+				JSONObject statusesJSONObject = statusesJSONArray.getJSONObject(
+					i);
+
+				String context = statusesJSONObject.getString("context");
+
+				if (context.equals("liferay/central-pull-request")) {
+					return statusesJSONObject.getString("target_url");
+				}
+			}
+		}
+
+		return null;
+	}
+
+	private String _getRepositoryName(
+		String repositoryBranchName, Repository repository) {
+
+		StoredConfig storedConfig = repository.getConfig();
+
+		String remote = storedConfig.getString("remote", "upstream", "url");
+
+		int x = remote.indexOf("/") + 1;
+		int y = remote.indexOf(".git");
+
+		String repositoryName = remote.substring(x, y);
+
+		if (!repositoryBranchName.contains("ee-") &&
+			!repositoryBranchName.contains("-private")) {
+
+			repositoryName = repositoryName.replace("-ee", "");
+			repositoryName = repositoryName.replace("-private", "");
+		}
+
+		return repositoryName;
+	}
+
+	private String _getRepositoryUsername(Repository repository) {
+		StoredConfig storedConfig = repository.getConfig();
+
+		String remote = storedConfig.getString("remote", "upstream", "url");
+
+		int x = remote.indexOf(":") + 1;
+		int y = remote.indexOf("/");
+
+		return remote.substring(x, y);
+	}
+
+	private String _getSubrepositoryBranchName() {
+		String subrepositoryBranchName = "master";
+
+		if (subrepositoryBranchName.contains("7.0")) {
+			subrepositoryBranchName = "7.0.x";
+		}
+
+		if (_repositoryBranchName.contains("ee-") ||
+			_repositoryBranchName.contains("-private")) {
+
+			subrepositoryBranchName += "-private";
+		}
+
+		return subrepositoryBranchName;
+	}
+
+	private List<GitWorkingDirectory> _getSubrepositoryGitWorkingDirectories()
+		throws GitAPIException, InterruptedException, IOException {
+
+		List<GitWorkingDirectory> subrepositoryGitWorkingDirectories =
+			new ArrayList<>();
+
+		File modulesDir = new File(_workingDirectory, "modules");
+
+		if (modulesDir.exists()) {
+			List<File> gitrepoFiles = JenkinsResultsParserUtil.findFiles(
+				modulesDir, ".gitrepo");
+
+			for (File gitrepoFile : gitrepoFiles) {
+				String subrepositoryBranchName = _getSubrepositoryBranchName();
+				String subrepositoryName = _getSubrepositoryName(gitrepoFile);
+
+				String subrepositoryPath = _getSubrepositoryPath(
+					subrepositoryName);
+
+				File subrepositoryDir = new File(subrepositoryPath);
+
+				if (subrepositoryDir.exists()) {
+					subrepositoryGitWorkingDirectories.add(
+						new GitWorkingDirectory(
+							subrepositoryPath, subrepositoryBranchName,
+							gitrepoFile));
+				}
+				else {
+					System.out.println(
+						subrepositoryDir + " is unavailable for " +
+							subrepositoryName);
+				}
+			}
+		}
+
+		return subrepositoryGitWorkingDirectories;
+	}
+
+	private String _getSubrepositoryName(File gitrepoFile) throws IOException {
+		Properties properties = new Properties();
+
+		properties.load(new FileInputStream(gitrepoFile));
+
+		String remote = properties.getProperty("remote");
+
+		int x = remote.indexOf("/") + 1;
+		int y = remote.indexOf(".git");
+
+		return remote.substring(x, y);
+	}
+
+	private String _getSubrepositoryPath(String subrepositoryName) {
+		String subrepositoryPath =
+			_workingDirectory.getParent() + File.separator + subrepositoryName;
+
+		if (!subrepositoryPath.contains("-private")) {
+			subrepositoryPath += "-private";
+		}
+
+		return subrepositoryPath;
+	}
+
+	private String _getUpstreamCommit() throws IOException {
+		StringBuilder sb = new StringBuilder();
+
+		sb.append("https://api.github.com/repos/");
+		sb.append(_repositoryUsername);
+		sb.append("/");
+		sb.append(_repositoryName);
+		sb.append("/git/refs/heads/");
+		sb.append(_repositoryBranchName);
+
+		JSONObject branchJSONObject = JenkinsResultsParserUtil.toJSONObject(
+			sb.toString());
+
+		JSONObject objectJSONObject = branchJSONObject.getJSONObject("object");
+
+		return objectJSONObject.getString("sha");
+	}
+
+	private Boolean _isCentralPullRequestCandidate() throws IOException {
+		if (_gitrepoFile == null) {
+			return false;
+		}
+
+		Properties properties = new Properties();
+
+		properties.load(new FileInputStream(_gitrepoFile));
+
+		String mode = properties.getProperty("mode", "push");
+
+		if (!mode.equals("pull")) {
+			return false;
+		}
+
+		String autopull = properties.getProperty("autopull", "false");
+
+		if (!autopull.equals("true")) {
+			return false;
+		}
+
+		String mergedCommit = properties.getProperty("commit", "");
+
+		String upstreamCommit = getUpstreamCommit();
+
+		if (mergedCommit.equals(upstreamCommit)) {
+			StringBuilder sb = new StringBuilder();
+
+			sb.append("SKIPPED: ");
+			sb.append(_repositoryName);
+			sb.append(" already has merged commit https://github.com/");
+			sb.append(_repositoryUsername);
+			sb.append("/");
+			sb.append(_repositoryName);
+			sb.append("/commit/");
+			sb.append(upstreamCommit);
+
+			System.out.println(sb.toString());
+
+			return false;
+		}
+
+		String centralPullRequestURL = getCentralPullRequestURL();
+
+		if (centralPullRequestURL != null) {
+			StringBuilder sb = new StringBuilder();
+
+			sb.append("SKIPPED: ");
+			sb.append(_repositoryName);
+			sb.append(" already has open central pull request ");
+			sb.append(centralPullRequestURL);
+
+			System.out.println(sb.toString());
+
+			return false;
+		}
+
+		return true;
 	}
 
 	private void _setWorkingDirectory(String workingDirectory)
@@ -236,9 +568,17 @@ public class GitWorkingDirectory {
 		SshSessionFactory.setInstance(jschConfigSessionFactory);
 	}
 
+	private Boolean _centralPullRequestCandidate;
+	private String _centralPullRequestURL;
 	private final Git _git;
 	private File _gitDirectory;
+	private final File _gitrepoFile;
 	private final Repository _repository;
+	private final String _repositoryBranchName;
+	private final String _repositoryName;
+	private final String _repositoryUsername;
+	private List<GitWorkingDirectory> _subrepositoryGitWorkingDirectories;
+	private String _upstreamCommit;
 	private File _workingDirectory;
 
 }
