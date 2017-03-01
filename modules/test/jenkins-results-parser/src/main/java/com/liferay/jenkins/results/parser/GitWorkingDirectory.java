@@ -159,6 +159,34 @@ public class GitWorkingDirectory {
 		createBranchCommand.call();
 	}
 
+	public void createPullRequest(
+			String receiverUserName, String pullRequestBranchName, String title,
+			String body)
+		throws IOException {
+
+		StringBuilder sb = new StringBuilder();
+
+		sb.append("https://api.github.com/repos/");
+		sb.append(receiverUserName);
+		sb.append("/");
+		sb.append(_repositoryName);
+		sb.append("/pulls");
+
+		JSONObject requestJSONObject = new JSONObject();
+
+		requestJSONObject.put("base", _repositoryBranchName);
+		requestJSONObject.put("body", body);
+		requestJSONObject.put(
+			"head", receiverUserName + ":" + pullRequestBranchName);
+		requestJSONObject.put("title", title);
+
+		JSONObject responseJSONObject = JenkinsResultsParserUtil.toJSONObject(
+			sb.toString(), requestJSONObject.toString());
+
+		System.out.println(
+			"Created a pull request at " + responseJSONObject.getString("url"));
+	}
+
 	public void deleteBranch(String branchName) throws GitAPIException {
 		System.out.println("Delete branch " + branchName);
 
