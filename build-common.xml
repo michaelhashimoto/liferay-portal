@@ -698,6 +698,7 @@ Please set the environment variable ANT_OPTS to the recommended value of
 	</macrodef>
 
 	<macrodef name="gradle-execute">
+		<attribute default="${basedir}" name="dir" />
 		<attribute default="true" name="failonerror" />
 		<attribute default="true" name="forcedcacheenabled" />
 		<attribute name="task" />
@@ -716,7 +717,7 @@ Please set the environment variable ANT_OPTS to the recommended value of
 				</else>
 			</if>
 
-			<exec executable="${project.dir}/tools/gradle/gradlew${gradlew.suffix}" failonerror="@{failonerror}">
+			<exec dir="@{dir}" executable="${project.dir}/tools/gradle/gradlew${gradlew.suffix}" failonerror="@{failonerror}">
 				<args />
 				<arg value="--init-script=${project.dir}/tools/gradle/init.gradle" />
 				<arg value="--no-daemon" />
