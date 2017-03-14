@@ -63,6 +63,11 @@ public class SearchResultUtilJournalArticleTest
 	}
 
 	@Test
+	public void testDamnThisFails() throws Exception {
+		Assert.assertTrue(false);
+	}
+
+	@Test
 	public void testJournalArticleWithDefectiveIndexer() throws Exception {
 		Mockito.doThrow(
 			IllegalArgumentException.class
