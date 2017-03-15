@@ -24,6 +24,7 @@ import java.util.Hashtable;
 import java.util.Properties;
 
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -60,6 +61,11 @@ public class BuildTest extends BaseJenkinsResultsParserTestCase {
 	@After
 	public void tearDown() throws Exception {
 		JenkinsResultsParserUtil.setBuildProperties((Hashtable<?, ?>)null);
+	}
+
+	@Test
+	public void testFailRandomThings() throws Exception {
+		Assert.assertTrue(false);
 	}
 
 	@Test
