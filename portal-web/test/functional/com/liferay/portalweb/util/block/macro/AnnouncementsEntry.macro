@@ -1,14 +1,14 @@
 <definition>
 	<command name="addPG">
-		<execute function="AssertClick#assertTextClickAtAndWait" locator1="PGAnnouncements#NAVIGATION_MANAGE_ENTRIES" value1="Manage Entries" />
+		<execute function="AssertClick#assertTextClickAt" locator1="PGAnnouncements#NAVIGATION_MANAGE_ENTRIES" value1="Manage Entries" />
 
-		<execute function="Select#selectAndWait" locator1="PGAnnouncementsManageentries#DISTRIBUTION_SCOPE_SELECT" value1="${distributionScope}" />
-		<execute function="AssertClick#assertValueClickAtAndWait" locator1="PGAnnouncementsManageentries#ADD_ENTRY_BUTTON" value1="Add Entry" />
+		<execute function="Select" locator1="PGAnnouncementsManageentries#DISTRIBUTION_SCOPE_SELECT" value1="${distributionScope}" />
+		<execute function="AssertClick#assertValueClickAt" locator1="PGAnnouncementsManageentries#ADD_ENTRY_BUTTON" value1="Add Entry" />
 
 		<execute function="Type" locator1="PGAnnouncementsAddentry#TITLE_FIELD" value1="${entryTitle}" />
 		<execute function="Type#typeCKEditorWaitForCKEditor" locator1="PGAnnouncementsAddentry#CONTENT_FIELD" value1="${entryContent}" />
 		<execute function="Type" locator1="PGAnnouncementsAddentry#URL_FIELD" value1="${entryURL}" />
-		<execute function="AssertClick#assertValueClickAtAndWait" locator1="PGAnnouncementsAddentry#SAVE_BUTTON" value1="Save" />
+		<execute function="AssertClick#assertValueClickAt" locator1="PGAnnouncementsAddentry#SAVE_BUTTON" value1="Save" />
 	</command>
 
 	<command name="deletePG">
@@ -28,7 +28,7 @@
 		<execute function="Type" locator1="PGAnnouncementsAddentry#TITLE_FIELD" value1="${entryTitleEdit}" />
 		<execute function="Type" locator1="PGAnnouncementsAddentry#URL_FIELD" value1="${entryURLEdit}" />
 		<execute function="Type#typeCKEditorWaitForCKEditor" locator1="PGAnnouncementsAddentry#CONTENT_FIELD" value1="${entryContentEdit}" />
-		<execute function="AssertClick#assertValueClickAtAndWait" locator1="PGAnnouncementsAddentry#SAVE_BUTTON" value1="Save" />
+		<execute function="AssertClick#assertValueClickAt" locator1="PGAnnouncementsAddentry#SAVE_BUTTON" value1="Save" />
 	</command>
 
 	<command name="tearDownPG">
@@ -49,9 +49,9 @@
 		<execute function="AssertTextEquals" locator1="PGAnnouncements#ENTRY_TITLE_1" value1="${entryTitle}" />
 		<execute function="AssertTextEquals" locator1="PGAnnouncements#ENTRY_SCOPE_1" value1="${distributionScope}" />
 		<execute function="AssertTextEquals" locator1="PGAnnouncements#ENTRY_CONTENT_1" value1="${distributionScope} ${entryContent}" />
-		<execute function="AssertClick#assertTextClickAtAndWait" locator1="PGAnnouncements#NAVIGATION_MANAGE_ENTRIES" value1="Manage Entries" />
+		<execute function="AssertClick#assertTextClickAt" locator1="PGAnnouncements#NAVIGATION_MANAGE_ENTRIES" value1="Manage Entries" />
 
-		<execute function="Select#selectAndWait" locator1="PGAnnouncementsManageentries#DISTRIBUTION_SCOPE_SELECT" value1="${distributionScope}" />
+		<execute function="Select" locator1="PGAnnouncementsManageentries#DISTRIBUTION_SCOPE_SELECT" value1="${distributionScope}" />
 		<execute function="AssertTextEquals" locator1="PGAnnouncementsManageentries#ENTRY_TABLE_TITLE_1" value1="${entryTitle}" />
 		<execute function="AssertTextEquals" locator1="PGAnnouncementsManageentries#ENTRY_TABLE_TYPE_1" value1="${distributionScope}" />
 	</command>

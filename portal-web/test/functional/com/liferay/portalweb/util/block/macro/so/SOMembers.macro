@@ -1,6 +1,6 @@
 <definition>
 	<command name="confirmMemberInvite">
-		<execute function="Click#textClickAtAndWait" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
+		<execute function="Click#textClickAt" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
 		<execute function="AssertElementPresent#assertElementPresent" locator1="SOUserBar#NOTIFICATION" />
 		<execute function="AssertTextEquals" locator1="SOUserBar#NOTIFICATION_MENU_COUNT" value1="1" />
 		<execute function="MouseOver" locator1="SOUserBar#NOTIFICATION" />
@@ -12,7 +12,7 @@
 	</command>
 
 	<command name="ignoreMemberInvite">
-		<execute function="Click#textClickAtAndWait" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
+		<execute function="Click#textClickAt" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
 		<execute function="AssertElementPresent#assertElementPresent" locator1="SOUserBar#NOTIFICATION" />
 		<execute function="AssertTextEquals" locator1="SOUserBar#NOTIFICATION_MENU_COUNT" value1="1" />
 		<execute function="MouseOver" locator1="SOUserBar#NOTIFICATION" />
@@ -43,7 +43,7 @@
 	</command>
 
 	<command name="viewConfirmMemberInvite">
-		<execute function="Click#textClickAtAndWait" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
+		<execute function="Click#textClickAt" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
 		<execute function="Click#pauseClickAt" locator1="SOUserBar#GO_TO" />
 		<execute function="Select" locator1="SOUserBar#GO_TO_SITE_CATEGORY_SELECT" value1="My Sites" />
 		<execute function="AssertTextNotEquals#assertNotPartialText" locator1="SOUserBar#GO_TO_SITE_LIST" value1="Liferay" />
@@ -102,7 +102,7 @@
 				<execute function="AssertElementPresent" locator1="SOSiteHome#RECENT_DOWNLOADS_CLOSE" />
 				<execute function="AssertElementPresent" locator1="SOSiteHome#EVENTS_DISPLAY_OPTIONS" />
 				<execute function="AssertElementPresent" locator1="SOSiteHome#EVENTS_DISPLAY_CLOSE" />
-				<execute function="Click#textClickAtAndWait" locator1="SOSiteHome#NAVIGATION_MEMBERS" value1="Members" />
+				<execute function="Click#textClickAt" locator1="SOSiteHome#NAVIGATION_MEMBERS" value1="Members" />
 
 				<execute function="Type" locator1="SOMembers#MEMBERS_LIST_SEARCH" value1="${userEmailAddress}" />
 				<execute function="AssertTextEquals" locator1="SOMembers#MEMBERS_LIST_NAME" value1="${userLastName}, ${userFirstName}" />
@@ -116,19 +116,19 @@
 				</execute>
 
 				<execute function="Type" locator1="CPSites#SEARCH_FIELD" value1="${siteName}" />
-				<execute function="AssertClick#assertValueClickAtAndWait" locator1="CPSites#SEARCH_BUTTON" value1="Search" />
+				<execute function="AssertClick#assertValueClickAt" locator1="CPSites#SEARCH_BUTTON" value1="Search" />
 				<execute function="AssertTextEquals#assertPartialText" locator1="CPSites#SITE_TABLE_NAME" value1="${siteName}" />
 				<execute function="AssertClick" locator1="CPSites#SITE_TABLE_ACTIONS" value1="Actions" />
 				<execute function="AssertClick" locator1="CPSites#SITE_MENULIST_MANAGE_MEMBERSHIPS" value1="Manage Memberships" />
 
 				<execute function="Type" locator1="CPSitememberships#USER_SEARCH_FIELD" value1="${userScreenName}" />
-				<execute function="AssertClick#assertValueClickAtAndWait" locator1="CPSitememberships#USER_SEARCH_BUTTON" value1="Search" />
+				<execute function="AssertClick#assertValueClickAt" locator1="CPSitememberships#USER_SEARCH_BUTTON" value1="Search" />
 				<execute function="AssertTextEquals" locator1="CPSitememberships#USER_TABLE_NAME_1" value1="${userName}" />
 				<execute function="AssertTextEquals" locator1="CPSitememberships#USER_TABLE_SCREEN_NAME_1" value1="${userScreenName}" />
 				<execute function="AssertTextEquals" locator1="CPSitememberships#USER_TABLE_SITE_ROLES_1" value1="${siteRoleInvite}" />
 			</then>
 			<else>
-				<execute function="Click#textClickAtAndWait" locator1="SOSiteHome#NAVIGATION_MEMBERS" value1="Members" />
+				<execute function="Click#textClickAt" locator1="SOSiteHome#NAVIGATION_MEMBERS" value1="Members" />
 
 				<execute macro="SOMembers#viewMember" />
 			</else>
@@ -136,7 +136,7 @@
 	</command>
 
 	<command name="viewIgnoreMemberInvite">
-		<execute function="Click#textClickAtAndWait" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
+		<execute function="Click#textClickAt" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
 		<execute function="Click#pauseClickAt" locator1="SOUserBar#GO_TO" />
 		<execute function="Select" locator1="SOUserBar#GO_TO_SITE_CATEGORY_SELECT" value1="My Sites" />
 		<execute function="AssertTextNotEquals#assertNotPartialText" locator1="SOUserBar#GO_TO_SITE_LIST" value1="Liferay" />
@@ -165,7 +165,7 @@
 		<execute function="AssertTextEquals" locator1="SOSiteHome#NAVIGATION_BLOGS" value1="Blogs" />
 		<execute function="AssertTextEquals" locator1="SOSiteHome#NAVIGATION_WIKI" value1="Wiki" />
 		<execute function="AssertTextEquals" locator1="SOSiteHome#NAVIGATION_MEMBERS" value1="Members" />
-		<execute function="Click#textClickAtAndWait" locator1="SOSiteHome#NAVIGATION_MEMBERS" value1="Members" />
+		<execute function="Click#textClickAt" locator1="SOSiteHome#NAVIGATION_MEMBERS" value1="Members" />
 
 		<execute macro="SOMembers#viewNonMember" />
 	</command>

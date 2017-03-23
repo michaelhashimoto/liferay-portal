@@ -4,7 +4,7 @@
 
 		<execute function="Type" locator1="CPBlogsAdd#TITLE_FIELD" value1="${entryTitle}" />
 		<execute function="Type#typeCKEditorWaitForCKEditor" locator1="CPBlogsAdd#CONTENT_FIELD" value1="${entryContent}" />
-		<execute function="AssertClick#assertValueClickAtAndWaitCKEditor" locator1="CPBlogsAdd#PUBLISH_BUTTON" value1="Publish" />
+		<execute function="AssertClick#assertValueClickAtCKEditor" locator1="CPBlogsAdd#PUBLISH_BUTTON" value1="Publish" />
 
 		<var name="key_entryTitle" value="${entryTitle}" />
 
@@ -21,7 +21,7 @@
 
 		<execute function="Type" locator1="CPBlogsAdd#TITLE_FIELD" value1="${entryTitle}" />
 		<execute function="Type#typeCKEditorWaitForCKEditor" locator1="CPBlogsAdd#CONTENT_FIELD" value1="${entryContent}" />
-		<execute function="AssertClick#assertValueClickAtAndWaitCKEditor" locator1="CPBlogsAdd#SUBMIT_FOR_PUBLICATION_BUTTON" value1="Submit for Publication" />
+		<execute function="AssertClick#assertValueClickAtCKEditor" locator1="CPBlogsAdd#SUBMIT_FOR_PUBLICATION_BUTTON" value1="Submit for Publication" />
 
 		<var name="key_entryTitle" value="${entryTitle}" />
 
@@ -40,7 +40,7 @@
 	</command>
 
 	<command name="addPG">
-		<execute function="AssertClick#assertValueClickAtAndWait" locator1="PGBlogs#ADD_ENTRY_BUTTON" value1="Add Blog Entry" />
+		<execute function="AssertClick#assertValueClickAt" locator1="PGBlogs#ADD_ENTRY_BUTTON" value1="Add Blog Entry" />
 
 		<if>
 			<isset var="number" />
@@ -49,7 +49,7 @@
 
 				<execute function="Type" locator1="PGBlogsAdd#TITLE_FIELD" value1="${entryTitle}${number}" />
 				<execute function="Type#typeCKEditorWaitForCKEditor" locator1="PGBlogsAdd#CONTENT_FIELD" value1="${entryContent}${number}" />
-				<execute function="AssertClick#assertValueClickAtAndWaitCKEditor" locator1="PGBlogsAdd#PUBLISH_BUTTON" value1="Publish" />
+				<execute function="AssertClick#assertValueClickAtCKEditor" locator1="PGBlogsAdd#PUBLISH_BUTTON" value1="Publish" />
 
 				<execute function="AssertTextEquals#assertText" locator1="PGBlogs#SUCCESS_MESSAGE" value1="Your request completed successfully." />
 				<execute function="AssertTextEquals" locator1="PGBlogs#ENTRY_TITLE_INCREMENT" value1="${entryTitle}${number}" />
@@ -58,7 +58,7 @@
 			<else>
 				<execute function="Type" locator1="PGBlogsAdd#TITLE_FIELD" value1="${entryTitle}" />
 				<execute function="Type#typeCKEditorWaitForCKEditor" locator1="PGBlogsAdd#CONTENT_FIELD" value1="${entryContent}" />
-				<execute function="AssertClick#assertValueClickAtAndWaitCKEditor" locator1="PGBlogsAdd#PUBLISH_BUTTON" value1="Publish" />
+				<execute function="AssertClick#assertValueClickAtCKEditor" locator1="PGBlogsAdd#PUBLISH_BUTTON" value1="Publish" />
 
 				<execute function="AssertTextEquals#assertText" locator1="PGBlogs#SUCCESS_MESSAGE" value1="Your request completed successfully." />
 				<execute function="AssertTextEquals" locator1="PGBlogs#ENTRY_TITLE_1" value1="${entryTitle}" />
@@ -87,7 +87,7 @@
 		<execute function="AssertClick" locator1="PGBlogs#ENTRY_EDIT_1" value1="Edit" />
 		<execute function="Type" locator1="PGBlogsEdit#TITLE_FIELD" value1="${entryTitleEdit}" />
 		<execute function="Type#typeCKEditorWaitForCKEditor" locator1="PGBlogsEdit#CONTENT_FIELD" value1="${entryContentEdit}" />
-		<execute function="AssertClick#assertValueClickAtAndWaitCKEditor" locator1="PGBlogsEdit#PUBLISH_BUTTON" value1="Publish" />
+		<execute function="AssertClick#assertValueClickAtCKEditor" locator1="PGBlogsEdit#PUBLISH_BUTTON" value1="Publish" />
 
 		<execute function="AssertTextEquals#assertText" locator1="PGBlogs#SUCCESS_MESSAGE" value1="Your request completed successfully." />
 		<execute function="AssertTextEquals" locator1="PGBlogs#ENTRY_TITLE_1" value1="${entryTitleEdit}" />

@@ -15,7 +15,7 @@
 				<execute function="UploadCommonFile" locator1="PGDocumentsandmediaAdddocument#FILE_FIELD" value1="${dmDocumentFile}" />
 				<execute function="Type" locator1="PGDocumentsandmediaAdddocument#TITLE_FIELD" value1="${dmDocumentTitle}${number}" />
 				<execute function="Type" locator1="PGDocumentsandmediaAdddocument#DESCRIPTION_FIELD" value1="${dmDocumentDescription}${number}" />
-				<execute function="AssertClick#assertValueClickAtAndWait" locator1="PGDocumentsandmediaAdddocument#PUBLISH_BUTTON" value1="Publish" />
+				<execute function="AssertClick#assertValueClickAt" locator1="PGDocumentsandmediaAdddocument#PUBLISH_BUTTON" value1="Publish" />
 			</then>
 			<else>
 				<execute function="Click" locator1="PGDocumentsandmedia#ENTRIES_FOLDER" />
@@ -26,7 +26,7 @@
 				<execute function="UploadCommonFile" locator1="PGDocumentsandmediaAdddocument#FILE_FIELD" value1="${dmDocumentFile}" />
 				<execute function="Type" locator1="PGDocumentsandmediaAdddocument#TITLE_FIELD" value1="${dmDocumentTitle}" />
 				<execute function="Type" locator1="PGDocumentsandmediaAdddocument#DESCRIPTION_FIELD" value1="${dmDocumentDescription}" />
-				<execute function="AssertClick#assertValueClickAtAndWait" locator1="PGDocumentsandmediaAdddocument#PUBLISH_BUTTON" value1="Publish" />
+				<execute function="AssertClick#assertValueClickAt" locator1="PGDocumentsandmediaAdddocument#PUBLISH_BUTTON" value1="Publish" />
 			</else>
 		</if>
 
@@ -34,21 +34,21 @@
 	</command>
 
 	<command name="addPGviaDMD">
-		<execute function="AssertClick#assertTextClickAtAndWait" locator1="PGDocumentlibrarydisplay#FOLDERS_TABLE_NAME_1" value1="${dmdFolderName}" />
+		<execute function="AssertClick#assertTextClickAt" locator1="PGDocumentlibrarydisplay#FOLDERS_TABLE_NAME_1" value1="${dmdFolderName}" />
 
 		<execute function="Click" locator1="PGDocumentlibrarydisplayFolder#SUBFOLDER_MENU_ADD_DOCUMENT" value1="${dmdDocumentTitle}" />
 
 		<execute function="SelectFrame#selectFrameWaitForScript" locator1="PGDocumentlibrarydisplayAdddocument#SELECT_DOCUMENT_TYPE_IFRAME" />
-		<execute function="AssertClick#assertTextClickAtAndWait" locator1="PGDocumentlibrarydisplayAdddocument#SELECT_DOCUMENT_TYPE_BASIC_DOCUMENT" value1="Basic Document" />
+		<execute function="AssertClick#assertTextClickAt" locator1="PGDocumentlibrarydisplayAdddocument#SELECT_DOCUMENT_TYPE_BASIC_DOCUMENT" value1="Basic Document" />
 		<execute function="SelectFrame" />
 		<execute function="UploadCommonFile" locator1="PGDocumentlibrarydisplayAdddocument#DOCUMENT_FILE_FIELD" value1="${dmdDocumentFile}" />
 		<execute function="Type" locator1="PGDocumentlibrarydisplayAdddocument#DOCUMENT_TITLE_FIELD" value1="${dmdDocumentTitle}" />
-		<execute function="AssertClick#assertValueClickAtAndWait" locator1="PGDocumentlibrarydisplayAdddocument#PUBLISH_BUTTON" value1="Publish" />
+		<execute function="AssertClick#assertValueClickAt" locator1="PGDocumentlibrarydisplayAdddocument#PUBLISH_BUTTON" value1="Publish" />
 
 		<execute function="AssertTextEquals" locator1="PGDocumentlibrarydisplayFolder#SUCCESS_MESSAGE" value1="Your request completed successfully." />
 		<execute function="AssertTextEquals" locator1="PGDocumentlibrarydisplayFolder#DOCUMENTS_TABLE_NAME_1" value1="${dmdDocumentTitle}" />
 		<execute function="AssertTextEquals" locator1="PGDocumentlibrarydisplayFolder#DOCUMENTS_TABLE_SIZE_1" value1="${dmdDocumentSize}" />
-		<execute function="AssertClick#assertTextClickAtAndWait" locator1="PGDocumentlibrarydisplayFolder#DOCUMENTS_TABLE_NAME_1" value1="${dmdDocumentTitle}" />
+		<execute function="AssertClick#assertTextClickAt" locator1="PGDocumentlibrarydisplayFolder#DOCUMENTS_TABLE_NAME_1" value1="${dmdDocumentTitle}" />
 
 		<execute function="AssertTextEquals" locator1="PGDocumentlibrarydisplayDocument#DOCUMENT_HEADER_TITLE" value1="${dmdDocumentTitle}" />
 		<execute function="AssertTextEquals" locator1="PGDocumentlibrarydisplayDocument#DOCUMENT_TITLE" value1="${dmdDocumentTitle}" />
@@ -315,7 +315,7 @@
 		<execute function="SelectWindow" locator1="PGDocumentsandmediaMovefiles#SELECT_POP_UP" />
 		<execute function="AssertClick" locator1="PGDocumentsandmediaMovefiles#SELECT_POP_UP_CHOOSE_2" value1="Choose" />
 		<execute function="SelectWindow" />
-		<execute function="AssertClick#assertValueClickAtAndWait" locator1="PGDocumentsandmediaMovefiles#MOVE" value1="Move" />
+		<execute function="AssertClick#assertValueClickAt" locator1="PGDocumentsandmediaMovefiles#MOVE" value1="Move" />
 
 		<execute function="AssertTextEquals" locator1="PGDocumentsandmedia#SUCCESS_MESSAGE" value1="Your request completed successfully." />
 	</command>
@@ -440,13 +440,13 @@
 
 	<command name="searchNoPGviaDMD">
 		<execute function="Type" locator1="PGDocumentlibrarydisplaySearch#SEARCH_FIELD" value1="${dmdDocumentTitleSearch}" />
-		<execute function="AssertClick#assertValueClickAtAndWait" locator1="PGDocumentlibrarydisplaySearch#SEARCH_BUTTON" value1="Search" />
+		<execute function="AssertClick#assertValueClickAt" locator1="PGDocumentlibrarydisplaySearch#SEARCH_BUTTON" value1="Search" />
 		<execute function="AssertTextEquals" locator1="PGDocumentlibrarydisplaySearch#INFO_MESSAGE" value1="No documents were found that matched the keywords: ${dmdDocumentTitleSearch}." />
 	</command>
 
 	<command name="searchPGviaDMD">
 		<execute function="Type" locator1="PGDocumentlibrarydisplay#SEARCH_FIELD" value1="${dmdDocumentTitleSearch}" />
-		<execute function="AssertClick#assertValueClickAtAndWait" locator1="PGDocumentlibrarydisplay#SEARCH_BUTTON" value1="Search" />
+		<execute function="AssertClick#assertValueClickAt" locator1="PGDocumentlibrarydisplay#SEARCH_BUTTON" value1="Search" />
 
 		<execute function="AssertTextEquals" locator1="PGDocumentlibrarydisplaySearch#SEARCH_RESULTS_FOLDER" value1="${dmdFolderName}" />
 		<execute function="AssertTextEquals" locator1="PGDocumentlibrarydisplaySearch#SEARCH_RESULTS_DOCUMENT" value1="${dmdDocumentTitle}" />
@@ -456,7 +456,7 @@
 		<execute function="AssertTextEquals" locator1="PGDocumentsandmedia#BREADCRUMB_HOME" value1="Home" />
 		<execute function="Type" locator1="PGDocumentsandmedia#TOOLBAR_SEARCH_FIELD" value1="${dmDocumentTitle}" />
 		<execute function="AssertClick" locator1="PGDocumentsandmedia#TOOLBAR_SEARCH_BUTTON" value1="Search" />
-		<execute function="AssertClick#assertTextClickAtAndWait" locator1="PGDocumentsandmedia#ENTRIES_DOCUMENT_SEARCH_TITLE" value1="${dmDocumentTitle}" />
+		<execute function="AssertClick#assertTextClickAt" locator1="PGDocumentsandmedia#ENTRIES_DOCUMENT_SEARCH_TITLE" value1="${dmDocumentTitle}" />
 
 		<execute function="AssertTextEquals" locator1="PGDocumentsandmediaDocument#TOOLBAR_DOWNLOAD_BUTTON" value1="Download" />
 		<execute function="AssertTextEquals" locator1="PGDocumentsandmediaDocument#TOOLBAR_EDIT_BUTTON" value1="Edit" />
@@ -504,7 +504,7 @@
 		<execute function="AssertTextEquals" locator1="PGDocumentsandmedia#BREADCRUMB_HOME" value1="Home" />
 		<execute function="Type" locator1="PGDocumentsandmedia#TOOLBAR_SEARCH_FIELD" value1="${dmDocumentTitle}" />
 		<execute function="AssertClick" locator1="PGDocumentsandmedia#TOOLBAR_SEARCH_BUTTON" value1="Search" />
-		<execute function="AssertClick#assertTextClickAtAndWait" locator1="PGDocumentsandmedia#ENTRIES_DOCUMENT_SEARCH_TITLE" value1="${dmDocumentTitle}" />
+		<execute function="AssertClick#assertTextClickAt" locator1="PGDocumentsandmedia#ENTRIES_DOCUMENT_SEARCH_TITLE" value1="${dmDocumentTitle}" />
 
 		<execute function="AssertTextEquals" locator1="PGDocumentsandmediaDocument#TOOLBAR_DOWNLOAD_BUTTON" value1="Download" />
 
@@ -547,7 +547,7 @@
 		<execute function="AssertTextEquals" locator1="PGDocumentsandmedia#BREADCRUMB_HOME" value1="Home" />
 		<execute function="Type" locator1="PGDocumentsandmedia#TOOLBAR_SEARCH_FIELD" value1="${dmDocumentTitle}" />
 		<execute function="AssertClick" locator1="PGDocumentsandmedia#TOOLBAR_SEARCH_BUTTON" value1="Search" />
-		<execute function="AssertClick#assertTextClickAtAndWait" locator1="PGDocumentsandmedia#ENTRIES_DOCUMENT_SEARCH_TITLE" value1="${dmDocumentTitle} (Draft)" />
+		<execute function="AssertClick#assertTextClickAt" locator1="PGDocumentsandmedia#ENTRIES_DOCUMENT_SEARCH_TITLE" value1="${dmDocumentTitle} (Draft)" />
 
 		<execute function="AssertTextEquals" locator1="PGDocumentsandmediaDocument#TOOLBAR_DOWNLOAD_BUTTON" value1="Download" />
 		<execute function="AssertTextEquals" locator1="PGDocumentsandmediaDocument#TOOLBAR_EDIT_BUTTON" value1="Edit" />

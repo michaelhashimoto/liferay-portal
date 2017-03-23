@@ -118,7 +118,7 @@
 			<var name="userName" value="${userName}" />
 		</execute>
 
-		<execute function="Click#textClickAtAndWait" locator1="SODashboard#NAVIGATION_CONTACTS_CENTER" value1="Contacts Center" />
+		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_CONTACTS_CENTER" value1="Contacts Center" />
 
 		<execute macro="SOProfile#viewConnectionProfile">
 			<var name="filterType" value="Connections" />
@@ -139,7 +139,7 @@
 			<var name="userName" value="${adminName}" />
 		</execute>
 
-		<execute function="Click#textClickAtAndWait" locator1="SODashboard#NAVIGATION_CONTACTS_CENTER" value1="Contacts Center" />
+		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_CONTACTS_CENTER" value1="Contacts Center" />
 
 		<execute macro="SOProfile#viewConnectionProfile">
 			<var name="filterType" value="Connections" />
@@ -339,7 +339,7 @@
 			<var name="userName" value="${userName}" />
 		</execute>
 
-		<execute function="Click#textClickAtAndWait" locator1="SODashboard#NAVIGATION_CONTACTS_CENTER" value1="Contacts Center" />
+		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_CONTACTS_CENTER" value1="Contacts Center" />
 
 		<execute macro="SOProfile#viewConnectionProfile">
 			<var name="filterType" value="Connections" />
@@ -360,7 +360,7 @@
 			<var name="userName" value="${adminName}" />
 		</execute>
 
-		<execute function="Click#textClickAtAndWait" locator1="SODashboard#NAVIGATION_CONTACTS_CENTER" value1="Contacts Center" />
+		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_CONTACTS_CENTER" value1="Contacts Center" />
 
 		<execute macro="SOProfile#viewConnectionProfile">
 			<var name="filterType" value="Connections" />
@@ -374,7 +374,7 @@
 			<var name="userName" value="${adminName}" />
 		</execute>
 
-		<execute function="Click#textClickAtAndWait" locator1="SODashboard#NAVIGATION_CONTACTS_CENTER" value1="Contacts Center" />
+		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_CONTACTS_CENTER" value1="Contacts Center" />
 
 		<execute macro="SOProfile#disconnectFromConnection">
 			<var name="filterType" value="Connections" />
@@ -395,7 +395,7 @@
 			<var name="userName" value="${userName}" />
 		</execute>
 
-		<execute function="Click#textClickAtAndWait" locator1="SODashboard#NAVIGATION_CONTACTS_CENTER" value1="Contacts Center" />
+		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_CONTACTS_CENTER" value1="Contacts Center" />
 
 		<execute macro="SOProfile#viewNoConnection">
 			<var name="adminEmailAddress" value="${adminEmailAddress}" />
@@ -423,9 +423,9 @@
 		<execute function="AssertTextEquals" locator1="SOProfile#CONTACTS_INFO_MESSAGE" value1="${adminName} has no contacts." />
 		<execute function="AssertTextNotPresent" value1="${userName}" />
 
-		<execute function="Click#textClickAtAndWait" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
+		<execute function="Click#textClickAt" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
 
-		<execute function="Click#textClickAtAndWait" locator1="SODashboard#NAVIGATION_CONTACTS_CENTER" value1="Contacts Center" />
+		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_CONTACTS_CENTER" value1="Contacts Center" />
 
 		<execute function="Type" locator1="SOContactscenter#CONTACTS_LIST_SEARCH" value1="${userFirstName}" />
 		<execute function="Select" locator1="SOContactscenter#CONTACTS_LIST_FILTER" value1="Connections" />
@@ -464,17 +464,17 @@
 		<execute function="AssertTextEquals" locator1="SOProfile#CONTACTS_INFO_MESSAGE" value1="${adminName} has no contacts." />
 		<execute function="AssertTextNotPresent" value1="${userName}" />
 
-		<execute function="Click#textClickAtAndWait" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
+		<execute function="Click#textClickAt" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
 
-		<execute function="Click#textClickAtAndWait" locator1="SODashboard#NAVIGATION_CONTACTS_CENTER" value1="Contacts Center" />
+		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_CONTACTS_CENTER" value1="Contacts Center" />
 
 		<execute function="Type" locator1="SOContactscenter#CONTACTS_LIST_SEARCH" value1="${userFirstName}" />
 		<execute function="Select" locator1="SOContactscenter#CONTACTS_LIST_FILTER" value1="Connections" />
 		<execute function="AssertTextEquals" locator1="SOContactscenter#CONTACTS_LIST_EMPTY" value1="There are no results." />
 
-		<execute function="Click#textClickAtAndWait" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
+		<execute function="Click#textClickAt" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
 
-		<execute function="Click#textClickAtAndWait" locator1="SODashboard#NAVIGATION_CONTACTS_CENTER" value1="Contacts Center" />
+		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_CONTACTS_CENTER" value1="Contacts Center" />
 
 		<execute function="Type" locator1="SOContactscenter#CONTACTS_LIST_SEARCH" value1="${userFirstName}" />
 		<execute function="Select" locator1="SOContactscenter#CONTACTS_LIST_FILTER" value1="All" />
@@ -521,9 +521,9 @@
 		<execute function="AssertTextEquals" locator1="SOProfile#CONTACTS_NAME" value1="${userName}" />
 		<execute function="AssertTextNotPresent" value1="${adminName} has no contacts." />
 
-		<execute function="Click#textClickAtAndWait" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
+		<execute function="Click#textClickAt" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
 
-		<execute function="Click#textClickAtAndWait" locator1="SODashboard#NAVIGATION_CONTACTS_CENTER" value1="Contacts Center" />
+		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_CONTACTS_CENTER" value1="Contacts Center" />
 
 		<execute function="Type" locator1="SOContactscenter#CONTACTS_LIST_SEARCH" value1="${userFirstName}" />
 		<execute function="Select" locator1="SOContactscenter#CONTACTS_LIST_FILTER" value1="Connections" />

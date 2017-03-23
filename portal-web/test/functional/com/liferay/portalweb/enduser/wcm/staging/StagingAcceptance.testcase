@@ -93,7 +93,7 @@
 
 		<var name="key_pageName" value="${pageName}" />
 
-		<execute function="AssertClick#assertTextClickAtAndWait" locator1="Home#PAGE" value1="${pageName}" />
+		<execute function="AssertClick#assertTextClickAt" locator1="Home#PAGE" value1="${pageName}" />
 		<execute function="AssertElementPresent" locator1="Home#PORTLET_1" />
 	</command>
 

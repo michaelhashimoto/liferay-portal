@@ -12,7 +12,7 @@
 
 		<execute function="AssertTextEquals" locator1="SOConfigurations#USER_TABLE_SCREEN_NAME_1" value1="${userScreenName}" />
 		<execute function="Check" locator1="SOConfigurations#USER_TABLE_CHECKBOX_1" />
-		<execute function="Click#valueClickAtAndWait" locator1="SOConfigurations#SAVE_BUTTON" value1="Save" />
+		<execute function="Click#valueClickAt" locator1="SOConfigurations#SAVE_BUTTON" value1="Save" />
 
 		<execute function="AssertTextEquals" locator1="CPRolesAssignmembersUsers#SUCCESS_MESSAGE" />
 
@@ -32,7 +32,7 @@
 
 		<execute function="AssertTextEquals" locator1="SOConfigurations#USER_TABLE_SCREEN_NAME_1" value1="${userScreenName}" />
 		<execute function="Uncheck" locator1="SOConfigurations#USER_TABLE_CHECKBOX_1" />
-		<execute function="Click#valueClickAtAndWait" locator1="SOConfigurations#SAVE_BUTTON" value1="Save" />
+		<execute function="Click#valueClickAt" locator1="SOConfigurations#SAVE_BUTTON" value1="Save" />
 
 		<execute function="AssertTextEquals" locator1="CPRolesAssignmembersUsers#SUCCESS_MESSAGE" />
 	</command>

@@ -5,14 +5,14 @@
 		</execute>
 
 		<execute function="AssertClick#pauseAssertTextClickAt" locator1="PGDocumentlibrarydisplay#OPTIONS_WRENCH_ICON" value1="Options" />
-		<execute function="AssertClick#assertTextClickAtAndWait" locator1="PGDocumentlibrarydisplay#OPTIONS_MENULIST_CONFIGURATION" value1="Configuration" />
+		<execute function="AssertClick#assertTextClickAt" locator1="PGDocumentlibrarydisplay#OPTIONS_MENULIST_CONFIGURATION" value1="Configuration" />
 
 		<execute function="SelectFrame#selectFrameWaitForScript" locator1="PGDocumentlibrarydisplayConfiguration#CONFIGURATION_IFRAME" />
 		<execute function="Check#clickAtConfiguration" locator1="PGDocumentlibrarydisplayConfiguration#SETUP_DISPLAY_SETTINGS_SHOW_ACTIONS_CHECKBOX" />
 		<execute function="Check#clickAtConfiguration" locator1="PGDocumentlibrarydisplayConfiguration#SETUP_DISPLAY_SETTINGS_SHOW_FOLDER_MENU_CHECKBOX" />
 		<execute function="Check#clickAtConfiguration" locator1="PGDocumentlibrarydisplayConfiguration#SETUP_DISPLAY_SETTINGS_SHOW_NAVIGATION_LINKS_CHECKBOX" />
 		<execute function="Check#clickAtConfiguration" locator1="PGDocumentlibrarydisplayConfiguration#SETUP_DISPLAY_SETTINGS_SHOW_SEARCH_CHECKBOX" />
-		<execute function="AssertClick#assertValueClickAtAndWait" locator1="PGDocumentlibrarydisplayAddfolder#SAVE_BUTTON" value1="Save" />
+		<execute function="AssertClick#assertValueClickAt" locator1="PGDocumentlibrarydisplayAddfolder#SAVE_BUTTON" value1="Save" />
 		<execute function="AssertTextEquals" locator1="PGDocumentlibrarydisplayConfiguration#SUCCESS_MESSAGE" value1="You have successfully updated the setup." />
 		<execute function="AssertChecked" locator1="PGDocumentlibrarydisplayConfiguration#SETUP_DISPLAY_SETTINGS_SHOW_ACTIONS_CHECKBOX" />
 		<execute function="AssertChecked" locator1="PGDocumentlibrarydisplayConfiguration#SETUP_DISPLAY_SETTINGS_SHOW_FOLDER_MENU_CHECKBOX" />

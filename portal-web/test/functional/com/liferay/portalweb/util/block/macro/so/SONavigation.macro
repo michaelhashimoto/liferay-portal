@@ -1,6 +1,6 @@
 <definition>
 	<command name="gotoDashboardTasks">
-		<execute function="Click#textClickAtAndWait" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
+		<execute function="Click#textClickAt" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
 
 		<execute function="AssertClick" locator1="SODashboard#NAVIGATION_TASKS" value1="Tasks" />
 	</command>
@@ -8,6 +8,6 @@
 	<command name="gotoSiteDocuments">
 		<execute macro="Page#openURL" />
 
-		<execute function="Click#textClickAtAndWait" locator1="SOSiteHome#NAVIGATION_DOCUMENTS" value1="Documents" />
+		<execute function="Click#textClickAt" locator1="SOSiteHome#NAVIGATION_DOCUMENTS" value1="Documents" />
 	</command>
 </definition>

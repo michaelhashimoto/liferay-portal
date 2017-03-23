@@ -46,7 +46,7 @@
 		<execute macro="Page#openURL" />
 
 		<execute function="MouseOver#textMouseOverClickDockbar" locator1="Dockbar#GO_TO" value1="Go to" />
-		<execute function="AssertClick#assertTextClickAtAndWait" locator1="Dockbar#GO_TO_CONTROL_PANEL" value1="Control Panel" />
+		<execute function="AssertClick#assertTextClickAt" locator1="Dockbar#GO_TO_CONTROL_PANEL" value1="Control Panel" />
 
 		<if>
 			<isset var="siteScopeName" />

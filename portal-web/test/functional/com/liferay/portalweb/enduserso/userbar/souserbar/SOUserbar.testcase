@@ -61,7 +61,7 @@
 			<var name="userName" value="Joe Bloggs" />
 		</execute>
 
-		<execute function="AssertClick#assertTextClickAtAndWait" locator1="SODashboard#NAVIGATION_TASKS" value1="Tasks" />
+		<execute function="AssertClick#assertTextClickAt" locator1="SODashboard#NAVIGATION_TASKS" value1="Tasks" />
 
 		<execute macro="SODashboard#viewLinkTasks" />
 	</command>

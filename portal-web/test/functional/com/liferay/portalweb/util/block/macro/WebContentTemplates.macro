@@ -1,8 +1,8 @@
 <definition>
 	<command name="addCP">
-		<execute function="AssertClick#assertTextClickAtAndWait" locator1="CPWebcontent#NAVIGATION_TEMPLATES" value1="Templates" />
+		<execute function="AssertClick#assertTextClickAt" locator1="CPWebcontent#NAVIGATION_TEMPLATES" value1="Templates" />
 
-		<execute function="AssertClick#assertValueClickAtAndWait" locator1="CPWebcontentTemplates#ADD_TEMPLATE" value1="Add Template" />
+		<execute function="AssertClick#assertValueClickAt" locator1="CPWebcontentTemplates#ADD_TEMPLATE" value1="Add Template" />
 
 		<execute function="Type" locator1="CPWebcontentTemplatesAddtemplate#NAME_FIELD" value1="${templateName}" />
 		<execute function="Type" locator1="CPWebcontentTemplatesAddtemplate#DESCRIPTION_FIELD" value1="${templateDescription}" />
@@ -27,7 +27,7 @@
 
 		<execute function="SelectFrame" locator1="CPWebcontentTemplatesAddtemplateEditor#EDITOR_IFRAME" />
 		<execute function="Type#typeWaitForNotValueNull" locator1="CPWebcontentTemplatesAddtemplateEditor#EDITOR_FIELD" value1="$text.getData()" />
-		<execute function="AssertClick#assertValueClickAtAndWait" locator1="CPWebcontentTemplatesAddtemplateEditor#UPDATE_BUTTON" value1="Update" />
+		<execute function="AssertClick#assertValueClickAt" locator1="CPWebcontentTemplatesAddtemplateEditor#UPDATE_BUTTON" value1="Update" />
 
 		<execute function="SelectFrame" />
 
@@ -44,7 +44,7 @@
 			<var name="portletName" value="Web Content" />
 		</execute>
 
-		<execute function="AssertClick#assertTextClickAtAndWait" locator1="CPWebcontent#NAVIGATION_TEMPLATES" value1="Templates" />
+		<execute function="AssertClick#assertTextClickAt" locator1="CPWebcontent#NAVIGATION_TEMPLATES" value1="Templates" />
 
 		<if>
 			<condition function="IsElementPresent#isVisible" locator1="CPWebcontentTemplates#TEMPLATE_TABLE_ALL_CHECKBOX" />

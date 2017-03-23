@@ -1,15 +1,15 @@
 <definition>
 	<command name="addCP">
-		<execute function="AssertClick#assertTextClickAtAndWait" locator1="CPWebcontent#NAVIGATION_STRUCTURES" value1="Structures" />
+		<execute function="AssertClick#assertTextClickAt" locator1="CPWebcontent#NAVIGATION_STRUCTURES" value1="Structures" />
 
-		<execute function="AssertClick#assertValueClickAtAndWait" locator1="CPWebcontentStructures#ADD_STRUCTURE_BUTTON" value1="Add Structure" />
+		<execute function="AssertClick#assertValueClickAt" locator1="CPWebcontentStructures#ADD_STRUCTURE_BUTTON" value1="Add Structure" />
 
 		<execute function="Type" locator1="CPWebcontentStructuresAddstructure#NAME_FIELD" value1="${structureName}" />
 		<execute function="Type" locator1="CPWebcontentStructuresAddstructure#DESCRIPTION_FIELD" value1="${structureDescription}" />
-		<execute function="AssertClick#assertValueClickAtAndWait" locator1="CPWebcontentStructuresAddstructure#ADD_ROW_BUTTON" value1="Add Row" />
+		<execute function="AssertClick#assertValueClickAt" locator1="CPWebcontentStructuresAddstructure#ADD_ROW_BUTTON" value1="Add Row" />
 		<execute function="Type" locator1="CPWebcontentStructuresAddstructure#ROW_NAME_1" value1="text" />
 		<execute function="Select" locator1="CPWebcontentStructuresAddstructure#ROW_TYPE_SELECT_1" value1="Text" />
-		<execute function="AssertClick#assertValueClickAtAndWait" locator1="CPWebcontentStructuresAddstructure#SAVE_BUTTON" value1="Save" />
+		<execute function="AssertClick#assertValueClickAt" locator1="CPWebcontentStructuresAddstructure#SAVE_BUTTON" value1="Save" />
 
 		<execute function="AssertTextEquals" locator1="CPWebcontentStructures#SUCCESS_MESSAGE" value1="Your request completed successfully." />
 		<execute function="AssertElementPresent" locator1="CPWebcontentStructures#STRUCTURE_TABLE_ID_1" />
@@ -22,7 +22,7 @@
 			<var name="portletName" value="Web Content" />
 		</execute>
 
-		<execute function="AssertClick#assertTextClickAtAndWait" locator1="CPWebcontent#NAVIGATION_STRUCTURES" value1="Structures" />
+		<execute function="AssertClick#assertTextClickAt" locator1="CPWebcontent#NAVIGATION_STRUCTURES" value1="Structures" />
 
 		<if>
 			<condition function="IsElementPresent#isVisible" locator1="CPWebcontentStructures#STRUCTURE_TABLE_ALL_CHECKBOX" />

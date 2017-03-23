@@ -13,7 +13,7 @@
 	<command name="viewMyPostsPG">
 		<var name="key_threadSubject" value="${threadSubject}" />
 
-		<execute function="AssertClick#assertTextClickAtAndWait" locator1="PGMessageboards#NAVIGATION_MY_POSTS" value1="My Posts" />
+		<execute function="AssertClick#assertTextClickAt" locator1="PGMessageboards#NAVIGATION_MY_POSTS" value1="My Posts" />
 
 		<execute function="Click" locator1="SOUserBar#TOGGLE_DOCKBAR" />
 
@@ -37,7 +37,7 @@
 		<execute function="AssertTextEquals" locator1="PGMessageboardsMyposts#THREAD_TABLE_POSTS" value1="1" />
 		<execute function="AssertTextEquals#assertPartialText" locator1="PGMessageboardsMyposts#THREAD_TABLE_LAST_POST" value1="By: ${userName}" />
 		<execute function="AssertElementPresent" locator1="PGMessageboardsMyposts#THREAD_TABLE_ACTIONS" />
-		<execute function="AssertClick#assertTextClickAtAndWait" locator1="PGMessageboardsMyposts#THREAD_TABLE_THREAD" value1="${threadSubject}" />
+		<execute function="AssertClick#assertTextClickAt" locator1="PGMessageboardsMyposts#THREAD_TABLE_THREAD" value1="${threadSubject}" />
 
 		<execute function="AssertTextEquals" locator1="SOForums#BREADCRUMB_PORTLET_TITLE" value1="BREADCRUMB" />
 		<execute function="AssertTextEquals" locator1="SOForums#MESSAGE_BOARDS_PORTLET_TITLE" value1="MESSAGE BOARDS" />
@@ -119,7 +119,7 @@
 	<command name="viewRecentPostsPG">
 		<var name="key_threadSubject" value="${threadSubject}" />
 
-		<execute function="AssertClick#assertTextClickAtAndWait" locator1="PGMessageboards#NAVIGATION_RECENT_POSTS" value1="Recent Posts" />
+		<execute function="AssertClick#assertTextClickAt" locator1="PGMessageboards#NAVIGATION_RECENT_POSTS" value1="Recent Posts" />
 
 		<execute function="Click" locator1="SOUserBar#TOGGLE_DOCKBAR" />
 
@@ -143,7 +143,7 @@
 		<execute function="AssertTextEquals" locator1="PGMessageboardsMyposts#THREAD_TABLE_POSTS" value1="1" />
 		<execute function="AssertTextEquals#assertPartialText" locator1="PGMessageboardsMyposts#THREAD_TABLE_LAST_POST" value1="By: ${userName}" />
 		<execute function="AssertElementPresent" locator1="PGMessageboardsMyposts#THREAD_TABLE_ACTIONS" />
-		<execute function="AssertClick#assertTextClickAtAndWait" locator1="PGMessageboardsMyposts#THREAD_TABLE_THREAD" value1="${threadSubject}" />
+		<execute function="AssertClick#assertTextClickAt" locator1="PGMessageboardsMyposts#THREAD_TABLE_THREAD" value1="${threadSubject}" />
 
 		<execute function="Click" locator1="SOUserBar#TOGGLE_DOCKBAR" />
 

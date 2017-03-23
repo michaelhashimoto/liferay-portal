@@ -35,11 +35,11 @@
 			<var name="portletName" value="Users and Organizations" />
 		</execute>
 
-		<execute function="AssertClick#assertTextClickAtAndWait" locator1="CPUsersandorganizations#SEARCH_ALL_USERS" value1="Search All Users" />
+		<execute function="AssertClick#assertTextClickAt" locator1="CPUsersandorganizations#SEARCH_ALL_USERS" value1="Search All Users" />
 
 		<execute macro="CPUsersandorganizationsViewusers#showBasicSearch" />
 		<execute function="Type" locator1="CPUsersandorganizationsViewusers#BASIC_SEARCH_FIELD" value1="${userScreenName}" />
-		<execute function="AssertClick#assertValueClickAtAndWait" locator1="CPUsersandorganizationsViewusers#BASIC_SEARCH_BUTTON" value1="Search" />
+		<execute function="AssertClick#assertValueClickAt" locator1="CPUsersandorganizationsViewusers#BASIC_SEARCH_BUTTON" value1="Search" />
 		<execute function="AssertTextEquals" locator1="CPUsersandorganizationsViewusers#USER_TABLE_SCREEN_NAME_1" value1="${userScreenName}" />
 		<execute function="Click" locator1="CPUsersandorganizationsViewusers#USER_TABLE_SCREEN_NAME_1" value1="${userScreenName}" />
 
@@ -134,14 +134,14 @@
 		<execute function="Type" locator1="PGLogin#EMAIL_ADDRESS_FIELD" value1="${userEmailAddress}" />
 		<execute function="Type" locator1="PGLogin#PASSWORD_FIELD" value1="${password}" />
 		<execute function="Click" locator1="PGLogin#REMEMBER_ME_CHECKBOX" />
-		<execute function="AssertClick#assertValueClickAtAndWait" locator1="PGLogin#SIGN_IN_BUTTON" value1="Sign In" />
+		<execute function="AssertClick#assertValueClickAt" locator1="PGLogin#SIGN_IN_BUTTON" value1="Sign In" />
 
 		<if>
 			<condition function="IsElementPresent" locator1="PGLoginNewpassword#PASSWORD_FIELD" />
 			<then>
 				<execute function="Type" locator1="PGLoginNewpassword#PASSWORD_FIELD" value1="test" />
 				<execute function="Type" locator1="PGLoginNewpassword#ENTER_AGAIN_FIELD" value1="test" />
-				<execute function="AssertClick#assertValueClickAtAndWait" locator1="PGLoginNewpassword#SAVE_BUTTON" value1="Save" />
+				<execute function="AssertClick#assertValueClickAt" locator1="PGLoginNewpassword#SAVE_BUTTON" value1="Save" />
 			</then>
 		</if>
 
@@ -149,7 +149,7 @@
 			<condition function="IsElementPresent" locator1="PGLoginPasswordreminder#ANSWER_FIELD" />
 			<then>
 				<execute function="Type" locator1="PGLoginPasswordreminder#ANSWER_FIELD" value1="test" />
-				<execute function="AssertClick#assertValueClickAtAndWait" locator1="PGLoginPasswordreminder#SAVE_BUTTON" value1="Save" />
+				<execute function="AssertClick#assertValueClickAt" locator1="PGLoginPasswordreminder#SAVE_BUTTON" value1="Save" />
 			</then>
 		</if>
 	</command>
@@ -159,7 +159,7 @@
 			<condition function="IsElementPresent" locator1="SOUserBar#USER_NAME" />
 			<then>
 				<execute function="Click" locator1="SOUserBar#USER_NAME" />
-				<execute function="AssertClick#assertTextClickAtAndWait" locator1="SOUserBar#USER_MENU_SIGN_OUT" value1="Sign Out" />
+				<execute function="AssertClick#assertTextClickAt" locator1="SOUserBar#USER_MENU_SIGN_OUT" value1="Sign Out" />
 			</then>
 		</if>
 	</command>

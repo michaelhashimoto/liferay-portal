@@ -114,9 +114,9 @@
 			<var name="userScreenName" value="${userScreenName}" />
 		</execute>
 
-		<execute function="Click#textClickAtAndWait" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
+		<execute function="Click#textClickAt" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
 
-		<execute function="Click#textClickAtAndWait" locator1="SODashboard#NAVIGATION_CONTACTS_CENTER" value1="Contacts Center" />
+		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_CONTACTS_CENTER" value1="Contacts Center" />
 
 		<execute function="Type" locator1="SOContactscenter#CONTACTS_LIST_SEARCH" value1="${userFirstName}" />
 		<execute function="Select" locator1="SOContactscenter#CONTACTS_LIST_FILTER" value1="Connections" />
@@ -148,17 +148,17 @@
 			<var name="userEmailAddress" value="${adminEmailAddress}" />
 		</execute>
 
-		<execute function="Click#textClickAtAndWait" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
+		<execute function="Click#textClickAt" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
 
-		<execute function="Click#textClickAtAndWait" locator1="SODashboard#NAVIGATION_CONTACTS_CENTER" value1="Contacts Center" />
+		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_CONTACTS_CENTER" value1="Contacts Center" />
 
 		<execute function="Type" locator1="SOContactscenter#CONTACTS_LIST_SEARCH" value1="${userFirstName}" />
 		<execute function="Select" locator1="SOContactscenter#CONTACTS_LIST_FILTER" value1="Connections" />
 		<execute function="AssertTextEquals" locator1="SOContactscenter#CONTACTS_LIST_EMPTY" value1="There are no results." />
 
-		<execute function="Click#textClickAtAndWait" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
+		<execute function="Click#textClickAt" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
 
-		<execute function="Click#textClickAtAndWait" locator1="SODashboard#NAVIGATION_CONTACTS_CENTER" value1="Contacts Center" />
+		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_CONTACTS_CENTER" value1="Contacts Center" />
 
 		<execute function="Type" locator1="SOContactscenter#CONTACTS_LIST_SEARCH" value1="${userFirstName}" />
 		<execute function="Select" locator1="SOContactscenter#CONTACTS_LIST_FILTER" value1="All" />
@@ -198,9 +198,9 @@
 			<var name="userEmailAddress" value="${adminEmailAddress}" />
 		</execute>
 
-		<execute function="Click#textClickAtAndWait" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
+		<execute function="Click#textClickAt" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
 
-		<execute function="Click#textClickAtAndWait" locator1="SODashboard#NAVIGATION_CONTACTS_CENTER" value1="Contacts Center" />
+		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_CONTACTS_CENTER" value1="Contacts Center" />
 
 		<execute function="Type" locator1="SOContactscenter#CONTACTS_LIST_SEARCH" value1="${userFirstName}" />
 		<execute function="Select" locator1="SOContactscenter#CONTACTS_LIST_FILTER" value1="Connections" />
@@ -233,9 +233,9 @@
 			<var name="userEmailAddress" value="${userEmailAddress}" />
 		</execute>
 
-		<execute function="Click#textClickAtAndWait" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
+		<execute function="Click#textClickAt" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
 
-		<execute function="Click#textClickAtAndWait" locator1="SODashboard#NAVIGATION_CONTACTS_CENTER" value1="Contacts Center" />
+		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_CONTACTS_CENTER" value1="Contacts Center" />
 
 		<execute function="Type" locator1="SOContactscenter#CONTACTS_LIST_SEARCH" value1="${adminFirstName}" />
 		<execute function="Select" locator1="SOContactscenter#CONTACTS_LIST_FILTER" value1="Following" />
@@ -247,9 +247,9 @@
 			<var name="adminName" value="${adminName}" />
 		</execute>
 
-		<execute function="Click#textClickAtAndWait" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
+		<execute function="Click#textClickAt" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
 
-		<execute function="Click#textClickAtAndWait" locator1="SODashboard#NAVIGATION_CONTACTS_CENTER" value1="Contacts Center" />
+		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_CONTACTS_CENTER" value1="Contacts Center" />
 
 		<execute function="Type" locator1="SOContactscenter#CONTACTS_LIST_SEARCH" value1="${adminFirstName}" />
 		<execute function="Select" locator1="SOContactscenter#CONTACTS_LIST_FILTER" value1="Following" />
@@ -273,9 +273,9 @@
 			<var name="userScreenName" value="${userScreenName}" />
 		</execute>
 
-		<execute function="Click#textClickAtAndWait" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
+		<execute function="Click#textClickAt" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
 
-		<execute function="Click#textClickAtAndWait" locator1="SODashboard#NAVIGATION_CONTACTS_CENTER" value1="Contacts Center" />
+		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_CONTACTS_CENTER" value1="Contacts Center" />
 
 		<execute function="Pause" value1="1000" />
 		<execute function="Select" locator1="SOContactscenter#CONTACTS_LIST_FILTER" value1="All" />
@@ -394,11 +394,11 @@
 			<var name="userEmailAddress" value="${adminEmailAddress}" />
 		</execute>
 
-		<execute function="Click#textClickAtAndWait" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
+		<execute function="Click#textClickAt" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
 		<execute function="AssertElementPresent#assertElementPresent" locator1="SOUserBar#NOTIFICATION" />
 		<execute function="AssertTextEquals" locator1="SOUserBar#NOTIFICATION_MENU_COUNT" value1="6" />
 		<execute function="MouseOver" locator1="SOUserBar#NOTIFICATION" />
-		<execute function="AssertClick#assertPartialTextClickAtAndWait" locator1="SOUserBar#NOTIFICATION_MENU_VIEW_ALL" value1="View All" />
+		<execute function="AssertClick#assertPartialTextClickAt" locator1="SOUserBar#NOTIFICATION_MENU_VIEW_ALL" value1="View All" />
 
 		<var name="row" value="1" />
 

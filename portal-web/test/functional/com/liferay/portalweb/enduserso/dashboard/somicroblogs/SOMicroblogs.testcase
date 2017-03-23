@@ -214,9 +214,9 @@
 			<var name="userName" value="${userName}" />
 		</execute>
 
-		<execute function="Click#textClickAtAndWait" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
+		<execute function="Click#textClickAt" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
 
-		<execute function="AssertClick#assertTextClickAtAndWait" locator1="SOActivities#NAVIGATION_CONNECTIONS" value1="Connections" />
+		<execute function="AssertClick#assertTextClickAt" locator1="SOActivities#NAVIGATION_CONNECTIONS" value1="Connections" />
 
 		<execute macro="SOActivities#viewMicroblogsNotViewableByEveryoneActivityEntry">
 			<var name="userFirstName" value="${microblogsEntryAuthorFirstName}" />
@@ -265,9 +265,9 @@
 			<var name="userEmailAddress" value="${userEmailAddress}" />
 		</execute>
 
-		<execute function="Click#textClickAtAndWait" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
+		<execute function="Click#textClickAt" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
 
-		<execute function="Click#textClickAtAndWait" locator1="SODashboard#NAVIGATION_MICROBLOGS" value1="Microblogs" />
+		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_MICROBLOGS" value1="Microblogs" />
 
 		<execute macro="SOMicroblogs#addMicroblogsEntryComment">
 			<var name="microblogsEntryAuthorFirstName" value="${microblogsEntryAuthorFirstName}" />
@@ -403,7 +403,7 @@
 			<var name="microblogsEntryCommentContent" value="${microblogsEntryCommentContent}" />
 		</execute>
 
-		<execute function="Click#textClickAtAndWait" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
+		<execute function="Click#textClickAt" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
 
 		<execute macro="SOActivities#viewMicroblogsCommentActivityEntry">
 			<var name="commentCount" value="1" />
@@ -424,11 +424,11 @@
 			<var name="microblogsEntryCommentContent" value="${microblogsEntryCommentContent} [@${adminScreenName}]" />
 		</execute>
 
-		<execute function="Click#textClickAtAndWait" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
+		<execute function="Click#textClickAt" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
 
-		<execute function="Click#textClickAtAndWait" locator1="SODashboard#NAVIGATION_MICROBLOGS" value1="Microblogs" />
+		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_MICROBLOGS" value1="Microblogs" />
 
-		<execute function="AssertClick#assertTextClickAtAndWait" locator1="SOMicroblogs#TAB_MENTIONS" value1="Mentions" />
+		<execute function="AssertClick#assertTextClickAt" locator1="SOMicroblogs#TAB_MENTIONS" value1="Mentions" />
 
 		<execute macro="SOMicroblogs#viewMicroblogsEntryAuthor">
 			<var name="microblogsEntryAuthorFirstName" value="${userFirstName}" />
@@ -485,9 +485,9 @@
 			<var name="adminName" value="${adminName}" />
 		</execute>
 
-		<execute function="Click#textClickAtAndWait" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
+		<execute function="Click#textClickAt" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
 
-		<execute function="AssertClick#assertTextClickAtAndWait" locator1="SOActivities#NAVIGATION_FOLLOWING" value1="Following" />
+		<execute function="AssertClick#assertTextClickAt" locator1="SOActivities#NAVIGATION_FOLLOWING" value1="Following" />
 
 		<execute macro="SOActivities#viewMicroblogsNotViewableByEveryoneActivityEntry">
 			<var name="userFirstName" value="${microblogsEntryAuthorFirstName}" />
@@ -537,9 +537,9 @@
 			<var name="userEmailAddress" value="${userEmailAddress}" />
 		</execute>
 
-		<execute function="Click#textClickAtAndWait" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
+		<execute function="Click#textClickAt" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
 
-		<execute function="Click#textClickAtAndWait" locator1="SODashboard#NAVIGATION_MICROBLOGS" value1="Microblogs" />
+		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_MICROBLOGS" value1="Microblogs" />
 
 		<execute macro="SOMicroblogs#addMicroblogsEntryComment">
 			<var name="microblogsEntryCommentContent" value="${microblogsEntryCommentContent}" />
@@ -598,9 +598,9 @@
 			<var name="microblogsEntryContent" value="${microblogsEntryContent}" />
 		</execute>
 
-		<execute function="Click#textClickAtAndWait" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
+		<execute function="Click#textClickAt" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
 
-		<execute function="Click#textClickAtAndWait" locator1="SODashboard#NAVIGATION_MICROBLOGS" value1="Microblogs" />
+		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_MICROBLOGS" value1="Microblogs" />
 
 		<execute macro="SOMicroblogs#deleteMicroblogsEntry" />
 
@@ -644,7 +644,7 @@
 			<var name="microblogsEntryContent" value="${microblogsEntryContent}" />
 		</execute>
 
-		<execute function="Click#textClickAtAndWait" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
+		<execute function="Click#textClickAt" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
 
 		<execute function="AssertClick" locator1="SOActivities#NAVIGATION_ME" value1="Me" />
 
@@ -726,11 +726,11 @@
 			<var name="number" value="03" />
 		</execute>
 
-		<execute function="Click#textClickAtAndWait" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
+		<execute function="Click#textClickAt" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
 
-		<execute function="Click#textClickAtAndWait" locator1="SODashboard#NAVIGATION_MICROBLOGS" value1="Microblogs" />
+		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_MICROBLOGS" value1="Microblogs" />
 
-		<execute function="AssertClick#assertTextClickAtAndWait" locator1="SOMicroblogs#TAB_TIMELINE" value1="Timeline" />
+		<execute function="AssertClick#assertTextClickAt" locator1="SOMicroblogs#TAB_TIMELINE" value1="Timeline" />
 
 		<execute function="Pause" value1="1000" />
 

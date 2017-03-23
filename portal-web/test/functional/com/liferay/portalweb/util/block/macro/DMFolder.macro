@@ -46,10 +46,10 @@
 	</command>
 
 	<command name="addPGviaDMD">
-		<execute function="AssertClick#assertTextClickAtAndWait" locator1="PGDocumentlibrarydisplay#FOLDER_MENU_ADD_FOLDER" value1="Add Folder" />
+		<execute function="AssertClick#assertTextClickAt" locator1="PGDocumentlibrarydisplay#FOLDER_MENU_ADD_FOLDER" value1="Add Folder" />
 
 		<execute function="Type" locator1="PGDocumentlibrarydisplayAddfolder#FOLDER_NAME" value1="${dmdFolderName}" />
-		<execute function="AssertClick#assertValueClickAtAndWait" locator1="PGDocumentlibrarydisplayAddfolder#SAVE_BUTTON" value1="Save" />
+		<execute function="AssertClick#assertValueClickAt" locator1="PGDocumentlibrarydisplayAddfolder#SAVE_BUTTON" value1="Save" />
 
 		<execute function="AssertTextEquals" locator1="PGDocumentlibrarydisplay#SUCCESS_MESSAGE" value1="Your request completed successfully." />
 		<execute function="AssertTextEquals" locator1="PGDocumentlibrarydisplay#FOLDERS_TABLE_NAME_1" value1="${dmdFolderName}" />

@@ -1,6 +1,6 @@
 <definition>
 	<command name="addPG">
-		<execute function="AssertClick#assertValueClickAtAndWait" locator1="PGMessageboards#ADD_CATEGORY_BUTTON" value1="Add Category" />
+		<execute function="AssertClick#assertValueClickAt" locator1="PGMessageboards#ADD_CATEGORY_BUTTON" value1="Add Category" />
 
 		<if>
 			<isset var="number" />
@@ -8,11 +8,11 @@
 				<var name="number" value="${number}" />
 
 				<execute function="Type" locator1="PGMessageboardsAddcategory#NAME_FIELD" value1="${categoryName}${number}" />
-				<execute function="AssertClick#assertValueClickAtAndWait" locator1="PGMessageboardsAddcategory#SAVE_BUTTON" value1="Save" />
+				<execute function="AssertClick#assertValueClickAt" locator1="PGMessageboardsAddcategory#SAVE_BUTTON" value1="Save" />
 			</then>
 			<else>
 				<execute function="Type" locator1="PGMessageboardsAddcategory#NAME_FIELD" value1="${categoryName}" />
-				<execute function="AssertClick#assertValueClickAtAndWait" locator1="PGMessageboardsAddcategory#SAVE_BUTTON" value1="Save" />
+				<execute function="AssertClick#assertValueClickAt" locator1="PGMessageboardsAddcategory#SAVE_BUTTON" value1="Save" />
 			</else>
 		</if>
 
@@ -38,7 +38,7 @@
 		<execute function="AssertClick" locator1="PGMessageboards#CATEGORY_MENULIST_EDIT" value1="Edit" />
 
 		<execute function="Type" locator1="PGMessageboardsAddcategory#NAME_FIELD" value1="${categoryNameEdit}" />
-		<execute function="AssertClick#assertValueClickAtAndWait" locator1="PGMessageboardsAddcategory#SAVE_BUTTON" value1="Save" />
+		<execute function="AssertClick#assertValueClickAt" locator1="PGMessageboardsAddcategory#SAVE_BUTTON" value1="Save" />
 
 		<execute function="AssertTextEquals" locator1="PGMessageboards#SUCCESS_MESSAGE" value1="Your request completed successfully." />
 

@@ -48,7 +48,7 @@
 			<var name="userName" value="Joe Bloggs" />
 		</execute>
 
-		<execute function="Click#textClickAtAndWait" locator1="SODashboard#NAVIGATION_MY_DOCUMENTS" value1="My Documents" />
+		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_MY_DOCUMENTS" value1="My Documents" />
 
 		<execute macro="DMFolder#addPG" />
 
@@ -56,7 +56,7 @@
 			<var name="userName" value="Joe Bloggs" />
 		</execute>
 
-		<execute function="Click#textClickAtAndWait" locator1="SODashboard#NAVIGATION_MY_DOCUMENTS" value1="My Documents" />
+		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_MY_DOCUMENTS" value1="My Documents" />
 
 		<execute macro="DMFolderDocument#addPG" />
 
@@ -64,7 +64,7 @@
 			<var name="userName" value="Joe Bloggs" />
 		</execute>
 
-		<execute function="Click#textClickAtAndWait" locator1="SODashboard#NAVIGATION_MY_DOCUMENTS" value1="My Documents" />
+		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_MY_DOCUMENTS" value1="My Documents" />
 
 		<execute function="Click" locator1="PGDocumentsandmedia#ENTRIES_FOLDER" />
 
@@ -90,7 +90,7 @@
 			<var name="userName" value="Joe Bloggs" />
 		</execute>
 
-		<execute function="Click#textClickAtAndWait" locator1="SODashboard#NAVIGATION_MY_DOCUMENTS" value1="My Documents" />
+		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_MY_DOCUMENTS" value1="My Documents" />
 
 		<execute macro="DMDocument#addPG" />
 
@@ -98,7 +98,7 @@
 			<var name="userName" value="Joe Bloggs" />
 		</execute>
 
-		<execute function="Click#textClickAtAndWait" locator1="SODashboard#NAVIGATION_MY_DOCUMENTS" value1="My Documents" />
+		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_MY_DOCUMENTS" value1="My Documents" />
 
 		<execute macro="DMDocument#viewPG">
 			<var name="versionNumber" value="${dmDocumentVersionNumber}" />
@@ -122,7 +122,7 @@
 			<var name="userName" value="Joe Bloggs" />
 		</execute>
 
-		<execute function="Click#textClickAtAndWait" locator1="SODashboard#NAVIGATION_MY_DOCUMENTS" value1="My Documents" />
+		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_MY_DOCUMENTS" value1="My Documents" />
 
 		<execute macro="DMFolder#addPG" />
 
@@ -130,7 +130,7 @@
 			<var name="userName" value="Joe Bloggs" />
 		</execute>
 
-		<execute function="Click#textClickAtAndWait" locator1="SODashboard#NAVIGATION_MY_DOCUMENTS" value1="My Documents" />
+		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_MY_DOCUMENTS" value1="My Documents" />
 
 		<execute macro="DMFolderDocument#addPG" />
 
@@ -138,7 +138,7 @@
 			<var name="userName" value="Joe Bloggs" />
 		</execute>
 
-		<execute function="Click#textClickAtAndWait" locator1="SODashboard#NAVIGATION_MY_DOCUMENTS" value1="My Documents" />
+		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_MY_DOCUMENTS" value1="My Documents" />
 
 		<execute function="Click" locator1="PGDocumentsandmedia#ENTRIES_FOLDER" />
 
@@ -164,7 +164,7 @@
 			<var name="userName" value="Joe Bloggs" />
 		</execute>
 
-		<execute function="Click#textClickAtAndWait" locator1="SODashboard#NAVIGATION_MY_DOCUMENTS" value1="My Documents" />
+		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_MY_DOCUMENTS" value1="My Documents" />
 
 		<execute macro="DMFolder#addPG" />
 
@@ -172,7 +172,7 @@
 			<var name="userName" value="Joe Bloggs" />
 		</execute>
 
-		<execute function="Click#textClickAtAndWait" locator1="SODashboard#NAVIGATION_MY_DOCUMENTS" value1="My Documents" />
+		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_MY_DOCUMENTS" value1="My Documents" />
 
 		<execute macro="DMFolderDocument#addPG" />
 
@@ -180,7 +180,7 @@
 			<var name="userName" value="Joe Bloggs" />
 		</execute>
 
-		<execute function="Click#textClickAtAndWait" locator1="SODashboard#NAVIGATION_MY_DOCUMENTS" value1="My Documents" />
+		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_MY_DOCUMENTS" value1="My Documents" />
 
 		<execute macro="DMFolderDocument#checkoutPG" />
 
@@ -188,7 +188,7 @@
 			<var name="userName" value="Joe Bloggs" />
 		</execute>
 
-		<execute function="Click#textClickAtAndWait" locator1="SODashboard#NAVIGATION_MY_DOCUMENTS" value1="My Documents" />
+		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_MY_DOCUMENTS" value1="My Documents" />
 
 		<execute macro="DMFolderDocument#cancelCheckoutPG" />
 
@@ -196,7 +196,7 @@
 			<var name="userName" value="Joe Bloggs" />
 		</execute>
 
-		<execute function="Click#textClickAtAndWait" locator1="SODashboard#NAVIGATION_MY_DOCUMENTS" value1="My Documents" />
+		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_MY_DOCUMENTS" value1="My Documents" />
 
 		<execute function="Click" locator1="PGDocumentsandmedia#ENTRIES_FOLDER" />
 
@@ -222,7 +222,7 @@
 			<var name="userName" value="Joe Bloggs" />
 		</execute>
 
-		<execute function="Click#textClickAtAndWait" locator1="SODashboard#NAVIGATION_MY_DOCUMENTS" value1="My Documents" />
+		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_MY_DOCUMENTS" value1="My Documents" />
 
 		<execute macro="DMFolder#addPG" />
 
@@ -230,7 +230,7 @@
 			<var name="userName" value="Joe Bloggs" />
 		</execute>
 
-		<execute function="Click#textClickAtAndWait" locator1="SODashboard#NAVIGATION_MY_DOCUMENTS" value1="My Documents" />
+		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_MY_DOCUMENTS" value1="My Documents" />
 
 		<execute macro="DMFolderDocument#addPG" />
 
@@ -238,7 +238,7 @@
 			<var name="userName" value="Joe Bloggs" />
 		</execute>
 
-		<execute function="Click#textClickAtAndWait" locator1="SODashboard#NAVIGATION_MY_DOCUMENTS" value1="My Documents" />
+		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_MY_DOCUMENTS" value1="My Documents" />
 
 		<execute macro="DMFolderDocument#checkoutPG" />
 
@@ -246,7 +246,7 @@
 			<var name="userName" value="Joe Bloggs" />
 		</execute>
 
-		<execute function="Click#textClickAtAndWait" locator1="SODashboard#NAVIGATION_MY_DOCUMENTS" value1="My Documents" />
+		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_MY_DOCUMENTS" value1="My Documents" />
 
 		<execute macro="DMFolderDocument#checkinPG">
 			<var name="revision" value="Major" />
@@ -256,7 +256,7 @@
 			<var name="userName" value="Joe Bloggs" />
 		</execute>
 
-		<execute function="Click#textClickAtAndWait" locator1="SODashboard#NAVIGATION_MY_DOCUMENTS" value1="My Documents" />
+		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_MY_DOCUMENTS" value1="My Documents" />
 
 		<execute function="Click" locator1="PGDocumentsandmedia#ENTRIES_FOLDER" />
 
@@ -283,7 +283,7 @@
 			<var name="userName" value="Joe Bloggs" />
 		</execute>
 
-		<execute function="Click#textClickAtAndWait" locator1="SODashboard#NAVIGATION_MY_DOCUMENTS" value1="My Documents" />
+		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_MY_DOCUMENTS" value1="My Documents" />
 
 		<execute macro="DMFolder#addPG" />
 
@@ -291,7 +291,7 @@
 			<var name="userName" value="Joe Bloggs" />
 		</execute>
 
-		<execute function="Click#textClickAtAndWait" locator1="SODashboard#NAVIGATION_MY_DOCUMENTS" value1="My Documents" />
+		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_MY_DOCUMENTS" value1="My Documents" />
 
 		<execute macro="DMFolderDocument#addPG" />
 
@@ -299,7 +299,7 @@
 			<var name="userName" value="Joe Bloggs" />
 		</execute>
 
-		<execute function="Click#textClickAtAndWait" locator1="SODashboard#NAVIGATION_MY_DOCUMENTS" value1="My Documents" />
+		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_MY_DOCUMENTS" value1="My Documents" />
 
 		<execute macro="DMFolderDocument#checkoutPG" />
 
@@ -307,7 +307,7 @@
 			<var name="userName" value="Joe Bloggs" />
 		</execute>
 
-		<execute function="Click#textClickAtAndWait" locator1="SODashboard#NAVIGATION_MY_DOCUMENTS" value1="My Documents" />
+		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_MY_DOCUMENTS" value1="My Documents" />
 
 		<execute macro="DMFolderDocument#checkinPG">
 			<var name="revision" value="Minor" />
@@ -317,7 +317,7 @@
 			<var name="userName" value="Joe Bloggs" />
 		</execute>
 
-		<execute function="Click#textClickAtAndWait" locator1="SODashboard#NAVIGATION_MY_DOCUMENTS" value1="My Documents" />
+		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_MY_DOCUMENTS" value1="My Documents" />
 
 		<execute function="Click" locator1="PGDocumentsandmedia#ENTRIES_FOLDER" />
 
@@ -344,7 +344,7 @@
 			<var name="userName" value="Joe Bloggs" />
 		</execute>
 
-		<execute function="Click#textClickAtAndWait" locator1="SODashboard#NAVIGATION_MY_DOCUMENTS" value1="My Documents" />
+		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_MY_DOCUMENTS" value1="My Documents" />
 
 		<execute macro="DMFolder#addPG" />
 
@@ -352,7 +352,7 @@
 			<var name="userName" value="Joe Bloggs" />
 		</execute>
 
-		<execute function="Click#textClickAtAndWait" locator1="SODashboard#NAVIGATION_MY_DOCUMENTS" value1="My Documents" />
+		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_MY_DOCUMENTS" value1="My Documents" />
 
 		<execute macro="DMFolderDocument#addPG" />
 
@@ -360,7 +360,7 @@
 			<var name="userName" value="Joe Bloggs" />
 		</execute>
 
-		<execute function="Click#textClickAtAndWait" locator1="SODashboard#NAVIGATION_MY_DOCUMENTS" value1="My Documents" />
+		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_MY_DOCUMENTS" value1="My Documents" />
 
 		<execute macro="DMFolderDocument#checkoutPG" />
 
@@ -368,7 +368,7 @@
 			<var name="userName" value="Joe Bloggs" />
 		</execute>
 
-		<execute function="Click#textClickAtAndWait" locator1="SODashboard#NAVIGATION_MY_DOCUMENTS" value1="My Documents" />
+		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_MY_DOCUMENTS" value1="My Documents" />
 
 		<execute function="Click" locator1="PGDocumentsandmedia#ENTRIES_FOLDER" />
 
@@ -394,7 +394,7 @@
 			<var name="userName" value="Joe Bloggs" />
 		</execute>
 
-		<execute function="Click#textClickAtAndWait" locator1="SODashboard#NAVIGATION_MY_DOCUMENTS" value1="My Documents" />
+		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_MY_DOCUMENTS" value1="My Documents" />
 
 		<execute macro="DMFolder#addPG" />
 
@@ -402,7 +402,7 @@
 			<var name="userName" value="Joe Bloggs" />
 		</execute>
 
-		<execute function="Click#textClickAtAndWait" locator1="SODashboard#NAVIGATION_MY_DOCUMENTS" value1="My Documents" />
+		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_MY_DOCUMENTS" value1="My Documents" />
 
 		<execute macro="DMFolderDocument#addPG" />
 
@@ -410,7 +410,7 @@
 			<var name="userName" value="Joe Bloggs" />
 		</execute>
 
-		<execute function="Click#textClickAtAndWait" locator1="SODashboard#NAVIGATION_MY_DOCUMENTS" value1="My Documents" />
+		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_MY_DOCUMENTS" value1="My Documents" />
 
 		<execute macro="DMFolderDocument#deletePG" />
 	</command>
@@ -431,7 +431,7 @@
 			<var name="userName" value="Joe Bloggs" />
 		</execute>
 
-		<execute function="Click#textClickAtAndWait" locator1="SODashboard#NAVIGATION_MY_DOCUMENTS" value1="My Documents" />
+		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_MY_DOCUMENTS" value1="My Documents" />
 
 		<execute macro="DMFolder#addPG" />
 
@@ -439,7 +439,7 @@
 			<var name="userName" value="Joe Bloggs" />
 		</execute>
 
-		<execute function="Click#textClickAtAndWait" locator1="SODashboard#NAVIGATION_MY_DOCUMENTS" value1="My Documents" />
+		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_MY_DOCUMENTS" value1="My Documents" />
 
 		<execute macro="DMFolderDocument#addPG" />
 
@@ -447,7 +447,7 @@
 			<var name="userName" value="Joe Bloggs" />
 		</execute>
 
-		<execute function="Click#textClickAtAndWait" locator1="SODashboard#NAVIGATION_MY_DOCUMENTS" value1="My Documents" />
+		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_MY_DOCUMENTS" value1="My Documents" />
 
 		<execute macro="DMFolderDocument#deletePG" />
 	</command>
@@ -473,7 +473,7 @@
 			<var name="userName" value="Joe Bloggs" />
 		</execute>
 
-		<execute function="Click#textClickAtAndWait" locator1="SODashboard#NAVIGATION_MY_DOCUMENTS" value1="My Documents" />
+		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_MY_DOCUMENTS" value1="My Documents" />
 
 		<execute macro="DMFolder#addPG" />
 
@@ -481,7 +481,7 @@
 			<var name="userName" value="Joe Bloggs" />
 		</execute>
 
-		<execute function="Click#textClickAtAndWait" locator1="SODashboard#NAVIGATION_MY_DOCUMENTS" value1="My Documents" />
+		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_MY_DOCUMENTS" value1="My Documents" />
 
 		<execute macro="DMFolderDocument#addPG" />
 
@@ -489,7 +489,7 @@
 			<var name="userName" value="Joe Bloggs" />
 		</execute>
 
-		<execute function="Click#textClickAtAndWait" locator1="SODashboard#NAVIGATION_MY_DOCUMENTS" value1="My Documents" />
+		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_MY_DOCUMENTS" value1="My Documents" />
 
 		<execute macro="DMFolderDocument#editPG" />
 
@@ -497,7 +497,7 @@
 			<var name="userName" value="Joe Bloggs" />
 		</execute>
 
-		<execute function="Click#textClickAtAndWait" locator1="SODashboard#NAVIGATION_MY_DOCUMENTS" value1="My Documents" />
+		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_MY_DOCUMENTS" value1="My Documents" />
 
 		<execute function="Click" locator1="PGDocumentsandmedia#ENTRIES_FOLDER" />
 
@@ -527,7 +527,7 @@
 			<var name="userName" value="Joe Bloggs" />
 		</execute>
 
-		<execute function="Click#textClickAtAndWait" locator1="SODashboard#NAVIGATION_MY_DOCUMENTS" value1="My Documents" />
+		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_MY_DOCUMENTS" value1="My Documents" />
 
 		<execute macro="DMFolder#addPG" />
 
@@ -535,7 +535,7 @@
 			<var name="userName" value="Joe Bloggs" />
 		</execute>
 
-		<execute function="Click#textClickAtAndWait" locator1="SODashboard#NAVIGATION_MY_DOCUMENTS" value1="My Documents" />
+		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_MY_DOCUMENTS" value1="My Documents" />
 
 		<execute macro="DMFolderDocument#saveAsDraftPG" />
 
@@ -543,7 +543,7 @@
 			<var name="userName" value="Joe Bloggs" />
 		</execute>
 
-		<execute function="Click#textClickAtAndWait" locator1="SODashboard#NAVIGATION_MY_DOCUMENTS" value1="My Documents" />
+		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_MY_DOCUMENTS" value1="My Documents" />
 
 		<execute macro="DMFolderDocument#publishDraftDMFolderDocument" />
 
@@ -551,7 +551,7 @@
 			<var name="userName" value="Joe Bloggs" />
 		</execute>
 
-		<execute function="Click#textClickAtAndWait" locator1="SODashboard#NAVIGATION_MY_DOCUMENTS" value1="My Documents" />
+		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_MY_DOCUMENTS" value1="My Documents" />
 
 		<execute function="Click" locator1="PGDocumentsandmedia#ENTRIES_FOLDER" />
 
@@ -577,7 +577,7 @@
 			<var name="userName" value="Joe Bloggs" />
 		</execute>
 
-		<execute function="Click#textClickAtAndWait" locator1="SODashboard#NAVIGATION_MY_DOCUMENTS" value1="My Documents" />
+		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_MY_DOCUMENTS" value1="My Documents" />
 
 		<execute macro="DMFolder#addPG" />
 
@@ -585,14 +585,14 @@
 			<var name="userName" value="Joe Bloggs" />
 		</execute>
 
-		<execute function="Click#textClickAtAndWait" locator1="SODashboard#NAVIGATION_MY_DOCUMENTS" value1="My Documents" />
+		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_MY_DOCUMENTS" value1="My Documents" />
 		<execute macro="DMFolderDocument#addPG" />
 
 		<execute macro="SOUserBar#dashboardPG">
 			<var name="userName" value="Joe Bloggs" />
 		</execute>
 
-		<execute function="Click#textClickAtAndWait" locator1="SODashboard#NAVIGATION_MY_DOCUMENTS" value1="My Documents" />
+		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_MY_DOCUMENTS" value1="My Documents" />
 
 		<execute macro="DMFolderDocument#checkoutPG" />
 
@@ -600,7 +600,7 @@
 			<var name="userName" value="Joe Bloggs" />
 		</execute>
 
-		<execute function="Click#textClickAtAndWait" locator1="SODashboard#NAVIGATION_MY_DOCUMENTS" value1="My Documents" />
+		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_MY_DOCUMENTS" value1="My Documents" />
 
 		<execute macro="DMFolderDocument#editPG">
 			<var name="changeLog" value="Major Revision" />
@@ -611,7 +611,7 @@
 			<var name="userName" value="Joe Bloggs" />
 		</execute>
 
-		<execute function="Click#textClickAtAndWait" locator1="SODashboard#NAVIGATION_MY_DOCUMENTS" value1="My Documents" />
+		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_MY_DOCUMENTS" value1="My Documents" />
 
 		<execute function="Click" locator1="PGDocumentsandmedia#ENTRIES_FOLDER" />
 
@@ -646,7 +646,7 @@
 			<var name="userName" value="Joe Bloggs" />
 		</execute>
 
-		<execute function="Click#textClickAtAndWait" locator1="SODashboard#NAVIGATION_MY_DOCUMENTS" value1="My Documents" />>
+		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_MY_DOCUMENTS" value1="My Documents" />>
 
 		<execute macro="DMFolder#addPG" />
 
@@ -654,7 +654,7 @@
 			<var name="userName" value="Joe Bloggs" />
 		</execute>
 
-		<execute function="Click#textClickAtAndWait" locator1="SODashboard#NAVIGATION_MY_DOCUMENTS" value1="My Documents" />
+		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_MY_DOCUMENTS" value1="My Documents" />
 
 		<execute macro="DMFolderDocument#addPG" />
 
@@ -662,7 +662,7 @@
 			<var name="userName" value="Joe Bloggs" />
 		</execute>
 
-		<execute function="Click#textClickAtAndWait" locator1="SODashboard#NAVIGATION_MY_DOCUMENTS" value1="My Documents" />
+		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_MY_DOCUMENTS" value1="My Documents" />
 
 		<execute macro="DMFolderDocument#checkoutPG" />
 
@@ -670,7 +670,7 @@
 			<var name="userName" value="Joe Bloggs" />
 		</execute>
 
-		<execute function="Click#textClickAtAndWait" locator1="SODashboard#NAVIGATION_MY_DOCUMENTS" value1="My Documents" />
+		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_MY_DOCUMENTS" value1="My Documents" />
 
 		<execute macro="DMFolderDocument#editPG">
 			<var name="changeLog" value="Minor Revision" />
@@ -681,7 +681,7 @@
 			<var name="userName" value="Joe Bloggs" />
 		</execute>
 
-		<execute function="Click#textClickAtAndWait" locator1="SODashboard#NAVIGATION_MY_DOCUMENTS" value1="My Documents" />
+		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_MY_DOCUMENTS" value1="My Documents" />
 		<execute function="Click" locator1="PGDocumentsandmedia#ENTRIES_FOLDER" />
 
 		<execute macro="SODocuments#viewPGDisplayView">
@@ -715,7 +715,7 @@
 			<var name="userName" value="Joe Bloggs" />
 		</execute>
 
-		<execute function="Click#textClickAtAndWait" locator1="SODashboard#NAVIGATION_MY_DOCUMENTS" value1="My Documents" />
+		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_MY_DOCUMENTS" value1="My Documents" />
 
 		<execute macro="DMFolder#addPG" />
 
@@ -723,14 +723,14 @@
 			<var name="userName" value="Joe Bloggs" />
 		</execute>
 
-		<execute function="Click#textClickAtAndWait" locator1="SODashboard#NAVIGATION_MY_DOCUMENTS" value1="My Documents" />
+		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_MY_DOCUMENTS" value1="My Documents" />
 		<execute macro="DMFolderDocument#saveAsDraftPG" />
 
 		<execute macro="SOUserBar#dashboardPG">
 			<var name="userName" value="Joe Bloggs" />
 		</execute>
 
-		<execute function="Click#textClickAtAndWait" locator1="SODashboard#NAVIGATION_MY_DOCUMENTS" value1="My Documents" />
+		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_MY_DOCUMENTS" value1="My Documents" />
 
 		<execute function="Click" locator1="PGDocumentsandmedia#ENTRIES_FOLDER" />
 
@@ -760,7 +760,7 @@
 			<var name="userName" value="Joe Bloggs" />
 		</execute>
 
-		<execute function="Click#textClickAtAndWait" locator1="SODashboard#NAVIGATION_MY_DOCUMENTS" value1="My Documents" />
+		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_MY_DOCUMENTS" value1="My Documents" />
 
 		<execute macro="DMFolder#addPG" />
 
@@ -768,7 +768,7 @@
 			<var name="userName" value="Joe Bloggs" />
 		</execute>
 
-		<execute function="Click#textClickAtAndWait" locator1="SODashboard#NAVIGATION_MY_DOCUMENTS" value1="My Documents" />
+		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_MY_DOCUMENTS" value1="My Documents" />
 
 		<execute macro="DMFolderDocument#addPG" />
 
@@ -776,7 +776,7 @@
 			<var name="userName" value="Joe Bloggs" />
 		</execute>
 
-		<execute function="Click#textClickAtAndWait" locator1="SODashboard#NAVIGATION_MY_DOCUMENTS" value1="My Documents" />
+		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_MY_DOCUMENTS" value1="My Documents" />
 
 		<execute macro="DMFolderDocument#saveAsDraftEditDMFolderDocument" />
 
@@ -784,7 +784,7 @@
 			<var name="userName" value="Joe Bloggs" />
 		</execute>
 
-		<execute function="Click#textClickAtAndWait" locator1="SODashboard#NAVIGATION_MY_DOCUMENTS" value1="My Documents" />
+		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_MY_DOCUMENTS" value1="My Documents" />
 
 		<execute function="Click" locator1="PGDocumentsandmedia#ENTRIES_FOLDER" />
 

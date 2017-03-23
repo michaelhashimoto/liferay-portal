@@ -65,7 +65,7 @@
 
 		<var name="key_pageName" value="りんご" />
 
-		<execute function="AssertClick#assertTextClickAtAndWait" locator1="Home#PAGE" value1="りんご" />
+		<execute function="AssertClick#assertTextClickAt" locator1="Home#PAGE" value1="りんご" />
 
 		<execute macro="TestUtils#pass" />
 	</command>
@@ -85,7 +85,7 @@
 
 		<var name="key_pageName" value="${test}" />
 
-		<execute function="AssertClick#assertTextClickAtAndWait" locator1="Home#PAGE" value1="${test}" />
+		<execute function="AssertClick#assertTextClickAt" locator1="Home#PAGE" value1="${test}" />
 
 		<execute macro="TestUtils#pass" />
 	</command>

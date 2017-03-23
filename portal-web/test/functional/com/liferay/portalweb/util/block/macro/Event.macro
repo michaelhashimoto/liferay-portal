@@ -1,10 +1,10 @@
 <definition>
 	<command name="addCP">
-		<execute function="AssertClick#assertTextClickAtAndWait" locator1="CPCalendar#VIEW_SUMMARY" value1="Summary" />
-		<execute function="AssertClick#assertValueClickAtAndWait" locator1="CPCalendar#ADD_EVENT_BUTTON" value1="Add Event" />
+		<execute function="AssertClick#assertTextClickAt" locator1="CPCalendar#VIEW_SUMMARY" value1="Summary" />
+		<execute function="AssertClick#assertValueClickAt" locator1="CPCalendar#ADD_EVENT_BUTTON" value1="Add Event" />
 
 		<execute function="Type" locator1="CPCalendarAddEvent#TITLE_FIELD" value1="${eventTitle}" />
-		<execute function="AssertClick#assertValueClickAtAndWait" locator1="CPCalendarAddEvent#SAVE_BUTTON" value1="Save" />
+		<execute function="AssertClick#assertValueClickAt" locator1="CPCalendarAddEvent#SAVE_BUTTON" value1="Save" />
 
 		<execute function="AssertTextEquals" locator1="CPCalendar#SUCCESS_MESSAGE" value1="Your request completed successfully." />
 		<execute function="AssertElementPresent" locator1="CPCalendar#EVENT_TABLE_TIME" />
@@ -21,7 +21,7 @@
 			<then>
 				<var name="dayNumber" value="0" />
 
-				<execute function="AssertClick#assertTextClickAtAndWait" locator1="PGCalendar#VIEW_DAY" value1="Day" />
+				<execute function="AssertClick#assertTextClickAt" locator1="PGCalendar#VIEW_DAY" value1="Day" />
 
 				<while>
 					<not>
@@ -30,16 +30,16 @@
 					<then>
 						<var method="MathUtil#sum('${dayNumber}', '1')" name="dayNumber" />
 
-						<execute function="Click#clickAtAndWait" locator1="PGCalendar#NEXT_BUTTON" />
+						<execute function="Click#clickAt" locator1="PGCalendar#NEXT_BUTTON" />
 					</then>
 				</while>
 			</then>
 			<else>
-				<execute function="AssertClick#assertTextClickAtAndWait" locator1="PGCalendar#VIEW_SUMMARY" value1="Summary" />
+				<execute function="AssertClick#assertTextClickAt" locator1="PGCalendar#VIEW_SUMMARY" value1="Summary" />
 			</else>
 		</if>
 
-		<execute function="AssertClick#assertValueClickAtAndWait" locator1="PGCalendar#ADD_EVENT_BUTTON" value1="Add Event" />
+		<execute function="AssertClick#assertValueClickAt" locator1="PGCalendar#ADD_EVENT_BUTTON" value1="Add Event" />
 
 		<if>
 			<isset var="number" />
@@ -48,10 +48,10 @@
 
 				<execute function="Type" locator1="PGCalendarAddEvent#TITLE_FIELD" value1="${eventTitle}${number}" />
 				<execute function="Type#typeCKEditorWaitForCKEditor" locator1="PGCalendarAddEvent#DESCRIPTION_FIELD" value1="${eventDescription}${number}" />
-				<execute function="AssertClick#assertValueClickAtAndWait" locator1="PGCalendarAddEvent#SAVE_BUTTON" value1="Save" />
+				<execute function="AssertClick#assertValueClickAt" locator1="PGCalendarAddEvent#SAVE_BUTTON" value1="Save" />
 
 				<execute function="AssertTextEquals" locator1="PGCalendar#SUCCESS_MESSAGE" value1="Your request completed successfully." />
-				<execute function="AssertClick#assertTextClickAtAndWait" locator1="PGCalendar#VIEW_SUMMARY" value1="Summary" />
+				<execute function="AssertClick#assertTextClickAt" locator1="PGCalendar#VIEW_SUMMARY" value1="Summary" />
 				<execute function="AssertElementPresent" locator1="PGCalendar#EVENT_TABLE_TIME_INCREMENT" />
 				<execute function="AssertTextEquals" locator1="PGCalendar#EVENT_TABLE_TITLE_INCREMENT" value1="${eventTitle}${number}" />
 				<execute function="AssertTextEquals" locator1="PGCalendar#EVENT_TABLE_TYPE_INCREMENT" value1="Anniversary" />
@@ -60,10 +60,10 @@
 			<else>
 				<execute function="Type" locator1="PGCalendarAddEvent#TITLE_FIELD" value1="${eventTitle}" />
 				<execute function="Type#typeCKEditorWaitForCKEditor" locator1="PGCalendarAddEvent#DESCRIPTION_FIELD" value1="${eventDescription}" />
-				<execute function="AssertClick#assertValueClickAtAndWait" locator1="PGCalendarAddEvent#SAVE_BUTTON" value1="Save" />
+				<execute function="AssertClick#assertValueClickAt" locator1="PGCalendarAddEvent#SAVE_BUTTON" value1="Save" />
 
 				<execute function="AssertTextEquals" locator1="PGCalendar#SUCCESS_MESSAGE" value1="Your request completed successfully." />
-				<execute function="AssertClick#assertTextClickAtAndWait" locator1="PGCalendar#VIEW_SUMMARY" value1="Summary" />
+				<execute function="AssertClick#assertTextClickAt" locator1="PGCalendar#VIEW_SUMMARY" value1="Summary" />
 				<execute function="AssertElementPresent" locator1="PGCalendar#EVENT_TABLE_TIME" />
 				<execute function="AssertTextEquals" locator1="PGCalendar#EVENT_TABLE_TITLE" value1="${eventTitle}" />
 				<execute function="AssertTextEquals" locator1="PGCalendar#EVENT_TABLE_TYPE" value1="Anniversary" />
@@ -75,7 +75,7 @@
 	<command name="addRepeatMonthlyPG">
 		<var name="key_eventTitle" value="${eventTitle}" />
 
-		<execute function="AssertClick#assertValueClickAtAndWait" locator1="PGCalendar#ADD_EVENT_BUTTON" value1="Add Event" />
+		<execute function="AssertClick#assertValueClickAt" locator1="PGCalendar#ADD_EVENT_BUTTON" value1="Add Event" />
 
 		<execute function="Select" locator1="PGCalendarAddEvent#START_DATE_MONTH_SELECT" value1="${eventStartMonth}" />
 		<execute function="Select" locator1="PGCalendarAddEvent#START_DATE_DAY_SELECT" value1="${eventStartDay}" />
@@ -88,10 +88,10 @@
 		<execute function="Select" locator1="PGCalendarAddEvent#END_DATE_MONTH_SELECT" value1="${eventEndMonth}" />
 		<execute function="Select" locator1="PGCalendarAddEvent#END_DATE_DAY_SELECT" value1="${eventEndDay}" />
 		<execute function="Select" locator1="PGCalendarAddEvent#END_DATE_YEAR_SELECT" value1="${eventEndYear}" />
-		<execute function="AssertClick#assertValueClickAtAndWait" locator1="PGCalendarAddEvent#SAVE_BUTTON" value1="Save" />
+		<execute function="AssertClick#assertValueClickAt" locator1="PGCalendarAddEvent#SAVE_BUTTON" value1="Save" />
 
 		<execute function="AssertTextEquals" locator1="PGCalendar#SUCCESS_MESSAGE" value1="Your request completed successfully." />
-		<execute function="AssertClick#assertTextClickAtAndWait" locator1="PGCalendar#VIEW_EVENTS" value1="Events" />
+		<execute function="AssertClick#assertTextClickAt" locator1="PGCalendar#VIEW_EVENTS" value1="Events" />
 		<execute function="AssertElementPresent" locator1="PGCalendar#EVENT_TABLE_TIME" />
 		<execute function="AssertTextEquals" locator1="PGCalendar#EVENT_TABLE_TITLE" value1="${eventTitle}" />
 		<execute function="AssertTextEquals" locator1="PGCalendar#EVENT_TABLE_TYPE" value1="${eventType}" />
@@ -101,7 +101,7 @@
 	<command name="addRepeatWeeklyPG">
 		<var name="key_eventTitle" value="${eventTitle}" />
 
-		<execute function="AssertClick#assertValueClickAtAndWait" locator1="PGCalendar#ADD_EVENT_BUTTON" value1="Add Event" />
+		<execute function="AssertClick#assertValueClickAt" locator1="PGCalendar#ADD_EVENT_BUTTON" value1="Add Event" />
 
 		<execute function="Select" locator1="PGCalendarAddEvent#START_DATE_MONTH_SELECT" value1="${eventStartMonth}" />
 		<execute function="Select" locator1="PGCalendarAddEvent#START_DATE_DAY_SELECT" value1="${eventStartDay}" />
@@ -115,10 +115,10 @@
 		<execute function="Select" locator1="PGCalendarAddEvent#END_DATE_MONTH_SELECT" value1="${eventEndMonth}" />
 		<execute function="Select" locator1="PGCalendarAddEvent#END_DATE_DAY_SELECT" value1="${eventEndDay}" />
 		<execute function="Select" locator1="PGCalendarAddEvent#END_DATE_YEAR_SELECT" value1="${eventEndYear}" />
-		<execute function="AssertClick#assertValueClickAtAndWait" locator1="PGCalendarAddEvent#SAVE_BUTTON" value1="Save" />
+		<execute function="AssertClick#assertValueClickAt" locator1="PGCalendarAddEvent#SAVE_BUTTON" value1="Save" />
 
 		<execute function="AssertTextEquals" locator1="PGCalendar#SUCCESS_MESSAGE" value1="Your request completed successfully." />
-		<execute function="AssertClick#assertTextClickAtAndWait" locator1="PGCalendar#VIEW_EVENTS" value1="Events" />
+		<execute function="AssertClick#assertTextClickAt" locator1="PGCalendar#VIEW_EVENTS" value1="Events" />
 		<execute function="AssertElementPresent" locator1="PGCalendar#EVENT_TABLE_TIME" />
 		<execute function="AssertTextEquals" locator1="PGCalendar#EVENT_TABLE_TITLE" value1="${eventTitle}" />
 		<execute function="AssertTextEquals" locator1="PGCalendar#EVENT_TABLE_TYPE" value1="${eventType}" />
@@ -126,7 +126,7 @@
 	</command>
 
 	<command name="deleteCP">
-		<execute function="AssertClick#assertTextClickAtAndWait" locator1="CPCalendar#VIEW_SUMMARY" value1="Summary" />
+		<execute function="AssertClick#assertTextClickAt" locator1="CPCalendar#VIEW_SUMMARY" value1="Summary" />
 		<execute function="AssertTextEquals" locator1="CPCalendar#EVENT_TABLE_TITLE" value1="${eventTitle}" />
 		<execute function="AssertClick" locator1="CPCalendar#EVENT_TABLE_ACTIONS" value1="Actions" />
 		<execute function="AssertClickNoError" locator1="CPCalendar#EVENT_MENULIST_DELETE" value1="Delete" />
@@ -137,7 +137,7 @@
 	<command name="deletePG">
 		<var name="key_eventTitle" value="${eventTitle}" />
 
-		<execute function="AssertClick#assertTextClickAtAndWait" locator1="PGCalendar#VIEW_SUMMARY" value1="Summary" />
+		<execute function="AssertClick#assertTextClickAt" locator1="PGCalendar#VIEW_SUMMARY" value1="Summary" />
 		<execute function="AssertTextEquals" locator1="PGCalendar#EVENT_TABLE_TITLE" value1="${eventTitle}" />
 		<execute function="AssertClick" locator1="PGCalendar#EVENT_TABLE_ACTIONS"  value1="Actions" />
 		<execute function="AssertClickNoError" locator1="PGCalendar#EVENT_MENULIST_DELETE" value1="Delete" />
@@ -146,13 +146,13 @@
 	</command>
 
 	<command name="editCP">
-		<execute function="AssertClick#assertTextClickAtAndWait" locator1="CPCalendar#VIEW_SUMMARY" value1="Summary" />
+		<execute function="AssertClick#assertTextClickAt" locator1="CPCalendar#VIEW_SUMMARY" value1="Summary" />
 		<execute function="AssertTextEquals" locator1="CPCalendar#EVENT_TABLE_TITLE" value1="${eventTitle}" />
 		<execute function="AssertClick" locator1="CPCalendar#EVENT_TABLE_ACTIONS"  value1="Actions" />
 		<execute function="AssertClick" locator1="CPCalendar#EVENT_MENULIST_EDIT" value1="Edit" />
 
 		<execute function="Type" locator1="CPCalendarEditEvent#TITLE_FIELD" value1="${eventTitleEdit}" />
-		<execute function="AssertClick#assertValueClickAtAndWait" locator1="CPCalendarEditEvent#SAVE_BUTTON" value1="Save" />
+		<execute function="AssertClick#assertValueClickAt" locator1="CPCalendarEditEvent#SAVE_BUTTON" value1="Save" />
 
 		<execute function="AssertTextEquals" locator1="CPCalendar#SUCCESS_MESSAGE" value1="Your request completed successfully." />
 		<execute function="AssertElementPresent" locator1="CPCalendar#EVENT_TABLE_TIME" />
@@ -164,14 +164,14 @@
 	<command name="editPG">
 		<var name="key_eventTitle" value="${eventTitle}" />
 
-		<execute function="AssertClick#assertTextClickAtAndWait" locator1="PGCalendar#VIEW_SUMMARY" value1="Summary" />
+		<execute function="AssertClick#assertTextClickAt" locator1="PGCalendar#VIEW_SUMMARY" value1="Summary" />
 		<execute function="AssertTextEquals" locator1="PGCalendar#EVENT_TABLE_TITLE" value1="${eventTitle}" />
 		<execute function="AssertClick" locator1="PGCalendar#EVENT_TABLE_ACTIONS"  value1="Actions" />
 		<execute function="AssertClick" locator1="PGCalendar#EVENT_MENULIST_EDIT" value1="Edit" />
 
 		<execute function="Type" locator1="PGCalendarEditEvent#TITLE_FIELD" value1="${eventTitleEdit}" />
 		<execute function="Type#typeCKEditorWaitForCKEditor" locator1="PGCalendarEditEvent#DESCRIPTION_FIELD" value1="${eventDescriptionEdit}" />
-		<execute function="AssertClick#assertValueClickAtAndWait" locator1="PGCalendarEditEvent#SAVE_BUTTON" value1="Save" />
+		<execute function="AssertClick#assertValueClickAt" locator1="PGCalendarEditEvent#SAVE_BUTTON" value1="Save" />
 
 		<execute function="AssertTextEquals" locator1="PGCalendar#SUCCESS_MESSAGE" value1="Your request completed successfully." />
 		<execute function="AssertElementPresent" locator1="PGCalendar#EVENT_TABLE_TIME" />
@@ -185,7 +185,7 @@
 			<var name="portletName" value="Calendar" />
 		</execute>
 
-		<execute function="AssertClick#assertTextClickAtAndWait" locator1="PGCalendar#VIEW_EVENTS" value1="Events" />
+		<execute function="AssertClick#assertTextClickAt" locator1="PGCalendar#VIEW_EVENTS" value1="Events" />
 
 		<while>
 			<condition function="IsElementPresent" locator1="CPCalendarEvents#EVENT_TABLE_ACTIONS" value1="Actions" />
@@ -238,7 +238,7 @@
 	<command name="viewPG">
 		<var name="key_eventTitle" value="${eventTitle}" />
 
-		<execute function="AssertClick#assertTextClickAtAndWait" locator1="PGCalendar#EVENT_TABLE_TITLE" value1="${eventTitle}" />
+		<execute function="AssertClick#assertTextClickAt" locator1="PGCalendar#EVENT_TABLE_TITLE" value1="${eventTitle}" />
 
 		<execute macro="Event#viewDetailsPG" />
 	</command>

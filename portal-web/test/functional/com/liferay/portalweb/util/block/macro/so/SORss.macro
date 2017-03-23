@@ -30,7 +30,7 @@
 		<execute function="Check" locator1="SOSiteHomeRssConfiguration#DISPLAY_SETTINGS_SHOW_FEED_ITEM_AUTHOR_CHECKBOX" />
 		<execute function="Select" locator1="SOSiteHomeRssConfiguration#DISPLAY_SETTINGS_ENTRIES_PER_FEED_SELECT" value1="${entriesPerFeed}" />
 		<execute function="Select" locator1="SOSiteHomeRssConfiguration#DISPLAY_SETTINGS_EXPANDED_ENTRIES_PER_FEED_SELECT" value1="${expandedEntriesPerFeed}" />
-		<execute function="AssertClick#assertValueClickAtAndWait" locator1="SOSiteHomeRssConfiguration#SAVE_BUTTON" value1="Save" />
+		<execute function="AssertClick#assertValueClickAt" locator1="SOSiteHomeRssConfiguration#SAVE_BUTTON" value1="Save" />
 		<execute function="AssertTextEquals" locator1="SOSiteHomeRssConfiguration#SUCCESS_MESSAGE" value1="You have successfully updated the setup." />
 		<execute function="SelectFrameTop" />
 		<execute function="Click" locator1="SOSiteHomeEventsConfiguration#CLOSE_BUTTON" />

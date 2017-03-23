@@ -713,7 +713,7 @@
 
 		<var name="key_number" value="02" />
 
-		<execute function="AssertClick#assertTextClickAtAndWait" locator1="PGCalendar#VIEW_EVENTS" value1="Events" />
+		<execute function="AssertClick#assertTextClickAt" locator1="PGCalendar#VIEW_EVENTS" value1="Events" />
 		<execute function="AssertElementPresent" locator1="PGCalendar#EVENTS_EVENT_TABLE_DATE_INCREMENT" />
 		<execute function="AssertElementPresent" locator1="PGCalendar#EVENTS_EVENT_TABLE_TIME_INCREMENT" />
 		<execute function="AssertTextEquals" locator1="PGCalendar#EVENTS_EVENT_TABLE_TITLE_INCREMENT" value1="${eventTitle}02" />
@@ -751,7 +751,7 @@
 
 		<var name="number" value="02" />
 
-		<execute function="AssertClick#assertTextClickAtAndWait" locator1="SOSiteHome#EVENTS_DISPLAY_UPCOMING_EVENTS_EVENT_TITLE_INCREMENT" value1="${eventTitle}02" />
+		<execute function="AssertClick#assertTextClickAt" locator1="SOSiteHome#EVENTS_DISPLAY_UPCOMING_EVENTS_EVENT_TITLE_INCREMENT" value1="${eventTitle}02" />
 
 		<execute macro="Event#viewDetailsPG" />
 
@@ -857,7 +857,7 @@
 		<execute function="AssertElementPresent" locator1="SOSiteHome#EVENTS_DISPLAY_TODAYS_EVENTS_EVENT_TIME" />
 		<execute function="AssertElementNotPresent" locator1="SOSiteHome#EVENTS_DISPLAY_UPCOMING_EVENTS_EVENT_TITLE" />
 		<execute function="AssertElementNotPresent" locator1="SOSiteHome#EVENTS_DISPLAY_UPCOMING_EVENTS_EVENT_TIME" />
-		<execute function="AssertClick#assertTextClickAtAndWait" locator1="SOSiteHome#EVENTS_DISPLAY_TODAYS_EVENTS_EVENT_TITLE" value1="${eventTitle}" />
+		<execute function="AssertClick#assertTextClickAt" locator1="SOSiteHome#EVENTS_DISPLAY_TODAYS_EVENTS_EVENT_TITLE" value1="${eventTitle}" />
 
 		<execute macro="Event#viewDetailsPG" />
 
@@ -877,7 +877,7 @@
 		<execute function="AssertElementPresent" locator1="SOSiteHome#EVENTS_DISPLAY_UPCOMING_EVENTS_EVENT_TIME_INCREMENT" />
 		<execute function="AssertTextNotEquals#assertNotPartialText" locator1="SOSiteHome#EVENTS_DISPLAY_TODAYS_EVENTS" value1="${eventTitle}02" />
 		<execute function="AssertTextNotEquals#assertNotPartialText" locator1="SOSiteHome#EVENTS_DISPLAY_UPCOMING_EVENTS" value1="${eventTitle}02" />
-		<execute function="AssertClick#assertTextClickAtAndWait" locator1="SOSiteHome#EVENTS_DISPLAY_UPCOMING_EVENTS_EVENT_TITLE_INCREMENT" value1="${eventTitle}01" />
+		<execute function="AssertClick#assertTextClickAt" locator1="SOSiteHome#EVENTS_DISPLAY_UPCOMING_EVENTS_EVENT_TITLE_INCREMENT" value1="${eventTitle}01" />
 
 		<execute macro="Event#viewDetailsPG" />
 
@@ -902,7 +902,7 @@
 		<execute function="AssertElementPresent" locator1="SOSiteHome#EVENTS_DISPLAY_UPCOMING_EVENTS_EVENT_TIME_INCREMENT" />
 		<execute function="AssertTextNotEquals#assertNotPartialText" locator1="SOSiteHome#EVENTS_DISPLAY_TODAYS_EVENTS" value1="${eventTitle}03" />
 		<execute function="AssertTextNotEquals#assertNotPartialText" locator1="SOSiteHome#EVENTS_DISPLAY_UPCOMING_EVENTS" value1="${eventTitle}03" />
-		<execute function="AssertClick#assertTextClickAtAndWait" locator1="SOSiteHome#EVENTS_DISPLAY_UPCOMING_EVENTS_EVENT_TITLE_INCREMENT" value1="${eventTitle}02" />
+		<execute function="AssertClick#assertTextClickAt" locator1="SOSiteHome#EVENTS_DISPLAY_UPCOMING_EVENTS_EVENT_TITLE_INCREMENT" value1="${eventTitle}02" />
 
 		<execute macro="Event#viewDetailsPG" />
 
@@ -932,7 +932,7 @@
 		<execute function="AssertElementPresent" locator1="SOSiteHome#EVENTS_DISPLAY_UPCOMING_EVENTS_EVENT_TIME_INCREMENT" />
 		<execute function="AssertTextNotEquals#assertNotPartialText" locator1="SOSiteHome#EVENTS_DISPLAY_TODAYS_EVENTS" value1="${eventTitle}04" />
 		<execute function="AssertTextNotEquals#assertNotPartialText" locator1="SOSiteHome#EVENTS_DISPLAY_UPCOMING_EVENTS" value1="${eventTitle}04" />
-		<execute function="AssertClick#assertTextClickAtAndWait" locator1="SOSiteHome#EVENTS_DISPLAY_UPCOMING_EVENTS_EVENT_TITLE_INCREMENT" value1="${eventTitle}03" />
+		<execute function="AssertClick#assertTextClickAt" locator1="SOSiteHome#EVENTS_DISPLAY_UPCOMING_EVENTS_EVENT_TITLE_INCREMENT" value1="${eventTitle}03" />
 
 		<execute macro="Event#viewDetailsPG" />
 
@@ -965,7 +965,7 @@
 
 		<execute function="AssertTextEquals" locator1="SOSiteHome#EVENTS_DISPLAY_UPCOMING_EVENTS_EVENT_TITLE_INCREMENT" value1="${eventTitle}04" />
 		<execute function="AssertElementPresent" locator1="SOSiteHome#EVENTS_DISPLAY_UPCOMING_EVENTS_EVENT_TIME_INCREMENT" />
-		<execute function="AssertClick#assertTextClickAtAndWait" locator1="SOSiteHome#EVENTS_DISPLAY_UPCOMING_EVENTS_EVENT_TITLE_INCREMENT" value1="${eventTitle}04" />
+		<execute function="AssertClick#assertTextClickAt" locator1="SOSiteHome#EVENTS_DISPLAY_UPCOMING_EVENTS_EVENT_TITLE_INCREMENT" value1="${eventTitle}04" />
 
 		<execute macro="Event#viewDetailsPG" />
 
@@ -1001,7 +1001,7 @@
 
 		<execute function="AssertTextEquals" locator1="SOSiteHome#EVENTS_DISPLAY_UPCOMING_EVENTS_EVENT_TITLE_INCREMENT" value1="${eventTitle}04" />
 		<execute function="AssertElementPresent" locator1="SOSiteHome#EVENTS_DISPLAY_UPCOMING_EVENTS_EVENT_TIME_INCREMENT" />
-		<execute function="AssertClick#assertTextClickAtAndWait" locator1="SOSiteHome#EVENTS_DISPLAY_UPCOMING_EVENTS_EVENT_TITLE_INCREMENT" value1="${eventTitle}04" />
+		<execute function="AssertClick#assertTextClickAt" locator1="SOSiteHome#EVENTS_DISPLAY_UPCOMING_EVENTS_EVENT_TITLE_INCREMENT" value1="${eventTitle}04" />
 
 		<execute macro="Event#viewDetailsPG" />
 	</command>
@@ -1074,7 +1074,7 @@
 
 		<var name="entryAuthor" value="${adminName}" />
 
-		<execute function="Click#textClickAtAndWait" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
+		<execute function="Click#textClickAt" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
 		<execute function="AssertElementPresent#assertElementPresent" locator1="SOUserBar#NOTIFICATION" />
 		<execute function="AssertTextEquals" locator1="SOUserBar#NOTIFICATION_MENU_COUNT" value1="0" />
 		<execute function="MouseOver" locator1="SOUserBar#NOTIFICATION" />

@@ -62,9 +62,9 @@
 	</tear-down>
 
 	<command name="DeleteMessage" priority="5">
-		<execute function="Click#textClickAtAndWait" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
+		<execute function="Click#textClickAt" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
 
-		<execute function="Click#textClickAtAndWait" locator1="SODashboard#NAVIGATION_MESSAGES" value1="Messages" />
+		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_MESSAGES" value1="Messages" />
 
 		<execute macro="SOMessages#sendMessage">
 			<var name="key_recipientName" value="${userName}" />
@@ -75,9 +75,9 @@
 			<var name="userName" value="${adminName}" />
 		</execute>
 
-		<execute function="Click#textClickAtAndWait" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
+		<execute function="Click#textClickAt" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
 
-		<execute function="Click#textClickAtAndWait" locator1="SODashboard#NAVIGATION_MESSAGES" value1="Messages" />
+		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_MESSAGES" value1="Messages" />
 
 		<execute macro="SOMessages#viewMessageList">
 			<var name="connectionName" value="${userName}" />
@@ -86,14 +86,14 @@
 		</execute>
 
 		<execute function="Check" locator1="SOMessages#MESSAGE_CHECKBOX" />
-		<execute function="AssertClick#assertValueClickAtAndWait" locator1="SOMessages#DELETE_BUTTON" value1="Delete" />
+		<execute function="AssertClick#assertValueClickAt" locator1="SOMessages#DELETE_BUTTON" value1="Delete" />
 		<execute function="AssertTextEquals" locator1="SOMessages#INFO_MESSAGE" value1="No messages found." />
 	</command>
 
 	<command name="DeleteMessageBySOUser" priority="5">
-		<execute function="Click#textClickAtAndWait" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
+		<execute function="Click#textClickAt" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
 
-		<execute function="Click#textClickAtAndWait" locator1="SODashboard#NAVIGATION_MESSAGES" value1="Messages" />
+		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_MESSAGES" value1="Messages" />
 
 		<execute macro="SOMessages#sendMessage">
 			<var name="key_recipientName" value="${userName}" />
@@ -111,9 +111,9 @@
 			<var name="userEmailAddress" value="${userEmailAddress}" />
 		</execute>
 
-		<execute function="Click#textClickAtAndWait" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
+		<execute function="Click#textClickAt" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
 
-		<execute function="Click#textClickAtAndWait" locator1="SODashboard#NAVIGATION_MESSAGES" value1="Messages" />
+		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_MESSAGES" value1="Messages" />
 
 		<execute macro="SOMessages#viewMessage">
 			<var name="connectionName" value="${adminName}" />
@@ -123,7 +123,7 @@
 			<var name="userName" value="${userName}" />
 		</execute>
 
-		<execute function="AssertClick#assertValueClickAtAndWait" locator1="SOMessagesMessage#DELETE_BUTTON" value1="Delete" />
+		<execute function="AssertClick#assertValueClickAt" locator1="SOMessagesMessage#DELETE_BUTTON" value1="Delete" />
 		<execute function="AssertTextEquals" locator1="SOMessagesMessage#SUCCESS_MESSAGE" value1="Your request completed successfully." />
 		<execute function="AssertTextEquals" locator1="SOMessagesMessage#INFO_MESSAGE" value1="No messages found." />
 		<execute function="AssertTextNotPresent" value1="${messageSubject}" />
@@ -173,9 +173,9 @@
 			<var name="userEmailAddress" value="${userEmailAddress}" />
 		</execute>
 
-		<execute function="Click#textClickAtAndWait" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
+		<execute function="Click#textClickAt" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
 
-		<execute function="Click#textClickAtAndWait" locator1="SODashboard#NAVIGATION_MESSAGES" value1="Messages" />
+		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_MESSAGES" value1="Messages" />
 
 		<execute macro="SOMessages#sendMessage">
 			<var name="key_recipientName" value="${userName2}" />
@@ -193,9 +193,9 @@
 			<var name="userEmailAddress" value="${userEmailAddress2}" />
 		</execute>
 
-		<execute function="Click#textClickAtAndWait" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
+		<execute function="Click#textClickAt" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
 
-		<execute function="Click#textClickAtAndWait" locator1="SODashboard#NAVIGATION_MESSAGES" value1="Messages" />
+		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_MESSAGES" value1="Messages" />
 
 		<execute macro="SOMessages#viewMessage">
 			<var name="connectionName" value="${userName}" />
@@ -205,9 +205,9 @@
 			<var name="userName" value="${userName2}" />
 		</execute>
 
-		<execute function="Click#textClickAtAndWait" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
+		<execute function="Click#textClickAt" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
 
-		<execute function="Click#textClickAtAndWait" locator1="SODashboard#NAVIGATION_MESSAGES" value1="Messages" />
+		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_MESSAGES" value1="Messages" />
 
 		<execute macro="SOMessages#viewMessageList">
 			<var name="connectionName" value="${userName}" />
@@ -218,18 +218,18 @@
 		<var name="senderName" value="${userName}" />
 
 		<execute function="Check" locator1="SOMessages#MESSAGE_CHECKBOX" />
-		<execute function="AssertClick#assertValueClickAtAndWait" locator1="SOMessages#DELETE_BUTTON" value1="Delete" />
+		<execute function="AssertClick#assertValueClickAt" locator1="SOMessages#DELETE_BUTTON" value1="Delete" />
 		<execute function="AssertTextEquals" locator1="SOMessages#INFO_MESSAGE" value1="No messages found." />
 
-		<execute function="Click#textClickAtAndWait" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
+		<execute function="Click#textClickAt" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
 
-		<execute function="Click#textClickAtAndWait" locator1="SODashboard#NAVIGATION_MESSAGES" value1="Messages" />
+		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_MESSAGES" value1="Messages" />
 
 		<execute function="AssertTextEquals" locator1="SOMessages#INFO_MESSAGE" value1="No messages found." />
 		<execute function="AssertTextNotPresent" value1="Message Subject" />
 		<execute function="AssertTextNotPresent" value1="Message Body" />
 
-		<execute function="Click#textClickAtAndWait" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
+		<execute function="Click#textClickAt" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
 		<execute function="AssertElementPresent#assertElementPresent" locator1="SOUserBar#NOTIFICATION" />
 		<execute function="AssertTextEquals" locator1="SOUserBar#NOTIFICATION_MENU_COUNT" value1="0" />
 		<execute function="AssertTextNotPresent" value1="${senderName} sent you a message." />
@@ -241,9 +241,9 @@
 			<var name="userEmailAddress" value="${userEmailAddress}" />
 		</execute>
 
-		<execute function="Click#textClickAtAndWait" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
+		<execute function="Click#textClickAt" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
 
-		<execute function="Click#textClickAtAndWait" locator1="SODashboard#NAVIGATION_MESSAGES" value1="Messages" />
+		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_MESSAGES" value1="Messages" />
 
 		<execute macro="SOMessages#viewMessage">
 			<var name="connectionName" value="${userName2}" />
@@ -255,9 +255,9 @@
 	</command>
 
 	<command name="DeleteMessageDetails" priority="5">
-		<execute function="Click#textClickAtAndWait" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
+		<execute function="Click#textClickAt" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
 
-		<execute function="Click#textClickAtAndWait" locator1="SODashboard#NAVIGATION_MESSAGES" value1="Messages" />
+		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_MESSAGES" value1="Messages" />
 
 		<execute macro="SOMessages#sendMessage">
 			<var name="key_recipientName" value="${userName}" />
@@ -268,9 +268,9 @@
 			<var name="userName" value="${adminName}" />
 		</execute>
 
-		<execute function="Click#textClickAtAndWait" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
+		<execute function="Click#textClickAt" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
 
-		<execute function="Click#textClickAtAndWait" locator1="SODashboard#NAVIGATION_MESSAGES" value1="Messages" />
+		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_MESSAGES" value1="Messages" />
 
 		<execute macro="SOMessages#viewMessage">
 			<var name="connectionName" value="${userName}" />
@@ -280,16 +280,16 @@
 			<var name="userName" value="${adminName}" />
 		</execute>
 
-		<execute function="AssertClick#assertValueClickAtAndWait" locator1="SOMessagesMessage#DELETE_BUTTON" value1="Delete" />
+		<execute function="AssertClick#assertValueClickAt" locator1="SOMessagesMessage#DELETE_BUTTON" value1="Delete" />
 		<execute function="AssertTextEquals" locator1="SOMessagesMessage#SUCCESS_MESSAGE" value1="Your request completed successfully." />
 		<execute function="AssertTextEquals" locator1="SOMessagesMessage#INFO_MESSAGE" value1="No messages found." />
 		<execute function="AssertTextNotPresent" value1="${messageSubject}" />
 	</command>
 
 	<command name="DeleteMessagesAll" priority="5">
-		<execute function="Click#textClickAtAndWait" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
+		<execute function="Click#textClickAt" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
 
-		<execute function="Click#textClickAtAndWait" locator1="SODashboard#NAVIGATION_MESSAGES" value1="Messages" />
+		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_MESSAGES" value1="Messages" />
 
 		<execute macro="SOMessages#sendMessage">
 			<var name="key_recipientName" value="${userName}" />
@@ -301,9 +301,9 @@
 			<var name="userName" value="${adminName}" />
 		</execute>
 
-		<execute function="Click#textClickAtAndWait" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
+		<execute function="Click#textClickAt" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
 
-		<execute function="Click#textClickAtAndWait" locator1="SODashboard#NAVIGATION_MESSAGES" value1="Messages" />
+		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_MESSAGES" value1="Messages" />
 
 		<execute macro="SOMessages#sendMessage">
 			<var name="key_recipientName" value="${userName}" />
@@ -315,9 +315,9 @@
 			<var name="userName" value="${adminName}" />
 		</execute>
 
-		<execute function="Click#textClickAtAndWait" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
+		<execute function="Click#textClickAt" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
 
-		<execute function="Click#textClickAtAndWait" locator1="SODashboard#NAVIGATION_MESSAGES" value1="Messages" />
+		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_MESSAGES" value1="Messages" />
 
 		<execute macro="SOMessages#sendMessage">
 			<var name="key_recipientName" value="${userName}" />
@@ -329,9 +329,9 @@
 			<var name="userName" value="${adminName}" />
 		</execute>
 
-		<execute function="Click#textClickAtAndWait" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
+		<execute function="Click#textClickAt" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
 
-		<execute function="Click#textClickAtAndWait" locator1="SODashboard#NAVIGATION_MESSAGES" value1="Messages" />
+		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_MESSAGES" value1="Messages" />
 
 		<execute macro="SOMessages#viewMessageList">
 			<var name="connectionName" value="${userName}" />
@@ -355,14 +355,14 @@
 		</execute>
 
 		<execute function="Check" locator1="SOMessages#SELECT_ALL_CHECKBOX" />
-		<execute function="AssertClick#assertValueClickAtAndWait" locator1="SOMessages#DELETE_BUTTON" value1="Delete" />
+		<execute function="AssertClick#assertValueClickAt" locator1="SOMessages#DELETE_BUTTON" value1="Delete" />
 		<execute function="AssertTextEquals" locator1="SOMessages#INFO_MESSAGE" value1="No messages found." />
 	</command>
 
 	<command name="MarkAsUnreadMessage" priority="5">
-		<execute function="Click#textClickAtAndWait" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
+		<execute function="Click#textClickAt" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
 
-		<execute function="Click#textClickAtAndWait" locator1="SODashboard#NAVIGATION_MESSAGES" value1="Messages" />
+		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_MESSAGES" value1="Messages" />
 
 		<execute macro="SOMessages#sendMessage">
 			<var name="key_recipientName" value="${userName}" />
@@ -380,9 +380,9 @@
 			<var name="userEmailAddress" value="${userEmailAddress}" />
 		</execute>
 
-		<execute function="Click#textClickAtAndWait" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
+		<execute function="Click#textClickAt" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
 
-		<execute function="Click#textClickAtAndWait" locator1="SODashboard#NAVIGATION_MESSAGES" value1="Messages" />
+		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_MESSAGES" value1="Messages" />
 
 		<execute macro="SOMessages#viewMessageList">
 			<var name="connectionName" value="${adminName}" />
@@ -391,14 +391,14 @@
 		</execute>
 
 		<execute function="Check" locator1="SOMessages#MESSAGE_CHECKBOX" />
-		<execute function="AssertClick#assertValueClickAtAndWait" locator1="SOMessages#MARK_AS_UNREAD_BUTTON" value1="Mark as Unread" />
+		<execute function="AssertClick#assertValueClickAt" locator1="SOMessages#MARK_AS_UNREAD_BUTTON" value1="Mark as Unread" />
 		<execute function="AssertElementPresent" locator1="SOMessages#MESSAGE_UNREAD" />
 	</command>
 
 	<command name="MarkAsUnreadMessageDetails" priority="5">
-		<execute function="Click#textClickAtAndWait" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
+		<execute function="Click#textClickAt" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
 
-		<execute function="Click#textClickAtAndWait" locator1="SODashboard#NAVIGATION_MESSAGES" value1="Messages" />
+		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_MESSAGES" value1="Messages" />
 
 		<execute macro="SOMessages#sendMessage">
 			<var name="key_recipientName" value="${userName}" />
@@ -416,9 +416,9 @@
 			<var name="userEmailAddress" value="${userEmailAddress}" />
 		</execute>
 
-		<execute function="Click#textClickAtAndWait" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
+		<execute function="Click#textClickAt" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
 
-		<execute function="Click#textClickAtAndWait" locator1="SODashboard#NAVIGATION_MESSAGES" value1="Messages" />
+		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_MESSAGES" value1="Messages" />
 
 		<execute macro="SOMessages#viewMessage">
 			<var name="connectionName" value="${adminName}" />
@@ -428,7 +428,7 @@
 			<var name="userName" value="${userName}" />
 		</execute>
 
-		<execute function="AssertClick#assertValueClickAtAndWait" locator1="SOMessagesMessage#MARK_AS_UNREAD_BUTTON" value1="Mark as Unread" />
+		<execute function="AssertClick#assertValueClickAt" locator1="SOMessagesMessage#MARK_AS_UNREAD_BUTTON" value1="Mark as Unread" />
 
 		<execute function="AssertTextEquals" locator1="SOMessages#SUCCESS_MESSAGE" value1="Your request completed successfully." />
 
@@ -442,9 +442,9 @@
 	</command>
 
 	<command name="MarkAsUnreadMessagesAll" priority="5">
-		<execute function="Click#textClickAtAndWait" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
+		<execute function="Click#textClickAt" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
 
-		<execute function="Click#textClickAtAndWait" locator1="SODashboard#NAVIGATION_MESSAGES" value1="Messages" />
+		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_MESSAGES" value1="Messages" />
 
 		<execute macro="SOMessages#sendMessage">
 			<var name="key_recipientName" value="${userName}" />
@@ -456,9 +456,9 @@
 			<var name="userName" value="${adminName}" />
 		</execute>
 
-		<execute function="Click#textClickAtAndWait" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
+		<execute function="Click#textClickAt" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
 
-		<execute function="Click#textClickAtAndWait" locator1="SODashboard#NAVIGATION_MESSAGES" value1="Messages" />
+		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_MESSAGES" value1="Messages" />
 
 		<execute macro="SOMessages#sendMessage">
 			<var name="key_recipientName" value="${userName}" />
@@ -470,9 +470,9 @@
 			<var name="userName" value="${adminName}" />
 		</execute>
 
-		<execute function="Click#textClickAtAndWait" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
+		<execute function="Click#textClickAt" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
 
-		<execute function="Click#textClickAtAndWait" locator1="SODashboard#NAVIGATION_MESSAGES" value1="Messages" />
+		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_MESSAGES" value1="Messages" />
 
 		<execute macro="SOMessages#sendMessage">
 			<var name="key_recipientName" value="${userName}" />
@@ -484,9 +484,9 @@
 			<var name="userName" value="${adminName}" />
 		</execute>
 
-		<execute function="Click#textClickAtAndWait" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
+		<execute function="Click#textClickAt" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
 
-		<execute function="Click#textClickAtAndWait" locator1="SODashboard#NAVIGATION_MESSAGES" value1="Messages" />
+		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_MESSAGES" value1="Messages" />
 
 		<execute macro="SOMessages#viewMessage">
 			<var name="connectionName" value="${userName}" />
@@ -497,9 +497,9 @@
 			<var name="userName" value="${adminName}" />
 		</execute>
 
-		<execute function="Click#textClickAtAndWait" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
+		<execute function="Click#textClickAt" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
 
-		<execute function="Click#textClickAtAndWait" locator1="SODashboard#NAVIGATION_MESSAGES" value1="Messages" />
+		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_MESSAGES" value1="Messages" />
 
 		<execute macro="SOMessages#viewMessageList">
 			<var name="connectionName" value="${userName}" />
@@ -516,7 +516,7 @@
 		</execute>
 
 		<execute function="Check" locator1="SOMessages#SELECT_ALL_CHECKBOX" />
-		<execute function="AssertClick#assertValueClickAtAndWait" locator1="SOMessages#MARK_AS_UNREAD_BUTTON" value1="Mark as Unread" />
+		<execute function="AssertClick#assertValueClickAt" locator1="SOMessages#MARK_AS_UNREAD_BUTTON" value1="Mark as Unread" />
 
 		<var name="messageBody" value="${messageBody}" />
 		<var name="number" value="01" />
@@ -533,9 +533,9 @@
 	</command>
 
 	<command name="SendMessage" priority="5">
-		<execute function="Click#textClickAtAndWait" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
+		<execute function="Click#textClickAt" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
 
-		<execute function="Click#textClickAtAndWait" locator1="SODashboard#NAVIGATION_MESSAGES" value1="Messages" />
+		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_MESSAGES" value1="Messages" />
 
 		<execute macro="SOMessages#sendMessage">
 			<var name="key_recipientName" value="${userName}" />
@@ -546,9 +546,9 @@
 			<var name="userName" value="${adminName}" />
 		</execute>
 
-		<execute function="Click#textClickAtAndWait" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
+		<execute function="Click#textClickAt" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
 
-		<execute function="Click#textClickAtAndWait" locator1="SODashboard#NAVIGATION_MESSAGES" value1="Messages" />
+		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_MESSAGES" value1="Messages" />
 
 		<execute macro="SOMessages#viewMessage">
 			<var name="connectionName" value="${userName}" />
@@ -565,9 +565,9 @@
 			<var name="userEmailAddress" value="${userEmailAddress}" />
 		</execute>
 
-		<execute function="Click#textClickAtAndWait" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
+		<execute function="Click#textClickAt" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
 
-		<execute function="Click#textClickAtAndWait" locator1="SODashboard#NAVIGATION_MESSAGES" value1="Messages" />
+		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_MESSAGES" value1="Messages" />
 
 		<execute macro="SOMessages#viewMessage">
 			<var name="connectionName" value="${adminName}" />
@@ -579,9 +579,9 @@
 	</command>
 
 	<command name="SendMessageAttachment" priority="5">
-		<execute function="Click#textClickAtAndWait" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
+		<execute function="Click#textClickAt" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
 
-		<execute function="Click#textClickAtAndWait" locator1="SODashboard#NAVIGATION_MESSAGES" value1="Messages" />
+		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_MESSAGES" value1="Messages" />
 
 		<execute macro="SOMessages#sendMessage">
 			<var name="key_recipientName" value="${userName}" />
@@ -593,9 +593,9 @@
 			<var name="userName" value="${adminName}" />
 		</execute>
 
-		<execute function="Click#textClickAtAndWait" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
+		<execute function="Click#textClickAt" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
 
-		<execute function="Click#textClickAtAndWait" locator1="SODashboard#NAVIGATION_MESSAGES" value1="Messages" />
+		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_MESSAGES" value1="Messages" />
 
 		<execute macro="SOMessages#viewMessage">
 			<var name="connectionName" value="${userName}" />
@@ -613,9 +613,9 @@
 			<var name="userEmailAddress" value="${userEmailAddress}" />
 		</execute>
 
-		<execute function="Click#textClickAtAndWait" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
+		<execute function="Click#textClickAt" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
 
-		<execute function="Click#textClickAtAndWait" locator1="SODashboard#NAVIGATION_MESSAGES" value1="Messages" />
+		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_MESSAGES" value1="Messages" />
 
 		<execute macro="SOMessages#viewMessage">
 			<var name="connectionName" value="${adminName}" />
@@ -683,9 +683,9 @@
 	</command>
 
 	<command name="SendReplyMessage" priority="5">
-		<execute function="Click#textClickAtAndWait" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
+		<execute function="Click#textClickAt" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
 
-		<execute function="Click#textClickAtAndWait" locator1="SODashboard#NAVIGATION_MESSAGES" value1="Messages" />
+		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_MESSAGES" value1="Messages" />
 
 		<execute macro="SOMessages#sendMessage">
 			<var name="key_recipientName" value="${userName}" />
@@ -708,7 +708,7 @@
 			<var name="senderName" value="${adminName}" />
 		</execute>
 
-		<execute function="Click#textClickAtAndWait" locator1="SODashboard#NAVIGATION_MESSAGES" value1="Messages" />
+		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_MESSAGES" value1="Messages" />
 
 		<execute macro="SOMessages#viewMessage">
 			<var name="connectionName" value="${adminName}" />
@@ -722,9 +722,9 @@
 			<var name="messageReplyBody" value="${messageReplyBody}" />
 		</execute>
 
-		<execute function="Click#textClickAtAndWait" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
+		<execute function="Click#textClickAt" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
 
-		<execute function="Click#textClickAtAndWait" locator1="SODashboard#NAVIGATION_MESSAGES" value1="Messages" />
+		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_MESSAGES" value1="Messages" />
 
 		<execute macro="SOMessages#viewReplyMessage">
 			<var name="connectionName" value="${adminName}" />
@@ -747,7 +747,7 @@
 			<var name="senderName" value="${userName}" />
 		</execute>
 
-		<execute function="Click#textClickAtAndWait" locator1="SODashboard#NAVIGATION_MESSAGES" value1="Messages" />
+		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_MESSAGES" value1="Messages" />
 
 		<execute macro="SOMessages#viewReplyMessage">
 			<var name="connectionName" value="${userName}" />
@@ -760,9 +760,9 @@
 	</command>
 
 	<command name="SendReplyMessageAttachment" priority="5">
-		<execute function="Click#textClickAtAndWait" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
+		<execute function="Click#textClickAt" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
 
-		<execute function="Click#textClickAtAndWait" locator1="SODashboard#NAVIGATION_MESSAGES" value1="Messages" />
+		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_MESSAGES" value1="Messages" />
 
 		<execute macro="SOMessages#sendMessage">
 			<var name="key_recipientName" value="${userName}" />
@@ -785,7 +785,7 @@
 			<var name="senderName" value="${adminName}" />
 		</execute>
 
-		<execute function="Click#textClickAtAndWait" locator1="SODashboard#NAVIGATION_MESSAGES" value1="Messages" />
+		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_MESSAGES" value1="Messages" />
 
 		<execute macro="SOMessages#viewMessage">
 			<var name="connectionName" value="${adminName}" />
@@ -800,9 +800,9 @@
 			<var name="messageReplyBody" value="${messageReplyBody}" />
 		</execute>
 
-		<execute function="Click#textClickAtAndWait" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
+		<execute function="Click#textClickAt" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
 
-		<execute function="Click#textClickAtAndWait" locator1="SODashboard#NAVIGATION_MESSAGES" value1="Messages" />
+		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_MESSAGES" value1="Messages" />
 
 		<execute macro="SOMessages#viewReplyMessage">
 			<var name="connectionName" value="${adminName}" />
@@ -826,7 +826,7 @@
 			<var name="senderName" value="${userName}" />
 		</execute>
 
-		<execute function="Click#textClickAtAndWait" locator1="SODashboard#NAVIGATION_MESSAGES" value1="Messages" />
+		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_MESSAGES" value1="Messages" />
 
 		<execute macro="SOMessages#viewReplyMessage">
 			<var name="connectionName" value="${userName}" />

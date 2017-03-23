@@ -6,7 +6,7 @@
 			<var name="userName" value="Joe Bloggs" />
 		</execute>
 
-		<execute function="Click#textClickAtAndWait" locator1="SODashboard#NAVIGATION_MY_DOCUMENTS" value1="My Documents" />
+		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_MY_DOCUMENTS" value1="My Documents" />
 
 		<execute function="Click" locator1="PGDocumentsandmedia#TOOLBAR_DISPLAY_ICON" value1="Icon Display" />
 	</command>
@@ -18,7 +18,7 @@
 			<var name="userName" value="Joe Bloggs" />
 		</execute>
 
-		<execute function="Click#textClickAtAndWait" locator1="SODashboard#NAVIGATION_MY_DOCUMENTS" value1="My Documents" />
+		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_MY_DOCUMENTS" value1="My Documents" />
 
 		<if>
 			<condition function="IsElementPresent" locator1="PGDocumentsandmedia#ENTRIES_DOCUMENT_GENERIC" />

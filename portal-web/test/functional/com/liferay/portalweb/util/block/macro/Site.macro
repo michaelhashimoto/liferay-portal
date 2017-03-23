@@ -20,7 +20,7 @@
 		<if>
 			<equals arg1="${siteType}" arg2="Blank" />
 			<then>
-				<execute function="AssertClick#assertTextClickAtAndWait" locator1="CPSites#ADD_BLANK_SITE" value1="Blank Site" />
+				<execute function="AssertClick#assertTextClickAt" locator1="CPSites#ADD_BLANK_SITE" value1="Blank Site" />
 			</then>
 			<elseif>
 				<equals arg1="${siteType}" arg2="Community" />
@@ -54,7 +54,7 @@
 			</elseif>
 		</if>
 
-		<execute function="AssertClick#assertValueClickAtAndWait" locator1="CPSitesAdd#MENU_SAVE" value1="Save" />
+		<execute function="AssertClick#assertValueClickAt" locator1="CPSitesAdd#MENU_SAVE" value1="Save" />
 
 		<execute function="AssertTextEquals" locator1="CPSitesEdit#SUCCESS_MESSAGE" value1="Your request completed successfully." />
 		<execute function="AssertTextEquals" locator1="CPSitesEdit#HEADER" value1="${siteName}" />
@@ -68,7 +68,7 @@
 
 	<command name="addMemberCP">
 		<execute function="Type" locator1="CPSites#SEARCH_FIELD" value1="${siteName}" />
-		<execute function="AssertClick#assertValueClickAtAndWait" locator1="CPSites#SEARCH_BUTTON" value1="Search" />
+		<execute function="AssertClick#assertValueClickAt" locator1="CPSites#SEARCH_BUTTON" value1="Search" />
 		<execute function="AssertTextEquals#assertPartialText" locator1="CPSites#SITE_TABLE_NAME" value1="${siteName}" />
 		<execute function="AssertClick" locator1="CPSites#SITE_TABLE_ACTIONS" value1="Actions" />
 		<execute function="AssertClick" locator1="CPSites#SITE_MENULIST_MANAGE_MEMBERSHIPS" value1="Manage Memberships" />
@@ -77,7 +77,7 @@
 		<execute function="AssertClick" locator1="CPSitememberships#ADD_MEMBERS_MENULIST_USER" value1="User" />
 
 		<execute function="Type" locator1="CPSitemembershipsAddmembers#SEARCH_FIELD" value1="${userScreenName}" />
-		<execute function="AssertClick#assertValueClickAtAndWait" locator1="CPSitemembershipsAddmembers#SEARCH_BUTTON" value1="Search" />
+		<execute function="AssertClick#assertValueClickAt" locator1="CPSitemembershipsAddmembers#SEARCH_BUTTON" value1="Search" />
 
 		<if>
 			<isset var="userMiddleName" />
@@ -91,34 +91,34 @@
 
 		<execute function="AssertTextEquals" locator1="CPSitemembershipsAddmembers#USER_TABLE_SCREEN_NAME" value1="${userScreenName}" />
 		<execute function="Check" locator1="CPSitemembershipsAddmembers#USER_TABLE_CHECKBOX" />
-		<execute function="AssertClick#assertValueClickAtAndWait" locator1="CPSitemembershipsAddmembers#SAVE_BUTTON" value1="Save" />
+		<execute function="AssertClick#assertValueClickAt" locator1="CPSitemembershipsAddmembers#SAVE_BUTTON" value1="Save" />
 		<execute function="AssertTextEquals" locator1="CPSitemembershipsAddmembers#SUCCESS_MESSAGE" value1="Your request completed successfully." />
 	</command>
 
 	<command name="assignRoleCP">
 		<execute function="Type" locator1="CPSites#SEARCH_FIELD" value1="${siteName}" />
-		<execute function="AssertClick#assertValueClickAtAndWait" locator1="CPSites#SEARCH_BUTTON" value1="Search" />
+		<execute function="AssertClick#assertValueClickAt" locator1="CPSites#SEARCH_BUTTON" value1="Search" />
 		<execute function="AssertTextEquals#assertPartialText" locator1="CPSites#SITE_TABLE_NAME" value1="${siteName}" />
 		<execute function="AssertClick" locator1="CPSites#SITE_TABLE_ACTIONS" value1="Actions" />
 		<execute function="AssertClick" locator1="CPSites#SITE_MENULIST_MANAGE_MEMBERSHIPS" value1="Manage Memberships" />
 
 		<execute function="AssertClick" locator1="CPSitememberships#TOOLBAR_ADD_SITE_ROLES_TO" value1="Add Site Roles to" />
-		<execute function="AssertClick#assertTextClickAtAndWait" locator1="CPSitememberships#ADD_SITE_ROLES_TO_MENULIST_USERS" value1="Users" />
+		<execute function="AssertClick#assertTextClickAt" locator1="CPSitememberships#ADD_SITE_ROLES_TO_MENULIST_USERS" value1="Users" />
 
 		<execute function="Type" locator1="CPSitemembershipsAssignuserroles#ROLES_SEARCH_FIELD" value1="${searchTerm}" />
-		<execute function="AssertClick#assertValueClickAtAndWait" locator1="CPSitemembershipsAssignuserroles#ROLES_SEARCH_BUTTON" value1="Search" />
+		<execute function="AssertClick#assertValueClickAt" locator1="CPSitemembershipsAssignuserroles#ROLES_SEARCH_BUTTON" value1="Search" />
 		<execute function="AssertTextEquals" locator1="CPSitemembershipsAssignuserroles#ROLE_TABLE_TITLE_1" value1="${roleName}" />
 		<execute function="AssertClick" locator1="CPSitemembershipsAssignuserroles#ROLE_TABLE_TITLE_1" value1="${roleName}" />
 
-		<execute function="AssertClick#assertTextClickAtAndWait" locator1="CPSitemembershipsAssignuserrolesUser#AVAILABLE" value1="Available" />
+		<execute function="AssertClick#assertTextClickAt" locator1="CPSitemembershipsAssignuserrolesUser#AVAILABLE" value1="Available" />
 		<execute function="Type" locator1="CPSitemembershipsAssignuserrolesUser#BASIC_SEARCH_FIELD" value1="${userScreenName}" />
-		<execute function="AssertClick#assertValueClickAtAndWait" locator1="CPSitemembershipsAssignuserrolesUser#BASIC_SEARCH_BUTTON" value1="Search" />
+		<execute function="AssertClick#assertValueClickAt" locator1="CPSitemembershipsAssignuserrolesUser#BASIC_SEARCH_BUTTON" value1="Search" />
 		<execute function="AssertTextEquals" locator1="CPSitemembershipsAssignuserrolesUser#USER_TABLE_SCREEN_NAME_1" value1="${userScreenName}" />
 		<execute function="Check" locator1="CPSitemembershipsAssignuserrolesUser#USER_TABLE_CHECKBOX_1" />
-		<execute function="AssertClick#assertValueClickAtAndWait" locator1="CPSitemembershipsAssignuserrolesUser#UPDATE_ASSOCIATIONS_BUTTON" value1="Update Associations" />
+		<execute function="AssertClick#assertValueClickAt" locator1="CPSitemembershipsAssignuserrolesUser#UPDATE_ASSOCIATIONS_BUTTON" value1="Update Associations" />
 		<execute function="AssertTextEquals" locator1="CPSitemembershipsAssignuserrolesUser#SUCCESS_MESSAGE" value1="Your request completed successfully." />
 
-		<execute function="AssertClick#assertTextClickAtAndWait" locator1="CPSitemembershipsAssignuserrolesUser#CURRENT" value1="Current" />
+		<execute function="AssertClick#assertTextClickAt" locator1="CPSitemembershipsAssignuserrolesUser#CURRENT" value1="Current" />
 		<execute function="AssertChecked" locator1="CPSitemembershipsAssignuserrolesUser#USER_TABLE_CHECKBOX_1" />
 
 		<if>
@@ -136,7 +136,7 @@
 
 	<command name="deleteCP">
 		<execute function="Type" locator1="CPSites#SEARCH_FIELD" value1="Name" />
-		<execute function="AssertClick#assertValueClickAtAndWait" locator1="CPSites#SEARCH_BUTTON" value1="Search" />
+		<execute function="AssertClick#assertValueClickAt" locator1="CPSites#SEARCH_BUTTON" value1="Search" />
 		<execute function="AssertTextEquals#assertPartialText" locator1="CPSites#SITE_TABLE_NAME" value1="${siteName}" />
 		<execute function="AssertClick" locator1="CPSites#SITE_TABLE_ACTIONS" value1="Actions" />
 		<execute function="AssertClickNoError" locator1="CPSites#SITE_MENULIST_DELETE" value1="Delete" />
@@ -147,13 +147,13 @@
 
 	<command name="removeMemberCP">
 		<execute function="Type" locator1="CPSites#SEARCH_FIELD" value1="${siteName}" />
-		<execute function="AssertClick#assertValueClickAtAndWait" locator1="CPSites#SEARCH_BUTTON" value1="Search" />
+		<execute function="AssertClick#assertValueClickAt" locator1="CPSites#SEARCH_BUTTON" value1="Search" />
 		<execute function="AssertTextEquals#assertPartialText" locator1="CPSites#SITE_TABLE_NAME" value1="${siteName}" />
 		<execute function="AssertClick" locator1="CPSites#SITE_TABLE_ACTIONS" value1="Actions" />
 		<execute function="AssertClick" locator1="CPSites#SITE_MENULIST_MANAGE_MEMBERSHIPS" value1="Manage Memberships" />
 
 		<execute function="Type" locator1="CPSitememberships#USER_SEARCH_FIELD" value1="${userScreenName}" />
-		<execute function="AssertClick#assertValueClickAtAndWait" locator1="CPSitememberships#USER_SEARCH_BUTTON" value1="Search" />
+		<execute function="AssertClick#assertValueClickAt" locator1="CPSitememberships#USER_SEARCH_BUTTON" value1="Search" />
 		<execute function="AssertTextEquals" locator1="CPSitememberships#USER_TABLE_NAME_1" value1="${userFirstName} ${userLastName}" />
 		<execute function="AssertTextEquals" locator1="CPSitememberships#USER_TABLE_SCREEN_NAME_1" value1="${userScreenName}" />
 		<execute function="AssertClick" locator1="CPSitememberships#USER_TABLE_ACTIONS_1" value1="Actions" />
@@ -168,7 +168,7 @@
 		</execute>
 
 		<execute function="Type" locator1="CPSites#SEARCH_FIELD" value1="Name" />
-		<execute function="AssertClick#assertValueClickAtAndWait" locator1="CPSites#SEARCH_BUTTON" value1="Search" />
+		<execute function="AssertClick#assertValueClickAt" locator1="CPSites#SEARCH_BUTTON" value1="Search" />
 
 		<while>
 			<condition function="IsElementPresent" locator1="CPSites#SITE_TABLE_ACTIONS" />
@@ -182,7 +182,7 @@
 
 	<command name="viewCP">
 		<execute function="Type" locator1="CPSites#SEARCH_FIELD" value1="${siteName}" />
-		<execute function="AssertClick#assertValueClickAtAndWait" locator1="CPSites#SEARCH_BUTTON" value1="Search" />
+		<execute function="AssertClick#assertValueClickAt" locator1="CPSites#SEARCH_BUTTON" value1="Search" />
 		<execute function="AssertTextEquals#assertPartialText" locator1="CPSites#SITE_TABLE_NAME" value1="${siteName}" />
 		<execute function="AssertTextEquals" locator1="CPSites#SITE_TABLE_TYPE" value1="${siteType}" />
 

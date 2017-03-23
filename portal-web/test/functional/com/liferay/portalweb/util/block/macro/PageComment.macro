@@ -14,7 +14,7 @@
 	<command name="addPGWithWorkflow">
 		<execute function="AssertClick" locator1="PGPageComments#BE_THE_FIRST_LINK" value1="Be the first." />
 		<execute function="Type" locator1="PGPageComments#COMMENT_FIELD" value1="${commentBody}" />
-		<execute function="AssertClick#assertValueClickAtAndWait" locator1="PGPageComments#SUBMIT_FOR_PUBLICATION_BUTTON" value1="Submit for Publication" />
+		<execute function="AssertClick#assertValueClickAt" locator1="PGPageComments#SUBMIT_FOR_PUBLICATION_BUTTON" value1="Submit for Publication" />
 
 		<var name="key_commentBody" value="${commentBody}" />
 

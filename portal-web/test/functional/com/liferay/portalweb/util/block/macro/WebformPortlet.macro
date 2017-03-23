@@ -16,7 +16,7 @@
 		<execute function="AssertElementPresent" locator1="PGWebform#DEFAULT_FORM_FIELDS_COMMENTS" />
 
 		<execute function="AssertClick#pauseAssertTextClickAt" locator1="PGWebform#PORTLET_OPTIONS" value1="Options" />
-		<execute function="AssertClick#assertTextClickAtAndWait" locator1="PGWebform#WEBFORM_OPTIONS_MENULIST_CONFIGURATION" value1="Configuration" />
+		<execute function="AssertClick#assertTextClickAt" locator1="PGWebform#WEBFORM_OPTIONS_MENULIST_CONFIGURATION" value1="Configuration" />
 
 		<execute function="SelectFrame" locator1="PGWebformConfiguration#CONFIGURATION_IFRAME" />
 		<execute function="Type#clickAtSendKeys" locator1="PGWebformConfiguration#SETUP_FORM_INFORMATION_TITLE" value1="${webFormInformationTitleEdit}" />
@@ -25,7 +25,7 @@
 		<execute function="Type#clickAtSendKeys" locator1="PGWebformConfiguration#SETUP_FORM_FIELDS_RATING" value1="${webFormFieldsRatingEdit}" />
 		<execute function="Type#clickAtSendKeys" locator1="PGWebformConfiguration#SETUP_FORM_FIELDS_COMMENTS" value1="${webFormFieldsCommentsEdit}" />
 
-		<execute function="AssertClick#assertValueClickAtAndWait" locator1="PGWebformConfiguration#SAVE_BUTTON" value1="Save" />
+		<execute function="AssertClick#assertValueClickAt" locator1="PGWebformConfiguration#SAVE_BUTTON" value1="Save" />
 		<execute function="AssertTextEquals" locator1="PGWebformConfiguration#SUCCESS_MESSAGE" value1="You have successfully updated the setup." />
 	</command>
 

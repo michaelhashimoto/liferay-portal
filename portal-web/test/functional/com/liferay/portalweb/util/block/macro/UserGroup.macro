@@ -1,6 +1,6 @@
 <definition>
 	<command name="addCP">
-		<execute function="AssertClick#assertTextClickAtAndWait" locator1="CPUsergroups#ADD" value1="Add" />
+		<execute function="AssertClick#assertTextClickAt" locator1="CPUsergroups#ADD" value1="Add" />
 
 		<execute function="Type" locator1="CPUsergroupsAddusergroup#NAME_FIELD" value1="${userGroupName}" />
 		<execute function="Click" locator1="CPUsergroupsAddusergroup#SAVE_BUTTON" value1="Save" />
@@ -19,10 +19,10 @@
 
 	<command name="editCP">
 		<execute function="AssertClick" locator1="CPUsergroups#USER_GROUP_TABLE_ACTIONS_1" value1="Actions" />
-		<execute function="AssertClick#assertTextClickAtAndWait" locator1="CPUsergroups#USER_GROUP_MENULIST_EDIT" value1="Edit" />
+		<execute function="AssertClick#assertTextClickAt" locator1="CPUsergroups#USER_GROUP_MENULIST_EDIT" value1="Edit" />
 
 		<execute function="Type" locator1="CPUsergroupsEditusergroup#NAME_FIELD" value1="${userGroupNameEdit}" />
-		<execute function="AssertClick#assertValueClickAtAndWait" locator1="CPUsergroupsEditusergroup#SAVE_BUTTON" value1="Save" />
+		<execute function="AssertClick#assertValueClickAt" locator1="CPUsergroupsEditusergroup#SAVE_BUTTON" value1="Save" />
 
 		<execute function="AssertTextEquals" locator1="CPUsergroups#SUCCESS_MESSAGE" value1="Your request completed successfully." />
 		<execute function="AssertTextEquals" locator1="CPUsergroups#USER_GROUP_TABLE_NAME_1" value1="${userGroupNameEdit}" />

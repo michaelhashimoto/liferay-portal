@@ -1,10 +1,10 @@
 <definition>
 	<command name="addCP">
-		<execute function="AssertClick#assertValueClickAtAndWait" locator1="CPWiki#ADD_WIKI_BUTTON" value1="Add Wiki" />
+		<execute function="AssertClick#assertValueClickAt" locator1="CPWiki#ADD_WIKI_BUTTON" value1="Add Wiki" />
 
 		<execute function="Type" locator1="CPWikiAddwiki#NAME_FIELD" value1="${wikiNodeName}" />
 		<execute function="Type" locator1="CPWikiAddwiki#DESCRIPTION_FIELD" value1="${wikiNodeDescription}" />
-		<execute function="AssertClick#assertValueClickAtAndWait" locator1="CPWikiAddwiki#SAVE_BUTTON" value1="Save" />
+		<execute function="AssertClick#assertValueClickAt" locator1="CPWikiAddwiki#SAVE_BUTTON" value1="Save" />
 
 		<execute function="AssertTextEquals" locator1="CPWiki#SUCCESS_MESSAGE"  value1="Your request completed successfully." />
 		<execute function="AssertTextEquals" locator1="CPWiki#WIKI_NODE_TABLE_WIKI_2" value1="${wikiNodeName}" />
@@ -22,11 +22,11 @@
 	<command name="editCP">
 		<execute function="AssertTextEquals" locator1="CPWiki#WIKI_NODE_TABLE_WIKI_2" value1="${wikiNodeName}" />
 		<execute function="AssertClick#pauseAssertTextClickAt" locator1="CPWiki#WIKI_NODE_TABLE_ACTIONS_2" value1="Actions" />
-		<execute function="AssertClick#assertTextClickAtAndWait" locator1="CPWiki#WIKI_NODE_MENULIST_EDIT" value1="Edit" />
+		<execute function="AssertClick#assertTextClickAt" locator1="CPWiki#WIKI_NODE_MENULIST_EDIT" value1="Edit" />
 
 		<execute function="Type" locator1="CPWikiAddwiki#NAME_FIELD" value1="${wikiNodeNameEdit}" />
 		<execute function="Type" locator1="CPWikiAddwiki#DESCRIPTION_FIELD" value1="${wikiNodeDescriptionEdit}" />
-		<execute function="AssertClick#assertValueClickAtAndWait" locator1="CPWikiAddwiki#SAVE_BUTTON" value1="Save" />
+		<execute function="AssertClick#assertValueClickAt" locator1="CPWikiAddwiki#SAVE_BUTTON" value1="Save" />
 
 		<execute function="AssertTextEquals" locator1="CPWiki#SUCCESS_MESSAGE"  value1="Your request completed successfully." />
 		<execute function="AssertTextEquals" locator1="CPWiki#WIKI_NODE_TABLE_WIKI_2" value1="${wikiNodeNameEdit}" />

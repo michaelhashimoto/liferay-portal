@@ -115,7 +115,7 @@
 	</command>
 
 	<command name="completeTask">
-		<execute function="Click#clickAtAndWait" locator1="SOTasks#ASSIGNED_TO_ME_LINK" />
+		<execute function="Click#clickAt" locator1="SOTasks#ASSIGNED_TO_ME_LINK" />
 
 		<if>
 			<equals arg1="${taskPriority}" arg2="High" />
@@ -234,14 +234,14 @@
 	</command>
 
 	<command name="deleteTask">
-		<execute function="Click#clickAtAndWait" locator1="SOTasks#I_HAVE_CREATED_LINK" />
+		<execute function="Click#clickAt" locator1="SOTasks#I_HAVE_CREATED_LINK" />
 		<execute function="Check" locator1="SOTasks#SHOW_COMPLETED_TASKS_CHECKBOX" />
 		<execute function="AssertClick" locator1="SOTasks#TASK_DESCRIPTION" value1="${taskDescription}" />
 
 		<execute function="ClickNoError" locator1="SOTasksTask#TASK_DELETE_BUTTON" />
 		<execute function="Confirm" value1="Are you sure you want to delete this entry?" />
 
-		<execute function="Click#clickAtAndWait" locator1="SOTasks#ASSIGNED_TO_ME_LINK" />
+		<execute function="Click#clickAt" locator1="SOTasks#ASSIGNED_TO_ME_LINK" />
 		<execute function="Check" locator1="SOTasks#SHOW_COMPLETED_TASKS_CHECKBOX" />
 
 		<if>
@@ -253,7 +253,7 @@
 
 		<execute function="AssertTextNotPresent" value1="${taskDescription}" />
 
-		<execute function="Click#clickAtAndWait" locator1="SOTasks#I_HAVE_CREATED_LINK" />
+		<execute function="Click#clickAt" locator1="SOTasks#I_HAVE_CREATED_LINK" />
 		<execute function="Check" locator1="SOTasks#SHOW_COMPLETED_TASKS_CHECKBOX" />
 
 		<if>
@@ -267,7 +267,7 @@
 	</command>
 
 	<command name="editTask">
-		<execute function="Click#clickAtAndWait" locator1="SOTasks#I_HAVE_CREATED_LINK" />
+		<execute function="Click#clickAt" locator1="SOTasks#I_HAVE_CREATED_LINK" />
 		<execute function="Check" locator1="SOTasks#SHOW_COMPLETED_TASKS_CHECKBOX" />
 		<execute function="AssertClick" locator1="SOTasks#TASK_DESCRIPTION" value1="${taskDescription}" />
 
@@ -352,7 +352,7 @@
 	<command name="resolveTask">
 		<var locator="SODashboard#PROFILE_NAME" name="currentUser" />
 
-		<execute function="AssertClick#assertTextClickAtAndWait" locator1="SOTasks#ASSIGNED_TO_ME_LINK" value1="Assigned to Me" />
+		<execute function="AssertClick#assertTextClickAt" locator1="SOTasks#ASSIGNED_TO_ME_LINK" value1="Assigned to Me" />
 		<execute function="AssertClick" locator1="SOTasks#TASK_DESCRIPTION_NORMAL" value1="${taskDescription}" />
 
 		<execute function="AssertTextEquals" locator1="SOTasksTask#TASK_DESCRIPTION" value1="${taskDescription}" />
@@ -370,7 +370,7 @@
 
 		<execute macro="SONavigation#gotoDashboardTasks" />
 
-		<execute function="Click#clickAtAndWait" locator1="SOTasks#ASSIGNED_TO_ME_LINK" />
+		<execute function="Click#clickAt" locator1="SOTasks#ASSIGNED_TO_ME_LINK" />
 		<execute function="Check" locator1="SOTasks#SHOW_COMPLETED_TASKS_CHECKBOX" />
 
 		<while>
@@ -381,12 +381,12 @@
 				<execute function="ClickNoError" locator1="SOTasksTask#TASK_DELETE_BUTTON" />
 				<execute function="Confirm" value1="Are you sure you want to delete this entry?" />
 
-				<execute function="Click#clickAtAndWait" locator1="SOTasks#ASSIGNED_TO_ME_LINK" />
+				<execute function="Click#clickAt" locator1="SOTasks#ASSIGNED_TO_ME_LINK" />
 				<execute function="Check" locator1="SOTasks#SHOW_COMPLETED_TASKS_CHECKBOX" />
 			</then>
 		</while>
 
-		<execute function="Click#clickAtAndWait" locator1="SOTasks#I_HAVE_CREATED_LINK" />
+		<execute function="Click#clickAt" locator1="SOTasks#I_HAVE_CREATED_LINK" />
 		<execute function="Check" locator1="SOTasks#SHOW_COMPLETED_TASKS_CHECKBOX" />
 
 		<while>
@@ -397,14 +397,14 @@
 				<execute function="ClickNoError" locator1="SOTasksTask#TASK_DELETE_BUTTON" />
 				<execute function="Confirm" value1="Are you sure you want to delete this entry?" />
 
-				<execute function="Click#clickAtAndWait" locator1="SOTasks#I_HAVE_CREATED_LINK" />
+				<execute function="Click#clickAt" locator1="SOTasks#I_HAVE_CREATED_LINK" />
 				<execute function="Check" locator1="SOTasks#SHOW_COMPLETED_TASKS_CHECKBOX" />
 			</then>
 		</while>
 	</command>
 
 	<command name="viewResolveTaskNotification">
-		<execute function="Click#textClickAtAndWait" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
+		<execute function="Click#textClickAt" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
 		<execute function="AssertElementPresent#assertElementPresent" locator1="SOUserBar#NOTIFICATION" />
 		<execute function="AssertTextEquals" locator1="SOUserBar#NOTIFICATION_MENU_COUNT" value1="1" />
 		<execute function="MouseOver" locator1="SOUserBar#NOTIFICATION" />
@@ -417,7 +417,7 @@
 	<command name="viewTask">
 		<var locator="SODashboard#PROFILE_NAME" name="currentUser" />
 
-		<execute function="AssertClick#assertTextClickAtAndWait" locator1="SOTasks#ASSIGNED_TO_ME_LINK" value1="Assigned to Me" />
+		<execute function="AssertClick#assertTextClickAt" locator1="SOTasks#ASSIGNED_TO_ME_LINK" value1="Assigned to Me" />
 
 		<if>
 			<equals arg1="${taskAssignee}" arg2="${currentUser}" />
@@ -488,7 +488,7 @@
 
 		<execute macro="SONavigation#gotoDashboardTasks" />
 
-		<execute function="AssertClick#assertTextClickAtAndWait" locator1="SOTasks#I_HAVE_CREATED_LINK" value1="I Have Created" />
+		<execute function="AssertClick#assertTextClickAt" locator1="SOTasks#I_HAVE_CREATED_LINK" value1="I Have Created" />
 
 		<if>
 			<equals arg1="${taskReporter}" arg2="${currentUser}" />
@@ -654,7 +654,7 @@
 	</command>
 
 	<command name="viewTaskNotification">
-		<execute function="Click#textClickAtAndWait" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
+		<execute function="Click#textClickAt" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
 		<execute function="AssertElementPresent#assertElementPresent" locator1="SOUserBar#NOTIFICATION" />
 		<execute function="AssertTextEquals" locator1="SOUserBar#NOTIFICATION_MENU_COUNT" value1="1" />
 		<execute function="MouseOver" locator1="SOUserBar#NOTIFICATION" />
@@ -704,7 +704,7 @@
 
 		<execute function="AssertTextEquals" locator1="SOTasks#TASK_REPORTER" value1="Reporter: ${taskReporter}" />
 
-		<execute function="Click#textClickAtAndWait" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
+		<execute function="Click#textClickAt" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
 		<execute function="AssertElementPresent#assertElementPresent" locator1="SOUserBar#NOTIFICATION" />
 		<execute function="AssertTextEquals" locator1="SOUserBar#NOTIFICATION_MENU_COUNT" value1="1" />
 		<execute function="MouseOver" locator1="SOUserBar#NOTIFICATION" />

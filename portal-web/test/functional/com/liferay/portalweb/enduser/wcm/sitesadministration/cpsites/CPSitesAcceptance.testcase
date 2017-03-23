@@ -74,11 +74,11 @@
 		<execute function="Open" locator1="/user/${userScreenName}/home" />
 
 		<execute function="AssertTextEquals" locator1="PGPersonalsiteMysites#MY_SITES_INFO_MESSAGE" value1="No sites were found." />
-		<execute function="AssertClick#assertTextClickAtAndWait" locator1="PGPersonalsiteMysites#MY_SITES_AVAILABLE_SITES" value1="Available Sites" />
+		<execute function="AssertClick#assertTextClickAt" locator1="PGPersonalsiteMysites#MY_SITES_AVAILABLE_SITES" value1="Available Sites" />
 
 		<execute function="AssertTextNotPresent" value1="${siteName}" />
 		<execute function="Type" locator1="PGPersonalsiteAvailablesites#AVAILABLE_SITES_SEARCH_FIELD" value1="${siteName}" />
-		<execute function="AssertClick#assertValueClickAtAndWait" locator1="PGPersonalsiteAvailablesites#AVAILABLE_SITES_SEARCH_BUTTON" value1="Search" />
+		<execute function="AssertClick#assertValueClickAt" locator1="PGPersonalsiteAvailablesites#AVAILABLE_SITES_SEARCH_BUTTON" value1="Search" />
 		<execute function="AssertTextNotPresent" value1="${siteName}" />
 		<execute function="AssertTextEquals" locator1="PGPersonalsiteAvailablesites#AVAILABLE_SITES_INFO_MESSAGE" value1="No sites were found." />
 	</command>

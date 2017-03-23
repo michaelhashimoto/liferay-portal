@@ -34,21 +34,21 @@
 		<execute function="AssertTextEquals" locator1="Setupwizard#DATABASE_CHANGE_JDBC_DRIVER_CLASS_NAME_LABEL" value1="JDBC Driver Class Name (Required)" />
 		<execute function="AssertTextEquals" locator1="Setupwizard#DATABASE_CHANGE_USER_NAME_LABEL" value1="User Name" />
 		<execute function="AssertTextEquals" locator1="Setupwizard#DATABASE_CHANGE_PASSWORD_LABEL" value1="Password" />
-		<execute function="AssertClick#assertValueClickAtAndWait" locator1="Setupwizard#FINISH_CONFIGURATION_BUTTON" value1="Finish Configuration" />
+		<execute function="AssertClick#assertValueClickAt" locator1="Setupwizard#FINISH_CONFIGURATION_BUTTON" value1="Finish Configuration" />
 
 		<execute function="AssertTextEquals" locator1="SetupwizardFinishconfiguration#SUCCESS_MESSAGE" value1="Your configuration was saved successfully." />
 		<execute function="AssertTextEquals#assertPartialText" locator1="SetupwizardFinishconfiguration#CONFIGURATION_SAVE_MESSAGE" value1="The configuration was saved in" />
 		<execute function="AssertTextEquals#assertPartialText" locator1="SetupwizardFinishconfiguration#CONFIGURATION_SAVE_LOCATION" value1="portal-setup-wizard.properties" />
-		<execute function="AssertClick#assertValueClickAtAndWait" locator1="SetupwizardFinishconfiguration#GO_TO_MY_PORTAL_BUTTON" value1="Go to My Portal" />
+		<execute function="AssertClick#assertValueClickAt" locator1="SetupwizardFinishconfiguration#GO_TO_MY_PORTAL_BUTTON" value1="Go to My Portal" />
 
-		<execute function="AssertClick#assertValueClickAtAndWait" locator1="PGLoginTermsofservice#I_AGREE_BUTTON" value1="I Agree" />
+		<execute function="AssertClick#assertValueClickAt" locator1="PGLoginTermsofservice#I_AGREE_BUTTON" value1="I Agree" />
 
 		<execute function="Type" locator1="PGLoginNewpassword#PASSWORD_FIELD" value1="${newPassword}" />
 		<execute function="Type" locator1="PGLoginNewpassword#ENTER_AGAIN_FIELD" value1="${newPassword}" />
-		<execute function="AssertClick#assertValueClickAtAndWait" locator1="PGLoginNewpassword#SAVE_BUTTON" value1="Save" />
+		<execute function="AssertClick#assertValueClickAt" locator1="PGLoginNewpassword#SAVE_BUTTON" value1="Save" />
 
 		<execute function="Type" locator1="PGLoginPasswordreminder#ANSWER_FIELD" value1="${passwordReminder}" />
-		<execute function="AssertClick#assertValueClickAtAndWait" locator1="PGLoginPasswordreminder#SAVE_BUTTON" value1="Save" />
+		<execute function="AssertClick#assertValueClickAt" locator1="PGLoginPasswordreminder#SAVE_BUTTON" value1="Save" />
 	</set-up>
 
 	<command name="WelcomeThemeView" priority="5">
@@ -69,13 +69,13 @@
 		<execute function="AssertTextEquals" locator1="PGWelcomePage1#GETTING_STARTED" value1="Need Help Getting Started?" />
 		<execute function="AssertTextEquals" locator1="PGWelcomePage1#DEVELOP_FASTER" value1="Develop Faster." />
 
-		<execute function="Click#clickAtAndWait" locator1="PGWelcomePage1#PAGE_2" />
+		<execute function="Click#clickAt" locator1="PGWelcomePage1#PAGE_2" />
 
 		<execute function="AssertElementPresent#assertVisible" locator1="PGWelcomePage2#CUSTOMERS_1" />
 		<execute function="AssertElementPresent#assertVisible" locator1="PGWelcomePage2#CUSTOMERS_2" />
 		<execute function="AssertTextEquals" locator1="PGWelcomePage2#HEADER" value1="Liferay helps you build feature-rich, easy-to-use web applications quickly." />
 
-		<execute function="Click#clickAtAndWait" locator1="PGWelcomePage1#PAGE_3" />
+		<execute function="Click#clickAt" locator1="PGWelcomePage1#PAGE_3" />
 
 		<execute function="AssertTextEquals" locator1="PGWelcomePage3#HEADER" value1="See how Liferay can change the way you do business." />
 		<execute function="AssertTextEquals" locator1="PGWelcomePage3#MENU_PAGE_1" value1="Open Source: A Better Way" />

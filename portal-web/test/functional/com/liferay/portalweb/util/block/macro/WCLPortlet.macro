@@ -1,12 +1,12 @@
 <definition>
 	<command name="configureSetupPG">
 		<execute function="AssertClick" locator1="PGWebcontentlist#OPTIONS_ICON" value1="Options" />
-		<execute function="AssertClick#assertTextClickAtAndWait" locator1="PGWebcontentlist#OPTIONS_MENULIST_CONFIGURATION" value1="Configuration" />
+		<execute function="AssertClick#assertTextClickAt" locator1="PGWebcontentlist#OPTIONS_MENULIST_CONFIGURATION" value1="Configuration" />
 
 		<execute function="SelectFrame#selectFrameWaitForScript" locator1="PGWebcontentlistConfiguration#CONFIGURATION_IFRAME" />
 		<execute function="Select" locator1="PGWebcontentlistConfiguration#DISPLAY_SETTINGS_DISPLAY_URL_SELECT" value1="Normal" />
 		<execute function="Select" locator1="PGWebcontentlistConfiguration#DISPLAY_SETTINGS_DISPLAY_PER_PAGE_SELECT" value1="10" />
-		<execute function="AssertClick#assertValueClickAtAndWait" locator1="PGWebcontentlistConfiguration#SAVE_BUTTON" value1="Save" />
+		<execute function="AssertClick#assertValueClickAt" locator1="PGWebcontentlistConfiguration#SAVE_BUTTON" value1="Save" />
 		<execute function="AssertTextEquals" locator1="PGWebcontentlistConfiguration#SUCCESS_MESSAGE" value1="You have successfully updated the setup." />
 
 		<execute function="SelectFrame" />

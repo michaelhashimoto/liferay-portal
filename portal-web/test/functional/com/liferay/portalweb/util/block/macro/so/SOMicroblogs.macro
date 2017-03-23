@@ -242,9 +242,9 @@
 	</command>
 
 	<command name="gotoMicroblogsContentField">
-		<execute function="Click#textClickAtAndWait" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
+		<execute function="Click#textClickAt" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
 
-		<execute function="Click#textClickAtAndWait" locator1="SODashboard#NAVIGATION_MICROBLOGS" value1="Microblogs" />
+		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_MICROBLOGS" value1="Microblogs" />
 
 		<if>
 			<condition function="IsElementNotPresent" locator1="SOMicroblogs#MICROBLOGS_ENTRY_CONTENT" />
@@ -282,9 +282,9 @@
 	<command name="tearDownMicroblogsEntry">
 		<execute macro="SOUser#firstLoginPG" />
 
-		<execute function="Click#textClickAtAndWait" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
+		<execute function="Click#textClickAt" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
 
-		<execute function="Click#textClickAtAndWait" locator1="SODashboard#NAVIGATION_MICROBLOGS" value1="Microblogs" />
+		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_MICROBLOGS" value1="Microblogs" />
 
 		<while>
 			<condition function="IsElementPresent#pauseIsElementPresent" locator1="SOMicroblogs#MICROBLOGS_ENTRY_DELETE_LINK" value1="Delete" />
@@ -386,7 +386,7 @@
 	</command>
 
 	<command name="viewMicroblogsEntryCommentNotification">
-		<execute function="Click#textClickAtAndWait" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
+		<execute function="Click#textClickAt" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
 		<execute function="AssertElementPresent#assertElementPresent" locator1="SOUserBar#NOTIFICATION" />
 		<execute function="AssertTextEquals" locator1="SOUserBar#NOTIFICATION_MENU_COUNT" value1="1" />
 		<execute function="MouseOver" locator1="SOUserBar#NOTIFICATION" />
@@ -409,7 +409,7 @@
 	<command name="viewMicroblogsEntryMention">
 		<var name="microblogsEntryContent" value="${mentionUserName}" />
 
-		<execute function="Click#textClickAtAndWait" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
+		<execute function="Click#textClickAt" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
 
 		<if>
 			<condition function="IsElementNotPresent" locator1="SODashboard#WHATS_HAPPENING_ENTRY_CONTENT" />
@@ -418,7 +418,7 @@
 			</then>
 		</if>
 
-		<execute function="Click#textClickAtAndWait" locator1="SODashboard#NAVIGATION_MICROBLOGS" value1="Microblogs" />
+		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_MICROBLOGS" value1="Microblogs" />
 
 		<execute macro="SOMicroblogs#viewMicroblogsEntryAuthor" />
 
@@ -426,7 +426,7 @@
 
 		<execute macro="SOMicroblogs#viewMicroblogsEntryCommentLink" />
 
-		<execute function="AssertClick#assertTextClickAtAndWait" locator1="SOMicroblogs#TAB_MENTIONS" value1="Mentions" />
+		<execute function="AssertClick#assertTextClickAt" locator1="SOMicroblogs#TAB_MENTIONS" value1="Mentions" />
 
 		<execute macro="SOMicroblogs#viewMicroblogsEntryAuthor" />
 
@@ -441,26 +441,26 @@
 	</command>
 
 	<command name="viewMicroblogsEntryNone">
-		<execute function="Click#textClickAtAndWait" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
+		<execute function="Click#textClickAt" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
 
-		<execute function="AssertClick#assertTextClickAtAndWait" locator1="SOActivities#NAVIGATION_CONNECTIONS" value1="Connections" />
+		<execute function="AssertClick#assertTextClickAt" locator1="SOActivities#NAVIGATION_CONNECTIONS" value1="Connections" />
 		<execute function="AssertTextEquals" locator1="SOActivities#NO_ACTIVITIES" value1="There are no activities." />
 		<execute function="AssertTextNotPresent" value1="${microblogsEntryContent}" />
-		<execute function="AssertClick#assertTextClickAtAndWait" locator1="SOActivities#NAVIGATION_FOLLOWING" value1="Following" />
+		<execute function="AssertClick#assertTextClickAt" locator1="SOActivities#NAVIGATION_FOLLOWING" value1="Following" />
 		<execute function="AssertTextEquals" locator1="SOActivities#NO_ACTIVITIES" value1="There are no activities." />
 		<execute function="AssertTextNotPresent" value1="${microblogsEntryContent}" />
 
-		<execute function="Click#textClickAtAndWait" locator1="SODashboard#NAVIGATION_MICROBLOGS" value1="Microblogs" />
+		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_MICROBLOGS" value1="Microblogs" />
 
 		<execute function="AssertTextNotPresent" value1="${microblogsEntryContent}" />
 	</command>
 
 	<command name="viewMicroblogsEntryNotViewableByEveryone">
-		<execute function="Click#textClickAtAndWait" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
+		<execute function="Click#textClickAt" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
 
 		<execute function="AssertTextEquals" locator1="SODashboard#WHATS_HAPPENING_INFO_MESSAGE" value1="You do not have any microblog entries." />
 
-		<execute function="Click#textClickAtAndWait" locator1="SODashboard#NAVIGATION_MICROBLOGS" value1="Microblogs" />
+		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_MICROBLOGS" value1="Microblogs" />
 
 		<execute macro="SOMicroblogs#viewMicroblogsEntryAuthor" />
 
@@ -472,9 +472,9 @@
 	</command>
 
 	<command name="viewMicroblogsEntryViewableByEveryone">
-		<execute function="Click#textClickAtAndWait" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
+		<execute function="Click#textClickAt" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
 
-		<execute function="Click#textClickAtAndWait" locator1="SODashboard#NAVIGATION_CONTACTS_CENTER" value1="Contacts Center" />
+		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_CONTACTS_CENTER" value1="Contacts Center" />
 
 		<execute function="Type" locator1="SOContactscenter#CONTACTS_LIST_SEARCH" value1="${microblogsEntryAuthorScreenName}" />
 		<execute function="AssertClick#pauseAssertTextClickAt" locator1="SOContactscenter#CONTACTS_LIST_NAME" value1="${microblogsEntryAuthorLastName}, ${microblogsEntryAuthorFirstName}" />
@@ -482,10 +482,10 @@
 		<if>
 			<isset var="microblogsEntryAuthorMiddleName" />
 			<then>
-				<execute function="AssertClick#assertTextClickAtAndWait" locator1="SOContactscenter#USER_DETAILS_NAME" value1="${microblogsEntryAuthorFirstName} ${microblogsEntryAuthorMiddleName} ${microblogsEntryAuthorLastName}" />
+				<execute function="AssertClick#assertTextClickAt" locator1="SOContactscenter#USER_DETAILS_NAME" value1="${microblogsEntryAuthorFirstName} ${microblogsEntryAuthorMiddleName} ${microblogsEntryAuthorLastName}" />
 			</then>
 			<else>
-				<execute function="AssertClick#assertTextClickAtAndWait" locator1="SOContactscenter#USER_DETAILS_NAME" value1="${microblogsEntryAuthorFirstName} ${microblogsEntryAuthorLastName}" />
+				<execute function="AssertClick#assertTextClickAt" locator1="SOContactscenter#USER_DETAILS_NAME" value1="${microblogsEntryAuthorFirstName} ${microblogsEntryAuthorLastName}" />
 			</else>
 		</if>
 
@@ -527,11 +527,11 @@
 				<var name="number" value="${number}" />
 				<var name="whatsHappeningNumber" value="${whatsHappeningNumber}" />
 
-				<execute function="Click#textClickAtAndWait" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
+				<execute function="Click#textClickAt" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
 
 				<execute function="AssertTextEquals" locator1="SODashboard#WHATS_HAPPENING_ENTRY_CONTENT" value1="${microblogsEntryContent}${whatsHappeningNumber}" />
 
-				<execute function="Click#textClickAtAndWait" locator1="SODashboard#NAVIGATION_MICROBLOGS" value1="Microblogs" />
+				<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_MICROBLOGS" value1="Microblogs" />
 
 				<execute macro="SOMicroblogs#viewMicroblogsEntryAuthor" />
 
@@ -542,10 +542,10 @@
 				<execute function="AssertElementNotPresent" locator1="SOMicroblogs#MICROBLOGS_ENTRY_REPOST_LINK" value1="Repost" />
 			</then>
 			<else>
-				<execute function="Click#textClickAtAndWait" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
+				<execute function="Click#textClickAt" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
 
 				<execute function="AssertTextEquals" locator1="SODashboard#WHATS_HAPPENING_ENTRY_CONTENT" value1="${microblogsEntryContent}" />
-				<execute function="Click#textClickAtAndWait" locator1="SODashboard#NAVIGATION_MICROBLOGS" value1="Microblogs" />
+				<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_MICROBLOGS" value1="Microblogs" />
 
 				<execute macro="SOMicroblogs#viewMicroblogsEntryAuthor" />
 
@@ -584,7 +584,7 @@
 				<execute function="AssertTextEquals" locator1="SOMicroblogs#TAB_TAG_VALUE" value1="${microblogsEntryTagValue}" />
 				<execute function="AssertTextEquals" locator1="SOMicroblogs#MICROBLOGS_ENTRY_CONTENT_INCREMENT" value1="${microblogsEntryContent}${number}" />
 				<execute function="AssertTextEquals" locator1="SOMicroblogs#MICROBLOGS_ENTRY_CONTENT_TAG_INCREMENT" value1="${microblogsEntryTagValue}" />
-				<execute function="AssertClick#assertTextClickAtAndWait" locator1="SOMicroblogs#TAB_TAG_VALUE" value1="${microblogsEntryTagValue}" />
+				<execute function="AssertClick#assertTextClickAt" locator1="SOMicroblogs#TAB_TAG_VALUE" value1="${microblogsEntryTagValue}" />
 
 				<execute macro="SOMicroblogs#viewMicroblogsEntryAuthor" />
 
@@ -602,7 +602,7 @@
 				<execute function="AssertTextEquals" locator1="SOMicroblogs#TAB_TAG_VALUE" value1="${microblogsEntryTagValue}" />
 				<execute function="AssertTextEquals" locator1="SOMicroblogs#MICROBLOGS_ENTRY_CONTENT" value1="${microblogsEntryContent}" />
 				<execute function="AssertTextEquals" locator1="SOMicroblogs#MICROBLOGS_ENTRY_CONTENT_TAG" value1="${microblogsEntryTagValue}" />
-				<execute function="AssertClick#assertTextClickAtAndWait" locator1="SOMicroblogs#TAB_TAG_VALUE" value1="${microblogsEntryTagValue}" />
+				<execute function="AssertClick#assertTextClickAt" locator1="SOMicroblogs#TAB_TAG_VALUE" value1="${microblogsEntryTagValue}" />
 
 				<execute macro="SOMicroblogs#viewMicroblogsEntryAuthor" />
 
@@ -614,9 +614,9 @@
 	</command>
 
 	<command name="viewOwnMicroblogsRepost">
-		<execute function="Click#textClickAtAndWait" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
+		<execute function="Click#textClickAt" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
 
-		<execute function="Click#textClickAtAndWait" locator1="SODashboard#NAVIGATION_MICROBLOGS" value1="Microblogs" />
+		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_MICROBLOGS" value1="Microblogs" />
 
 		<execute macro="SOMicroblogs#viewMicroblogsEntryAuthor" />
 

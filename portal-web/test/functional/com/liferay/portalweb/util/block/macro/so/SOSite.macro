@@ -5,28 +5,28 @@
 		</execute>
 
 		<execute function="Type" locator1="CPSites#SEARCH_FIELD" value1="${siteName}" />
-		<execute function="AssertClick#assertValueClickAtAndWait" locator1="CPSites#SEARCH_BUTTON" value1="Search" />
+		<execute function="AssertClick#assertValueClickAt" locator1="CPSites#SEARCH_BUTTON" value1="Search" />
 		<execute function="AssertTextEquals#assertPartialText" locator1="CPSites#SITE_TABLE_NAME" value1="${siteName}" />
 		<execute function="AssertClick" locator1="CPSites#SITE_TABLE_ACTIONS" value1="Actions" />
 		<execute function="AssertClick" locator1="CPSites#SITE_MENULIST_MANAGE_MEMBERSHIPS" value1="Manage Memberships" />
 
-		<execute function="AssertClick#assertTextClickAtAndWait" locator1="CPSitememberships#PENDING_MEMBERSHIP_REQUESTS_LINK" value1="There are 1 membership requests pending." />
+		<execute function="AssertClick#assertTextClickAt" locator1="CPSitememberships#PENDING_MEMBERSHIP_REQUESTS_LINK" value1="There are 1 membership requests pending." />
 
-		<execute function="AssertClick#assertTextClickAtAndWait" locator1="CPSitemembershipsViewmembershiprequests#NAVIGATION_PENDING" value1="Pending" />
+		<execute function="AssertClick#assertTextClickAt" locator1="CPSitemembershipsViewmembershiprequests#NAVIGATION_PENDING" value1="Pending" />
 		<execute function="AssertElementPresent" locator1="CPSitemembershipsViewmembershiprequests#USER_TABLE_DATE" />
 		<execute function="AssertTextEquals#assertPartialText" locator1="CPSitemembershipsViewmembershiprequests#USER_TABLE_NAME" value1="${userName}" />
 		<execute function="AssertTextEquals#assertPartialText" locator1="CPSitemembershipsViewmembershiprequests#USER_TABLE_NAME" value1="${userEmailAddress}" />
 		<execute function="AssertTextEquals" locator1="CPSitemembershipsViewmembershiprequests#USER_TABLE_USER_COMMENTS" value1="${userName} wishes to join ${siteName}." />
-		<execute function="AssertClick#assertTextClickAtAndWait" locator1="CPSitemembershipsViewmembershiprequests#USER_TABLE_REPLY" value1="Reply" />
+		<execute function="AssertClick#assertTextClickAt" locator1="CPSitemembershipsViewmembershiprequests#USER_TABLE_REPLY" value1="Reply" />
 
 		<execute function="AssertTextEquals" locator1="CPSitemembershipsReplymembershiprequests#HEADER_TITLE" value1="Reply Membership Request for ${siteName}" />
 		<execute function="Select" locator1="CPSitemembershipsReplymembershiprequests#STATUS_SELECT" value1="Approve" />
 		<execute function="Type" locator1="CPSitemembershipsReplymembershiprequests#REPLY_COMMENTS_FIELD" value1="${siteName} Membership Approved" />
-		<execute function="AssertClick#assertValueClickAtAndWait" locator1="CPSitemembershipsReplymembershiprequests#SAVE_BUTTON" value1="Save" />
+		<execute function="AssertClick#assertValueClickAt" locator1="CPSitemembershipsReplymembershiprequests#SAVE_BUTTON" value1="Save" />
 
 		<execute function="AssertTextEquals" locator1="CPSitemembershipsViewmembershiprequests#SUCCESS_MESSAGE_1" value1="Your request completed successfully." />
 		<execute function="AssertTextEquals" locator1="CPSitemembershipsViewmembershiprequests#SUCCESS_MESSAGE_2" value1="Your reply will be sent to the user by email." />
-		<execute function="AssertClick#assertTextClickAtAndWait" locator1="CPSitemembershipsViewmembershiprequests#NAVIGATION_APPROVED" value1="Approved" />
+		<execute function="AssertClick#assertTextClickAt" locator1="CPSitemembershipsViewmembershiprequests#NAVIGATION_APPROVED" value1="Approved" />
 		<execute function="AssertElementPresent" locator1="CPSitemembershipsViewmembershiprequests#USER_TABLE_DATE" />
 		<execute function="AssertTextEquals#assertPartialText" locator1="CPSitemembershipsViewmembershiprequests#USER_TABLE_NAME" value1="${userName}" />
 		<execute function="AssertTextEquals#assertPartialText" locator1="CPSitemembershipsViewmembershiprequests#USER_TABLE_NAME" value1="${userEmailAddress}" />
@@ -42,28 +42,28 @@
 		</execute>
 
 		<execute function="Type" locator1="CPSites#SEARCH_FIELD" value1="${siteName}" />
-		<execute function="AssertClick#assertValueClickAtAndWait" locator1="CPSites#SEARCH_BUTTON" value1="Search" />
+		<execute function="AssertClick#assertValueClickAt" locator1="CPSites#SEARCH_BUTTON" value1="Search" />
 		<execute function="AssertTextEquals#assertPartialText" locator1="CPSites#SITE_TABLE_NAME" value1="${siteName}" />
 		<execute function="AssertClick" locator1="CPSites#SITE_TABLE_ACTIONS" value1="Actions" />
 		<execute function="AssertClick" locator1="CPSites#SITE_MENULIST_MANAGE_MEMBERSHIPS" value1="Manage Memberships" />
 
-		<execute function="AssertClick#assertTextClickAtAndWait" locator1="CPSitememberships#PENDING_MEMBERSHIP_REQUESTS_LINK" value1="There are 1 membership requests pending." />
+		<execute function="AssertClick#assertTextClickAt" locator1="CPSitememberships#PENDING_MEMBERSHIP_REQUESTS_LINK" value1="There are 1 membership requests pending." />
 
-		<execute function="AssertClick#assertTextClickAtAndWait" locator1="CPSitemembershipsViewmembershiprequests#NAVIGATION_PENDING" value1="Pending" />
+		<execute function="AssertClick#assertTextClickAt" locator1="CPSitemembershipsViewmembershiprequests#NAVIGATION_PENDING" value1="Pending" />
 		<execute function="AssertElementPresent" locator1="CPSitemembershipsViewmembershiprequests#USER_TABLE_DATE" />
 		<execute function="AssertTextEquals#assertPartialText" locator1="CPSitemembershipsViewmembershiprequests#USER_TABLE_NAME" value1="${userName}" />
 		<execute function="AssertTextEquals#assertPartialText" locator1="CPSitemembershipsViewmembershiprequests#USER_TABLE_NAME" value1="${userEmailAddress}" />
 		<execute function="AssertTextEquals" locator1="CPSitemembershipsViewmembershiprequests#USER_TABLE_USER_COMMENTS" value1="${userName} wishes to join ${siteName}." />
-		<execute function="AssertClick#assertTextClickAtAndWait" locator1="CPSitemembershipsViewmembershiprequests#USER_TABLE_REPLY" value1="Reply" />
+		<execute function="AssertClick#assertTextClickAt" locator1="CPSitemembershipsViewmembershiprequests#USER_TABLE_REPLY" value1="Reply" />
 
 		<execute function="AssertTextEquals" locator1="CPSitemembershipsReplymembershiprequests#HEADER_TITLE" value1="Reply Membership Request for ${siteName}" />
 		<execute function="Select" locator1="CPSitemembershipsReplymembershiprequests#STATUS_SELECT" value1="Deny" />
 		<execute function="Type" locator1="CPSitemembershipsReplymembershiprequests#REPLY_COMMENTS_FIELD" value1="${siteName} Membership Denied" />
-		<execute function="AssertClick#assertValueClickAtAndWait" locator1="CPSitemembershipsReplymembershiprequests#SAVE_BUTTON" value1="Save" />
+		<execute function="AssertClick#assertValueClickAt" locator1="CPSitemembershipsReplymembershiprequests#SAVE_BUTTON" value1="Save" />
 
 		<execute function="AssertTextEquals" locator1="CPSitemembershipsViewmembershiprequests#SUCCESS_MESSAGE_1" value1="Your request completed successfully." />
 		<execute function="AssertTextEquals" locator1="CPSitemembershipsViewmembershiprequests#SUCCESS_MESSAGE_2" value1="Your reply will be sent to the user by email." />
-		<execute function="AssertClick#assertTextClickAtAndWait" locator1="CPSitemembershipsViewmembershiprequests#NAVIGATION_DENIED" value1="Denied" />
+		<execute function="AssertClick#assertTextClickAt" locator1="CPSitemembershipsViewmembershiprequests#NAVIGATION_DENIED" value1="Denied" />
 		<execute function="AssertElementPresent" locator1="CPSitemembershipsViewmembershiprequests#USER_TABLE_DATE" />
 		<execute function="AssertTextEquals#assertPartialText" locator1="CPSitemembershipsViewmembershiprequests#USER_TABLE_NAME" value1="${userName}" />
 		<execute function="AssertTextEquals#assertPartialText" locator1="CPSitemembershipsViewmembershiprequests#USER_TABLE_NAME" value1="${userEmailAddress}" />
@@ -99,7 +99,7 @@
 		<execute function="AssertTextEquals" locator1="SOSiteHome#NAVIGATION_WIKI" value1="Wiki" />
 		<execute function="AssertTextEquals" locator1="SOSiteHome#NAVIGATION_MEMBERS" value1="Members" />
 
-		<execute function="Click#textClickAtAndWait" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
+		<execute function="Click#textClickAt" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
 		<execute function="Click#pauseClickAt" locator1="SOUserBar#GO_TO" />
 		<execute function="Click#pauseClickAt" locator1="SOUserBar#GO_TO_SITES_DIRECTORY_BUTTON" />
 
@@ -150,7 +150,7 @@
 	</command>
 
 	<command name="viewSOSiteFavorite">
-		<execute function="Click#textClickAtAndWait" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
+		<execute function="Click#textClickAt" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
 		<execute function="Click#pauseClickAt" locator1="SOUserBar#GO_TO" />
 		<execute function="Select" locator1="SOUserBar#GO_TO_SITE_CATEGORY_SELECT" value1="My Favorites" />
 		<execute function="Click#pauseClickAt" locator1="SOUserBar#GO_TO" />
@@ -169,7 +169,7 @@
 		<execute function="AssertTextEquals" locator1="SOSiteHome#NAVIGATION_WIKI" value1="Wiki" />
 		<execute function="AssertTextEquals" locator1="SOSiteHome#NAVIGATION_MEMBERS" value1="Members" />
 
-		<execute function="Click#textClickAtAndWait" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
+		<execute function="Click#textClickAt" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
 		<execute function="Click#pauseClickAt" locator1="SOUserBar#GO_TO" />
 		<execute function="Click#pauseClickAt" locator1="SOUserBar#GO_TO_SITES_DIRECTORY_BUTTON" />
 
@@ -191,7 +191,7 @@
 	</command>
 
 	<command name="viewSOSiteMembership">
-		<execute function="Click#textClickAtAndWait" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
+		<execute function="Click#textClickAt" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
 		<execute function="Click#pauseClickAt" locator1="SOUserBar#GO_TO" />
 		<execute function="Select" locator1="SOUserBar#GO_TO_SITE_CATEGORY_SELECT" value1="My Sites" />
 		<execute function="Click#pauseClickAt" locator1="SOUserBar#GO_TO" />
@@ -210,7 +210,7 @@
 		<execute function="AssertTextEquals" locator1="SOSiteHome#NAVIGATION_WIKI" value1="Wiki" />
 		<execute function="AssertTextEquals" locator1="SOSiteHome#NAVIGATION_MEMBERS" value1="Members" />
 
-		<execute function="Click#textClickAtAndWait" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
+		<execute function="Click#textClickAt" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
 		<execute function="Click#pauseClickAt" locator1="SOUserBar#GO_TO" />
 		<execute function="Click#pauseClickAt" locator1="SOUserBar#GO_TO_SITES_DIRECTORY_BUTTON" />
 
@@ -228,13 +228,13 @@
 		<execute function="AssertTextEquals" locator1="SOSiteHome#NAVIGATION_FORUMS" value1="Forums" />
 		<execute function="AssertTextEquals" locator1="SOSiteHome#NAVIGATION_BLOGS" value1="Blogs" />
 		<execute function="AssertTextEquals" locator1="SOSiteHome#NAVIGATION_WIKI" value1="Wiki" />
-		<execute function="Click#textClickAtAndWait" locator1="SOSiteHome#NAVIGATION_MEMBERS" value1="Members" />
+		<execute function="Click#textClickAt" locator1="SOSiteHome#NAVIGATION_MEMBERS" value1="Members" />
 
 		<execute macro="SOMembers#viewMember" />
 	</command>
 
 	<command name="viewSOSiteNonMembership">
-		<execute function="Click#textClickAtAndWait" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
+		<execute function="Click#textClickAt" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
 		<execute function="Click#pauseClickAt" locator1="SOUserBar#GO_TO" />
 		<execute function="Select" locator1="SOUserBar#GO_TO_SITE_CATEGORY_SELECT" value1="All Sites" />
 		<execute function="Click#pauseClickAt" locator1="SOUserBar#GO_TO" />
@@ -251,7 +251,7 @@
 			</else>
 		</if>
 
-		<execute function="Click#textClickAtAndWait" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
+		<execute function="Click#textClickAt" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
 		<execute function="Click#pauseClickAt" locator1="SOUserBar#GO_TO" />
 		<execute function="Select" locator1="SOUserBar#GO_TO_SITE_CATEGORY_SELECT" value1="My Sites" />
 		<execute function="Click#pauseClickAt" locator1="SOUserBar#GO_TO" />
@@ -330,7 +330,7 @@
 				<execute function="AssertTextEquals" locator1="SOSiteHome#NAVIGATION_FORUMS" value1="Forums" />
 				<execute function="AssertTextEquals" locator1="SOSiteHome#NAVIGATION_BLOGS" value1="Blogs" />
 				<execute function="AssertTextEquals" locator1="SOSiteHome#NAVIGATION_WIKI" value1="Wiki" />
-				<execute function="Click#textClickAtAndWait" locator1="SOSiteHome#NAVIGATION_MEMBERS" value1="Members" />
+				<execute function="Click#textClickAt" locator1="SOSiteHome#NAVIGATION_MEMBERS" value1="Members" />
 
 				<execute function="AssertTextEquals" locator1="SOMembers#MEMBERS_LINK_ALL" value1="View all 1 users." />
 				<execute function="Type" locator1="SOMembers#MEMBERS_LIST_SEARCH" value1="${userEmailAddress}" />

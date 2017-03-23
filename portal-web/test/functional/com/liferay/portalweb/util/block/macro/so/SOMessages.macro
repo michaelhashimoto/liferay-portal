@@ -50,9 +50,9 @@
 	<command name="tearDownPG">
 		<execute macro="SOUser#firstLoginPG" />
 
-		<execute function="Click#textClickAtAndWait" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
+		<execute function="Click#textClickAt" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
 
-		<execute function="Click#textClickAtAndWait" locator1="SODashboard#NAVIGATION_MESSAGES" value1="Messages" />
+		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_MESSAGES" value1="Messages" />
 		<execute function="Check" locator1="SOMessages#SELECT_ALL_CHECKBOX" />
 		<execute function="Click" locator1="SOMessages#DELETE_BUTTON" />
 		<execute function="AssertTextEquals" locator1="SOMessages#INFO_MESSAGE" value1="No messages found." />
@@ -106,7 +106,7 @@
 	</command>
 
 	<command name="viewMessageNotification">
-		<execute function="Click#textClickAtAndWait" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
+		<execute function="Click#textClickAt" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
 		<execute function="AssertElementPresent#assertElementPresent" locator1="SOUserBar#NOTIFICATION" />
 		<execute function="AssertTextEquals" locator1="SOUserBar#NOTIFICATION_MENU_COUNT" value1="1" />
 		<execute function="MouseOver" locator1="SOUserBar#NOTIFICATION" />

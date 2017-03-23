@@ -327,7 +327,7 @@
 			</then>
 			<else>
 				<execute function="Click" locator1="SOUserBar#USER_NAME" />
-				<execute function="AssertClick#assertTextClickAtAndWait" locator1="SOUserBar#USER_MENU_MY_PROFILE" value1="My Profile" />
+				<execute function="AssertClick#assertTextClickAt" locator1="SOUserBar#USER_MENU_MY_PROFILE" value1="My Profile" />
 			</else>
 		</if>
 
@@ -501,7 +501,7 @@
 
 		<var locator="CPMyAccount#USER_NAME_HEADER" name="currentUser" />
 
-		<execute function="Click#textClickAtAndWait" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
+		<execute function="Click#textClickAt" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
 
 		<execute function="AssertElementPresent" locator1="SOActivities#NO_ACTIVITIES" />
 
@@ -662,7 +662,7 @@
 			</then>
 			<else>
 				<execute function="Click" locator1="SOUserBar#USER_NAME" />
-				<execute function="AssertClick#assertTextClickAtAndWait" locator1="SOUserBar#USER_MENU_MY_PROFILE" value1="My Profile" />
+				<execute function="AssertClick#assertTextClickAt" locator1="SOUserBar#USER_MENU_MY_PROFILE" value1="My Profile" />
 			</else>
 		</if>
 

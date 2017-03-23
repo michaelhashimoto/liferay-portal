@@ -11,18 +11,6 @@
 		<execute selenium="assertLiferayErrors" />
 	</command>
 
-	<command name="clickAtAndWait">
-		<execute selenium="waitForVisible" />
-
-		<execute function="MouseOver#mouseOver" />
-
-		<execute selenium="clickAtAndWait" />
-
-		<execute selenium="assertJavaScriptErrors" />
-
-		<execute selenium="assertLiferayErrors" />
-	</command>
-
 	<command name="clickAtPause">
 		<execute selenium="waitForVisible" />
 
@@ -61,18 +49,6 @@
 		<execute selenium="assertLiferayErrors" />
 	</command>
 
-	<command name="partialTextClickAtAndWait">
-		<execute function="AssertTextEquals#assertPartialText" />
-
-		<execute function="MouseOver#mouseOver" />
-
-		<execute selenium="clickAtAndWait" />
-
-		<execute selenium="assertJavaScriptErrors" />
-
-		<execute selenium="assertLiferayErrors" />
-	</command>
-
 	<command name="pauseClickAt">
 		<execute argument1="1000" selenium="pause" />
 
@@ -87,16 +63,6 @@
 		<execute argument1="1000" selenium="pause" />
 
 		<execute function="Click#textClickAt" />
-
-		<execute selenium="assertJavaScriptErrors" />
-
-		<execute selenium="assertLiferayErrors" />
-	</command>
-
-	<command name="pauseTextClickAtAndWait">
-		<execute argument1="1000" selenium="pause" />
-
-		<execute function="Click#textClickAtAndWait" />
 
 		<execute selenium="assertJavaScriptErrors" />
 
@@ -125,36 +91,12 @@
 		<execute selenium="assertLiferayErrors" />
 	</command>
 
-	<command name="textClickAndWait">
-		<execute function="AssertTextEquals#assertText" />
-
-		<execute function="MouseOver#mouseOver" />
-
-		<execute selenium="clickAndWait" />
-
-		<execute selenium="assertJavaScriptErrors" />
-
-		<execute selenium="assertLiferayErrors" />
-	</command>
-
 	<command name="textClickAt">
 		<execute function="AssertTextEquals#assertText" />
 
 		<execute function="MouseOver#mouseOver" />
 
 		<execute selenium="clickAt" />
-
-		<execute selenium="assertJavaScriptErrors" />
-
-		<execute selenium="assertLiferayErrors" />
-	</command>
-
-	<command name="textClickAtAndWait">
-		<execute function="AssertTextEquals#assertText" />
-
-		<execute function="MouseOver#mouseOver" />
-
-		<execute selenium="clickAtAndWait" />
 
 		<execute selenium="assertJavaScriptErrors" />
 
@@ -179,44 +121,6 @@
 		<execute function="MouseOver#mouseOver" />
 
 		<execute selenium="clickAt" />
-
-		<execute selenium="assertJavaScriptErrors" />
-
-		<execute selenium="assertLiferayErrors" />
-	</command>
-
-	<command name="valueClickAtAndWait">
-		<execute function="AssertTextEquals#assertValue" />
-
-		<execute function="MouseOver#mouseOver" />
-
-		<execute selenium="clickAtAndWait" />
-
-		<execute selenium="assertJavaScriptErrors" />
-
-		<execute selenium="assertLiferayErrors" />
-	</command>
-
-	<command name="valueClickAtAndWaitCKEditor">
-		<execute argument1="//a[@class='cke_button_cut cke_disabled']" selenium="waitForVisible" />
-
-		<execute function="Click#valueClickAtAndWait" />
-
-		<execute selenium="assertJavaScriptErrors" />
-
-		<execute selenium="assertLiferayErrors" />
-	</command>
-
-	<command name="valueClickAtAndWaitClickAtAndWait">
-		<execute function="AssertTextEquals#assertValue" />
-
-		<execute function="MouseOver#mouseOver" />
-
-		<execute selenium="clickAtAndWait" />
-
-		<execute function="MouseOver#mouseOver" />
-
-		<execute selenium="clickAtAndWait" />
 
 		<execute selenium="assertJavaScriptErrors" />
 

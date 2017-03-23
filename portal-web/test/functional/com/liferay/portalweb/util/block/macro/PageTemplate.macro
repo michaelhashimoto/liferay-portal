@@ -2,7 +2,7 @@
 	<var name="pageTemplateActive" value="Yes" />
 
 	<command name="addCP">
-		<execute function="AssertClick#assertTextClickAtAndWait" locator1="CPPagetemplates#ADD_BUTTON" value1="Add" />
+		<execute function="AssertClick#assertTextClickAt" locator1="CPPagetemplates#ADD_BUTTON" value1="Add" />
 
 		<execute function="Type" locator1="CPPagetemplatesAdd#NAME_FIELD" value1="${pageTemplateName}" />
 
@@ -16,7 +16,7 @@
 			</else>
 		</if>
 
-		<execute function="AssertClick#assertValueClickAtAndWait" locator1="CPPagetemplatesAdd#SAVE_BUTTON" value1="Save" />
+		<execute function="AssertClick#assertValueClickAt" locator1="CPPagetemplatesAdd#SAVE_BUTTON" value1="Save" />
 
 		<execute function="AssertTextEquals" locator1="CPPagetemplates#SUCCESS_MESSAGE" value1="Your request completed successfully." />
 		<execute function="AssertTextEquals" locator1="CPPagetemplates#PAGE_TEMPLATE_TABLE_NAME_4" value1="${pageTemplateName}" />
@@ -26,7 +26,7 @@
 	<command name="editCP">
 		<execute function="AssertTextEquals" locator1="CPPagetemplates#PAGE_TEMPLATE_TABLE_NAME_4" value1="${pageTemplateName}" />
 		<execute function="AssertClick" locator1="CPPagetemplates#PAGE_TEMPLATE_TABLE_ACTIONS_4" value1="Actions" />
-		<execute function="AssertClick#assertTextClickAtAndWait" locator1="CPPagetemplates#PAGE_TEMPLATE_MENULIST_EDIT" value1="Edit" />
+		<execute function="AssertClick#assertTextClickAt" locator1="CPPagetemplates#PAGE_TEMPLATE_MENULIST_EDIT" value1="Edit" />
 
 		<execute function="Type" locator1="CPPagetemplatesEdit#NAME_FIELD" value1="${pageTemplateNameEdit}" />
 
@@ -41,7 +41,7 @@
 		</if>
 
 		<execute function="AssertTextEquals" locator1="CPPagetemplatesEdit#CONFIGURATION_OPEN" value1="Open Page Template" />
-		<execute function="AssertClick#assertValueClickAtAndWait" locator1="CPPagetemplatesEdit#SAVE_BUTTON" value1="Save" />
+		<execute function="AssertClick#assertValueClickAt" locator1="CPPagetemplatesEdit#SAVE_BUTTON" value1="Save" />
 
 		<execute function="AssertTextEquals" locator1="CPPagetemplates#SUCCESS_MESSAGE" value1="Your request completed successfully." />
 		<execute function="AssertTextEquals" locator1="CPPagetemplates#PAGE_TEMPLATE_TABLE_NAME_4" value1="${pageTemplateNameEdit}" />

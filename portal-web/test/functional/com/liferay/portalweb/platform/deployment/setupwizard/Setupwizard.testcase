@@ -33,21 +33,21 @@
 		<execute function="AssertTextEquals" locator1="Setupwizard#DATABASE_CHANGE_JDBC_DRIVER_CLASS_NAME_LABEL" value1="JDBC Driver Class Name (Required)" />
 		<execute function="AssertTextEquals" locator1="Setupwizard#DATABASE_CHANGE_USER_NAME_LABEL" value1="User Name" />
 		<execute function="AssertTextEquals" locator1="Setupwizard#DATABASE_CHANGE_PASSWORD_LABEL" value1="Password" />
-		<execute function="AssertClick#assertValueClickAtAndWait" locator1="Setupwizard#FINISH_CONFIGURATION_BUTTON" value1="Finish Configuration" />
+		<execute function="AssertClick#assertValueClickAt" locator1="Setupwizard#FINISH_CONFIGURATION_BUTTON" value1="Finish Configuration" />
 
 		<execute function="AssertTextEquals" locator1="SetupwizardFinishconfiguration#SUCCESS_MESSAGE" value1="Your configuration was saved successfully." />
 		<execute function="AssertTextEquals#assertPartialText" locator1="SetupwizardFinishconfiguration#CONFIGURATION_SAVE_MESSAGE" value1="The configuration was saved in" />
 		<execute function="AssertTextEquals#assertPartialText" locator1="SetupwizardFinishconfiguration#CONFIGURATION_SAVE_LOCATION" value1="portal-setup-wizard.properties" />
-		<execute function="AssertClick#assertValueClickAtAndWait" locator1="SetupwizardFinishconfiguration#GO_TO_MY_PORTAL_BUTTON" value1="Go to My Portal" />
+		<execute function="AssertClick#assertValueClickAt" locator1="SetupwizardFinishconfiguration#GO_TO_MY_PORTAL_BUTTON" value1="Go to My Portal" />
 
-		<execute function="AssertClick#assertValueClickAtAndWait" locator1="PGLoginTermsofservice#I_AGREE_BUTTON" value1="I Agree" />
+		<execute function="AssertClick#assertValueClickAt" locator1="PGLoginTermsofservice#I_AGREE_BUTTON" value1="I Agree" />
 
 		<execute function="Type" locator1="PGLoginNewpassword#PASSWORD_FIELD" value1="${newPassword}" />
 		<execute function="Type" locator1="PGLoginNewpassword#ENTER_AGAIN_FIELD" value1="${newPassword}" />
-		<execute function="AssertClick#assertValueClickAtAndWait" locator1="PGLoginNewpassword#SAVE_BUTTON" value1="Save" />
+		<execute function="AssertClick#assertValueClickAt" locator1="PGLoginNewpassword#SAVE_BUTTON" value1="Save" />
 
 		<execute function="Type" locator1="PGLoginPasswordreminder#ANSWER_FIELD" value1="${passwordReminder}" />
-		<execute function="AssertClick#assertValueClickAtAndWait" locator1="PGLoginPasswordreminder#SAVE_BUTTON" value1="Save" />
+		<execute function="AssertClick#assertValueClickAt" locator1="PGLoginPasswordreminder#SAVE_BUTTON" value1="Save" />
 
 		<execute macro="Page#openURL" />
 

@@ -19,18 +19,18 @@
 
 	<command name="addCP">
 		<execute function="Type" locator1="CPDynamicdatalists#BASIC_SEARCH_FIELD" value1="${listName}" />
-		<execute function="AssertClick#assertValueClickAtAndWait" locator1="CPDynamicdatalists#BASIC_SEARCH_BUTTON" value1="Search" />
+		<execute function="AssertClick#assertValueClickAt" locator1="CPDynamicdatalists#BASIC_SEARCH_BUTTON" value1="Search" />
 		<execute function="AssertTextEquals" locator1="CPDynamicdatalists#LIST_TABLE_NAME_1" value1="${listName}" />
 		<execute function="AssertClick" locator1="CPDynamicdatalists#LIST_TABLE_NAME_1" value1="${listName}" />
 
 		<execute function="AssertTextEquals" locator1="CPDynamicdatalistsList#HEADER_TITLE" value1="${listName}" />
-		<execute function="AssertClick#assertValueClickAtAndWait" locator1="CPDynamicdatalistsList#ADD_RECORD_BUTTON" value1="Add Record" />
+		<execute function="AssertClick#assertValueClickAt" locator1="CPDynamicdatalistsList#ADD_RECORD_BUTTON" value1="Add Record" />
 
 		<execute macro="ListRecord#addTextCmdCP">
 			<var name="textNameLabel" value="text" />
 		</execute>
 
-		<execute function="AssertClick#assertValueClickAtAndWait" locator1="CPDynamicdatalistsListAddrecord#PUBLISH_BUTTON" value1="Publish" />
+		<execute function="AssertClick#assertValueClickAt" locator1="CPDynamicdatalistsListAddrecord#PUBLISH_BUTTON" value1="Publish" />
 
 		<execute function="AssertTextEquals" locator1="CPDynamicdatalistsList#SUCCESS_MESSAGE" value1="Your request completed successfully." />
 	</command>
@@ -62,13 +62,13 @@
 	</command>
 
 	<command name="addPG">
-		<execute function="AssertClick#assertValueClickAtAndWait" locator1="PGDDLDisplay#ADD_RECORD_BUTTON" value1="Add Record" />
+		<execute function="AssertClick#assertValueClickAt" locator1="PGDDLDisplay#ADD_RECORD_BUTTON" value1="Add Record" />
 
 		<execute macro="ListRecord#addTextCmdPG">
 			<var name="textNameLabel" value="text" />
 		</execute>
 
-		<execute function="AssertClick#assertValueClickAtAndWait" locator1="PGDDLDisplayAddrecord#PUBLISH_BUTTON" value1="Publish" />
+		<execute function="AssertClick#assertValueClickAt" locator1="PGDDLDisplayAddrecord#PUBLISH_BUTTON" value1="Publish" />
 
 		<execute function="AssertTextEquals#assertText" locator1="PGDDLDisplay#SUCCESS_MESSAGE" value1="Your request completed successfully." />
 	</command>
@@ -115,7 +115,7 @@
 
 	<command name="deleteCP">
 		<execute function="Type" locator1="CPDynamicdatalists#BASIC_SEARCH_FIELD" value1="${listName}" />
-		<execute function="AssertClick#assertValueClickAtAndWait" locator1="CPDynamicdatalists#BASIC_SEARCH_BUTTON" value1="Search" />
+		<execute function="AssertClick#assertValueClickAt" locator1="CPDynamicdatalists#BASIC_SEARCH_BUTTON" value1="Search" />
 		<execute function="AssertTextEquals" locator1="CPDynamicdatalists#LIST_TABLE_NAME_1" value1="${listName}" />
 		<execute function="AssertClick" locator1="CPDynamicdatalists#LIST_TABLE_NAME_1" value1="${listName}" />
 
@@ -142,18 +142,18 @@
 
 	<command name="editCP">
 		<execute function="Type" locator1="CPDynamicdatalists#BASIC_SEARCH_FIELD" value1="${listName}" />
-		<execute function="AssertClick#assertValueClickAtAndWait" locator1="CPDynamicdatalists#BASIC_SEARCH_BUTTON" value1="Search" />
+		<execute function="AssertClick#assertValueClickAt" locator1="CPDynamicdatalists#BASIC_SEARCH_BUTTON" value1="Search" />
 		<execute function="AssertTextEquals" locator1="CPDynamicdatalists#LIST_TABLE_NAME_1" value1="${listName}" />
 		<execute function="AssertClick" locator1="CPDynamicdatalists#LIST_TABLE_NAME_1" value1="${listName}" />
 
 		<execute function="AssertClick" locator1="CPDynamicdatalistsList#RECORD_TABLE_ACTIONS_1" value1="Actions" />
-		<execute function="AssertClick#assertTextClickAtAndWait" locator1="CPDynamicdatalistsList#RECORD_MENULIST_EDIT" value1="Edit" />
+		<execute function="AssertClick#assertTextClickAt" locator1="CPDynamicdatalistsList#RECORD_MENULIST_EDIT" value1="Edit" />
 
 		<execute macro="ListRecord#editTextCmdCP">
 			<var name="textNameLabel" value="text" />
 		</execute>
 
-		<execute function="AssertClick#assertValueClickAtAndWait" locator1="CPDynamicdatalistsListEditrecord#PUBLISH_BUTTON" value1="Publish" />
+		<execute function="AssertClick#assertValueClickAt" locator1="CPDynamicdatalistsListEditrecord#PUBLISH_BUTTON" value1="Publish" />
 
 		<execute function="AssertTextEquals" locator1="CPDynamicdatalistsList#SUCCESS_MESSAGE" value1="Your request completed successfully." />
 	</command>
@@ -198,13 +198,13 @@
 
 	<command name="editPG">
 		<execute function="AssertClick" locator1="PGDDLDisplay#RECORD_TABLE_ACTIONS_1" value1="Actions" />
-		<execute function="AssertClick#assertTextClickAtAndWait" locator1="PGDDLDisplay#RECORD_MENULIST_EDIT" value1="Edit" />
+		<execute function="AssertClick#assertTextClickAt" locator1="PGDDLDisplay#RECORD_MENULIST_EDIT" value1="Edit" />
 
 		<execute macro="ListRecord#editTextCmdPG">
 			<var name="textNameLabel" value="text" />
 		</execute>
 
-		<execute function="AssertClick#assertValueClickAtAndWait" locator1="PGDDLDisplayEditrecord#PUBLISH_BUTTON" value1="Publish" />
+		<execute function="AssertClick#assertValueClickAt" locator1="PGDDLDisplayEditrecord#PUBLISH_BUTTON" value1="Publish" />
 
 		<execute function="AssertTextEquals#assertText" locator1="PGDDLDisplay#SUCCESS_MESSAGE" value1="Your request completed successfully." />
 	</command>
@@ -241,10 +241,10 @@
 
 	<command name="spreadsheetViewCP">
 		<execute function="Type" locator1="CPDynamicdatalists#BASIC_SEARCH_FIELD" value1="${listName}" />
-		<execute function="AssertClick#assertValueClickAtAndWait" locator1="CPDynamicdatalists#BASIC_SEARCH_BUTTON" value1="Search" />
+		<execute function="AssertClick#assertValueClickAt" locator1="CPDynamicdatalists#BASIC_SEARCH_BUTTON" value1="Search" />
 		<execute function="AssertTextEquals" locator1="CPDynamicdatalists#LIST_TABLE_NAME_1" value1="${listName}" />
 		<execute function="AssertClick" locator1="CPDynamicdatalists#LIST_TABLE_ACTIONS_1" value1="Actions" />
-		<execute function="AssertClick#assertTextClickAtAndWait" locator1="CPDynamicdatalists#LIST_MENULIST_SPREADSHEET_VIEW" value1="Spreadsheet View" />
+		<execute function="AssertClick#assertTextClickAt" locator1="CPDynamicdatalists#LIST_MENULIST_SPREADSHEET_VIEW" value1="Spreadsheet View" />
 
 		<execute function="AssertTextEquals" locator1="CPDynamicdatalistsListSpreadsheetview#HEADER_TITLE" value1="${listName}" />
 		<execute function="AssertTextEquals" locator1="CPDynamicdatalistsListSpreadsheetview#RECORD_TABLE_COLUMN_ONE_NAME" value1="Text" />
@@ -253,7 +253,7 @@
 
 	<command name="viewCP">
 		<execute function="Type" locator1="CPDynamicdatalists#BASIC_SEARCH_FIELD" value1="${listName}" />
-		<execute function="AssertClick#assertValueClickAtAndWait" locator1="CPDynamicdatalists#BASIC_SEARCH_BUTTON" value1="Search" />
+		<execute function="AssertClick#assertValueClickAt" locator1="CPDynamicdatalists#BASIC_SEARCH_BUTTON" value1="Search" />
 		<execute function="AssertTextEquals" locator1="CPDynamicdatalists#LIST_TABLE_NAME_1" value1="${listName}" />
 		<execute function="AssertClick" locator1="CPDynamicdatalists#LIST_TABLE_NAME_1" value1="${listName}" />
 
@@ -261,7 +261,7 @@
 		<execute function="AssertTextEquals" locator1="CPDynamicdatalistsList#RECORD_TABLE_COLUMN_ONE_NAME" value1="Text" />
 		<execute function="AssertTextEquals" locator1="CPDynamicdatalistsList#RECORD_TABLE_COLUMN_ONE_RECORD_1" value1="${recordText}" />
 		<execute function="AssertClick" locator1="CPDynamicdatalistsList#RECORD_TABLE_ACTIONS_1" value1="Actions" />
-		<execute function="AssertClick#assertTextClickAtAndWait" locator1="CPDynamicdatalistsList#RECORD_MENULIST_VIEW" value1="View" />
+		<execute function="AssertClick#assertTextClickAt" locator1="CPDynamicdatalistsList#RECORD_MENULIST_VIEW" value1="View" />
 
 		<execute function="AssertTextEquals" locator1="CPDynamicdatalistsListRecord#FIELD_1" value1="Text ${recordText}" />
 	</command>

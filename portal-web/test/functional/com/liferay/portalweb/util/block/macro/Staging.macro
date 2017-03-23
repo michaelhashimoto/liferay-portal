@@ -28,7 +28,7 @@
 		<execute function="Check" locator1="CPSitesEdit#STAGING_WEB_CONTENT_DISPLAY_CHECKBOX" />
 		<execute function="Check" locator1="CPSitesEdit#STAGING_WIKI_CHECKBOX" />
 		<execute function="Check" locator1="CPSitesEdit#STAGING_WIKI_DISPLAY_CHECKBOX" />
-		<execute function="AssertClick#assertValueClickAtAndWait" locator1="CPSitesEdit#MENU_SAVE" value1="Save" />
+		<execute function="AssertClick#assertValueClickAt" locator1="CPSitesEdit#MENU_SAVE" value1="Save" />
 		<execute function="AssertTextEquals" locator1="CPSitesEdit#SUCCESS_MESSAGE" value1="Your request completed successfully." />
 		<execute function="AssertTextEquals" locator1="CPSitesEdit#HEADER" value1="${siteName} (Staging)" />
 	</command>
@@ -39,7 +39,7 @@
 			<then>
 				<execute function="AssertClick" locator1="CPSitesEdit#MENU_STAGING" value1="Staging" />
 				<execute function="Check" locator1="CPSitesEdit#STAGING_NONE" />
-				<execute function="AssertClick#assertValueClickAtAndWait" locator1="CPSitesEdit#MENU_SAVE" value1="Save" />
+				<execute function="AssertClick#assertValueClickAt" locator1="CPSitesEdit#MENU_SAVE" value1="Save" />
 				<execute function="AssertTextEquals" locator1="CPSitesEdit#SUCCESS_MESSAGE" value1="Your request completed successfully." />
 			</then>
 		</if>
