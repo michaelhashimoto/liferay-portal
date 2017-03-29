@@ -212,6 +212,13 @@ public class JSLoaderModulesServletTest extends PowerMockito {
 	}
 
 	@Test
+	public void testFake() {
+		System.out.println("fake test!!!");
+		System.out.println("fake test!!!");
+		System.out.println("fake test!!!");
+	}
+
+	@Test
 	public void testSingleModuleOutput() throws Exception {
 		JSLoaderModulesServlet jsLoaderModulesServlet =
 			buildJSLoaderModulesServlet();
