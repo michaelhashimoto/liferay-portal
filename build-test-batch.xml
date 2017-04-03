@@ -1585,7 +1585,16 @@ app.server.type=@{app.server.type}]]></echo>
 	</target>
 
 	<target name="functional-smoke-tomcat80-mysql56-jdk8">
-		<run-functional-test app.server.type="tomcat" database.type="mysql" />
+		<trycatch>
+			<try>
+				<run-functional-test app.server.type="tomcat" database.type="mysql" />
+			</try>
+			<finally>
+				<ant dir="portal-kernel" inheritAll="false" target="test-class">
+					<property name="test.class" value="PortalLogAssertorTest" />
+				</ant>
+			</finally>
+		</trycatch>
 	</target>
 
 	<target name="functional-smoke-tomcat80-oracle121-jdk8">

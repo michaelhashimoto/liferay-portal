@@ -9770,9 +9770,11 @@ jdbc.default.password=${database.password}</echo>
 			<then>
 				<for param="liferay.log">
 					<fileset dir="${project.dir}/bundles/logs">
-						<include name="liferay.*.log" />
+						<include name="liferay.*.xml" />
 					</fileset>
 					<sequential>
+						<echo>Adding '@{liferay.log}'</echo>
+
 						<echo append="true" file="@{liferay.log}"><![CDATA[
 
 <log4j:event logger="com.liferay.portal.license.LicenseManager" timestamp="1491237885031" level="ERROR" thread="localhost-startStop-1">
