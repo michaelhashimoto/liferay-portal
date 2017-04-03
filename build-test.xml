@@ -9763,4 +9763,27 @@ jdbc.default.password=${database.password}</echo>
 			</then>
 		</if>
 	</target>
+
+	<target name="z-cause-failure">
+		<if>
+			<available file="${project.dir}/bundles/logs" />
+			<then>
+				<for param="liferay.log">
+					<fileset dir="${project.dir}/bundles/logs">
+						<include name="liferay.*.log" />
+					</fileset>
+					<sequential>
+						<echo append="true" file="@{liferay.log}"><![CDATA[
+
+<log4j:event logger="com.liferay.portal.license.LicenseManager" timestamp="1491237885031" level="ERROR" thread="localhost-startStop-1">
+<log4j:message>This is a real error!! test...</log4j:message>
+<log4j:locationInfo class="com.liferay.portal.error.McErrorSon" method="error" file="?" line="?"/>
+</log4j:event>
+
+]]></echo>
+					</sequential>
+				</for>
+			</then>
+		</if>
+	</target>
 </project>
