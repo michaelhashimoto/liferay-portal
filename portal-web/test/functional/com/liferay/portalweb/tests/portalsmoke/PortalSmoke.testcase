@@ -10,8 +10,6 @@
 	</set-up>
 
 	<tear-down>
-		<execute function="AntCommand" locator1="build-test.xml" value1="z-cause-failure" />
-
 		<var method="TestPropsUtil#get('test.portal.instance')" name="testPortalInstance" />
 
 		<if>
@@ -32,6 +30,8 @@
 		<property name="test.assert.warning.exceptions" value="true" />
 
 		<execute macro="Smoke#viewWelcomePage" />
+
+		<execute function="AntCommand" locator1="build-test.xml" value1="z-cause-failure" />
 
 		<execute macro="Smoke#runSmoke" />
 	</command>
