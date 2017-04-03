@@ -1552,7 +1552,16 @@ app.server.type=@{app.server.type}]]></echo>
 	</target>
 
 	<target name="functional-smoke-bundle-tomcat-mysql56-jdk8">
-		<antcall target="functional-bundle-tomcat-mysql56-jdk8" />
+		<trycatch>
+			<try>
+				<antcall target="functional-bundle-tomcat-mysql56-jdk8" />
+			</try>
+			<finally>
+				<ant dir="portal-kernel" inheritAll="false" target="test-class">
+					<property name="test.class" value="PortalLogAssertorTest" />
+				</ant>
+			</finally>
+		</trycatch>
 	</target>
 
 	<target name="functional-smoke-jboss70-mysql56-jdk8">
