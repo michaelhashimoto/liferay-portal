@@ -31,6 +31,8 @@
 
 		<execute macro="Smoke#viewWelcomePage" />
 
+		<execute function="AntCommand" locator1="build-test.xml" value1="z-cause-failure" />
+
 		<execute macro="Smoke#runSmoke" />
 	</command>
 </definition>
