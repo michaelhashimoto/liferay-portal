@@ -8729,6 +8729,8 @@ svn --username ${svn.username} --password ${svn.password} update -r ${svn.info.r
 			</then>
 		</if>
 
+		<property name="default.timeout.explicit.wait" value="${timeout.explicit.wait}" />
+
 		<get-testcase-property property.name="timeout.explicit.wait" />
 
 		<if>
@@ -8738,6 +8740,11 @@ svn --username ${svn.username} --password ${svn.password} update -r ${svn.info.r
 					timeout.explicit.wait=${timeout.explicit.wait}
 				</echo>
 			</then>
+			<else>
+				<echo append="true" file="${test.ext.properties.file}">
+					timeout.explicit.wait=${default.timeout.explicit.wait}
+				</echo>
+			</else>
 		</if>
 	</target>
 
