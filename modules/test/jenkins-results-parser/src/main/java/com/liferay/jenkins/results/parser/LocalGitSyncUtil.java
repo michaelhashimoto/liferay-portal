@@ -157,7 +157,7 @@ public class LocalGitSyncUtil {
 
 							if (upstreamUsername.equals("liferay")) {
 								gitWorkingDirectory.pushToRemote(
-									false, upstreamBranchName,
+									true, upstreamBranchName,
 									upstreamBranchName, localGitRemoteConfig);
 							}
 						}
@@ -183,6 +183,27 @@ public class LocalGitSyncUtil {
 		System.out.println(
 			"Cache branches pushed up in " +
 				JenkinsResultsParserUtil.toDurationString(duration));
+	}
+
+	protected static void checkoutUpstreamBranch(
+			GitWorkingDirectory gitWorkingDirectory)
+		throws GitAPIException {
+
+		String upstreamBranchName = gitWorkingDirectory.getUpstreamBranchName();
+
+		if (!gitWorkingDirectory.branchExists(upstreamBranchName, null)) {
+			RemoteConfig upstreamRemoteConfig =
+				gitWorkingDirectory.getRemoteConfig("upstream");
+
+			updateLocalUpstreamBranch(
+				gitWorkingDirectory, upstreamBranchName,
+				gitWorkingDirectory.getBranchSHA(
+					gitWorkingDirectory.getUpstreamBranchName(),
+					upstreamRemoteConfig),
+				upstreamRemoteConfig);
+		}
+
+		gitWorkingDirectory.checkoutBranch(upstreamBranchName);
 	}
 
 	protected static void copyUpstreamRefsToHeads(
@@ -690,27 +711,24 @@ public class LocalGitSyncUtil {
 							"Cache branch ", cacheBranchName,
 							" already exists"));
 
-					updateCacheBranchTimestamp(
-						cacheBranchName, gitWorkingDirectory,
-						localGitRemoteConfigs);
-
 					if (!gitWorkingDirectory.branchExists(
 							upstreamBranchName, null)) {
 
 						updateLocalUpstreamBranch(
 							gitWorkingDirectory, upstreamBranchName,
-							upstreamRemoteConfig);
+							upstreamBranchSHA, upstreamRemoteConfig);
 					}
+
+					updateCacheBranchTimestamp(
+						cacheBranchName, gitWorkingDirectory,
+						localGitRemoteConfigs);
 
 					return cacheBranchName;
 				}
 
 				updateLocalUpstreamBranch(
-					gitWorkingDirectory, upstreamBranchName,
+					gitWorkingDirectory, upstreamBranchName, upstreamBranchSHA,
 					upstreamRemoteConfig);
-
-				gitWorkingDirectory.createLocalBranch(
-					cacheBranchName, true, null);
 
 				gitWorkingDirectory.fetch(
 					cacheBranchName, senderBranchName, senderRemoteConfig);
@@ -719,8 +737,10 @@ public class LocalGitSyncUtil {
 					cacheBranchName, true, senderBranchSHA);
 
 				if (pullRequest) {
+					gitWorkingDirectory.checkoutBranch(cacheBranchName);
+
 					gitWorkingDirectory.rebase(
-						true, upstreamBranchSHA, cacheBranchName);
+						true, upstreamBranchName, cacheBranchName);
 				}
 
 				cacheBranches(
@@ -760,8 +780,7 @@ public class LocalGitSyncUtil {
 					gitWorkingDirectory.checkoutBranch(originalBranchName);
 				}
 				else {
-					gitWorkingDirectory.checkoutBranch(
-						gitWorkingDirectory.getUpstreamBranchName());
+					checkoutUpstreamBranch(gitWorkingDirectory);
 				}
 
 				gitWorkingDirectory.deleteLocalBranch(cacheBranchName);
@@ -847,7 +866,7 @@ public class LocalGitSyncUtil {
 
 					gitWorkingDirectory.createLocalBranch(
 						newTimestampBranchName, true,
-						gitWorkingDirectory.getRemoteBranchSHA(
+						gitWorkingDirectory.getBranchSHA(
 							remoteCacheBranchName, localGitRemoteConfig));
 
 					try {
@@ -861,7 +880,14 @@ public class LocalGitSyncUtil {
 						updated = true;
 					}
 					finally {
-						gitWorkingDirectory.checkoutBranch(currentBranch);
+						if (gitWorkingDirectory.branchExists(
+								currentBranch, null)) {
+
+							gitWorkingDirectory.checkoutBranch(currentBranch);
+						}
+						else {
+							checkoutUpstreamBranch(gitWorkingDirectory);
+						}
 
 						gitWorkingDirectory.deleteLocalBranch(
 							newTimestampBranchName);
@@ -881,11 +907,8 @@ public class LocalGitSyncUtil {
 
 	protected static void updateLocalUpstreamBranch(
 			GitWorkingDirectory gitWorkingDirectory, String upstreamBranchName,
-			RemoteConfig upstreamRemoteConfig)
+			String upstreamBranchSHA, RemoteConfig upstreamRemoteConfig)
 		throws GitAPIException {
-
-		String upstreamBranchSHA = gitWorkingDirectory.getRemoteBranchSHA(
-			upstreamBranchName, upstreamRemoteConfig);
 
 		gitWorkingDirectory.rebaseAbort();
 

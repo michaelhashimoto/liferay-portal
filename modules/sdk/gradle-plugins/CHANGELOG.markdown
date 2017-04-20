@@ -1447,7 +1447,7 @@ dependency to version 2.1.12.
 - [LPS-71826]: Update the [Liferay Gradle Plugins JS Transpiler] dependency to
 version 2.3.10.
 
-## 3.2.38 - 2017-04-11
+## 3.2.39 - 2017-04-12
 
 ### Changed
 - [LPS-71164]: Update the [Liferay Gradle Plugins Source Formatter] dependency
@@ -1459,9 +1459,53 @@ to version 1.0.35.
 - [LPS-71722]: Update the [Liferay Portal Tools Service Builder] dependency to
 version 1.0.151.
 
+## 3.2.40 - 2017-04-14
+
+### Changed
+- [LPS-71164]: Update the [Liferay Gradle Plugins Source Formatter] dependency
+to version 1.0.117.
+- [LPS-71164]: Update the [Liferay Source Formatter] dependency to version
+1.0.384.
+
+## 3.2.41 - 2017-04-17
+
+### Changed
+- [LPS-71164]: Update the [Liferay Gradle Plugins Source Formatter] dependency
+to version 1.0.118.
+- [LPS-71164]: Update the [Liferay Source Formatter] dependency to version
+1.0.385.
+- [LPS-71686]: Update the [Liferay Gradle Plugins Service Builder] dependency
+to version 1.0.36.
+- [LPS-71686]: Update the [Liferay Portal Tools Service Builder] dependency to
+version 1.0.152.
+
+## 3.3.0 - 2017-04-18
+
+### Changed
+- [LPS-67573]: Update the [Liferay Gradle Plugins Alloy Taglib] dependency to
+version 2.0.0.
+- [LPS-69139]: Update the [Liferay Gradle Plugins Soy] dependency to version
+3.1.1.
+- [LPS-70451]: Update the [Liferay Alloy Taglib] dependency to version 1.1.10.
+- [LPS-71164]: Update the [Liferay Gradle Plugins Source Formatter] dependency
+to version 1.0.119.
+- [LPS-71164]: Update the [Liferay Source Formatter] dependency to version
+1.0.386.
+- [LPS-71925]: Update the [Liferay Gradle Plugins Service Builder] dependency
+to version 1.0.37.
+- [LPS-71925]: Update the [Liferay Portal Tools Service Builder] dependency to
+version 1.0.153.
+
+## 3.3.1 - 2017-04-19
+
+### Changed
+- [LPS-72039]: Update the [Liferay Jasper JSPC] dependency to version 1.0.10.
+
 [Gradle Bundle Plugin]: https://github.com/TomDmitriev/gradle-bundle-plugin
+[Liferay Alloy Taglib]: https://github.com/liferay/alloy-taglibs
 [Liferay Ant BND]: https://github.com/liferay/liferay-portal/tree/master/modules/sdk/ant-bnd
 [Liferay CSS Builder]: https://github.com/liferay/liferay-portal/tree/master/modules/util/css-builder
+[Liferay Gradle Plugins Alloy Taglib]: https://github.com/liferay/liferay-portal/tree/master/modules/sdk/gradle-plugins-alloy-taglib
 [Liferay Gradle Plugins CSS Builder]: https://github.com/liferay/liferay-portal/tree/master/modules/sdk/gradle-plugins-css-builder
 [Liferay Gradle Plugins DB Support]: https://github.com/liferay/liferay-portal/tree/master/modules/sdk/gradle-plugins-db-support
 [Liferay Gradle Plugins Gulp]: https://github.com/liferay/liferay-portal/tree/master/modules/sdk/gradle-plugins-gulp
@@ -1588,6 +1632,9 @@ version 1.0.151.
 [LPS-71558]: https://issues.liferay.com/browse/LPS-71558
 [LPS-71591]: https://issues.liferay.com/browse/LPS-71591
 [LPS-71603]: https://issues.liferay.com/browse/LPS-71603
+[LPS-71686]: https://issues.liferay.com/browse/LPS-71686
 [LPS-71722]: https://issues.liferay.com/browse/LPS-71722
 [LPS-71826]: https://issues.liferay.com/browse/LPS-71826
+[LPS-71925]: https://issues.liferay.com/browse/LPS-71925
+[LPS-72039]: https://issues.liferay.com/browse/LPS-72039
 [LRDOCS-3023]: https://issues.liferay.com/browse/LRDOCS-3023

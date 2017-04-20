@@ -63,6 +63,7 @@ import com.liferay.portal.kernel.util.LocalizationUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.PortletKeys;
 import com.liferay.portal.kernel.util.PropsKeys;
+import com.liferay.portal.kernel.util.ReflectionUtil;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.UnicodeProperties;
@@ -581,7 +582,12 @@ public class LayoutImpl extends LayoutBaseImpl {
 	 */
 	@Override
 	public Group getGroup() {
-		return GroupLocalServiceUtil.fetchGroup(getGroupId());
+		try {
+			return GroupLocalServiceUtil.getGroup(getGroupId());
+		}
+		catch (PortalException pe) {
+			return ReflectionUtil.throwException(pe);
+		}
 	}
 
 	/**
@@ -644,8 +650,13 @@ public class LayoutImpl extends LayoutBaseImpl {
 	@Override
 	public LayoutSet getLayoutSet() {
 		if (_layoutSet == null) {
-			_layoutSet = LayoutSetLocalServiceUtil.fetchLayoutSet(
-				getGroupId(), isPrivateLayout());
+			try {
+				_layoutSet = LayoutSetLocalServiceUtil.getLayoutSet(
+					getGroupId(), isPrivateLayout());
+			}
+			catch (PortalException pe) {
+				ReflectionUtil.throwException(pe);
+			}
 		}
 
 		return _layoutSet;
@@ -1476,16 +1487,16 @@ public class LayoutImpl extends LayoutBaseImpl {
 			}
 		}
 
-		String portalURL = PortalUtil.getPortalURL(request);
-
 		String url = PortalUtil.getLayoutURL(this, themeDisplay);
 
-		if (!CookieKeys.hasSessionId(request) &&
-			(url.startsWith(portalURL) || url.startsWith(StringPool.SLASH))) {
+		if (!CookieKeys.hasSessionId(request)) {
+			String portalURL = PortalUtil.getPortalURL(request);
 
-			HttpSession session = request.getSession();
+			if (url.startsWith(portalURL) || url.startsWith(StringPool.SLASH)) {
+				HttpSession session = request.getSession();
 
-			url = PortalUtil.getURLWithSessionId(url, session.getId());
+				url = PortalUtil.getURLWithSessionId(url, session.getId());
+			}
 		}
 
 		if (!resetMaxState) {
