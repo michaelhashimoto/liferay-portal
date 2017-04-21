@@ -724,6 +724,16 @@ app.server.type=@{app.server.type}]]></echo>
 		<run-integration-test database.type="postgresql" />
 	</target>
 
+	<target name="javadoc-jdk7">
+		<run-batch-test>
+			<test-action>
+				<antcall target="compile" />
+
+				<antcall target="doc" />
+			</test-action>
+		</run-batch-test>
+	</target>
+
 	<target name="plugins-compile-jdk7">
 		<run-batch-test>
 			<test-action>
