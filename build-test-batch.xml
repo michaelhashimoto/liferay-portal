@@ -1374,6 +1374,11 @@ app.server.type=@{app.server.type}]]></echo>
 					</else>
 				</if>
 
+				<print-file file.name="${app.server.tomcat.classes.portal.dir}/portal-ext.properties" />
+
+				<echo>Deleting ${app.server.tomcat.classes.portal.dir}/portal-ext.properties</echo>
+				<delete file="${app.server.tomcat.classes.portal.dir}/portal-ext.properties" />
+
 				<remake-dir dir="tools/zip_tmpl/license" />
 
 				<ant antfile="build-dist.xml" target="zip-tomcat" />
