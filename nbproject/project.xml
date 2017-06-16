@@ -236,6 +236,7 @@
 				<classpath mode="compile">lib/development/ckpackager.jar</classpath>
 				<classpath mode="compile">lib/development/cobertura.jar</classpath>
 				<classpath mode="compile">lib/development/com.liferay.ant.mirrors.get.jar</classpath>
+				<classpath mode="compile">lib/development/com.liferay.ant.sync.dir.jar</classpath>
 				<classpath mode="compile">lib/development/deployment.jar</classpath>
 				<classpath mode="compile">lib/development/derby.jar</classpath>
 				<classpath mode="compile">lib/development/derbytools.jar</classpath>
