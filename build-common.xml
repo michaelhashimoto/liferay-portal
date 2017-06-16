@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 
-<project name="build-common" xmlns:antelope="antlib:ise.antelope.tasks">
+<project name="build-common" xmlns:antelope="antlib:ise.antelope.tasks" xmlns:unless="ant:unless">
 	<dirname file="${ant.file.build-common}" property="project.dir" />
 
 	<pathconvert dirsep="/" property="project.dir.unix">
@@ -78,6 +78,7 @@
 
 	<taskdef classname="com.liferay.ant.beanshell.BeanShellTask" classpathref="lib.classpath" name="beanshell" />
 	<taskdef classname="com.liferay.ant.mirrors.get.MirrorsGetTask" classpathref="lib.classpath" name="mirrors-get" />
+	<taskdef classname="com.liferay.ant.sync.dir.SyncDirTask" classpathref="lib.classpath" name="sync-dir" />
 
 	<taskdef classname="com.oopsconsultancy.xmltask.ant.XmlTask" classpath="${project.dir}/lib/development/xmltask.jar" name="xmltask" />
 
@@ -705,6 +706,8 @@ Please set the environment variable ANT_OPTS to the recommended value of
 		<element implicit="true" name="args" optional="true" />
 
 		<sequential>
+			<setup-binaries-cache unless:true="${setup.binaries.cache.executed}" />
+
 			<if>
 				<os family="unix" />
 				<then>
@@ -725,6 +728,24 @@ Please set the environment variable ANT_OPTS to the recommended value of
 				<arg value="-Dgradle.user.home=${project.dir}/.gradle" />
 				<arg value="@{task}" />
 			</exec>
+		</sequential>
+	</macrodef>
+
+	<macrodef name="setup-binaries-cache">
+		<sequential>
+			<var name="gradle.build.binaries.cache.dir" value="${project.dir}/${build.binaries.cache.dir}/.gradle/caches/modules-2/files-2.1" />
+
+			<if>
+				<available file="${gradle.build.binaries.cache.dir}" type="dir" />
+				<then>
+					<sync-dir
+						dir="${gradle.build.binaries.cache.dir}"
+						toDir="${project.dir}/.gradle/caches/modules-2/files-2.1"
+					/>
+				</then>
+			</if>
+
+			<property name="setup.binaries.cache.executed" value="true" />
 		</sequential>
 	</macrodef>
 
