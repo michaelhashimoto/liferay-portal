@@ -39,6 +39,7 @@ plugins.includes=${plugins.includes}</echo>
 			</then>
 			<else>
 				<echo file="${lp.plugins.dir}/build.${user.name}.properties">app.server.parent.dir=${app.server.parent.dir}
+app.server.tomcat.dir=${app.server.parent.dir}/tomcat-$(app.server.tomcat.version)
 app.server.type=${app.server.type}
 
 auto.deploy.dir=${liferay.home}/deploy
