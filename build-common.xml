@@ -338,7 +338,7 @@
 	</xmlcatalog>
 
 	<condition property="correct.ant.version">
-		<antversion atleast="1.7.0" />
+		<antversion atleast="1.9.3" />
 	</condition>
 
 	<if>
@@ -346,7 +346,7 @@
 			<equals arg1="${correct.ant.version}" arg2="true" />
 		</not>
 		<then>
-			<fail>Please use Ant 1.7.0 or above.</fail>
+			<fail>Please use Ant 1.9.3 or above.</fail>
 		</then>
 	</if>
 
