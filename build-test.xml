@@ -10589,6 +10589,15 @@ jdbc.default.password=${database.mysql.password}</echo>
 			</then>
 		</if>
 
+		<get-testcase-property property.name="remote.elasticsearch.enabled" />
+
+		<if>
+			<equals arg1="${remote.elasticsearch.enabled}" arg2="true" />
+			<then>
+				<ant antfile="build-test-elasticsearch.xml" target="start-elasticsearch" />
+			</then>
+		</if>
+
 		<get-testcase-property property.name="solr.enabled" />
 
 		<if>
@@ -10771,6 +10780,24 @@ jdbc.default.password=${database.mysql.password}</echo>
 				</antelope:repeat>
 
 				<var name="app.server.bundle.index" unset="true" />
+			</then>
+		</if>
+
+		<get-testcase-property property.name="remote.elasticsearch.enabled" />
+
+		<if>
+			<equals arg1="${remote.elasticsearch.enabled}" arg2="true" />
+			<then>
+				<print-file file.name="${elasticsearch.dir}/logs/LiferayElasticsearchCluster.log" />
+
+				<get
+					dest="${elasticsearch.dir}/logs/LiferayElasticsearchClusterMappings.log"
+					src="http://localhost:9200/_all/_mapping?pretty"
+				/>
+
+				<print-file file.name="${elasticsearch.dir}/logs/LiferayElasticsearchClusterMappings.log" />
+
+				<ant antfile="build-test-elasticsearch.xml" target="stop-elasticsearch" />
 			</then>
 		</if>
 
