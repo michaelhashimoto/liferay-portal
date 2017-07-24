@@ -1453,6 +1453,13 @@ app.server.type=@{app.server.type}]]></echo>
 		<sequential>
 			<get-testcase-property property.name="test.setup.proxy" />
 
+			<echo>-------------------------------------------------------</echo>
+			<echo>-------------------------------------------------------</echo>
+			<echo>setup.proxy="@{setup.proxy}"</echo>
+			<echo>test.setup.proxy="${test.setup.proxy}"</echo>
+			<echo>-------------------------------------------------------</echo>
+			<echo>-------------------------------------------------------</echo>
+
 			<if>
 				<and>
 					<equals arg1="@{setup.proxy}" arg2="true" />
@@ -1462,6 +1469,8 @@ app.server.type=@{app.server.type}]]></echo>
 				</and>
 				<then>
 					<setup-testable-tomcat-dummy-socket-proxy />
+
+					<echo>APPLYING DUMMY PROXY!!</echo>
 				</then>
 			</if>
 

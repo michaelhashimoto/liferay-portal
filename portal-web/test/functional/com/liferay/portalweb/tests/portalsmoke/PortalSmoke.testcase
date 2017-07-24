@@ -52,4 +52,13 @@
 
 		<execute macro="Smoke#runSmoke" />
 	</command>
+
+	<command name="SmokeWithProxyDisabled" priority="5">
+		<property name="portal.smoke" value="false" />
+		<property name="test.setup.proxy" value="false" />
+
+		<execute macro="Smoke#viewWelcomePage" />
+
+		<execute macro="Smoke#runSmoke" />
+	</command>
 </definition>
