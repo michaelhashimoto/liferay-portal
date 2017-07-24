@@ -1451,8 +1451,15 @@ app.server.type=@{app.server.type}]]></echo>
 		<attribute default="true" name="setup.proxy" />
 
 		<sequential>
+			<get-testcase-property property.name="test.setup.proxy" />
+
 			<if>
-				<equals arg1="@{setup.proxy}" arg2="true" />
+				<and>
+					<equals arg1="@{setup.proxy}" arg2="true" />
+					<not>
+						<equals arg1="${test.setup.proxy}" arg2="false" />
+					</not>
+				</and>
 				<then>
 					<setup-testable-tomcat-dummy-socket-proxy />
 				</then>
