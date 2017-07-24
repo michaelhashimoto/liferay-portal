@@ -428,8 +428,6 @@ app.server.type=@{app.server.type}]]></echo>
 				<equals arg1="@{app.server.type}" arg2="tomcat" />
 				<then>
 					<setup-testable-tomcat />
-
-					<setup-test-batch-testable-tomcat />
 				</then>
 			</if>
 
@@ -804,8 +802,6 @@ app.server.type=@{app.server.type}]]></echo>
 								</and>
 								<then>
 									<setup-testable-tomcat />
-
-									<setup-test-batch-testable-tomcat setup.proxy="@{setup.proxy}" />
 								</then>
 							</if>
 						</then>
@@ -841,11 +837,19 @@ app.server.type=@{app.server.type}]]></echo>
 								</and>
 								<then>
 									<setup-testable-tomcat />
-
-									<setup-test-batch-testable-tomcat setup.proxy="@{setup.proxy}" />
 								</then>
 							</if>
 						</else>
+					</if>
+
+					<if>
+						<and>
+							<equals arg1="${app.server.type}" arg2="tomcat" />
+							<equals arg1="@{setup.testable.tomcat}" arg2="true" />
+						</and>
+						<then>
+							<setup-test-batch-testable-tomcat setup.proxy="@{setup.proxy}" />
+						</then>
 					</if>
 
 					<if>
