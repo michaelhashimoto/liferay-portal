@@ -135,6 +135,15 @@
 			<replacevalue><![CDATA[cluster.name: LiferayElasticsearchCluster]]></replacevalue>
 		</replace>
 
+		<get-testcase-property property.name="elasticsearch.single.shard.enabled" />
+
+		<if>
+			<equals arg1="${elasticsearch.single.shard.enabled}" arg2="true" />
+			<then>
+				<echo append="true" file="${elasticsearch.dir}/config/elasticsearch.yml">index.number_of_shards: 1</echo>
+			</then>
+		</if>
+
 		<echo append="true" file="${elasticsearch.dir}/config/elasticsearch.yml">action.auto_create_index: .marvel-*,.security</echo>
 
 		<local name="elasticsearch.server.not.started" />
