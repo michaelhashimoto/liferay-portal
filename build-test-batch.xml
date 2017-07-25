@@ -375,6 +375,8 @@ mariadb.executable=${mariadb.executable}]]></echo>
 					<fail message="Unable to prepare test build." />
 				</catch>
 			</trycatch>
+
+			<setup-test-batch-testable-tomcat />
 		</sequential>
 	</macrodef>
 
@@ -392,6 +394,8 @@ mariadb.executable=${mariadb.executable}]]></echo>
 					<fail message="Unable to prepare test build." />
 				</catch>
 			</trycatch>
+
+			<setup-test-batch-testable-tomcat />
 		</sequential>
 	</macrodef>
 
@@ -509,11 +513,14 @@ app.server.type=@{app.server.type}]]></echo>
 					<fail message="Unable to prepare test build." />
 				</catch>
 			</trycatch>
+
+			<setup-test-batch-testable-tomcat />
 		</sequential>
 	</macrodef>
 
 	<macrodef name="prepare-test-environment">
 		<attribute default="tomcat" name="app.server.type" />
+		<attribute default="true" name="setup.proxy" />
 
 		<sequential>
 			<execute>
@@ -532,6 +539,8 @@ app.server.type=@{app.server.type}]]></echo>
 
 			<antcall if:set="env.JENKINS_HOME" target="clean-up-db2-processes" inheritAll="false" />
 			<antcall if:set="env.JENKINS_HOME" target="clean-up-java-processes" inheritAll="false" />
+
+			<setup-test-batch-testable-tomcat setup.proxy="@{setup.proxy}" />
 		</sequential>
 	</macrodef>
 
@@ -802,6 +811,8 @@ app.server.type=@{app.server.type}]]></echo>
 								</and>
 								<then>
 									<setup-testable-tomcat />
+
+									<setup-test-batch-testable-tomcat setup.proxy="@{setup.proxy}" />
 								</then>
 							</if>
 						</then>
@@ -811,7 +822,7 @@ app.server.type=@{app.server.type}]]></echo>
 								<available file="liferay-portal-source.zip" />
 							</and>
 							<then>
-								<prepare-test-environment app.server.type="${app.server.type}" />
+								<prepare-test-environment app.server.type="${app.server.type}" setup.proxy="@{setup.proxy}" />
 							</then>
 						</elseif>
 						<else>
@@ -837,19 +848,11 @@ app.server.type=@{app.server.type}]]></echo>
 								</and>
 								<then>
 									<setup-testable-tomcat />
+
+									<setup-test-batch-testable-tomcat setup.proxy="@{setup.proxy}" />
 								</then>
 							</if>
 						</else>
-					</if>
-
-					<if>
-						<and>
-							<equals arg1="${app.server.type}" arg2="tomcat" />
-							<equals arg1="@{setup.testable.tomcat}" arg2="true" />
-						</and>
-						<then>
-							<setup-test-batch-testable-tomcat setup.proxy="@{setup.proxy}" />
-						</then>
 					</if>
 
 					<if>
@@ -1466,6 +1469,7 @@ app.server.type=@{app.server.type}]]></echo>
 
 			<if>
 				<and>
+					<equals arg1="${app.server.type}" arg2="tomcat" />
 					<equals arg1="@{setup.proxy}" arg2="true" />
 					<not>
 						<equals arg1="${test.setup.proxy}" arg2="false" />
