@@ -376,7 +376,12 @@ mariadb.executable=${mariadb.executable}]]></echo>
 				</catch>
 			</trycatch>
 
-			<setup-test-batch-testable-tomcat />
+			<if>
+				<equals arg1="${app.server.type}" arg2="tomcat" />
+				<then>
+					<setup-test-batch-testable-tomcat />
+				</then>
+			</if>
 		</sequential>
 	</macrodef>
 
@@ -395,7 +400,12 @@ mariadb.executable=${mariadb.executable}]]></echo>
 				</catch>
 			</trycatch>
 
-			<setup-test-batch-testable-tomcat />
+			<if>
+				<equals arg1="${app.server.type}" arg2="tomcat" />
+				<then>
+					<setup-test-batch-testable-tomcat />
+				</then>
+			</if>
 		</sequential>
 	</macrodef>
 
@@ -514,7 +524,12 @@ app.server.type=@{app.server.type}]]></echo>
 				</catch>
 			</trycatch>
 
-			<setup-test-batch-testable-tomcat />
+			<if>
+				<equals arg1="${app.server.type}" arg2="tomcat" />
+				<then>
+					<setup-test-batch-testable-tomcat />
+				</then>
+			</if>
 		</sequential>
 	</macrodef>
 
@@ -540,7 +555,12 @@ app.server.type=@{app.server.type}]]></echo>
 			<antcall if:set="env.JENKINS_HOME" target="clean-up-db2-processes" inheritAll="false" />
 			<antcall if:set="env.JENKINS_HOME" target="clean-up-java-processes" inheritAll="false" />
 
-			<setup-test-batch-testable-tomcat setup.proxy="@{setup.proxy}" />
+			<if>
+				<equals arg1="${app.server.type}" arg2="tomcat" />
+				<then>
+					<setup-test-batch-testable-tomcat />
+				</then>
+			</if>
 		</sequential>
 	</macrodef>
 
@@ -1458,6 +1478,8 @@ app.server.type=@{app.server.type}]]></echo>
 		<attribute default="true" name="setup.proxy" />
 
 		<sequential>
+			<echo>Running setup-test-batch-testable-tomcat</echo>
+
 			<get-testcase-property property.name="test.setup.proxy" />
 
 			<echo>-------------------------------------------------------</echo>
@@ -1469,7 +1491,6 @@ app.server.type=@{app.server.type}]]></echo>
 
 			<if>
 				<and>
-					<equals arg1="${app.server.type}" arg2="tomcat" />
 					<equals arg1="@{setup.proxy}" arg2="true" />
 					<not>
 						<equals arg1="${test.setup.proxy}" arg2="false" />
@@ -1487,6 +1508,8 @@ app.server.type=@{app.server.type}]]></echo>
 			<setup-testable-tomcat-heap-dump-on-oom />
 
 			<setup-testable-tomcat-print-final-flags />
+
+			<echo>Ending setup-test-batch-testable-tomcat</echo>
 		</sequential>
 	</macrodef>
 
