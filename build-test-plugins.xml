@@ -486,14 +486,14 @@ plugins.includes=${test.plugin}</echo>
 
 		<for list="${test.plugins}" param="test.plugin">
 			<sequential>
-				<trycatch property="test.plugin.failure">
+				<trycatch property="test.plugin.exception">
 					<try>
 						<antcall target="test-plugin">
 							<param name="test.plugin" value="@{test.plugin}" />
 						</antcall>
 					</try>
 					<catch>
-						<echo>PLUGIN_FAILURE: ${test.plugin.failure}</echo>
+						<echo>${test.plugin.exception}</echo>
 
 						<echo append="true" file="plugins-compile-failure">@{test.plugin},</echo>
 					</catch>
