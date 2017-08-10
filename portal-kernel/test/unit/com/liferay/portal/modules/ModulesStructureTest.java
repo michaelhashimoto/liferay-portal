@@ -910,6 +910,10 @@ public class ModulesStructureTest {
 	private void _testGitRepoIgnoreFiles(Path dirPath, String gitIgnoreTemplate)
 		throws IOException {
 
+		if (_isEmptyGitRepo(dirPath)) {
+			return;
+		}
+
 		if (_isInGitRepoReadOnly(dirPath)) {
 			return;
 		}
