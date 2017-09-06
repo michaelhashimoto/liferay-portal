@@ -2404,6 +2404,86 @@ app.server.type=@{app.server.type}]]></echo>
 		</run-batch-test>
 	</target>
 
+	<target name="modules-compile-1-jdk8">
+		<antcall target="modules-compile-jdk8" />
+	</target>
+
+	<target name="modules-compile-2-jdk8">
+		<antcall target="modules-compile-jdk8" />
+	</target>
+
+	<target name="modules-compile-3-jdk8">
+		<antcall target="modules-compile-jdk8" />
+	</target>
+
+	<target name="modules-compile-4-jdk8">
+		<antcall target="modules-compile-jdk8" />
+	</target>
+
+	<target name="modules-compile-5-jdk8">
+		<antcall target="modules-compile-jdk8" />
+	</target>
+
+	<target name="modules-compile-6-jdk8">
+		<antcall target="modules-compile-jdk8" />
+	</target>
+
+	<target name="modules-compile-7-jdk8">
+		<antcall target="modules-compile-jdk8" />
+	</target>
+
+	<target name="modules-compile-8-jdk8">
+		<antcall target="modules-compile-jdk8" />
+	</target>
+
+	<target name="modules-compile-9-jdk8">
+		<antcall target="modules-compile-jdk8" />
+	</target>
+
+	<target name="modules-compile-10-jdk8">
+		<antcall target="modules-compile-jdk8" />
+	</target>
+
+	<target name="modules-compile-11-jdk8">
+		<antcall target="modules-compile-jdk8" />
+	</target>
+
+	<target name="modules-compile-12-jdk8">
+		<antcall target="modules-compile-jdk8" />
+	</target>
+
+	<target name="modules-compile-13-jdk8">
+		<antcall target="modules-compile-jdk8" />
+	</target>
+
+	<target name="modules-compile-14-jdk8">
+		<antcall target="modules-compile-jdk8" />
+	</target>
+
+	<target name="modules-compile-15-jdk8">
+		<antcall target="modules-compile-jdk8" />
+	</target>
+
+	<target name="modules-compile-16-jdk8">
+		<antcall target="modules-compile-jdk8" />
+	</target>
+
+	<target name="modules-compile-17-jdk8">
+		<antcall target="modules-compile-jdk8" />
+	</target>
+
+	<target name="modules-compile-18-jdk8">
+		<antcall target="modules-compile-jdk8" />
+	</target>
+
+	<target name="modules-compile-19-jdk8">
+		<antcall target="modules-compile-jdk8" />
+	</target>
+
+	<target name="modules-compile-20-jdk8">
+		<antcall target="modules-compile-jdk8" />
+	</target>
+
 	<target name="modules-functional-jdk8">
 		<run-batch-test>
 			<test-action>

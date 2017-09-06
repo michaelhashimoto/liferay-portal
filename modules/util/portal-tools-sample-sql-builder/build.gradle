@@ -46,19 +46,28 @@ writeReleases {
 			Writer writer ->
 
 			configurations.compile.each {
-				JarFile jarFile = new JarFile(it)
+				try {
+					JarFile jarFile = new JarFile(it)
 
-				Attributes mainAttributes = jarFile.manifest.mainAttributes
+					throw new GradleException("test")
 
-				String schemaVersion = mainAttributes.getValue("Liferay-Require-SchemaVersion")
+					Attributes mainAttributes = jarFile.manifest.mainAttributes
 
-				if (!schemaVersion) {
-					return
+					String schemaVersion = mainAttributes.getValue("Liferay-Require-SchemaVersion")
+
+					if (!schemaVersion) {
+						return
+					}
+
+					String symbolicName = mainAttributes.getValue("Bundle-SymbolicName")
+
+					writer.writeLine "${symbolicName}:${schemaVersion}"
 				}
+				catch (Exception e) {
+					println("CORRUPTED ZIP: " + it)
 
-				String symbolicName = mainAttributes.getValue("Bundle-SymbolicName")
-
-				writer.writeLine "${symbolicName}:${schemaVersion}"
+					throw e
+				}
 			}
 		}
 	}
