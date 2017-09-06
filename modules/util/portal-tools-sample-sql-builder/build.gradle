@@ -49,8 +49,6 @@ writeReleases {
 				try {
 					JarFile jarFile = new JarFile(it)
 
-					throw new GradleException("test")
-
 					Attributes mainAttributes = jarFile.manifest.mainAttributes
 
 					String schemaVersion = mainAttributes.getValue("Liferay-Require-SchemaVersion")
