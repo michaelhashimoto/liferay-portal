@@ -126,6 +126,8 @@ public interface Build {
 
 	public void setCompareToUpstream(boolean compareToUpstream);
 
+	public void takeSlaveOffline(SlaveOfflineRule slaveOfflineRule);
+
 	public void update();
 
 }

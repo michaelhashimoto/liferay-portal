@@ -1,3 +1,5 @@
+import hudson.slaves.OfflineCause;
+import hudson.slaves.OfflineCause.ByCLI;
 import hudson.slaves.SlaveComputer;
 
 String slaves = "${slaves}";
@@ -10,9 +12,9 @@ for (String slave : slaves.split(",")) {
 	SlaveComputer slaveComputer = slaveObject.getComputer();
 
 	try {
-		boolean offlineStatus = ${offline.status};
+		OfflineCause offlineCause = new OfflineCause.ByCLI("${offline.reason}");
 
-		slaveComputer.setTemporarilyOffline(offlineStatus)
+		slaveComputer.setTemporarilyOffline(${offline.status}, offlineCause);
 	}
 	catch (NullPointerException npe) {
 	}

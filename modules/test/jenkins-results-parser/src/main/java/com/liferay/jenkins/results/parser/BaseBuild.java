@@ -926,6 +926,53 @@ public abstract class BaseBuild implements Build {
 	}
 
 	@Override
+	public void takeSlaveOffline(SlaveOfflineRule slaveOfflineRule) {
+		if ((slaveOfflineRule == null) || fromArchive) {
+			return;
+		}
+
+		String hostName = JenkinsResultsParserUtil.getHostName("");
+
+		String slave = hostName.substring(0, hostName.indexOf("."));
+
+		String message = JenkinsResultsParserUtil.combine(
+			slaveOfflineRule.getName(), " failure detected at ", getBuildURL(),
+			". ", slave, " will be taken offline.\n\n",
+			slaveOfflineRule.toString(), "\n\n");
+
+		System.out.println(message);
+
+		JenkinsResultsParserUtil.turnSlavesOff(master, message, slave);
+
+		TopLevelBuild topLevelBuild = getTopLevelBuild();
+
+		if (topLevelBuild != null) {
+			message = JenkinsResultsParserUtil.combine(
+				message, "Top Level Build URL: ", topLevelBuild.getBuildURL());
+		}
+
+		if (topLevelBuild != null) {
+			message = JenkinsResultsParserUtil.combine(
+				message, "\nOffline Slave URL: ", "https://", master,
+				".liferay.com/computer/", slave);
+		}
+
+		String notificationList = slaveOfflineRule.getNotificationList();
+
+		if ((notificationList != null) && !notificationList.isEmpty()) {
+			try {
+				JenkinsResultsParserUtil.sendEmail(
+					message, "jenkins", "Slave Offline",
+					slaveOfflineRule.notificationList);
+			}
+			catch (InterruptedException | IOException e) {
+				throw new RuntimeException(
+					"Unable to send offline slave notification", e);
+			}
+		}
+	}
+
+	@Override
 	public void update() {
 		String status = getStatus();
 
@@ -999,6 +1046,24 @@ public abstract class BaseBuild implements Build {
 
 					findDownstreamBuilds();
 
+					if ((result == null) || result.equals("SUCCESS")) {
+						return;
+					}
+
+					if (!(this instanceof BatchBuild) && !fromArchive) {
+						for (SlaveOfflineRule slaveOfflineRule :
+								slaveOfflineRules) {
+
+							if (!slaveOfflineRule.matches(this)) {
+								continue;
+							}
+
+							takeSlaveOffline(slaveOfflineRule);
+
+							break;
+						}
+					}
+
 					if (this instanceof AxisBuild ||
 						this instanceof BatchBuild ||
 						this instanceof TopLevelBuild || fromArchive ||
@@ -1007,16 +1072,14 @@ public abstract class BaseBuild implements Build {
 						return;
 					}
 
-					if ((result != null) && !result.equals("SUCCESS")) {
-						for (ReinvokeRule reinvokeRule : reinvokeRules) {
-							if (!reinvokeRule.matches(this)) {
-								continue;
-							}
-
-							reinvoke(reinvokeRule);
-
-							break;
+					for (ReinvokeRule reinvokeRule : reinvokeRules) {
+						if (!reinvokeRule.matches(this)) {
+							continue;
 						}
+
+						reinvoke(reinvokeRule);
+
+						break;
 					}
 				}
 			}
@@ -2058,6 +2121,8 @@ public abstract class BaseBuild implements Build {
 		ReinvokeRule.getReinvokeRules();
 	protected String repositoryName;
 	protected String result;
+	protected List<SlaveOfflineRule> slaveOfflineRules =
+		SlaveOfflineRule.getSlaveOfflineRules();
 	protected long statusModifiedTime;
 	protected Element upstreamJobFailureMessageElement;
 
