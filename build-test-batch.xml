@@ -1877,7 +1877,11 @@ app.server.type=@{app.server.type}]]></echo>
 	</target>
 
 	<target name="dist-jdk7">
-		<prepare-test-build-dist app.server.type="${axis.variable}" />
+		<echo>This is a test for No space left on device</echo>
+	</target>
+
+	<target name="quick-jdk7">
+		<echo>This is a test for No space left on device</echo>
 	</target>
 
 	<target name="empty-temp-dir-jdk8">
