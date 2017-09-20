@@ -458,6 +458,8 @@ app.server.type=@{app.server.type}]]></echo>
 				<test-action>
 					<database-test-run-test app.server.type="@{app.server.type}" database.type="@{database.type}" database.version="@{database.version}">
 						<test-action>
+							<antcall inheritAll="false" target="prepare-log4j-ext-xml" />
+
 							<ant antfile="build-test-${app.server.type}.xml" inheritAll="false" target="run-selenium-${app.server.type}">
 								<property name="database.type" value="@{database.type}" />
 								<property name="liferay.portal.bundle" value="${test.portal.bundle.version}" />
