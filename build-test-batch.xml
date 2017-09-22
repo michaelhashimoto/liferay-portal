@@ -3379,6 +3379,10 @@ ${output.content}</echo>
 			</test-action>
 
 			<test-set-up>
+				<echo>Hello World - No space left on device - Goodbye World!</echo>
+
+				<fail message="THIS IS A TEST!" />
+
 				<if>
 					<isset property="env.DIST_PATH" />
 					<then>
@@ -3406,6 +3410,10 @@ ${output.content}</echo>
 			</test-action>
 
 			<test-set-up>
+				<echo>Caused by: java.io.IOException: Read-only file system</echo>
+
+				<fail message="THIS IS A TEST!" />
+
 				<if>
 					<isset property="env.DIST_PATH" />
 					<then>
