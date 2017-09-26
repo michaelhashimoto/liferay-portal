@@ -223,6 +223,7 @@
 	</command>
 
 	<command name="AddWebContentFeed" priority="3">
+		<property name="portal.acceptance" value="LRQA-34105" />
 		<property name="test.name.skip.portal.instance" value="RSS#AddWebContentFeed" />
 		<property name="testray.component.names" value="Asset Publisher,RSS" />
 
@@ -577,6 +578,7 @@
 	</command>
 
 	<command name="EnableRSSFeedFromAssetpublisher" priority="3">
+		<property name="portal.acceptance" value="LRQA-34105" />
 		<property name="test.name.skip.portal.instance" value="RSS#EnableRSSFeedFromAssetpublisher" />
 		<property name="testray.component.names" value="Asset Publisher,RSS" />
 

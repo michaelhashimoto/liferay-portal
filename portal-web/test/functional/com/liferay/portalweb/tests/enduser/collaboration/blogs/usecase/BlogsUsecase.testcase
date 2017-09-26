@@ -457,6 +457,7 @@
 
 	<command name="DemoTrackbackURL" priority="4">
 		<property name="custom.properties" value="blogs.trackback.enabled=true" />
+		<property name="portal.acceptance" value="LRQA-34105" />
 		<property name="test.name.skip.portal.instance" value="BlogsUsecase#DemoTrackbackURL" />
 
 		<execute macro="Navigator#gotoPage">

@@ -700,6 +700,7 @@
 	</command>
 
 	<command ignore="true" name="ViewEmailRecipientDelivery" priority="4">
+		<property name="portal.acceptance" value="LRQA-34105" />
 		<property name="test.name.skip.portal.instance" value="CPReportsadmin#ViewEmailRecipientDelivery" />
 
 		<var method="TestPropsUtil#get('portal.url')" name="portalURL" />
