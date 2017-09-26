@@ -9728,6 +9728,27 @@ module.framework.properties.blacklist.portal.profile.names=${blacklist.portal.pr
 			</then>
 		</if>
 
+		<get-testcase-property property.name="socks.proxy.enabled" />
+
+		<if>
+			<equals arg1="${test.socks.proxy.enabled}" arg2="true" />
+			<then>
+				<echo>Deploying the socks proxy module</echo>
+
+				<echo file="tools/sdk/build.${user.name}.properties">auto.deploy.dir=${liferay.home}/deploy</echo>
+
+				<gradle-execute dir="${project.dir}/modules/test/simple-socks-proxy" task="deploy">
+					<arg value="clean" />
+				</gradle-execute>
+
+				<echo file="${liferay.home}/osgi/modules/com.liferay.simple.socks.proxy.SocksProxyConfiguration.cfg">allowedHostnames=google.com</echo>
+
+				<print-file file.name="${liferay.home}/osgi/modules/com.liferay.simple.socks.proxy.SocksProxyConfiguration.cfg" />
+
+				<echo>Completed deploying socks proxy module</echo>
+			</then>
+		</if>
+
 		<get-testcase-property property.name="solr.enabled" />
 
 		<if>
