@@ -9741,7 +9741,7 @@ module.framework.properties.blacklist.portal.profile.names=${blacklist.portal.pr
 					<arg value="clean" />
 				</gradle-execute>
 
-				<echo file="${liferay.home}/osgi/modules/com.liferay.simple.socks.proxy.SocksProxyConfiguration.cfg">allowedHostnames=cloud-10-0-15-1,cloud-10-0-15-2,cloud-10-0-15-3,cloud-10-0-15-4,cloud-10-0-15-5,cloud-10-0-15-6,cloud-10-0-15-7,cloud-10-0-15-8,cloud-10-0-15-9,cloud-10-0-15-10,cloud-10-0-15-11,cloud-10-0-15-12,cloud-10-0-15-13,cloud-10-0-15-14,cloud-10-0-15-15,cloud-10-0-15-16,cloud-10-0-15-17,cloud-10-0-15-18,cloud-10-0-15-19,cloud-10-0-15-20,cloud-10-0-15-21</echo>
+				<echo file="${liferay.home}/osgi/modules/com.liferay.simple.socks.proxy.SocksProxyConfiguration.cfg">allowedHostnames=cloud-10-0-15-1,cloud-10-0-15-2,cloud-10-0-15-3,cloud-10-0-15-4,cloud-10-0-15-5,cloud-10-0-15-6,cloud-10-0-15-7,cloud-10-0-15-8,cloud-10-0-15-9,cloud-10-0-15-10,cloud-10-0-15-11,cloud-10-0-15-12,cloud-10-0-15-13,cloud-10-0-15-14,cloud-10-0-15-15,cloud-10-0-15-16,cloud-10-0-15-17,cloud-10-0-15-18,cloud-10-0-15-19,cloud-10-0-15-20,cloud-10-0-15-21,localhost,www.able.com,www.baker.com</echo>
 
 				<print-file file.name="${liferay.home}/osgi/modules/com.liferay.simple.socks.proxy.SocksProxyConfiguration.cfg" />
 
