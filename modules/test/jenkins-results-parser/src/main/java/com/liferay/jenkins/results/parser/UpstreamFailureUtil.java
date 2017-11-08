@@ -171,7 +171,7 @@ public class UpstreamFailureUtil {
 					UPSTREAM_FAILURES_JOB_BASE_URL + upstreamJobName +
 						"/builds/latest/test.results.json");
 
-				upstreamFailuresJobJSONObject =
+				upstreamFailuresJobJSONObject = upstreamFailuresJobJSONObject;
 					JenkinsResultsParserUtil.toJSONObject(url);
 			}
 		}
@@ -187,6 +187,10 @@ public class UpstreamFailureUtil {
 		"https://test-1-0.liferay.com/userContent/testResults/";
 
 	protected static JSONObject upstreamFailuresJobJSONObject = new JSONObject(
-		"{\"SHA\":\"\",\"failedBatches\":[]}");
+		"{\"SHA\":\"\",\"failedBatches\":[{\"result\":\"FAILURE\",\"" +
+			"failedTests\":[],\"jobVariant\":\"source-format-jdk8\"}, " +
+			"{\"result\":\"UNSTABLE\",\"failedTests\":" +
+			"[\"PoshiElementFactoryTest.testPoshiToReadable\",\"BuildTest.testGetGitHubMessage\"]," +
+			"\"jobVariant\":\"modules-unit-jdk8\"}]}");
 
 }
