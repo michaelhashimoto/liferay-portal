@@ -145,7 +145,7 @@ public class BatchBuild extends BaseBuild {
 		String status = getStatus();
 
 		if (!status.equals("completed")) {
-			return null;
+			return Collections.emptyList();
 		}
 
 		List<TestResult> testResults = new ArrayList<>();
