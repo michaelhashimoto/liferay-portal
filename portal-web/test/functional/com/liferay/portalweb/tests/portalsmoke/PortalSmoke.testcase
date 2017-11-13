@@ -35,6 +35,8 @@
 		<execute macro="Smoke#viewWelcomePage" />
 
 		<execute macro="Smoke#runSmoke" />
+
+		<fail message="Force a failure" />
 	</command>
 
 	<command name="SmokeWithDeveloperProperties" priority="5">
