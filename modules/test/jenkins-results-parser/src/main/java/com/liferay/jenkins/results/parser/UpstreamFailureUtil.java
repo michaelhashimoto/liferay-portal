@@ -90,6 +90,10 @@ public class UpstreamFailureUtil {
 				String jobVariant = build.getJobVariant();
 				String result = build.getResult();
 
+				if (result == null) {
+					return false;
+				}
+
 				if (jobVariant.contains("/")) {
 					int index = jobVariant.lastIndexOf("/");
 
@@ -183,6 +187,6 @@ public class UpstreamFailureUtil {
 		"https://test-1-0.liferay.com/userContent/testResults/";
 
 	protected static JSONObject upstreamFailuresJobJSONObject = new JSONObject(
-		"{\"SHA\":\"\",\"failedBatches\":[]}");
+		"{\"SHA\":\"\",\"failedBatches\":[{\"result\":\"UNSTABLE\",\"failedTests\":[\"PortalSmoke#Smoke\"],\"jobVariant\":\"functional-smoke-tomcat80-mysql56-jdk8\"}]}");
 
 }
