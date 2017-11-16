@@ -44,6 +44,7 @@ public class BeanLocatorImpl implements BeanLocator {
 
 		_classLoader = classLoader;
 		_applicationContext = applicationContext;
+		_kenji = "kenji";
 	}
 
 	@Override
@@ -187,6 +188,7 @@ public class BeanLocatorImpl implements BeanLocator {
 
 	private ApplicationContext _applicationContext;
 	private final ClassLoader _classLoader;
+	private final String _kenji;
 	private String _paclServletContextName;
 	private final Map<String, Object> _velocityBeans =
 		new ConcurrentHashMap<>();
