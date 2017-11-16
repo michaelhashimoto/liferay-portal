@@ -54,6 +54,33 @@ public class AutoCloseRule {
 					downstreamBuild)) {
 
 				failingInUpstreamJobDownstreamBuilds.add(downstreamBuild);
+
+				continue;
+			}
+
+			List<TestResult> testResults = new ArrayList<>();
+
+			testResults.addAll(downstreamBuild.getTestResults("FAILED"));
+			testResults.addAll(downstreamBuild.getTestResults("REGRESSION"));
+
+			boolean containsUniqueTestFailure = false;
+
+			for (TestResult testResult : testResults) {
+				if (!UpstreamFailureUtil.isTestFailingInUpstreamJob(
+						testResult)) {
+
+					containsUniqueTestFailure = true;
+
+					break;
+				}
+			}
+
+			if (testResults.isEmpty()) {
+				containsUniqueTestFailure = true;
+			}
+
+			if (!containsUniqueTestFailure) {
+				failingInUpstreamJobDownstreamBuilds.add(downstreamBuild);
 			}
 		}
 
@@ -102,7 +129,7 @@ public class AutoCloseRule {
 
 	@Override
 	public String toString() {
-		return ruleData;
+			return ruleData;
 	}
 
 	protected String getBatchName(Build build) {
