@@ -68,7 +68,7 @@ public class SQLDateTest {
 		for (int i = 0; i < Time.SECOND; i++) {
 			writeTimeJDBC(time);
 
-			Assert.assertEquals(time++, readTimeJDBC());
+			Assert.assertEquals(0, 1);
 		}
 	}
 
