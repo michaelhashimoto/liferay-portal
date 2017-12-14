@@ -14,10 +14,13 @@
 
 package com.liferay.jenkins.results.parser;
 
+import java.io.File;
 import java.io.IOException;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import org.dom4j.Element;
 
 /**
  * @author Michael Hashimoto
@@ -25,70 +28,175 @@ import java.util.List;
 public class LegacyDataArchiveGroup {
 
 	public LegacyDataArchiveGroup(
-		LegacyDataArchiveUtil legacyDataArchiveUtil,
-		String legacyDataArchiveType, String portalVersion) {
+		LegacyDataArchivePortalVersion legacyDataArchivePortalVersion,
+		String dataArchiveType) {
 
-		_legacyDataArchiveUtil = legacyDataArchiveUtil;
-		_legacyDataArchiveType = legacyDataArchiveType;
-		_portalVersion = portalVersion;
-	}
+		_legacyDataArchivePortalVersion = legacyDataArchivePortalVersion;
+		_dataArchiveType = dataArchiveType;
 
-	public void addLegacyDataArchive(LegacyDataArchive legacyDataArchive) {
-		_legacyDataArchives.add(legacyDataArchive);
+		_legacyDataArchiveUtil =
+			_legacyDataArchivePortalVersion.getLegacyDataArchiveUtil();
+
+		_legacyGitWorkingDirectory =
+			_legacyDataArchiveUtil.getLegacyGitWorkingDirectory();
+
+		_legacyDataArchives = _getLegacyDataArchives();
 	}
 
 	public void commitLegacyDataArchives() throws IOException {
 		for (LegacyDataArchive legacyDataArchive : _legacyDataArchives) {
 			if (!legacyDataArchive.isUpdated()) {
-				legacyDataArchive.updateLegacyDataArchive();
+				legacyDataArchive.stageLegacyDataArchive();
 			}
 		}
 
-		GitWorkingDirectory legacyDataGitWorkingDirectory =
-			_legacyDataArchiveUtil.getLegacyDataGitWorkingDirectory();
-
-		String status = legacyDataGitWorkingDirectory.status();
+		String status = _legacyGitWorkingDirectory.status();
 
 		if (!status.contains("nothing to commit") &&
 			!status.contains("nothing added to commit")) {
 
-			Commit latestManualCommit =
-				_legacyDataArchiveUtil.getLatestManualCommit();
+			Commit latestTestCommit =
+				_legacyDataArchivePortalVersion.getLatestTestCommit();
+			String portalVersion =
+				_legacyDataArchivePortalVersion.getPortalVersion();
 
-			legacyDataGitWorkingDirectory.commitStagedFilesToCurrentBranch(
+			_legacyGitWorkingDirectory.commitStagedFilesToCurrentBranch(
 				JenkinsResultsParserUtil.combine(
-					"archive:ignore Update '", _legacyDataArchiveType,
-					"' for '", _portalVersion, "' at ",
-					latestManualCommit.getAbbreviatedSHA(), "."));
-
-			String gitLog = legacyDataGitWorkingDirectory.log(1);
-
-			_commit = CommitFactory.newCommit(gitLog);
+					"archive:ignore Update '", _dataArchiveType, "' for '",
+					portalVersion, "' at ",
+					latestTestCommit.getAbbreviatedSHA(), "."));
 		}
 	}
 
 	public Commit getCommit() {
-		return _commit;
+		return CommitFactory.newCommit(
+			_legacyGitWorkingDirectory.log(1), _legacyGitWorkingDirectory);
 	}
 
-	public String getLegacyDataArchiveType() {
-		return _legacyDataArchiveType;
+	public String getDataArchiveType() {
+		return _dataArchiveType;
 	}
 
-	public boolean isUpdated() {
+	public LegacyDataArchivePortalVersion getLegacyDataArchivePortalVersion() {
+		return _legacyDataArchivePortalVersion;
+	}
+
+	public List<LegacyDataArchive> getLegacyDataArchives() {
+		return _legacyDataArchives;
+	}
+
+	public LegacyDataArchive.Status getStatus() {
+		if (hasUpdatedArchives()) {
+			return LegacyDataArchive.Status.UPDATED;
+		}
+
+		if (hasMissingArchives()) {
+			return LegacyDataArchive.Status.MISSING;
+		}
+
+		if (hasStaleArchives()) {
+			return LegacyDataArchive.Status.STALE;
+		}
+
+		return LegacyDataArchive.Status.UNCHANGED;
+	}
+
+	public boolean hasMissingArchives() {
 		for (LegacyDataArchive legacyDataArchive : _legacyDataArchives) {
-			if (!legacyDataArchive.isUpdated()) {
-				return false;
+			if (legacyDataArchive.isMissing()) {
+				return true;
 			}
 		}
 
-		return true;
+		return false;
 	}
 
-	private Commit _commit;
-	private List<LegacyDataArchive> _legacyDataArchives = new ArrayList<>();
-	private final String _legacyDataArchiveType;
+	public boolean hasStaleArchives() {
+		for (LegacyDataArchive legacyDataArchive : _legacyDataArchives) {
+			if (legacyDataArchive.isStale()) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	public boolean hasUpdatedArchives() {
+		for (LegacyDataArchive legacyDataArchive : _legacyDataArchives) {
+			if (legacyDataArchive.isUpdated()) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	protected LegacyDataReadMeSummaryElement
+		getLegacyDataReadMeSummaryElement() {
+
+		LegacyDataArchive.Status status = getStatus();
+		Element summaryContentElement = Dom4JUtil.getNewElement("div");
+		Commit commit = getCommit();
+
+		if (commit != null) {
+			Dom4JUtil.getNewAnchorElement(
+				commit.getGitHubCommitURL(), summaryContentElement,
+				commit.getAbbreviatedSHA());
+
+			Dom4JUtil.getNewElement(
+				"span", summaryContentElement, commit.getMessage());
+		}
+		else {
+			Dom4JUtil.getNewElement(
+				"span", summaryContentElement, getDataArchiveType());
+		}
+
+		LegacyDataReadMeSummaryElement legacyDataReadMeSummaryElement =
+			new LegacyDataReadMeSummaryElement();
+
+		legacyDataReadMeSummaryElement.setSummaryContent(summaryContentElement);
+
+		for (LegacyDataArchive legacyDataArchive : getLegacyDataArchives()) {
+			if (legacyDataArchive.getStatus() == status) {
+				File legacyDataArchiveFile =
+					legacyDataArchive.getLegacyDataArchiveFile();
+
+				GitWorkingDirectory.Branch dataArchiveBranch =
+					_legacyDataArchiveUtil.getDataArchiveBranch();
+
+				legacyDataReadMeSummaryElement.addLineItem(
+					Dom4JUtil.getNewAnchorElement(
+						_legacyGitWorkingDirectory.getGitHubFileURL(
+							dataArchiveBranch.getName(),
+							_legacyGitWorkingDirectory.getRemote("upstream"),
+							legacyDataArchiveFile, false),
+						JenkinsResultsParserUtil.getPathRelativeTo(
+							legacyDataArchiveFile,
+							_legacyGitWorkingDirectory.getWorkingDirectory())));
+			}
+		}
+
+		return legacyDataReadMeSummaryElement;
+	}
+
+	private List<LegacyDataArchive> _getLegacyDataArchives() {
+		List<LegacyDataArchive> legacyDataArchives = new ArrayList<>();
+
+		List<String> databaseNames =
+			_legacyDataArchivePortalVersion.getDatabaseNames();
+
+		for (String databaseName : databaseNames) {
+			legacyDataArchives.add(new LegacyDataArchive(this, databaseName));
+		}
+
+		return legacyDataArchives;
+	}
+
+	private final String _dataArchiveType;
+	private final LegacyDataArchivePortalVersion
+		_legacyDataArchivePortalVersion;
+	private final List<LegacyDataArchive> _legacyDataArchives;
 	private final LegacyDataArchiveUtil _legacyDataArchiveUtil;
-	private final String _portalVersion;
+	private final GitWorkingDirectory _legacyGitWorkingDirectory;
 
 }
