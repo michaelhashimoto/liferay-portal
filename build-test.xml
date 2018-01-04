@@ -1296,16 +1296,17 @@ counter.jdbc.prefix=jdbc.counter.]]></echo>
 		<attribute name="task" />
 
 		<sequential>
-			<local name="java.jdk.home" />
-			<local name="poshi.jvm.opts" />
-
-			<get-java-jdk-home architecture="x32" />
-
-			<get-poshi-jvm-opts />
 
 			<if>
 				<isset property="env.JENKINS_HOME" />
 				<then>
+					<local name="java.jdk.home" />
+					<local name="poshi.jvm.opts" />
+
+					<get-java-jdk-home architecture="x32" />
+
+					<get-poshi-jvm-opts />
+
 					<gradle-execute failonerror="false" task="@{task}">
 						<arg value="--build-file=portal-web/build-test.gradle" />
 						<arg value="-Plocal=${test.poshi.runner.local.release}" />
@@ -2436,6 +2437,8 @@ org.apache.catalina.startup.ClassLoaderFactory.level=INFO]]>
 			<if>
 				<equals arg1="${test.ant.launched.by.selenium}" arg2="true" />
 				<then>
+					<local name="java.jdk.home" />
+
 					<get-java-jdk-home />
 
 					<exec dir="${test.app.server.bin.dir}" executable="${app.server.start.executable}" resolveexecutable="true">
@@ -2623,13 +2626,13 @@ org.apache.catalina.startup.ClassLoaderFactory.level=INFO]]>
 
 			<parallel>
 				<daemons>
-					<local name="java.jdk.home" />
-
-					<get-java-jdk-home />
-
 					<if>
 						<equals arg1="${test.ant.launched.by.selenium}" arg2="true" />
 						<then>
+							<local name="java.jdk.home" />
+
+							<get-java-jdk-home />
+
 							<exec dir="${test.app.server.bin.dir}" executable="${app.server.stop.executable}" resolveexecutable="true">
 								<arg line="${app.server.stop.executable.arg.line}" />
 								<env key="JAVA_HOME" path="${java.jdk.home}" />
