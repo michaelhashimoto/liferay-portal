@@ -527,6 +527,28 @@ counter.jdbc.prefix=jdbc.counter.]]></echo>
 		</sequential>
 	</macrodef>
 
+	<macrodef name="get-java-jdk-home">
+		<attribute default="x64" name="architecture" />
+
+		<sequential>
+			<if>
+				<and>
+					<equals arg1="${ant.java.version}" arg2="1.7" />
+					<isset property="java.jdk.7.@{architecture}.home" />
+				</and>
+				<then>
+					<property name="java.jdk.home" value="${java.jdk.7.@{architecture}.home}" />
+				</then>
+				<elseif>
+					<isset property="java.jdk.8.@{architecture}.home" />
+					<then>
+						<property name="java.jdk.home" value="${java.jdk.8.@{architecture}.home}" />
+					</then>
+				</elseif>
+			</if>
+		</sequential>
+	</macrodef>
+
 	<macrodef name="get-jstack-output">
 		<attribute name="process.name" />
 
@@ -1252,21 +1274,7 @@ counter.jdbc.prefix=jdbc.counter.]]></echo>
 		<sequential>
 			<local name="java.jdk.home" />
 
-			<if>
-				<and>
-					<equals arg1="${ant.java.version}" arg2="1.7" />
-					<isset property="java.jdk.7.x32.home" />
-				</and>
-				<then>
-					<property name="java.jdk.home" value="${java.jdk.7.x32.home}" />
-				</then>
-				<elseif>
-					<isset property="java.jdk.8.x32.home" />
-					<then>
-						<property name="java.jdk.home" value="${java.jdk.8.x32.home}" />
-					</then>
-				</elseif>
-			</if>
+			<get-java-jdk-home architecture="x32" />
 
 			<if>
 				<and>
