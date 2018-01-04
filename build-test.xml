@@ -662,6 +662,18 @@ counter.jdbc.prefix=jdbc.counter.]]></echo>
 		</sequential>
 	</macrodef>
 
+	<macrodef name="get-poshi-jvm-opts">
+		<sequential>
+			<propertyregex
+				input="${env.ANT_OPTS}"
+				override="true"
+				property="poshi.jvm.opts"
+				regexp="(-Xmx)(\d*\w*)"
+				replace="\12048m"
+			/>
+		</sequential>
+	</macrodef>
+
 	<macrodef name="get-poshi-method-name">
 		<sequential>
 			<fail message="Please set the property ${test.class}." unless="test.class" />
@@ -1273,8 +1285,11 @@ counter.jdbc.prefix=jdbc.counter.]]></echo>
 
 		<sequential>
 			<local name="java.jdk.home" />
+			<local name="poshi.jvm.opts" />
 
 			<get-java-jdk-home architecture="x32" />
+
+			<get-poshi-jvm-opts />
 
 			<if>
 				<and>
@@ -1286,6 +1301,7 @@ counter.jdbc.prefix=jdbc.counter.]]></echo>
 						<arg value="--build-file=portal-web/build-test.gradle" />
 						<arg value="-Plocal=${test.poshi.runner.local.release}" />
 						<arg value="-PposhiRunnerExtProperties=${test.ext.properties.file}" />
+						<env key="ANT_OPTS" value="${poshi.jvm.opts}" />
 						<env key="JAVA_HOME" path="${java.jdk.home}" />
 					</gradle-execute>
 				</then>
