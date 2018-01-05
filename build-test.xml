@@ -558,7 +558,7 @@ counter.jdbc.prefix=jdbc.counter.]]></echo>
 
 					<execute>
 						<![CDATA[
-							jstack ${bootstrap.pid} > jstack_output
+							jstack -l ${bootstrap.pid} > jstack_output
 						]]>
 					</execute>
 
