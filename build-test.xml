@@ -1246,6 +1246,52 @@ counter.jdbc.prefix=jdbc.counter.]]></echo>
 		</sequential>
 	</macrodef>
 
+	<macrodef name="poshi-execute">
+		<attribute name="task" />
+
+		<sequential>
+			<local name="java.jdk.home" />
+
+			<if>
+				<and>
+					<equals arg1="${ant.java.version}" arg2="1.7" />
+					<isset property="java.jdk.7.x32.home" />
+				</and>
+				<then>
+					<property name="java.jdk.home" value="${java.jdk.7.x32.home}" />
+				</then>
+				<elseif>
+					<isset property="java.jdk.8.x32.home" />
+					<then>
+						<property name="java.jdk.home" value="${java.jdk.8.x32.home}" />
+					</then>
+				</elseif>
+			</if>
+
+			<if>
+				<and>
+					<isset property="env.JENKINS_HOME" />
+					<available file="${java.jdk.home}" />
+				</and>
+				<then>
+					<gradle-execute failonerror="false" task="@{task}">
+						<arg value="--build-file=portal-web/build-test.gradle" />
+						<arg value="-Plocal=${test.poshi.runner.local.release}" />
+						<arg value="-PposhiRunnerExtProperties=${test.ext.properties.file}" />
+						<env key="JAVA_HOME" path="${java.jdk.home}" />
+					</gradle-execute>
+				</then>
+				<else>
+					<gradle-execute failonerror="false" task="@{task}">
+						<arg value="--build-file=portal-web/build-test.gradle" />
+						<arg value="-Plocal=${test.poshi.runner.local.release}" />
+						<arg value="-PposhiRunnerExtProperties=${test.ext.properties.file}" />
+					</gradle-execute>
+				</else>
+			</if>
+		</sequential>
+	</macrodef>
+
 	<macrodef name="prepare-additional-bundles">
 		<sequential>
 			<get-testcase-property property.name="app.server.bundles.size" />
@@ -9901,11 +9947,7 @@ go</echo>
 			</else>
 		</if>
 
-		<gradle-execute failonerror="false" task="writePoshiProperties">
-			<arg value="--build-file=portal-web/build-test.gradle" />
-			<arg value="-Plocal=${test.poshi.runner.local.release}" />
-			<arg value="-PposhiRunnerExtProperties=${test.ext.properties.file}" />
-		</gradle-execute>
+		<poshi-execute task="writePoshiProperties" />
 
 		<move file="portal-web/test.case.method.names.properties" tofile="test.case.method.names.properties" />
 
@@ -9976,11 +10018,7 @@ go</echo>
 			</else>
 		</if>
 
-		<gradle-execute failonerror="false" task="writePoshiProperties">
-			<arg value="--build-file=portal-web/build-test.gradle" />
-			<arg value="-Plocal=${test.poshi.runner.local.release}" />
-			<arg value="-PposhiRunnerExtProperties=${test.ext.properties.file}" />
-		</gradle-execute>
+		<poshi-execute task="writePoshiProperties" />
 
 		<move file="portal-web/test.generated.properties" tofile="test.generated.properties" />
 
@@ -10273,53 +10311,11 @@ go</echo>
 			</else>
 		</if>
 
-		<gradle-execute failonerror="false" task="evaluatePoshiConsole">
-			<arg value="--build-file=portal-web/build-test.gradle" />
-			<arg value="-Plocal=${test.poshi.runner.local.release}" />
-			<arg value="-PposhiRunnerExtProperties=${test.ext.properties.file}" />
-		</gradle-execute>
+		<poshi-execute task="evaluatePoshiConsole" />
 	</target>
 
 	<target name="run-poshi-runner">
-		<local name="java.jdk.home" />
-
-		<if>
-			<and>
-				<equals arg1="${ant.java.version}" arg2="1.7" />
-				<isset property="java.jdk.7.x32.home" />
-			</and>
-			<then>
-				<property name="java.jdk.home" value="${java.jdk.7.x32.home}" />
-			</then>
-			<elseif>
-				<isset property="java.jdk.8.x32.home" />
-				<then>
-					<property name="java.jdk.home" value="${java.jdk.8.x32.home}" />
-				</then>
-			</elseif>
-		</if>
-
-		<if>
-			<and>
-				<isset property="env.JENKINS_HOME" />
-				<available file="${java.jdk.home}" />
-			</and>
-			<then>
-				<gradle-execute failonerror="false" task="runPoshi">
-					<arg value="--build-file=portal-web/build-test.gradle" />
-					<arg value="-Plocal=${test.poshi.runner.local.release}" />
-					<arg value="-PposhiRunnerExtProperties=${test.ext.properties.file}" />
-					<env key="JAVA_HOME" path="${java.jdk.home}" />
-				</gradle-execute>
-			</then>
-			<else>
-				<gradle-execute failonerror="false" task="runPoshi">
-					<arg value="--build-file=portal-web/build-test.gradle" />
-					<arg value="-Plocal=${test.poshi.runner.local.release}" />
-					<arg value="-PposhiRunnerExtProperties=${test.ext.properties.file}" />
-				</gradle-execute>
-			</else>
-		</if>
+		<poshi-execute task="runPoshi" />
 	</target>
 
 	<target name="run-poshi-validation">
@@ -10337,11 +10333,7 @@ go</echo>
 			</else>
 		</if>
 
-		<gradle-execute failonerror="false" task="validatePoshi">
-			<arg value="--build-file=portal-web/build-test.gradle" />
-			<arg value="-Plocal=${test.poshi.runner.local.release}" />
-			<arg value="-PposhiRunnerExtProperties=${test.ext.properties.file}" />
-		</gradle-execute>
+		<poshi-execute task="validatePoshi" />
 	</target>
 
 	<target name="run-selenium-test" depends="prepare-selenium">
