@@ -1,4 +1,5 @@
 <definition component-name="portal-smoke">
+	<property name="database.types" value="db2,hypersonic,mariadb,mysql,oracle,postgresql,sqlserver,sybase" />
 	<property name="portal.release" value="true" />
 	<property name="portal.smoke" value="true" />
 	<property name="portal.upstream" value="true" />
