@@ -5,7 +5,7 @@
 
 	<if>
 		<and>
-			<isset property="test.base.dir.name" />
+			<isset property="test.base.dir.name"/>
 			<available file="${test.base.dir.name}/test.properties" />
 		</and>
 		<then>
