@@ -3148,8 +3148,6 @@ information. Make sure to commit in all build services results.
 	<target name="source-format-current-branch-jdk8">
 		<run-batch-test>
 			<test-action>
-				<antcall target="compile" />
-
 				<ant dir="portal-impl" target="format-source-all">
 					<property name="format.current.branch" value="true" />
 					<property name="show.documentation" value="false" />
