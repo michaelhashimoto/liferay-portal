@@ -888,6 +888,29 @@ app.server.type=@{app.server.type}]]></echo>
 		<antcall target="functional-bundle-tomcat-mysql55-jdk7" />
 	</target>
 
+	<target name="source-format-jdk7">
+		<run-batch-test>
+			<test-action>
+				<database-test-run-test database.type="mysql">
+					<test-action>
+						<run-source-formatter />
+					</test-action>
+				</database-test-run-test>
+			</test-action>
+			<test-set-up>
+				<antcall target="compile" />
+
+				<ant antfile="build.xml" dir="portal-service" target="compile-test" />
+
+				<ant antfile="build.xml" dir="portal-impl" target="compile-test" />
+
+				<ant antfile="build.xml" dir="util-java" target="compile-test" />
+
+				<ant antfile="build.xml" dir="sql" target="build-db" />
+			</test-set-up>
+		</run-batch-test>
+	</target>
+
 	<target name="tck-jdk7">
 		<run-batch-test tomcat.gc.log="true" tsant.gc.log="true">
 			<test-action>
