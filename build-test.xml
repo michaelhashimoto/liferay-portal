@@ -6655,6 +6655,11 @@ osb.lcs.portlet.oauth.consumer.secret=${osb.lcs.portlet.oauth.consumer.secret}</
 	</root>
 </log4j:configuration>]]></echo>
 
+		<replace file="${app.server.tomcat.dir}/conf/logging.properties">
+			<replacetoken>, java.util.logging.ConsoleHandler</replacetoken>
+			<replacevalue></replacevalue>
+		</replace>
+
 		<echo file="${liferay.home}/osgi/log4j/com.liferay.portal.osgi.web.wab.generator-log4j-ext.xml"><![CDATA[<?xml version="1.0"?>
 <!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
 
