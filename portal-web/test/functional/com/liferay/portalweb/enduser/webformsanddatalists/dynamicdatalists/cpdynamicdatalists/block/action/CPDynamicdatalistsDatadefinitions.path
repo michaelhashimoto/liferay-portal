@@ -68,16 +68,6 @@
 <!--ADVANCED_SEARCH-->
 <tr>
 	<td>ADVANCED_SEARCH_MATCH_SELECT</td>
-	<td>//select[@id='_166_andOperator']</td>
-	<td></td>
-</tr>
-<tr>
-	<td>ADVANCED_SEARCH_MATCH_SELECT</td>
-	<td>//input[@id='_166_name']</td>
-	<td></td>
-</tr>
-<tr>
-	<td>ADVANCED_SEARCH_MATCH_SELECT</td>
 	<td>//input[@id='_166_description']</td>
 	<td></td>
 </tr>

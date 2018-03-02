@@ -138,11 +138,6 @@
 </tr>
 <tr>
 	<td>COMMENTS_REPLY</td>
-	<td>//div[@class='taglib-discussion']/form/fieldset/div/div/div/span/span/input</td>
-	<td>Reply</td>
-</tr>
-<tr>
-	<td>COMMENTS_REPLY</td>
 	<td>//div[@class='taglib-discussion']/form/fieldset/div/div/div/span[2]/span/input</td>
 	<td>Cancel</td>
 </tr>

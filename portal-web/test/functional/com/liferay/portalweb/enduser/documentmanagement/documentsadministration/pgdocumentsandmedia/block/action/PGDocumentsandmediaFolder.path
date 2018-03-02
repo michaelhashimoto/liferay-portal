@@ -147,11 +147,6 @@
 	<td>Online Training</td>
 </tr>
 <tr>
-	<td>ADD_MENULIST_CONTRACT</td>
-	<td>//a[@role='menuitem' and contains(.,'Sales Presentation')]</td>
-	<td>Sales Presentation</td>
-</tr>
-<tr>
 	<td></td>
 	<td></td>
 	<td></td>

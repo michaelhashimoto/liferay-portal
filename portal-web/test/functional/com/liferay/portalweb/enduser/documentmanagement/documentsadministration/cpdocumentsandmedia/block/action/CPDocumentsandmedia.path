@@ -263,11 +263,6 @@
 	<td></td>
 </tr>
 <tr>
-	<td>DOCUMENT_CONTAINER_DOCUMENT1_DROPDOWN</td>
-	<td>//div[@id='_20_documentContainer']/div[2]/span[2]/span/ul/li/strong/a</td>
-	<td></td>
-</tr>
-<tr>
 	<td>DOCUMENT_CONTAINER_DOCUMENT1_TITLE</td>
 	<td>//div[@id='_20_documentContainer']/div[2]/a/span[@class='entry-title']</td>
 	<td></td>

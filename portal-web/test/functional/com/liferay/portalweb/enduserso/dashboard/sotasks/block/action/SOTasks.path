@@ -70,11 +70,6 @@
 	<td></td>
 </tr>
 <tr>
-	<td>FILTER_PLACE_SELECT_MENU</td>
-	<td>//div[@class='filter-container group-filter']/select</td>
-	<td></td>
-</tr>
-<tr>
 	<td></td>
 	<td></td>
 	<td></td>

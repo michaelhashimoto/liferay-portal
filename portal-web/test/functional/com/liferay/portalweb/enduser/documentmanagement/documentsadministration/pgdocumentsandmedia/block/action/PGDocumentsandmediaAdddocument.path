@@ -100,11 +100,6 @@
 	<td>Delete Discussion</td>
 </tr>
 <tr>
-	<td>PERMISSIONS_GUEST_OVERRIDE_CHECKOUT_CHECKBOX</td>
-	<td>//table[@id='_20_inputPermissionsTable']/tbody/tr[2]/td[5]/input</td>
-	<td>Override Checkout</td>
-</tr>
-<tr>
 	<td>PERMISSIONS_GUEST_PERMISSIONS_CHECKBOX</td>
 	<td>//table[@id='_20_inputPermissionsTable']/tbody/tr[2]/td[6]/input</td>
 	<td>Permissions</td>
