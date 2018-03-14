@@ -62,7 +62,7 @@ public class PortalAcceptancePullRequestJob extends PortalRepositoryJob {
 		String[] propertyNames = {
 			JenkinsResultsParserUtil.combine(
 				"test.batch.run.property.query[", testBatchName, "][",
-				_testSuiteName, "]")
+				_testSuiteName, "]"),
 			JenkinsResultsParserUtil.combine(
 				"test.batch.run.property.query[", testBatchName, "]")
 		};
