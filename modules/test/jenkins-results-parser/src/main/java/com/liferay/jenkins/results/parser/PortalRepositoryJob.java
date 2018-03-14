@@ -46,6 +46,21 @@ public abstract class PortalRepositoryJob extends RepositoryJob {
 		return getListFromString(testBatchDistAppServers);
 	}
 
+	public String getPoshiQuery(String testBatchName) {
+		String[] propertyNames = {
+			"test.batch.run.property.query[" + testBatchName + "]",
+			"test.batch.release.run.property.query[" + testBatchName + "]"
+		};
+
+		for (String propertyName : propertyNames) {
+			if (portalTestProperies.containsKey(propertyName)) {
+				return portalTestProperies.getProperty(propertyName);
+			}
+		}
+
+		return null;
+	}
+
 	protected PortalRepositoryJob(String jobName) {
 		super(jobName);
 
