@@ -60,12 +60,11 @@ public class PortalAcceptancePullRequestJob extends PortalRepositoryJob {
 	@Override
 	public String getPoshiQuery(String testBatchName) {
 		String[] propertyNames = {
-			"test.batch.run.property.query[" + testBatchName + "][" +
-				_testSuiteName + "]",
-			"test.batch.release.run.property.query[" + testBatchName + "][" +
-				_testSuiteName + "]",
-			"test.batch.run.property.query[" + testBatchName + "]",
-			"test.batch.release.run.property.query[" + testBatchName + "]"
+			JenkinsResultsParserUtil.combine(
+				"test.batch.run.property.query[", testBatchName, "][",
+				_testSuiteName, "]")
+			JenkinsResultsParserUtil.combine(
+				"test.batch.run.property.query[", testBatchName, "]")
 		};
 
 		for (String propertyName : propertyNames) {
