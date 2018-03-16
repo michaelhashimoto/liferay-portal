@@ -3150,8 +3150,6 @@ information. Make sure to commit in all build services results.
 			<test-action>
 				<antcall target="compile" />
 
-				<ant dir="portal-impl" target="jar" />
-
 				<antcall target="install-portal-snapshots" />
 
 				<gradle-execute dir="modules/util/source-formatter" task="deploy" />
