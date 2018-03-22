@@ -2361,6 +2361,23 @@ ${tomcat-gc-log}
 			<beanshell>
 				<![CDATA[
 					import org.apache.tools.ant.DirectoryScanner;
+					import com.liferay.jenkins.results.parser.GitWorkingDirectory;
+					import com.liferay.jenkins.results.parser.TestBatchGroup;
+					import com.liferay.jenkins.results.parser.TestBatchGroupFactory;
+
+					GitWorkingDirectory gitWorkingDirectory = new GitWorkingDirectory("master", "/opt/dev/projects/github/liferay-portal-branch2", "liferay-portal");
+
+					TestBatchGroup tbg = TestBatchGroupFactory.newTestBatchGroup(gitWorkingDirectory ,"unit-jdk8");
+
+					System.out.println("TestClassSize: " + tbg.getTestClassListCount());
+
+					List myList0 = tbg.getTestClassList(0);
+
+					System.out.println("Number of Tests: " + myList0.size());
+
+					for (String s : myList0 ) {
+						System.out.println(s);
+					}
 
 					List getClassGroups(List classFileNames, int groupsSize) {
 						List classFileNameGroups = new ArrayList(groupsSize);
