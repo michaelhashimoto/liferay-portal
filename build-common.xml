@@ -56,6 +56,11 @@
 			dir="${project.dir}/lib/portal"
 			includes="*.jar"
 		/>
+
+		<fileset
+			dir="${project.dir}/tools/sdk/dist"
+			includes="*.jar"
+		/>
 	</path>
 
 	<path id="lib.pre.classpath">
