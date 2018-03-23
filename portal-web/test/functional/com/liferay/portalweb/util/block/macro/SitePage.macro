@@ -72,10 +72,17 @@
 	</command>
 
 	<command name="addCP">
-		<execute function="Type" locator1="CPSites#SEARCH_FIELD" value1="${siteName}" />
-		<execute function="AssertClick#assertValueClickAt" locator1="CPSites#SEARCH_BUTTON" value1="Search" />
-		<execute function="AssertClick" locator1="CPSites#SITE_TABLE_ACTIONS" value1="Actions" />
-		<execute function="AssertClick" locator1="CPSites#SITE_MENULIST_MANAGE_PAGES" value1="Manage Pages" />
+		<if>
+			<not>
+				<equals arg1="${siteScopeSelected}" arg2="true" />
+			</not>
+			<then>
+				<execute function="Type" locator1="CPSites#SEARCH_FIELD" value1="${siteName}" />
+				<execute function="AssertClick#assertValueClickAt" locator1="CPSites#SEARCH_BUTTON" value1="Search" />
+				<execute function="AssertClick" locator1="CPSites#SITE_TABLE_ACTIONS" value1="Actions" />
+				<execute function="AssertClick" locator1="CPSites#SITE_MENULIST_MANAGE_PAGES" value1="Manage Pages" />
+			</then>
+		</if>
 
 		<if>
 			<equals arg1="${sitePagePrivacy}" arg2="Private" />
