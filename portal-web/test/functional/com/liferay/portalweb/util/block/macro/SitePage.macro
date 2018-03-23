@@ -116,6 +116,10 @@
 			<var name="key_sitePageName" value="${sitePageName}" />
 		</execute>
 
+		<execute function="Click" locator1="CPSitepages#PAGE_TREE_PAGE_LINK_GENERIC">
+			<var name="key_sitePageName" value="${sitePageName}" />
+		</execute>
+
 		<execute macro="SitePage#_configurePageType">
 			<var name="componentName" value="${componentName}" />
 			<var name="description" value="${description}" />
