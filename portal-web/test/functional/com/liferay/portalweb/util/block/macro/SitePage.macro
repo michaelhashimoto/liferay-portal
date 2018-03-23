@@ -6,18 +6,18 @@
 		<execute function="AssertClick" locator1="CPSites#SITE_MENULIST_MANAGE_PAGES" value1="Manage Pages" />
 
 		<if>
-			<equals arg1="${sitePageType}" arg2="Private" />
+			<equals arg1="${sitePagePrivacy}" arg2="Private" />
 			<then>
 				<execute function="AssertClick#assertTextClickAt" locator1="CPSitepages#NAVIGATION_PRIVATE_PAGES" value1="Private Pages" />
 			</then>
 			<elseif>
-				<equals arg1="${sitePageType}" arg2="Public" />
+				<equals arg1="${sitePagePrivacy}" arg2="Public" />
 				<then>
 					<execute function="AssertClick#assertTextClickAt" locator1="CPSitepages#NAVIGATION_PUBLIC_PAGES" value1="Public Pages" />
 				</then>
 			</elseif>
 			<else>
-				<fail message="Invalid var sitePageType. Must be (Organization|User)." />
+				<fail message="Invalid var sitePagePrivacy. Must be (Organization|User)." />
 			</else>
 		</if>
 
@@ -43,18 +43,18 @@
 		<execute function="AssertClick" locator1="CPSites#SITE_MENULIST_MANAGE_PAGES" value1="Manage Pages" />
 
 		<if>
-			<equals arg1="${sitePageType}" arg2="Private" />
+			<equals arg1="${sitePagePrivacy}" arg2="Private" />
 			<then>
 				<execute function="AssertClick#assertTextClickAt" locator1="CPSitepages#NAVIGATION_PRIVATE_PAGES" value1="Private Pages" />
 			</then>
 			<elseif>
-				<equals arg1="${sitePageType}" arg2="Public" />
+				<equals arg1="${sitePagePrivacy}" arg2="Public" />
 				<then>
 					<execute function="AssertClick#assertTextClickAt" locator1="CPSitepages#NAVIGATION_PUBLIC_PAGES" value1="Public Pages" />
 				</then>
 			</elseif>
 			<else>
-				<fail message="Invalid var sitePageType. Must be (Private|Public)." />
+				<fail message="Invalid var sitePagePrivacy. Must be (Private|Public)." />
 			</else>
 		</if>
 
