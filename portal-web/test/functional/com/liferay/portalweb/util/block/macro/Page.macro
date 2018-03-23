@@ -71,7 +71,11 @@
 	</command>
 
 	<command name="gotoPG" summary="Navigate to the page named '${pageName}'">
-		<execute macro="Page#openURL" />
+		<execute macro="Page#openURL">
+			<var name="pageAccess" value="${pageAccess}" />
+			<var name="pageStaging" value="${pageStaging}" />
+			<var name="pageType" value="${pageType}" />
+		</execute>
 
 		<execute function="Click" locator1="Home#PAGE" value1="${pageName}">
 			<var name="key_pageName" value="${pageName}" />

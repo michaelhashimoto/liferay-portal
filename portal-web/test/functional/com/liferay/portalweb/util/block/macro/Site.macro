@@ -4,12 +4,16 @@
 
 	<command name="addBlankCP">
 		<execute macro="Site#addCP">
+			<var name="membershipType" value="${membershipType}" />
+			<var name="siteName" value="${siteName}" />
 			<var name="siteType" value="Blank" />
 		</execute>
 	</command>
 
 	<command name="addCommunityCP">
 		<execute macro="Site#addCP">
+			<var name="membershipType" value="${membershipType}" />
+			<var name="siteName" value="${siteName}" />
 			<var name="siteType" value="Community" />
 		</execute>
 	</command>
@@ -56,12 +60,16 @@
 
 		<execute function="AssertClick#assertValueClickAt" locator1="CPSitesAdd#MENU_SAVE" value1="Save" />
 
+		<execute function="AssertClick#assertValueClickAt" locator1="CPSitesAdd#MENU_SAVE" value1="Save" />
+
 		<execute function="AssertTextEquals" locator1="CPSitesEdit#SUCCESS_MESSAGE" value1="Your request completed successfully." />
 		<execute function="AssertTextEquals" locator1="CPSitesEdit#HEADER" value1="${siteName}" />
 	</command>
 
 	<command name="addIntranetCP">
 		<execute macro="Site#addCP">
+			<var name="membershipType" value="${membershipType}" />
+			<var name="siteName" value="${siteName}" />
 			<var name="siteType" value="Intranet" />
 		</execute>
 	</command>

@@ -1,7 +1,10 @@
 <definition>
 	<command name="addPG" summary="Add a '${portletName}' portlet">
 		<execute macro="Page#gotoPG">
+			<var name="pageAccess" value="${pageAccess}" />
 			<var name="pageName" value="${pageName}" />
+			<var name="pageStaging" value="${pageStaging}" />
+			<var name="pageType" value="${pageType}" />
 		</execute>
 
 		<if>
