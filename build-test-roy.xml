@@ -94,32 +94,32 @@
 				String testBatchName = "modules-unit-jdk8";
 				String testSuiteName = "default";
 
-				PortalRepositoryJob portalRepositoryJob = JobFactory.newPortalRepositoryJob("test-portal-acceptance-upstream(master)", "unit");
+				PortalRepositoryJob portalRepositoryJob = JobFactory.newPortalRepositoryJob("test-portal-acceptance-upstream(master)");
 
 				TestBatchGroup testBatchGroup = TestBatchGroupFactory.newTestBatchGroup(portalRepositoryJob, testBatchName);
 
-				int count = testBatchGroup.getTestClassListCount();
+				int size = testBatchGroup.getTestBatchGroupSize();
 
 				System.out.println("test.batch.name=" + testBatchName);
 				System.out.println("test.suite.name=" + testSuiteName);
 				System.out.println();
 
 				System.out.println("##");
-				System.out.println("## test.batch.group.size=" + count);
+				System.out.println("## test.batch.group.size=" + size);
 				System.out.println("##");
 				System.out.println();
 
-				for (int i = 0; i < count; i++) {
-					List testClassList = testBatchGroup.getTestClassList(i);
+				for (int i = 0; i < size; i++) {
+					List testClassGroup = testBatchGroup.getTestClassGroup(i);
 
-					System.out.println("GROUP_" + i + "=" + testClassList.size());
+					System.out.println("GROUP_" + i + "=" + testClassGroup.size());
 
 					/*System.out.println();
 					System.out.println("\t#");
 					System.out.println("\t# " + i);
 					System.out.println("\t#");
 					System.out.println();
-					System.out.println("\t\t" + testClassList.size());
+					System.out.println("\t\t" + testClassGroup.size());
 					System.out.println();*/
 				}
 			]]>
