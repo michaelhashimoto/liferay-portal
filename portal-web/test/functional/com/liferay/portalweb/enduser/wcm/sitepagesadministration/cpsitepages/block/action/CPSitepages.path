@@ -148,6 +148,11 @@
 	<td></td>
 </tr>
 <tr>
+	<td>PAGE_TREE_PAGE_LINK_GENERIC</td>
+	<td>//li[@class='aui-tree-node']//a[normalize-space()='${key_sitePageName}']</td>
+	<td></td>
+</tr>
+<tr>
 	<td>PAGE_TREE_PAGE_ARROW_1</td>
 	<td>xPath=(//div[@id='_156_layoutsTreeOutput']/ul/li/ul/li/div/div[@class='aui-tree-hitarea'])[1]</td>
 	<td></td>
