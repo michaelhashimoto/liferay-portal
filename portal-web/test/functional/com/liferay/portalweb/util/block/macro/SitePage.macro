@@ -60,6 +60,18 @@
 
 		<execute function="AssertClick" locator1="CPSitepages#TOOLBAR_ADD_PAGE" value1="Add Page" />
 		<execute function="Type" locator1="CPSitepages#ADD_PAGE_NAME_FIELD" value1="${sitePageName}" />
+
+		<var name="sitePageType" value="${sitePageType}" />
+
+		<if>
+			<contains string="${sitePageType}" substring="{sitePageType}" />
+			<then>
+				<var name="sitePageType" value="Portlet" />
+			</then>
+		</if>
+
+		<execute function="Select" locator1="CPSitepages#ADD_PAGE_TYPE_SELECT" value1="${sitePageType}" />
+
 		<execute function="AssertClick#assertValueClickAt" locator1="CPSitepages#ADD_PAGE_BUTTON" value1="Add Page" />
 		<execute function="AssertTextEquals" locator1="CPSitepages#SUCCESS_MESSAGE" value1="Your request completed successfully." />
 
