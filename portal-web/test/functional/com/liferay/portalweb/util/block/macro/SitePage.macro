@@ -17,7 +17,7 @@
 				</then>
 			</elseif>
 			<else>
-				<fail message="Invalid var sitePagePrivacy. Must be (Organization|User)." />
+				<fail message="Invalid var sitePagePrivacy. Must be (Private|Public)." />
 			</else>
 		</if>
 
