@@ -103,6 +103,17 @@
 		<execute function="AssertClick" locator1="CPSitepages#TOOLBAR_ADD_PAGE" value1="Add Page" />
 		<execute function="Type" locator1="CPSitepages#ADD_PAGE_NAME_FIELD" value1="${sitePageName}" />
 
+		<var name="sitePageTemplate" value="${sitePageTemplate}" />
+
+		<if>
+			<contains string="${sitePageTemplate" substring="{sitePageTemplate}" />
+			<then>
+				<var name="sitePageTemplate" value="" />
+			</then>
+		</if>
+
+		<execute function="Select" locator1="CPSitepages#ADD_PAGE_TEMPLATE_SELECT" value1="${sitePageTemplate}" />
+
 		<var name="sitePageType" value="${sitePageType}" />
 
 		<if>
