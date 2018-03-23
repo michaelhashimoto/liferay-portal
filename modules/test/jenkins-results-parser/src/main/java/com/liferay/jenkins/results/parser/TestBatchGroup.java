@@ -86,30 +86,37 @@ public class TestBatchGroup {
 		return _portalTestProperties;
 	}
 
-	public List<String> getTestClassGroup(int i) throws Exception {
-		return _testClassGroups.get(i);
-	}
-
 	public int getTestBatchGroupSize() {
 		return _testClassGroups.size();
 	}
 
-	private boolean _pathExcluded(Path path) {
-		return _pathMatches(path, _testClassNamesExcludesPathMatchers);
+	public List<String> getTestClassGroup(int i) throws Exception {
+		return _testClassGroups.get(i);
 	}
 
-	private boolean _pathIncluded(Path path) {
-		return _pathMatches(path, _testClassNamesIncludesPathMatchers);
-	}
+	private int _getMaxClassGroupSize() {
+		List<String> orderedPropertyNames = new ArrayList<>();
 
-	private boolean _pathMatches(Path path, List<PathMatcher> pathMatchers) {
-		for (PathMatcher pathMatcher : pathMatchers) {
-			if (pathMatcher.matches(path)) {
-				return true;
-			}
+		orderedPropertyNames.add(
+			JenkinsResultsParserUtil.combine(
+				"test.batch.max.class.group.size[", _batchName, "][",
+				_testSuiteName, "]"));
+		orderedPropertyNames.add(
+			JenkinsResultsParserUtil.combine(
+				"test.batch.max.class.group.size[", _batchName, "]"));
+		orderedPropertyNames.add(
+			JenkinsResultsParserUtil.combine(
+				"test.batch.max.class.group.size[", _testSuiteName, "]"));
+		orderedPropertyNames.add("test.batch.max.class.group.size");
+
+		String propertyValue = _getPropertyValueFromOrderedPropertyNames(
+			_portalTestProperties, orderedPropertyNames);
+
+		if (propertyValue != null) {
+			return Integer.parseInt(propertyValue);
 		}
 
-		return false;
+		return _DEFAULT_MAX_CLASS_GROUP_SIZE;
 	}
 
 	private String _getPropertyValueFromOrderedPropertyNames(
@@ -126,40 +133,6 @@ public class TestBatchGroup {
 		}
 
 		return null;
-	}
-
-	private int _getMaxClassGroupSize() {
-		List<String> orderedPropertyNames = new ArrayList<>();
-
-		orderedPropertyNames.add(JenkinsResultsParserUtil.combine("test.batch.max.class.group.size[", _batchName, "][", _testSuiteName, "]"));
-		orderedPropertyNames.add(JenkinsResultsParserUtil.combine("test.batch.max.class.group.size[", _batchName, "]"));
-		orderedPropertyNames.add(JenkinsResultsParserUtil.combine("test.batch.max.class.group.size[", _testSuiteName, "]"));
-		orderedPropertyNames.add("test.batch.max.class.group.size");
-
-		String propertyValue = _getPropertyValueFromOrderedPropertyNames(
-			_portalTestProperties, orderedPropertyNames);
-
-		if (propertyValue != null) {
-			return Integer.parseInt(propertyValue);
-		}
-
-		return _DEFAULT_MAX_CLASS_GROUP_SIZE;
-	}
-
-	private void _setCurrentBranch() {
-		List<String> orderedPropertyNames = new ArrayList<>();
-
-		orderedPropertyNames.add(JenkinsResultsParserUtil.combine("test.batch.current.branch[", _testSuiteName, "]"));
-		orderedPropertyNames.add("test.batch.current.branch");
-
-		String propertyValue = _getPropertyValueFromOrderedPropertyNames(
-			_portalTestProperties, orderedPropertyNames);
-
-		if (propertyValue != null) {
-			_testBatchCurrentBranch = Boolean.parseBoolean(propertyValue);
-		}
-
-		_testBatchCurrentBranch = false;
 	}
 
 	private Set<String> _getTestClassFileNames() throws Exception {
@@ -218,6 +191,42 @@ public class TestBatchGroup {
 			});
 
 		return testClassFileNames;
+	}
+
+	private boolean _pathExcluded(Path path) {
+		return _pathMatches(path, _testClassNamesExcludesPathMatchers);
+	}
+
+	private boolean _pathIncluded(Path path) {
+		return _pathMatches(path, _testClassNamesIncludesPathMatchers);
+	}
+
+	private boolean _pathMatches(Path path, List<PathMatcher> pathMatchers) {
+		for (PathMatcher pathMatcher : pathMatchers) {
+			if (pathMatcher.matches(path)) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	private void _setCurrentBranch() {
+		List<String> orderedPropertyNames = new ArrayList<>();
+
+		orderedPropertyNames.add(
+			JenkinsResultsParserUtil.combine(
+				"test.batch.current.branch[", _testSuiteName, "]"));
+		orderedPropertyNames.add("test.batch.current.branch");
+
+		String propertyValue = _getPropertyValueFromOrderedPropertyNames(
+			_portalTestProperties, orderedPropertyNames);
+
+		if (propertyValue != null) {
+			_testBatchCurrentBranch = Boolean.parseBoolean(propertyValue);
+		}
+
+		_testBatchCurrentBranch = false;
 	}
 
 	private void _setTestClassGroups() throws Exception {
@@ -292,9 +301,16 @@ public class TestBatchGroup {
 	private void _setTestClassNamesExcludes() throws IOException {
 		List<String> orderedPropertyNames = new ArrayList<>();
 
-		orderedPropertyNames.add(JenkinsResultsParserUtil.combine("test.batch.class.names.excludes[", _batchName, "][", _testSuiteName, "]"));
-		orderedPropertyNames.add(JenkinsResultsParserUtil.combine("test.batch.class.names.excludes[", _batchName, "]"));
-		orderedPropertyNames.add(JenkinsResultsParserUtil.combine("test.batch.class.names.excludes[", _testSuiteName, "]"));
+		orderedPropertyNames.add(
+			JenkinsResultsParserUtil.combine(
+				"test.batch.class.names.excludes[", _batchName, "][",
+				_testSuiteName, "]"));
+		orderedPropertyNames.add(
+			JenkinsResultsParserUtil.combine(
+				"test.batch.class.names.excludes[", _batchName, "]"));
+		orderedPropertyNames.add(
+			JenkinsResultsParserUtil.combine(
+				"test.batch.class.names.excludes[", _testSuiteName, "]"));
 		orderedPropertyNames.add("test.batch.class.names.excludes");
 		orderedPropertyNames.add("test.class.names.excludes");
 
@@ -302,7 +318,9 @@ public class TestBatchGroup {
 			_getPropertyValueFromOrderedPropertyNames(
 				_portalTestProperties, orderedPropertyNames);
 
-		if (testClassNamesExcludes != null && !testClassNamesExcludes.isEmpty()) {
+		if ((testClassNamesExcludes != null) &&
+			!testClassNamesExcludes.isEmpty()) {
+
 			List<String> testClassExcludeGlobs = Arrays.asList(
 				testClassNamesExcludes.split(","));
 
@@ -344,9 +362,16 @@ public class TestBatchGroup {
 	private void _setTestClassNamesIncludes() throws IOException {
 		List<String> orderedPropertyNames = new ArrayList<>();
 
-		orderedPropertyNames.add(JenkinsResultsParserUtil.combine("test.batch.class.names.includes[", _batchName, "][", _testSuiteName, "]"));
-		orderedPropertyNames.add(JenkinsResultsParserUtil.combine("test.batch.class.names.includes[", _batchName, "]"));
-		orderedPropertyNames.add(JenkinsResultsParserUtil.combine("test.batch.class.names.includes[", _testSuiteName, "]"));
+		orderedPropertyNames.add(
+			JenkinsResultsParserUtil.combine(
+				"test.batch.class.names.includes[", _batchName, "][",
+				_testSuiteName, "]"));
+		orderedPropertyNames.add(
+			JenkinsResultsParserUtil.combine(
+				"test.batch.class.names.includes[", _batchName, "]"));
+		orderedPropertyNames.add(
+			JenkinsResultsParserUtil.combine(
+				"test.batch.class.names.includes[", _testSuiteName, "]"));
 		orderedPropertyNames.add("test.batch.class.names.includes");
 		orderedPropertyNames.add("test.class.names.includes");
 
@@ -354,7 +379,9 @@ public class TestBatchGroup {
 			_getPropertyValueFromOrderedPropertyNames(
 				_portalTestProperties, orderedPropertyNames);
 
-		if (testClassNamesIncludes != null && !testClassNamesIncludes.isEmpty()) {
+		if ((testClassNamesIncludes != null) &&
+			!testClassNamesIncludes.isEmpty()) {
+
 			List<String> testClassIncludeGlobs = Arrays.asList(
 				testClassNamesIncludes.split(","));
 
