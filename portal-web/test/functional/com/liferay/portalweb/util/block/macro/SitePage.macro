@@ -1,4 +1,39 @@
 <definition>
+	<command name="_configurePageType">
+		<if>
+			<or>
+				<equals arg1="${sitePageType}" arg2="Embedded" />
+				<equals arg1="${sitePageType}" arg2="URL" />
+			</or>
+			<then>
+				<execute function="Type" locator1="CPSitepages#DETAILS_URL_FIELD" value1="${url}" />
+			</then>
+			<elseif>
+				<equals arg1="${sitePageType}" arg2="Link to Page" />
+				<then>
+					<execute function="Select" locator1="CPSitepages#DETAILS_LINK_TO_PAGE_SELECT_FIELD" value1="regexp:.*${linkToPage}" />
+				</then>
+			</elseif>
+			<elseif>
+				<equals arg1="${sitePageType}" arg2="Panel" />
+				<then>
+					<execute function="Click" locator1="CPSitepages#DETAILS_PANEL_APPLICATION_CHECKBOX">
+						<var name="key_componentName" value="${componentName}" />
+					</execute>
+				</then>
+			</elseif>
+		</if>
+
+		<if>
+			<not>
+				<contains string="${description}" substring="{description}" />
+			</not>
+			<then>
+				<execute function="Type" locator1="CPSitepages#DETAILS_DESCRIPTION_FIELD" value1="${description}" />
+			</then>
+		</if>
+	</command>
+
 	<command name="addChildCP">
 		<execute function="Type" locator1="CPSites#SEARCH_FIELD" value1="${siteName}" />
 		<execute function="AssertClick#assertValueClickAt" locator1="CPSites#SEARCH_BUTTON" value1="Search" />
@@ -78,6 +113,14 @@
 		<execute macro="SitePage#expandRootCP" />
 
 		<execute function="AssertTextEquals" locator1="CPSitepages#PAGE_TREE_PAGE_LINK_1" value1="${sitePageName}" />
+
+		<execute macro="SitePage#_configurePageType">
+			<var name="componentName" value="${componentName}" />
+			<var name="description" value="${description}" />
+			<var name="linkToPage" value="${linkToPage}" />
+			<var name="sitePageType" value="${sitePageType}" />
+			<var name="url" value="${url}" />
+		</execute>
 	</command>
 
 	<command name="expandRootCP">
