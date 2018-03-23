@@ -117,37 +117,45 @@ public class TestBatchGroup {
 	}
 
 	private int _getTestBatchClassesPerGroup() {
-		String testBatchClassesPerGroup = _portalTestProperties.getProperty(
-			_TEST_BATCH_CLASSES_PER_GROUP_PROPERTY_NAME + "[" + _batchName +
-				"]");
+		String[] propertyNames = {
+			JenkinsResultsParserUtil.combine(_TEST_BATCH_CLASSES_PER_GROUP_PROPERTY_NAME, "[", _batchName, "][", _testSuiteName, "]"),
+			JenkinsResultsParserUtil.combine(_TEST_BATCH_CLASSES_PER_GROUP_PROPERTY_NAME, "[", _batchName, "]"),
+			JenkinsResultsParserUtil.combine(_TEST_BATCH_CLASSES_PER_GROUP_PROPERTY_NAME, "[", _testSuiteName, "]"),
+			_TEST_BATCH_CLASSES_PER_GROUP_PROPERTY_NAME
+		};
 
-		if (testBatchClassesPerGroup == null) {
-			testBatchClassesPerGroup = _portalTestProperties.getProperty(
-				_TEST_BATCH_CLASSES_PER_GROUP_PROPERTY_NAME);
-		}
+		for (String propertyName : propertyNames) {
+			if (_portalTestProperties.containsKey(propertyName)) {
+				String propertyValue = _portalTestProperties.getProperty(
+					propertyName);
 
-		if (testBatchClassesPerGroup != null) {
-			return Integer.parseInt(testBatchClassesPerGroup);
+				if ((propertyValue != null) && !propertyValue.isEmpty()) {
+					return Integer.parseInt(propertyValue);
+				}
+			}
 		}
 
 		return _DEFAULT_TEST_BATCH_CLASSES_PER_GROUP;
 	}
 
 	private void _setTestBatchCurrentBranch() {
-		String testBatchClassesPerGroup = _portalTestProperties.getProperty(
-			_TEST_BATCH_CURRENT_BRANCH_PROPERTY_NAME + "[" + _testSuiteName +
-				"]");
+		String[] propertyNames = {
+			JenkinsResultsParserUtil.combine(_TEST_BATCH_CURRENT_BRANCH_PROPERTY_NAME, "[", _testSuiteName, "]"),
+			_TEST_BATCH_CURRENT_BRANCH_PROPERTY_NAME
+		};
 
-		if (testBatchClassesPerGroup == null) {
-			testBatchClassesPerGroup = _portalTestProperties.getProperty(
-				_TEST_BATCH_CURRENT_BRANCH_PROPERTY_NAME);
-		}
+		for (String propertyName : propertyNames) {
+			if (_portalTestProperties.containsKey(propertyName)) {
+				String propertyValue = _portalTestProperties.getProperty(
+					propertyName);
 
-		if (testBatchClassesPerGroup != null) {
-			_testBatchCurrentBranch = Boolean.parseBoolean(
-				testBatchClassesPerGroup);
+				if ((propertyValue != null) && !propertyValue.isEmpty()) {
+					_testBatchCurrentBranch = Boolean.parseBoolean(
+						propertyValue);
 
-			return;
+					return;
+				}
+			}
 		}
 
 		_testBatchCurrentBranch = false;
@@ -233,12 +241,24 @@ public class TestBatchGroup {
 	}
 
 	private void _setTestClassNamesExcludes() throws IOException {
-		String testClassNamesExcludes = _portalTestProperties.getProperty(
-			_TEST_CLASS_NAMES_EXCLUDES_PROPERTY_NAME + "[" + _batchName + "]");
+		String[] propertyNames = {
+			JenkinsResultsParserUtil.combine(_TEST_CLASS_NAMES_EXCLUDES_PROPERTY_NAME, "[", _batchName, "][", _testSuiteName, "]"),
+			JenkinsResultsParserUtil.combine(_TEST_CLASS_NAMES_EXCLUDES_PROPERTY_NAME, "[", _batchName, "]"),
+			JenkinsResultsParserUtil.combine(_TEST_CLASS_NAMES_EXCLUDES_PROPERTY_NAME, "[", _testSuiteName, "]"),
+			_TEST_CLASS_NAMES_EXCLUDES_PROPERTY_NAME
+		};
 
-		if (testClassNamesExcludes == null) {
-			testClassNamesExcludes = _portalTestProperties.getProperty(
-				_TEST_CLASS_NAMES_EXCLUDES_PROPERTY_NAME);
+		String testClassNamesExcludes = null;
+
+		for (String propertyName : propertyNames) {
+			if (_portalTestProperties.containsKey(propertyName)) {
+				String propertyValue = _portalTestProperties.getProperty(
+					propertyName);
+
+				if ((propertyValue != null) && !propertyValue.isEmpty()) {
+					testClassNamesExcludes = propertyValue;
+				}
+			}
 		}
 
 		if (testClassNamesExcludes != null) {
@@ -292,12 +312,24 @@ public class TestBatchGroup {
 	}
 
 	private void _setTestClassNamesIncludes() throws IOException {
-		String testClassNamesIncludes = _portalTestProperties.getProperty(
-			_TEST_CLASS_NAMES_INCLUDES_PROPERTY_NAME + "[" + _batchName + "]");
+		String[] propertyNames = {
+			JenkinsResultsParserUtil.combine(_TEST_CLASS_NAMES_INCLUDES_PROPERTY_NAME, "[", _batchName, "][", _testSuiteName, "]"),
+			JenkinsResultsParserUtil.combine(_TEST_CLASS_NAMES_INCLUDES_PROPERTY_NAME, "[", _batchName, "]"),
+			JenkinsResultsParserUtil.combine(_TEST_CLASS_NAMES_INCLUDES_PROPERTY_NAME, "[", _testSuiteName, "]"),
+			_TEST_CLASS_NAMES_INCLUDES_PROPERTY_NAME
+		};
 
-		if (testClassNamesIncludes == null) {
-			testClassNamesIncludes = _portalTestProperties.getProperty(
-				_TEST_CLASS_NAMES_INCLUDES_PROPERTY_NAME);
+		String testClassNamesIncludes = null;
+
+		for (String propertyName : propertyNames) {
+			if (_portalTestProperties.containsKey(propertyName)) {
+				String propertyValue = _portalTestProperties.getProperty(
+					propertyName);
+
+				if ((propertyValue != null) && !propertyValue.isEmpty()) {
+					testClassNamesIncludes = propertyValue;
+				}
+			}
 		}
 
 		if (testClassNamesIncludes != null) {
