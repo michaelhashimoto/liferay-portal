@@ -91,14 +91,21 @@
 				import java.util.Properties;
 				import org.apache.commons.lang.StringUtils;
 
-				PortalRepositoryJob portalRepositoryJob = JobFactory.newPortalRepositoryJob("test-portal-acceptance-upstream(master)");
+				String testBatchName = "modules-unit-jdk8";
+				String testSuiteName = "default";
 
-				TestBatchGroup testBatchGroup = TestBatchGroupFactory.newTestBatchGroup(portalRepositoryJob, "unit-jdk8");
+				PortalRepositoryJob portalRepositoryJob = JobFactory.newPortalRepositoryJob("test-portal-acceptance-upstream(master)", "unit");
+
+				TestBatchGroup testBatchGroup = TestBatchGroupFactory.newTestBatchGroup(portalRepositoryJob, testBatchName);
 
 				int count = testBatchGroup.getTestClassListCount();
 
+				System.out.println("test.batch.name=" + testBatchName);
+				System.out.println("test.suite.name=" + testSuiteName);
+				System.out.println();
+
 				System.out.println("##");
-				System.out.println("## " + count);
+				System.out.println("## test.batch.group.size=" + count);
 				System.out.println("##");
 				System.out.println();
 

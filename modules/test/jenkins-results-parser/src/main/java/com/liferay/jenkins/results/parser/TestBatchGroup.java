@@ -130,6 +130,8 @@ public class TestBatchGroup {
 					propertyName);
 
 				if ((propertyValue != null) && !propertyValue.isEmpty()) {
+					System.out.println(propertyName + "=" + propertyValue);
+
 					return Integer.parseInt(propertyValue);
 				}
 			}
@@ -152,6 +154,8 @@ public class TestBatchGroup {
 				if ((propertyValue != null) && !propertyValue.isEmpty()) {
 					_testBatchCurrentBranch = Boolean.parseBoolean(
 						propertyValue);
+
+					System.out.println(propertyName + "=" + propertyValue);
 
 					return;
 				}
@@ -242,9 +246,9 @@ public class TestBatchGroup {
 
 	private void _setTestClassNamesExcludes() throws IOException {
 		String[] propertyNames = {
-			JenkinsResultsParserUtil.combine(_TEST_CLASS_NAMES_EXCLUDES_PROPERTY_NAME, "[", _batchName, "][", _testSuiteName, "]"),
-			JenkinsResultsParserUtil.combine(_TEST_CLASS_NAMES_EXCLUDES_PROPERTY_NAME, "[", _batchName, "]"),
-			JenkinsResultsParserUtil.combine(_TEST_CLASS_NAMES_EXCLUDES_PROPERTY_NAME, "[", _testSuiteName, "]"),
+			JenkinsResultsParserUtil.combine("test.batch.class.names.excludes[", _batchName, "][", _testSuiteName, "]"),
+			JenkinsResultsParserUtil.combine("test.batch.class.names.excludes[", _batchName, "]"),
+			JenkinsResultsParserUtil.combine("test.batch.class.names.excludes[", _testSuiteName, "]"),
 			_TEST_CLASS_NAMES_EXCLUDES_PROPERTY_NAME
 		};
 
@@ -255,13 +259,15 @@ public class TestBatchGroup {
 				String propertyValue = _portalTestProperties.getProperty(
 					propertyName);
 
-				if ((propertyValue != null) && !propertyValue.isEmpty()) {
+				if (propertyValue != null) {
 					testClassNamesExcludes = propertyValue;
+
+					break;
 				}
 			}
 		}
 
-		if (testClassNamesExcludes != null) {
+		if (testClassNamesExcludes != null && !testClassNamesExcludes.isEmpty()) {
 			if (_testBatchCurrentBranch) {
 				PortalGitWorkingDirectory portalGitWorkingDirectory =
 					(PortalGitWorkingDirectory)_gitWorkingDirectory;
@@ -285,14 +291,21 @@ public class TestBatchGroup {
 					for (String testClassNames :
 							testClassNamesExcludes.split(",")) {
 
-						_testClassNamesIncludes.add(
+						_testClassNamesExcludes.add(
 							moduleGroupDirPath + "/" + testClassNames);
+
+						if (testClassNames.startsWith("**/")) {
+							_testClassNamesExcludes.add(
+								moduleGroupDirPath + "/" + testClassNames.substring(3));
+						}
 					}
 				}
+
+				System.out.println(_testClassNamesExcludes);
 			}
 			else {
 				Collections.addAll(
-					_testClassNamesIncludes, testClassNamesExcludes.split(","));
+					_testClassNamesExcludes, testClassNamesExcludes.split(","));
 			}
 		}
 	}
@@ -302,20 +315,26 @@ public class TestBatchGroup {
 
 		String workingDirectoryPath = workingDirectory.getAbsolutePath();
 
+		System.out.println("\nEXCLUDES\n");
+
 		for (String testClassNamesExclude : _testClassNamesExcludes) {
 			String filePattern =
 				workingDirectoryPath + "/" + testClassNamesExclude;
 
+			System.out.println("\tglob: " + filePattern);
+
 			_testClassNamesExcludesPathMatchers.add(
 				FileSystems.getDefault().getPathMatcher("glob:" + filePattern));
 		}
+
+		System.out.println();
 	}
 
 	private void _setTestClassNamesIncludes() throws IOException {
 		String[] propertyNames = {
-			JenkinsResultsParserUtil.combine(_TEST_CLASS_NAMES_INCLUDES_PROPERTY_NAME, "[", _batchName, "][", _testSuiteName, "]"),
-			JenkinsResultsParserUtil.combine(_TEST_CLASS_NAMES_INCLUDES_PROPERTY_NAME, "[", _batchName, "]"),
-			JenkinsResultsParserUtil.combine(_TEST_CLASS_NAMES_INCLUDES_PROPERTY_NAME, "[", _testSuiteName, "]"),
+			JenkinsResultsParserUtil.combine("test.batch.class.names.includes[", _batchName, "][", _testSuiteName, "]"),
+			JenkinsResultsParserUtil.combine("test.batch.class.names.includes[", _batchName, "]"),
+			JenkinsResultsParserUtil.combine("test.batch.class.names.includes[", _testSuiteName, "]"),
 			_TEST_CLASS_NAMES_INCLUDES_PROPERTY_NAME
 		};
 
@@ -328,6 +347,8 @@ public class TestBatchGroup {
 
 				if ((propertyValue != null) && !propertyValue.isEmpty()) {
 					testClassNamesIncludes = propertyValue;
+
+					break;
 				}
 			}
 		}
@@ -358,8 +379,15 @@ public class TestBatchGroup {
 
 						_testClassNamesIncludes.add(
 							moduleGroupDirPath + "/" + testClassNames);
+
+						if (testClassNames.startsWith("**/")) {
+							_testClassNamesIncludes.add(
+								moduleGroupDirPath + "/" + testClassNames.substring(3));
+						}
 					}
 				}
+
+				System.out.println(_testClassNamesIncludes);
 			}
 			else {
 				Collections.addAll(
@@ -373,13 +401,19 @@ public class TestBatchGroup {
 
 		String workingDirectoryPath = workingDirectory.getAbsolutePath();
 
+		System.out.println("\nINCLUDES\n");
+
 		for (String testClassNamesInclude : _testClassNamesIncludes) {
 			String filePattern =
 				workingDirectoryPath + "/" + testClassNamesInclude;
 
+			System.out.println("\tglob: " + filePattern);
+
 			_testClassNamesIncludesPathMatchers.add(
 				FileSystems.getDefault().getPathMatcher("glob:" + filePattern));
 		}
+
+		System.out.println();
 	}
 
 	private static final int _DEFAULT_TEST_BATCH_CLASSES_PER_GROUP = 5000;
