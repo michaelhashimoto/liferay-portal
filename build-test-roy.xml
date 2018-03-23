@@ -77,4 +77,45 @@
 			]]>
 		</beanshell>
 	</target>
+
+	<target name="three">
+		<beanshell>
+			<![CDATA[
+				import com.liferay.jenkins.results.parser.JenkinsResultsParserUtil;
+				import com.liferay.jenkins.results.parser.JobFactory;
+				import com.liferay.jenkins.results.parser.PortalRepositoryJob;
+				import com.liferay.jenkins.results.parser.TestBatchGroup;
+				import com.liferay.jenkins.results.parser.TestBatchGroupFactory;
+				import com.liferay.jenkins.results.parser.GitWorkingDirectory;
+				import com.liferay.jenkins.results.parser.PropertiesUtil;
+				import java.util.Properties;
+				import org.apache.commons.lang.StringUtils;
+
+				PortalRepositoryJob portalRepositoryJob = JobFactory.newPortalRepositoryJob("test-portal-acceptance-upstream(master)");
+
+				TestBatchGroup testBatchGroup = TestBatchGroupFactory.newTestBatchGroup(portalRepositoryJob, "unit-jdk8");
+
+				int count = testBatchGroup.getTestClassListCount();
+
+				System.out.println("##");
+				System.out.println("## " + count);
+				System.out.println("##");
+				System.out.println();
+
+				for (int i = 0; i < count; i++) {
+					List testClassList = testBatchGroup.getTestClassList(i);
+
+					System.out.println(i + "=" + testClassList.size());
+
+					/*System.out.println();
+					System.out.println("\t#");
+					System.out.println("\t# " + i);
+					System.out.println("\t#");
+					System.out.println();
+					System.out.println("\t\t" + testClassList.size());
+					System.out.println();*/
+				}
+			]]>
+		</beanshell>
+	</target>
 </project>
