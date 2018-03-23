@@ -125,6 +125,13 @@
 
 		<execute function="Select" locator1="CPSitepages#ADD_PAGE_TYPE_SELECT" value1="${sitePageType}" />
 
+		<if>
+			<equals arg1="${isHidden}" arg2="true" />
+			<then>
+				<execute function="Check" locator1="CPSitepages#ADD_PAGE_HIDDEN_CHECKBOX" />
+			</then>
+		</if>
+
 		<execute function="AssertClick#assertValueClickAt" locator1="CPSitepages#ADD_PAGE_BUTTON" value1="Add Page" />
 		<execute function="AssertTextEquals" locator1="CPSitepages#SUCCESS_MESSAGE" value1="Your request completed successfully." />
 
