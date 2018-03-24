@@ -711,6 +711,17 @@ information.
 		</sequential>
 	</macrodef>
 
+	<macrodef name="get-current-target-name">
+		<attribute name="property" default="current.target.name"/>
+
+		<sequential>
+			 <script language="javascript">
+			   targetName = self.getOwningTarget();
+			   self.getProject().setNewProperty("@{property}", targetName);
+		  	</script>
+		</sequential>
+	</macrodef>
+
 	<macrodef name="gradle-execute">
 		<attribute default="false" name="checktask" />
 		<attribute default="${basedir}" name="dir" />
