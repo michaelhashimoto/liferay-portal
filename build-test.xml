@@ -2369,16 +2369,6 @@ ${tomcat-gc-log}
 
 					TestBatchGroup tbg = TestBatchGroupFactory.newTestBatchGroup(gitWorkingDirectory ,"unit-jdk8");
 
-					System.out.println("TestClassSize: " + tbg.getTestClassListCount());
-
-					List myList0 = tbg.getTestClassList(0);
-
-					System.out.println("Number of Tests: " + myList0.size());
-
-					for (String s : myList0 ) {
-						System.out.println(s);
-					}
-
 					List getClassGroups(List classFileNames, int groupsSize) {
 						List classFileNameGroups = new ArrayList(groupsSize);
 
@@ -2446,18 +2436,24 @@ ${tomcat-gc-log}
 
 					StringBuilder sb = new StringBuilder();
 
-					int allTestClassGroupsSize = Integer.parseInt(project.getProperty("test.class.groups.size"));
+					//int allTestClassGroupsSize = Integer.parseInt(project.getProperty("test.class.groups.size"));
+
+					int allTestClassGroupsSize = tbg.getTestClassListCount();
 
 					String autoBalanceTestClassNamesString = project.getProperty("test.class.names.auto.balance");
 
 					String[] autoBalanceTestClassNames = autoBalanceTestClassNamesString.split(",");
 
-					List classFileNames = getClassFileNames();
+					//List classFileNames = getClassFileNames();
 
-					List testClassGroups = getClassGroups(classFileNames, allTestClassGroupsSize);
+					//List testClassGroups = getClassGroups(classFileNames, allTestClassGroupsSize);
 
 					for (i = 0; i < allTestClassGroupsSize; i++) {
-						List testClassGroup = testClassGroups.get(i);
+						//List testClassGroup = testClassGroups.get(i);
+
+						List testClassGroup = tbg.getTestClassList(i);
+
+						System.out.println("Group " + i + " size: " + testClassGroup.size());
 
 						sb.append("TEST_CLASS_GROUP_");
 						sb.append(i);

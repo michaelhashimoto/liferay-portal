@@ -3720,4 +3720,31 @@ ${output.content}</echo>
 			</test-set-up>
 		</run-batch-test>
 	</target>
+
+	<target name="first" >
+		<antcall inheritAll="false" target="myTarget" />
+	</target>
+
+	<target name="myTarget" >
+		<echo>Target: ${target}</echo>
+		<echo>Current targets: ${ant.project.invoked-targets}</echo>
+		<showtargetname
+			property="current.target.name"
+		/>
+
+		<echo>current.target.name: ${current.target.name}</echo>
+	</target>
+
+	<macrodef name="showtargetname">
+		<attribute name="property"/>
+		<attribute name="loglevel" default="3"/>
+		<sequential>
+			 <script language="javascript">
+			   t = self.getOwningTarget();
+			   self.getProject().setNewProperty("@{property}", t);
+			   self.log("TargetName => " + t, @{loglevel});
+		  	</script>
+		</sequential>
+	</macrodef>
+
 </project>

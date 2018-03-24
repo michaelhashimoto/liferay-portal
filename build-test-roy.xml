@@ -4,7 +4,7 @@
 	<import file="build-test.xml" />
 
 	<path id="jenkins.classpath">
-		<fileset dir="/opt/dev/projects/github/liferay-jenkins-ee/lib/jenkins" includes="*.jar" />
+		<fileset dir="${project.dir}/tools/sdk/dist" includes="*.jar"/>
 	</path>
 	<taskdef classpathref="jenkins.classpath" resource="ise/antelope/tasks/antlib.xml" uri="antlib:ise.antelope.tasks" />
 	<taskdef classpathref="jenkins.classpath" resource="net/sf/antcontrib/antlib.xml" />
@@ -67,7 +67,7 @@
 
 				GitWorkingDirectory gitWorkingDirectory = portalRepositoryJob.getGitWorkingDirectory();
 
-				Properties portalTestProperties = PropertiesUtil.getGitWorkingDirectoryProperties(gitWorkingDirectory, "test.properties");
+				Properties portalTestProperties = gitWorkingDirectory.getGitWorkingDirectoryProperties("test.properties");
 
 				for (String propertyName : portalTestProperties.stringPropertyNames()) {
 					if (propertyName.startsWith("test.batch.class.names.includes")) {
