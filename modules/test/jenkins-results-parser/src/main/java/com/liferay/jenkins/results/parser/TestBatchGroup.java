@@ -14,6 +14,8 @@
 
 package com.liferay.jenkins.results.parser;
 
+import com.google.common.collect.Lists;
+
 import java.io.File;
 import java.io.IOException;
 
@@ -92,6 +94,40 @@ public class TestBatchGroup {
 
 	public List<String> getTestClassGroup(int i) throws Exception {
 		return _testClassGroups.get(i);
+	}
+
+	private List<String> _getCurrentBranchTestClassGlobs(
+			List<String> testClassGlobs)
+		throws IOException {
+
+		List<String> currentBranchTestClassGlobs = new ArrayList<>();
+
+		File workingDirectory = _gitWorkingDirectory.getWorkingDirectory();
+
+		PortalGitWorkingDirectory portalGitWorkingDirectory =
+			(PortalGitWorkingDirectory)_gitWorkingDirectory;
+
+		List<File> moduleGroupDirs =
+			portalGitWorkingDirectory.getCurrentBranchModuleGroupDirs();
+
+		for (File moduleGroupDir : moduleGroupDirs) {
+			String moduleGroupDirPath = moduleGroupDir.getCanonicalPath();
+
+			moduleGroupDirPath = moduleGroupDirPath.replace(
+				workingDirectory.getCanonicalPath() + "/", "");
+
+			for (String testClassGlob : testClassGlobs) {
+				currentBranchTestClassGlobs.add(
+					moduleGroupDirPath + "/" + testClassGlob);
+
+				if (testClassGlob.startsWith("**/")) {
+					currentBranchTestClassGlobs.add(
+						moduleGroupDirPath + "/" + testClassGlob.substring(3));
+				}
+			}
+		}
+
+		return currentBranchTestClassGlobs;
 	}
 
 	private int _getMaxClassGroupSize() {
@@ -193,6 +229,26 @@ public class TestBatchGroup {
 		return testClassFileNames;
 	}
 
+	private List<PathMatcher> _getTestClassNamesPathMatchers(
+		List<String> testClassGlobs) {
+
+		List<PathMatcher> pathMatchers = new ArrayList<>();
+
+		File workingDirectory = _gitWorkingDirectory.getWorkingDirectory();
+
+		String workingDirectoryPath = workingDirectory.getAbsolutePath();
+
+		for (String testClassGlob : testClassGlobs) {
+			FileSystem fileSystem = FileSystems.getDefault();
+
+			pathMatchers.add(
+				fileSystem.getPathMatcher(
+					"glob:" + workingDirectoryPath + "/" + testClassGlob));
+		}
+
+		return pathMatchers;
+	}
+
 	private boolean _pathExcluded(Path path) {
 		return _pathMatches(path, _testClassNamesExcludesPathMatchers);
 	}
@@ -240,62 +296,12 @@ public class TestBatchGroup {
 
 		int testBatchGroupSize = testClassFileNamesCount / maxClassGroupSize;
 
-		/* Add guava and clean this up */
-
 		if ((testClassFileNamesCount % maxClassGroupSize) != 0) {
 			testBatchGroupSize++;
 		}
 
-		int balancedTestBatchClassesPerGroup =
-			testClassFileNamesCount / testBatchGroupSize;
-
-		if ((testClassFileNamesCount % testBatchGroupSize) != 0) {
-			balancedTestBatchClassesPerGroup++;
-		}
-
-		for (int i = 0; i < testBatchGroupSize; i++) {
-			_testClassGroups.add(
-				testClassFileNames.subList(
-					i * balancedTestBatchClassesPerGroup,
-					Math.min(
-						testClassFileNamesCount,
-						i * balancedTestBatchClassesPerGroup +
-							balancedTestBatchClassesPerGroup)));
-		}
-	}
-
-	private List<String> _getCurrentBranchTestClassGlobs(
-			List<String> testClassGlobs)
-		throws IOException {
-
-		List<String> currentBranchTestClassGlobs = new ArrayList<>();
-
-		File workingDirectory = _gitWorkingDirectory.getWorkingDirectory();
-
-		PortalGitWorkingDirectory portalGitWorkingDirectory =
-			(PortalGitWorkingDirectory)_gitWorkingDirectory;
-
-		List<File> moduleGroupDirs =
-			portalGitWorkingDirectory.getCurrentBranchModuleGroupDirs();
-
-		for (File moduleGroupDir : moduleGroupDirs) {
-			String moduleGroupDirPath = moduleGroupDir.getCanonicalPath();
-
-			moduleGroupDirPath = moduleGroupDirPath.replace(
-				workingDirectory.getCanonicalPath() + "/", "");
-
-			for (String testClassGlob : testClassGlobs) {
-				currentBranchTestClassGlobs.add(
-					moduleGroupDirPath + "/" + testClassGlob);
-
-				if (testClassGlob.startsWith("**/")) {
-					currentBranchTestClassGlobs.add(
-						moduleGroupDirPath + "/" + testClassGlob.substring(3));
-				}
-			}
-		}
-
-		return currentBranchTestClassGlobs;
+		_testClassGroups.addAll(
+			Lists.partition(testClassFileNames, testBatchGroupSize));
 	}
 
 	private void _setTestClassNamesExcludes() throws IOException {
@@ -332,26 +338,6 @@ public class TestBatchGroup {
 				_testClassNamesExcludes.addAll(testClassExcludeGlobs);
 			}
 		}
-	}
-
-	private List<PathMatcher> _getTestClassNamesPathMatchers(
-		List<String> testClassGlobs) {
-
-		List<PathMatcher> pathMatchers = new ArrayList<>();
-
-		File workingDirectory = _gitWorkingDirectory.getWorkingDirectory();
-
-		String workingDirectoryPath = workingDirectory.getAbsolutePath();
-
-		for (String testClassGlob : testClassGlobs) {
-			FileSystem fileSystem = FileSystems.getDefault();
-
-			pathMatchers.add(
-				fileSystem.getPathMatcher(
-					"glob:" + workingDirectoryPath + "/" + testClassGlob));
-		}
-
-		return pathMatchers;
 	}
 
 	private void _setTestClassNamesExcludesPathMatchers() {
@@ -404,7 +390,10 @@ public class TestBatchGroup {
 
 	private final String _batchName;
 	private final GitWorkingDirectory _gitWorkingDirectory;
+	private final Pattern _packagePathPattern = Pattern.compile(
+		".*/(?<packagePath>com/.*)");
 	private final Properties _portalTestProperties;
+	private boolean _testBatchCurrentBranch;
 	private final List<List<String>> _testClassGroups = new ArrayList<>();
 	private final List<String> _testClassNamesExcludes = new ArrayList<>();
 	private final List<PathMatcher> _testClassNamesExcludesPathMatchers =
@@ -412,9 +401,6 @@ public class TestBatchGroup {
 	private final List<String> _testClassNamesIncludes = new ArrayList<>();
 	private final List<PathMatcher> _testClassNamesIncludesPathMatchers =
 		new ArrayList<>();
-	private boolean _testBatchCurrentBranch;
-	private final Pattern _packagePathPattern = Pattern.compile(
-		".*/(?<packagePath>com/.*)");
 	private final String _testSuiteName;
 
 }
