@@ -22,6 +22,20 @@
 					</execute>
 				</then>
 			</elseif>
+			<elseif>
+				<equals arg1="${isCopy}" arg2="true" />
+				<then>
+					<execute function="Click" locator1="CPSitepages#NAVIGATION_SIDEBAR_NAVIGATION_ENTRY">
+						<var name="key_sidebarNav" value="Advanced" />
+					</execute>
+
+					<execute function="Click" locator1="CPSitepages#ADVANCED_COPY_PORTLETS_FROM_PAGE_BUTTON" />
+
+					<execute function="Select" locator1="CPSitepages#ADVANCED_COPY_PORTLETS_FROM_PAGE_SELECT" value1="regexp:.*${copyPageName}" />
+
+					<execute function="AssertClick" locator1="CPSitepages#ADVANCED_COPY_SUBMIT_BUTTON" value1="Copy" />
+				</then>
+			</elseif>
 		</if>
 
 		<if>
@@ -147,11 +161,17 @@
 
 		<execute macro="SitePage#_configurePageType">
 			<var name="componentName" value="${componentName}" />
+			<var name="copyPageName" value="${copyPageName}" />
 			<var name="description" value="${description}" />
+			<var name="isCopy" value="${isCopy}" />
 			<var name="linkToPage" value="${linkToPage}" />
 			<var name="sitePageType" value="${sitePageType}" />
 			<var name="url" value="${url}" />
 		</execute>
+
+		<execute function="AssertClick" locator1="CPSitepages#SAVE_BUTTON" value1="Save" />
+
+		<execute function="AssertTextEquals" locator1="CPSitepages#SUCCESS_MESSAGE" value1="Your request completed successfully." />
 	</command>
 
 	<command name="expandRootCP">

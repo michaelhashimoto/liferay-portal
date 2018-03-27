@@ -50,6 +50,11 @@
 	<td></td>
 </tr>
 <tr>
+	<td>NAVIGATION_SIDEBAR_NAVIGATION_ENTRY</td>
+	<td>//div[@class='lfr-component form-navigator']//a[normalize-space(text())='${key_sidebarNav}']</td>
+	<td></td>
+</tr>
+<tr>
 	<td></td>
 	<td></td>
 	<td></td>
@@ -315,6 +320,21 @@
 <!--JAVASCRIPT-->
 <!--CUSTOM_FIELDS-->
 <!--ADVANCED-->
+<tr>
+	<td>ADVANCED_COPY_PORTLETS_FROM_PAGE_BUTTON</td>
+	<td>//button[normalize-space()='Copy Portlets from Page']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ADVANCED_COPY_PORTLETS_FROM_PAGE_SELECT</td>
+	<td>//select[@id='_156_copyLayoutId']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ADVANCED_COPY_SUBMIT_BUTTON</td>
+	<td>//input[@id='_156_copySubmitButton']</td>
+	<td></td>
+</tr>
 <!--MOBILE_RULE_GROUPS-->
 </tbody>
 </table>
