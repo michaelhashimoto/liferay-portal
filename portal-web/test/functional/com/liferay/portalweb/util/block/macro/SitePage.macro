@@ -1,5 +1,16 @@
 <definition>
 	<command name="_configurePageType">
+		<var name="sitePageType" value="${sitePageType}" />
+
+		<if>
+			<contains string="${sitePageType}" substring="{sitePageType}" />
+			<then>
+				<var name="sitePageType" value="Portlet" />
+			</then>
+		</if>
+
+		<execute function="Select" locator1="CPSitepages#DETAILS_TYPE_SELECT" value1="${sitePageType}" />
+
 		<if>
 			<or>
 				<equals arg1="${sitePageType}" arg2="Embedded" />
