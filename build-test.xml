@@ -2360,96 +2360,40 @@ ${tomcat-gc-log}
 		<sequential>
 			<beanshell>
 				<![CDATA[
-					import org.apache.tools.ant.DirectoryScanner;
+					import com.liferay.jenkins.results.parser.GitWorkingDirectory;
+					import com.liferay.jenkins.results.parser.Batch;
+					import com.liferay.jenkins.results.parser.BatchFactory;
 
-					List getClassGroups(List classFileNames, int groupsSize) {
-						List classFileNameGroups = new ArrayList(groupsSize);
+					String gitWorkingBranchName = project.getProperty("git.working.branch.name");
 
-						for (int i = 0; i < groupsSize; i++) {
-							classFileNameGroups.add(new ArrayList());
-						}
+					String projectDir = project.getProperty("project.dir");
 
-						int i = 0;
+					GitWorkingDirectory gitWorkingDirectory = new GitWorkingDirectory(gitWorkingBranchName, projectDir, "liferay-portal");
 
-						for (String classFileName : classFileNames) {
-							List classFileNameGroup = classFileNameGroups.get(i++ % groupsSize);
+					String testBatchName = project.getProperty("test.batch.name");
 
-							classFileNameGroup.add(classFileName);
-						}
+					Batch batch = BatchFactory.newBatch(testBatchName, gitWorkingDirectory);
 
-						return classFileNameGroups;
-					}
-
-					List getClassFileNames() {
-						DirectoryScanner directoryScanner = new DirectoryScanner();
-
-						String testClassModulesBaseDir = project.getProperty("test.class.modules.base.dir");
-						String testClassNamesExcludes = project.getProperty("test.class.names.excludes");
-						String testClassNamesIncludes = project.getProperty("test.class.names.includes");
-
-						if (testClassModulesBaseDir != null) {
-							int x = testClassModulesBaseDir.indexOf("modules");
-
-							if (x != -1) {
-								testClassModulesBaseDir = testClassModulesBaseDir.substring(x);
-
-								StringBuilder sb = new StringBuilder();
-
-								for (String testClassNamesInclude : testClassNamesIncludes.split(",")) {
-									sb.append(testClassModulesBaseDir);
-									sb.append(File.separator);
-									sb.append(testClassNamesInclude);
-									sb.append(",");
-								}
-
-								testClassNamesIncludes = sb.toString();
-							}
-						}
-
-						directoryScanner.setBasedir(project.getBaseDir());
-						directoryScanner.setExcludes(testClassNamesExcludes.split(","));
-						directoryScanner.setIncludes(testClassNamesIncludes.split(","));
-
-						directoryScanner.scan();
-
-						List classFileNames = new ArrayList();
-
-						for (String fileName : directoryScanner.getIncludedFiles()) {
-							String classFileName = fileName.substring(fileName.indexOf("com" + File.separator), fileName.length() - 4);
-
-							classFileName = classFileName.concat("class");
-
-							classFileNames.add(classFileName);
-						}
-
-						Collections.sort(classFileNames);
-
-						return classFileNames;
-					}
-
-					StringBuilder sb = new StringBuilder();
-
-					int allTestClassGroupsSize = Integer.parseInt(project.getProperty("test.class.groups.size"));
+					int testBatchSize = batch.getBatchAxisCount();
 
 					String autoBalanceTestClassNamesString = project.getProperty("test.class.names.auto.balance");
 
 					String[] autoBalanceTestClassNames = autoBalanceTestClassNamesString.split(",");
 
-					List classFileNames = getClassFileNames();
+					StringBuilder sb = new StringBuilder();
 
-					List testClassGroups = getClassGroups(classFileNames, allTestClassGroupsSize);
-
-					for (i = 0; i < allTestClassGroupsSize; i++) {
-						List testClassGroup = testClassGroups.get(i);
+					for (i = 0; i < testBatchSize; i++) {
+						List testClassGroup = batch.getBatchAxis(i).getTestClassFiles();
 
 						sb.append("TEST_CLASS_GROUP_");
 						sb.append(i);
 						sb.append("=");
 
-						for (String testClass : testClassGroup) {
-							sb.append(testClass);
+						for (File testClass : testClassGroup) {
+							sb.append(testClass.getName());
 							sb.append(",");
 						}
+
 
 						for (String testClass : autoBalanceTestClassNames) {
 							if (!testClassGroup.contains(testClass)) {
@@ -2457,6 +2401,7 @@ ${tomcat-gc-log}
 								sb.append(",");
 							}
 						}
+
 
 						if (!testClassGroup.isEmpty() || autoBalanceTestClassNames.length > 0) {
 							sb.setLength(sb.length() - 1);
@@ -2467,12 +2412,12 @@ ${tomcat-gc-log}
 
 					sb.append("TEST_CLASS_GROUPS=");
 
-					for (int i = 0; i < allTestClassGroupsSize; i++) {
+					for (int i = 0; i < testBatchSize; i++) {
 						sb.append(i);
 						sb.append(" ");
 					}
 
-					if (allTestClassGroupsSize > 0) {
+					if (testBatchSize > 0) {
 						sb.setLength(sb.length() - 1);
 					}
 
