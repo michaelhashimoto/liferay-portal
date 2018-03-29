@@ -19,6 +19,11 @@ package com.liferay.jenkins.results.parser;
  */
 public class DefaultBatchTestClassGroup extends BatchTestClassGroup {
 
+	@Override
+	public int getAxisCount() {
+		return 1;
+	}
+
 	protected DefaultBatchTestClassGroup(
 		String batchName, GitWorkingDirectory gitWorkingDirectory,
 		String testSuiteName) {
