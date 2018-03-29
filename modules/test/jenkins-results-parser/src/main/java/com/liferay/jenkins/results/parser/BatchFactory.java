@@ -22,7 +22,14 @@ public class BatchFactory {
 	public static Batch newBatch(
 		String batchName, GitWorkingDirectory gitWorkingDirectory) {
 
-		return new Batch(batchName, gitWorkingDirectory);
+		return new Batch(batchName, gitWorkingDirectory, null);
+	}
+
+	public static Batch newBatch(
+		String batchName, GitWorkingDirectory gitWorkingDirectory,
+		String testSuiteName) {
+
+		return new Batch(batchName, gitWorkingDirectory, testSuiteName);
 	}
 
 	public static Batch newBatch(
