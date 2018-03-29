@@ -2358,6 +2358,8 @@ ${tomcat-gc-log}
 
 	<macrodef name="record-test-class-file-names">
 		<sequential>
+			<fail message="Please set the property ${test.batch.name}." unless="test.batch.name" />
+
 			<beanshell>
 				<![CDATA[
 					import com.liferay.jenkins.results.parser.GitWorkingDirectory;
@@ -2390,7 +2392,7 @@ ${tomcat-gc-log}
 						sb.append("=");
 
 						for (File testClass : testClassGroup) {
-							sb.append(testClass.getName());
+							sb.append(testClass.getPath());
 							sb.append(",");
 						}
 
