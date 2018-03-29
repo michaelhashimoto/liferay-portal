@@ -2362,18 +2362,18 @@ ${tomcat-gc-log}
 
 			<beanshell>
 				<![CDATA[
-					import com.liferay.jenkins.results.parser.Batch;
-					import com.liferay.jenkins.results.parser.Batch.BatchAxis;
-					import com.liferay.jenkins.results.parser.BatchFactory;
+					import com.liferay.jenkins.results.parser.AxisTestClassGroup;
+					import com.liferay.jenkins.results.parser.BatchTestClassGroup;
 					import com.liferay.jenkins.results.parser.PortalGitWorkingDirectory;
+					import com.liferay.jenkins.results.parser.TestClassGroupFactory;
 
 					PortalGitWorkingDirectory portalGitWorkingDirectory = new PortalGitWorkingDirectory(project.getProperty("git.working.branch.name"), project.getProperty("project.dir"));
 
 					String testBatchName = project.getProperty("test.batch.name");
 
-					Batch batch = BatchFactory.newBatch(testBatchName, portalGitWorkingDirectory, project.getProperty("env.CI_TEST_SUITE"));
+					BatchTestClassGroup batchTestClassGroup = TestClassGroupFactory.newBatchTestClassGroup(testBatchName, portalGitWorkingDirectory, project.getProperty("env.CI_TEST_SUITE"));
 
-					int batchAxisCount = batch.getBatchAxisCount();
+					int axisCount = batchTestClassGroup.getAxisCount();
 
 					String autoBalanceTestClassNamesString = project.getProperty("test.class.names.auto.balance");
 
@@ -2381,10 +2381,10 @@ ${tomcat-gc-log}
 
 					StringBuilder sb = new StringBuilder();
 
-					for (i = 0; i < batchAxisCount; i++) {
-						BatchAxis batchAxis = batch.getBatchAxis(i);
+					for (i = 0; i < axisCount; i++) {
+						AxisTestClassGroup axisTestClassGroup = batchTestClassGroup.getAxisTestClassGroup(i);
 
-						List testClassGroup = batchAxis.getTestClassFiles();
+						List testClassGroup = axisTestClassGroup.getTestClassFiles();
 
 						sb.append("TEST_CLASS_GROUP_");
 						sb.append(i);
@@ -2411,12 +2411,12 @@ ${tomcat-gc-log}
 
 					sb.append("TEST_CLASS_GROUPS=");
 
-					for (int i = 0; i < batchAxisCount; i++) {
+					for (int i = 0; i < axisCount; i++) {
 						sb.append(i);
 						sb.append(" ");
 					}
 
-					if (batchAxisCount > 0) {
+					if (axisCount > 0) {
 						sb.setLength(sb.length() - 1);
 					}
 
