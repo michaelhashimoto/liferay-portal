@@ -1404,7 +1404,6 @@ public class JournalArticleLocalServiceImpl
 			throw new NoSuchArticleException(
 				"No approved JournalArticle exists with the key {groupId=" +
 					groupId + ", " + "articleId=" + articleId + "}");
-
 		}
 
 		Date now = new Date();
@@ -2785,7 +2784,7 @@ public class JournalArticleLocalServiceImpl
 
 		Element elParent = el.getParent();
 
-		for (;;) {
+		while (true) {
 			if ((elParent == null) || elParent.getName().equals("root")) {
 				break;
 			}

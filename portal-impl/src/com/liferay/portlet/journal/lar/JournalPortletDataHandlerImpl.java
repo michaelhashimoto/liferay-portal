@@ -1618,7 +1618,6 @@ public class JournalPortletDataHandlerImpl extends BasePortletDataHandler {
 				if (fileEntry.isDefaultRepository()) {
 					path = DLPortletDataHandlerImpl.getFileEntryPath(
 						portletDataContext, fileEntry);
-
 				}
 				else {
 					path = DLPortletDataHandlerImpl.getRepositoryEntryPath(

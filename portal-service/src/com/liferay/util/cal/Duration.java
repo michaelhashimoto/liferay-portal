@@ -60,7 +60,6 @@ public class Duration implements Cloneable, Serializable {
 	public Duration() {
 
 		/* Zero-initialization of all fields happens by default */
-
 	}
 
 	/**
