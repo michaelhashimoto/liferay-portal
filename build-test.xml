@@ -2362,21 +2362,18 @@ ${tomcat-gc-log}
 
 			<beanshell>
 				<![CDATA[
-					import com.liferay.jenkins.results.parser.GitWorkingDirectory;
 					import com.liferay.jenkins.results.parser.Batch;
+					import com.liferay.jenkins.results.parser.Batch.BatchAxis;
 					import com.liferay.jenkins.results.parser.BatchFactory;
+					import com.liferay.jenkins.results.parser.PortalGitWorkingDirectory;
 
-					String gitWorkingBranchName = project.getProperty("git.working.branch.name");
-
-					String projectDir = project.getProperty("project.dir");
-
-					GitWorkingDirectory gitWorkingDirectory = new GitWorkingDirectory(gitWorkingBranchName, projectDir, "liferay-portal");
+					PortalGitWorkingDirectory portalGitWorkingDirectory = new PortalGitWorkingDirectory(project.getProperty("git.working.branch.name"), project.getProperty("project.dir"));
 
 					String testBatchName = project.getProperty("test.batch.name");
 
-					Batch batch = BatchFactory.newBatch(testBatchName, gitWorkingDirectory);
+					Batch batch = BatchFactory.newBatch(testBatchName, portalGitWorkingDirectory, project.getProperty("env.CI_TEST_SUITE"));
 
-					int testBatchSize = batch.getBatchAxisCount();
+					int batchAxisCount = batch.getBatchAxisCount();
 
 					String autoBalanceTestClassNamesString = project.getProperty("test.class.names.auto.balance");
 
@@ -2384,8 +2381,10 @@ ${tomcat-gc-log}
 
 					StringBuilder sb = new StringBuilder();
 
-					for (i = 0; i < testBatchSize; i++) {
-						List testClassGroup = batch.getBatchAxis(i).getTestClassFiles();
+					for (i = 0; i < batchAxisCount; i++) {
+						BatchAxis batchAxis = batch.getBatchAxis(i);
+
+						List testClassGroup = batchAxis.getTestClassFiles();
 
 						sb.append("TEST_CLASS_GROUP_");
 						sb.append(i);
@@ -2396,7 +2395,6 @@ ${tomcat-gc-log}
 							sb.append(",");
 						}
 
-
 						for (String testClass : autoBalanceTestClassNames) {
 							if (!testClassGroup.contains(testClass)) {
 								sb.append(testClass);
@@ -2404,8 +2402,7 @@ ${tomcat-gc-log}
 							}
 						}
 
-
-						if (!testClassGroup.isEmpty() || autoBalanceTestClassNames.length > 0) {
+						if (!testClassGroup.isEmpty() || (autoBalanceTestClassNames.length > 0)) {
 							sb.setLength(sb.length() - 1);
 						}
 
@@ -2414,12 +2411,12 @@ ${tomcat-gc-log}
 
 					sb.append("TEST_CLASS_GROUPS=");
 
-					for (int i = 0; i < testBatchSize; i++) {
+					for (int i = 0; i < batchAxisCount; i++) {
 						sb.append(i);
 						sb.append(" ");
 					}
 
-					if (testBatchSize > 0) {
+					if (batchAxisCount > 0) {
 						sb.setLength(sb.length() - 1);
 					}
 
