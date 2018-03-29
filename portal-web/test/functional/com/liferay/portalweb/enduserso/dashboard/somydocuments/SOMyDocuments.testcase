@@ -646,7 +646,7 @@
 			<var name="userName" value="Joe Bloggs" />
 		</execute>
 
-		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_MY_DOCUMENTS" value1="My Documents" />>
+		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_MY_DOCUMENTS" value1="My Documents" />
 
 		<execute macro="DMFolder#addPG" />
 
