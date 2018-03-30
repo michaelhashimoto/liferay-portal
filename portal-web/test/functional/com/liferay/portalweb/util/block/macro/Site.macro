@@ -60,6 +60,8 @@
 
 		<execute function="AssertClick#assertValueClickAt" locator1="CPSitesAdd#MENU_SAVE" value1="Save" />
 
+		<execute function="AssertClick#assertValueClickAt" locator1="CPSitesAdd#MENU_SAVE" value1="Save" />
+
 		<execute function="AssertTextEquals" locator1="CPSitesEdit#SUCCESS_MESSAGE" value1="Your request completed successfully." />
 		<execute function="AssertTextEquals" locator1="CPSitesEdit#HEADER" value1="${siteName}" />
 	</command>
