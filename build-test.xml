@@ -508,6 +508,14 @@ counter.jdbc.prefix=jdbc.counter.]]></echo>
 				regexp="(-Xmx)(\d*\w*)"
 				replace="\12048m"
 			/>
+
+			<propertyregex
+				input="${poshi.java.jdk.opts}"
+				override="true"
+				property="poshi.java.jdk.opts"
+				regexp="PermSize"
+				replace="MetaspaceSize"
+			/>
 		</sequential>
 	</macrodef>
 
