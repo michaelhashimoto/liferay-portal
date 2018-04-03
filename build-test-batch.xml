@@ -3676,44 +3676,25 @@ ${output.content}</echo>
 	</target>
 
 	<target name="unit-jdk8">
-		<run-batch-test>
-			<test-action>
-				<ant dir="portal-kernel" inheritAll="false" target="test-class-group">
-					<property name="junit.code.coverage" value="${test.batch.code.coverage}" />
-					<property name="test.class.group.index" value="${axis.variable}" />
-				</ant>
+		<property name="test.batch.code.coverage" value="false" />
 
-				<ant dir="portal-impl" inheritAll="false" target="test-class-group">
-					<property name="junit.code.coverage" value="${test.batch.code.coverage}" />
-					<property name="test.class.group.index" value="${axis.variable}" />
-					<property name="test.type" value="unit" />
-				</ant>
+		<!-- <antcall target="record-test-class-file-names" /> -->
 
-				<ant dir="util-java" inheritAll="false" target="test-class-group">
-					<property name="junit.code.coverage" value="${test.batch.code.coverage}" />
-					<property name="test.class.group.index" value="${axis.variable}" />
-				</ant>
-			</test-action>
+		<ant dir="portal-kernel" inheritAll="false" target="test-class-group">
+			<property name="junit.code.coverage" value="${test.batch.code.coverage}" />
+			<property name="test.class.group.index" value="${axis.variable}" />
+		</ant>
 
-			<test-set-up>
-				<if>
-					<isset property="env.DIST_PATH" />
-					<then>
-						<prepare-test-environment />
+		<ant dir="portal-impl" inheritAll="false" target="test-class-group">
+			<property name="junit.code.coverage" value="${test.batch.code.coverage}" />
+			<property name="test.class.group.index" value="${axis.variable}" />
+			<property name="test.type" value="unit" />
+		</ant>
 
-						<antcall inheritAll="false" target="record-test-class-file-names">
-							<param name="test.class.groups.size" value="${test.batch.size}" />
-						</antcall>
-
-						<delete dir="${liferay.home}/osgi/static" />
-						<delete file="${app.server.lib.portal.dir}/util-taglib.jar" />
-					</then>
-					<else>
-						<prepare-test-build-unit />
-					</else>
-				</if>
-			</test-set-up>
-		</run-batch-test>
+		<ant dir="util-java" inheritAll="false" target="test-class-group">
+			<property name="junit.code.coverage" value="${test.batch.code.coverage}" />
+			<property name="test.class.group.index" value="${axis.variable}" />
+		</ant>
 	</target>
 
 	<target name="wsdd-builder-jdk8">
