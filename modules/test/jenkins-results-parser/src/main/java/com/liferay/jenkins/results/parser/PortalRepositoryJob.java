@@ -68,6 +68,13 @@ public abstract class PortalRepositoryJob extends RepositoryJob {
 		return null;
 	}
 
+	public Integer getTestClassListCount(String testBatchName) {
+		TestBatchGroup testBatchGroup = TestBatchGroupFactory.newTestBatchGroup(
+			gitWorkingDirectory, testBatchName);
+
+		return testBatchGroup.getTestClassListCount();
+	}
+
 	protected PortalRepositoryJob(String jobName) {
 		super(jobName);
 
