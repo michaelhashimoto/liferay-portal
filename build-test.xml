@@ -2396,6 +2396,8 @@ ${tomcat-gc-log}
 					for (i = 0; i < axisCount; i++) {
 						AxisTestClassGroup axisTestClassGroup = batchTestClassGroup.getAxisTestClassGroup(i);
 
+						System.out.println(axisTestClassGroup);
+
 						List testClassGroup = axisTestClassGroup.getTestClassFiles();
 
 						sb.append("TEST_CLASS_GROUP_");
