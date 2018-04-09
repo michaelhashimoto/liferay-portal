@@ -411,9 +411,9 @@ mariadb.executable=${mariadb.executable}]]></echo>
 		<sequential>
 			<trycatch property="exception.message">
 				<try>
-					<antcall target="setup-libs" />
+					<antcall inheritAll="false" target="setup-libs" />
 
-					<antcall target="prepare-test-build">
+					<antcall inheritAll="false" target="prepare-test-build">
 						<param name="test.class.groups.size" value="${test.batch.size}" />
 						<param name="test.plugin.groups.size" value="${test.batch.size}" />
 					</antcall>
@@ -431,9 +431,9 @@ mariadb.executable=${mariadb.executable}]]></echo>
 		<sequential>
 			<trycatch property="exception.message">
 				<try>
-					<antcall target="setup-libs" />
+					<antcall inheritAll="false" target="setup-libs" />
 
-					<antcall target="prepare-test-build-custom">
+					<antcall inheritAll="false" target="prepare-test-build-custom">
 						<param name="app.server.type" value="${app.server.type}" />
 					</antcall>
 				</try>
