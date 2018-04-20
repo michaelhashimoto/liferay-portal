@@ -39,51 +39,63 @@
 work.dir=${basedir.unix}/tools/tck/work</echo>
 	</target>
 
-	<target name="record-test-tck-package-names">
-		<ant antfile="build-test-tck.xml" target="prepare-tck" />
+	<target name="record-test-tck-package-names" depends="prepare-tck">
+		<beanshell>
+			<![CDATA[
+				import com.liferay.jenkins.results.parser.AxisTestClassGroup;
+				import com.liferay.jenkins.results.parser.PortalGitWorkingDirectory;
+				import com.liferay.jenkins.results.parser.TestClassGroup;
+				import com.liferay.jenkins.results.parser.TestClassGroupFactory;
 
-		<script classpathref="project.classpath" language="beanshell">
-			import com.liferay.portal.kernel.util.OSDetector;
-			import com.liferay.portal.kernel.util.StringUtil;
+				PortalGitWorkingDirectory portalGitWorkingDirectory = new PortalGitWorkingDirectory(project.getProperty("liferay.portal.branch"), project.getProperty("project.dir"));
 
-			import org.apache.tools.ant.DirectoryScanner;
+				TestClassGroup batchTestClassGroup = TestClassGroupFactory.newBatchTestClassGroup(project.getProperty("test.batch.name"), portalGitWorkingDirectory, project.getProperty("env.CI_TEST_SUITE"));
 
-			DirectoryScanner directoryScanner = new DirectoryScanner();
+				int axisCount = batchTestClassGroup.getAxisCount();
 
-			directoryScanner.setBasedir(project.getBaseDir());
-			directoryScanner.setIncludes(new String[] {"**/com/sun/ts/tests/**/*.war"});
+				StringBuilder sb = new StringBuilder();
 
-			directoryScanner.scan();
+				for (i = 0; i < axisCount; i++) {
+					AxisTestClassGroup axisTestClassGroup = batchTestClassGroup.getAxisTestClassGroup(i);
 
-			String[] fileNames = directoryScanner.getIncludedFiles();
+					List testClassGroup = axisTestClassGroup.getTestClassFiles();
 
-			Arrays.sort(fileNames);
+					sb.append("TEST_CLASS_GROUP_");
+					sb.append(i);
+					sb.append("=");
 
-			Set packageNames = new TreeSet();
+					for (File testClass : testClassGroup) {
+						String packageName = testClass.getParent();
 
-			for (String fileName : fileNames) {
-				int x = fileName.indexOf("com/");
-				int y = fileName.lastIndexOf("/");
+						int x = packageName.indexOf("com" + File.separator);
 
-				if (OSDetector.isWindows()) {
-					x = fileName.indexOf("com\\");
-					y = fileName.lastIndexOf("\\");
+						String packageName = packageName.substring(x);
+
+						sb.append(packageName.replace(File.separatorChar, '.'));
+						sb.append(",");
+					}
+
+					if (!testClassGroup.isEmpty()) {
+						sb.setLength(sb.length() - 1);
+					}
+
+					sb.append("\n\n");
 				}
 
-				String packageName = fileName.substring(x, y);
+				sb.append("TEST_CLASS_GROUPS=");
 
-				if (packageName.endsWith("PortletSessionSecondapp")) {
-					continue;
+				for (int i = 0; i < axisCount; i++) {
+					sb.append(i);
+					sb.append(" ");
 				}
 
-				packageName = StringUtil.replace(packageName, "/", ".");
-				packageName = StringUtil.replace(packageName, "\\", ".");
+				if (axisCount > 0) {
+					sb.setLength(sb.length() - 1);
+				}
 
-				packageNames.add(packageName);
-			}
-
-			project.setProperty("test.tck.package.names", StringUtil.merge(packageNames, " "));
-		</script>
+				project.setProperty("test.tck.package.names", sb.toString());
+			]]>
+		</beanshell>
 
 		<echo file="test.tck.package.names.properties">TEST_TCK_PACKAGE_NAMES=${test.tck.package.names}</echo>
 	</target>
