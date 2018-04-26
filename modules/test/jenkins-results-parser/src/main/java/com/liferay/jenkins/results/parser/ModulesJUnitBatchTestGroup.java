@@ -23,9 +23,9 @@ import java.util.List;
 /**
  * @author Yi-Chen Tsai
  */
-public class ModulesJUnitBatchTestClassGroup extends JUnitBatchTestClassGroup {
+public class ModulesJUnitBatchTestGroup extends JUnitBatchTestGroup {
 
-	protected ModulesJUnitBatchTestClassGroup(
+	protected ModulesJUnitBatchTestGroup(
 		String batchName, PortalGitWorkingDirectory portalGitWorkingDirectory,
 		String testSuiteName) {
 

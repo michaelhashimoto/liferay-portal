@@ -17,58 +17,57 @@ package com.liferay.jenkins.results.parser;
 /**
  * @author Michael Hashimoto
  */
-public class TestClassGroupFactory {
+public class TestGroupFactory {
 
-	public static BatchTestClassGroup newBatchTestClassGroup(
+	public static BatchTestGroup newBatchTestGroup(
 		String batchName, PortalGitWorkingDirectory portalGitWorkingDirectory) {
 
-		return newBatchTestClassGroup(
-			batchName, portalGitWorkingDirectory, null);
+		return newBatchTestGroup(batchName, portalGitWorkingDirectory, null);
 	}
 
-	public static BatchTestClassGroup newBatchTestClassGroup(
+	public static BatchTestGroup newBatchTestGroup(
 		String batchName, PortalGitWorkingDirectory portalGitWorkingDirectory,
 		String testSuiteName) {
 
 		if (batchName.startsWith("functional-")) {
-			return new FunctionalBatchTestClassGroup(
+			return new FunctionalBatchTestGroup(
 				batchName, portalGitWorkingDirectory, testSuiteName);
 		}
 
 		if (batchName.startsWith("integration-") ||
 			batchName.startsWith("unit-")) {
 
-			return new JUnitBatchTestClassGroup(
+			return new JUnitBatchTestGroup(
 				batchName, portalGitWorkingDirectory, testSuiteName);
 		}
 
 		if (batchName.startsWith("modules-integration-") ||
 			batchName.startsWith("modules-unit-")) {
 
-			return new ModulesJUnitBatchTestClassGroup(
+			return new ModulesJUnitBatchTestGroup(
 				batchName, portalGitWorkingDirectory, testSuiteName);
 		}
 
 		if (batchName.startsWith("plugins-compile-")) {
-			return new PluginsBatchTestClassGroup(
+			return new PluginsBatchTestGroup(
 				batchName, portalGitWorkingDirectory, testSuiteName);
 		}
 
 		if (batchName.startsWith("portal-frontend-js-")) {
-			return new NPMTestBatchTestClassGroup(
+			return new NPMTestBatchTestGroup(
 				batchName, portalGitWorkingDirectory, testSuiteName);
 		}
 
 		if (batchName.startsWith("tck-")) {
-			return new TCKJunitBatchTestClassGroup(
+			return new TCKJunitBatchTestGroup(
 				batchName, portalGitWorkingDirectory, testSuiteName);
 		}
 
-		return new DefaultBatchTestClassGroup(
+		return new DefaultBatchTestGroup(
 			batchName, portalGitWorkingDirectory, testSuiteName);
 	}
 
-	public static BatchTestClassGroup newBatchTestClassGroup(
+	public static BatchTestGroup newBatchTestGroup(
 		String batchName, PortalRepositoryJob portalRepositoryJob) {
 
 		PortalGitWorkingDirectory portalGitWorkingDirectory =
@@ -84,7 +83,7 @@ public class TestClassGroupFactory {
 			testSuiteName = portalAcceptancePullRequestJob.getTestSuiteName();
 		}
 
-		return newBatchTestClassGroup(
+		return newBatchTestGroup(
 			batchName, portalGitWorkingDirectory, testSuiteName);
 	}
 

@@ -14,15 +14,18 @@
 
 package com.liferay.jenkins.results.parser;
 
-import java.io.File;
-
-import java.util.List;
-
 /**
- * @author Michael Hashimoto
+ * @author Yi-Chen Tsai
  */
-public interface TestClassGroup {
+public class DefaultBatchTestGroup extends BatchTestGroup {
 
-	public List<File> getTestClassFiles();
+	protected DefaultBatchTestGroup(
+		String batchName, PortalGitWorkingDirectory portalGitWorkingDirectory,
+		String testSuiteName) {
+
+		super(batchName, portalGitWorkingDirectory, testSuiteName);
+
+		axisTestGroups.put(0, new AxisTestGroup(this, 0));
+	}
 
 }

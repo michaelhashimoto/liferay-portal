@@ -36,9 +36,9 @@ import java.util.regex.Pattern;
 /**
  * @author Yi-Chen Tsai
  */
-public class JUnitBatchTestClassGroup extends BatchTestClassGroup {
+public class JUnitBatchTestGroup extends BatchTestGroup {
 
-	protected JUnitBatchTestClassGroup(
+	protected JUnitBatchTestGroup(
 		String batchName, PortalGitWorkingDirectory portalGitWorkingDirectory,
 		String testSuiteName) {
 
@@ -51,7 +51,7 @@ public class JUnitBatchTestClassGroup extends BatchTestClassGroup {
 
 		_setIncludeAutoBalanceTests();
 
-		setAxisTestClassGroups();
+		setAxisTestGroups();
 	}
 
 	protected List<String> getRelevantTestClassNamesRelativeGlobs(

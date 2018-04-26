@@ -14,18 +14,35 @@
 
 package com.liferay.jenkins.results.parser;
 
+import java.io.File;
+
 /**
- * @author Yi-Chen Tsai
+ * @author Michael Hashimoto
  */
-public class DefaultBatchTestClassGroup extends BatchTestClassGroup {
+public class AxisTestGroup extends BaseTestGroup {
 
-	protected DefaultBatchTestClassGroup(
-		String batchName, PortalGitWorkingDirectory portalGitWorkingDirectory,
-		String testSuiteName) {
-
-		super(batchName, portalGitWorkingDirectory, testSuiteName);
-
-		axisTestClassGroups.put(0, new AxisTestClassGroup(this, 0));
+	public String getBatchName() {
+		return _batchTestGroup.getBatchName();
 	}
+
+	public BatchTestGroup getBatchTestGroup() {
+		return _batchTestGroup;
+	}
+
+	public int getId() {
+		return _id;
+	}
+
+	protected AxisTestGroup(BatchTestGroup batchTestGroup, int id) {
+		_batchTestGroup = batchTestGroup;
+		_id = id;
+	}
+
+	protected void addTestClassFile(File testClassFile) {
+		testClassFiles.add(testClassFile);
+	}
+
+	private final BatchTestGroup _batchTestGroup;
+	private final int _id;
 
 }

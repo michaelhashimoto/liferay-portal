@@ -22,7 +22,7 @@ import java.util.List;
 /**
  * @author Peter Yoo
  */
-public abstract class BaseTestClassGroup implements TestClassGroup {
+public abstract class BaseTestGroup implements TestGroup {
 
 	public List<File> getTestClassFiles() {
 		return testClassFiles;

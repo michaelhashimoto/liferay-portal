@@ -23,28 +23,28 @@ import java.util.Properties;
 /**
  * @author Yi-Chen Tsai
  */
-public class FunctionalBatchTestClassGroup extends BatchTestClassGroup {
+public class FunctionalBatchTestGroup extends BatchTestGroup {
 
 	@Override
-	public AxisTestClassGroup getAxisTestClassGroup(int axisId) {
+	public AxisTestGroup getAxisTestGroup(int axisId) {
 		if (axisId != 0) {
 			throw new IllegalArgumentException("axisId is not 0");
 		}
 
-		return super.getAxisTestClassGroup(axisId);
+		return super.getAxisTestGroup(axisId);
 	}
 
 	public String getRelevantTestBatchRunPropertyQuery() {
 		return _relevantTestBatchRunPropertyQuery;
 	}
 
-	protected FunctionalBatchTestClassGroup(
+	protected FunctionalBatchTestGroup(
 		String batchName, PortalGitWorkingDirectory portalGitWorkingDirectory,
 		String testSuiteName) {
 
 		super(batchName, portalGitWorkingDirectory, testSuiteName);
 
-		axisTestClassGroups.put(0, new AxisTestClassGroup(this, 0));
+		axisTestGroups.put(0, new AxisTestGroup(this, 0));
 
 		_setRelevantTestBatchRunPropertyQuery();
 	}

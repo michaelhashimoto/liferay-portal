@@ -22,24 +22,24 @@ import java.util.List;
 /**
  * @author Michael Hashimoto
  */
-public class NPMTestBatchTestClassGroup extends BatchTestClassGroup {
+public class NPMTestBatchTestGroup extends BatchTestGroup {
 
 	@Override
-	public AxisTestClassGroup getAxisTestClassGroup(int axisId) {
+	public AxisTestGroup getAxisTestGroup(int axisId) {
 		if (axisId != 0) {
 			throw new IllegalArgumentException("axisId is not 0");
 		}
 
-		AxisTestClassGroup axisTestClassGroup = axisTestClassGroups.get(axisId);
+		AxisTestGroup axisTestGroup = axisTestGroups.get(axisId);
 
-		if (axisTestClassGroup != null) {
-			return axisTestClassGroups.get(axisId);
+		if (axisTestGroup != null) {
+			return axisTestGroups.get(axisId);
 		}
 
-		return new AxisTestClassGroup(this, axisId);
+		return new AxisTestGroup(this, axisId);
 	}
 
-	protected NPMTestBatchTestClassGroup(
+	protected NPMTestBatchTestGroup(
 		String batchName, PortalGitWorkingDirectory portalGitWorkingDirectory,
 		String testSuiteName) {
 
@@ -47,19 +47,18 @@ public class NPMTestBatchTestClassGroup extends BatchTestClassGroup {
 
 		_setTestClassFiles();
 
-		_setAxisTestClassGroups();
+		_setAxisTestGroups();
 	}
 
-	private void _setAxisTestClassGroups() {
+	private void _setAxisTestGroups() {
 		if (!testClassFiles.isEmpty()) {
-			AxisTestClassGroup axisTestClassGroup = new AxisTestClassGroup(
-				this, 0);
+			AxisTestGroup axisTestGroup = new AxisTestGroup(this, 0);
 
 			for (File testClassFile : testClassFiles) {
-				axisTestClassGroup.addTestClassFile(testClassFile);
+				axisTestGroup.addTestClassFile(testClassFile);
 			}
 
-			axisTestClassGroups.put(0, axisTestClassGroup);
+			axisTestGroups.put(0, axisTestGroup);
 		}
 	}
 

@@ -29,56 +29,48 @@ import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Properties;
 
 /**
  * @author Michael Hashimoto
  */
-public class PluginsBatchTestClassGroup extends BatchTestClassGroup {
+public class TCKJunitBatchTestGroup extends BatchTestGroup {
 
-	protected PluginsBatchTestClassGroup(
+	protected TCKJunitBatchTestGroup(
 		String batchName, PortalGitWorkingDirectory portalGitWorkingDirectory,
 		String testSuiteName) {
 
 		super(batchName, portalGitWorkingDirectory, testSuiteName);
 
-		Properties portalReleaseProperties =
-			JenkinsResultsParserUtil.getProperties(
-				new File(
-					portalGitWorkingDirectory.getWorkingDirectory(),
-					"release.properties"));
+		File workingDirectory = portalGitWorkingDirectory.getWorkingDirectory();
 
-		try {
-			_pluginsGitWorkingDirectory = new PluginsGitWorkingDirectory(
-				portalGitWorkingDirectory.getUpstreamBranchName(),
+		File tckHomeDirectory = new File(workingDirectory, "tools/tck");
+
+		if (!tckHomeDirectory.exists()) {
+			tckHomeDirectory = new File(
 				JenkinsResultsParserUtil.getProperty(
-					portalReleaseProperties, "lp.plugins.dir"));
-
-			_pluginNamesExcludePathMatchers = _getPluginNamesPathMatchers(
-				"test.batch.plugin.names.excludes");
-			_pluginNamesIncludePathMatchers = _getPluginNamesPathMatchers(
-				"test.batch.plugin.names.includes");
-
-			setTestClassFiles();
-
-			setAxisTestClassGroups();
+					portalTestProperties, "tck.home"));
 		}
-		catch (IOException ioe) {
-			throw new RuntimeException(ioe);
-		}
+
+		_tckHomeDirectory = tckHomeDirectory;
+
+		_testClassNameExcludePathMatchers = _getTestClassNamesPathMatchers(
+			"test.batch.class.names.excludes");
+		_testClassNameIncludePathMatchers = _getTestClassNamesPathMatchers(
+			"test.batch.class.names.includes");
+
+		setTestClassFiles();
+
+		setAxisTestGroups();
 	}
 
 	protected void setTestClassFiles() {
-		File workingDirectory =
-			_pluginsGitWorkingDirectory.getWorkingDirectory();
-
 		try {
 			Files.walkFileTree(
-				workingDirectory.toPath(),
+				_tckHomeDirectory.toPath(),
 				new SimpleFileVisitor<Path>() {
 
 					@Override
-					public FileVisitResult preVisitDirectory(
+					public FileVisitResult visitFile(
 							Path filePath, BasicFileAttributes attrs)
 						throws IOException {
 
@@ -86,20 +78,8 @@ public class PluginsBatchTestClassGroup extends BatchTestClassGroup {
 							return FileVisitResult.SKIP_SUBTREE;
 						}
 
-						return FileVisitResult.CONTINUE;
-					}
-
-					@Override
-					public FileVisitResult visitFile(
-							Path filePath, BasicFileAttributes attrs)
-						throws IOException {
-
-						if (_pathIncluded(filePath) &&
-							!_pathExcluded(filePath)) {
-
-							File file = filePath.toFile();
-
-							testClassFiles.add(file.getParentFile());
+						if (_pathIncluded(filePath)) {
+							testClassFiles.add(filePath.toFile());
 						}
 
 						return FileVisitResult.CONTINUE;
@@ -107,12 +87,12 @@ public class PluginsBatchTestClassGroup extends BatchTestClassGroup {
 
 					private boolean _pathExcluded(Path path) {
 						return _pathMatches(
-							path, _pluginNamesExcludePathMatchers);
+							path, _testClassNameExcludePathMatchers);
 					}
 
 					private boolean _pathIncluded(Path path) {
 						return _pathMatches(
-							path, _pluginNamesIncludePathMatchers);
+							path, _testClassNameIncludePathMatchers);
 					}
 
 					private boolean _pathMatches(
@@ -132,46 +112,46 @@ public class PluginsBatchTestClassGroup extends BatchTestClassGroup {
 		catch (IOException ioe) {
 			throw new RuntimeException(
 				"Unable to search for test file names in " +
-					workingDirectory.getPath(),
+					_tckHomeDirectory.getPath(),
 				ioe);
 		}
 
 		Collections.sort(testClassFiles);
 	}
 
-	private List<PathMatcher> _getPluginNamesPathMatchers(String propertyName) {
-		String pluginNamesRelativeGlobs = getFirstPropertyValue(propertyName);
+	private List<PathMatcher> _getTestClassNamesPathMatchers(
+		String propertyName) {
 
-		if ((pluginNamesRelativeGlobs == null) ||
-			pluginNamesRelativeGlobs.isEmpty()) {
+		String testClassNamesRelativeGlobs = getFirstPropertyValue(
+			propertyName);
 
-			return new ArrayList<>();
+		if ((testClassNamesRelativeGlobs == null) ||
+			testClassNamesRelativeGlobs.isEmpty()) {
+
+			return Collections.emptyList();
 		}
 
 		List<PathMatcher> pathMatchers = new ArrayList<>();
 
-		File workingDirectory =
-			_pluginsGitWorkingDirectory.getWorkingDirectory();
+		String workingDirectoryPath = _tckHomeDirectory.getAbsolutePath();
 
-		String workingDirectoryPath = workingDirectory.getAbsolutePath();
+		FileSystem fileSystem = FileSystems.getDefault();
 
-		for (String pluginNamesRelativeGlob :
-				pluginNamesRelativeGlobs.split(",")) {
-
-			FileSystem fileSystem = FileSystems.getDefault();
+		for (String testClassNamesRelativeGlob :
+				testClassNamesRelativeGlobs.split(",")) {
 
 			pathMatchers.add(
 				fileSystem.getPathMatcher(
 					JenkinsResultsParserUtil.combine(
 						"glob:", workingDirectoryPath, "/",
-						pluginNamesRelativeGlob)));
+						testClassNamesRelativeGlob)));
 		}
 
 		return pathMatchers;
 	}
 
-	private final List<PathMatcher> _pluginNamesExcludePathMatchers;
-	private final List<PathMatcher> _pluginNamesIncludePathMatchers;
-	private final PluginsGitWorkingDirectory _pluginsGitWorkingDirectory;
+	private final File _tckHomeDirectory;
+	private final List<PathMatcher> _testClassNameExcludePathMatchers;
+	private final List<PathMatcher> _testClassNameIncludePathMatchers;
 
 }

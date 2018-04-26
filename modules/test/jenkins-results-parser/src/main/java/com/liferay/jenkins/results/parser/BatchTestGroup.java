@@ -30,14 +30,14 @@ import java.util.regex.Pattern;
 /**
  * @author Michael Hashimoto
  */
-public abstract class BatchTestClassGroup extends BaseTestClassGroup {
+public abstract class BatchTestGroup extends BaseTestGroup {
 
 	public int getAxisCount() {
-		return axisTestClassGroups.size();
+		return axisTestGroups.size();
 	}
 
-	public AxisTestClassGroup getAxisTestClassGroup(int axisId) {
-		return axisTestClassGroups.get(axisId);
+	public AxisTestGroup getAxisTestGroup(int axisId) {
+		return axisTestGroups.get(axisId);
 	}
 
 	public String getBatchName() {
@@ -52,7 +52,7 @@ public abstract class BatchTestClassGroup extends BaseTestClassGroup {
 		return portalTestProperties;
 	}
 
-	protected BatchTestClassGroup(
+	protected BatchTestGroup(
 		String batchName, PortalGitWorkingDirectory portalGitWorkingDirectory,
 		String testSuiteName) {
 
@@ -163,20 +163,19 @@ public abstract class BatchTestClassGroup extends BaseTestClassGroup {
 		return null;
 	}
 
-	protected void setAxisTestClassGroups() {
+	protected void setAxisTestGroups() {
 		int testClassFileCount = testClassFiles.size();
 
 		if (testClassFileCount == 0) {
 			if (includeAutoBalanceTests && !autoBalanceTestFiles.isEmpty()) {
 				int id = 0;
 
-				AxisTestClassGroup axisTestClassGroup = new AxisTestClassGroup(
-					this, id);
+				AxisTestGroup axisTestGroup = new AxisTestGroup(this, id);
 
-				axisTestClassGroups.put(id, axisTestClassGroup);
+				axisTestGroups.put(id, axisTestGroup);
 
 				for (File autoBalanceTestFile : autoBalanceTestFiles) {
-					axisTestClassGroup.addTestClassFile(autoBalanceTestFile);
+					axisTestGroup.addTestClassFile(autoBalanceTestFile);
 				}
 			}
 
@@ -195,18 +194,17 @@ public abstract class BatchTestClassGroup extends BaseTestClassGroup {
 		for (List<File> axisTestClassFiles :
 				Lists.partition(testClassFiles, axisSize)) {
 
-			AxisTestClassGroup axisTestClassGroup = new AxisTestClassGroup(
-				this, id);
+			AxisTestGroup axisTestGroup = new AxisTestGroup(this, id);
 
-			axisTestClassGroups.put(id, axisTestClassGroup);
+			axisTestGroups.put(id, axisTestGroup);
 
 			for (File axisTestClassFile : axisTestClassFiles) {
-				axisTestClassGroup.addTestClassFile(axisTestClassFile);
+				axisTestGroup.addTestClassFile(axisTestClassFile);
 			}
 
 			if (includeAutoBalanceTests) {
 				for (File autoBalanceTestFile : autoBalanceTestFiles) {
-					axisTestClassGroup.addTestClassFile(autoBalanceTestFile);
+					axisTestGroup.addTestClassFile(autoBalanceTestFile);
 				}
 			}
 
@@ -215,7 +213,7 @@ public abstract class BatchTestClassGroup extends BaseTestClassGroup {
 	}
 
 	protected List<File> autoBalanceTestFiles = new ArrayList();
-	protected final Map<Integer, AxisTestClassGroup> axisTestClassGroups =
+	protected final Map<Integer, AxisTestGroup> axisTestGroups =
 		new HashMap<>();
 	protected final String batchName;
 	protected boolean includeAutoBalanceTests;
