@@ -33,21 +33,21 @@
 	</command>
 
 	<command name="Length" priority="5">
-		<echo message="Test length()" />
+		<echo message="Test StringUtil#length" />
 
 		<var name="string" value="abcde" />
 
-		<var name="stringLength" value="${string?length()}" />
+		<var method="StringUtil#length('${string}')" name="stringLength" />
 
 		<execute macro="TestUtils#assertEquals">
 			<var name="actual" value="${stringLength}" />
 			<var name="expected" value="5" />
 		</execute>
 
-		<echo message="Test length() used inline" />
+		<echo message="Test StringUtil#length used inline" />
 
 		<execute macro="TestUtils#assertEquals">
-			<var name="actual" value="${string?length()}" />
+			<var method="StringUtil#length('${string}')" name="actual" />
 			<var name="expected" value="5" />
 		</execute>
 	</command>
