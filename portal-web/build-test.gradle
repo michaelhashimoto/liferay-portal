@@ -10,7 +10,7 @@ buildscript {
 	}
 
 	dependencies {
-		classpath group: "com.liferay", name: "com.liferay.gradle.plugins.poshi.runner", version: "2.2.3"
+		classpath group: "com.liferay", name: "com.liferay.gradle.plugins.defaults", version: "5.3.117"
 	}
 }
 
