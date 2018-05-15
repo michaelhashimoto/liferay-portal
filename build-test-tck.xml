@@ -42,14 +42,14 @@ work.dir=${basedir.unix}/tools/tck/work</echo>
 	<target name="record-test-tck-package-names" depends="prepare-tck">
 		<beanshell>
 			<![CDATA[
-				import com.liferay.jenkins.results.parser.AxisTestClassGroup;
 				import com.liferay.jenkins.results.parser.PortalGitWorkingDirectory;
-				import com.liferay.jenkins.results.parser.TestClassGroup;
-				import com.liferay.jenkins.results.parser.TestClassGroupFactory;
+				import com.liferay.jenkins.results.parser.test.clazz.group.AxisTestClassGroup;
+				import com.liferay.jenkins.results.parser.test.clazz.group.BatchTestClassGroup;
+				import com.liferay.jenkins.results.parser.test.clazz.group.TestClassGroupFactory;
 
 				PortalGitWorkingDirectory portalGitWorkingDirectory = new PortalGitWorkingDirectory(project.getProperty("liferay.portal.branch"), project.getProperty("project.dir"));
 
-				TestClassGroup batchTestClassGroup = TestClassGroupFactory.newBatchTestClassGroup(project.getProperty("test.batch.name"), portalGitWorkingDirectory, project.getProperty("env.CI_TEST_SUITE"));
+				BatchTestClassGroup batchTestClassGroup = TestClassGroupFactory.newBatchTestClassGroup(project.getProperty("test.batch.name"), portalGitWorkingDirectory, project.getProperty("env.CI_TEST_SUITE"));
 
 				int axisCount = batchTestClassGroup.getAxisCount();
 
