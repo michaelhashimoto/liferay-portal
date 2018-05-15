@@ -702,6 +702,7 @@ Please set the environment variable ANT_OPTS to the recommended value of
 		<attribute default="${basedir}" name="dir" />
 		<attribute default="true" name="failonerror" />
 		<attribute default="true" name="forcedcacheenabled" />
+		<attribute default="${env.ANT_OPTS}" name="gradleopts" />
 		<attribute name="task" />
 		<element implicit="true" name="args" optional="true" />
 
@@ -727,6 +728,7 @@ Please set the environment variable ANT_OPTS to the recommended value of
 				<arg value="-Dforced.cache.enabled=@{forcedcacheenabled}" />
 				<arg value="-Dgradle.user.home=${project.dir}/.gradle" />
 				<arg value="@{task}" />
+				<env key="GRADLE_OPTS" value="@{gradleopts}" />
 			</exec>
 		</sequential>
 	</macrodef>
