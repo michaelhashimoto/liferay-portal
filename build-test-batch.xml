@@ -802,7 +802,7 @@ app.server.type=@{app.server.type}]]></echo>
 		<run-integration-test database.type="mysql" database.version="5.5" />
 	</target>
 
-	<target name="integration-oracle12-jdk7">
+	<target name="integration-oracle122-jdk7">
 		<run-integration-test database.type="oracle" />
 	</target>
 
