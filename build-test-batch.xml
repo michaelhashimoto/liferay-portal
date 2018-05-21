@@ -806,7 +806,7 @@ app.server.type=@{app.server.type}]]></echo>
 		<run-integration-test database.type="oracle" />
 	</target>
 
-	<target name="integration-postgresql94-jdk7">
+	<target name="integration-postgresql10-jdk7">
 		<run-integration-test database.type="postgresql" />
 	</target>
 
