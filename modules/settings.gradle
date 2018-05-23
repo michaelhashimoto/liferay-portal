@@ -8,18 +8,7 @@ String testClassGroup = System.getProperty("test.class.group")
 String testClassGroupIndex = System.getProperty("test.class.group.index")
 String testClassGroups = System.getProperty("test.class.groups")
 
-if (testClassGroupIndex) {
-	if (!testClassGroup || !testClassGroups) {
-		Properties properties = new Properties()
-
-		File file = new File(rootDir, "../test.class.file.names.properties")
-
-		properties.load(new StringReader(file.text.replace("\\", "/")))
-
-		testClassGroup = properties["TEST_CLASS_GROUP_" + testClassGroupIndex]
-		testClassGroups = properties["TEST_CLASS_GROUPS"]
-	}
-
+if (testClassGroup && testClassGroupIndex && testClassGroups) {
 	gradle.ext.testClasses = testClassGroup.tokenize(",")
 	gradle.ext.testClassGroupIndex = testClassGroupIndex
 	gradle.ext.testClassGroups = testClassGroups

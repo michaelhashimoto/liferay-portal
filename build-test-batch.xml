@@ -1654,10 +1654,17 @@ app.server.type=@{app.server.type}]]></echo>
 
 							<get-test-batch-app-server-start-executable-arg-line />
 
+							<property file="${project.dir}/test.class.file.names.properties" />
+
+							<propertycopy from="TEST_CLASS_GROUP_${axis.variable}" name="test.class.group" />
+							<propertycopy from="TEST_CLASS_GROUPS" name="test.class.groups" />
+
 							<gradle-execute dir="modules" refreshdependencies="@{refreshdependencies}" task="testIntegration">
 								<arg value="-Dapp.server.start.executable.arg.line=${test.batch.app.server.start.executable.arg.line}" />
 								<arg value="-Ddatabase.type=@{database.type}" />
 								<arg value="-Dbuild.exclude.ant.plugin=true" />
+								<arg value="-Dtest.class.group=${test.class.group}" />
+								<arg value="-Dtest.class.groups=${test.class.groups}" />
 								<arg value="-Dtest.class.group.index=${axis.variable}" />
 							</gradle-execute>
 
@@ -2872,9 +2879,16 @@ app.server.type=@{app.server.type}]]></echo>
 	<target name="modules-unit-jdk8">
 		<run-batch-test>
 			<test-action>
+				<property file="${project.dir}/test.class.file.names.properties" />
+
+				<propertycopy from="TEST_CLASS_GROUP_${axis.variable}" name="test.class.group" />
+				<propertycopy from="TEST_CLASS_GROUPS" name="test.class.groups" />
+
 				<gradle-execute dir="modules" task="test">
 					<arg value="-Dbuild.exclude.ant.plugin=true" />
 					<arg value="-Djunit.code.coverage=${test.batch.code.coverage}" />
+					<arg value="-Dtest.class.group=${test.class.group}" />
+					<arg value="-Dtest.class.groups=${test.class.groups}" />
 					<arg value="-Dtest.class.group.index=${axis.variable}" />
 				</gradle-execute>
 			</test-action>
