@@ -4,17 +4,21 @@ buildscript {
 
 apply plugin: "com.liferay.settings.plugin"
 
+String testClassGroup = System.getProperty("test.class.group")
 String testClassGroupIndex = System.getProperty("test.class.group.index")
+String testClassGroups = System.getProperty("test.class.groups")
 
 if (testClassGroupIndex) {
-	Properties properties = new Properties()
+	if (!testClassGroup || !testClassGroups) {
+		Properties properties = new Properties()
 
-	File file = new File(rootDir, "../test.class.file.names.properties")
+		File file = new File(rootDir, "../test.class.file.names.properties")
 
-	properties.load(new StringReader(file.text.replace("\\", "/")))
+		properties.load(new StringReader(file.text.replace("\\", "/")))
 
-	String testClassGroup = properties["TEST_CLASS_GROUP_" + testClassGroupIndex]
-	String testClassGroups = properties["TEST_CLASS_GROUPS"]
+		testClassGroup = properties["TEST_CLASS_GROUP_" + testClassGroupIndex]
+		testClassGroups = properties["TEST_CLASS_GROUPS"]
+	}
 
 	gradle.ext.testClasses = testClassGroup.tokenize(",")
 	gradle.ext.testClassGroupIndex = testClassGroupIndex
