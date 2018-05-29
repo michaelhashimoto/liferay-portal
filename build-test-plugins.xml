@@ -379,7 +379,7 @@ liferay.home=${liferay.home}</echo>
 			<sequential>
 				<var name="plugin.type" value="@{plugin.type}" />
 
-				<script classpathref="project.classpath" language="beanshell">
+				<beanshell>
 					String pluginTypeSingular = project.getProperty("plugin.type");
 
 					if (pluginTypeSingular.endsWith("s")) {
@@ -387,7 +387,7 @@ liferay.home=${liferay.home}</echo>
 					}
 
 					project.setProperty("plugin.type.singular", pluginTypeSingular);
-				</script>
+				</beanshell>
 
 				<delete dir="${lp.plugins.dir}/${plugin.type}/test-${plugin.type.singular}" />
 

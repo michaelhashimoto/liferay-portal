@@ -306,7 +306,7 @@ counter.jdbc.prefix=jdbc.counter.]]></echo>
 
 			<property name="property.name" value="@{property.name}" />
 
-			<script classpathref="project.classpath" language="beanshell">
+			<beanshell>
 				<![CDATA[
 					String propertyName = project.getProperty("property.name");
 
@@ -321,7 +321,7 @@ counter.jdbc.prefix=jdbc.counter.]]></echo>
 
 					project.setProperty(propertyName, propertyValue);
 				]]>
-			</script>
+			</beanshell>
 		</sequential>
 	</macrodef>
 
@@ -469,7 +469,7 @@ counter.jdbc.prefix=jdbc.counter.]]></echo>
 
 			<get-test-simple-class-name />
 
-			<script classpathref="project.classpath" language="beanshell">
+			<beanshell>
 				<![CDATA[
 					String testSimpleClassName = project.getProperty("test.simple.class.name");
 
@@ -477,7 +477,7 @@ counter.jdbc.prefix=jdbc.counter.]]></echo>
 
 					project.setProperty("poshi.class.name", poshiClassName);
 				]]>
-			</script>
+			</beanshell>
 		</sequential>
 	</macrodef>
 
@@ -527,7 +527,7 @@ counter.jdbc.prefix=jdbc.counter.]]></echo>
 
 			<get-test-method-name />
 
-			<script classpathref="project.classpath" language="beanshell">
+			<beanshell>
 				<![CDATA[
 					String testMethodName = project.getProperty("test.method.name");
 
@@ -535,7 +535,7 @@ counter.jdbc.prefix=jdbc.counter.]]></echo>
 
 					project.setProperty("poshi.method.name", poshiClassName);
 				]]>
-			</script>
+			</beanshell>
 		</sequential>
 	</macrodef>
 
@@ -594,7 +594,7 @@ counter.jdbc.prefix=jdbc.counter.]]></echo>
 
 			<get-poshi-class-name />
 
-			<script classpathref="project.classpath" language="beanshell">
+			<beanshell>
 				<![CDATA[
 					import org.apache.tools.ant.DirectoryScanner;
 
@@ -630,7 +630,7 @@ counter.jdbc.prefix=jdbc.counter.]]></echo>
 					catch (Exception e) {
 					}
 				]]>
-			</script>
+			</beanshell>
 
 			<fail message="${test.name}.testcase does not exist." unless="test.class.name" />
 		</sequential>
@@ -642,7 +642,7 @@ counter.jdbc.prefix=jdbc.counter.]]></echo>
 
 			<var name="test.method.name" unset="true" />
 
-			<script classpathref="project.classpath" language="beanshell">
+			<beanshell>
 				<![CDATA[
 					String testClass = project.getProperty("test.class");
 
@@ -658,7 +658,7 @@ counter.jdbc.prefix=jdbc.counter.]]></echo>
 						project.setProperty("test.method.name", testMethodName);
 					}
 				]]>
-			</script>
+			</beanshell>
 		</sequential>
 	</macrodef>
 
@@ -668,7 +668,7 @@ counter.jdbc.prefix=jdbc.counter.]]></echo>
 
 			<var name="test.simple.class.name" unset="true" />
 
-			<script classpathref="project.classpath" language="beanshell">
+			<beanshell>
 				<![CDATA[
 					String testClass = project.getProperty("test.class");
 
@@ -686,7 +686,7 @@ counter.jdbc.prefix=jdbc.counter.]]></echo>
 
 					project.setProperty("test.simple.class.name", testSimpleClassName);
 				]]>
-			</script>
+			</beanshell>
 		</sequential>
 	</macrodef>
 
@@ -780,7 +780,7 @@ counter.jdbc.prefix=jdbc.counter.]]></echo>
 					<get-test-method-name />
 					<get-test-simple-class-name />
 
-					<script classpathref="project.classpath" language="beanshell">
+					<beanshell>
 						<![CDATA[
 							String propertyName = project.getProperty("property.name");
 							String propertyValueDefault = project.getProperty("property.value.default");
@@ -815,7 +815,7 @@ counter.jdbc.prefix=jdbc.counter.]]></echo>
 
 							project.setProperty(propertyName, propertyValue);
 						]]>
-					</script>
+					</beanshell>
 				</then>
 			</if>
 		</sequential>
@@ -1484,7 +1484,7 @@ ${tomcat-gc-log}
 
 	<macrodef name="record-git-commit-plugins">
 		<sequential>
-			<script classpathref="project.classpath" language="beanshell">
+			<beanshell>
 				<![CDATA[
 					File pluginsDir = null;
 
@@ -1509,7 +1509,7 @@ ${tomcat-gc-log}
 
 					project.setProperty("git.plugins.dir", pluginsDir.toString());
 				]]>
-			</script>
+			</beanshell>
 
 			<exec dir="${git.plugins.dir}" executable="git" outputproperty="git.commit.plugins.rev.parse">
 				<arg line="rev-parse HEAD" />
@@ -5871,7 +5871,7 @@ go]]></replacevalue>
 	</target>
 
 	<target name="generate-tests">
-		<script classpathref="project.classpath" language="beanshell">
+		<beanshell>
 			String testCase = "";
 			String testSuite = "";
 
@@ -5892,7 +5892,7 @@ go]]></replacevalue>
 
 			project.setProperty("test.case", testCase);
 			project.setProperty("test.suite", testSuite);
-		</script>
+		</beanshell>
 
 		<if>
 			<available file="portal-web/test/functional" type="dir" />
@@ -6656,7 +6656,7 @@ auto.deploy.dest.dir=C:/WINDOWS/system32/config/systemprofile/liferay/websphere-
 			<arg line="info" />
 		</exec>
 
-		<script classpathref="project.classpath" language="beanshell">
+		<beanshell>
 			String svnInfoOutput = project.getProperty("svn.info.output");
 
 			int x = svnInfoOutput.indexOf("Revision: ");
@@ -6668,7 +6668,7 @@ auto.deploy.dest.dir=C:/WINDOWS/system32/config/systemprofile/liferay/websphere-
 			String revision = svnInfoOutput.substring(x, y).trim();
 
 			project.setProperty("svn.info.revision.actual", revision);
-		</script>
+		</beanshell>
 
 		<loadfile property="svn.info.revision.valid" srcfile="svn-revision" />
 
@@ -8802,7 +8802,7 @@ go</echo>
 					</then>
 				</if>
 
-				<script classpathref="project.classpath" language="beanshell">
+				<beanshell>
 					<![CDATA[
 						import java.util.regex.Matcher;
 						import java.util.regex.Pattern;
@@ -8837,7 +8837,7 @@ go</echo>
 
 						project.setProperty("test.generated.properties.content", sb.toString());
 					]]>
-				</script>
+				</beanshell>
 
 				<echo>##</echo>
 				<echo>## test.generated.properties</echo>
@@ -9701,7 +9701,7 @@ jdbc.default.password=${database.mysql.password}</echo>
 				<get-testcase-property property.name="theme.plugins.includes" />
 				<get-testcase-property property.name="web.plugins.includes" />
 
-				<script classpathref="project.classpath" language="beanshell">
+				<beanshell>
 					<![CDATA[
 						import org.apache.commons.io.FileUtils;
 
@@ -9757,7 +9757,7 @@ jdbc.default.password=${database.mysql.password}</echo>
 							}
 						}
 					]]>
-				</script>
+				</beanshell>
 			</then>
 		</if>
 	</target>

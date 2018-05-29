@@ -254,7 +254,7 @@
 
 		<loadfile property="creole_parser.content" srcfile="docroot/html/js/editor/ckeditor_diffs/plugins/creole/creole_parser.js" />
 
-		<script classpathref="project.classpath" language="beanshell">
+		<beanshell>
 			<![CDATA[
 				import org.apache.commons.lang.StringEscapeUtils;
 
@@ -328,7 +328,7 @@
 
 				project.setProperty("creole_parser.content", creoleParserContent);
 			]]>
-		</script>
+		</beanshell>
 
 		<echo file="docroot/html/js/editor/ckeditor_diffs/plugins/creole/creole_parser.js">${creole_parser.content}</echo>
 	</target>
@@ -773,7 +773,7 @@
 
 				<delete dir="docroot/html/js/editor/tiny_mce" />
 
-				<script classpathref="project.classpath" language="beanshell">
+				<beanshell>
 					<![CDATA[
 						import com.liferay.portal.kernel.util.GetterUtil;
 
@@ -805,7 +805,7 @@
 							get.execute();
 						}
 					]]>
-				</script>
+				</beanshell>
 			</then>
 		</if>
 

@@ -120,7 +120,7 @@
 				<available file="classes/META-INF/MANIFEST.MF" />
 			</not>
 			<then>
-				<script classpathref="project.classpath" language="beanshell">
+				<beanshell>
 					<![CDATA[
 						import com.liferay.portal.kernel.util.PackagingUtil;
 						import com.liferay.portal.kernel.util.ReleaseInfo;
@@ -190,7 +190,7 @@
 
 						project.setProperty("export.packages", packages);
 					]]>
-				</script>
+				</beanshell>
 
 				<mkdir dir="classes/META-INF" />
 

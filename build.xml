@@ -604,7 +604,7 @@ ${app.server.tomcat.dir}, then run "ant -buildfile build-dist.xml unzip-tomcat".
 			<arg line="/c svn info" />
 		</exec>
 
-		<script classpathref="project.classpath" language="beanshell">
+		<beanshell>
 			String svnInfoOutput = project.getProperty("svn.info.output");
 
 			int x = svnInfoOutput.indexOf("Revision: ");
@@ -616,7 +616,7 @@ ${app.server.tomcat.dir}, then run "ant -buildfile build-dist.xml unzip-tomcat".
 			String revision = svnInfoOutput.substring(x, y).trim();
 
 			project.setProperty("svn.info.revision", revision);
-		</script>
+		</beanshell>
 
 		<echo file="svn-revision">Revision: ${svn.info.revision}
 Username: ${svn.username}
@@ -837,7 +837,7 @@ print AdminControl.invoke(appManager, 'startApplication', 'liferay-portal')
 	<target name="update-plugins-to-svn-revision">
 		<loadfile property="svn.info.revision.valid" srcfile="svn-revision" />
 
-		<script classpathref="project.classpath" language="beanshell">
+		<beanshell>
 			String svnInfoOutput = project.getProperty("svn.info.revision.valid");
 
 			int x = svnInfoOutput.indexOf("Revision: ");
@@ -849,7 +849,7 @@ print AdminControl.invoke(appManager, 'startApplication', 'liferay-portal')
 			String revision = svnInfoOutput.substring(x, y).trim();
 
 			project.setProperty("svn.info.revision", revision);
-		</script>
+		</beanshell>
 
 		<exec dir="${lp.plugins.dir}" executable="cmd.exe" os="${os.windows}">
 			<arg line="/c svn --username ${svn.username} --password ${svn.password} update -r ${svn.info.revision}" />
