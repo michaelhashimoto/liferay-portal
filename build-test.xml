@@ -1563,7 +1563,7 @@ ${tomcat-gc-log}
 
 			<local name="top.level.job.name" />
 
-			<condition else="test-portal-acceptance-upstream(${git.working.branch.name})" property="top.level.job.name" value="${env.TOP_LEVEL_JOB_NAME}">
+			<condition else="test-portal-acceptance-upstream(${liferay.portal.branch})" property="top.level.job.name" value="${env.TOP_LEVEL_JOB_NAME}">
 				<isset property="env.TOP_LEVEL_JOB_NAME" />
 			</condition>
 
@@ -8856,7 +8856,7 @@ go</echo>
 
 		<local name="top.level.job.name" />
 
-		<condition else="test-portal-acceptance-upstream(${git.working.branch.name})" property="top.level.job.name" value="${env.TOP_LEVEL_JOB_NAME}">
+		<condition else="test-portal-acceptance-upstream(${liferay.portal.branch})" property="top.level.job.name" value="${env.TOP_LEVEL_JOB_NAME}">
 			<isset property="env.TOP_LEVEL_JOB_NAME" />
 		</condition>
 
