@@ -14,9 +14,12 @@
 
 package com.liferay.jenkins.results.parser;
 
+import java.io.File;
+
 import java.util.Map;
 
 import org.apache.tools.ant.Project;
+import org.apache.tools.ant.ProjectHelper;
 import org.apache.tools.ant.RuntimeConfigurable;
 import org.apache.tools.ant.Task;
 
@@ -41,6 +44,25 @@ public class AntUtil {
 		task.setRuntimeConfigurableWrapper(runtimeConfigurable);
 
 		task.perform();
+	}
+
+	public static void callTarget(
+		Project project, File antFile, String name,
+		Map<String, String> parameters) {
+
+		ProjectHelper projectHelper = ProjectHelper.getProjectHelper();
+
+		project.addReference("ant.projectHelper", projectHelper);
+
+		project.setUserProperty("ant.file", antFile.getAbsolutePath());
+
+		for (Map.Entry<String, String> parameter : parameters.entrySet()) {
+			project.setProperty(parameter.getKey(), parameter.getValue());
+		}
+
+		projectHelper.parse(project, antFile);
+
+		project.executeTarget(name);
 	}
 
 }
