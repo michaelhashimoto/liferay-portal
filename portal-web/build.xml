@@ -773,7 +773,7 @@
 
 				<delete dir="docroot/html/js/editor/tiny_mce" />
 
-				<beanshell>
+				<beanshell classpathref="project.classpath">
 					<![CDATA[
 						import com.liferay.portal.kernel.util.GetterUtil;
 
