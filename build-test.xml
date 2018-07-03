@@ -3736,13 +3736,63 @@ org.apache.catalina.startup.ClassLoaderFactory.level=INFO]]>
 							</then>
 						</elseif>
 						<else>
+							<echo><![CDATA[========================================================================================]]></echo>
+
+							<execute>
+								<![CDATA[
+									jps > jps_output
+								]]>
+							</execute>
+
+							<local name="jps.output" />
+
+							<loadfile
+								property="jps.output"
+								srcfile="jps_output"
+							/>
+
+							<echo>${jps.output}</echo>
+
+							<delete file="jps_output" />
+
+							<echo><![CDATA[========================================================================================]]></echo>
+
+							<execute>
+								<![CDATA[
+									lsof -i:8099 -t > lsof_output
+								]]>
+							</execute>
+
+							<local name="lsof.output" />
+
+							<loadfile
+								property="lsof.output"
+								srcfile="lsof_output"
+							/>
+
+							<echo>${lsof.output}</echo>
+
+							<delete file="lsof_output" />
+
+							<echo><![CDATA[========================================================================================]]></echo>
+
+							<if>
+								<isset property="env.HOSTNAME" />
+								<then>
+									<property name="server.host" value="${env.HOSTNAME}" />
+								</then>
+								<else>
+									<property name="server.host" value="localhost" />
+								</else>
+							</if>
+
 							<waitfor maxwait="5" maxwaitunit="minute" timeoutproperty="app.server.stopping.timeout">
 								<and>
 									<not>
-										<http url="http://localhost:${test.app.server.leading.port.number}080/web/guest" />
+										<socket port="${test.app.server.leading.port.number}080" server="localhost" />
 									</not>
 									<not>
-										<http url="http://localhost:${test.app.server.leading.port.number}099" />
+										<socket port="${test.app.server.leading.port.number}099" server="${server.host}" />
 									</not>
 								</and>
 							</waitfor>
@@ -3782,6 +3832,45 @@ org.apache.catalina.startup.ClassLoaderFactory.level=INFO]]>
 									<delete file="jps_output" />
 								</then>
 							</if>
+							<echo><![CDATA[========================================================================================]]></echo>
+
+							<execute>
+								<![CDATA[
+									jps > jps_output
+								]]>
+							</execute>
+
+							<local name="jps.output" />
+
+							<loadfile
+								property="jps.output"
+								srcfile="jps_output"
+							/>
+
+							<echo>${jps.output}</echo>
+
+							<delete file="jps_output" />
+
+							<echo><![CDATA[========================================================================================]]></echo>
+
+							<execute>
+								<![CDATA[
+									lsof -i:8099 -t > lsof_output
+								]]>
+							</execute>
+
+							<local name="lsof.output" />
+
+							<loadfile
+								property="lsof.output"
+								srcfile="lsof_output"
+							/>
+
+							<echo>${lsof.output}</echo>
+
+							<delete file="lsof_output" />
+
+							<echo><![CDATA[========================================================================================]]></echo>
 						</else>
 					</if>
 
