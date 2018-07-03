@@ -3741,6 +3741,29 @@ org.apache.catalina.startup.ClassLoaderFactory.level=INFO]]>
 
 							<echo>${jps.output}</echo>
 
+							<delete file="jps_output" />
+
+							<echo><![CDATA[========================================================================================]]></echo>
+
+							<execute>
+								<![CDATA[
+									lsof -i:8099 -t > lsof_output
+								]]>
+							</execute>
+
+							<local name="lsof.output" />
+
+							<loadfile
+								property="lsof.output"
+								srcfile="lsof_output"
+							/>
+
+							<echo>${lsof.output}</echo>
+
+							<delete file="lsof_output" />
+
+							<echo><![CDATA[========================================================================================]]></echo>
+
 							<if>
 								<isset property="env.HOSTNAME" />
 								<then>
