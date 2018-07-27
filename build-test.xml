@@ -1178,7 +1178,7 @@ counter.jdbc.prefix=jdbc.counter.]]></echo>
 					<matches pattern="https?://" string="${test.build.fix.pack.zip.url}" />
 				</and>
 				<then>
-					<mirrors-get
+					<get
 						dest="${basedir}"
 						src="${test.fix.pack.base.url}/patching-tool/${patching.tool.latest.txt}"
 					/>
