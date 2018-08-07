@@ -114,7 +114,7 @@
 	<command name="firstLoginPG" summary="Log into Liferay Portal as '${userEmailAddress}' using the password '${password}'; if not logged in as '${userEmailAddress}', then log out first">
 		<echo message="Checking to see if Mobile Device is enabled..." />
 
-		<var method="TestPropsUtil#get('MOBILE_BROWSER')" name="mobileBrowser" />
+		<var method="PropsUtil#get('MOBILE_BROWSER')" name="mobileBrowser" />
 
 		<if>
 			<equals arg1="${mobileBrowser}" arg2="true" />

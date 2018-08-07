@@ -5,7 +5,7 @@
 	<property name="testray.main.component.name" value="Tools" />
 
 	<command name="Get" priority="5">
-		<var method="TestPropsUtil#get('browser.type')" name="string" />
+		<var method="PropsUtil#get('browser.type')" name="string" />
 
 		<execute macro="TestUtils#assertEquals">
 			<var name="actual" value="${string}" />
