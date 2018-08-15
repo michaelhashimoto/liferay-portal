@@ -1054,7 +1054,7 @@ public class GitWorkingDirectory {
 		}
 	}
 
-	public LocalGitBranch getRebaseLocalGitBranch(PullRequest pullRequest) {
+	public LocalGitBranch getRebasedLocalGitBranch(PullRequest pullRequest) {
 		return getRebasedLocalGitBranch(
 			pullRequest.getLocalSenderBranchName(),
 			pullRequest.getSenderBranchName(), pullRequest.getSenderRemoteURL(),
