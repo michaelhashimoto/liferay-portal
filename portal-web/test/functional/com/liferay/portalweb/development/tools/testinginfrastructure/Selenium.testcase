@@ -119,7 +119,7 @@
 		<var locator="CPBlogsAdd#DISPLAY_DATE" name="int" />
 
 		<var method="selenium#getCurrentMonth()" name="month" />
-		<var group="1" input="${int}" name="regex" pattern="([1-9]*[0-9])/([0-9]*)/([0-9]*)" />
+		<var method="RegexUtil#replace('${int}', '([1-9]*[0-9])/([0-9]*)/([0-9]*)', '1')" name="regex" />
 
 		<execute macro="TestUtils#assertEquals">
 			<var name="actual" value="${month}" />

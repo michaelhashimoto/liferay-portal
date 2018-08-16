@@ -73,14 +73,14 @@
 	</command>
 
 	<command name="Regex" priority="5">
-		<var group="0" input="regularexpression=32132" name="regex" pattern="[a-z]*=([0-9]*)" />
+		<var method="RegexUtil#replace('regularexpression=32132', '[a-z]*=([0-9]*)', '0')" name="regex" />
 
 		<execute macro="TestUtils#assertEquals">
 			<var name="actual" value="${regex}" />
 			<var name="expected" value="regularexpression=32132" />
 		</execute>
 
-		<var group="1" input="regularexpression=32132" name="regex" pattern="[a-z]*=([0-9]*)" />
+		<var method="RegexUtil#replace('regularexpression=32132', '[a-z]*=([0-9]*)', '1')" name="regex" />
 
 		<execute macro="TestUtils#assertEquals">
 			<var name="actual" value="${regex}" />
