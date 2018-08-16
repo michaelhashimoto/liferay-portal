@@ -12,7 +12,7 @@
 	</set-up>
 
 	<command name="storeAttributeWithoutVariablesInLocator" priority="5">
-		<var attribute="class" locator="//h1[@class='site-title']/a/span" name="attributeValue" />
+		<var method="selenium#getAttribute('//h1[@class=\'site-title\']/a/span@class')" name="attributeValue" />
 
 		<echo message="Test storeAttribute #1: using locator/path with xpath containing no variables" />
 
@@ -23,7 +23,7 @@
 	</command>
 
 	<command name="storeAttributeWithoutVariablesInLocatorKey" priority="5">
-		<var attribute="class" locator="//h1[@class='site-title']/a/span" name="attributeValue" />
+		<var method="selenium#getAttribute('//h1[@class=\'site-title\']/a/span@class')" name="attributeValue" />
 
 		<echo message="Test storeAttribute #2: using locator with xpath containing no variables" />
 
@@ -36,7 +36,7 @@
 	<command name="storeAttributeWithVariablesInAttributeName" priority="5">
 		<var name="key_testVar" value="site-title" />
 
-		<var attribute="class" locator="//h1[@class='${key_testVar}']/a/span" name="attributeValue" />
+		<var method="selenium#getAttribute('//h1[@class=\'${key_testVar}\']/a/span@class')" name="attributeValue" />
 
 		<echo message="Test storeAttribute #3: using locator/path with xpath containing variables" />
 
@@ -49,7 +49,7 @@
 	<command name="storeAttributeWithVariablesInLocator" priority="5">
 		<var name="class-name">site-title</var>
 
-		<var attribute="class" locator="//h1[@class='${class-name}']" name="attributeValue" />
+		<var method="selenium#getAttribute('//h1[@class=\'${class-name}\']@class')" name="attributeValue" />
 
 		<echo message="Test storeAttribute #4: using locator with xpath containing variables" />
 
@@ -64,7 +64,7 @@
 		<var name="attributeNamePart2">ss</var>
 		<var name="class-name">site-title</var>
 
-		<var attribute="c${attributeNamePart1}${attributeNamePart2}" locator="//h1[@class='${class-name}']" name="attributeValue" />
+		<var method="selenium#getAttribute('//h1[@class=\'${class-name}\']@c${attributeNamePart1}${attributeNamePart2}')" name="attributeValue" />
 
 		<echo message="Test storeAttribute #5: using locator with xpath containing variables" />
 
