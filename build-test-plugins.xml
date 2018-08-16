@@ -56,6 +56,11 @@ plugins.includes=${plugins.includes}</echo>
 
 app.server.tomcat.dir=${app.server.parent.dir}/tomcat-7.0.27</echo>
 			</then>
+			<else>
+				<echo append="true" file="${lp.plugins.dir}/build.${user.name}.properties">
+
+app.server.tomcat.dir=${app.server.parent.dir}/tomcat-${app.server.tomcat.version}</echo>
+			</else>
 		</if>
 
 		<for list="${plugins.includes}" param="plugin">
