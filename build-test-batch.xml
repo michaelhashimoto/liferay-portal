@@ -372,11 +372,17 @@ app.server.type=@{app.server.type}]]></echo>
 				</then>
 			</if>
 
-			<zip basedir="." destfile="liferay-portal-bundle-@{app.server.type}.zip" includes="bundles/**" />
+			<tar
+				basedir="."
+				compression="gzip"
+				destfile="liferay-portal-bundle-@{app.server.type}.tar.gz"
+				includes="bundles/**"
+				longfile="posix"
+			/>
 
 			<execute>
 				<![CDATA[
-					jar -ftv liferay-portal-bundle-@{app.server.type}.zip
+					tar --gzip --list --verbose --file=liferay-portal-bundle-@{app.server.type}.tar.gz
 				]]>
 			</execute>
 		</sequential>
@@ -406,12 +412,16 @@ app.server.type=@{app.server.type}]]></echo>
 			<execute>
 				<![CDATA[
 					unzip -oq liferay-portal-source.zip
-
-					unzip -oq liferay-portal-bundle-@{app.server.type}.zip
-
-					chmod -R a+x bundles
 				]]>
 			</execute>
+
+			<untar
+				compression="gzip"
+				dest="."
+				src="liferay-portal-bundle-@{app.server.type}.tar.gz"
+			/>
+
+			<chmod dir="bundles" includes="**/*.sh" perm="u+x" />
 
 			<echo if:set="env.JENKINS_HOME">ANT_OPTS=${env.ANT_OPTS}</echo>
 
@@ -574,19 +584,24 @@ app.server.type=@{app.server.type}]]></echo>
 						</then>
 						<elseif>
 							<and>
-								<available file="liferay-portal-bundle-${app.server.type}.zip" />
+								<available file="liferay-portal-bundle-${app.server.type}.tar.gz" />
 								<available file="liferay-portal-source.zip" />
 							</and>
 							<then>
+
 								<execute>
 									<![CDATA[
 										unzip -oq liferay-portal-source.zip
-
-										unzip -oq liferay-portal-bundle-@{app.server.type}.zip
-
-										chmod -R a+x bundles
 									]]>
 								</execute>
+
+								<untar
+									compression="gzip"
+									dest="."
+									src="liferay-portal-bundle-@{app.server.type}.tar.gz"
+								/>
+
+								<chmod dir="bundles" includes="**/*.sh" perm="u+x" />
 							</then>
 						</elseif>
 						<else>
