@@ -366,7 +366,9 @@ app.server.type=@{app.server.type}]]></echo>
 						<![CDATA[
 							git add -A
 
-							git diff --cached --name-only | grep -v -E '^bundles/|^modules/\.gitignore' | xargs -n 1000 zip -v liferay-portal-source.zip
+							git diff --cached --name-only | grep -v -E '^bundles/|^modules/\.gitignore' | xargs -n 1000 tar --update --verbose --file=liferay-portal-source.tar
+
+							gzip liferay-portal-source.tar
 						]]>
 					</execute>
 				</then>
@@ -409,11 +411,11 @@ app.server.type=@{app.server.type}]]></echo>
 		<attribute default="tomcat" name="app.server.type" />
 
 		<sequential>
-			<execute>
-				<![CDATA[
-					unzip -oq liferay-portal-source.zip
-				]]>
-			</execute>
+			<untar
+				compression="gzip"
+				dest="."
+				src="liferay-portal-source.tar.gz"
+			/>
 
 			<untar
 				compression="gzip"
@@ -585,15 +587,14 @@ app.server.type=@{app.server.type}]]></echo>
 						<elseif>
 							<and>
 								<available file="liferay-portal-bundle-${app.server.type}.tar.gz" />
-								<available file="liferay-portal-source.zip" />
+								<available file="liferay-portal-source.tar.gz" />
 							</and>
 							<then>
-
-								<execute>
-									<![CDATA[
-										unzip -oq liferay-portal-source.zip
-									]]>
-								</execute>
+								<untar
+									compression="gzip"
+									dest="."
+									src="liferay-portal-source.tar.gz"
+								/>
 
 								<untar
 									compression="gzip"
