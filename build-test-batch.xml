@@ -359,6 +359,8 @@ app.server.type=@{app.server.type}]]></echo>
 				<fileset dir="bundles" includes="*.zip" />
 			</delete>
 
+			<chmod dir="bundles" includes="**/*.sh" perm="u+x" />
+
 			<if>
 				<contains string="@{app.server.type}" substring="tomcat" />
 				<then>
