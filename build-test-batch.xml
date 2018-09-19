@@ -703,13 +703,11 @@ app.server.type=@{app.server.type}]]></echo>
 			<if>
 				<contains string="@{app.server.type}" substring="tomcat" />
 				<then>
-					<tar
+					<zip
 						basedir="${project.dir}"
-						compression="gzip"
-						destfile="liferay-portal-source.tar.gz"
+						destfile="liferay-portal-source.zip"
 						excludes="${test.batch.dist.source.excludes}"
 						includes="${test.batch.dist.source.includes}"
-						longfile="posix"
 					/>
 
 					<prepare-liferay-classes if:true="${test.batch.code.coverage}" merged.jar="${project.dir}/jacoco/merged.jar" portal.bundle.dir="bundles" />
@@ -757,10 +755,9 @@ app.server.type=@{app.server.type}]]></echo>
 
 			<antcall inheritAll="false" target="setup-sdk" />
 
-			<untar
-				compression="gzip"
+			<unzip
 				dest="."
-				src="liferay-portal-source.tar.gz"
+				src="liferay-portal-source.zip"
 			/>
 
 			<untar
@@ -1229,7 +1226,7 @@ app.server.type=@{app.server.type}]]></echo>
 						<elseif>
 							<and>
 								<available file="liferay-portal-bundle-${app.server.type}.tar.gz" />
-								<available file="liferay-portal-source.tar.gz" />
+								<available file="liferay-portal-source.zip" />
 							</and>
 							<then>
 								<prepare-test-environment app.server.type="${app.server.type}" />
@@ -3844,7 +3841,7 @@ log.sanitizer.enabled=false</echo>
 					<elseif>
 						<and>
 							<available file="liferay-portal-bundle-${app.server.type}.tar.gz" />
-							<available file="liferay-portal-source.tar.gz" />
+							<available file="liferay-portal-source.zip" />
 						</and>
 						<then>
 							<prepare-test-environment app.server.type="${app.server.type}" />
@@ -3967,13 +3964,13 @@ log.sanitizer.enabled=false</echo>
 					</else>
 				</if>
 
-				<echo>tar --verbose --extract --gzip --to-stdout --file=liferay-portal-source.tar.gz modules/core/portal-bootstrap/build/system.packages.extra.mf > modules/core/portal-bootstrap/system.packages.extra.mf</echo>
+				<echo>unzip -p liferay-portal-source.zip modules/core/portal-bootstrap/build/system.packages.extra.mf > modules/core/portal-bootstrap/system.packages.extra.mf</echo>
 
 				<execute>
 					<![CDATA[
 						mkdir -p modules/core/portal-bootstrap
 
-						tar --verbose --extract --gzip --to-stdout --file=liferay-portal-source.tar.gz modules/core/portal-bootstrap/build/system.packages.extra.mf > modules/core/portal-bootstrap/system.packages.extra.mf
+						unzip -p liferay-portal-source.zip modules/core/portal-bootstrap/build/system.packages.extra.mf > modules/core/portal-bootstrap/system.packages.extra.mf
 					]]>
 				</execute>
 			</test-set-up>
@@ -4214,13 +4211,13 @@ log.sanitizer.enabled=false</echo>
 
 						<antcall inheritAll="false" target="install-portal-snapshots" />
 
-						<echo>tar --verbose --extract --gzip --to-stdout --file=liferay-portal-source.tar.gz modules/core/portal-bootstrap/build/system.packages.extra.mf > modules/core/portal-bootstrap/system.packages.extra.mf</echo>
+						<echo>unzip -p liferay-portal-source.zip modules/core/portal-bootstrap/build/system.packages.extra.mf > modules/core/portal-bootstrap/system.packages.extra.mf</echo>
 
 						<execute>
 							<![CDATA[
 								mkdir -p modules/core/portal-bootstrap
 
-								tar --verbose --extract --gzip --to-stdout --file=liferay-portal-source.tar.gz modules/core/portal-bootstrap/build/system.packages.extra.mf > modules/core/portal-bootstrap/system.packages.extra.mf
+								unzip -p liferay-portal-source.zip modules/core/portal-bootstrap/build/system.packages.extra.mf > modules/core/portal-bootstrap/system.packages.extra.mf
 							]]>
 						</execute>
 					</then>
@@ -4802,13 +4799,13 @@ ${output.content}</echo>
 			</test-action>
 
 			<test-set-up>
-				<echo>tar --verbose --extract --gzip --to-stdout --file=liferay-portal-source.tar.gz modules/core/portal-bootstrap/build/system.packages.extra.mf > modules/core/portal-bootstrap/system.packages.extra.mf</echo>
+				<echo>unzip -p liferay-portal-source.zip modules/core/portal-bootstrap/build/system.packages.extra.mf > modules/core/portal-bootstrap/system.packages.extra.mf</echo>
 
 				<execute>
 					<![CDATA[
 						mkdir -p modules/core/portal-bootstrap
 
-						tar --verbose --extract --gzip --to-stdout --file=liferay-portal-source.tar.gz modules/core/portal-bootstrap/build/system.packages.extra.mf > modules/core/portal-bootstrap/system.packages.extra.mf
+						unzip -p liferay-portal-source.zip modules/core/portal-bootstrap/build/system.packages.extra.mf > modules/core/portal-bootstrap/system.packages.extra.mf
 					]]>
 				</execute>
 
