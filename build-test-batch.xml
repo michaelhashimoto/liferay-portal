@@ -716,7 +716,7 @@ app.server.type=@{app.server.type}]]></echo>
 				</then>
 			</if>
 
-			<chmod dir="bundles" includes="**/*.sh" perm="a+x">
+			<chmod file="bundles/**/*.sh" perm="a+x" />
 
 			<tar
 				basedir="."
