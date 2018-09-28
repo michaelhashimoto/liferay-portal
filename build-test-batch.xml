@@ -382,8 +382,10 @@ app.server.type=@{app.server.type}]]></echo>
 			>
 				<fileset
 					dir="bundles"
-					includes="**/*.sh"
-				/>
+				>
+					<include name="**/*.sh" />
+					<include name="**/bin/*" />
+				</fileset>
 			</chmod>
 
 			<tar
@@ -441,8 +443,10 @@ app.server.type=@{app.server.type}]]></echo>
 			>
 				<fileset
 					dir="bundles"
-					includes="**/*.sh"
-				/>
+				>
+					<include name="**/*.sh" />
+					<include name="**/bin/*" />
+				</fileset>
 			</chmod>
 
 			<echo if:set="env.JENKINS_HOME">ANT_OPTS=${env.ANT_OPTS}</echo>
