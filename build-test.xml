@@ -4893,6 +4893,39 @@ go]]></replacevalue>
 							dest="${todir}"
 							src="${test.jdbc.drivers.url}/db2/${database.version}/@{jdbc.driver}"
 						/>
+
+						<tstamp>
+							<format pattern="yyyyMMddkkmmssSSS" property="tstamp.value" />
+						</tstamp>
+
+						<mkdir dir="${tstamp.value}" />
+
+						<unzip
+							dest="${tstamp.value}"
+							src="${todir}/@{jdbc.driver}"
+						>
+							<flattenmapper />
+							<patternset>
+								<include name="META-INF/MANIFEST.MF" />
+							</patternset>
+						</unzip>
+
+						<replace file="${tstamp.value}/MANIFEST.MF">
+							<replacetoken><![CDATA[Class-Path: pdq.jar]]></replacetoken>
+							<replacevalue><![CDATA[]]></replacevalue>
+						</replace>
+
+						<zip
+							destfile="${todir}/@{jdbc.driver}"
+							update="true"
+						>
+							<zipfileset
+								file="${tstamp.value}/MANIFEST.MF"
+								fullpath="META-INF/MANIFEST.MF"
+							/>
+						</zip>
+
+						<delete dir="${tstamp.value}" />
 					</sequential>
 				</for>
 			</then>
