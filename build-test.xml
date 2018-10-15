@@ -4903,27 +4903,26 @@ go]]></replacevalue>
 						<unzip
 							dest="${tstamp.value}"
 							src="${todir}/@{jdbc.driver}"
-						>
-							<flattenmapper />
-							<patternset>
-								<include name="META-INF/MANIFEST.MF" />
-							</patternset>
-						</unzip>
+						/>
 
-						<replace file="${tstamp.value}/MANIFEST.MF">
-							<replacetoken><![CDATA[Class-Path: pdq.jar]]></replacetoken>
-							<replacevalue><![CDATA[]]></replacevalue>
-						</replace>
+						<if>
+							<available file="${tstamp.value}/META-INF/MANIFEST.MF" />
+							<then>
+								<replace file="${tstamp.value}/META-INF/MANIFEST.MF">
+									<replacetoken><![CDATA[Class-Path: pdq.jar]]></replacetoken>
+									<replacevalue><![CDATA[]]></replacevalue>
+								</replace>
+
+								<print-file file.name="${tstamp.value}/META-INF/MANIFEST.MF" />
+							</then>
+						</if>
+
+						<delete file="${todir}/@{jdbc.driver}" />
 
 						<zip
+							basedir="${tstamp.value}"
 							destfile="${todir}/@{jdbc.driver}"
-							update="true"
-						>
-							<zipfileset
-								file="${tstamp.value}/MANIFEST.MF"
-								fullpath="META-INF/MANIFEST.MF"
-							/>
-						</zip>
+						/>
 
 						<delete dir="${tstamp.value}" />
 					</sequential>
