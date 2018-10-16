@@ -4908,11 +4908,11 @@ go]]></replacevalue>
 						<if>
 							<available file="${tstamp.value}/META-INF/MANIFEST.MF" />
 							<then>
-								<replace file="${tstamp.value}/META-INF/MANIFEST.MF">
-									<replacetoken><![CDATA[Class-Path: pdq.jar
-]]></replacetoken>
-									<replacevalue><![CDATA[]]></replacevalue>
-								</replace>
+								<replaceregexp
+									file="${tstamp.value}/META-INF/MANIFEST.MF"
+									match="Class-Path: pdq.jar\s+"
+									replace=""
+								/>
 
 								<print-file file.name="${tstamp.value}/META-INF/MANIFEST.MF" />
 							</then>
