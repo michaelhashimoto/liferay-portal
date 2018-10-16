@@ -4909,7 +4909,8 @@ go]]></replacevalue>
 							<available file="${tstamp.value}/META-INF/MANIFEST.MF" />
 							<then>
 								<replace file="${tstamp.value}/META-INF/MANIFEST.MF">
-									<replacetoken><![CDATA[Class-Path: pdq.jar]]></replacetoken>
+									<replacetoken><![CDATA[Class-Path: pdq.jar
+]]></replacetoken>
 									<replacevalue><![CDATA[]]></replacevalue>
 								</replace>
 
