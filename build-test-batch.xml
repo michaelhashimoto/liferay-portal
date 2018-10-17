@@ -614,33 +614,13 @@ app.server.type=@{app.server.type}]]></echo>
 								<available file="liferay-portal-source.tar.gz" />
 							</and>
 							<then>
-								<untar
-									compression="gzip"
-									dest="."
-									src="liferay-portal-source.tar.gz"
-								/>
-
-								<untar
-									compression="gzip"
-									dest="."
-									src="liferay-portal-bundle-@{app.server.type}.tar.gz"
-								/>
-
-								<chmod dir="bundles" includes="**/*.sh" perm="u+x" />
+								<prepare-test-environment app.server.type="${app.server.type}" />
 							</then>
 						</elseif>
 						<else>
-							<if>
-								<isset property="env.DIST_PATH" />
-								<then>
-									<prepare-test-environment app.server.type="${app.server.type}" />
-								</then>
-								<else>
-									<antcall target="start" />
+							<antcall target="start" />
 
-									<ant antfile="build-dist.xml" target="build-dist-${app.server.type}" />
-								</else>
-							</if>
+							<ant antfile="build-dist.xml" target="build-dist-${app.server.type}" />
 						</else>
 					</if>
 
