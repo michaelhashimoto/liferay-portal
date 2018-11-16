@@ -13,3 +13,21 @@ dependencies {
 	compile group: "org.apache.ant", name: "ant", version: "1.9.4"
 	compile group: "org.json", name: "json", version: "20140107"
 }
+
+def propertiesFile = new File("${projectDir}/src/test/resources/test-jenkins-results-parser-util-ext.properties");
+
+task deleteProperties << {
+    delete propertiesFile
+}
+
+task writeProperties << {
+	def repositoryDir = System.getProperty("repository.dir");
+
+	if ((repositoryDir != null) && (!repositoryDir.isEmpty())) {
+		propertiesFile.text = "repository.dir=" + repositoryDir;
+	}
+}
+
+compileJava.dependsOn(writeProperties);
+
+test.finalizedBy(deleteProperties);
