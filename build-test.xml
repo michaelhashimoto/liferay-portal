@@ -9186,7 +9186,7 @@ go</echo>
 			</else>
 		</if>
 
-		<poshi-execute task="validatePoshi" />
+		<poshi-execute failonerror="true" task="validatePoshi" />
 	</target>
 
 	<target name="run-selenium-test" depends="prepare-selenium">
