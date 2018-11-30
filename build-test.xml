@@ -1187,7 +1187,12 @@ counter.jdbc.prefix=jdbc.counter.]]></echo>
 					<loadfile
 						property="patching.tool.version"
 						srcFile="${patching.tool.latest.txt}"
-					/>
+					>
+						<filterchain>
+							<trim />
+							<striplinebreaks/>
+						</filterchain>
+					</loadfile>
 
 					<delete file="${basedir}/${patching.tool.latest.txt}" />
 
