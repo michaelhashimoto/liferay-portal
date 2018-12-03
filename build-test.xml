@@ -1189,8 +1189,8 @@ counter.jdbc.prefix=jdbc.counter.]]></echo>
 						srcFile="${patching.tool.latest.txt}"
 					>
 						<filterchain>
-							<trim />
 							<striplinebreaks/>
+							<trim />
 						</filterchain>
 					</loadfile>
 
