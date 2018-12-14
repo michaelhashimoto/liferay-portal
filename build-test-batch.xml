@@ -675,7 +675,10 @@ app.server.type=@{app.server.type}]]></echo>
 
 				<test-set-up>
 					<if>
-						<isset property="env.DIST_PATH" />
+						<and>
+							<available file="liferay-portal-bundle-${app.server.type}.tar.gz" />
+							<available file="liferay-portal-source.tar.gz" />
+						</and>
 						<then>
 							<prepare-test-environment />
 
@@ -714,7 +717,10 @@ app.server.type=@{app.server.type}]]></echo>
 
 			<test-set-up>
 				<if>
-					<isset property="env.DIST_PATH" />
+					<and>
+						<available file="liferay-portal-bundle-${app.server.type}.tar.gz" />
+						<available file="liferay-portal-source.tar.gz" />
+					</and>
 					<then>
 						<prepare-test-environment />
 					</then>
@@ -810,7 +816,10 @@ app.server.type=@{app.server.type}]]></echo>
 
 			<test-set-up>
 				<if>
-					<isset property="env.DIST_PATH" />
+					<and>
+						<available file="liferay-portal-bundle-${app.server.type}.tar.gz" />
+						<available file="liferay-portal-source.tar.gz" />
+					</and>
 					<then>
 						<prepare-test-environment />
 
@@ -888,7 +897,10 @@ app.server.type=@{app.server.type}]]></echo>
 
 			<test-set-up>
 				<if>
-					<isset property="env.DIST_PATH" />
+					<and>
+						<available file="liferay-portal-bundle-${app.server.type}.tar.gz" />
+						<available file="liferay-portal-source.tar.gz" />
+					</and>
 					<then>
 						<prepare-test-environment />
 					</then>
@@ -949,7 +961,10 @@ app.server.type=@{app.server.type}]]></echo>
 
 			<test-set-up>
 				<if>
-					<isset property="env.DIST_PATH" />
+					<and>
+						<available file="liferay-portal-bundle-${app.server.type}.tar.gz" />
+						<available file="liferay-portal-source.tar.gz" />
+					</and>
 					<then>
 						<prepare-test-environment />
 					</then>
@@ -984,7 +999,10 @@ app.server.type=@{app.server.type}]]></echo>
 
 			<test-set-up>
 				<if>
-					<isset property="env.DIST_PATH" />
+					<and>
+						<available file="liferay-portal-bundle-${app.server.type}.tar.gz" />
+						<available file="liferay-portal-source.tar.gz" />
+					</and>
 					<then>
 						<prepare-test-environment />
 
