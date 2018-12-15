@@ -44,7 +44,7 @@ public class AutoCloseUtil {
 		sb.append(build.getBuildURL());
 		sb.append("\">");
 		sb.append(build.getBuildURL());
-		sb.append("</li>");
+		sb.append("</a>");
 
 		return _autoClose(
 			pullRequest, build, Lists.newArrayList(sb.toString()));
@@ -97,7 +97,7 @@ public class AutoCloseUtil {
 					sb.append(failedDownstreamBuild.getJobName());
 				}
 
-				sb.append("</li>");
+				sb.append("</a>");
 
 				failedDownstreamBuildURLs.add(failureBuildURL);
 			}
