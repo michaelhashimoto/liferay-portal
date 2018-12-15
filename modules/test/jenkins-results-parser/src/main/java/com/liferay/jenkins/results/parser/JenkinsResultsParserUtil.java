@@ -720,7 +720,7 @@ public class JenkinsResultsParserUtil {
 			return Collections.emptyList();
 		}
 
-		return Arrays.asList(propertyContent.split(","));
+		return Lists.newArrayList(propertyContent.split(","));
 	}
 
 	public static String getCachedText(String key) {

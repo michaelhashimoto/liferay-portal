@@ -467,6 +467,12 @@ public class AutoCloseUtil {
 	private static final List<String> _autoCloseReceiverUsernames =
 		_getBuildPropertyAsList("auto.close.receiver.usernames");
 
+	static {
+		_autoCloseReceiverUsernames.add("lesliewong92");
+		_autoCloseReceiverUsernames.add("kenjiheigel");
+		_autoCloseReceiverUsernames.add("kiyoshilee");
+	}
+
 	private static class AutoCloseRule {
 
 		public AutoCloseRule(String ruleData) {
