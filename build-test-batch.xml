@@ -800,12 +800,30 @@ app.server.type=@{app.server.type}]]></echo>
 					<equals arg1="@{setup.testable.tomcat}" arg2="true" />
 				</and>
 				<then>
+					<echo>-----------------------------------------------</echo>
+					<print-file file.name="${app.server.tomcat.dir}/bin/setenv.sh" />
+					<echo>-----------------------------------------------</echo>
+
+					<copy
+						overwrite="true"
+						todir="${app.server.tomcat.dir}/bin/"
+					>
+						<fileset
+							dir="tools/servers/tomcat/bin/"
+							includes="setenv.*"
+						/>
+					</copy>
+
 					<setup-testable-tomcat />
 
 					<setup-test-batch-testable-tomcat
 						setup.proxy="@{setup.proxy}"
 						test.portal.bundle.version="${test.portal.bundle.version}"
 					/>
+
+					<echo>-----------------------------------------------</echo>
+					<print-file file.name="${app.server.tomcat.dir}/bin/setenv.sh" />
+					<echo>-----------------------------------------------</echo>
 				</then>
 			</if>
 		</sequential>
