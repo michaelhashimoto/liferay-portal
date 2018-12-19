@@ -1267,7 +1267,6 @@ war.path=${app.server.portal.dir}/</echo>
 			<if>
 				<isset property="env.JENKINS_HOME" />
 				<then>
-					<local name="java.jdk.home" />
 					<local name="poshi.java.jdk.opts" />
 
 					<get-java-jdk-home architecture="x32" version="1.8" />
@@ -3890,17 +3889,13 @@ org.apache.catalina.startup.ClassLoaderFactory.level=INFO]]>
 						/>
 					</delete>
 
+					<get-java-jdk-bundle-version test.batch.name="${test.batch.name}" />
+
+					<get-java-jdk-home version="${java.jdk.bundle.version}" />
+
 					<if>
 						<equals arg1="${test.ant.launched.by.selenium}" arg2="true" />
 						<then>
-							<local name="java.jdk.bundle.version" />
-
-							<get-java-jdk-bundle-version test.batch.name="${test.batch.name}" />
-
-							<local name="java.jdk.home" />
-
-							<get-java-jdk-home version="${java.jdk.bundle.version}" />
-
 							<exec dir="${test.app.server.bin.dir}" executable="${app.server.start.executable}" resolveexecutable="true">
 								<arg line="${app.server.start.executable.arg.line}" />
 								<env key="JAVA_HOME" path="${java.jdk.home}" />
@@ -3924,14 +3919,6 @@ org.apache.catalina.startup.ClassLoaderFactory.level=INFO]]>
 								</if>
 
 								<daemons>
-									<local name="java.jdk.bundle.version" />
-
-									<get-java-jdk-bundle-version test.batch.name="${test.batch.name}" />
-
-									<local name="java.jdk.home" />
-
-									<get-java-jdk-home version="${java.jdk.bundle.version}" />
-
 									<exec dir="${test.app.server.bin.dir}" executable="${app.server.start.executable}" failonerror="true" resolveexecutable="true">
 										<arg line="${app.server.start.executable.arg.line}" />
 										<env key="JAVA_HOME" path="${java.jdk.home}" />
@@ -4090,33 +4077,21 @@ org.apache.catalina.startup.ClassLoaderFactory.level=INFO]]>
 				app.server.bundle.index="@{app.server.bundle.index}"
 			/>
 
+			<get-java-jdk-bundle-version test.batch.name="${test.batch.name}" />
+
+			<get-java-jdk-home version="${java.jdk.bundle.version}" />
+
 			<parallel>
 				<daemons>
 					<if>
 						<equals arg1="${test.ant.launched.by.selenium}" arg2="true" />
 						<then>
-							<local name="java.jdk.bundle.version" />
-
-							<get-java-jdk-bundle-version test.batch.name="${test.batch.name}" />
-
-							<local name="java.jdk.home" />
-
-							<get-java-jdk-home version="${java.jdk.bundle.version}" />
-
 							<exec dir="${test.app.server.bin.dir}" executable="${app.server.stop.executable}" resolveexecutable="true">
 								<arg line="${app.server.stop.executable.arg.line}" />
 								<env key="JAVA_HOME" path="${java.jdk.home}" />
 							</exec>
 						</then>
 						<else>
-							<local name="java.jdk.bundle.version" />
-
-							<get-java-jdk-bundle-version test.batch.name="${test.batch.name}" />
-
-							<local name="java.jdk.home" />
-
-							<get-java-jdk-home version="${java.jdk.bundle.version}" />
-
 							<exec dir="${test.app.server.bin.dir}" executable="${app.server.stop.executable}" resolveexecutable="true">
 								<arg line="${app.server.stop.executable.arg.line}" />
 								<env key="JAVA_HOME" path="${java.jdk.home}" />
