@@ -2697,6 +2697,17 @@ log.sanitizer.enabled=false</echo>
 				</then>
 			</if>
 
+			<local name="java.jdk.bundle.version" />
+
+			<get-java-jdk-bundle-version test.batch.name="${test.batch.name}" />
+
+			<if>
+				<isset property="test.batch.app.server.tomcat.setenv.gc.new[${java.jdk.bundle.version}]" />
+				<then>
+					<propertycopy from="test.batch.app.server.tomcat.setenv.gc.new[${java.jdk.bundle.version}]" name="test.batch.app.server.tomcat.setenv.gc.new" override="true" />
+				</then>
+			</if>
+
 			<if>
 				<resourcecontains
 					resource="${set.env.file.name}"
