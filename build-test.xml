@@ -1198,6 +1198,7 @@ counter.jdbc.prefix=jdbc.counter.]]></echo>
 
 					<get
 						dest="${basedir}"
+						httpusecaches="false"
 						src="${patching.tool.version.url}"
 					/>
 
