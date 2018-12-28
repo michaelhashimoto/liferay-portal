@@ -139,14 +139,14 @@
 		</execute>
 	</command>
 
-	<!--<command name="Remove" priority="5">
+	<!-- <command name="Remove" priority="5">
 		<var method="StringUtil#remove('The fox jumped over the lazy dog', 'lazy')" name="stringRemove" />
 
 		<execute macro="TestUtils#assertEquals">
 			<var name="actual" value="${stringRemove}" />
 			<var name="expected" value="The fox jumped over the dog" />
 		</execute>
-	</command>-->
+	</command> -->
 
 	<command name="Replace" priority="5">
 		<var method="StringUtil#replace('You are my guest', 'guest', 'friend')" name="string" />

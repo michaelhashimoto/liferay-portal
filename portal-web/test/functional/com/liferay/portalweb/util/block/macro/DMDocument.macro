@@ -228,7 +228,7 @@
 		<execute function="AssertElementPresent" locator1="CPDocumentsandmedia#DOCUMENT_CONTAINER_FOLDER1" />
 		<execute function="AssertTextEquals" locator1="CPDocumentsandmedia#DOCUMENT_CONTAINER_FOLDER1_TITLE" value1="${dmFolderName}" />
 		<execute function="Click" locator1="CPDocumentsandmedia#DOCUMENT_CONTAINER_FOLDER1" />
-		<!--<execute function="AssertTextEquals" locator1="CPDocumentsandmedia#BREADCRUMB_LAST" value1="${dmFolderName}" />-->
+		<!-- <execute function="AssertTextEquals" locator1="CPDocumentsandmedia#BREADCRUMB_LAST" value1="${dmFolderName}" /> -->
 		<execute function="AssertElementPresent" locator1="CPDocumentsandmedia#FOLDER_VIEW_DOCUMENT1" />
 		<execute function="AssertTextEquals" locator1="CPDocumentsandmedia#FOLDER_VIEW_DOCUMENT1_TITLE" value1="${dmDocumentTitle}" />
 	</command>

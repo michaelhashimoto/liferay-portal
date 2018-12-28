@@ -45,7 +45,7 @@
 		</execute>
 	</command>
 
-	<!--<command name="AddMembersSiteGuestUser" priority="5">
+	<!-- <command name="AddMembersSiteGuestUser" priority="5">
 		<var name="siteName" value="Liferay" />
 		<var name="userEmailAddress" value="userea@liferay.com" />
 		<var name="userFirstName" value="userfn" />
@@ -73,7 +73,7 @@
 			<var name="userFirstName" value="${userFirstName}" />
 			<var name="userLastName" value="${userLastName}" />
 		</execute>
-	</command>-->
+	</command> -->
 
 	<command name="AddTeam" priority="5">
 		<var name="siteName" value="Site Name" />

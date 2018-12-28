@@ -4,7 +4,7 @@
 		<execute function="AssertClick" locator1="PGDocumentsandmedia#ADD_MENULIST_SHORTCUT" value1="Shortcut" />
 
 		<execute function="Click" locator1="PGDocumentsandmediaAddshortcut#SITE_BUTTON" />
-		<!--<execute function="#selectwindow" locator1="PGDocumentsandmediaAddshortcutsites#DOCUMENTS_AND_MEDIA_POPUP" />-->
+		<!-- <execute function="#selectwindow" locator1="PGDocumentsandmediaAddshortcutsites#DOCUMENTS_AND_MEDIA_POPUP" /> -->
 		<execute function="Click" locator1="PGDocumentsandmediaAddshortcutsites#SITES_GLOBAL_SITE" />
 		<execute function="AssertClick" locator1="PGDocumentsandmediaAddshortcut#SAVE_BUTTON" value1="Save" />
 	</command>
