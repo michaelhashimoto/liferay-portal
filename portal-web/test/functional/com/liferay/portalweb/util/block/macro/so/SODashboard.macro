@@ -254,7 +254,7 @@
 	<command name="viewUpcomingTask">
 		<execute function="Click#textClickAt" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
 
-		<var method="selenium#getText(SODashboard#PROFILE_NAME)" name="currentUser" />
+		<var method="selenium#getText('SODashboard#PROFILE_NAME')" name="currentUser" />
 
 		<if>
 			<equals arg1="${taskAssignee}" arg2="${currentUser}" />

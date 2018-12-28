@@ -318,7 +318,7 @@
 		<execute function="Click" locator1="SOUserBar#USER_NAME" />
 		<execute function="AssertClick#assertTextClickAt" locator1="SOUserBar#USER_MENU_MY_ACCOUNT" value1="My Account" />
 
-		<var method="selenium#getText(CPMyAccount#USER_NAME_HEADER)" name="currentUser" />
+		<var method="selenium#getText('CPMyAccount#USER_NAME_HEADER')" name="currentUser" />
 
 		<if>
 			<isset var="profileScreenName" />
@@ -499,7 +499,7 @@
 		<execute function="Click" locator1="SOUserBar#USER_NAME" />
 		<execute function="AssertClick#assertTextClickAt" locator1="SOUserBar#USER_MENU_MY_ACCOUNT" value1="My Account" />
 
-		<var method="selenium#getText(CPMyAccount#USER_NAME_HEADER)" name="currentUser" />
+		<var method="selenium#getText('CPMyAccount#USER_NAME_HEADER')" name="currentUser" />
 
 		<execute function="Click#textClickAt" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
 
@@ -653,7 +653,7 @@
 		<execute function="Click" locator1="SOUserBar#USER_NAME" />
 		<execute function="AssertClick#assertTextClickAt" locator1="SOUserBar#USER_MENU_MY_ACCOUNT" value1="My Account" />
 
-		<var method="selenium#getText(CPMyAccount#USER_NAME_HEADER)" name="currentUser" />
+		<var method="selenium#getText('CPMyAccount#USER_NAME_HEADER')" name="currentUser" />
 
 		<if>
 			<isset var="profileScreenName" />

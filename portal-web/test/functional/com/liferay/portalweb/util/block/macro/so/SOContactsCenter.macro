@@ -223,7 +223,7 @@
 		<while>
 			<condition function="IsElementPresent" locator1="SOContactscenter#CONTACTS_LIST_NAME" />
 			<then>
-				<var method="selenium#getText(SOContactscenter#CONTACTS_LIST_NAME)" name="contactName" />
+				<var method="selenium#getText('SOContactscenter#CONTACTS_LIST_NAME')" name="contactName" />
 
 				<execute function="Click" locator1="SOContactscenter#CONTACTS_LIST_NAME" />
 				<execute function="Click" locator1="SOContactscenter#CONTACTS_LIST_NAME" />

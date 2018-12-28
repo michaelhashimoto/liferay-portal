@@ -105,7 +105,7 @@
 
 		<execute macro="TestUtils#assertEquals">
 			<var name="actual" value="${int}" />
-			<var method="selenium#getText(CPBlogsAdd#DISPLAY_DATE_DAY)" name="expected" />
+			<var method="selenium#getText('CPBlogsAdd#DISPLAY_DATE_DAY')" name="expected" />
 		</execute>
 	</command>
 
@@ -116,7 +116,7 @@
 
 		<execute function="AssertClick" locator1="CPBlogs#ADD_ENTRY" value1="Add" />
 
-		<var method="selenium#getText(CPBlogsAdd#DISPLAY_DATE)" name="int" />
+		<var method="selenium#getText('CPBlogsAdd#DISPLAY_DATE')" name="int" />
 
 		<var method="selenium#getCurrentMonth()" name="month" />
 		<var method="RegexUtil#replace('${int}', '([1-9]*[0-9])/([0-9]*)/([0-9]*)', '1')" name="regex" />
@@ -138,7 +138,7 @@
 
 		<execute macro="TestUtils#assertEquals">
 			<var name="actual" value="${int}" />
-			<var method="selenium#getText(CPBlogsAdd#DISPLAY_DATE_YEAR)" name="expected" />
+			<var method="selenium#getText('CPBlogsAdd#DISPLAY_DATE_YEAR')" name="expected" />
 		</execute>
 	</command>
 

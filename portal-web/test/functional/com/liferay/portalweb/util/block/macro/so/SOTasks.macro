@@ -350,7 +350,7 @@
 	</command>
 
 	<command name="resolveTask">
-		<var method="selenium#getText(SODashboard#PROFILE_NAME)" name="currentUser" />
+		<var method="selenium#getText('SODashboard#PROFILE_NAME')" name="currentUser" />
 
 		<execute function="AssertClick#assertTextClickAt" locator1="SOTasks#ASSIGNED_TO_ME_LINK" value1="Assigned to Me" />
 		<execute function="AssertClick" locator1="SOTasks#TASK_DESCRIPTION_NORMAL" value1="${taskDescription}" />
@@ -415,7 +415,7 @@
 	</command>
 
 	<command name="viewTask">
-		<var method="selenium#getText(SODashboard#PROFILE_NAME)" name="currentUser" />
+		<var method="selenium#getText('SODashboard#PROFILE_NAME')" name="currentUser" />
 
 		<execute function="AssertClick#assertTextClickAt" locator1="SOTasks#ASSIGNED_TO_ME_LINK" value1="Assigned to Me" />
 
