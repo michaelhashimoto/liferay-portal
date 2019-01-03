@@ -7,7 +7,7 @@
 
 	<set-up>
 		<execute macro="User#firstLoginPG">
-			<var name="welcome-theme" value="welcome-theme" />
+			<var name="welcomeTheme" value="welcome-theme" />
 		</execute>
 	</set-up>
 

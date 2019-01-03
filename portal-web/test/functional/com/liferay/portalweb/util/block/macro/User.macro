@@ -152,7 +152,7 @@
 		<execute macro="Page#openURL" />
 
 		<if>
-			<isset var="welcome-theme" />
+			<isset var="welcomeTheme" />
 			<then>
 				<execute function="AssertClick#assertTextClickAt" locator1="PGWelcomePage1#SIGN_IN" value1="Sign In" />
 			</then>

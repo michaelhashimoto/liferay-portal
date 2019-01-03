@@ -240,8 +240,8 @@
 		<execute function="Click" locator1="PGDocumentsandmedia#ENTRIES_FOLDER" />
 
 		<execute macro="SODocuments#viewPGDisplayView">
-			<var name=" dmDocumentUploader" value="${dmDocumentUploader}" />
-			<var name=" dmDocumentVersionNumber" value="${dmDocumentVersionNumber}" />
+			<var name="dmDocumentUploader" value="${dmDocumentUploader}" />
+			<var name="dmDocumentVersionNumber" value="${dmDocumentVersionNumber}" />
 		</execute>
 	</command>
 
@@ -291,8 +291,8 @@
 		<execute function="Click" locator1="PGDocumentsandmedia#ENTRIES_FOLDER" />
 
 		<execute macro="SODocuments#viewPGDisplayView">
-			<var name=" dmDocumentUploader" value="${dmDocumentUploader}" />
-			<var name=" dmDocumentVersionNumber" value="${dmDocumentVersionNumber}" />
+			<var name="dmDocumentUploader" value="${dmDocumentUploader}" />
+			<var name="dmDocumentVersionNumber" value="${dmDocumentVersionNumber}" />
 		</execute>
 	</command>
 
