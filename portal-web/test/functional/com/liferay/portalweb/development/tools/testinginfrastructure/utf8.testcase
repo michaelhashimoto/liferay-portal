@@ -39,19 +39,6 @@
 		</if>
 	</command>
 
-	<command name="IssetConditionalWithUTF8Characters" priority="5">
-		<echo message="Test UTF8 Characters: 'isset' conditional clause values" />
-
-		<if>
-			<isset var="りんご" />
-			<then>
-				<execute macro="TestUtils#pass" />
-			</then>
-		</if>
-
-		<execute macro="TestUtils#pass" />
-	</command>
-
 	<command name="TypeAndAssertInlineUTF8Characters" priority="5">
 		<echo message="Test UTF8 Characters: typing and asserting inline values" />
 
