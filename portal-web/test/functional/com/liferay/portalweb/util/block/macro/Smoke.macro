@@ -48,7 +48,7 @@
 		<var name="portletName" value="Blogs" />
 		<var name="portletTitle" value="Blogs" />
 
-		<task macro-summary="Page#gotoCP">
+		<task summary="Navigate to Go to > Control Panel > ${portletName}">
 			<execute macro="Page#gotoCP">
 				<var name="portletName" value="${portletName}" />
 			</execute>
