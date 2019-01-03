@@ -2,7 +2,7 @@
 	<command name="clickAtSendKeys">
 		<execute selenium="waitForVisible" />
 
-		<execute argument2="" selenium="type" />
+		<execute argument1="${locator1}" argument2="" selenium="type" />
 
 		<execute selenium="clickAt" />
 
