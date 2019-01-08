@@ -1,67 +1,53 @@
-<definition component-name="marketplace">
-	<property name="portal.release" value="true" />
-	<property name="portal.upstream" value="true" />
-	<property name="testray.main.component.name" value="Marketplace" />
-	<property name="theme.plugins.includes" value="welcome-theme" />
-	<property name="web.plugins.includes" value="resource-importer-web" />
+@component-name = "marketplace"
+definition {
+	property portal.release = "true";
+	property portal.upstream = "true";
+	property testray.main.component.name = "Marketplace";
+	property theme.plugins.includes = "welcome-theme";
+	property web.plugins.includes = "resource-importer-web";
 
-	<set-up>
-		<execute macro="User#firstLoginPG">
-			<var name="welcomeTheme" value="welcome-theme" />
-		</execute>
-	</set-up>
+	setUp {
+		User.firstLoginPG(welcomeTheme = "welcome-theme");
+	}
 
-	<tear-down>
-		<execute macro="SitePage#selectTheme">
-			<var name="availableThemeName" value="Classic" />
-			<var name="liferayVersion" value="6101" />
-		</execute>
+	tearDown {
+		SitePage.selectTheme(availableThemeName = "Classic", liferayVersion = "6101");
 
-		<execute macro="Site#tearDownCP" />
+		Site.tearDownCP();
 
-		<execute macro="BlogsEntry#tearDownCP" />
+		BlogsEntry.tearDownCP();
 
-		<execute macro="BookmarksFolder#tearDownCP" />
+		BookmarksFolder.tearDownCP();
 
-		<execute macro="DMDocument#tearDownCP" />
+		DMDocument.tearDownCP();
 
-		<execute macro="Event#tearDownCP" />
+		Event.tearDownCP();
 
-		<execute macro="MessageboardsCategory#tearDownCP" />
+		MessageboardsCategory.tearDownCP();
 
-		<execute macro="WikiPage#tearDownCP" />
+		WikiPage.tearDownCP();
 
-		<execute macro="Page#tearDownPG" />
-	</tear-down>
+		Page.tearDownPG();
+	}
 
-	<command name="MarketplaceSmoke611" priority="5">
-		<execute macro="Marketplace#smoke" />
-	</command>
+	@priority = "5"
+	test MarketplaceSmoke611 {
+		Marketplace.smoke();
+	}
 
-	<command name="MarketplaceSmoke611Sites" priority="5">
-		<var name="siteName" value="Site Name" />
-		<var name="sitePageName" value="Public Site Page" />
+	@priority = "5"
+	test MarketplaceSmoke611Sites {
+		var siteName = "Site Name";
+		var sitePageName = "Public Site Page";
 
-		<execute macro="Page#gotoCP">
-			<var name="portletName" value="Sites" />
-		</execute>
+		Page.gotoCP(portletName = "Sites");
 
-		<execute macro="Site#addCP">
-			<var name="siteName" value="${siteName}" />
-			<var name="siteType" value="Blank" />
-		</execute>
+		Site.addCP(siteName = "${siteName}", siteType = "Blank");
 
-		<execute macro="Page#gotoCP">
-			<var name="portletName" value="Sites" />
-		</execute>
+		Page.gotoCP(portletName = "Sites");
 
-		<execute macro="SitePage#addCP">
-			<var name="sitePageName" value="${sitePageName}" />
-			<var name="sitePagePrivacy" value="Public" />
-		</execute>
+		SitePage.addCP(sitePageName = "${sitePageName}", sitePagePrivacy = "Public");
 
-		<execute macro="Marketplace#smoke">
-			<var name="pageType" value="Site" />
-		</execute>
-	</command>
-</definition>
+		Marketplace.smoke(pageType = "Site");
+	}
+}

@@ -1,49 +1,48 @@
-<definition component-name="portal-wcm">
-	<property name="portal.release" value="true" />
-	<property name="portal.upstream" value="true" />
-	<property name="testray.main.component.name" value="WCM" />
+@component-name = "portal-wcm"
+definition {
+	property portal.release = "true";
+	property portal.upstream = "true";
+	property testray.main.component.name = "WCM";
 
-	<set-up>
-		<execute macro="User#firstLoginPG" />
-	</set-up>
+	setUp {
+		User.firstLoginPG();
+	}
 
-	<command name="AddPageTemplate" priority="5">
-		<var name="pageTemplateActive" value="Yes" />
-		<var name="pageTemplateName" value="Page Template Name" />
+	@priority = "5"
+	test AddPageTemplate {
+		var pageTemplateActive = "Yes";
+		var pageTemplateName = "Page Template Name";
 
-		<execute macro="Page#gotoCP">
-			<var name="portletName" value="Page Templates" />
-		</execute>
+		Page.gotoCP(portletName = "Page Templates");
 
-		<execute macro="PageTemplate#addCP">
-			<var name="pageTemplateActive" value="${pageTemplateActive}" />
-			<var name="pageTemplateName" value="${pageTemplateName}" />
-		</execute>
-	</command>
+		PageTemplate.addCP(
+			pageTemplateActive = "${pageTemplateActive}",
+			pageTemplateName = "${pageTemplateName}"
+		);
+	}
 
-	<command name="EditPageTemplate" priority="5">
-		<var name="pageTemplateActive" value="Yes" />
-		<var name="pageTemplateActiveEdit" value="No" />
-		<var name="pageTemplateName" value="Page Template Name" />
-		<var name="pageTemplateNameEdit" value="Page Template Name Edit" />
+	@priority = "5"
+	test EditPageTemplate {
+		var pageTemplateActive = "Yes";
+		var pageTemplateActiveEdit = "No";
+		var pageTemplateName = "Page Template Name";
+		var pageTemplateNameEdit = "Page Template Name Edit";
 
-		<execute macro="Page#gotoCP">
-			<var name="portletName" value="Page Templates" />
-		</execute>
+		Page.gotoCP(portletName = "Page Templates");
 
-		<execute macro="PageTemplate#addCP">
-			<var name="pageTemplateActive" value="${pageTemplateActive}" />
-			<var name="pageTemplateName" value="${pageTemplateName}" />
-		</execute>
+		PageTemplate.addCP(
+			pageTemplateActive = "${pageTemplateActive}",
+			pageTemplateName = "${pageTemplateName}"
+		);
 
-		<execute macro="PageTemplate#editCP">
-			<var name="pageTemplateActiveEdit" value="${pageTemplateActiveEdit}" />
-			<var name="pageTemplateName" value="${pageTemplateName}" />
-			<var name="pageTemplateNameEdit" value="${pageTemplateNameEdit}" />
-		</execute>
-	</command>
+		PageTemplate.editCP(
+			pageTemplateActiveEdit = "${pageTemplateActiveEdit}",
+			pageTemplateName = "${pageTemplateName}",
+			pageTemplateNameEdit = "${pageTemplateNameEdit}"
+		);
+	}
 
-	<tear-down>
-		<execute macro="PageTemplate#tearDownCP" />
-	</tear-down>
-</definition>
+	tearDown {
+		PageTemplate.tearDownCP();
+	}
+}

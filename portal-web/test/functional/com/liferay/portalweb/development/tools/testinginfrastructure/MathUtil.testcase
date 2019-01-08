@@ -1,56 +1,43 @@
-<definition component-name="portal-tools">
-	<property name="portal.release" value="true" />
-	<property name="portal.upstream" value="true" />
-	<property name="testcase.url" value="" />
-	<property name="testray.main.component.name" value="Tools" />
+@component-name = "portal-tools"
+definition {
+	property portal.release = "true";
+	property portal.upstream = "true";
+	property testcase.url = "";
+	property testray.main.component.name = "Tools";
 
-	<command name="Difference" priority="5">
-		<var method="MathUtil#difference('3', '2')" name="difference" />
+	@priority = "5"
+	test Difference {
+		var difference = MathUtil.difference("3", "2");
 
-		<execute macro="TestUtils#assertEquals">
-			<var name="actual" value="${difference}" />
-			<var name="expected" value="1" />
-		</execute>
-	</command>
+		TestUtils.assertEquals(actual = "${difference}", expected = "1");
+	}
 
-	<command name="Product" priority="5">
-		<var method="MathUtil#product('4', '2')" name="product" />
+	@priority = "5"
+	test Product {
+		var product = MathUtil.product("4", "2");
 
-		<execute macro="TestUtils#assertEquals">
-			<var name="actual" value="${product}" />
-			<var name="expected" value="8" />
-		</execute>
+		TestUtils.assertEquals(actual = "${product}", expected = "8");
 
-		<var method="MathUtil#product('2', '3', '4')" name="product" />
+		var product = MathUtil.product("2", "3", "4");
 
-		<execute macro="TestUtils#assertEquals">
-			<var name="actual" value="${product}" />
-			<var name="expected" value="24" />
-		</execute>
-	</command>
+		TestUtils.assertEquals(actual = "${product}", expected = "24");
+	}
 
-	<command name="Quotient" priority="5">
-		<var method="MathUtil#quotient('6', '2')" name="quotient" />
+	@priority = "5"
+	test Quotient {
+		var quotient = MathUtil.quotient("6", "2");
 
-		<execute macro="TestUtils#assertEquals">
-			<var name="actual" value="${quotient}" />
-			<var name="expected" value="3" />
-		</execute>
-	</command>
+		TestUtils.assertEquals(actual = "${quotient}", expected = "3");
+	}
 
-	<command name="Sum" priority="5">
-		<var method="MathUtil#sum('1', '2')" name="sum" />
+	@priority = "5"
+	test Sum {
+		var sum = MathUtil.sum("1", "2");
 
-		<execute macro="TestUtils#assertEquals">
-			<var name="actual" value="${sum}" />
-			<var name="expected" value="3" />
-		</execute>
+		TestUtils.assertEquals(actual = "${sum}", expected = "3");
 
-		<var method="MathUtil#sum('1', '2', '3')" name="sum" />
+		var sum = MathUtil.sum("1", "2", "3");
 
-		<execute macro="TestUtils#assertEquals">
-			<var name="actual" value="${sum}" />
-			<var name="expected" value="6" />
-		</execute>
-	</command>
-</definition>
+		TestUtils.assertEquals(actual = "${sum}", expected = "6");
+	}
+}

@@ -1,55 +1,46 @@
-<definition component-name="social-office-administration">
-	<property name="hook.plugins.includes" value="deploy-listener-hook,portal-compat-hook,so-activities-hook,so-hook" />
-	<property name="portlet.plugins.includes" value="chat-portlet,contacts-portlet,events-display-portlet,microblogs-portlet,private-messaging-portlet,so-announcements-portlet,so-configurations-portlet,so-portlet,tasks-portlet,wysiwyg-portlet" />
-	<property name="testray.main.component.name" value="Social Office EE" />
-	<property name="theme.plugins.includes" value="so-theme" />
+@component-name = "social-office-administration"
+definition {
+	property hook.plugins.includes = "deploy-listener-hook,portal-compat-hook,so-activities-hook,so-hook";
+	property portlet.plugins.includes = "chat-portlet,contacts-portlet,events-display-portlet,microblogs-portlet,private-messaging-portlet,so-announcements-portlet,so-configurations-portlet,so-portlet,tasks-portlet,wysiwyg-portlet";
+	property testray.main.component.name = "Social Office EE";
+	property theme.plugins.includes = "so-theme";
 
-	<set-up>
-		<execute macro="SOUser#firstLoginPG" />
-	</set-up>
+	setUp {
+		SOUser.firstLoginPG();
+	}
 
-	<command name="AssignSORoleAdminUser" priority="5">
-		<var name="roleName" value="Social Office" />
-		<var name="userName" value="Joe Bloggs" />
-		<var name="userScreenName" value="joebloggs" />
+	@priority = "5"
+	test AssignSORoleAdminUser {
+		var roleName = "Social Office";
+		var userName = "Joe Bloggs";
+		var userScreenName = "joebloggs";
 
-		<execute macro="Page#gotoCP">
-			<var name="portletName" value="Roles" />
-		</execute>
+		Page.gotoCP(portletName = "Roles");
 
-		<execute macro="Role#assignRegRoleCP">
-			<var name="roleName" value="${roleName}" />
-			<var name="userScreenName" value="${userScreenName}" />
-		</execute>
+		Role.assignRegRoleCP(
+			roleName = "${roleName}",
+			userScreenName = "${userScreenName}"
+		);
 
-		<execute macro="SOUserBar#dashboardPG">
-			<var name="userName" value="${userName}" />
-		</execute>
+		SOUserBar.dashboardPG(userName = "${userName}");
 
-		<execute macro="Page#gotoCP">
-			<var name="portletName" value="Roles" />
-		</execute>
+		Page.gotoCP(portletName = "Roles");
 
-		<execute macro="Role#unassignRegRoleCP">
-			<var name="roleName" value="${roleName}" />
-			<var name="userScreenName" value="${userScreenName}" />
-		</execute>
-	</command>
+		Role.unassignRegRoleCP(
+			roleName = "${roleName}",
+			userScreenName = "${userScreenName}"
+		);
+	}
 
-	<command name="AssignSORoleAdminUserConfigurations" priority="5">
-		<var name="userName" value="Joe Bloggs" />
-		<var name="userScreenName" value="joebloggs" />
+	@priority = "5"
+	test AssignSORoleAdminUserConfigurations {
+		var userName = "Joe Bloggs";
+		var userScreenName = "joebloggs";
 
-		<execute macro="SOConfigurations#assignUserRoleCP">
-			<var name="userScreenName" value="${userScreenName}" />
-		</execute>
+		SOConfigurations.assignUserRoleCP(userScreenName = "${userScreenName}");
 
-		<execute macro="SOUserBar#dashboardPG">
-			<var name="userName" value="${userName}" />
-		</execute>
+		SOUserBar.dashboardPG(userName = "${userName}");
 
-		<execute macro="SOConfigurations#unassignUserRoleCP">
-			<var name="userScreenName" value="${userScreenName}" />
-		</execute>
-	</command>
-</definition>
+		SOConfigurations.unassignUserRoleCP(userScreenName = "${userScreenName}");
+	}
+}

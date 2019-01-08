@@ -1,14 +1,17 @@
-<definition component-name="portal-authentication">
-	<property name="portal.release" value="true" />
-	<property name="portal.upstream" value="true" />
-	<property name="testray.main.component.name" value="Authentication" />
+@component-name = "portal-authentication"
+definition {
+	property portal.release = "true";
+	property portal.upstream = "true";
+	property testray.main.component.name = "Authentication";
 
-	<set-up>
-		<execute macro="User#firstLoginPG" />
-	</set-up>
+	setUp {
+		User.firstLoginPG();
+	}
 
-	<command name="Login" priority="5">
-		<execute macro="User#logoutPG" />
-		<execute macro="User#loginPG" />
-	</command>
-</definition>
+	@priority = "5"
+	test Login {
+		User.logoutPG();
+
+		User.loginPG();
+	}
+}

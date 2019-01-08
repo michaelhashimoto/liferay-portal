@@ -1,70 +1,66 @@
-<definition component-name="portal-collaboration">
-	<property name="portal.release" value="true" />
-	<property name="portal.upstream" value="true" />
-	<property name="testray.main.component.name" value="Collaboration" />
+@component-name = "portal-collaboration"
+definition {
+	property portal.release = "true";
+	property portal.upstream = "true";
+	property testray.main.component.name = "Collaboration";
 
-	<set-up>
-		<execute macro="User#firstLoginPG" />
-	</set-up>
+	setUp {
+		User.firstLoginPG();
+	}
 
-	<command name="AddWikiNode" priority="5">
-		<var name="wikiNodeDescription" value="Wiki Node Description" />
-		<var name="wikiNodeName" value="Wiki Node Name" />
+	@priority = "5"
+	test AddWikiNode {
+		var wikiNodeDescription = "Wiki Node Description";
+		var wikiNodeName = "Wiki Node Name";
 
-		<execute macro="Page#gotoCP">
-			<var name="portletName" value="Wiki" />
-		</execute>
+		Page.gotoCP(portletName = "Wiki");
 
-		<execute macro="WikiNode#addCP">
-			<var name="wikiNodeDescription" value="${wikiNodeDescription}" />
-			<var name="wikiNodeName" value="${wikiNodeName}" />
-		</execute>
-	</command>
+		WikiNode.addCP(
+			wikiNodeDescription = "${wikiNodeDescription}",
+			wikiNodeName = "${wikiNodeName}"
+		);
+	}
 
-	<command name="DeleteWikiNode" priority="5">
-		<var name="wikiNodeDescription" value="Wiki Node Description" />
-		<var name="wikiNodeName" value="Wiki Node Name" />
+	@priority = "5"
+	test DeleteWikiNode {
+		var wikiNodeDescription = "Wiki Node Description";
+		var wikiNodeName = "Wiki Node Name";
 
-		<execute macro="Page#gotoCP">
-			<var name="portletName" value="Wiki" />
-		</execute>
+		Page.gotoCP(portletName = "Wiki");
 
-		<execute macro="WikiNode#addCP">
-			<var name="wikiNodeDescription" value="${wikiNodeDescription}" />
-			<var name="wikiNodeName" value="${wikiNodeName}" />
-		</execute>
+		WikiNode.addCP(
+			wikiNodeDescription = "${wikiNodeDescription}",
+			wikiNodeName = "${wikiNodeName}"
+		);
 
-		<execute macro="WikiNode#deleteCP">
-			<var name="wikiNodeName" value="${wikiNodeName}" />
-		</execute>
-	</command>
+		WikiNode.deleteCP(wikiNodeName = "${wikiNodeName}");
+	}
 
-	<command name="EditWikiNode" priority="5">
-		<var name="wikiNodeDescription" value="Wiki Node Description" />
-		<var name="wikiNodeDescriptionEdit" value="Wiki Node Description Edit" />
-		<var name="wikiNodeName" value="Wiki Node Name" />
-		<var name="wikiNodeNameEdit" value="Wiki Node Name Edit" />
+	@priority = "5"
+	test EditWikiNode {
+		var wikiNodeDescription = "Wiki Node Description";
+		var wikiNodeDescriptionEdit = "Wiki Node Description Edit";
+		var wikiNodeName = "Wiki Node Name";
+		var wikiNodeNameEdit = "Wiki Node Name Edit";
 
-		<execute macro="Page#gotoCP">
-			<var name="portletName" value="Wiki" />
-		</execute>
+		Page.gotoCP(portletName = "Wiki");
 
-		<execute macro="WikiNode#addCP">
-			<var name="wikiNodeDescription" value="${wikiNodeDescription}" />
-			<var name="wikiNodeName" value="${wikiNodeName}" />
-		</execute>
+		WikiNode.addCP(
+			wikiNodeDescription = "${wikiNodeDescription}",
+			wikiNodeName = "${wikiNodeName}"
+		);
 
-		<execute macro="WikiNode#editCP">
-			<var name="wikiNodeDescription" value="${wikiNodeDescription}" />
-			<var name="wikiNodeDescriptionEdit" value="${wikiNodeDescriptionEdit}" />
-			<var name="wikiNodeName" value="${wikiNodeName}" />
-			<var name="wikiNodeNameEdit" value="${wikiNodeNameEdit}" />
-		</execute>
-	</command>
+		WikiNode.editCP(
+			wikiNodeDescription = "${wikiNodeDescription}",
+			wikiNodeDescriptionEdit = "${wikiNodeDescriptionEdit}",
+			wikiNodeName = "${wikiNodeName}",
+			wikiNodeNameEdit = "${wikiNodeNameEdit}"
+		);
+	}
 
-	<tear-down>
-		<execute macro="WikiNode#tearDownCP" />
+	tearDown {
+		WikiNode.tearDownCP();
 
-		<execute macro="WikiPage#tearDownCP" />
-	</tear-down>
-</definition>
+		WikiPage.tearDownCP();
+	}
+}

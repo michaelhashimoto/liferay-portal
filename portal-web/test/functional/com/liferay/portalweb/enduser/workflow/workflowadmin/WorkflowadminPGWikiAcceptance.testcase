@@ -1,170 +1,143 @@
-<definition component-name="portal-workflow">
-	<property name="hook.plugins.includes" value="kaleo-upgrade-hook" />
-	<property name="portal.release" value="true" />
-	<property name="portal.upstream" value="true" />
-	<property name="testray.main.component.name" value="Workflow" />
-	<property name="web.plugins.includes" value="kaleo-web" />
+@component-name = "portal-workflow"
+definition {
+	property hook.plugins.includes = "kaleo-upgrade-hook";
+	property portal.release = "true";
+	property portal.upstream = "true";
+	property testray.main.component.name = "Workflow";
+	property web.plugins.includes = "kaleo-web";
+	var pageName = "Wiki Page";
+	var portletName = "Wiki";
 
-	<var name="pageName" value="Wiki Page" />
-	<var name="portletName" value="Wiki" />
+	setUp {
+		User.firstLoginPG();
 
-	<set-up>
-		<execute macro="User#firstLoginPG" />
+		Page.gotoCP(portletName = "Workflow Configuration");
 
-		<execute macro="Page#gotoCP">
-			<var name="portletName" value="Workflow Configuration" />
-		</execute>
+		Workflow.configureSiteWorkflow(
+			workflowDefinition = "Single Approver (Version 1)",
+			workflowResourceKey = "RESOURCE_TABLE_WIKI_PAGE_SELECT"
+		);
 
-		<execute macro="Workflow#configureSiteWorkflow">
-			<var name="workflowDefinition" value="Single Approver (Version 1)" />
-			<var name="workflowResourceKey" value="RESOURCE_TABLE_WIKI_PAGE_SELECT" />
-		</execute>
+		Page.addPG(pageName = "${pageName}");
 
-		<execute macro="Page#addPG">
-			<var name="pageName" value="${pageName}" />
-		</execute>
+		Portlet.addPG(pageName = "${pageName}", portletName = "${portletName}");
+	}
 
-		<execute macro="Portlet#addPG">
-			<var name="pageName" value="${pageName}" />
-			<var name="portletName" value="${portletName}" />
-		</execute>
-	</set-up>
+	@priority = "5"
+	test ApproveWikiPageCP {
+		var wikiPageContent = "Wiki Page Content";
+		var wikiPageTitle = "Wiki Page Title";
 
-	<command name="ApproveWikiPageCP" priority="5">
-		<var name="wikiPageContent" value="Wiki Page Content" />
-		<var name="wikiPageTitle" value="Wiki Page Title" />
+		Page.gotoPG(pageName = "${pageName}");
 
-		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${pageName}" />
-		</execute>
+		WikiPage.addPagePGWithWorkflow(
+			wikiPageContent = "${wikiPageContent}",
+			wikiPageTitle = "${wikiPageTitle}",
+			wikiPageUsername = "Test Test"
+		);
 
-		<execute macro="WikiPage#addPagePGWithWorkflow">
-			<var name="wikiPageContent" value="${wikiPageContent}" />
-			<var name="wikiPageTitle" value="${wikiPageTitle}" />
-			<var name="wikiPageUsername" value="Test Test" />
-		</execute>
+		Page.gotoPG(pageName = "${pageName}");
 
-		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${pageName}" />
-		</execute>
+		WikiPage.viewPagePGWithWorkflow(
+			wikiPageStatus = "Pending",
+			wikiPageTitle = "${wikiPageTitle}",
+			wikiPageUsername = "Test Test"
+		);
 
-		<execute macro="WikiPage#viewPagePGWithWorkflow">
-			<var name="wikiPageStatus" value="Pending" />
-			<var name="wikiPageTitle" value="${wikiPageTitle}" />
-			<var name="wikiPageUsername" value="Test Test" />
-		</execute>
+		Page.gotoCP(portletName = "My Workflow Tasks");
 
-		<execute macro="Page#gotoCP">
-			<var name="portletName" value="My Workflow Tasks" />
-		</execute>
+		Workflow.assignToMeTaskByActions(
+			workflowAssetTitle = "${wikiPageTitle}",
+			workflowAssetType = "Wiki Page",
+			workflowTask = "Review"
+		);
 
-		<execute macro="Workflow#assignToMeTaskByActions">
-			<var name="workflowAssetTitle" value="${wikiPageTitle}" />
-			<var name="workflowAssetType" value="Wiki Page" />
-			<var name="workflowTask" value="Review" />
-		</execute>
+		Page.gotoPG(pageName = "${pageName}");
 
-		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${pageName}" />
-		</execute>
+		WikiPage.viewPagePGWithWorkflow(
+			wikiPageStatus = "Pending",
+			wikiPageTitle = "${wikiPageTitle}",
+			wikiPageUsername = "Test Test"
+		);
 
-		<execute macro="WikiPage#viewPagePGWithWorkflow">
-			<var name="wikiPageStatus" value="Pending" />
-			<var name="wikiPageTitle" value="${wikiPageTitle}" />
-			<var name="wikiPageUsername" value="Test Test" />
-		</execute>
+		Page.gotoCP(portletName = "My Workflow Tasks");
 
-		<execute macro="Page#gotoCP">
-			<var name="portletName" value="My Workflow Tasks" />
-		</execute>
+		Workflow.approveTaskByActions(
+			workflowAssetTitle = "${wikiPageTitle}",
+			workflowAssetType = "Wiki Page",
+			workflowTask = "Review"
+		);
 
-		<execute macro="Workflow#approveTaskByActions">
-			<var name="workflowAssetTitle" value="${wikiPageTitle}" />
-			<var name="workflowAssetType" value="Wiki Page" />
-			<var name="workflowTask" value="Review" />
-		</execute>
+		Page.gotoPG(pageName = "${pageName}");
 
-		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${pageName}" />
-		</execute>
+		WikiPage.viewPagePG(
+			wikiPageContent = "${wikiPageContent}",
+			wikiPageRevision = "1.0",
+			wikiPageTitle = "${wikiPageTitle}",
+			wikiPageUsername = "Test Test"
+		);
+	}
 
-		<execute macro="WikiPage#viewPagePG">
-			<var name="wikiPageContent" value="${wikiPageContent}" />
-			<var name="wikiPageRevision" value="1.0" />
-			<var name="wikiPageTitle" value="${wikiPageTitle}" />
-			<var name="wikiPageUsername" value="Test Test" />
-		</execute>
-	</command>
+	@priority = "5"
+	test RejectWikiPageCP {
+		var wikiPageContent = "Wiki Page Content";
+		var wikiPageTitle = "Wiki Page Title";
 
-	<command name="RejectWikiPageCP" priority="5">
-		<var name="wikiPageContent" value="Wiki Page Content" />
-		<var name="wikiPageTitle" value="Wiki Page Title" />
+		Page.gotoPG(pageName = "${pageName}");
 
-		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${pageName}" />
-		</execute>
+		WikiPage.addPagePGWithWorkflow(
+			wikiPageContent = "${wikiPageContent}",
+			wikiPageTitle = "${wikiPageTitle}",
+			wikiPageUsername = "Test Test"
+		);
 
-		<execute macro="WikiPage#addPagePGWithWorkflow">
-			<var name="wikiPageContent" value="${wikiPageContent}" />
-			<var name="wikiPageTitle" value="${wikiPageTitle}" />
-			<var name="wikiPageUsername" value="Test Test" />
-		</execute>
+		Page.gotoPG(pageName = "${pageName}");
 
-		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${pageName}" />
-		</execute>
+		WikiPage.viewPagePGWithWorkflow(
+			wikiPageStatus = "Pending",
+			wikiPageTitle = "${wikiPageTitle}",
+			wikiPageUsername = "Test Test"
+		);
 
-		<execute macro="WikiPage#viewPagePGWithWorkflow">
-			<var name="wikiPageStatus" value="Pending" />
-			<var name="wikiPageTitle" value="${wikiPageTitle}" />
-			<var name="wikiPageUsername" value="Test Test" />
-		</execute>
+		Page.gotoCP(portletName = "My Workflow Tasks");
 
-		<execute macro="Page#gotoCP">
-			<var name="portletName" value="My Workflow Tasks" />
-		</execute>
+		Workflow.assignToMeTaskByActions(
+			workflowAssetTitle = "${wikiPageTitle}",
+			workflowAssetType = "Wiki Page",
+			workflowTask = "Review"
+		);
 
-		<execute macro="Workflow#assignToMeTaskByActions">
-			<var name="workflowAssetTitle" value="${wikiPageTitle}" />
-			<var name="workflowAssetType" value="Wiki Page" />
-			<var name="workflowTask" value="Review" />
-		</execute>
+		Workflow.rejectTaskByActions(
+			workflowAssetTitle = "${wikiPageTitle}",
+			workflowAssetType = "Wiki Page",
+			workflowTask = "Review"
+		);
 
-		<execute macro="Workflow#rejectTaskByActions">
-			<var name="workflowAssetTitle" value="${wikiPageTitle}" />
-			<var name="workflowAssetType" value="Wiki Page" />
-			<var name="workflowTask" value="Review" />
-		</execute>
+		Page.gotoCP(portletName = "My Workflow Tasks");
 
-		<execute macro="Page#gotoCP">
-			<var name="portletName" value="My Workflow Tasks" />
-		</execute>
+		Workflow.viewRejectTask(
+			workflowAssetTitle = "${wikiPageTitle}",
+			workflowAssetType = "Wiki Page"
+		);
 
-		<execute macro="Workflow#viewRejectTask">
-			<var name="workflowAssetTitle" value="${wikiPageTitle}" />
-			<var name="workflowAssetType" value="Wiki Page" />
-		</execute>
+		Page.gotoPG(pageName = "${pageName}");
 
-		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${pageName}" />
-		</execute>
+		WikiPage.viewPagePGWithWorkflow(
+			wikiPageStatus = "Pending",
+			wikiPageTitle = "${wikiPageTitle}",
+			wikiPageUsername = "Test Test"
+		);
+	}
 
-		<execute macro="WikiPage#viewPagePGWithWorkflow">
-			<var name="wikiPageStatus" value="Pending" />
-			<var name="wikiPageTitle" value="${wikiPageTitle}" />
-			<var name="wikiPageUsername" value="Test Test" />
-		</execute>
-	</command>
+	tearDown {
+		WikiNode.tearDownCP();
 
-	<tear-down>
-		<execute macro="WikiNode#tearDownCP" />
+		WikiPage.tearDownCP();
 
-		<execute macro="WikiPage#tearDownCP" />
+		Page.tearDownPG();
 
-		<execute macro="Page#tearDownPG" />
+		Workflow.tearDownPortalWorkflow();
 
-		<execute macro="Workflow#tearDownPortalWorkflow" />
-
-		<execute macro="Workflow#tearDownSiteWorkflow" />
-	</tear-down>
-</definition>
+		Workflow.tearDownSiteWorkflow();
+	}
+}

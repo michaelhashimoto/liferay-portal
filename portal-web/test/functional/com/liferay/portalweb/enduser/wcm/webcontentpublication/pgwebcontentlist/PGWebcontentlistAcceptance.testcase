@@ -1,59 +1,61 @@
-<definition component-name="portal-wcm">
-	<property name="portal.release" value="true" />
-	<property name="portal.upstream" value="true" />
-	<property name="testray.main.component.name" value="WCM" />
+@component-name = "portal-wcm"
+definition {
+	property portal.release = "true";
+	property portal.upstream = "true";
+	property testray.main.component.name = "WCM";
+	var pageName = "Web Content List Page";
+	var portletName = "Web Content List";
 
-	<var name="pageName" value="Web Content List Page" />
-	<var name="portletName" value="Web Content List" />
+	setUp {
+		User.firstLoginPG();
 
-	<set-up>
-		<execute macro="User#firstLoginPG" />
+		Page.addPG(pageName = "${pageName}");
 
-		<execute macro="Page#addPG">
-			<var name="pageName" value="${pageName}" />
-		</execute>
+		Portlet.addPG(pageName = "${pageName}", portletName = "${portletName}");
+	}
 
-		<execute macro="Portlet#addPG">
-			<var name="pageName" value="${pageName}" />
-			<var name="portletName" value="${portletName}" />
-		</execute>
-	</set-up>
+	@priority = "5"
+	test ViewWebContentViaWCLDisplayURLNormal {
+		var webContentContent = "WC WebContent Content";
+		var webContentTitle = "WC WebContent Title";
 
-	<command name="ViewWebContentViaWCLDisplayURLNormal" priority="5">
-		<var name="webContentContent" value="WC WebContent Content" />
-		<var name="webContentTitle" value="WC WebContent Title" />
+		Page.gotoCP(portletName = "Web Content");
 
-		<execute macro="Page#gotoCP">
-			<var name="portletName" value="Web Content" />
-		</execute>
+		WebContent.addCP(
+			webContentContent = "${webContentContent}",
+			webContentTitle = "${webContentTitle}"
+		);
 
-		<execute macro="WebContent#addCP">
-			<var name="webContentContent" value="${webContentContent}" />
-			<var name="webContentTitle" value="${webContentTitle}" />
-		</execute>
+		Page.gotoPG(pageName = "${pageName}");
 
-		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${pageName}" />
-		</execute>
+		WCLPortlet.configureSetupPG(webContentTitle = "${webContentTitle}");
 
-		<execute macro="WCLPortlet#configureSetupPG">
-			<var name="webContentTitle" value="${webContentTitle}" />
-		</execute>
+		Page.gotoPG(pageName = "${pageName}");
 
-		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${pageName}" />
-		</execute>
+		AssertTextEquals(
+			locator1 = "PGWebcontentlist#WEB_CONTENT_TABLE_TITLE_1",
+			value1 = "${webContentTitle}"
+		);
 
-		<execute function="AssertTextEquals" locator1="PGWebcontentlist#WEB_CONTENT_TABLE_TITLE_1" value1="${webContentTitle}" />
-		<execute function="AssertClick#assertTextClickAt" locator1="PGWebcontentlist#WEB_CONTENT_TABLE_TITLE_1" value1="${webContentTitle}" />
+		AssertClick.assertTextClickAt(
+			locator1 = "PGWebcontentlist#WEB_CONTENT_TABLE_TITLE_1",
+			value1 = "${webContentTitle}"
+		);
 
-		<execute function="AssertTextEquals" locator1="PGWebcontentlistWebcontent#WEB_CONTENT_TITLE" value1="${webContentTitle}" />
-		<execute function="AssertTextEquals" locator1="PGWebcontentlistWebcontent#WEB_CONTENT_CONTENT" value1="${webContentContent}" />
-	</command>
+		AssertTextEquals(
+			locator1 = "PGWebcontentlistWebcontent#WEB_CONTENT_TITLE",
+			value1 = "${webContentTitle}"
+		);
 
-	<tear-down>
-		<execute macro="WebContent#tearDownCP" />
+		AssertTextEquals(
+			locator1 = "PGWebcontentlistWebcontent#WEB_CONTENT_CONTENT",
+			value1 = "${webContentContent}"
+		);
+	}
 
-		<execute macro="Page#tearDownPG" />
-	</tear-down>
-</definition>
+	tearDown {
+		WebContent.tearDownCP();
+
+		Page.tearDownPG();
+	}
+}

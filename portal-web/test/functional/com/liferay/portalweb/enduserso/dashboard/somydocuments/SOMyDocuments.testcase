@@ -1,795 +1,847 @@
-<definition component-name="social-office-dashboard">
-	<property name="testray.main.component.name" value="Social Office EE" />
-
-	<var name="dmDocumentDescription" value="DM Folder Document Description" />
-	<var name="dmDocumentDescriptionEdit" value="DM Folder Document Description Edit" />
-	<var name="dmDocumentFile" value="Document_1.doc" />
-	<var name="dmDocumentFile2" value="Document_2.doc" />
-	<var name="dmDocumentSize" value="21.5k" />
-	<var name="dmDocumentSize2" value="22.5k" />
-	<var name="dmDocumentTitle" value="DM Folder Document Title" />
-	<var name="dmDocumentTitleEdit" value="DM Folder Document Title Edit" />
-	<var name="dmDocumentUploader" value="Joe Bloggs" />
-	<var name="dmDocumentVersionNumber" value="1.0" />
-	<var name="dmDocumentVersionNumberEdit" value="1.1" />
-	<var name="dmDocumentVersionNumberEdit2" value="2.0" />
-	<var name="dmFolderDescription" value="DM Folder Description" />
-	<var name="dmFolderName" value="DM Folder Name" />
-	<var name="dmImageDescription" value="DM Folder Image Description" />
-	<var name="dmImageDescriptionEdit" value="DM Folder Image Description Edit" />
-	<var name="dmImageFile" value="Document_1.jpeg" />
-	<var name="dmImageFile2" value="Document_2.jpeg" />
-	<var name="dmImageSize" value="15.0k" />
-	<var name="dmImageSize2" value="22.0k" />
-	<var name="dmImageTitle" value="DM Folder Image Title" />
-	<var name="dmImageTitleEdit" value="DM Folder Image Title Edit" />
-
-	<set-up>
-		<execute macro="SOUser#firstLoginPG" />
-	</set-up>
-
-	<tear-down>
-		<execute macro="SODocuments#tearDownPG" />
-	</tear-down>
-
-	<command name="AddDMFolderImage" priority="5">
-		<var name="dmDocumentDescription" value="${dmImageDescription}" />
-		<var name="dmDocumentFile" value="${dmImageFile}" />
-		<var name="dmDocumentSize" value="${dmImageSize}" />
-		<var name="dmDocumentTitle" value="${dmImageTitle}" />
-		<var name="dmDocumentUploader" value="${dmDocumentUploader}" />
-		<var name="dmFolderDescription" value="${dmFolderDescription}" />
-		<var name="dmFolderName" value="${dmFolderName}" />
-		<var name="key_siteName" value="${key_siteName}" />
-		<var name="pageName" value="${pageName}" />
-		<var name="siteName" value="${siteName}" />
-
-		<execute macro="SOUserBar#dashboardPG">
-			<var name="userName" value="Joe Bloggs" />
-		</execute>
-
-		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_MY_DOCUMENTS" value1="My Documents" />
-
-		<execute macro="DMFolder#addPG" />
-
-		<execute macro="SOUserBar#dashboardPG">
-			<var name="userName" value="Joe Bloggs" />
-		</execute>
-
-		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_MY_DOCUMENTS" value1="My Documents" />
-
-		<execute macro="DMFolderDocument#addPG" />
-
-		<execute macro="SOUserBar#dashboardPG">
-			<var name="userName" value="Joe Bloggs" />
-		</execute>
-
-		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_MY_DOCUMENTS" value1="My Documents" />
-
-		<execute function="Click" locator1="PGDocumentsandmedia#ENTRIES_FOLDER" />
-
-		<execute macro="DMFolderDocument#viewPG">
-			<var name="versionNumber" value="${dmDocumentVersionNumber}" />
-		</execute>
-	</command>
-
-	<command name="AddDocument" priority="5">
-		<var name="dmDocumentDescription" value="${dmDocumentDescription}" />
-		<var name="dmDocumentFile" value="${dmDocumentFile}" />
-		<var name="dmDocumentSize" value="${dmDocumentSize}" />
-		<var name="dmDocumentTitle" value="${dmDocumentTitle}" />
-		<var name="dmDocumentUploader" value="${dmDocumentUploader}" />
-		<var name="dmFolderDescription" value="${dmFolderDescription}" />
-		<var name="dmFolderName" value="${dmFolderName}" />
-		<var name="key_siteName" value="${key_siteName}" />
-		<var name="pageName" value="${pageName}" />
-		<var name="pageType" value="${pageType}" />
-		<var name="siteName" value="${siteName}" />
-
-		<execute macro="SOUserBar#dashboardPG">
-			<var name="userName" value="Joe Bloggs" />
-		</execute>
-
-		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_MY_DOCUMENTS" value1="My Documents" />
-
-		<execute macro="DMDocument#addPG" />
-
-		<execute macro="SOUserBar#dashboardPG">
-			<var name="userName" value="Joe Bloggs" />
-		</execute>
-
-		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_MY_DOCUMENTS" value1="My Documents" />
+@component-name = "social-office-dashboard"
+definition {
+	property testray.main.component.name = "Social Office EE";
+	var dmDocumentDescription = "DM Folder Document Description";
+	var dmDocumentDescriptionEdit = "DM Folder Document Description Edit";
+	var dmDocumentFile = "Document_1.doc";
+	var dmDocumentFile2 = "Document_2.doc";
+	var dmDocumentSize = "21.5k";
+	var dmDocumentSize2 = "22.5k";
+	var dmDocumentTitle = "DM Folder Document Title";
+	var dmDocumentTitleEdit = "DM Folder Document Title Edit";
+	var dmDocumentUploader = "Joe Bloggs";
+	var dmDocumentVersionNumber = "1.0";
+	var dmDocumentVersionNumberEdit = "1.1";
+	var dmDocumentVersionNumberEdit2 = "2.0";
+	var dmFolderDescription = "DM Folder Description";
+	var dmFolderName = "DM Folder Name";
+	var dmImageDescription = "DM Folder Image Description";
+	var dmImageDescriptionEdit = "DM Folder Image Description Edit";
+	var dmImageFile = "Document_1.jpeg";
+	var dmImageFile2 = "Document_2.jpeg";
+	var dmImageSize = "15.0k";
+	var dmImageSize2 = "22.0k";
+	var dmImageTitle = "DM Folder Image Title";
+	var dmImageTitleEdit = "DM Folder Image Title Edit";
+
+	setUp {
+		SOUser.firstLoginPG();
+	}
+
+	tearDown {
+		SODocuments.tearDownPG();
+	}
+
+	@priority = "5"
+	test AddDMFolderImage {
+		var dmDocumentDescription = "${dmImageDescription}";
+		var dmDocumentFile = "${dmImageFile}";
+		var dmDocumentSize = "${dmImageSize}";
+		var dmDocumentTitle = "${dmImageTitle}";
+		var dmDocumentUploader = "${dmDocumentUploader}";
+		var dmFolderDescription = "${dmFolderDescription}";
+		var dmFolderName = "${dmFolderName}";
+		var key_siteName = "${key_siteName}";
+		var pageName = "${pageName}";
+		var siteName = "${siteName}";
+
+		SOUserBar.dashboardPG(userName = "Joe Bloggs");
+
+		Click.textClickAt(
+			locator1 = "SODashboard#NAVIGATION_MY_DOCUMENTS",
+			value1 = "My Documents"
+		);
+
+		DMFolder.addPG();
+
+		SOUserBar.dashboardPG(userName = "Joe Bloggs");
+
+		Click.textClickAt(
+			locator1 = "SODashboard#NAVIGATION_MY_DOCUMENTS",
+			value1 = "My Documents"
+		);
+
+		DMFolderDocument.addPG();
+
+		SOUserBar.dashboardPG(userName = "Joe Bloggs");
+
+		Click.textClickAt(
+			locator1 = "SODashboard#NAVIGATION_MY_DOCUMENTS",
+			value1 = "My Documents"
+		);
+
+		Click(locator1 = "PGDocumentsandmedia#ENTRIES_FOLDER");
+
+		DMFolderDocument.viewPG(versionNumber = "${dmDocumentVersionNumber}");
+	}
+
+	@priority = "5"
+	test AddDocument {
+		var dmDocumentDescription = "${dmDocumentDescription}";
+		var dmDocumentFile = "${dmDocumentFile}";
+		var dmDocumentSize = "${dmDocumentSize}";
+		var dmDocumentTitle = "${dmDocumentTitle}";
+		var dmDocumentUploader = "${dmDocumentUploader}";
+		var dmFolderDescription = "${dmFolderDescription}";
+		var dmFolderName = "${dmFolderName}";
+		var key_siteName = "${key_siteName}";
+		var pageName = "${pageName}";
+		var pageType = "${pageType}";
+		var siteName = "${siteName}";
+
+		SOUserBar.dashboardPG(userName = "Joe Bloggs");
+
+		Click.textClickAt(
+			locator1 = "SODashboard#NAVIGATION_MY_DOCUMENTS",
+			value1 = "My Documents"
+		);
+
+		DMDocument.addPG();
+
+		SOUserBar.dashboardPG(userName = "Joe Bloggs");
+
+		Click.textClickAt(
+			locator1 = "SODashboard#NAVIGATION_MY_DOCUMENTS",
+			value1 = "My Documents"
+		);
 
-		<execute macro="DMDocument#viewPG">
-			<var name="versionNumber" value="${dmDocumentVersionNumber}" />
-		</execute>
-	</command>
+		DMDocument.viewPG(versionNumber = "${dmDocumentVersionNumber}");
+	}
 
-	<command name="AddFolderDocument" priority="5">
-		<var name="dmDocumentDescription" value="${dmDocumentDescription}" />
-		<var name="dmDocumentFile" value="${dmDocumentFile}" />
-		<var name="dmDocumentSize" value="${dmDocumentSize}" />
-		<var name="dmDocumentTitle" value="${dmDocumentTitle}" />
-		<var name="dmDocumentUploader" value="${dmDocumentUploader}" />
-		<var name="dmFolderDescription" value="${dmFolderDescription}" />
-		<var name="dmFolderName" value="${dmFolderName}" />
-		<var name="key_siteName" value="${key_siteName}" />
-		<var name="pageName" value="${pageName}" />
-		<var name="pageType" value="${pageType}" />
-		<var name="siteName" value="${siteName}" />
+	@priority = "5"
+	test AddFolderDocument {
+		var dmDocumentDescription = "${dmDocumentDescription}";
+		var dmDocumentFile = "${dmDocumentFile}";
+		var dmDocumentSize = "${dmDocumentSize}";
+		var dmDocumentTitle = "${dmDocumentTitle}";
+		var dmDocumentUploader = "${dmDocumentUploader}";
+		var dmFolderDescription = "${dmFolderDescription}";
+		var dmFolderName = "${dmFolderName}";
+		var key_siteName = "${key_siteName}";
+		var pageName = "${pageName}";
+		var pageType = "${pageType}";
+		var siteName = "${siteName}";
 
-		<execute macro="SOUserBar#dashboardPG">
-			<var name="userName" value="Joe Bloggs" />
-		</execute>
+		SOUserBar.dashboardPG(userName = "Joe Bloggs");
+
+		Click.textClickAt(
+			locator1 = "SODashboard#NAVIGATION_MY_DOCUMENTS",
+			value1 = "My Documents"
+		);
+
+		DMFolder.addPG();
 
-		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_MY_DOCUMENTS" value1="My Documents" />
+		SOUserBar.dashboardPG(userName = "Joe Bloggs");
+
+		Click.textClickAt(
+			locator1 = "SODashboard#NAVIGATION_MY_DOCUMENTS",
+			value1 = "My Documents"
+		);
 
-		<execute macro="DMFolder#addPG" />
+		DMFolderDocument.addPG();
 
-		<execute macro="SOUserBar#dashboardPG">
-			<var name="userName" value="Joe Bloggs" />
-		</execute>
+		SOUserBar.dashboardPG(userName = "Joe Bloggs");
 
-		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_MY_DOCUMENTS" value1="My Documents" />
+		Click.textClickAt(
+			locator1 = "SODashboard#NAVIGATION_MY_DOCUMENTS",
+			value1 = "My Documents"
+		);
 
-		<execute macro="DMFolderDocument#addPG" />
+		Click(locator1 = "PGDocumentsandmedia#ENTRIES_FOLDER");
 
-		<execute macro="SOUserBar#dashboardPG">
-			<var name="userName" value="Joe Bloggs" />
-		</execute>
+		DMFolderDocument.viewPG(versionNumber = "${dmDocumentVersionNumber}");
+	}
 
-		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_MY_DOCUMENTS" value1="My Documents" />
+	@priority = "5"
+	test CancelCheckoutDMFolderDocument {
+		var dmDocumentDescription = "${dmDocumentDescription}";
+		var dmDocumentFile = "${dmDocumentFile}";
+		var dmDocumentSize = "${dmDocumentSize}";
+		var dmDocumentTitle = "${dmDocumentTitle}";
+		var dmDocumentUploader = "${dmDocumentUploader}";
+		var dmFolderDescription = "${dmFolderDescription}";
+		var dmFolderName = "${dmFolderName}";
+		var key_siteName = "${key_siteName}";
+		var pageName = "${pageName}";
+		var pageType = "${pageType}";
+		var siteName = "${siteName}";
 
-		<execute function="Click" locator1="PGDocumentsandmedia#ENTRIES_FOLDER" />
+		SOUserBar.dashboardPG(userName = "Joe Bloggs");
 
-		<execute macro="DMFolderDocument#viewPG">
-			<var name="versionNumber" value="${dmDocumentVersionNumber}" />
-		</execute>
-	</command>
+		Click.textClickAt(
+			locator1 = "SODashboard#NAVIGATION_MY_DOCUMENTS",
+			value1 = "My Documents"
+		);
 
-	<command name="CancelCheckoutDMFolderDocument" priority="5">
-		<var name="dmDocumentDescription" value="${dmDocumentDescription}" />
-		<var name="dmDocumentFile" value="${dmDocumentFile}" />
-		<var name="dmDocumentSize" value="${dmDocumentSize}" />
-		<var name="dmDocumentTitle" value="${dmDocumentTitle}" />
-		<var name="dmDocumentUploader" value="${dmDocumentUploader}" />
-		<var name="dmFolderDescription" value="${dmFolderDescription}" />
-		<var name="dmFolderName" value="${dmFolderName}" />
-		<var name="key_siteName" value="${key_siteName}" />
-		<var name="pageName" value="${pageName}" />
-		<var name="pageType" value="${pageType}" />
-		<var name="siteName" value="${siteName}" />
+		DMFolder.addPG();
 
-		<execute macro="SOUserBar#dashboardPG">
-			<var name="userName" value="Joe Bloggs" />
-		</execute>
+		SOUserBar.dashboardPG(userName = "Joe Bloggs");
 
-		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_MY_DOCUMENTS" value1="My Documents" />
+		Click.textClickAt(
+			locator1 = "SODashboard#NAVIGATION_MY_DOCUMENTS",
+			value1 = "My Documents"
+		);
 
-		<execute macro="DMFolder#addPG" />
+		DMFolderDocument.addPG();
 
-		<execute macro="SOUserBar#dashboardPG">
-			<var name="userName" value="Joe Bloggs" />
-		</execute>
+		SOUserBar.dashboardPG(userName = "Joe Bloggs");
 
-		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_MY_DOCUMENTS" value1="My Documents" />
+		Click.textClickAt(
+			locator1 = "SODashboard#NAVIGATION_MY_DOCUMENTS",
+			value1 = "My Documents"
+		);
 
-		<execute macro="DMFolderDocument#addPG" />
+		DMFolderDocument.checkoutPG();
+
+		SOUserBar.dashboardPG(userName = "Joe Bloggs");
 
-		<execute macro="SOUserBar#dashboardPG">
-			<var name="userName" value="Joe Bloggs" />
-		</execute>
+		Click.textClickAt(
+			locator1 = "SODashboard#NAVIGATION_MY_DOCUMENTS",
+			value1 = "My Documents"
+		);
+
+		DMFolderDocument.cancelCheckoutPG();
 
-		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_MY_DOCUMENTS" value1="My Documents" />
+		SOUserBar.dashboardPG(userName = "Joe Bloggs");
 
-		<execute macro="DMFolderDocument#checkoutPG" />
+		Click.textClickAt(
+			locator1 = "SODashboard#NAVIGATION_MY_DOCUMENTS",
+			value1 = "My Documents"
+		);
 
-		<execute macro="SOUserBar#dashboardPG">
-			<var name="userName" value="Joe Bloggs" />
-		</execute>
+		Click(locator1 = "PGDocumentsandmedia#ENTRIES_FOLDER");
 
-		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_MY_DOCUMENTS" value1="My Documents" />
+		DMFolderDocument.viewPG(versionNumber = "${dmDocumentVersionNumber}");
+	}
 
-		<execute macro="DMFolderDocument#cancelCheckoutPG" />
+	@priority = "5"
+	test CheckinMajorDMFolderDocument {
+		var dmDocumentDescription = "${dmDocumentDescription}";
+		var dmDocumentFile = "${dmDocumentFile}";
+		var dmDocumentSize = "${dmDocumentSize}";
+		var dmDocumentTitle = "${dmDocumentTitle}";
+		var dmDocumentUploader = "${dmDocumentUploader}";
+		var dmFolderDescription = "${dmFolderDescription}";
+		var dmFolderName = "${dmFolderName}";
+		var key_siteName = "${key_siteName}";
+		var pageName = "${pageName}";
+		var pageType = "${pageType}";
+		var siteName = "${siteName}";
 
-		<execute macro="SOUserBar#dashboardPG">
-			<var name="userName" value="Joe Bloggs" />
-		</execute>
+		SOUserBar.dashboardPG(userName = "Joe Bloggs");
 
-		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_MY_DOCUMENTS" value1="My Documents" />
+		Click.textClickAt(
+			locator1 = "SODashboard#NAVIGATION_MY_DOCUMENTS",
+			value1 = "My Documents"
+		);
 
-		<execute function="Click" locator1="PGDocumentsandmedia#ENTRIES_FOLDER" />
+		DMFolder.addPG();
 
-		<execute macro="DMFolderDocument#viewPG">
-			<var name="versionNumber" value="${dmDocumentVersionNumber}" />
-		</execute>
-	</command>
+		SOUserBar.dashboardPG(userName = "Joe Bloggs");
 
-	<command name="CheckinMajorDMFolderDocument" priority="5">
-		<var name="dmDocumentDescription" value="${dmDocumentDescription}" />
-		<var name="dmDocumentFile" value="${dmDocumentFile}" />
-		<var name="dmDocumentSize" value="${dmDocumentSize}" />
-		<var name="dmDocumentTitle" value="${dmDocumentTitle}" />
-		<var name="dmDocumentUploader" value="${dmDocumentUploader}" />
-		<var name="dmFolderDescription" value="${dmFolderDescription}" />
-		<var name="dmFolderName" value="${dmFolderName}" />
-		<var name="key_siteName" value="${key_siteName}" />
-		<var name="pageName" value="${pageName}" />
-		<var name="pageType" value="${pageType}" />
-		<var name="siteName" value="${siteName}" />
+		Click.textClickAt(
+			locator1 = "SODashboard#NAVIGATION_MY_DOCUMENTS",
+			value1 = "My Documents"
+		);
 
-		<execute macro="SOUserBar#dashboardPG">
-			<var name="userName" value="Joe Bloggs" />
-		</execute>
+		DMFolderDocument.addPG();
 
-		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_MY_DOCUMENTS" value1="My Documents" />
+		SOUserBar.dashboardPG(userName = "Joe Bloggs");
 
-		<execute macro="DMFolder#addPG" />
+		Click.textClickAt(
+			locator1 = "SODashboard#NAVIGATION_MY_DOCUMENTS",
+			value1 = "My Documents"
+		);
 
-		<execute macro="SOUserBar#dashboardPG">
-			<var name="userName" value="Joe Bloggs" />
-		</execute>
+		DMFolderDocument.checkoutPG();
 
-		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_MY_DOCUMENTS" value1="My Documents" />
+		SOUserBar.dashboardPG(userName = "Joe Bloggs");
 
-		<execute macro="DMFolderDocument#addPG" />
+		Click.textClickAt(
+			locator1 = "SODashboard#NAVIGATION_MY_DOCUMENTS",
+			value1 = "My Documents"
+		);
 
-		<execute macro="SOUserBar#dashboardPG">
-			<var name="userName" value="Joe Bloggs" />
-		</execute>
+		DMFolderDocument.checkinPG(revision = "Major");
 
-		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_MY_DOCUMENTS" value1="My Documents" />
+		SOUserBar.dashboardPG(userName = "Joe Bloggs");
 
-		<execute macro="DMFolderDocument#checkoutPG" />
+		Click.textClickAt(
+			locator1 = "SODashboard#NAVIGATION_MY_DOCUMENTS",
+			value1 = "My Documents"
+		);
 
-		<execute macro="SOUserBar#dashboardPG">
-			<var name="userName" value="Joe Bloggs" />
-		</execute>
+		Click(locator1 = "PGDocumentsandmedia#ENTRIES_FOLDER");
 
-		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_MY_DOCUMENTS" value1="My Documents" />
+		SODocuments.viewPGDisplayView(
+			dmDocumentUploader = "${dmDocumentUploader}",
+			dmDocumentVersionNumber = "${dmDocumentVersionNumber}"
+		);
+	}
 
-		<execute macro="DMFolderDocument#checkinPG">
-			<var name="revision" value="Major" />
-		</execute>
+	@priority = "5"
+	test CheckinMinorDMFolderDocument {
+		var dmDocumentDescription = "${dmDocumentDescription}";
+		var dmDocumentFile = "${dmDocumentFile}";
+		var dmDocumentSize = "${dmDocumentSize}";
+		var dmDocumentTitle = "${dmDocumentTitle}";
+		var dmDocumentUploader = "${dmDocumentUploader}";
+		var dmFolderDescription = "${dmFolderDescription}";
+		var dmFolderName = "${dmFolderName}";
+		var key_siteName = "${key_siteName}";
+		var pageName = "${pageName}";
+		var pageType = "${pageType}";
+		var siteName = "${siteName}";
 
-		<execute macro="SOUserBar#dashboardPG">
-			<var name="userName" value="Joe Bloggs" />
-		</execute>
+		SOUserBar.dashboardPG(userName = "Joe Bloggs");
 
-		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_MY_DOCUMENTS" value1="My Documents" />
+		Click.textClickAt(
+			locator1 = "SODashboard#NAVIGATION_MY_DOCUMENTS",
+			value1 = "My Documents"
+		);
 
-		<execute function="Click" locator1="PGDocumentsandmedia#ENTRIES_FOLDER" />
+		DMFolder.addPG();
 
-		<execute macro="SODocuments#viewPGDisplayView">
-			<var name="dmDocumentUploader" value="${dmDocumentUploader}" />
-			<var name="dmDocumentVersionNumber" value="${dmDocumentVersionNumber}" />
-		</execute>
-	</command>
+		SOUserBar.dashboardPG(userName = "Joe Bloggs");
 
-	<command name="CheckinMinorDMFolderDocument" priority="5">
-		<var name="dmDocumentDescription" value="${dmDocumentDescription}" />
-		<var name="dmDocumentFile" value="${dmDocumentFile}" />
-		<var name="dmDocumentSize" value="${dmDocumentSize}" />
-		<var name="dmDocumentTitle" value="${dmDocumentTitle}" />
-		<var name="dmDocumentUploader" value="${dmDocumentUploader}" />
-		<var name="dmFolderDescription" value="${dmFolderDescription}" />
-		<var name="dmFolderName" value="${dmFolderName}" />
-		<var name="key_siteName" value="${key_siteName}" />
-		<var name="pageName" value="${pageName}" />
-		<var name="pageType" value="${pageType}" />
-		<var name="siteName" value="${siteName}" />
+		Click.textClickAt(
+			locator1 = "SODashboard#NAVIGATION_MY_DOCUMENTS",
+			value1 = "My Documents"
+		);
 
-		<execute macro="SOUserBar#dashboardPG">
-			<var name="userName" value="Joe Bloggs" />
-		</execute>
+		DMFolderDocument.addPG();
 
-		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_MY_DOCUMENTS" value1="My Documents" />
+		SOUserBar.dashboardPG(userName = "Joe Bloggs");
 
-		<execute macro="DMFolder#addPG" />
+		Click.textClickAt(
+			locator1 = "SODashboard#NAVIGATION_MY_DOCUMENTS",
+			value1 = "My Documents"
+		);
 
-		<execute macro="SOUserBar#dashboardPG">
-			<var name="userName" value="Joe Bloggs" />
-		</execute>
+		DMFolderDocument.checkoutPG();
 
-		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_MY_DOCUMENTS" value1="My Documents" />
+		SOUserBar.dashboardPG(userName = "Joe Bloggs");
 
-		<execute macro="DMFolderDocument#addPG" />
+		Click.textClickAt(
+			locator1 = "SODashboard#NAVIGATION_MY_DOCUMENTS",
+			value1 = "My Documents"
+		);
 
-		<execute macro="SOUserBar#dashboardPG">
-			<var name="userName" value="Joe Bloggs" />
-		</execute>
+		DMFolderDocument.checkinPG(revision = "Minor");
 
-		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_MY_DOCUMENTS" value1="My Documents" />
+		SOUserBar.dashboardPG(userName = "Joe Bloggs");
 
-		<execute macro="DMFolderDocument#checkoutPG" />
+		Click.textClickAt(
+			locator1 = "SODashboard#NAVIGATION_MY_DOCUMENTS",
+			value1 = "My Documents"
+		);
 
-		<execute macro="SOUserBar#dashboardPG">
-			<var name="userName" value="Joe Bloggs" />
-		</execute>
+		Click(locator1 = "PGDocumentsandmedia#ENTRIES_FOLDER");
 
-		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_MY_DOCUMENTS" value1="My Documents" />
+		SODocuments.viewPGDisplayView(
+			dmDocumentUploader = "${dmDocumentUploader}",
+			dmDocumentVersionNumber = "${dmDocumentVersionNumber}"
+		);
+	}
 
-		<execute macro="DMFolderDocument#checkinPG">
-			<var name="revision" value="Minor" />
-		</execute>
+	@priority = "5"
+	test CheckoutDMFolderDocument {
+		var dmDocumentDescription = "${dmDocumentDescription}";
+		var dmDocumentFile = "${dmDocumentFile}";
+		var dmDocumentSize = "${dmDocumentSize}";
+		var dmDocumentTitle = "${dmDocumentTitle}";
+		var dmDocumentUploader = "${dmDocumentUploader}";
+		var dmFolderDescription = "${dmFolderDescription}";
+		var dmFolderName = "${dmFolderName}";
+		var key_siteName = "${key_siteName}";
+		var pageName = "${pageName}";
+		var pageType = "${pageType}";
+		var siteName = "${siteName}";
 
-		<execute macro="SOUserBar#dashboardPG">
-			<var name="userName" value="Joe Bloggs" />
-		</execute>
+		SOUserBar.dashboardPG(userName = "Joe Bloggs");
 
-		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_MY_DOCUMENTS" value1="My Documents" />
+		Click.textClickAt(
+			locator1 = "SODashboard#NAVIGATION_MY_DOCUMENTS",
+			value1 = "My Documents"
+		);
 
-		<execute function="Click" locator1="PGDocumentsandmedia#ENTRIES_FOLDER" />
+		DMFolder.addPG();
 
-		<execute macro="SODocuments#viewPGDisplayView">
-			<var name="dmDocumentUploader" value="${dmDocumentUploader}" />
-			<var name="dmDocumentVersionNumber" value="${dmDocumentVersionNumber}" />
-		</execute>
-	</command>
+		SOUserBar.dashboardPG(userName = "Joe Bloggs");
 
-	<command name="CheckoutDMFolderDocument" priority="5">
-		<var name="dmDocumentDescription" value="${dmDocumentDescription}" />
-		<var name="dmDocumentFile" value="${dmDocumentFile}" />
-		<var name="dmDocumentSize" value="${dmDocumentSize}" />
-		<var name="dmDocumentTitle" value="${dmDocumentTitle}" />
-		<var name="dmDocumentUploader" value="${dmDocumentUploader}" />
-		<var name="dmFolderDescription" value="${dmFolderDescription}" />
-		<var name="dmFolderName" value="${dmFolderName}" />
-		<var name="key_siteName" value="${key_siteName}" />
-		<var name="pageName" value="${pageName}" />
-		<var name="pageType" value="${pageType}" />
-		<var name="siteName" value="${siteName}" />
+		Click.textClickAt(
+			locator1 = "SODashboard#NAVIGATION_MY_DOCUMENTS",
+			value1 = "My Documents"
+		);
 
-		<execute macro="SOUserBar#dashboardPG">
-			<var name="userName" value="Joe Bloggs" />
-		</execute>
+		DMFolderDocument.addPG();
 
-		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_MY_DOCUMENTS" value1="My Documents" />
+		SOUserBar.dashboardPG(userName = "Joe Bloggs");
 
-		<execute macro="DMFolder#addPG" />
+		Click.textClickAt(
+			locator1 = "SODashboard#NAVIGATION_MY_DOCUMENTS",
+			value1 = "My Documents"
+		);
 
-		<execute macro="SOUserBar#dashboardPG">
-			<var name="userName" value="Joe Bloggs" />
-		</execute>
+		DMFolderDocument.checkoutPG();
 
-		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_MY_DOCUMENTS" value1="My Documents" />
+		SOUserBar.dashboardPG(userName = "Joe Bloggs");
 
-		<execute macro="DMFolderDocument#addPG" />
+		Click.textClickAt(
+			locator1 = "SODashboard#NAVIGATION_MY_DOCUMENTS",
+			value1 = "My Documents"
+		);
 
-		<execute macro="SOUserBar#dashboardPG">
-			<var name="userName" value="Joe Bloggs" />
-		</execute>
+		Click(locator1 = "PGDocumentsandmedia#ENTRIES_FOLDER");
 
-		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_MY_DOCUMENTS" value1="My Documents" />
+		SODocuments.viewPGDisplayView(workflow = "Checkedout");
+	}
+
+	@priority = "5"
+	test DeleteDMFolderDocument {
+		var dmDocumentDescription = "${dmDocumentDescription}";
+		var dmDocumentFile = "${dmDocumentFile}";
+		var dmDocumentSize = "${dmDocumentSize}";
+		var dmDocumentTitle = "${dmDocumentTitle}";
+		var dmDocumentUploader = "${dmDocumentUploader}";
+		var dmFolderDescription = "${dmFolderDescription}";
+		var dmFolderName = "${dmFolderName}";
+		var key_siteName = "${key_siteName}";
+		var pageName = "${pageName}";
+		var pageType = "${pageType}";
+		var siteName = "${siteName}";
 
-		<execute macro="DMFolderDocument#checkoutPG" />
+		SOUserBar.dashboardPG(userName = "Joe Bloggs");
 
-		<execute macro="SOUserBar#dashboardPG">
-			<var name="userName" value="Joe Bloggs" />
-		</execute>
+		Click.textClickAt(
+			locator1 = "SODashboard#NAVIGATION_MY_DOCUMENTS",
+			value1 = "My Documents"
+		);
 
-		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_MY_DOCUMENTS" value1="My Documents" />
+		DMFolder.addPG();
 
-		<execute function="Click" locator1="PGDocumentsandmedia#ENTRIES_FOLDER" />
+		SOUserBar.dashboardPG(userName = "Joe Bloggs");
 
-		<execute macro="SODocuments#viewPGDisplayView">
-			<var name="workflow" value="Checkedout" />
-		</execute>
-	</command>
+		Click.textClickAt(
+			locator1 = "SODashboard#NAVIGATION_MY_DOCUMENTS",
+			value1 = "My Documents"
+		);
 
-	<command name="DeleteDMFolderDocument" priority="5">
-		<var name="dmDocumentDescription" value="${dmDocumentDescription}" />
-		<var name="dmDocumentFile" value="${dmDocumentFile}" />
-		<var name="dmDocumentSize" value="${dmDocumentSize}" />
-		<var name="dmDocumentTitle" value="${dmDocumentTitle}" />
-		<var name="dmDocumentUploader" value="${dmDocumentUploader}" />
-		<var name="dmFolderDescription" value="${dmFolderDescription}" />
-		<var name="dmFolderName" value="${dmFolderName}" />
-		<var name="key_siteName" value="${key_siteName}" />
-		<var name="pageName" value="${pageName}" />
-		<var name="pageType" value="${pageType}" />
-		<var name="siteName" value="${siteName}" />
+		DMFolderDocument.addPG();
 
-		<execute macro="SOUserBar#dashboardPG">
-			<var name="userName" value="Joe Bloggs" />
-		</execute>
+		SOUserBar.dashboardPG(userName = "Joe Bloggs");
 
-		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_MY_DOCUMENTS" value1="My Documents" />
+		Click.textClickAt(
+			locator1 = "SODashboard#NAVIGATION_MY_DOCUMENTS",
+			value1 = "My Documents"
+		);
 
-		<execute macro="DMFolder#addPG" />
+		DMFolderDocument.deletePG();
+	}
 
-		<execute macro="SOUserBar#dashboardPG">
-			<var name="userName" value="Joe Bloggs" />
-		</execute>
+	@priority = "5"
+	test DeleteDMFolderImage {
+		var dmDocumentDescription = "${dmImageDescription}";
+		var dmDocumentFile = "${dmImageFile}";
+		var dmDocumentSize = "${dmImageSize}";
+		var dmDocumentTitle = "${dmImageTitle}";
+		var dmDocumentUploader = "${dmDocumentUploader}";
+		var dmFolderDescription = "${dmFolderDescription}";
+		var dmFolderName = "${dmFolderName}";
+		var key_siteName = "${key_siteName}";
+		var pageName = "${pageName}";
+		var siteName = "${siteName}";
+
+		SOUserBar.dashboardPG(userName = "Joe Bloggs");
+
+		Click.textClickAt(
+			locator1 = "SODashboard#NAVIGATION_MY_DOCUMENTS",
+			value1 = "My Documents"
+		);
+
+		DMFolder.addPG();
+
+		SOUserBar.dashboardPG(userName = "Joe Bloggs");
+
+		Click.textClickAt(
+			locator1 = "SODashboard#NAVIGATION_MY_DOCUMENTS",
+			value1 = "My Documents"
+		);
+
+		DMFolderDocument.addPG();
 
-		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_MY_DOCUMENTS" value1="My Documents" />
+		SOUserBar.dashboardPG(userName = "Joe Bloggs");
+
+		Click.textClickAt(
+			locator1 = "SODashboard#NAVIGATION_MY_DOCUMENTS",
+			value1 = "My Documents"
+		);
 
-		<execute macro="DMFolderDocument#addPG" />
+		DMFolderDocument.deletePG();
+	}
 
-		<execute macro="SOUserBar#dashboardPG">
-			<var name="userName" value="Joe Bloggs" />
-		</execute>
+	@priority = "5"
+	test EditDMFolderDocument {
+		var dmDocumentDescription = "${dmDocumentDescription}";
+		var dmDocumentDescriptionEdit = "${dmDocumentDescriptionEdit}";
+		var dmDocumentFile = "${dmDocumentFile}";
+		var dmDocumentSize = "${dmDocumentSize}";
+		var dmDocumentTitle = "${dmDocumentTitle}";
+		var dmDocumentTitleEdit = "${dmDocumentTitleEdit}";
+		var dmDocumentUploader = "${dmDocumentUploader}";
+		var dmDocumentVersionNumber = "${dmDocumentVersionNumber}";
+		var dmDocumentVersionNumberEdit = "${dmDocumentVersionNumberEdit}";
+		var dmFolderDescription = "${dmFolderDescription}";
+		var dmFolderName = "${dmFolderName}";
+		var key_siteName = "${key_siteName}";
+		var pageName = "${pageName}";
+		var pageType = "${pageType}";
+		var siteName = "${siteName}";
 
-		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_MY_DOCUMENTS" value1="My Documents" />
+		SOUserBar.dashboardPG(userName = "Joe Bloggs");
 
-		<execute macro="DMFolderDocument#deletePG" />
-	</command>
+		Click.textClickAt(
+			locator1 = "SODashboard#NAVIGATION_MY_DOCUMENTS",
+			value1 = "My Documents"
+		);
 
-	<command name="DeleteDMFolderImage" priority="5">
-		<var name="dmDocumentDescription" value="${dmImageDescription}" />
-		<var name="dmDocumentFile" value="${dmImageFile}" />
-		<var name="dmDocumentSize" value="${dmImageSize}" />
-		<var name="dmDocumentTitle" value="${dmImageTitle}" />
-		<var name="dmDocumentUploader" value="${dmDocumentUploader}" />
-		<var name="dmFolderDescription" value="${dmFolderDescription}" />
-		<var name="dmFolderName" value="${dmFolderName}" />
-		<var name="key_siteName" value="${key_siteName}" />
-		<var name="pageName" value="${pageName}" />
-		<var name="siteName" value="${siteName}" />
+		DMFolder.addPG();
 
-		<execute macro="SOUserBar#dashboardPG">
-			<var name="userName" value="Joe Bloggs" />
-		</execute>
+		SOUserBar.dashboardPG(userName = "Joe Bloggs");
+
+		Click.textClickAt(
+			locator1 = "SODashboard#NAVIGATION_MY_DOCUMENTS",
+			value1 = "My Documents"
+		);
 
-		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_MY_DOCUMENTS" value1="My Documents" />
+		DMFolderDocument.addPG();
+
+		SOUserBar.dashboardPG(userName = "Joe Bloggs");
 
-		<execute macro="DMFolder#addPG" />
+		Click.textClickAt(
+			locator1 = "SODashboard#NAVIGATION_MY_DOCUMENTS",
+			value1 = "My Documents"
+		);
 
-		<execute macro="SOUserBar#dashboardPG">
-			<var name="userName" value="Joe Bloggs" />
-		</execute>
+		DMFolderDocument.editPG();
 
-		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_MY_DOCUMENTS" value1="My Documents" />
+		SOUserBar.dashboardPG(userName = "Joe Bloggs");
 
-		<execute macro="DMFolderDocument#addPG" />
+		Click.textClickAt(
+			locator1 = "SODashboard#NAVIGATION_MY_DOCUMENTS",
+			value1 = "My Documents"
+		);
 
-		<execute macro="SOUserBar#dashboardPG">
-			<var name="userName" value="Joe Bloggs" />
-		</execute>
+		Click(locator1 = "PGDocumentsandmedia#ENTRIES_FOLDER");
 
-		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_MY_DOCUMENTS" value1="My Documents" />
+		DMFolderDocument.viewPG(
+			dmDocumentDescription = "${dmDocumentDescriptionEdit}",
+			dmDocumentSize = "${dmDocumentSize2}",
+			dmDocumentTitle = "${dmDocumentTitleEdit}",
+			dmDocumentVersionNumber = "${dmDocumentVersionNumberEdit}",
+			versionNumber = "${dmDocumentVersionNumberEdit}"
+		);
+	}
 
-		<execute macro="DMFolderDocument#deletePG" />
-	</command>
+	@priority = "5"
+	test PublishDraftDMFolderDocument {
+		var dmDocumentDescription = "${dmDocumentDescription}";
+		var dmDocumentFile = "${dmDocumentFile}";
+		var dmDocumentSize = "${dmDocumentSize}";
+		var dmDocumentTitle = "${dmDocumentTitle}";
+		var dmDocumentUploader = "${dmDocumentUploader}";
+		var dmFolderDescription = "${dmFolderDescription}";
+		var dmFolderName = "${dmFolderName}";
+		var key_siteName = "${key_siteName}";
+		var pageName = "${pageName}";
+		var pageType = "${pageType}";
+		var siteName = "${siteName}";
 
-	<command name="EditDMFolderDocument" priority="5">
-		<var name="dmDocumentDescription" value="${dmDocumentDescription}" />
-		<var name="dmDocumentDescriptionEdit" value="${dmDocumentDescriptionEdit}" />
-		<var name="dmDocumentFile" value="${dmDocumentFile}" />
-		<var name="dmDocumentSize" value="${dmDocumentSize}" />
-		<var name="dmDocumentTitle" value="${dmDocumentTitle}" />
-		<var name="dmDocumentTitleEdit" value="${dmDocumentTitleEdit}" />
-		<var name="dmDocumentUploader" value="${dmDocumentUploader}" />
-		<var name="dmDocumentVersionNumber" value="${dmDocumentVersionNumber}" />
-		<var name="dmDocumentVersionNumberEdit" value="${dmDocumentVersionNumberEdit}" />
-		<var name="dmFolderDescription" value="${dmFolderDescription}" />
-		<var name="dmFolderName" value="${dmFolderName}" />
-		<var name="key_siteName" value="${key_siteName}" />
-		<var name="pageName" value="${pageName}" />
-		<var name="pageType" value="${pageType}" />
-		<var name="siteName" value="${siteName}" />
+		SOUserBar.dashboardPG(userName = "Joe Bloggs");
 
-		<execute macro="SOUserBar#dashboardPG">
-			<var name="userName" value="Joe Bloggs" />
-		</execute>
+		Click.textClickAt(
+			locator1 = "SODashboard#NAVIGATION_MY_DOCUMENTS",
+			value1 = "My Documents"
+		);
 
-		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_MY_DOCUMENTS" value1="My Documents" />
+		DMFolder.addPG();
 
-		<execute macro="DMFolder#addPG" />
+		SOUserBar.dashboardPG(userName = "Joe Bloggs");
 
-		<execute macro="SOUserBar#dashboardPG">
-			<var name="userName" value="Joe Bloggs" />
-		</execute>
+		Click.textClickAt(
+			locator1 = "SODashboard#NAVIGATION_MY_DOCUMENTS",
+			value1 = "My Documents"
+		);
 
-		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_MY_DOCUMENTS" value1="My Documents" />
+		DMFolderDocument.saveAsDraftPG();
 
-		<execute macro="DMFolderDocument#addPG" />
+		SOUserBar.dashboardPG(userName = "Joe Bloggs");
+
+		Click.textClickAt(
+			locator1 = "SODashboard#NAVIGATION_MY_DOCUMENTS",
+			value1 = "My Documents"
+		);
+
+		DMFolderDocument.publishDraftDMFolderDocument();
+
+		SOUserBar.dashboardPG(userName = "Joe Bloggs");
+
+		Click.textClickAt(
+			locator1 = "SODashboard#NAVIGATION_MY_DOCUMENTS",
+			value1 = "My Documents"
+		);
+
+		Click(locator1 = "PGDocumentsandmedia#ENTRIES_FOLDER");
+
+		DMFolderDocument.viewPG(versionNumber = "${dmDocumentVersionNumber}");
+	}
+
+	@priority = "5"
+	test SaveandcheckinMajorDMFolderDocument {
+		var dmDocumentDescription = "${dmDocumentDescription}";
+		var dmDocumentFile = "${dmDocumentFile}";
+		var dmDocumentSize = "${dmDocumentSize}";
+		var dmDocumentTitle = "${dmDocumentTitle}";
+		var dmDocumentUploader = "${dmDocumentUploader}";
+		var dmFolderDescription = "${dmFolderDescription}";
+		var dmFolderName = "${dmFolderName}";
+		var key_siteName = "${key_siteName}";
+		var pageName = "${pageName}";
+		var pageType = "${pageType}";
+		var siteName = "${siteName}";
 
-		<execute macro="SOUserBar#dashboardPG">
-			<var name="userName" value="Joe Bloggs" />
-		</execute>
+		SOUserBar.dashboardPG(userName = "Joe Bloggs");
 
-		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_MY_DOCUMENTS" value1="My Documents" />
+		Click.textClickAt(
+			locator1 = "SODashboard#NAVIGATION_MY_DOCUMENTS",
+			value1 = "My Documents"
+		);
 
-		<execute macro="DMFolderDocument#editPG" />
+		DMFolder.addPG();
 
-		<execute macro="SOUserBar#dashboardPG">
-			<var name="userName" value="Joe Bloggs" />
-		</execute>
+		SOUserBar.dashboardPG(userName = "Joe Bloggs");
 
-		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_MY_DOCUMENTS" value1="My Documents" />
+		Click.textClickAt(
+			locator1 = "SODashboard#NAVIGATION_MY_DOCUMENTS",
+			value1 = "My Documents"
+		);
 
-		<execute function="Click" locator1="PGDocumentsandmedia#ENTRIES_FOLDER" />
+		DMFolderDocument.addPG();
 
-		<execute macro="DMFolderDocument#viewPG">
-			<var name="dmDocumentDescription" value="${dmDocumentDescriptionEdit}" />
-			<var name="dmDocumentSize" value="${dmDocumentSize2}" />
-			<var name="dmDocumentTitle" value="${dmDocumentTitleEdit}" />
-			<var name="dmDocumentVersionNumber" value="${dmDocumentVersionNumberEdit}" />
-			<var name="versionNumber" value="${dmDocumentVersionNumberEdit}" />
-		</execute>
-	</command>
+		SOUserBar.dashboardPG(userName = "Joe Bloggs");
 
-	<command name="PublishDraftDMFolderDocument" priority="5">
-		<var name="dmDocumentDescription" value="${dmDocumentDescription}" />
-		<var name="dmDocumentFile" value="${dmDocumentFile}" />
-		<var name="dmDocumentSize" value="${dmDocumentSize}" />
-		<var name="dmDocumentTitle" value="${dmDocumentTitle}" />
-		<var name="dmDocumentUploader" value="${dmDocumentUploader}" />
-		<var name="dmFolderDescription" value="${dmFolderDescription}" />
-		<var name="dmFolderName" value="${dmFolderName}" />
-		<var name="key_siteName" value="${key_siteName}" />
-		<var name="pageName" value="${pageName}" />
-		<var name="pageType" value="${pageType}" />
-		<var name="siteName" value="${siteName}" />
+		Click.textClickAt(
+			locator1 = "SODashboard#NAVIGATION_MY_DOCUMENTS",
+			value1 = "My Documents"
+		);
 
-		<execute macro="SOUserBar#dashboardPG">
-			<var name="userName" value="Joe Bloggs" />
-		</execute>
+		DMFolderDocument.checkoutPG();
 
-		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_MY_DOCUMENTS" value1="My Documents" />
+		SOUserBar.dashboardPG(userName = "Joe Bloggs");
 
-		<execute macro="DMFolder#addPG" />
-
-		<execute macro="SOUserBar#dashboardPG">
-			<var name="userName" value="Joe Bloggs" />
-		</execute>
-
-		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_MY_DOCUMENTS" value1="My Documents" />
-
-		<execute macro="DMFolderDocument#saveAsDraftPG" />
-
-		<execute macro="SOUserBar#dashboardPG">
-			<var name="userName" value="Joe Bloggs" />
-		</execute>
-
-		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_MY_DOCUMENTS" value1="My Documents" />
-
-		<execute macro="DMFolderDocument#publishDraftDMFolderDocument" />
-
-		<execute macro="SOUserBar#dashboardPG">
-			<var name="userName" value="Joe Bloggs" />
-		</execute>
-
-		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_MY_DOCUMENTS" value1="My Documents" />
-
-		<execute function="Click" locator1="PGDocumentsandmedia#ENTRIES_FOLDER" />
-
-		<execute macro="DMFolderDocument#viewPG">
-			<var name="versionNumber" value="${dmDocumentVersionNumber}" />
-		</execute>
-	</command>
-
-	<command name="SaveandcheckinMajorDMFolderDocument" priority="5">
-		<var name="dmDocumentDescription" value="${dmDocumentDescription}" />
-		<var name="dmDocumentFile" value="${dmDocumentFile}" />
-		<var name="dmDocumentSize" value="${dmDocumentSize}" />
-		<var name="dmDocumentTitle" value="${dmDocumentTitle}" />
-		<var name="dmDocumentUploader" value="${dmDocumentUploader}" />
-		<var name="dmFolderDescription" value="${dmFolderDescription}" />
-		<var name="dmFolderName" value="${dmFolderName}" />
-		<var name="key_siteName" value="${key_siteName}" />
-		<var name="pageName" value="${pageName}" />
-		<var name="pageType" value="${pageType}" />
-		<var name="siteName" value="${siteName}" />
-
-		<execute macro="SOUserBar#dashboardPG">
-			<var name="userName" value="Joe Bloggs" />
-		</execute>
-
-		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_MY_DOCUMENTS" value1="My Documents" />
-
-		<execute macro="DMFolder#addPG" />
-
-		<execute macro="SOUserBar#dashboardPG">
-			<var name="userName" value="Joe Bloggs" />
-		</execute>
-
-		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_MY_DOCUMENTS" value1="My Documents" />
-		<execute macro="DMFolderDocument#addPG" />
-
-		<execute macro="SOUserBar#dashboardPG">
-			<var name="userName" value="Joe Bloggs" />
-		</execute>
-
-		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_MY_DOCUMENTS" value1="My Documents" />
-
-		<execute macro="DMFolderDocument#checkoutPG" />
-
-		<execute macro="SOUserBar#dashboardPG">
-			<var name="userName" value="Joe Bloggs" />
-		</execute>
-
-		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_MY_DOCUMENTS" value1="My Documents" />
-
-		<execute macro="DMFolderDocument#editPG">
-			<var name="changeLog" value="Major Revision" />
-			<var name="revision" value="Major" />
-		</execute>
-
-		<execute macro="SOUserBar#dashboardPG">
-			<var name="userName" value="Joe Bloggs" />
-		</execute>
-
-		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_MY_DOCUMENTS" value1="My Documents" />
-
-		<execute function="Click" locator1="PGDocumentsandmedia#ENTRIES_FOLDER" />
-
-		<execute macro="SODocuments#viewPGDisplayView">
-			<var name="dmDocumentDescription" value="${dmDocumentDescriptionEdit}" />
-			<var name="dmDocumentPreviousDescription" value="${dmDocumentDescription}" />
-			<var name="dmDocumentPreviousSize" value="${dmDocumentSize}" />
-			<var name="dmDocumentPreviousTitle" value="${dmDocumentTitle}" />
-			<var name="dmDocumentPreviousUploader" value="${dmDocumentUploader}" />
-			<var name="dmDocumentPreviousVersionNumber" value="${dmDocumentVersionNumber}" />
-			<var name="dmDocumentSize" value="${dmDocumentSize2}" />
-			<var name="dmDocumentTitle" value="${dmDocumentTitleEdit}" />
-			<var name="dmDocumentUploader" value="${dmDocumentUploader}" />
-			<var name="dmDocumentVersionNumber" value="${dmDocumentVersionNumberEdit2}" />
-		</execute>
-	</command>
-
-	<command name="SaveandcheckinMinorDMFolderDocument" priority="5">
-		<var name="dmDocumentDescription" value="${dmDocumentDescription}" />
-		<var name="dmDocumentFile" value="${dmDocumentFile}" />
-		<var name="dmDocumentSize" value="${dmDocumentSize}" />
-		<var name="dmDocumentTitle" value="${dmDocumentTitle}" />
-		<var name="dmDocumentUploader" value="${dmDocumentUploader}" />
-		<var name="dmFolderDescription" value="${dmFolderDescription}" />
-		<var name="dmFolderName" value="${dmFolderName}" />
-		<var name="key_siteName" value="${key_siteName}" />
-		<var name="pageName" value="${pageName}" />
-		<var name="pageType" value="${pageType}" />
-		<var name="siteName" value="${siteName}" />
-
-		<execute macro="SOUserBar#dashboardPG">
-			<var name="userName" value="Joe Bloggs" />
-		</execute>
-
-		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_MY_DOCUMENTS" value1="My Documents" />
-
-		<execute macro="DMFolder#addPG" />
-
-		<execute macro="SOUserBar#dashboardPG">
-			<var name="userName" value="Joe Bloggs" />
-		</execute>
-
-		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_MY_DOCUMENTS" value1="My Documents" />
-
-		<execute macro="DMFolderDocument#addPG" />
-
-		<execute macro="SOUserBar#dashboardPG">
-			<var name="userName" value="Joe Bloggs" />
-		</execute>
-
-		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_MY_DOCUMENTS" value1="My Documents" />
-
-		<execute macro="DMFolderDocument#checkoutPG" />
-
-		<execute macro="SOUserBar#dashboardPG">
-			<var name="userName" value="Joe Bloggs" />
-		</execute>
-
-		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_MY_DOCUMENTS" value1="My Documents" />
-
-		<execute macro="DMFolderDocument#editPG">
-			<var name="changeLog" value="Minor Revision" />
-			<var name="revision" value="Minor" />
-		</execute>
-
-		<execute macro="SOUserBar#dashboardPG">
-			<var name="userName" value="Joe Bloggs" />
-		</execute>
-
-		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_MY_DOCUMENTS" value1="My Documents" />
-		<execute function="Click" locator1="PGDocumentsandmedia#ENTRIES_FOLDER" />
-
-		<execute macro="SODocuments#viewPGDisplayView">
-			<var name="dmDocumentDescription" value="${dmDocumentDescriptionEdit}" />
-			<var name="dmDocumentPreviousDescription" value="${dmDocumentDescription}" />
-			<var name="dmDocumentPreviousSize" value="${dmDocumentSize}" />
-			<var name="dmDocumentPreviousTitle" value="${dmDocumentTitle}" />
-			<var name="dmDocumentPreviousUploader" value="${dmDocumentUploader}" />
-			<var name="dmDocumentPreviousVersionNumber" value="${dmDocumentVersionNumber}" />
-			<var name="dmDocumentSize" value="${dmDocumentSize2}" />
-			<var name="dmDocumentTitle" value="${dmDocumentTitleEdit}" />
-			<var name="dmDocumentUploader" value="${dmDocumentUploader}" />
-			<var name="dmDocumentVersionNumber" value="${dmDocumentVersionNumberEdit}" />
-		</execute>
-	</command>
-
-	<command name="SaveAsDraftDMFolderDocument" priority="5">
-		<var name="dmDocumentDescription" value="${dmDocumentDescription}" />
-		<var name="dmDocumentFile" value="${dmDocumentFile}" />
-		<var name="dmDocumentSize" value="${dmDocumentSize}" />
-		<var name="dmDocumentTitle" value="${dmDocumentTitle}" />
-		<var name="dmDocumentUploader" value="${dmDocumentUploader}" />
-		<var name="dmFolderDescription" value="${dmFolderDescription}" />
-		<var name="dmFolderName" value="${dmFolderName}" />
-		<var name="key_siteName" value="${key_siteName}" />
-		<var name="pageName" value="${pageName}" />
-		<var name="pageType" value="${pageType}" />
-		<var name="siteName" value="${siteName}" />
-
-		<execute macro="SOUserBar#dashboardPG">
-			<var name="userName" value="Joe Bloggs" />
-		</execute>
-
-		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_MY_DOCUMENTS" value1="My Documents" />
-
-		<execute macro="DMFolder#addPG" />
-
-		<execute macro="SOUserBar#dashboardPG">
-			<var name="userName" value="Joe Bloggs" />
-		</execute>
-
-		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_MY_DOCUMENTS" value1="My Documents" />
-		<execute macro="DMFolderDocument#saveAsDraftPG" />
-
-		<execute macro="SOUserBar#dashboardPG">
-			<var name="userName" value="Joe Bloggs" />
-		</execute>
-
-		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_MY_DOCUMENTS" value1="My Documents" />
-
-		<execute function="Click" locator1="PGDocumentsandmedia#ENTRIES_FOLDER" />
-
-		<execute macro="SODocuments#viewPGDisplayView">
-			<var name="workflow" value="Draft" />
-		</execute>
-	</command>
-
-	<command name="SaveAsDraftEditDMFolderDocument" priority="5">
-		<var name="dmDocumentDescription" value="${dmDocumentDescription}" />
-		<var name="dmDocumentDescriptionEdit" value="${dmDocumentDescriptionEdit}" />
-		<var name="dmDocumentFile" value="${dmDocumentFile}" />
-		<var name="dmDocumentSize" value="${dmDocumentSize}" />
-		<var name="dmDocumentTitle" value="${dmDocumentTitle}" />
-		<var name="dmDocumentTitleEdit" value="${dmDocumentTitleEdit}" />
-		<var name="dmDocumentUploader" value="${dmDocumentUploader}" />
-		<var name="dmDocumentVersionNumber" value="${dmDocumentVersionNumber}" />
-		<var name="dmDocumentVersionNumberEdit" value="${dmDocumentVersionNumberEdit}" />
-		<var name="dmFolderDescription" value="${dmFolderDescription}" />
-		<var name="dmFolderName" value="${dmFolderName}" />
-		<var name="key_siteName" value="${key_siteName}" />
-		<var name="pageName" value="${pageName}" />
-		<var name="pageType" value="${pageType}" />
-		<var name="siteName" value="${siteName}" />
-
-		<execute macro="SOUserBar#dashboardPG">
-			<var name="userName" value="Joe Bloggs" />
-		</execute>
-
-		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_MY_DOCUMENTS" value1="My Documents" />
-
-		<execute macro="DMFolder#addPG" />
-
-		<execute macro="SOUserBar#dashboardPG">
-			<var name="userName" value="Joe Bloggs" />
-		</execute>
-
-		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_MY_DOCUMENTS" value1="My Documents" />
-
-		<execute macro="DMFolderDocument#addPG" />
-
-		<execute macro="SOUserBar#dashboardPG">
-			<var name="userName" value="Joe Bloggs" />
-		</execute>
-
-		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_MY_DOCUMENTS" value1="My Documents" />
-
-		<execute macro="DMFolderDocument#saveAsDraftEditDMFolderDocument" />
-
-		<execute macro="SOUserBar#dashboardPG">
-			<var name="userName" value="Joe Bloggs" />
-		</execute>
-
-		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_MY_DOCUMENTS" value1="My Documents" />
-
-		<execute function="Click" locator1="PGDocumentsandmedia#ENTRIES_FOLDER" />
-
-		<execute macro="DMFolderDocument#viewSaveAsDraftEditDMFolderDocumentPG">
-			<var name="versionNumber" value="${dmDocumentVersionNumberEdit}" />
-		</execute>
-	</command>
-</definition>
+		Click.textClickAt(
+			locator1 = "SODashboard#NAVIGATION_MY_DOCUMENTS",
+			value1 = "My Documents"
+		);
+
+		DMFolderDocument.editPG(changeLog = "Major Revision", revision = "Major");
+
+		SOUserBar.dashboardPG(userName = "Joe Bloggs");
+
+		Click.textClickAt(
+			locator1 = "SODashboard#NAVIGATION_MY_DOCUMENTS",
+			value1 = "My Documents"
+		);
+
+		Click(locator1 = "PGDocumentsandmedia#ENTRIES_FOLDER");
+
+		SODocuments.viewPGDisplayView(
+			dmDocumentDescription = "${dmDocumentDescriptionEdit}",
+			dmDocumentPreviousDescription = "${dmDocumentDescription}",
+			dmDocumentPreviousSize = "${dmDocumentSize}",
+			dmDocumentPreviousTitle = "${dmDocumentTitle}",
+			dmDocumentPreviousUploader = "${dmDocumentUploader}",
+			dmDocumentPreviousVersionNumber = "${dmDocumentVersionNumber}",
+			dmDocumentSize = "${dmDocumentSize2}",
+			dmDocumentTitle = "${dmDocumentTitleEdit}",
+			dmDocumentUploader = "${dmDocumentUploader}",
+			dmDocumentVersionNumber = "${dmDocumentVersionNumberEdit2}"
+		);
+	}
+
+	@priority = "5"
+	test SaveandcheckinMinorDMFolderDocument {
+		var dmDocumentDescription = "${dmDocumentDescription}";
+		var dmDocumentFile = "${dmDocumentFile}";
+		var dmDocumentSize = "${dmDocumentSize}";
+		var dmDocumentTitle = "${dmDocumentTitle}";
+		var dmDocumentUploader = "${dmDocumentUploader}";
+		var dmFolderDescription = "${dmFolderDescription}";
+		var dmFolderName = "${dmFolderName}";
+		var key_siteName = "${key_siteName}";
+		var pageName = "${pageName}";
+		var pageType = "${pageType}";
+		var siteName = "${siteName}";
+
+		SOUserBar.dashboardPG(userName = "Joe Bloggs");
+
+		Click.textClickAt(
+			locator1 = "SODashboard#NAVIGATION_MY_DOCUMENTS",
+			value1 = "My Documents"
+		);
+
+		DMFolder.addPG();
+
+		SOUserBar.dashboardPG(userName = "Joe Bloggs");
+
+		Click.textClickAt(
+			locator1 = "SODashboard#NAVIGATION_MY_DOCUMENTS",
+			value1 = "My Documents"
+		);
+
+		DMFolderDocument.addPG();
+
+		SOUserBar.dashboardPG(userName = "Joe Bloggs");
+
+		Click.textClickAt(
+			locator1 = "SODashboard#NAVIGATION_MY_DOCUMENTS",
+			value1 = "My Documents"
+		);
+
+		DMFolderDocument.checkoutPG();
+
+		SOUserBar.dashboardPG(userName = "Joe Bloggs");
+
+		Click.textClickAt(
+			locator1 = "SODashboard#NAVIGATION_MY_DOCUMENTS",
+			value1 = "My Documents"
+		);
+
+		DMFolderDocument.editPG(changeLog = "Minor Revision", revision = "Minor");
+
+		SOUserBar.dashboardPG(userName = "Joe Bloggs");
+
+		Click.textClickAt(
+			locator1 = "SODashboard#NAVIGATION_MY_DOCUMENTS",
+			value1 = "My Documents"
+		);
+
+		Click(locator1 = "PGDocumentsandmedia#ENTRIES_FOLDER");
+
+		SODocuments.viewPGDisplayView(
+			dmDocumentDescription = "${dmDocumentDescriptionEdit}",
+			dmDocumentPreviousDescription = "${dmDocumentDescription}",
+			dmDocumentPreviousSize = "${dmDocumentSize}",
+			dmDocumentPreviousTitle = "${dmDocumentTitle}",
+			dmDocumentPreviousUploader = "${dmDocumentUploader}",
+			dmDocumentPreviousVersionNumber = "${dmDocumentVersionNumber}",
+			dmDocumentSize = "${dmDocumentSize2}",
+			dmDocumentTitle = "${dmDocumentTitleEdit}",
+			dmDocumentUploader = "${dmDocumentUploader}",
+			dmDocumentVersionNumber = "${dmDocumentVersionNumberEdit}"
+		);
+	}
+
+	@priority = "5"
+	test SaveAsDraftDMFolderDocument {
+		var dmDocumentDescription = "${dmDocumentDescription}";
+		var dmDocumentFile = "${dmDocumentFile}";
+		var dmDocumentSize = "${dmDocumentSize}";
+		var dmDocumentTitle = "${dmDocumentTitle}";
+		var dmDocumentUploader = "${dmDocumentUploader}";
+		var dmFolderDescription = "${dmFolderDescription}";
+		var dmFolderName = "${dmFolderName}";
+		var key_siteName = "${key_siteName}";
+		var pageName = "${pageName}";
+		var pageType = "${pageType}";
+		var siteName = "${siteName}";
+
+		SOUserBar.dashboardPG(userName = "Joe Bloggs");
+
+		Click.textClickAt(
+			locator1 = "SODashboard#NAVIGATION_MY_DOCUMENTS",
+			value1 = "My Documents"
+		);
+
+		DMFolder.addPG();
+
+		SOUserBar.dashboardPG(userName = "Joe Bloggs");
+
+		Click.textClickAt(
+			locator1 = "SODashboard#NAVIGATION_MY_DOCUMENTS",
+			value1 = "My Documents"
+		);
+
+		DMFolderDocument.saveAsDraftPG();
+
+		SOUserBar.dashboardPG(userName = "Joe Bloggs");
+
+		Click.textClickAt(
+			locator1 = "SODashboard#NAVIGATION_MY_DOCUMENTS",
+			value1 = "My Documents"
+		);
+
+		Click(locator1 = "PGDocumentsandmedia#ENTRIES_FOLDER");
+
+		SODocuments.viewPGDisplayView(workflow = "Draft");
+	}
+
+	@priority = "5"
+	test SaveAsDraftEditDMFolderDocument {
+		var dmDocumentDescription = "${dmDocumentDescription}";
+		var dmDocumentDescriptionEdit = "${dmDocumentDescriptionEdit}";
+		var dmDocumentFile = "${dmDocumentFile}";
+		var dmDocumentSize = "${dmDocumentSize}";
+		var dmDocumentTitle = "${dmDocumentTitle}";
+		var dmDocumentTitleEdit = "${dmDocumentTitleEdit}";
+		var dmDocumentUploader = "${dmDocumentUploader}";
+		var dmDocumentVersionNumber = "${dmDocumentVersionNumber}";
+		var dmDocumentVersionNumberEdit = "${dmDocumentVersionNumberEdit}";
+		var dmFolderDescription = "${dmFolderDescription}";
+		var dmFolderName = "${dmFolderName}";
+		var key_siteName = "${key_siteName}";
+		var pageName = "${pageName}";
+		var pageType = "${pageType}";
+		var siteName = "${siteName}";
+
+		SOUserBar.dashboardPG(userName = "Joe Bloggs");
+
+		Click.textClickAt(
+			locator1 = "SODashboard#NAVIGATION_MY_DOCUMENTS",
+			value1 = "My Documents"
+		);
+
+		DMFolder.addPG();
+
+		SOUserBar.dashboardPG(userName = "Joe Bloggs");
+
+		Click.textClickAt(
+			locator1 = "SODashboard#NAVIGATION_MY_DOCUMENTS",
+			value1 = "My Documents"
+		);
+
+		DMFolderDocument.addPG();
+
+		SOUserBar.dashboardPG(userName = "Joe Bloggs");
+
+		Click.textClickAt(
+			locator1 = "SODashboard#NAVIGATION_MY_DOCUMENTS",
+			value1 = "My Documents"
+		);
+
+		DMFolderDocument.saveAsDraftEditDMFolderDocument();
+
+		SOUserBar.dashboardPG(userName = "Joe Bloggs");
+
+		Click.textClickAt(
+			locator1 = "SODashboard#NAVIGATION_MY_DOCUMENTS",
+			value1 = "My Documents"
+		);
+
+		Click(locator1 = "PGDocumentsandmedia#ENTRIES_FOLDER");
+
+		DMFolderDocument.viewSaveAsDraftEditDMFolderDocumentPG(
+			versionNumber = "${dmDocumentVersionNumberEdit}"
+		);
+	}
+}

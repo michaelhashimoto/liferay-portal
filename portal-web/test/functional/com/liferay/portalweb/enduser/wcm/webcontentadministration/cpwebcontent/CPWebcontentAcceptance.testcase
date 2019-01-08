@@ -1,124 +1,114 @@
-<definition component-name="portal-wcm">
-	<property name="portal.release" value="true" />
-	<property name="portal.upstream" value="true" />
-	<property name="testray.main.component.name" value="WCM" />
+@component-name = "portal-wcm"
+definition {
+	property portal.release = "true";
+	property portal.upstream = "true";
+	property testray.main.component.name = "WCM";
 
-	<set-up>
-		<execute macro="User#firstLoginPG" />
-	</set-up>
+	setUp {
+		User.firstLoginPG();
+	}
 
-	<tear-down>
-		<execute macro="WebContent#tearDownCP" />
+	tearDown {
+		WebContent.tearDownCP();
 
-		<execute macro="WebContentTemplates#tearDownCP" />
+		WebContentTemplates.tearDownCP();
 
-		<execute macro="WebContentStructures#tearDownCP" />
-	</tear-down>
+		WebContentStructures.tearDownCP();
+	}
 
-	<command name="AddStructure" priority="5">
-		<var name="structureDescription" value="WC Structure Description" />
-		<var name="structureName" value="WC Structure Name" />
+	@priority = "5"
+	test AddStructure {
+		var structureDescription = "WC Structure Description";
+		var structureName = "WC Structure Name";
 
-		<execute macro="Page#gotoCP">
-			<var name="portletName" value="Web Content" />
-		</execute>
+		Page.gotoCP(portletName = "Web Content");
 
-		<execute macro="WebContentStructures#addCP">
-			<var name="structureDescription" value="${structureDescription}" />
-			<var name="structureName" value="${structureName}" />
-		</execute>
-	</command>
+		WebContentStructures.addCP(
+			structureDescription = "${structureDescription}",
+			structureName = "${structureName}"
+		);
+	}
 
-	<command name="AddTemplate" priority="5">
-		<var name="templateDescription" value="WC Template Description" />
-		<var name="templateName" value="WC Template Name" />
+	@priority = "5"
+	test AddTemplate {
+		var templateDescription = "WC Template Description";
+		var templateName = "WC Template Name";
 
-		<execute macro="Page#gotoCP">
-			<var name="portletName" value="Web Content" />
-		</execute>
+		Page.gotoCP(portletName = "Web Content");
 
-		<execute macro="WebContentTemplates#addCP">
-			<var name="templateDescription" value="${templateDescription}" />
-			<var name="templateName" value="${templateName}" />
-		</execute>
-	</command>
+		WebContentTemplates.addCP(
+			templateDescription = "${templateDescription}",
+			templateName = "${templateName}"
+		);
+	}
 
-	<command name="AddTemplateStructure" priority="5">
-		<var name="structureDescription" value="WC Structure Description" />
-		<var name="structureName" value="WC Structure Name" />
-		<var name="templateDescription" value="WC Template Description" />
-		<var name="templateName" value="WC Template Name" />
+	@priority = "5"
+	test AddTemplateStructure {
+		var structureDescription = "WC Structure Description";
+		var structureName = "WC Structure Name";
+		var templateDescription = "WC Template Description";
+		var templateName = "WC Template Name";
 
-		<execute macro="Page#gotoCP">
-			<var name="portletName" value="Web Content" />
-		</execute>
+		Page.gotoCP(portletName = "Web Content");
 
-		<execute macro="WebContentStructures#addCP">
-			<var name="structureDescription" value="${structureDescription}" />
-			<var name="structureName" value="${structureName}" />
-		</execute>
+		WebContentStructures.addCP(
+			structureDescription = "${structureDescription}",
+			structureName = "${structureName}"
+		);
 
-		<execute macro="Page#gotoCP">
-			<var name="portletName" value="Web Content" />
-		</execute>
+		Page.gotoCP(portletName = "Web Content");
 
-		<execute macro="WebContentTemplates#addCP">
-			<var name="structureName" value="${structureName}" />
-			<var name="templateDescription" value="${templateDescription}" />
-			<var name="templateName" value="${templateName}" />
-		</execute>
-	</command>
+		WebContentTemplates.addCP(
+			structureName = "${structureName}",
+			templateDescription = "${templateDescription}",
+			templateName = "${templateName}"
+		);
+	}
 
-	<command name="AddWebContent" priority="5">
-		<var name="webContentContent" value="WC WebContent Content" />
-		<var name="webContentTitle" value="WC WebContent Title" />
+	@priority = "5"
+	test AddWebContent {
+		var webContentContent = "WC WebContent Content";
+		var webContentTitle = "WC WebContent Title";
 
-		<execute macro="Page#gotoCP">
-			<var name="portletName" value="Web Content" />
-		</execute>
+		Page.gotoCP(portletName = "Web Content");
 
-		<execute macro="WebContent#addCP">
-			<var name="webContentContent" value="${webContentContent}" />
-			<var name="webContentTitle" value="${webContentTitle}" />
-		</execute>
-	</command>
+		WebContent.addCP(
+			webContentContent = "${webContentContent}",
+			webContentTitle = "${webContentTitle}"
+		);
+	}
 
-	<command name="AddWebContentStructure" priority="5">
-		<var name="structureDescription" value="WC Structure Description" />
-		<var name="structureName" value="WC Structure Name" />
-		<var name="templateDescription" value="WC Template Description" />
-		<var name="templateName" value="WC Template Name" />
-		<var name="webContentText" value="WC WebContent Text" />
-		<var name="webContentTitle" value="WC WebContent Title" />
+	@priority = "5"
+	test AddWebContentStructure {
+		var structureDescription = "WC Structure Description";
+		var structureName = "WC Structure Name";
+		var templateDescription = "WC Template Description";
+		var templateName = "WC Template Name";
+		var webContentText = "WC WebContent Text";
+		var webContentTitle = "WC WebContent Title";
 
-		<execute macro="Page#gotoCP">
-			<var name="portletName" value="Web Content" />
-		</execute>
+		Page.gotoCP(portletName = "Web Content");
 
-		<execute macro="WebContentStructures#addCP">
-			<var name="structureDescription" value="${structureDescription}" />
-			<var name="structureName" value="${structureName}" />
-		</execute>
+		WebContentStructures.addCP(
+			structureDescription = "${structureDescription}",
+			structureName = "${structureName}"
+		);
 
-		<execute macro="Page#gotoCP">
-			<var name="portletName" value="Web Content" />
-		</execute>
+		Page.gotoCP(portletName = "Web Content");
 
-		<execute macro="WebContentTemplates#addCP">
-			<var name="structureName" value="${structureName}" />
-			<var name="templateDescription" value="${templateDescription}" />
-			<var name="templateName" value="${templateName}" />
-		</execute>
+		WebContentTemplates.addCP(
+			structureName = "${structureName}",
+			templateDescription = "${templateDescription}",
+			templateName = "${templateName}"
+		);
 
-		<execute macro="Page#gotoCP">
-			<var name="portletName" value="Web Content" />
-		</execute>
+		Page.gotoCP(portletName = "Web Content");
 
-		<execute macro="WebContent#addCPwithStructure">
-			<var name="structureName" value="${structureName}" />
-			<var name="templateName" value="${templateName}" />
-			<var name="webContentText" value="${webContentText}" />
-			<var name="webContentTitle" value="${webContentTitle}" />
-		</execute>
-	</command>
-</definition>
+		WebContent.addCPwithStructure(
+			structureName = "${structureName}",
+			templateName = "${templateName}",
+			webContentText = "${webContentText}",
+			webContentTitle = "${webContentTitle}"
+		);
+	}
+}

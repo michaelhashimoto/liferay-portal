@@ -1,54 +1,50 @@
-<definition component-name="portal-tools">
-	<property name="portal.release" value="true" />
-	<property name="portal.upstream" value="true" />
-	<property name="testray.main.component.name" value="Tools" />
+@component-name = "portal-tools"
+definition {
+	property portal.release = "true";
+	property portal.upstream = "true";
+	property testray.main.component.name = "Tools";
 
-	<set-up>
-		<execute macro="User#firstLoginPG" />
-	</set-up>
+	setUp {
+		User.firstLoginPG();
+	}
 
-	<tear-down>
-		<execute macro="DMDocument#tearDownCP" />
+	tearDown {
+		DMDocument.tearDownCP();
 
-		<execute macro="User#logoutPG" />
-	</tear-down>
+		User.logoutPG();
+	}
 
-	<command name="AddDocumentWithUploadTempFile" priority="5">
-		<var name="dmDocumentDescription" value="DM Document Description" />
-		<var name="dmDocumentFile" value="Document_1.doc" />
-		<var name="dmDocumentSize" value="21.5k" />
-		<var name="dmDocumentTitle" value="DM Document Title" />
+	@priority = "5"
+	test AddDocumentWithUploadTempFile {
+		var dmDocumentDescription = "DM Document Description";
+		var dmDocumentFile = "Document_1.doc";
+		var dmDocumentSize = "21.5k";
+		var dmDocumentTitle = "DM Document Title";
 
-		<execute macro="Page#gotoCP">
-			<var name="portletName" value="Documents and Media" />
-		</execute>
+		Page.gotoCP(portletName = "Documents and Media");
 
-		<execute macro="DMDocument#addCP">
-			<var name="dmDocumentDescription" value="${dmDocumentDescription}" />
-			<var name="dmDocumentFile" value="${dmDocumentFile}" />
-			<var name="dmDocumentSize" value="${dmDocumentSize}" />
-			<var name="dmDocumentTitle" value="${dmDocumentTitle}" />
-		</execute>
+		DMDocument.addCP(
+			dmDocumentDescription = "${dmDocumentDescription}",
+			dmDocumentFile = "${dmDocumentFile}",
+			dmDocumentSize = "${dmDocumentSize}",
+			dmDocumentTitle = "${dmDocumentTitle}"
+		);
 
-		<execute macro="Page#gotoCP">
-			<var name="portletName" value="Documents and Media" />
-		</execute>
+		Page.gotoCP(portletName = "Documents and Media");
 
-		<execute macro="DMDocument#downloadCP">
-			<var name="dmDocumentFile" value="${dmDocumentFile}" />
-			<var name="dmDocumentSize" value="${dmDocumentSize}" />
-		</execute>
+		DMDocument.downloadCP(
+			dmDocumentFile = "${dmDocumentFile}",
+			dmDocumentSize = "${dmDocumentSize}"
+		);
 
-		<execute macro="Page#gotoCP">
-			<var name="portletName" value="Documents and Media" />
-		</execute>
+		Page.gotoCP(portletName = "Documents and Media");
 
-		<execute macro="DMDocument#addCP">
-			<var name="dmDocumentDescription" value="${dmDocumentDescription} New" />
-			<var name="dmDocumentFile" value="${dmDocumentTitle}.doc" />
-			<var name="dmDocumentSize" value="${dmDocumentSize}" />
-			<var name="dmDocumentTitle" value="${dmDocumentTitle} New" />
-			<var name="uploadTempFile" value="true" />
-		</execute>
-	</command>
-</definition>
+		DMDocument.addCP(
+			dmDocumentDescription = "${dmDocumentDescription} New",
+			dmDocumentFile = "${dmDocumentTitle}.doc",
+			dmDocumentSize = "${dmDocumentSize}",
+			dmDocumentTitle = "${dmDocumentTitle} New",
+			uploadTempFile = "true"
+		);
+	}
+}

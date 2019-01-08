@@ -1,228 +1,188 @@
-<definition component-name="portal-wcm">
-	<property name="portal.release" value="true" />
-	<property name="portal.upstream" value="true" />
-	<property name="testray.main.component.name" value="WCM" />
+@component-name = "portal-wcm"
+definition {
+	property portal.release = "true";
+	property portal.upstream = "true";
+	property testray.main.component.name = "WCM";
 
-	<set-up>
-		<execute macro="User#firstLoginPG" />
-	</set-up>
+	setUp {
+		User.firstLoginPG();
+	}
 
-	<command name="AddSite" priority="5">
-		<var name="siteName" value="Site Name" />
+	@priority = "5"
+	test AddSite {
+		var siteName = "Site Name";
 
-		<execute macro="Page#gotoCP">
-			<var name="portletName" value="Sites" />
-		</execute>
+		Page.gotoCP(portletName = "Sites");
 
-		<execute macro="Site#addBlankCP">
-			<var name="siteName" value="${siteName}" />
-		</execute>
+		Site.addBlankCP(siteName = "${siteName}");
 
-		<execute macro="Page#gotoCP">
-			<var name="portletName" value="Sites" />
-		</execute>
+		Page.gotoCP(portletName = "Sites");
 
-		<execute macro="Site#viewCP">
-			<var name="siteName" value="${siteName}" />
-		</execute>
-	</command>
+		Site.viewCP(siteName = "${siteName}");
+	}
 
-	<command name="CannotJoinPrivateSiteAsUser" priority="5">
-		<var name="membershipType" value="Private" />
-		<var name="siteName" value="Site Name" />
-		<var name="userEmailAddress" value="userea@liferay.com" />
-		<var name="userFirstName" value="userfn" />
-		<var name="userLastName" value="userln" />
-		<var name="userScreenName" value="usersn" />
+	@priority = "5"
+	test CannotJoinPrivateSiteAsUser {
+		var membershipType = "Private";
+		var siteName = "Site Name";
+		var userEmailAddress = "userea@liferay.com";
+		var userFirstName = "userfn";
+		var userLastName = "userln";
+		var userScreenName = "usersn";
 
-		<execute macro="Page#gotoCP">
-			<var name="portletName" value="Sites" />
-		</execute>
+		Page.gotoCP(portletName = "Sites");
 
-		<execute macro="Site#addBlankCP">
-			<var name="membershipType" value="${membershipType}" />
-			<var name="siteName" value="${siteName}" />
-		</execute>
+		Site.addBlankCP(membershipType = "${membershipType}", siteName = "${siteName}");
 
-		<execute macro="Page#gotoCP">
-			<var name="portletName" value="Users and Organizations" />
-		</execute>
+		Page.gotoCP(portletName = "Users and Organizations");
 
-		<execute macro="User#addCP">
-			<var name="userEmailAddress" value="${userEmailAddress}" />
-			<var name="userFirstName" value="${userFirstName}" />
-			<var name="userLastName" value="${userLastName}" />
-			<var name="userScreenName" value="${userScreenName}" />
-		</execute>
+		User.addCP(
+			userEmailAddress = "${userEmailAddress}",
+			userFirstName = "${userFirstName}",
+			userLastName = "${userLastName}",
+			userScreenName = "${userScreenName}"
+		);
 
-		<execute macro="Page#gotoCP">
-			<var name="portletName" value="Users and Organizations" />
-		</execute>
+		Page.gotoCP(portletName = "Users and Organizations");
 
-		<execute macro="User#editPasswordCP">
-			<var name="userEmailAddress" value="${userEmailAddress}" />
-			<var name="userScreenName" value="${userScreenName}" />
-		</execute>
+		User.editPasswordCP(
+			userEmailAddress = "${userEmailAddress}",
+			userScreenName = "${userScreenName}"
+		);
 
-		<execute macro="User#logoutPG" />
+		User.logoutPG();
 
-		<execute macro="User#loginPG">
-			<var name="password" value="test" />
-			<var name="userEmailAddress" value="${userEmailAddress}" />
-		</execute>
+		User.loginPG(password = "test", userEmailAddress = "${userEmailAddress}");
 
-		<execute function="Open" locator1="/user/${userScreenName}/home" />
+		Open(locator1 = "/user/${userScreenName}/home");
 
-		<execute function="AssertTextEquals" locator1="PGPersonalsiteMysites#MY_SITES_INFO_MESSAGE" value1="No sites were found." />
-		<execute function="AssertClick#assertTextClickAt" locator1="PGPersonalsiteMysites#MY_SITES_AVAILABLE_SITES" value1="Available Sites" />
+		AssertTextEquals(
+			locator1 = "PGPersonalsiteMysites#MY_SITES_INFO_MESSAGE",
+			value1 = "No sites were found."
+		);
 
-		<execute function="AssertTextNotPresent" value1="${siteName}" />
-		<execute function="Type" locator1="PGPersonalsiteAvailablesites#AVAILABLE_SITES_SEARCH_FIELD" value1="${siteName}" />
-		<execute function="AssertClick#assertValueClickAt" locator1="PGPersonalsiteAvailablesites#AVAILABLE_SITES_SEARCH_BUTTON" value1="Search" />
-		<execute function="AssertTextNotPresent" value1="${siteName}" />
-		<execute function="AssertTextEquals" locator1="PGPersonalsiteAvailablesites#AVAILABLE_SITES_INFO_MESSAGE" value1="No sites were found." />
-	</command>
+		AssertClick.assertTextClickAt(
+			locator1 = "PGPersonalsiteMysites#MY_SITES_AVAILABLE_SITES",
+			value1 = "Available Sites"
+		);
 
-	<command name="DeleteSite" priority="5">
-		<var name="siteName" value="Site Name" />
+		AssertTextNotPresent(value1 = "${siteName}");
 
-		<execute macro="Page#gotoCP">
-			<var name="portletName" value="Sites" />
-		</execute>
+		Type(
+			locator1 = "PGPersonalsiteAvailablesites#AVAILABLE_SITES_SEARCH_FIELD",
+			value1 = "${siteName}"
+		);
 
-		<execute macro="Site#addBlankCP">
-			<var name="siteName" value="${siteName}" />
-		</execute>
+		AssertClick.assertValueClickAt(
+			locator1 = "PGPersonalsiteAvailablesites#AVAILABLE_SITES_SEARCH_BUTTON",
+			value1 = "Search"
+		);
 
-		<execute macro="Page#gotoCP">
-			<var name="portletName" value="Sites" />
-		</execute>
+		AssertTextNotPresent(value1 = "${siteName}");
 
-		<execute macro="Site#deleteCP">
-			<var name="siteName" value="${siteName}" />
-		</execute>
-	</command>
+		AssertTextEquals(
+			locator1 = "PGPersonalsiteAvailablesites#AVAILABLE_SITES_INFO_MESSAGE",
+			value1 = "No sites were found."
+		);
+	}
 
-	<command name="ImportLARSite" priority="5">
-		<var name="file" value="Sites_Public_Pages.lar" />
-		<var name="pageName" value="Message Boards Page" />
-		<var name="portletName" value="Message Boards" />
-		<var name="siteName" value="Site Name" />
-		<var name="sitePageName" value="Site Page" />
-		<var name="sitePagePrivacy" value="Public" />
-		<var name="threadBody" value="MB Thread Message Body" />
-		<var name="threadReplyBody" value="MB Thread Reply Body" />
-		<var name="threadSubject" value="MB Thread Message Subject" />
+	@priority = "5"
+	test DeleteSite {
+		var siteName = "Site Name";
 
-		<execute macro="Page#gotoCP">
-			<var name="portletName" value="Sites" />
-		</execute>
+		Page.gotoCP(portletName = "Sites");
 
-		<execute macro="Site#addBlankCP">
-			<var name="siteName" value="${siteName}" />
-		</execute>
+		Site.addBlankCP(siteName = "${siteName}");
 
-		<execute macro="Page#gotoCP">
-			<var name="portletName" value="Sites" />
-		</execute>
+		Page.gotoCP(portletName = "Sites");
 
-		<execute macro="SitePage#addCP">
-			<var name="siteName" value="${siteName}" />
-			<var name="sitePageName" value="${sitePageName}" />
-			<var name="sitePagePrivacy" value="${sitePagePrivacy}" />
-		</execute>
+		Site.deleteCP(siteName = "${siteName}");
+	}
 
-		<execute macro="Page#addPG">
-			<var name="pageName" value="${pageName}" />
-			<var name="pageType" value="Site" />
-		</execute>
+	@priority = "5"
+	test ImportLARSite {
+		var file = "Sites_Public_Pages.lar";
+		var pageName = "Message Boards Page";
+		var portletName = "Message Boards";
+		var siteName = "Site Name";
+		var sitePageName = "Site Page";
+		var sitePagePrivacy = "Public";
+		var threadBody = "MB Thread Message Body";
+		var threadReplyBody = "MB Thread Reply Body";
+		var threadSubject = "MB Thread Message Subject";
 
-		<execute macro="Portlet#addPG">
-			<var name="pageName" value="${pageName}" />
-			<var name="pageType" value="Site" />
-			<var name="portletName" value="${portletName}" />
-		</execute>
+		Page.gotoCP(portletName = "Sites");
 
-		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${pageName}" />
-			<var name="pageType" value="Site" />
-		</execute>
+		Site.addBlankCP(siteName = "${siteName}");
 
-		<execute macro="MessageboardsThread#addPG">
-			<var name="siteName" value="${siteName}" />
-			<var name="threadBody" value="${threadBody}" />
-			<var name="threadSubject" value="${threadSubject}" />
-		</execute>
+		Page.gotoCP(portletName = "Sites");
 
-		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${pageName}" />
-			<var name="pageType" value="Site" />
-		</execute>
+		SitePage.addCP(
+			siteName = "${siteName}",
+			sitePageName = "${sitePageName}",
+			sitePagePrivacy = "${sitePagePrivacy}"
+		);
 
-		<execute macro="MessageboardsThread#replyPG">
-			<var name="siteName" value="${siteName}" />
-			<var name="threadBody" value="${threadBody}" />
-			<var name="threadSubject" value="${threadSubject}" />
-		</execute>
+		Page.addPG(pageName = "${pageName}", pageType = "Site");
 
-		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${pageName}" />
-			<var name="pageType" value="Site" />
-		</execute>
+		Portlet.addPG(
+			pageName = "${pageName}",
+			pageType = "Site",
+			portletName = "${portletName}"
+		);
 
-		<execute macro="MessageboardsThread#viewReplyPG">
-			<var name="threadBody" value="${threadBody}" />
-			<var name="threadReplyBody" value="${threadReplyBody}" />
-			<var name="threadSubject" value="${threadSubject}" />
-		</execute>
+		Page.gotoPG(pageName = "${pageName}", pageType = "Site");
 
-		<execute macro="Page#gotoCP">
-			<var name="portletName" value="Site Pages" />
-			<var name="siteScopeName" value="${siteName}" />
-		</execute>
+		MessageboardsThread.addPG(
+			siteName = "${siteName}",
+			threadBody = "${threadBody}",
+			threadSubject = "${threadSubject}"
+		);
 
-		<execute macro="SitePage#exportLarCP">
-			<var name="file" value="${file}" />
-			<var name="siteName" value="${siteName}" />
-		</execute>
+		Page.gotoPG(pageName = "${pageName}", pageType = "Site");
 
-		<execute macro="Site#tearDownCP" />
+		MessageboardsThread.replyPG(
+			siteName = "${siteName}",
+			threadBody = "${threadBody}",
+			threadSubject = "${threadSubject}"
+		);
 
-		<execute macro="Page#gotoCP">
-			<var name="portletName" value="Sites" />
-		</execute>
+		Page.gotoPG(pageName = "${pageName}", pageType = "Site");
 
-		<execute macro="Site#addBlankCP">
-			<var name="siteName" value="${siteName}" />
-		</execute>
+		MessageboardsThread.viewReplyPG(
+			threadBody = "${threadBody}",
+			threadReplyBody = "${threadReplyBody}",
+			threadSubject = "${threadSubject}"
+		);
 
-		<execute macro="Page#gotoCP">
-			<var name="portletName" value="Site Pages" />
-			<var name="siteScopeName" value="${siteName}" />
-		</execute>
+		Page.gotoCP(portletName = "Site Pages", siteScopeName = "${siteName}");
 
-		<execute macro="SitePage#importLarCP">
-			<var name="file" value="${file}" />
-			<var name="siteName" value="${siteName}" />
-		</execute>
+		SitePage.exportLarCP(file = "${file}", siteName = "${siteName}");
 
-		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${pageName}" />
-			<var name="pageType" value="Site" />
-		</execute>
+		Site.tearDownCP();
 
-		<execute macro="MessageboardsThread#viewReplyPG">
-			<var name="threadBody" value="${threadBody}" />
-			<var name="threadReplyBody" value="${threadReplyBody}" />
-			<var name="threadSubject" value="${threadSubject}" />
-		</execute>
-	</command>
+		Page.gotoCP(portletName = "Sites");
 
-	<tear-down>
-		<execute macro="User#firstLoginPG" />
+		Site.addBlankCP(siteName = "${siteName}");
 
-		<execute macro="User#tearDownCP" />
+		Page.gotoCP(portletName = "Site Pages", siteScopeName = "${siteName}");
 
-		<execute macro="Site#tearDownCP" />
-	</tear-down>
-</definition>
+		SitePage.importLarCP(file = "${file}", siteName = "${siteName}");
+
+		Page.gotoPG(pageName = "${pageName}", pageType = "Site");
+
+		MessageboardsThread.viewReplyPG(
+			threadBody = "${threadBody}",
+			threadReplyBody = "${threadReplyBody}",
+			threadSubject = "${threadSubject}"
+		);
+	}
+
+	tearDown {
+		User.firstLoginPG();
+
+		User.tearDownCP();
+
+		Site.tearDownCP();
+	}
+}

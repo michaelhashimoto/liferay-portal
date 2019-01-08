@@ -1,356 +1,204 @@
-<definition component-name="portal-tools">
-	<property name="portal.release" value="true" />
-	<property name="portal.upstream" value="true" />
-	<property name="testcase.url" value="http://the-internet.herokuapp.com/status_codes" />
-	<property name="testray.main.component.name" value="Tools" />
+@component-name = "portal-tools"
+definition {
+	property portal.release = "true";
+	property portal.upstream = "true";
+	property testcase.url = "http://the-internet.herokuapp.com/status_codes";
+	property testray.main.component.name = "Tools";
 
-	<command name="Condition" priority="5">
-		<if>
-			<condition function="IsElementPresent" locator1="Conditional#TITLE_ELEMENT" />
-			<then>
-				<execute macro="TestUtils#pass">
-					<var name="message" value="Webpage title element was found: PASS" />
-				</execute>
-			</then>
-			<else>
-				<execute macro="TestUtils#fail">
-					<var name="message" value="Webpage title element was not found: FAIL" />
-				</execute>
-			</else>
-		</if>
+	@priority = "5"
+	test Condition {
+		if (IsElementPresent(locator1 = "Conditional#TITLE_ELEMENT")) {
+			TestUtils.pass(message = "Webpage title element was found: PASS");
+		}
+		else {
+			TestUtils.fail(message = "Webpage title element was not found: FAIL");
+		}
 
-		<if>
-			<condition function="IsElementNotPresent" locator1="Conditional#TITLE_ELEMENT" />
-			<then>
-				<execute macro="TestUtils#fail">
-					<var name="message" value="Webpage title element was not found: FAIL" />
-				</execute>
-			</then>
-			<else>
-				<execute macro="TestUtils#pass">
-					<var name="message" value="Webpage title element was found: PASS" />
-				</execute>
-			</else>
-		</if>
+		if (IsElementNotPresent(locator1 = "Conditional#TITLE_ELEMENT")) {
+			TestUtils.fail(message = "Webpage title element was not found: FAIL");
+		}
+		else {
+			TestUtils.pass(message = "Webpage title element was found: PASS");
+		}
 
-		<if>
-			<condition function="IsElementPresent" locator1="Conditional#LIST_ELEMENT" />
-			<then>
-				<execute macro="TestUtils#pass">
-					<var name="message" value="Webpage list element was found: PASS" />
-				</execute>
-			</then>
-			<else>
-				<execute macro="TestUtils#fail">
-					<var name="message" value="Webpage list element was not found: FAIL" />
-				</execute>
-			</else>
-		</if>
+		if (IsElementPresent(locator1 = "Conditional#LIST_ELEMENT")) {
+			TestUtils.pass(message = "Webpage list element was found: PASS");
+		}
+		else {
+			TestUtils.fail(message = "Webpage list element was not found: FAIL");
+		}
 
-		<if>
-			<condition function="IsElementNotPresent" locator1="Conditional#LIST_ELEMENT" />
-			<then>
-				<execute macro="TestUtils#fail">
-					<var name="message" value="Webpage list element was not found: FAIL" />
-				</execute>
-			</then>
-			<else>
-				<execute macro="TestUtils#pass">
-					<var name="message" value="Webpage list element was found: PASS" />
-				</execute>
-			</else>
-		</if>
+		if (IsElementNotPresent(locator1 = "Conditional#LIST_ELEMENT")) {
+			TestUtils.fail(message = "Webpage list element was not found: FAIL");
+		}
+		else {
+			TestUtils.pass(message = "Webpage list element was found: PASS");
+		}
 
-		<if>
-			<condition function="IsTextEqual" locator1="Conditional#TITLE_ELEMENT_NAME" value1="Status Codes" />
-			<then>
-				<execute macro="TestUtils#pass">
-					<var name="message" value="Matched webpage title value: PASS" />
-				</execute>
-			</then>
-			<else>
-				<execute macro="TestUtils#fail">
-					<var name="message" value="Did not match webpage title value: FAIL" />
-				</execute>
-			</else>
-		</if>
+		if (IsTextEqual(locator1 = "Conditional#TITLE_ELEMENT_NAME", value1 = "Status Codes")) {
+			TestUtils.pass(message = "Matched webpage title value: PASS");
+		}
+		else {
+			TestUtils.fail(message = "Did not match webpage title value: FAIL");
+		}
 
-		<if>
-			<condition function="IsTextEqual" locator1="Conditional#TITLE_ELEMENT_NAME" value1="Not real title" />
-			<then>
-				<execute macro="TestUtils#fail">
-					<var name="message" value="Matched incorrect webpage title value: FAIL" />
-				</execute>
-			</then>
-			<else>
-				<execute macro="TestUtils#pass">
-					<var name="message" value="Did not match incorrect webpage title value: PASS" />
-				</execute>
-			</else>
-		</if>
+		if (IsTextEqual(locator1 = "Conditional#TITLE_ELEMENT_NAME", value1 = "Not real title")) {
+			TestUtils.fail(message = "Matched incorrect webpage title value: FAIL");
+		}
+		else {
+			TestUtils.pass(message = "Did not match incorrect webpage title value: PASS");
+		}
 
-		<if>
-			<condition function="IsTextNotEqual" locator1="Conditional#TITLE_ELEMENT_NAME" value1="Status Codes" />
-			<then>
-				<execute macro="TestUtils#fail">
-					<var name="message" value="Did not match webpage title value: FAIL" />
-				</execute>
-			</then>
-			<else>
-				<execute macro="TestUtils#pass">
-					<var name="message" value="Matched webpage title value: PASS" />
-				</execute>
-			</else>
-		</if>
+		if (IsTextNotEqual(locator1 = "Conditional#TITLE_ELEMENT_NAME", value1 = "Status Codes")) {
+			TestUtils.fail(message = "Did not match webpage title value: FAIL");
+		}
+		else {
+			TestUtils.pass(message = "Matched webpage title value: PASS");
+		}
 
-		<if>
-			<condition function="IsTextNotEqual" locator1="Conditional#TITLE_ELEMENT_NAME" value1="Not real title" />
-			<then>
-				<execute macro="TestUtils#pass">
-					<var name="message" value="Did not match incorrect webpage title value: PASS" />
-				</execute>
-			</then>
-			<else>
-				<execute macro="TestUtils#fail">
-					<var name="message" value="Matched incorrect webpage title value: FAIL" />
-				</execute>
-			</else>
-		</if>
-	</command>
+		if (IsTextNotEqual(locator1 = "Conditional#TITLE_ELEMENT_NAME", value1 = "Not real title")) {
+			TestUtils.pass(message = "Did not match incorrect webpage title value: PASS");
+		}
+		else {
+			TestUtils.fail(message = "Matched incorrect webpage title value: FAIL");
+		}
+	}
 
-	<command name="Contains" priority="5">
-		<var name="nonSubstring" value="abc" />
-		<var name="string" value="string" />
-		<var name="substring" value="str" />
+	@priority = "5"
+	test Contains {
+		var nonSubstring = "abc";
+		var string = "string";
+		var substring = "str";
 
-		<if>
-			<contains string="${string}" substring="${substring}" />
-			<then>
-				<execute macro="TestUtils#pass">
-					<var name="message" value="Substring was found within string: PASS" />
-				</execute>
-			</then>
-			<else>
-				<execute macro="TestUtils#fail">
-					<var name="message" value="Substring was not found within string: FAIL" />
-				</execute>
-			</else>
-		</if>
+		if (contains("${string}", "${substring}")) {
+			TestUtils.pass(message = "Substring was found within string: PASS");
+		}
+		else {
+			TestUtils.fail(message = "Substring was not found within string: FAIL");
+		}
 
-		<if>
-			<contains string="${string}" substring="${nonSubstring}" />
-			<then>
-				<execute macro="TestUtils#fail">
-					<var name="message" value="Matched a non-substring as a substring: FAIL" />
-				</execute>
-			</then>
-			<else>
-				<execute macro="TestUtils#pass">
-					<var name="message" value="Did not match non-substring as a substring: PASS" />
-				</execute>
-			</else>
-		</if>
+		if (contains("${string}", "${nonSubstring}")) {
+			TestUtils.fail(message = "Matched a non-substring as a substring: FAIL");
+		}
+		else {
+			TestUtils.pass(message = "Did not match non-substring as a substring: PASS");
+		}
 
-		<if>
-			<contains string="string" substring="str" />
-			<then>
-				<execute macro="TestUtils#pass">
-					<var name="message" value="Substring was found within string: PASS" />
-				</execute>
-			</then>
-			<else>
-				<execute macro="TestUtils#fail">
-					<var name="message" value="Substring was not found within string: FAIL" />
-				</execute>
-			</else>
-		</if>
+		if (contains("string", "str")) {
+			TestUtils.pass(message = "Substring was found within string: PASS");
+		}
+		else {
+			TestUtils.fail(message = "Substring was not found within string: FAIL");
+		}
 
-		<if>
-			<contains string="string" substring="abc" />
-			<then>
-				<execute macro="TestUtils#fail">
-					<var name="message" value="Matched a non-substring as a substring: FAIL" />
-				</execute>
-			</then>
-			<else>
-				<execute macro="TestUtils#pass">
-					<var name="message" value="Did not match non-substring as a substring: PASS" />
-				</execute>
-			</else>
-		</if>
-	</command>
+		if (contains("string", "abc")) {
+			TestUtils.fail(message = "Matched a non-substring as a substring: FAIL");
+		}
+		else {
+			TestUtils.pass(message = "Did not match non-substring as a substring: PASS");
+		}
+	}
 
-	<command name="Equals" priority="5">
-		<var name="var1" value="value1" />
-		<var name="var2" value="value2" />
-		<var name="var3" value="value1" />
+	@priority = "5"
+	test Equals {
+		var var1 = "value1";
+		var var2 = "value2";
+		var var3 = "value1";
 
-		<if>
-			<equals arg1="${var1}" arg2="${var2}" />
-			<then>
-				<execute macro="TestUtils#fail">
-					<var name="message" value="Two non-matching variables were matched: FAIL" />
-				</execute>
-			</then>
-			<else>
-				<execute macro="TestUtils#pass">
-					<var name="message" value="Two non-matching variables were not matched: PASS" />
-				</execute>
-			</else>
-		</if>
+		if ("${var1}" == "${var2}") {
+			TestUtils.fail(message = "Two non-matching variables were matched: FAIL");
+		}
+		else {
+			TestUtils.pass(message = "Two non-matching variables were not matched: PASS");
+		}
 
-		<if>
-			<equals arg1="${var1}" arg2="${var3}" />
-			<then>
-				<execute macro="TestUtils#pass">
-					<var name="message" value="Two matching variables were matched: PASS" />
-				</execute>
-			</then>
-			<else>
-				<execute macro="TestUtils#fail">
-					<var name="message" value="Two matching variables were not matched: FAIL" />
-				</execute>
-			</else>
-		</if>
+		if ("${var1}" == "${var3}") {
+			TestUtils.pass(message = "Two matching variables were matched: PASS");
+		}
+		else {
+			TestUtils.fail(message = "Two matching variables were not matched: FAIL");
+		}
 
-		<if>
-			<equals arg1="matching value" arg2="matching value" />
-			<then>
-				<execute macro="TestUtils#pass">
-					<var name="message" value="Two matching values were matched: PASS" />
-				</execute>
-			</then>
-			<else>
-				<execute macro="TestUtils#fail">
-					<var name="message" value="Two matching values were not matched: FAIL" />
-				</execute>
-			</else>
-		</if>
+		if ("matching value" == "matching value") {
+			TestUtils.pass(message = "Two matching values were matched: PASS");
+		}
+		else {
+			TestUtils.fail(message = "Two matching values were not matched: FAIL");
+		}
 
-		<if>
-			<equals arg1="non-matching value" arg2="" />
-			<then>
-				<execute macro="TestUtils#fail">
-					<var name="message" value="Two non-matching values were matched: FAIL" />
-				</execute>
-			</then>
-			<else>
-				<execute macro="TestUtils#pass">
-					<var name="message" value="Two non-matching values were not matched: PASS" />
-				</execute>
-			</else>
-		</if>
-	</command>
+		if ("non-matching value" == "") {
+			TestUtils.fail(message = "Two non-matching values were matched: FAIL");
+		}
+		else {
+			TestUtils.pass(message = "Two non-matching values were not matched: PASS");
+		}
+	}
 
-	<command name="Isset" priority="5">
-		<var name="validVar1" value="validVarValue" />
+	@priority = "5"
+	test Isset {
+		var validVar1 = "validVarValue";
 
-		<if>
-			<isset var="validVar1" />
-			<then>
-				<execute macro="TestUtils#pass">
-					<var name="message" value="Detected a set variable was set: PASS" />
-				</execute>
-			</then>
-			<else>
-				<execute macro="TestUtils#fail">
-					<var name="message" value="Detected a set variable as not set: FAIL" />
-				</execute>
-			</else>
-		</if>
+		if (isSet(validVar1)) {
+			TestUtils.pass(message = "Detected a set variable was set: PASS");
+		}
+		else {
+			TestUtils.fail(message = "Detected a set variable as not set: FAIL");
+		}
 
-		<var name="validVar2" value="${validVar1}" />
+		var validVar2 = "${validVar1}";
 
-		<if>
-			<isset var="validVar2" />
-			<then>
-				<execute macro="TestUtils#pass">
-					<var name="message" value="Detected a set variable was set: PASS" />
-				</execute>
-			</then>
-			<else>
-				<execute macro="TestUtils#fail">
-					<var name="message" value="Detected a set variable as not set: FAIL" />
-				</execute>
-			</else>
-		</if>
+		if (isSet(validVar2)) {
+			TestUtils.pass(message = "Detected a set variable was set: PASS");
+		}
+		else {
+			TestUtils.fail(message = "Detected a set variable as not set: FAIL");
+		}
 
-		<if>
-			<isset var="nonexistentVar1" />
-			<then>
-				<execute macro="TestUtils#fail">
-					<var name="message" value="Detected a non-set variable as set: FAIL" />
-				</execute>
-			</then>
-			<else>
-				<execute macro="TestUtils#pass">
-					<var name="message" value="Detected the variable was not set: PASS" />
-				</execute>
-			</else>
-		</if>
+		if (isSet(nonexistentVar1)) {
+			TestUtils.fail(message = "Detected a non-set variable as set: FAIL");
+		}
+		else {
+			TestUtils.pass(message = "Detected the variable was not set: PASS");
+		}
 
-		<var name="nonexistentVar2" value="${nonexistentVar1}" />
+		var nonexistentVar2 = "${nonexistentVar1}";
 
-		<if>
-			<isset var="nonexistentVar2" />
-			<then>
-				<execute macro="TestUtils#fail">
-					<var name="message" value="Detected a non-set variable as set: FAIL" />
-				</execute>
-			</then>
-			<else>
-				<execute macro="TestUtils#pass">
-					<var name="message" value="Detected the variable was not set: PASS" />
-				</execute>
-			</else>
-		</if>
+		if (isSet(nonexistentVar2)) {
+			TestUtils.fail(message = "Detected a non-set variable as set: FAIL");
+		}
+		else {
+			TestUtils.pass(message = "Detected the variable was not set: PASS");
+		}
 
-		<var name="invalidVar1" value="${invalidVar1}" />
+		var invalidVar1 = "${invalidVar1}";
 
-		<if>
-			<isset var="invalidVar1" />
-			<then>
-				<execute macro="TestUtils#fail">
-					<var name="message" value="Detected a non-set variable as set: FAIL" />
-				</execute>
-			</then>
-			<else>
-				<execute macro="TestUtils#pass">
-					<var name="message" value="Detected the variable was not set: PASS" />
-				</execute>
-			</else>
-		</if>
+		if (isSet(invalidVar1)) {
+			TestUtils.fail(message = "Detected a non-set variable as set: FAIL");
+		}
+		else {
+			TestUtils.pass(message = "Detected the variable was not set: PASS");
+		}
 
-		<var name="invalidVar2" value="${invalidVar1}" />
+		var invalidVar2 = "${invalidVar1}";
 
-		<if>
-			<isset var="invalidVar2" />
-			<then>
-				<execute macro="TestUtils#fail">
-					<var name="message" value="Detected a non-set variable as set: FAIL" />
-				</execute>
-			</then>
-			<else>
-				<execute macro="TestUtils#pass">
-					<var name="message" value="Detected the variable was not set: PASS" />
-				</execute>
-			</else>
-		</if>
+		if (isSet(invalidVar2)) {
+			TestUtils.fail(message = "Detected a non-set variable as set: FAIL");
+		}
+		else {
+			TestUtils.pass(message = "Detected the variable was not set: PASS");
+		}
 
-		<var name="validWithLineSeparator" value="${validVar1}${line.separator}" />
+		var validWithLineSeparator = "${validVar1}${line.separator}";
 
-		<if>
-			<isset var="validWithLineSeparator" />
-			<then>
-				<execute macro="TestUtils#pass">
-					<var name="message" value="Detected a variable was set with special character: PASS" />
-				</execute>
-			</then>
-			<else>
-				<execute macro="TestUtils#fail">
-					<var name="message" value="Detected a set variable with special character as not set" />
-				</execute>
-			</else>
-		</if>
-	</command>
-</definition>
+		if (isSet(validWithLineSeparator)) {
+			TestUtils.pass(
+				message = "Detected a variable was set with special character: PASS"
+			);
+		}
+		else {
+			TestUtils.fail(
+				message = "Detected a set variable with special character as not set"
+			);
+		}
+	}
+}

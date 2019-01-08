@@ -1,242 +1,196 @@
-<definition component-name="portal-tools">
-	<property name="portal.release" value="true" />
-	<property name="portal.upstream" value="true" />
-	<property name="testcase.url" value="" />
-	<property name="testray.main.component.name" value="Tools" />
+@component-name = "portal-tools"
+definition {
+	property portal.release = "true";
+	property portal.upstream = "true";
+	property testcase.url = "";
+	property testray.main.component.name = "Tools";
 
-	<command name="Add" priority="5">
-		<var method="StringUtil#add('abc', 'def', '...')" name="string" />
+	@priority = "5"
+	test Add {
+		var string = StringUtil.add("abc", "def", "...");
 
-		<execute macro="TestUtils#assertEquals">
-			<var name="actual" value="${string}" />
-			<var name="expected" value="abc...def..." />
-		</execute>
-	</command>
+		TestUtils.assertEquals(actual = "${string}", expected = "abc...def...");
+	}
 
-	<command name="Contains" priority="5">
-		<var method="StringUtil#contains('These are tests', 'test')" name="boolean" />
+	@priority = "5"
+	test Contains {
+		var boolean = StringUtil.contains("These are tests", "test");
 
-		<execute macro="TestUtils#assertEquals">
-			<var name="actual" value="${boolean}" />
-			<var name="expected" value="false" />
-		</execute>
-	</command>
+		TestUtils.assertEquals(actual = "${boolean}", expected = "false");
+	}
 
-	<command name="Count" priority="5">
-		<var method="StringUtil#count('Life Ray is Life of Portal', 'Life')" name="int" />
+	@priority = "5"
+	test Count {
+		var int = StringUtil.count("Life Ray is Life of Portal", "Life");
 
-		<execute macro="TestUtils#assertEquals">
-			<var name="actual" value="${int}" />
-			<var name="expected" value="2" />
-		</execute>
-	</command>
+		TestUtils.assertEquals(actual = "${int}", expected = "2");
+	}
 
-	<command name="EndsWith" priority="5">
-		<var method="StringUtil#endsWith('Hello World', 'World')" name="boolean" />
+	@priority = "5"
+	test EndsWith {
+		var boolean = StringUtil.endsWith("Hello World", "World");
 
-		<execute macro="TestUtils#assertEquals">
-			<var name="actual" value="${boolean}" />
-			<var name="expected" value="true" />
-		</execute>
-	</command>
+		TestUtils.assertEquals(actual = "${boolean}", expected = "true");
+	}
 
-	<command name="ExtractChars" priority="5">
-		<var method="StringUtil#extractChars('These are t23415ests')" name="string" />
+	@priority = "5"
+	test ExtractChars {
+		var string = StringUtil.extractChars("These are t23415ests");
 
-		<execute macro="TestUtils#assertEquals">
-			<var name="actual" value="${string}" />
-			<var name="expected" value="Thesearetests" />
-		</execute>
-	</command>
+		TestUtils.assertEquals(actual = "${string}", expected = "Thesearetests");
+	}
 
-	<command name="ExtractDigits" priority="5">
-		<var method="StringUtil#extractDigits('These are t23415ests')" name="string" />
+	@priority = "5"
+	test ExtractDigits {
+		var string = StringUtil.extractDigits("These are t23415ests");
 
-		<execute macro="TestUtils#assertEquals">
-			<var name="actual" value="${string}" />
-			<var name="expected" value="23415" />
-		</execute>
-	</command>
+		TestUtils.assertEquals(actual = "${string}", expected = "23415");
+	}
 
-	<command name="ExtractFirst" priority="5">
-		<var method="StringUtil#extractFirst('The Life Ray is the Life of Portal', 'Life')" name="string" />
+	@priority = "5"
+	test ExtractFirst {
+		var string = StringUtil.extractFirst("The Life Ray is the Life of Portal", "Life");
 
-		<execute macro="TestUtils#assertEquals">
-			<var name="actual" value="${string}" />
-			<var name="expected" value="The " />
-		</execute>
-	</command>
+		TestUtils.assertEquals(actual = "${string}", expected = "The ");
+	}
 
-	<command name="ExtractLast" priority="5">
-		<var method="StringUtil#extractLast('The Life Ray is the Life of Portal', 'Life')" name="string" />
+	@priority = "5"
+	test ExtractLast {
+		var string = StringUtil.extractLast("The Life Ray is the Life of Portal", "Life");
 
-		<execute macro="TestUtils#assertEquals">
-			<var name="actual" value="${string}" />
-			<var name="expected" value=" of Portal" />
-		</execute>
-	</command>
+		TestUtils.assertEquals(actual = "${string}", expected = " of Portal");
+	}
 
-	<command name="ExtractLeadingDigits" priority="5">
-		<var method="StringUtil#extractLeadingDigits('123456Hello World')" name="string" />
+	@priority = "5"
+	test ExtractLeadingDigits {
+		var string = StringUtil.extractLeadingDigits("123456Hello World");
 
-		<execute macro="TestUtils#assertEquals">
-			<var name="actual" value="${string}" />
-			<var name="expected" value="123456" />
-		</execute>
-	</command>
+		TestUtils.assertEquals(actual = "${string}", expected = "123456");
+	}
 
-	<command name="IsLowerCase" priority="5">
-		<var method="StringUtil#isLowerCase('heLLo')" name="boolean" />
+	@priority = "5"
+	test IsLowerCase {
+		var boolean = StringUtil.isLowerCase("heLLo");
 
-		<execute macro="TestUtils#assertEquals">
-			<var name="actual" value="${boolean}" />
-			<var name="expected" value="false" />
-		</execute>
-	</command>
+		TestUtils.assertEquals(actual = "${boolean}", expected = "false");
+	}
 
-	<command name="IsUpperCase" priority="5">
-		<var method="StringUtil#isUpperCase('HELL0')" name="boolean" />
+	@priority = "5"
+	test IsUpperCase {
+		var boolean = StringUtil.isUpperCase("HELL0");
 
-		<execute macro="TestUtils#assertEquals">
-			<var name="actual" value="${boolean}" />
-			<var name="expected" value="true" />
-		</execute>
-	</command>
+		TestUtils.assertEquals(actual = "${boolean}", expected = "true");
+	}
 
-	<command name="LowerCase" priority="5">
-		<var method="StringUtil#lowerCase('heLLo')" name="string" />
+	@priority = "5"
+	test LowerCase {
+		var string = StringUtil.lowerCase("heLLo");
 
-		<execute macro="TestUtils#assertEquals">
-			<var name="actual" value="${string}" />
-			<var name="expected" value="hello" />
-		</execute>
-	</command>
+		TestUtils.assertEquals(actual = "${string}", expected = "hello");
+	}
 
-	<command name="LowerCaseFirstLetter" priority="5">
-		<var method="StringUtil#lowerCaseFirstLetter('HELLO')" name="string" />
+	@priority = "5"
+	test LowerCaseFirstLetter {
+		var string = StringUtil.lowerCaseFirstLetter("HELLO");
 
-		<execute macro="TestUtils#assertEquals">
-			<var name="actual" value="${string}" />
-			<var name="expected" value="hELLO" />
-		</execute>
-	</command>
+		TestUtils.assertEquals(actual = "${string}", expected = "hELLO");
+	}
 
-	<command name="Matches" priority="5">
-		<var method="StringUtil#matches('The fox jumped over the lazy dog', 'lazy dog')" name="boolean" />
+	@priority = "5"
+	test Matches {
+		var boolean = StringUtil.matches("The fox jumped over the lazy dog", "lazy dog");
 
-		<execute macro="TestUtils#assertEquals">
-			<var name="actual" value="${boolean}" />
-			<var name="expected" value="true" />
-		</execute>
-	</command>
+		TestUtils.assertEquals(actual = "${boolean}", expected = "true");
+	}
 
-	<command name="Quote" priority="5">
-		<var method="StringUtil#quote('Love', 'xo')" name="string" />
+	@priority = "5"
+	test Quote {
+		var string = StringUtil.quote("Love", "xo");
 
-		<execute macro="TestUtils#assertEquals">
-			<var name="actual" value="${string}" />
-			<var name="expected" value="xoLovexo" />
-		</execute>
-	</command>
+		TestUtils.assertEquals(actual = "${string}", expected = "xoLovexo");
+	}
 
-	<!-- <command name="Remove" priority="5">
+	/* <command name="Remove" priority="5">
 		<var method="StringUtil#remove('The fox jumped over the lazy dog', 'lazy')" name="stringRemove" />
 
 		<execute macro="TestUtils#assertEquals">
 			<var name="actual" value="${stringRemove}" />
 			<var name="expected" value="The fox jumped over the dog" />
 		</execute>
-	</command> -->
+	</command> */
 
-	<command name="Replace" priority="5">
-		<var method="StringUtil#replace('You are my guest', 'guest', 'friend')" name="string" />
+	@priority = "5"
+	test Replace {
+		var string = StringUtil.replace("You are my guest", "guest", "friend");
 
-		<execute macro="TestUtils#assertEquals">
-			<var name="actual" value="${string}" />
-			<var name="expected" value="You are my friend" />
-		</execute>
-	</command>
+		TestUtils.assertEquals(actual = "${string}", expected = "You are my friend");
+	}
 
-	<command name="Reverse" priority="5">
-		<var method="StringUtil#reverse('Hello')" name="string" />
+	@priority = "5"
+	test Reverse {
+		var string = StringUtil.reverse("Hello");
 
-		<execute macro="TestUtils#assertEquals">
-			<var name="actual" value="${string}" />
-			<var name="expected" value="olleH" />
-		</execute>
-	</command>
+		TestUtils.assertEquals(actual = "${string}", expected = "olleH");
+	}
 
-	<command name="StartsWith" priority="5">
-		<var method="StringUtil#startsWith('This is a test', 'This')" name="boolean" />
+	@priority = "5"
+	test StartsWith {
+		var boolean = StringUtil.startsWith("This is a test", "This");
 
-		<execute macro="TestUtils#assertEquals">
-			<var name="actual" value="${boolean}" />
-			<var name="expected" value="true" />
-		</execute>
-	</command>
+		TestUtils.assertEquals(actual = "${boolean}", expected = "true");
+	}
 
-	<command name="StripBetween" priority="5">
-		<var method="StringUtil#stripBetween('Liferay is the life of portal', 'is', 'of ')" name="string" />
+	@priority = "5"
+	test StripBetween {
+		var string = StringUtil.stripBetween("Liferay is the life of portal", "is", "of ");
 
-		<execute macro="TestUtils#assertEquals">
-			<var name="actual" value="${string}" />
-			<var name="expected" value="Liferay portal" />
-		</execute>
-	</command>
+		TestUtils.assertEquals(actual = "${string}", expected = "Liferay portal");
+	}
 
-	<command name="Trim" priority="5">
-		<var method="StringUtil#trim('       Life Ray is Life of Portal             ')" name="string" />
+	@priority = "5"
+	test Trim {
+		var string = StringUtil.trim("       Life Ray is Life of Portal             ");
 
-		<execute macro="TestUtils#assertEquals">
-			<var name="actual" value="${string}" />
-			<var name="expected" value="Life Ray is Life of Portal" />
-		</execute>
-	</command>
+		TestUtils.assertEquals(
+			actual = "${string}",
+			expected = "Life Ray is Life of Portal"
+		);
+	}
 
-	<command name="TrimLeading" priority="5">
-		<var method="StringUtil#trimLeading('            Hello')" name="string" />
+	@priority = "5"
+	test TrimLeading {
+		var string = StringUtil.trimLeading("            Hello");
 
-		<execute macro="TestUtils#assertEquals">
-			<var name="actual" value="${string}" />
-			<var name="expected" value="Hello" />
-		</execute>
-	</command>
+		TestUtils.assertEquals(actual = "${string}", expected = "Hello");
+	}
 
-	<command name="TrimTrailing" priority="5">
-		<var method="StringUtil#trimTrailing('Hello                 ')" name="string" />
+	@priority = "5"
+	test TrimTrailing {
+		var string = StringUtil.trimTrailing("Hello                 ");
 
-		<execute macro="TestUtils#assertEquals">
-			<var name="actual" value="${string}" />
-			<var name="expected" value="Hello" />
-		</execute>
-	</command>
+		TestUtils.assertEquals(actual = "${string}", expected = "Hello");
+	}
 
-	<command name="Unquote" priority="5">
-		<var name="stringUnquote"><![CDATA["HELP"]]></var>
+	@priority = "5"
+	test Unquote {
 
-		<var method="StringUtil#unquote('${stringUnquote}')" name="string" />
+		var stringUnquote = '''"HELP"''';
+		var string = StringUtil.unquote("${stringUnquote}");
 
-		<execute macro="TestUtils#assertEquals">
-			<var name="actual" value="${string}" />
-			<var name="expected" value="HELP" />
-		</execute>
-	</command>
+		TestUtils.assertEquals(actual = "${string}", expected = "HELP");
+	}
 
-	<command name="UpperCase" priority="5">
-		<var method="StringUtil#upperCase('heLLo')" name="string" />
+	@priority = "5"
+	test UpperCase {
+		var string = StringUtil.upperCase("heLLo");
 
-		<execute macro="TestUtils#assertEquals">
-			<var name="actual" value="${string}" />
-			<var name="expected" value="HELLO" />
-		</execute>
-	</command>
+		TestUtils.assertEquals(actual = "${string}", expected = "HELLO");
+	}
 
-	<command name="UpperCaseFirstLetter" priority="5">
-		<var method="StringUtil#upperCaseFirstLetter('heLLo')" name="string" />
+	@priority = "5"
+	test UpperCaseFirstLetter {
+		var string = StringUtil.upperCaseFirstLetter("heLLo");
 
-		<execute macro="TestUtils#assertEquals">
-			<var name="actual" value="${string}" />
-			<var name="expected" value="HeLLo" />
-		</execute>
-	</command>
-</definition>
+		TestUtils.assertEquals(actual = "${string}", expected = "HeLLo");
+	}
+}

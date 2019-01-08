@@ -1,156 +1,133 @@
-<definition component-name="portal-workflow">
-	<property name="hook.plugins.includes" value="kaleo-upgrade-hook" />
-	<property name="portal.release" value="true" />
-	<property name="portal.upstream" value="true" />
-	<property name="testray.main.component.name" value="Workflow" />
-	<property name="web.plugins.includes" value="kaleo-web" />
+@component-name = "portal-workflow"
+definition {
+	property hook.plugins.includes = "kaleo-upgrade-hook";
+	property portal.release = "true";
+	property portal.upstream = "true";
+	property testray.main.component.name = "Workflow";
+	property web.plugins.includes = "kaleo-web";
+	var pageName = "Page Comments Page";
+	var portletName = "Page Comments";
 
-	<var name="pageName" value="Page Comments Page" />
-	<var name="portletName" value="Page Comments" />
+	setUp {
+		User.firstLoginPG();
 
-	<set-up>
-		<execute macro="User#firstLoginPG" />
+		Page.gotoCP(portletName = "Workflow Configuration");
 
-		<execute macro="Page#gotoCP">
-			<var name="portletName" value="Workflow Configuration" />
-		</execute>
+		Workflow.configureSiteWorkflow(
+			workflowDefinition = "Single Approver (Version 1)",
+			workflowResourceKey = "RESOURCE_TABLE_COMMENTS_SELECT"
+		);
 
-		<execute macro="Workflow#configureSiteWorkflow">
-			<var name="workflowDefinition" value="Single Approver (Version 1)" />
-			<var name="workflowResourceKey" value="RESOURCE_TABLE_COMMENTS_SELECT" />
-		</execute>
+		Page.addPG(pageName = "${pageName}");
 
-		<execute macro="Page#addPG">
-			<var name="pageName" value="${pageName}" />
-		</execute>
+		Portlet.addPG(pageName = "${pageName}", portletName = "${portletName}");
+	}
 
-		<execute macro="Portlet#addPG">
-			<var name="pageName" value="${pageName}" />
-			<var name="portletName" value="${portletName}" />
-		</execute>
-	</set-up>
+	@priority = "5"
+	test ApprovePageCommentPG {
+		var commentBody = "Page Comment Comment";
+		var commentUsername = "Test Test";
 
-	<command name="ApprovePageCommentPG" priority="5">
-		<var name="commentBody" value="Page Comment Comment" />
-		<var name="commentUsername" value="Test Test" />
+		Page.gotoPG(pageName = "${pageName}");
 
-		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${pageName}" />
-		</execute>
+		PageComment.addPGWithWorkflow(
+			commentBody = "${commentBody}",
+			commentUsername = "${commentUsername}"
+		);
 
-		<execute macro="PageComment#addPGWithWorkflow">
-			<var name="commentBody" value="${commentBody}" />
-			<var name="commentUsername" value="${commentUsername}" />
-		</execute>
+		PageComment.viewPGWithWorkflow(
+			commentBody = "${commentBody}",
+			commentStatus = "Pending (Review)",
+			commentUsername = "${commentUsername}"
+		);
 
-		<execute macro="PageComment#viewPGWithWorkflow">
-			<var name="commentBody" value="${commentBody}" />
-			<var name="commentStatus" value="Pending (Review)" />
-			<var name="commentUsername" value="${commentUsername}" />
-		</execute>
+		Page.gotoCP(portletName = "My Workflow Tasks");
 
-		<execute macro="Page#gotoCP">
-			<var name="portletName" value="My Workflow Tasks" />
-		</execute>
+		Workflow.assignToMeTaskByActions(
+			workflowAssetTitle = "${commentBody}",
+			workflowAssetType = "Comments",
+			workflowTask = "Review"
+		);
 
-		<execute macro="Workflow#assignToMeTaskByActions">
-			<var name="workflowAssetTitle" value="${commentBody}" />
-			<var name="workflowAssetType" value="Comments" />
-			<var name="workflowTask" value="Review" />
-		</execute>
+		Page.gotoPG(pageName = "${pageName}");
 
-		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${pageName}" />
-		</execute>
+		PageComment.viewPGWithWorkflow(
+			commentBody = "${commentBody}",
+			commentStatus = "Pending (Review)",
+			commentUsername = "${commentUsername}"
+		);
 
-		<execute macro="PageComment#viewPGWithWorkflow">
-			<var name="commentBody" value="${commentBody}" />
-			<var name="commentStatus" value="Pending (Review)" />
-			<var name="commentUsername" value="${commentUsername}" />
-		</execute>
+		Page.gotoCP(portletName = "My Workflow Tasks");
 
-		<execute macro="Page#gotoCP">
-			<var name="portletName" value="My Workflow Tasks" />
-		</execute>
+		Workflow.approveTaskByActions(
+			workflowAssetTitle = "${commentBody}",
+			workflowAssetType = "Comments",
+			workflowTask = "Review"
+		);
 
-		<execute macro="Workflow#approveTaskByActions">
-			<var name="workflowAssetTitle" value="${commentBody}" />
-			<var name="workflowAssetType" value="Comments" />
-			<var name="workflowTask" value="Review" />
-		</execute>
+		Page.gotoPG(pageName = "${pageName}");
 
-		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${pageName}" />
-		</execute>
+		PageComment.viewPG(
+			commentBody = "${commentBody}",
+			commentUsername = "${commentUsername}"
+		);
+	}
 
-		<execute macro="PageComment#viewPG">
-			<var name="commentBody" value="${commentBody}" />
-			<var name="commentUsername" value="${commentUsername}" />
-		</execute>
-	</command>
+	@priority = "5"
+	test RejectBlogsEntryCP {
+		var commentBody = "Page Comment Comment";
+		var commentUsername = "Test Test";
 
-	<command name="RejectBlogsEntryCP" priority="5">
-		<var name="commentBody" value="Page Comment Comment" />
-		<var name="commentUsername" value="Test Test" />
+		Page.gotoPG(pageName = "${pageName}");
 
-		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${pageName}" />
-		</execute>
+		PageComment.addPGWithWorkflow(
+			commentBody = "${commentBody}",
+			commentUsername = "${commentUsername}"
+		);
 
-		<execute macro="PageComment#addPGWithWorkflow">
-			<var name="commentBody" value="${commentBody}" />
-			<var name="commentUsername" value="${commentUsername}" />
-		</execute>
+		PageComment.viewPGWithWorkflow(
+			commentBody = "${commentBody}",
+			commentStatus = "Pending (Review)",
+			commentUsername = "${commentUsername}"
+		);
 
-		<execute macro="PageComment#viewPGWithWorkflow">
-			<var name="commentBody" value="${commentBody}" />
-			<var name="commentStatus" value="Pending (Review)" />
-			<var name="commentUsername" value="${commentUsername}" />
-		</execute>
+		Page.gotoCP(portletName = "My Workflow Tasks");
 
-		<execute macro="Page#gotoCP">
-			<var name="portletName" value="My Workflow Tasks" />
-		</execute>
+		Workflow.assignToMeTaskByActions(
+			workflowAssetTitle = "${commentBody}",
+			workflowAssetType = "Comments",
+			workflowTask = "Review"
+		);
 
-		<execute macro="Workflow#assignToMeTaskByActions">
-			<var name="workflowAssetTitle" value="${commentBody}" />
-			<var name="workflowAssetType" value="Comments" />
-			<var name="workflowTask" value="Review" />
-		</execute>
+		Workflow.rejectTaskByActions(
+			workflowAssetTitle = "${commentBody}",
+			workflowAssetType = "Comments",
+			workflowTask = "Review"
+		);
 
-		<execute macro="Workflow#rejectTaskByActions">
-			<var name="workflowAssetTitle" value="${commentBody}" />
-			<var name="workflowAssetType" value="Comments" />
-			<var name="workflowTask" value="Review" />
-		</execute>
+		Page.gotoCP(portletName = "My Workflow Tasks");
 
-		<execute macro="Page#gotoCP">
-			<var name="portletName" value="My Workflow Tasks" />
-		</execute>
+		Workflow.viewRejectTask(
+			workflowAssetTitle = "${commentBody}",
+			workflowAssetType = "Comments"
+		);
 
-		<execute macro="Workflow#viewRejectTask">
-			<var name="workflowAssetTitle" value="${commentBody}" />
-			<var name="workflowAssetType" value="Comments" />
-		</execute>
+		Page.gotoPG(pageName = "${pageName}");
 
-		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${pageName}" />
-		</execute>
+		PageComment.viewPGWithWorkflow(
+			commentBody = "${commentBody}",
+			commentStatus = "Pending (Update)",
+			commentUsername = "${commentUsername}"
+		);
+	}
 
-		<execute macro="PageComment#viewPGWithWorkflow">
-			<var name="commentBody" value="${commentBody}" />
-			<var name="commentStatus" value="Pending (Update)" />
-			<var name="commentUsername" value="${commentUsername}" />
-		</execute>
-	</command>
+	tearDown {
+		PageComment.tearDownPG();
 
-	<tear-down>
-		<execute macro="PageComment#tearDownPG" />
+		Page.tearDownPG();
 
-		<execute macro="Page#tearDownPG" />
+		Workflow.tearDownPortalWorkflow();
 
-		<execute macro="Workflow#tearDownPortalWorkflow" />
-
-		<execute macro="Workflow#tearDownSiteWorkflow" />
-	</tear-down>
-</definition>
+		Workflow.tearDownSiteWorkflow();
+	}
+}

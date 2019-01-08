@@ -1,83 +1,73 @@
-<definition component-name="portal-collaboration">
-	<property name="portal.release" value="true" />
-	<property name="portal.upstream" value="true" />
-	<property name="testray.main.component.name" value="Collaboration" />
+@component-name = "portal-collaboration"
+definition {
+	property portal.release = "true";
+	property portal.upstream = "true";
+	property testray.main.component.name = "Collaboration";
+	var pageName = "Wiki Test Page";
+	var portletName = "Wiki";
 
-	<var name="pageName" value="Wiki Test Page" />
-	<var name="portletName" value="Wiki" />
+	setUp {
+		User.firstLoginPG();
 
-	<set-up>
-		<execute macro="User#firstLoginPG" />
+		Page.addPG(pageName = "${pageName}");
 
-		<execute macro="Page#addPG">
-			<var name="pageName" value="${pageName}" />
-		</execute>
+		Portlet.addPG(pageName = "${pageName}", portletName = "${portletName}");
+	}
 
-		<execute macro="Portlet#addPG">
-			<var name="pageName" value="${pageName}" />
-			<var name="portletName" value="${portletName}" />
-		</execute>
-	</set-up>
+	tearDown {
+		WikiNode.tearDownCP();
 
-	<tear-down>
-		<execute macro="WikiNode#tearDownCP" />
+		WikiPage.tearDownCP();
 
-		<execute macro="WikiPage#tearDownCP" />
+		Page.tearDownPG();
+	}
 
-		<execute macro="Page#tearDownPG" />
-	</tear-down>
+	@priority = "5"
+	test AddWikiFrontPage {
+		var wikiPageContent = "Wiki FrontPage Content";
 
-	<command name="AddWikiFrontPage" priority="5">
-		<var name="wikiPageContent" value="Wiki FrontPage Content" />
+		Page.gotoPG(pageName = "${pageName}");
 
-		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${pageName}" />
-		</execute>
+		WikiPage.addFrontPagePG(
+			pageName = "${pageName}",
+			wikiPageContent = "${wikiPageContent}"
+		);
+	}
 
-		<execute macro="WikiPage#addFrontPagePG">
-			<var name="pageName" value="${pageName}" />
-			<var name="wikiPageContent" value="${wikiPageContent}" />
-		</execute>
-	</command>
+	@priority = "5"
+	test AddWikiFrontPageChildPage {
+		var wikiChildPageContent = "Wiki Front Page Child Page Content";
+		var wikiChildPageTitle = "Wiki Front Page Child Page Title";
+		var wikiPageContent = "Wiki Front Page Content";
+		var wikiPageTitle = "FrontPage";
 
-	<command name="AddWikiFrontPageChildPage" priority="5">
-		<var name="wikiChildPageContent" value="Wiki Front Page Child Page Content" />
-		<var name="wikiChildPageTitle" value="Wiki Front Page Child Page Title" />
-		<var name="wikiPageContent" value="Wiki Front Page Content" />
-		<var name="wikiPageTitle" value="FrontPage" />
+		Page.gotoPG(pageName = "${pageName}");
 
-		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${pageName}" />
-		</execute>
+		WikiPage.addFrontPagePG(
+			pageName = "${pageName}",
+			wikiPageContent = "${wikiPageContent}"
+		);
 
-		<execute macro="WikiPage#addFrontPagePG">
-			<var name="pageName" value="${pageName}" />
-			<var name="wikiPageContent" value="${wikiPageContent}" />
-		</execute>
+		WikiPage.addChildPagePG(
+			pageName = "${pageName}",
+			wikiChildPageContent = "${wikiChildPageContent}",
+			wikiChildPageTitle = "${wikiChildPageTitle}",
+			wikiPageContent = "${wikiPageContent}",
+			wikiPageTitle = "${wikiPageTitle}"
+		);
+	}
 
-		<execute macro="WikiPage#addChildPagePG">
-			<var name="pageName" value="${pageName}" />
-			<var name="wikiChildPageContent" value="${wikiChildPageContent}" />
-			<var name="wikiChildPageTitle" value="${wikiChildPageTitle}" />
-			<var name="wikiPageContent" value="${wikiPageContent}" />
-			<var name="wikiPageTitle" value="${wikiPageTitle}" />
-		</execute>
-	</command>
+	@priority = "5"
+	test DeleteWikiFrontPage {
+		var wikiPageContent = "Wiki FrontPage Content";
 
-	<command name="DeleteWikiFrontPage" priority="5">
-		<var name="wikiPageContent" value="Wiki FrontPage Content" />
+		Page.gotoPG(pageName = "${pageName}");
 
-		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${pageName}" />
-		</execute>
+		WikiPage.addFrontPagePG(
+			pageName = "${pageName}",
+			wikiPageContent = "${wikiPageContent}"
+		);
 
-		<execute macro="WikiPage#addFrontPagePG">
-			<var name="pageName" value="${pageName}" />
-			<var name="wikiPageContent" value="${wikiPageContent}" />
-		</execute>
-
-		<execute macro="WikiPage#deleteFrontPagePG">
-			<var name="pageName" value="${pageName}" />
-		</execute>
-	</command>
-</definition>
+		WikiPage.deleteFrontPagePG(pageName = "${pageName}");
+	}
+}

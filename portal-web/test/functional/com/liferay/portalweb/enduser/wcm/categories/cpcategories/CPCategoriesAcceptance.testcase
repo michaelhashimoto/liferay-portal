@@ -1,208 +1,155 @@
-<definition component-name="portal-wcm">
-	<property name="portal.release" value="true" />
-	<property name="portal.upstream" value="true" />
-	<property name="testray.main.component.name" value="WCM" />
+@component-name = "portal-wcm"
+definition {
+	property portal.release = "true";
+	property portal.upstream = "true";
+	property testray.main.component.name = "WCM";
 
-	<set-up>
-		<execute macro="User#firstLoginPG" />
-	</set-up>
+	setUp {
+		User.firstLoginPG();
+	}
 
-	<command name="AddCategory" priority="5">
-		<var name="categoryName" value="Category Name" />
-		<var name="vocabularyName" value="Vocabulary Name" />
+	@priority = "5"
+	test AddCategory {
+		var categoryName = "Category Name";
+		var vocabularyName = "Vocabulary Name";
 
-		<execute macro="Page#gotoCP">
-			<var name="portletName" value="Categories" />
-		</execute>
+		Page.gotoCP(portletName = "Categories");
 
-		<execute macro="Vocabulary#addCP">
-			<var name="vocabularyName" value="${vocabularyName}" />
-		</execute>
+		Vocabulary.addCP(vocabularyName = "${vocabularyName}");
 
-		<execute macro="Category#addCP">
-			<var name="categoryName" value="${categoryName}" />
-		</execute>
-	</command>
+		Category.addCP(categoryName = "${categoryName}");
+	}
 
-	<command name="AddSubcategory" priority="5">
-		<var name="categoryName" value="Category Name" />
-		<var name="subcategoryName" value="Subcategory Name" />
-		<var name="vocabularyName" value="Vocabulary Name" />
+	@priority = "5"
+	test AddSubcategory {
+		var categoryName = "Category Name";
+		var subcategoryName = "Subcategory Name";
+		var vocabularyName = "Vocabulary Name";
 
-		<execute macro="Page#gotoCP">
-			<var name="portletName" value="Categories" />
-		</execute>
+		Page.gotoCP(portletName = "Categories");
 
-		<execute macro="Vocabulary#addCP">
-			<var name="vocabularyName" value="${vocabularyName}" />
-		</execute>
+		Vocabulary.addCP(vocabularyName = "${vocabularyName}");
 
-		<execute macro="Category#addCP">
-			<var name="categoryName" value="${categoryName}" />
-		</execute>
+		Category.addCP(categoryName = "${categoryName}");
 
-		<execute macro="Subcategory#addCP">
-			<var name="subcategoryName" value="${subcategoryName}" />
-		</execute>
-	</command>
+		Subcategory.addCP(subcategoryName = "${subcategoryName}");
+	}
 
-	<command name="AddVocabulary" priority="5">
-		<var name="vocabularyName" value="Vocabulary Name" />
+	@priority = "5"
+	test AddVocabulary {
+		var vocabularyName = "Vocabulary Name";
 
-		<execute macro="Page#gotoCP">
-			<var name="portletName" value="Categories" />
-		</execute>
+		Page.gotoCP(portletName = "Categories");
 
-		<execute macro="Vocabulary#addCP">
-			<var name="vocabularyName" value="${vocabularyName}" />
-		</execute>
-	</command>
+		Vocabulary.addCP(vocabularyName = "${vocabularyName}");
+	}
 
-	<command name="AddVocabularyAssetTypeWikiPage" priority="5">
-		<var name="vocabularyName" value="Vocabulary Name" />
+	@priority = "5"
+	test AddVocabularyAssetTypeWikiPage {
+		var vocabularyName = "Vocabulary Name";
 
-		<execute macro="Page#gotoCP">
-			<var name="portletName" value="Categories" />
-		</execute>
+		Page.gotoCP(portletName = "Categories");
 
-		<execute macro="Vocabulary#addAssetTypeWikiPageCP">
-			<var name="vocabularyName" value="${vocabularyName}" />
-		</execute>
-	</command>
+		Vocabulary.addAssetTypeWikiPageCP(vocabularyName = "${vocabularyName}");
+	}
 
-	<command name="DeleteCategory" priority="5">
-		<var name="categoryName" value="Category Name" />
-		<var name="vocabularyName" value="Vocabulary Name" />
+	@priority = "5"
+	test DeleteCategory {
+		var categoryName = "Category Name";
+		var vocabularyName = "Vocabulary Name";
 
-		<execute macro="Page#gotoCP">
-			<var name="portletName" value="Categories" />
-		</execute>
+		Page.gotoCP(portletName = "Categories");
 
-		<execute macro="Vocabulary#addCP">
-			<var name="vocabularyName" value="${vocabularyName}" />
-		</execute>
+		Vocabulary.addCP(vocabularyName = "${vocabularyName}");
 
-		<execute macro="Category#addCP">
-			<var name="categoryName" value="${categoryName}" />
-		</execute>
+		Category.addCP(categoryName = "${categoryName}");
 
-		<execute macro="Category#deleteCPByActions">
-			<var name="categoryName" value="${categoryName}" />
-		</execute>
-	</command>
+		Category.deleteCPByActions(categoryName = "${categoryName}");
+	}
 
-	<command name="DeleteSubcategory" priority="5">
-		<var name="categoryName" value="Category Name" />
-		<var name="subcategoryName" value="Subcategory Name" />
-		<var name="vocabularyName" value="Vocabulary Name" />
+	@priority = "5"
+	test DeleteSubcategory {
+		var categoryName = "Category Name";
+		var subcategoryName = "Subcategory Name";
+		var vocabularyName = "Vocabulary Name";
 
-		<execute macro="Page#gotoCP">
-			<var name="portletName" value="Categories" />
-		</execute>
+		Page.gotoCP(portletName = "Categories");
 
-		<execute macro="Vocabulary#addCP">
-			<var name="vocabularyName" value="${vocabularyName}" />
-		</execute>
+		Vocabulary.addCP(vocabularyName = "${vocabularyName}");
 
-		<execute macro="Category#addCP">
-			<var name="categoryName" value="${categoryName}" />
-		</execute>
+		Category.addCP(categoryName = "${categoryName}");
 
-		<execute macro="Subcategory#addCP">
-			<var name="subcategoryName" value="${subcategoryName}" />
-		</execute>
+		Subcategory.addCP(subcategoryName = "${subcategoryName}");
 
-		<execute macro="Subcategory#deleteCPByActions">
-			<var name="subcategoryName" value="${subcategoryName}" />
-		</execute>
-	</command>
+		Subcategory.deleteCPByActions(subcategoryName = "${subcategoryName}");
+	}
 
-	<command name="DeleteVocabulary" priority="5">
-		<var name="vocabularyName" value="Vocabulary Name" />
+	@priority = "5"
+	test DeleteVocabulary {
+		var vocabularyName = "Vocabulary Name";
 
-		<execute macro="Page#gotoCP">
-			<var name="portletName" value="Categories" />
-		</execute>
+		Page.gotoCP(portletName = "Categories");
 
-		<execute macro="Vocabulary#addCP">
-			<var name="vocabularyName" value="${vocabularyName}" />
-		</execute>
+		Vocabulary.addCP(vocabularyName = "${vocabularyName}");
 
-		<execute macro="Vocabulary#deleteCPByActions">
-			<var name="vocabularyName" value="${vocabularyName}" />
-		</execute>
-	</command>
+		Vocabulary.deleteCPByActions(vocabularyName = "${vocabularyName}");
+	}
 
-	<command name="EditCategory" priority="5">
-		<var name="categoryName" value="Category Name" />
-		<var name="categoryNameEdit" value="Category Name Edit" />
-		<var name="vocabularyName" value="Vocabulary Name" />
+	@priority = "5"
+	test EditCategory {
+		var categoryName = "Category Name";
+		var categoryNameEdit = "Category Name Edit";
+		var vocabularyName = "Vocabulary Name";
 
-		<execute macro="Page#gotoCP">
-			<var name="portletName" value="Categories" />
-		</execute>
+		Page.gotoCP(portletName = "Categories");
 
-		<execute macro="Vocabulary#addCP">
-			<var name="vocabularyName" value="${vocabularyName}" />
-		</execute>
+		Vocabulary.addCP(vocabularyName = "${vocabularyName}");
 
-		<execute macro="Category#addCP">
-			<var name="categoryName" value="${categoryName}" />
-		</execute>
+		Category.addCP(categoryName = "${categoryName}");
 
-		<execute macro="Category#editCP">
-			<var name="categoryName" value="${categoryName}" />
-			<var name="categoryNameEdit" value="${categoryNameEdit}" />
-		</execute>
-	</command>
+		Category.editCP(
+			categoryName = "${categoryName}",
+			categoryNameEdit = "${categoryNameEdit}"
+		);
+	}
 
-	<command name="EditSubcategory" priority="5">
-		<var name="categoryName" value="Category Name" />
-		<var name="subcategoryName" value="Subcategory Name" />
-		<var name="subcategoryNameEdit" value="Subcategory Name Edit" />
-		<var name="vocabularyName" value="Vocabulary Name" />
+	@priority = "5"
+	test EditSubcategory {
+		var categoryName = "Category Name";
+		var subcategoryName = "Subcategory Name";
+		var subcategoryNameEdit = "Subcategory Name Edit";
+		var vocabularyName = "Vocabulary Name";
 
-		<execute macro="Page#gotoCP">
-			<var name="portletName" value="Categories" />
-		</execute>
+		Page.gotoCP(portletName = "Categories");
 
-		<execute macro="Vocabulary#addCP">
-			<var name="vocabularyName" value="${vocabularyName}" />
-		</execute>
+		Vocabulary.addCP(vocabularyName = "${vocabularyName}");
 
-		<execute macro="Category#addCP">
-			<var name="categoryName" value="${categoryName}" />
-		</execute>
+		Category.addCP(categoryName = "${categoryName}");
 
-		<execute macro="Subcategory#addCP">
-			<var name="subcategoryName" value="${subcategoryName}" />
-		</execute>
+		Subcategory.addCP(subcategoryName = "${subcategoryName}");
 
-		<execute macro="Subcategory#editCP">
-			<var name="subcategoryName" value="${subcategoryName}" />
-			<var name="subcategoryNameEdit" value="${subcategoryNameEdit}" />
-		</execute>
-	</command>
+		Subcategory.editCP(
+			subcategoryName = "${subcategoryName}",
+			subcategoryNameEdit = "${subcategoryNameEdit}"
+		);
+	}
 
-	<command name="EditVocabulary" priority="5">
-		<var name="vocabularyName" value="Vocabulary Name" />
-		<var name="vocabularyNameEdit" value="Vocabulary Name Edit" />
+	@priority = "5"
+	test EditVocabulary {
+		var vocabularyName = "Vocabulary Name";
+		var vocabularyNameEdit = "Vocabulary Name Edit";
 
-		<execute macro="Page#gotoCP">
-			<var name="portletName" value="Categories" />
-		</execute>
+		Page.gotoCP(portletName = "Categories");
 
-		<execute macro="Vocabulary#addCP">
-			<var name="vocabularyName" value="${vocabularyName}" />
-		</execute>
+		Vocabulary.addCP(vocabularyName = "${vocabularyName}");
 
-		<execute macro="Vocabulary#editCP">
-			<var name="vocabularyName" value="${vocabularyName}" />
-			<var name="vocabularyNameEdit" value="${vocabularyNameEdit}" />
-		</execute>
-	</command>
+		Vocabulary.editCP(
+			vocabularyName = "${vocabularyName}",
+			vocabularyNameEdit = "${vocabularyNameEdit}"
+		);
+	}
 
-	<tear-down>
-		<execute macro="Vocabulary#tearDownCP" />
-	</tear-down>
-</definition>
+	tearDown {
+		Vocabulary.tearDownCP();
+	}
+}

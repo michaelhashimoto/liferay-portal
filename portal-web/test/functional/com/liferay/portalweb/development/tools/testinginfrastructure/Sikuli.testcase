@@ -1,13 +1,19 @@
-<definition component-name="portal-tools">
-	<property name="portal.release" value="true" />
-	<property name="portal.upstream" value="true" />
-	<property name="testray.main.component.name" value="Tools" />
+@component-name = "portal-tools"
+definition {
+	property portal.release = "true";
+	property portal.upstream = "true";
+	property testray.main.component.name = "Tools";
 
-	<command name="Smoke" priority="5">
-		<execute function="SikuliAssertElementPresent" locator1="Sikuli#EMAIL_ADDRESS" />
-		<execute function="SikuliAssertElementNotPresent" locator1="Sikuli#AVERAGE_RATING_STAR_ICON_PNG" />
-		<execute function="Type" locator1="Sikuli#EMAIL_ADDRESS" value1="test@liferay.com" />
-		<execute function="Type" locator1="Sikuli#PASSWORD" value1="test" />
-		<execute function="Click" locator1="Sikuli#SIGN_IN" />
-	</command>
-</definition>
+	@priority = "5"
+	test Smoke {
+		SikuliAssertElementPresent(locator1 = "Sikuli#EMAIL_ADDRESS");
+
+		SikuliAssertElementNotPresent(locator1 = "Sikuli#AVERAGE_RATING_STAR_ICON_PNG");
+
+		Type(locator1 = "Sikuli#EMAIL_ADDRESS", value1 = "test@liferay.com");
+
+		Type(locator1 = "Sikuli#PASSWORD", value1 = "test");
+
+		Click(locator1 = "Sikuli#SIGN_IN");
+	}
+}

@@ -1,345 +1,337 @@
-<definition component-name="social-office-site">
-	<property name="hook.plugins.includes" value="deploy-listener-hook,portal-compat-hook,so-activities-hook,so-hook" />
-	<property name="portlet.plugins.includes" value="chat-portlet,contacts-portlet,events-display-portlet,microblogs-portlet,private-messaging-portlet,so-announcements-portlet,so-configurations-portlet,so-portlet,tasks-portlet,wysiwyg-portlet" />
-	<property name="testray.main.component.name" value="Social Office EE" />
-	<property name="theme.plugins.includes" value="so-theme" />
-
-	<set-up>
-		<execute macro="SOUser#firstLoginPG" />
-	</set-up>
-
-	<command name="ViewDashboardActivitiesDashboard" priority="5">
-		<var name="adminEmailAddress" value="test@liferay.com" />
-		<var name="adminName" value="Joe Bloggs" />
-		<var name="microblogsEntryAuthorFirstName" value="Joe" />
-		<var name="microblogsEntryAuthorLastName" value="Bloggs" />
-		<var name="microblogsEntryAuthorScreenName" value="joebloggs" />
-		<var name="microblogsEntryCharacterCountdown1" value="141" />
-		<var name="microblogsEntryCharacterCountdown2" value="134" />
-		<var name="microblogsEntryContent" value="Microblogs Post" />
-		<var name="microblogsEntryViewableBy" value="Everyone" />
-		<var name="password" value="test" />
-		<var name="roleName" value="Social Office" />
-		<var name="userEmailAddress1" value="socialoffice01@liferay.com" />
-		<var name="userEmailAddress2" value="socialoffice02@liferay.com" />
-		<var name="userFirstName1" value="Social01" />
-		<var name="userFirstName2" value="Social02" />
-		<var name="userLastName1" value="User01" />
-		<var name="userLastName2" value="User02" />
-		<var name="userListName1" value="User01, Social01" />
-		<var name="userListName2" value="User02, Social02" />
-		<var name="userMiddleName1" value="Office01" />
-		<var name="userMiddleName2" value="Office02" />
-		<var name="userName1" value="Social01 Office01 User01" />
-		<var name="userName2" value="Social02 Office02 User02" />
-		<var name="userScreenName1" value="socialoffice01" />
-		<var name="userScreenName2" value="socialoffice02" />
-
-		<execute macro="SOContactsCenter#addConnection">
-			<var name="adminEmailAddress" value="${adminEmailAddress}" />
-			<var name="senderName" value="${adminName}" />
-			<var name="userEmailAddress" value="${userEmailAddress1}" />
-			<var name="userFirstName" value="${userFirstName1}" />
-			<var name="userLastName" value="${userLastName1}" />
-			<var name="userListName" value="${userListName1}" />
-			<var name="userMiddleName" value="${userMiddleName1}" />
-			<var name="userName" value="${userName1}" />
-			<var name="userScreenName" value="${userScreenName1}" />
-		</execute>
-
-		<execute macro="SOUser#logoutPG" />
-
-		<execute macro="SOUser#loginPG">
-			<var name="password" value="test" />
-			<var name="userEmailAddress" value="${adminEmailAddress}" />
-		</execute>
-
-		<execute macro="SOMicroblogs#gotoMicroblogsContentField" />
-
-		<execute macro="SOMicroblogs#addMicroblogsEntryMention">
-			<var name="mentionUserEmailAddress" value="${userEmailAddress1}" />
-			<var name="mentionUserFirstName" value="${userFirstName1}" />
-			<var name="mentionUserLastName" value="${userLastName1}" />
-			<var name="mentionUserListName" value="${userListName1}" />
-			<var name="mentionUserMiddleName" value="${userMiddleName1}" />
-			<var name="mentionUserName" value="${userName1}" />
-			<var name="mentionUserScreenName" value="${userScreenName1}" />
-			<var name="microblogsEntryCharacterCountdown" value="${microblogsEntryCharacterCountdown1}" />
-		</execute>
-
-		<execute macro="SOMicroblogs#gotoMicroblogsContentField" />
-
-		<execute macro="SOMicroblogs#addMicroblogsEntryHashtag">
-			<var name="microblogsEntryCharacterCountdown" value="${microblogsEntryCharacterCountdown2}" />
-			<var name="microblogsEntryContent" value="${microblogsEntryContent}" />
-		</execute>
-
-		<execute macro="SOUser#logoutPG" />
-
-		<execute macro="SOUser#loginPG">
-			<var name="password" value="test" />
-			<var name="userEmailAddress" value="${userEmailAddress1}" />
-		</execute>
-
-		<execute macro="SOUserBar#dashboardPG">
-			<var name="userName" value="${userName1}" />
-		</execute>
-
-		<execute macro="SOActivities#viewMicroblogsActivityEntry">
-			<var name="microblogsEntryContent" value="${microblogsEntryContent}" />
-			<var name="userName" value="${adminName}" />
-		</execute>
-
-		<execute macro="SOActivities#viewMicroblogsActivityEntry">
-			<var name="microblogsEntryContent" value="${userName1}" />
-			<var name="number" value="02" />
-			<var name="userName" value="${adminName}" />
-		</execute>
-
-		<execute function="Click" locator1="SOActivities#NAVIGATION_CONNECTIONS" />
-
-		<execute macro="SOActivities#viewMicroblogsActivityEntry">
-			<var name="microblogsEntryContent" value="${microblogsEntryContent}" />
-			<var name="userName" value="${adminName}" />
-		</execute>
-
-		<execute macro="SOActivities#viewMicroblogsActivityEntry">
-			<var name="microblogsEntryContent" value="${userName1}" />
-			<var name="number" value="02" />
-			<var name="userName" value="${adminName}" />
-		</execute>
-
-		<execute macro="SOUser#logoutPG" />
-
-		<execute macro="SOUser#loginPG">
-			<var name="password" value="test" />
-			<var name="userEmailAddress" value="${adminEmailAddress}" />
-		</execute>
-
-		<execute macro="SOContactsCenter#disconnectFromConnection">
-			<var name="userEmailAddress" value="${userEmailAddress1}" />
-			<var name="userListName" value="${userListName1}" />
-			<var name="userName" value="${userName1}" />
-			<var name="userScreenName" value="${userScreenName1}" />
-		</execute>
-
-		<execute macro="SOUser#logoutPG" />
-
-		<execute macro="SOUser#loginPG">
-			<var name="password" value="test" />
-			<var name="userEmailAddress" value="${userEmailAddress1}" />
-		</execute>
-
-		<execute macro="SOUserBar#dashboardPG">
-			<var name="userName" value="${userName1}" />
-		</execute>
-
-		<execute function="Click" locator1="SOActivities#NAVIGATION_ALL" />
-		<execute function="AssertTextEquals" locator1="SOActivities#NO_ACTIVITIES" value1="There are no activities." />
-		<execute function="Click" locator1="SOActivities#NAVIGATION_CONNECTIONS" />
-		<execute function="AssertTextEquals" locator1="SOActivities#NO_ACTIVITIES" value1="There are no activities." />
-
-		<execute macro="SOUser#logoutPG" />
-
-		<execute macro="SOUser#loginPG">
-			<var name="password" value="test" />
-			<var name="userEmailAddress" value="${adminEmailAddress}" />
-		</execute>
-
-		<execute macro="SOContactsCenter#addFollower">
-			<var name="adminEmailAddress" value="${adminEmailAddress}" />
-			<var name="senderName" value="${adminName}" />
-			<var name="userEmailAddress" value="${userEmailAddress2}" />
-			<var name="userFirstName" value="${userFirstName2}" />
-			<var name="userLastName" value="${userLastName2}" />
-			<var name="userListName" value="${userListName2}" />
-			<var name="userMiddleName" value="${userMiddleName2}" />
-			<var name="userName" value="${userName2}" />
-			<var name="userScreenName" value="${userScreenName2}" />
-		</execute>
-
-		<execute macro="SOUserBar#dashboardPG">
-			<var name="userName" value="${userName2}" />
-		</execute>
-
-		<execute macro="SOActivities#viewMicroblogsActivityEntry">
-			<var name="microblogsEntryContent" value="${microblogsEntryContent}" />
-			<var name="userName" value="${adminName}" />
-		</execute>
-
-		<execute macro="SOActivities#viewMicroblogsActivityEntry">
-			<var name="microblogsEntryContent" value="${userName1}" />
-			<var name="number" value="02" />
-			<var name="userName" value="${adminName}" />
-		</execute>
-
-		<execute function="Click" locator1="SOActivities#NAVIGATION_FOLLOWING" />
-
-		<execute macro="SOActivities#viewMicroblogsActivityEntry">
-			<var name="microblogsEntryContent" value="${microblogsEntryContent}" />
-			<var name="userName" value="${adminName}" />
-		</execute>
-
-		<execute macro="SOActivities#viewMicroblogsActivityEntry">
-			<var name="microblogsEntryContent" value="${userName1}" />
-			<var name="number" value="02" />
-			<var name="userName" value="${adminName}" />
-		</execute>
-
-		<execute macro="SOContactsCenter#unfollowUser">
-			<var name="adminEmailAddress" value="${adminEmailAddress}" />
-			<var name="userEmailAddress" value="${userEmailAddress2}" />
-			<var name="userName" value="${userName2}" />
-		</execute>
-
-		<execute macro="SOUserBar#dashboardPG">
-			<var name="userName" value="${userName2}" />
-		</execute>
-
-		<execute function="Click" locator1="SOActivities#NAVIGATION_ALL" />
-		<execute function="AssertTextEquals" locator1="SOActivities#NO_ACTIVITIES" value1="There are no activities." />
-		<execute function="Click" locator1="SOActivities#NAVIGATION_FOLLOWING" />
-		<execute function="AssertTextEquals" locator1="SOActivities#NO_ACTIVITIES" value1="There are no activities." />
-	</command>
-
-	<command name="ViewDashboardActivitiesProfiles" priority="5">
-		<var name="adminEmailAddress" value="test@liferay.com" />
-		<var name="adminName" value="Joe Bloggs" />
-		<var name="microblogsEntryAuthorFirstName" value="Joe" />
-		<var name="microblogsEntryAuthorLastName" value="Bloggs" />
-		<var name="microblogsEntryAuthorScreenName" value="joebloggs" />
-		<var name="microblogsEntryCharacterCountdown1" value="134" />
-		<var name="microblogsEntryCharacterCountdown2" value="133" />
-		<var name="microblogsEntryContent1" value="Microblogs Post1" />
-		<var name="microblogsEntryContent2" value="Microblogs Post2" />
-		<var name="microblogsEntryContent3" value="Microblogs Post3" />
-		<var name="microblogsEntryContent4" value="Microblogs Post4" />
-		<var name="microblogsEntryViewableBy" value="Everyone" />
-		<var name="password" value="test" />
-		<var name="roleName" value="Social Office" />
-		<var name="userEmailAddress" value="socialoffice01@liferay.com" />
-		<var name="userFirstName" value="Social01" />
-		<var name="userLastName" value="User01" />
-		<var name="userListName" value="User01, Social01" />
-		<var name="userMiddleName" value="Office01" />
-		<var name="userName" value="Social01 Office01 User01" />
-		<var name="userScreenName" value="socialoffice01" />
-
-		<execute macro="SOContactsCenter#addConnection">
-			<var name="adminEmailAddress" value="${adminEmailAddress}" />
-			<var name="senderName" value="${adminName}" />
-		</execute>
-
-		<execute macro="SOUser#logoutPG" />
-
-		<execute macro="SOUser#loginPG">
-			<var name="password" value="test" />
-			<var name="userEmailAddress" value="${adminEmailAddress}" />
-		</execute>
-
-		<execute macro="SOMicroblogs#gotoMicroblogsContentField" />
-
-		<execute macro="SOMicroblogs#addMicroblogsEntry">
-			<var name="microblogsEntryCharacterCountdown" value="${microblogsEntryCharacterCountdown1}" />
-			<var name="microblogsEntryContent" value="${microblogsEntryContent1}" />
-		</execute>
-
-		<execute macro="SOMicroblogs#gotoMicroblogsContentField" />
-
-		<execute macro="SOMicroblogs#addMicroblogsEntryHashtag">
-			<var name="microblogsEntryCharacterCountdown" value="${microblogsEntryCharacterCountdown2}" />
-			<var name="microblogsEntryContent" value="${microblogsEntryContent2}" />
-		</execute>
-
-		<execute macro="SOUser#logoutPG" />
-
-		<execute macro="SOUser#loginPG">
-			<var name="password" value="test" />
-			<var name="userEmailAddress" value="${userEmailAddress}" />
-		</execute>
-
-		<execute macro="SOUserBar#myProfilePG">
-			<var name="userName" value="${userName}" />
-		</execute>
-
-		<execute function="Click" locator1="SOActivities#NAVIGATION_ALL" />
-		<execute function="AssertTextEquals" locator1="SOActivities#NO_ACTIVITIES" value1="There are no activities." />
-		<execute function="Click" locator1="SOActivities#NAVIGATION_CONNECTIONS" />
-		<execute function="AssertTextEquals" locator1="SOActivities#NO_ACTIVITIES" value1="There are no activities." />
-
-		<execute macro="SOMicroblogs#addMicroblogsEntry">
-			<var name="microblogsEntryCharacterCountdown" value="${microblogsEntryCharacterCountdown1}" />
-			<var name="microblogsEntryContent" value="${microblogsEntryContent3}" />
-		</execute>
-
-		<execute macro="SOMicroblogs#addMicroblogsEntryHashtag">
-			<var name="microblogsEntryCharacterCountdown" value="${microblogsEntryCharacterCountdown2}" />
-			<var name="microblogsEntryContent" value="${microblogsEntryContent4}" />
-		</execute>
-
-		<execute macro="SOUserBar#myProfilePG">
-			<var name="userName" value="${userName}" />
-		</execute>
-
-		<execute macro="SOActivities#viewMicroblogsActivityEntry">
-			<var name="microblogsEntryContent" value="${microblogsEntryContent4}" />
-		</execute>
-
-		<execute macro="SOActivities#viewMicroblogsActivityEntry">
-			<var name="microblogsEntryContent" value="${microblogsEntryContent3}" />
-			<var name="number" value="02" />
-		</execute>
-
-		<execute function="Click" locator1="SOActivities#NAVIGATION_CONNECTIONS" />
-
-		<execute macro="SOActivities#viewMicroblogsActivityEntry">
-			<var name="microblogsEntryContent" value="${microblogsEntryContent4}" />
-		</execute>
-
-		<execute macro="SOActivities#viewMicroblogsActivityEntry">
-			<var name="microblogsEntryContent" value="${microblogsEntryContent3}" />
-			<var name="number" value="02" />
-		</execute>
-
-		<execute macro="SOUser#logoutPG" />
-
-		<execute macro="SOUser#loginPG">
-			<var name="password" value="test" />
-			<var name="userEmailAddress" value="${adminEmailAddress}" />
-		</execute>
-
-		<execute macro="SOUserBar#myProfilePG">
-			<var name="userName" value="${adminName}" />
-		</execute>
-
-		<execute macro="SOActivities#viewMicroblogsActivityEntry">
-			<var name="microblogsEntryContent" value="${microblogsEntryContent2}" />
-			<var name="userFirstName" value="${microblogsEntryAuthorFirstName}" />
-		</execute>
-
-		<execute macro="SOActivities#viewMicroblogsActivityEntry">
-			<var name="microblogsEntryContent" value="${microblogsEntryContent1}" />
-			<var name="number" value="02" />
-			<var name="userFirstName" value="${microblogsEntryAuthorFirstName}" />
-		</execute>
-
-		<execute function="Click" locator1="SOActivities#NAVIGATION_CONNECTIONS" />
-
-		<execute macro="SOActivities#viewMicroblogsActivityEntry">
-			<var name="microblogsEntryContent" value="${microblogsEntryContent2}" />
-			<var name="userFirstName" value="${microblogsEntryAuthorFirstName}" />
-		</execute>
-
-		<execute macro="SOActivities#viewMicroblogsActivityEntry">
-			<var name="microblogsEntryContent" value="${microblogsEntryContent1}" />
-			<var name="number" value="02" />
-			<var name="userFirstName" value="${microblogsEntryAuthorFirstName}" />
-		</execute>
-	</command>
-
-	<tear-down>
-		<execute macro="SOMicroblogs#tearDownMicroblogsEntry" />
-
-		<execute macro="SOUser#tearDownCP" />
-	</tear-down>
-</definition>
+@component-name = "social-office-site"
+definition {
+	property hook.plugins.includes = "deploy-listener-hook,portal-compat-hook,so-activities-hook,so-hook";
+	property portlet.plugins.includes = "chat-portlet,contacts-portlet,events-display-portlet,microblogs-portlet,private-messaging-portlet,so-announcements-portlet,so-configurations-portlet,so-portlet,tasks-portlet,wysiwyg-portlet";
+	property testray.main.component.name = "Social Office EE";
+	property theme.plugins.includes = "so-theme";
+
+	setUp {
+		SOUser.firstLoginPG();
+	}
+
+	@priority = "5"
+	test ViewDashboardActivitiesDashboard {
+		var adminEmailAddress = "test@liferay.com";
+		var adminName = "Joe Bloggs";
+		var microblogsEntryAuthorFirstName = "Joe";
+		var microblogsEntryAuthorLastName = "Bloggs";
+		var microblogsEntryAuthorScreenName = "joebloggs";
+		var microblogsEntryCharacterCountdown1 = "141";
+		var microblogsEntryCharacterCountdown2 = "134";
+		var microblogsEntryContent = "Microblogs Post";
+		var microblogsEntryViewableBy = "Everyone";
+		var password = "test";
+		var roleName = "Social Office";
+		var userEmailAddress1 = "socialoffice01@liferay.com";
+		var userEmailAddress2 = "socialoffice02@liferay.com";
+		var userFirstName1 = "Social01";
+		var userFirstName2 = "Social02";
+		var userLastName1 = "User01";
+		var userLastName2 = "User02";
+		var userListName1 = "User01, Social01";
+		var userListName2 = "User02, Social02";
+		var userMiddleName1 = "Office01";
+		var userMiddleName2 = "Office02";
+		var userName1 = "Social01 Office01 User01";
+		var userName2 = "Social02 Office02 User02";
+		var userScreenName1 = "socialoffice01";
+		var userScreenName2 = "socialoffice02";
+
+		SOContactsCenter.addConnection(
+			adminEmailAddress = "${adminEmailAddress}",
+			senderName = "${adminName}",
+			userEmailAddress = "${userEmailAddress1}",
+			userFirstName = "${userFirstName1}",
+			userLastName = "${userLastName1}",
+			userListName = "${userListName1}",
+			userMiddleName = "${userMiddleName1}",
+			userName = "${userName1}",
+			userScreenName = "${userScreenName1}"
+		);
+
+		SOUser.logoutPG();
+
+		SOUser.loginPG(password = "test", userEmailAddress = "${adminEmailAddress}");
+
+		SOMicroblogs.gotoMicroblogsContentField();
+
+		SOMicroblogs.addMicroblogsEntryMention(
+			mentionUserEmailAddress = "${userEmailAddress1}",
+			mentionUserFirstName = "${userFirstName1}",
+			mentionUserLastName = "${userLastName1}",
+			mentionUserListName = "${userListName1}",
+			mentionUserMiddleName = "${userMiddleName1}",
+			mentionUserName = "${userName1}",
+			mentionUserScreenName = "${userScreenName1}",
+			microblogsEntryCharacterCountdown = "${microblogsEntryCharacterCountdown1}"
+		);
+
+		SOMicroblogs.gotoMicroblogsContentField();
+
+		SOMicroblogs.addMicroblogsEntryHashtag(
+			microblogsEntryCharacterCountdown = "${microblogsEntryCharacterCountdown2}",
+			microblogsEntryContent = "${microblogsEntryContent}"
+		);
+
+		SOUser.logoutPG();
+
+		SOUser.loginPG(password = "test", userEmailAddress = "${userEmailAddress1}");
+
+		SOUserBar.dashboardPG(userName = "${userName1}");
+
+		SOActivities.viewMicroblogsActivityEntry(
+			microblogsEntryContent = "${microblogsEntryContent}",
+			userName = "${adminName}"
+		);
+
+		SOActivities.viewMicroblogsActivityEntry(
+			microblogsEntryContent = "${userName1}",
+			number = "02",
+			userName = "${adminName}"
+		);
+
+		Click(locator1 = "SOActivities#NAVIGATION_CONNECTIONS");
+
+		SOActivities.viewMicroblogsActivityEntry(
+			microblogsEntryContent = "${microblogsEntryContent}",
+			userName = "${adminName}"
+		);
+
+		SOActivities.viewMicroblogsActivityEntry(
+			microblogsEntryContent = "${userName1}",
+			number = "02",
+			userName = "${adminName}"
+		);
+
+		SOUser.logoutPG();
+
+		SOUser.loginPG(password = "test", userEmailAddress = "${adminEmailAddress}");
+
+		SOContactsCenter.disconnectFromConnection(
+			userEmailAddress = "${userEmailAddress1}",
+			userListName = "${userListName1}",
+			userName = "${userName1}",
+			userScreenName = "${userScreenName1}"
+		);
+
+		SOUser.logoutPG();
+
+		SOUser.loginPG(password = "test", userEmailAddress = "${userEmailAddress1}");
+
+		SOUserBar.dashboardPG(userName = "${userName1}");
+
+		Click(locator1 = "SOActivities#NAVIGATION_ALL");
+
+		AssertTextEquals(
+			locator1 = "SOActivities#NO_ACTIVITIES",
+			value1 = "There are no activities."
+		);
+
+		Click(locator1 = "SOActivities#NAVIGATION_CONNECTIONS");
+
+		AssertTextEquals(
+			locator1 = "SOActivities#NO_ACTIVITIES",
+			value1 = "There are no activities."
+		);
+
+		SOUser.logoutPG();
+
+		SOUser.loginPG(password = "test", userEmailAddress = "${adminEmailAddress}");
+
+		SOContactsCenter.addFollower(
+			adminEmailAddress = "${adminEmailAddress}",
+			senderName = "${adminName}",
+			userEmailAddress = "${userEmailAddress2}",
+			userFirstName = "${userFirstName2}",
+			userLastName = "${userLastName2}",
+			userListName = "${userListName2}",
+			userMiddleName = "${userMiddleName2}",
+			userName = "${userName2}",
+			userScreenName = "${userScreenName2}"
+		);
+
+		SOUserBar.dashboardPG(userName = "${userName2}");
+
+		SOActivities.viewMicroblogsActivityEntry(
+			microblogsEntryContent = "${microblogsEntryContent}",
+			userName = "${adminName}"
+		);
+
+		SOActivities.viewMicroblogsActivityEntry(
+			microblogsEntryContent = "${userName1}",
+			number = "02",
+			userName = "${adminName}"
+		);
+
+		Click(locator1 = "SOActivities#NAVIGATION_FOLLOWING");
+
+		SOActivities.viewMicroblogsActivityEntry(
+			microblogsEntryContent = "${microblogsEntryContent}",
+			userName = "${adminName}"
+		);
+
+		SOActivities.viewMicroblogsActivityEntry(
+			microblogsEntryContent = "${userName1}",
+			number = "02",
+			userName = "${adminName}"
+		);
+
+		SOContactsCenter.unfollowUser(
+			adminEmailAddress = "${adminEmailAddress}",
+			userEmailAddress = "${userEmailAddress2}",
+			userName = "${userName2}"
+		);
+
+		SOUserBar.dashboardPG(userName = "${userName2}");
+
+		Click(locator1 = "SOActivities#NAVIGATION_ALL");
+
+		AssertTextEquals(
+			locator1 = "SOActivities#NO_ACTIVITIES",
+			value1 = "There are no activities."
+		);
+
+		Click(locator1 = "SOActivities#NAVIGATION_FOLLOWING");
+
+		AssertTextEquals(
+			locator1 = "SOActivities#NO_ACTIVITIES",
+			value1 = "There are no activities."
+		);
+	}
+
+	@priority = "5"
+	test ViewDashboardActivitiesProfiles {
+		var adminEmailAddress = "test@liferay.com";
+		var adminName = "Joe Bloggs";
+		var microblogsEntryAuthorFirstName = "Joe";
+		var microblogsEntryAuthorLastName = "Bloggs";
+		var microblogsEntryAuthorScreenName = "joebloggs";
+		var microblogsEntryCharacterCountdown1 = "134";
+		var microblogsEntryCharacterCountdown2 = "133";
+		var microblogsEntryContent1 = "Microblogs Post1";
+		var microblogsEntryContent2 = "Microblogs Post2";
+		var microblogsEntryContent3 = "Microblogs Post3";
+		var microblogsEntryContent4 = "Microblogs Post4";
+		var microblogsEntryViewableBy = "Everyone";
+		var password = "test";
+		var roleName = "Social Office";
+		var userEmailAddress = "socialoffice01@liferay.com";
+		var userFirstName = "Social01";
+		var userLastName = "User01";
+		var userListName = "User01, Social01";
+		var userMiddleName = "Office01";
+		var userName = "Social01 Office01 User01";
+		var userScreenName = "socialoffice01";
+
+		SOContactsCenter.addConnection(
+			adminEmailAddress = "${adminEmailAddress}",
+			senderName = "${adminName}"
+		);
+
+		SOUser.logoutPG();
+
+		SOUser.loginPG(password = "test", userEmailAddress = "${adminEmailAddress}");
+
+		SOMicroblogs.gotoMicroblogsContentField();
+
+		SOMicroblogs.addMicroblogsEntry(
+			microblogsEntryCharacterCountdown = "${microblogsEntryCharacterCountdown1}",
+			microblogsEntryContent = "${microblogsEntryContent1}"
+		);
+
+		SOMicroblogs.gotoMicroblogsContentField();
+
+		SOMicroblogs.addMicroblogsEntryHashtag(
+			microblogsEntryCharacterCountdown = "${microblogsEntryCharacterCountdown2}",
+			microblogsEntryContent = "${microblogsEntryContent2}"
+		);
+
+		SOUser.logoutPG();
+
+		SOUser.loginPG(password = "test", userEmailAddress = "${userEmailAddress}");
+
+		SOUserBar.myProfilePG(userName = "${userName}");
+
+		Click(locator1 = "SOActivities#NAVIGATION_ALL");
+
+		AssertTextEquals(
+			locator1 = "SOActivities#NO_ACTIVITIES",
+			value1 = "There are no activities."
+		);
+
+		Click(locator1 = "SOActivities#NAVIGATION_CONNECTIONS");
+
+		AssertTextEquals(
+			locator1 = "SOActivities#NO_ACTIVITIES",
+			value1 = "There are no activities."
+		);
+
+		SOMicroblogs.addMicroblogsEntry(
+			microblogsEntryCharacterCountdown = "${microblogsEntryCharacterCountdown1}",
+			microblogsEntryContent = "${microblogsEntryContent3}"
+		);
+
+		SOMicroblogs.addMicroblogsEntryHashtag(
+			microblogsEntryCharacterCountdown = "${microblogsEntryCharacterCountdown2}",
+			microblogsEntryContent = "${microblogsEntryContent4}"
+		);
+
+		SOUserBar.myProfilePG(userName = "${userName}");
+
+		SOActivities.viewMicroblogsActivityEntry(
+			microblogsEntryContent = "${microblogsEntryContent4}"
+		);
+
+		SOActivities.viewMicroblogsActivityEntry(
+			microblogsEntryContent = "${microblogsEntryContent3}",
+			number = "02"
+		);
+
+		Click(locator1 = "SOActivities#NAVIGATION_CONNECTIONS");
+
+		SOActivities.viewMicroblogsActivityEntry(
+			microblogsEntryContent = "${microblogsEntryContent4}"
+		);
+
+		SOActivities.viewMicroblogsActivityEntry(
+			microblogsEntryContent = "${microblogsEntryContent3}",
+			number = "02"
+		);
+
+		SOUser.logoutPG();
+
+		SOUser.loginPG(password = "test", userEmailAddress = "${adminEmailAddress}");
+
+		SOUserBar.myProfilePG(userName = "${adminName}");
+
+		SOActivities.viewMicroblogsActivityEntry(
+			microblogsEntryContent = "${microblogsEntryContent2}",
+			userFirstName = "${microblogsEntryAuthorFirstName}"
+		);
+
+		SOActivities.viewMicroblogsActivityEntry(
+			microblogsEntryContent = "${microblogsEntryContent1}",
+			number = "02",
+			userFirstName = "${microblogsEntryAuthorFirstName}"
+		);
+
+		Click(locator1 = "SOActivities#NAVIGATION_CONNECTIONS");
+
+		SOActivities.viewMicroblogsActivityEntry(
+			microblogsEntryContent = "${microblogsEntryContent2}",
+			userFirstName = "${microblogsEntryAuthorFirstName}"
+		);
+
+		SOActivities.viewMicroblogsActivityEntry(
+			microblogsEntryContent = "${microblogsEntryContent1}",
+			number = "02",
+			userFirstName = "${microblogsEntryAuthorFirstName}"
+		);
+	}
+
+	tearDown {
+		SOMicroblogs.tearDownMicroblogsEntry();
+
+		SOUser.tearDownCP();
+	}
+}

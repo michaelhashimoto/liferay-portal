@@ -1,262 +1,233 @@
-<definition component-name="social-office-user-bar">
-	<property name="hook.plugins.includes" value="deploy-listener-hook,portal-compat-hook,so-activities-hook,so-hook" />
-	<property name="portlet.plugins.includes" value="chat-portlet,contacts-portlet,events-display-portlet,microblogs-portlet,private-messaging-portlet,so-announcements-portlet,so-configurations-portlet,so-portlet,tasks-portlet,wysiwyg-portlet" />
-	<property name="testray.main.component.name" value="Social Office EE" />
-	<property name="theme.plugins.includes" value="so-theme" />
+@component-name = "social-office-user-bar"
+definition {
+	property hook.plugins.includes = "deploy-listener-hook,portal-compat-hook,so-activities-hook,so-hook";
+	property portlet.plugins.includes = "chat-portlet,contacts-portlet,events-display-portlet,microblogs-portlet,private-messaging-portlet,so-announcements-portlet,so-configurations-portlet,so-portlet,tasks-portlet,wysiwyg-portlet";
+	property testray.main.component.name = "Social Office EE";
+	property theme.plugins.includes = "so-theme";
+	var userEmailAddress = "socialoffice01@liferay.com";
+	var userFirstName = "Social01";
+	var userLastName = "User01";
+	var userMiddleName = "Office01";
+	var userName = "Social01 Office01 User01";
+	var userScreenName = "socialoffice01";
 
-	<var name="userEmailAddress" value="socialoffice01@liferay.com" />
-	<var name="userFirstName" value="Social01" />
-	<var name="userLastName" value="User01" />
-	<var name="userMiddleName" value="Office01" />
-	<var name="userName" value="Social01 Office01 User01" />
-	<var name="userScreenName" value="socialoffice01" />
+	setUp {
+		SOUser.firstLoginPG();
 
-	<set-up>
-		<execute macro="SOUser#firstLoginPG" />
+		SOUserBar.gotoCP(portletName = "Users and Organizations");
 
-		<execute macro="SOUserBar#gotoCP">
-			<var name="portletName" value="Users and Organizations" />
-		</execute>
+		User.addCP(
+			userEmailAddress = "${userEmailAddress}",
+			userFirstName = "${userFirstName}",
+			userLastName = "${userLastName}",
+			userMiddleName = "${userMiddleName}",
+			userScreenName = "${userScreenName}"
+		);
 
-		<execute macro="User#addCP">
-			<var name="userEmailAddress" value="${userEmailAddress}" />
-			<var name="userFirstName" value="${userFirstName}" />
-			<var name="userLastName" value="${userLastName}" />
-			<var name="userMiddleName" value="${userMiddleName}" />
-			<var name="userScreenName" value="${userScreenName}" />
-		</execute>
+		SOUserBar.gotoCP(portletName = "Roles");
 
-		<execute macro="SOUserBar#gotoCP">
-			<var name="portletName" value="Roles" />
-		</execute>
+		Role.assignRegRoleCP(
+			roleName = "Social Office",
+			userScreenName = "${userScreenName}"
+		);
 
-		<execute macro="Role#assignRegRoleCP">
-			<var name="roleName" value="Social Office" />
-			<var name="userScreenName" value="${userScreenName}" />
-		</execute>
+		SOUser.editPasswordCP(
+			userEmailAddress = "${userEmailAddress}",
+			userScreenName = "${userScreenName}"
+		);
 
-		<execute macro="SOUser#editPasswordCP">
-			<var name="userEmailAddress" value="${userEmailAddress}" />
-			<var name="userScreenName" value="${userScreenName}" />
-		</execute>
+		SOUser.logoutPG();
 
-		<execute macro="SOUser#logoutPG" />
+		SOUser.loginPG(password = "test", userEmailAddress = "${userEmailAddress}");
+	}
 
-		<execute macro="SOUser#loginPG">
-			<var name="password" value="test" />
-			<var name="userEmailAddress" value="${userEmailAddress}" />
-		</execute>
-	</set-up>
+	tearDown {
+		SOUser.tearDownCP();
+	}
 
-	<tear-down>
-		<execute macro="SOUser#tearDownCP" />
-	</tear-down>
+	@priority = "5"
+	test AddAdditionalEmailAddress {
+		var userAdditionalEmailAddress = "socialoffice02@liferay.com";
 
-	<command name="AddAdditionalEmailAddress" priority="5">
-		<var name="userAdditionalEmailAddress" value="socialoffice02@liferay.com" />
+		SOProfile.addAdditionalEmailAddressMyAccount(
+			userAdditionalEmailAddress = "${userAdditionalEmailAddress}"
+		);
 
-		<execute macro="SOProfile#addAdditionalEmailAddressMyAccount">
-			<var name="userAdditionalEmailAddress" value="${userAdditionalEmailAddress}" />
-		</execute>
+		SOUserBar.gotoProfile(userName = "${userName}");
 
-		<execute macro="SOUserBar#gotoProfile">
-			<var name="userName" value="${userName}" />
-		</execute>
+		SOProfile.viewAdditionalEmailAddressProfile(
+			userAdditionalEmailAddress = "${userAdditionalEmailAddress}"
+		);
+	}
 
-		<execute macro="SOProfile#viewAdditionalEmailAddressProfile">
-			<var name="userAdditionalEmailAddress" value="${userAdditionalEmailAddress}" />
-		</execute>
-	</command>
+	@priority = "5"
+	test AddAddress {
+		var userAddressCity = "Ray of Light";
+		var userAddressCountry = "United States";
+		var userAddressPostalCode = "91234";
+		var userAddressRegion = "California";
+		var userAddressStreet1 = "123 Liferay Ln.";
+		var userAddressType = "Personal";
 
-	<command name="AddAddress" priority="5">
-		<var name="userAddressCity" value="Ray of Light" />
-		<var name="userAddressCountry" value="United States" />
-		<var name="userAddressPostalCode" value="91234" />
-		<var name="userAddressRegion" value="California" />
-		<var name="userAddressStreet1" value="123 Liferay Ln." />
-		<var name="userAddressType" value="Personal" />
+		SOProfile.addAddressMyAccount(
+			userAddressCity = "${userAddressCity}",
+			userAddressCountry = "${userAddressCountry}",
+			userAddressPostalCode = "${userAddressPostalCode}",
+			userAddressRegion = "${userAddressRegion}",
+			userAddressStreet1 = "${userAddressStreet1}",
+			userAddressType = "${userAddressType}"
+		);
 
-		<execute macro="SOProfile#addAddressMyAccount">
-			<var name="userAddressCity" value="${userAddressCity}" />
-			<var name="userAddressCountry" value="${userAddressCountry}" />
-			<var name="userAddressPostalCode" value="${userAddressPostalCode}" />
-			<var name="userAddressRegion" value="${userAddressRegion}" />
-			<var name="userAddressStreet1" value="${userAddressStreet1}" />
-			<var name="userAddressType" value="${userAddressType}" />
-		</execute>
+		SOUserBar.gotoProfile(userName = "${userName}");
 
-		<execute macro="SOUserBar#gotoProfile">
-			<var name="userName" value="${userName}" />
-		</execute>
+		SOProfile.viewAddressProfile(
+			userAddressCity = "${userAddressCity}",
+			userAddressCountry = "${userAddressCountry}",
+			userAddressPostalCode = "${userAddressPostalCode}",
+			userAddressRegion = "${userAddressRegion}",
+			userAddressStreet1 = "${userAddressStreet1}",
+			userAddressType = "${userAddressType}"
+		);
+	}
 
-		<execute macro="SOProfile#viewAddressProfile">
-			<var name="userAddressCity" value="${userAddressCity}" />
-			<var name="userAddressCountry" value="${userAddressCountry}" />
-			<var name="userAddressPostalCode" value="${userAddressPostalCode}" />
-			<var name="userAddressRegion" value="${userAddressRegion}" />
-			<var name="userAddressStreet1" value="${userAddressStreet1}" />
-			<var name="userAddressType" value="${userAddressType}" />
-		</execute>
-	</command>
+	@priority = "5"
+	test AddInstantMessenger {
+		var userInstantMessengerAIM = "socialofficesn";
+		var userInstantMessengerICQ = "socialofficesn";
+		var userInstantMessengerJabber = "socialofficesn";
+		var userInstantMessengerSkype = "socialofficesn";
+		var userInstantMessengerWindowsLiveMessenger = "socialofficesn";
+		var userInstantMessengerYM = "socialofficesn";
 
-	<command name="AddInstantMessenger" priority="5">
-		<var name="userInstantMessengerAIM" value="socialofficesn" />
-		<var name="userInstantMessengerICQ" value="socialofficesn" />
-		<var name="userInstantMessengerJabber" value="socialofficesn" />
-		<var name="userInstantMessengerSkype" value="socialofficesn" />
-		<var name="userInstantMessengerWindowsLiveMessenger" value="socialofficesn" />
-		<var name="userInstantMessengerYM" value="socialofficesn" />
+		SOProfile.addInstantMessengerMyAccount(
+			userInstantMessengerAIM = "${userInstantMessengerAIM}",
+			userInstantMessengerICQ = "${userInstantMessengerICQ}",
+			userInstantMessengerJabber = "${userInstantMessengerJabber}",
+			userInstantMessengerSkype = "${userInstantMessengerSkype}",
+			userInstantMessengerWindowsLiveMessenger = "${userInstantMessengerWindowsLiveMessenger}",
+			userInstantMessengerYM = "${userInstantMessengerYM}"
+		);
 
-		<execute macro="SOProfile#addInstantMessengerMyAccount">
-			<var name="userInstantMessengerAIM" value="${userInstantMessengerAIM}" />
-			<var name="userInstantMessengerICQ" value="${userInstantMessengerICQ}" />
-			<var name="userInstantMessengerJabber" value="${userInstantMessengerJabber}" />
-			<var name="userInstantMessengerSkype" value="${userInstantMessengerSkype}" />
-			<var name="userInstantMessengerWindowsLiveMessenger" value="${userInstantMessengerWindowsLiveMessenger}" />
-			<var name="userInstantMessengerYM" value="${userInstantMessengerYM}" />
-		</execute>
+		SOUserBar.gotoProfile(userName = "${userName}");
 
-		<execute macro="SOUserBar#gotoProfile">
-			<var name="userName" value="${userName}" />
-		</execute>
+		SOProfile.viewInstantMessengerProfile(
+			userInstantMessengerAIM = "${userInstantMessengerAIM}",
+			userInstantMessengerICQ = "${userInstantMessengerICQ}",
+			userInstantMessengerJabber = "${userInstantMessengerJabber}",
+			userInstantMessengerSkype = "${userInstantMessengerSkype}",
+			userInstantMessengerWindowsLiveMessenger = "${userInstantMessengerWindowsLiveMessenger}",
+			userInstantMessengerYM = "${userInstantMessengerYM}"
+		);
+	}
 
-		<execute macro="SOProfile#viewInstantMessengerProfile">
-			<var name="userInstantMessengerAIM" value="${userInstantMessengerAIM}" />
-			<var name="userInstantMessengerICQ" value="${userInstantMessengerICQ}" />
-			<var name="userInstantMessengerJabber" value="${userInstantMessengerJabber}" />
-			<var name="userInstantMessengerSkype" value="${userInstantMessengerSkype}" />
-			<var name="userInstantMessengerWindowsLiveMessenger" value="${userInstantMessengerWindowsLiveMessenger}" />
-			<var name="userInstantMessengerYM" value="${userInstantMessengerYM}" />
-		</execute>
-	</command>
+	@priority = "5"
+	test AddIntroduction {
+		var userIntroduction = "Introduction Content";
 
-	<command name="AddIntroduction" priority="5">
-		<var name="userIntroduction" value="Introduction Content" />
+		SOProfile.addCommentsMyAccount(userIntroduction = "${userIntroduction}");
 
-		<execute macro="SOProfile#addCommentsMyAccount">
-			<var name="userIntroduction" value="${userIntroduction}" />
-		</execute>
+		SOUserBar.gotoProfile(userName = "${userName}");
 
-		<execute macro="SOUserBar#gotoProfile">
-			<var name="userName" value="${userName}" />
-		</execute>
+		SOProfile.viewIntroductionProfile(userIntroduction = "${userIntroduction}");
+	}
 
-		<execute macro="SOProfile#viewIntroductionProfile">
-			<var name="userIntroduction" value="${userIntroduction}" />
-		</execute>
-	</command>
+	@priority = "5"
+	test AddPhoneNumbers {
+		var userPhoneNumberExtension = "123";
+		var userPhoneNumberNumber = "123-123-1234";
+		var userPhoneNumberType = "Business";
 
-	<command name="AddPhoneNumbers" priority="5">
-		<var name="userPhoneNumberExtension" value="123" />
-		<var name="userPhoneNumberNumber" value="123-123-1234" />
-		<var name="userPhoneNumberType" value="Business" />
+		SOProfile.addPhoneNumbersMyAccount(
+			userPhoneNumberExtension = "${userPhoneNumberExtension}",
+			userPhoneNumberNumber = "${userPhoneNumberNumber}",
+			userPhoneNumberType = "${userPhoneNumberType}"
+		);
 
-		<execute macro="SOProfile#addPhoneNumbersMyAccount">
-			<var name="userPhoneNumberExtension" value="${userPhoneNumberExtension}" />
-			<var name="userPhoneNumberNumber" value="${userPhoneNumberNumber}" />
-			<var name="userPhoneNumberType" value="${userPhoneNumberType}" />
-		</execute>
+		SOUserBar.gotoProfile(userName = "${userName}");
 
-		<execute macro="SOUserBar#gotoProfile">
-			<var name="userName" value="${userName}" />
-		</execute>
+		SOProfile.viewPhoneNumbersProfile(
+			userPhoneNumberExtension = "${userPhoneNumberExtension}",
+			userPhoneNumberNumber = "${userPhoneNumberNumber}",
+			userPhoneNumberType = "${userPhoneNumberType}"
+		);
+	}
 
-		<execute macro="SOProfile#viewPhoneNumbersProfile">
-			<var name="userPhoneNumberExtension" value="${userPhoneNumberExtension}" />
-			<var name="userPhoneNumberNumber" value="${userPhoneNumberNumber}" />
-			<var name="userPhoneNumberType" value="${userPhoneNumberType}" />
-		</execute>
-	</command>
+	@priority = "5"
+	test AddProjects {
+		var userProjectDescription = "Expertise Description";
+		var userProjectTitle = "Expertise Title";
 
-	<command name="AddProjects" priority="5">
-		<var name="userProjectDescription" value="Expertise Description" />
-		<var name="userProjectTitle" value="Expertise Title" />
+		SOProfile.addProjectsMyAccount(
+			userProjectDescription = "${userProjectDescription}",
+			userProjectTitle = "${userProjectTitle}"
+		);
 
-		<execute macro="SOProfile#addProjectsMyAccount">
-			<var name="userProjectDescription" value="${userProjectDescription}" />
-			<var name="userProjectTitle" value="${userProjectTitle}" />
-		</execute>
+		SOUserBar.gotoProfile(userName = "${userName}");
 
-		<execute macro="SOUserBar#gotoProfile">
-			<var name="userName" value="${userName}" />
-		</execute>
+		SOProfile.viewProjectsProfile(
+			userProjectDescription = "${userProjectDescription}",
+			userProjectTitle = "${userProjectTitle}"
+		);
+	}
 
-		<execute macro="SOProfile#viewProjectsProfile">
-			<var name="userProjectDescription" value="${userProjectDescription}" />
-			<var name="userProjectTitle" value="${userProjectTitle}" />
-		</execute>
-	</command>
+	@priority = "5"
+	test AddSMS {
+		var userSMS = "socialoffice@liferay.com";
 
-	<command name="AddSMS" priority="5">
-		<var name="userSMS" value="socialoffice@liferay.com" />
+		SOProfile.addSMSMyAccount(userSMS = "${userSMS}");
 
-		<execute macro="SOProfile#addSMSMyAccount">
-			<var name="userSMS" value="${userSMS}" />
-		</execute>
+		SOUserBar.gotoProfile(userName = "${userName}");
 
-		<execute macro="SOUserBar#gotoProfile">
-			<var name="userName" value="${userName}" />
-		</execute>
+		SOProfile.viewSMSProfile(userSMS = "${userSMS}");
+	}
 
-		<execute macro="SOProfile#viewSMSProfile">
-			<var name="userSMS" value="${userSMS}" />
-		</execute>
-	</command>
+	@priority = "5"
+	test AddSocialNetwork {
+		var userSocialNetworkFacebook = "socialoffice01";
+		var userSocialNetworkMyspace = "socialoffice01";
+		var userSocialNetworkTwitter = "socialoffice01";
 
-	<command name="AddSocialNetwork" priority="5">
-		<var name="userSocialNetworkFacebook" value="socialoffice01" />
-		<var name="userSocialNetworkMyspace" value="socialoffice01" />
-		<var name="userSocialNetworkTwitter" value="socialoffice01" />
+		SOProfile.addSocialNetworkMyAccount(
+			userSocialNetworkFacebook = "${userSocialNetworkFacebook}",
+			userSocialNetworkMyspace = "${userSocialNetworkMyspace}",
+			userSocialNetworkTwitter = "${userSocialNetworkTwitter}"
+		);
 
-		<execute macro="SOProfile#addSocialNetworkMyAccount">
-			<var name="userSocialNetworkFacebook" value="${userSocialNetworkFacebook}" />
-			<var name="userSocialNetworkMyspace" value="${userSocialNetworkMyspace}" />
-			<var name="userSocialNetworkTwitter" value="${userSocialNetworkTwitter}" />
-		</execute>
+		SOUserBar.gotoProfile(userName = "${userName}");
 
-		<execute macro="SOUserBar#gotoProfile">
-			<var name="userName" value="${userName}" />
-		</execute>
+		SOProfile.viewSocialNetworkProfile(
+			userSocialNetworkFacebook = "${userSocialNetworkFacebook}",
+			userSocialNetworkMyspace = "${userSocialNetworkMyspace}",
+			userSocialNetworkTwitter = "${userSocialNetworkTwitter}"
+		);
+	}
 
-		<execute macro="SOProfile#viewSocialNetworkProfile">
-			<var name="userSocialNetworkFacebook" value="${userSocialNetworkFacebook}" />
-			<var name="userSocialNetworkMyspace" value="${userSocialNetworkMyspace}" />
-			<var name="userSocialNetworkTwitter" value="${userSocialNetworkTwitter}" />
-		</execute>
-	</command>
+	@priority = "5"
+	test AddTag {
+		var userTag = "tag1";
 
-	<command name="AddTag" priority="5">
-		<var name="userTag" value="tag1" />
+		SOProfile.addTagMyAccount(userTag = "${userTag}");
 
-		<execute macro="SOProfile#addTagMyAccount">
-			<var name="userTag" value="${userTag}" />
-		</execute>
+		SOUserBar.gotoProfile(userName = "${userName}");
 
-		<execute macro="SOUserBar#gotoProfile">
-			<var name="userName" value="${userName}" />
-		</execute>
+		SOProfile.viewTagProfile(userTag = "${userTag}");
+	}
 
-		<execute macro="SOProfile#viewTagProfile">
-			<var name="userTag" value="${userTag}" />
-		</execute>
-	</command>
+	@priority = "5"
+	test AddWebsite {
+		var userWebsiteType = "Personal";
+		var userWebsiteURL = "http://www.socialoffice01.com";
 
-	<command name="AddWebsite" priority="5">
-		<var name="userWebsiteType" value="Personal" />
-		<var name="userWebsiteURL" value="http://www.socialoffice01.com" />
+		SOProfile.addWebsiteMyAccount(
+			userWebsiteType = "${userWebsiteType}",
+			userWebsiteURL = "${userWebsiteURL}"
+		);
 
-		<execute macro="SOProfile#addWebsiteMyAccount">
-			<var name="userWebsiteType" value="${userWebsiteType}" />
-			<var name="userWebsiteURL" value="${userWebsiteURL}" />
-		</execute>
+		SOUserBar.gotoProfile(userName = "${userName}");
 
-		<execute macro="SOUserBar#gotoProfile">
-			<var name="userName" value="${userName}" />
-		</execute>
-
-		<execute macro="SOProfile#viewWebsiteProfile">
-			<var name="userWebsiteType" value="${userWebsiteType}" />
-			<var name="userWebsiteURL" value="${userWebsiteURL}" />
-		</execute>
-	</command>
-</definition>
+		SOProfile.viewWebsiteProfile(
+			userWebsiteType = "${userWebsiteType}",
+			userWebsiteURL = "${userWebsiteURL}"
+		);
+	}
+}

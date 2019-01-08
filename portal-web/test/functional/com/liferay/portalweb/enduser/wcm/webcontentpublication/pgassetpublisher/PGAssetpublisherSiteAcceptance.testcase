@@ -1,44 +1,40 @@
-<definition component-name="portal-wcm">
-	<property name="portal.release" value="true" />
-	<property name="portal.upstream" value="true" />
-	<property name="testray.main.component.name" value="WCM" />
+@component-name = "portal-wcm"
+definition {
+	property portal.release = "true";
+	property portal.upstream = "true";
+	property testray.main.component.name = "WCM";
 
-	<set-up>
-		<execute macro="User#firstLoginPG" />
-	</set-up>
+	setUp {
+		User.firstLoginPG();
+	}
 
-	<command name="AddPortletAssetPublisherSite" priority="5">
-		<var name="pageName" value="Asset Publisher Page" />
-		<var name="portletName" value="Asset Publisher" />
-		<var name="siteName" value="Site Name" />
-		<var name="sitePagePrivacy" value="Public" />
+	@priority = "5"
+	test AddPortletAssetPublisherSite {
+		var pageName = "Asset Publisher Page";
+		var portletName = "Asset Publisher";
+		var siteName = "Site Name";
+		var sitePagePrivacy = "Public";
 
-		<execute macro="Page#gotoCP">
-			<var name="portletName" value="Sites" />
-		</execute>
+		Page.gotoCP(portletName = "Sites");
 
-		<execute macro="Site#addBlankCP">
-			<var name="siteName" value="${siteName}" />
-		</execute>
+		Site.addBlankCP(siteName = "${siteName}");
 
-		<execute macro="Page#gotoCP">
-			<var name="portletName" value="Sites" />
-		</execute>
+		Page.gotoCP(portletName = "Sites");
 
-		<execute macro="SitePage#addCP">
-			<var name="siteName" value="${siteName}" />
-			<var name="sitePageName" value="${pageName}" />
-			<var name="sitePagePrivacy" value="${sitePagePrivacy}" />
-		</execute>
+		SitePage.addCP(
+			siteName = "${siteName}",
+			sitePageName = "${pageName}",
+			sitePagePrivacy = "${sitePagePrivacy}"
+		);
 
-		<execute macro="Portlet#addPG">
-			<var name="pageName" value="${pageName}" />
-			<var name="pageType" value="Site" />
-			<var name="portletName" value="${portletName}" />
-		</execute>
-	</command>
+		Portlet.addPG(
+			pageName = "${pageName}",
+			pageType = "Site",
+			portletName = "${portletName}"
+		);
+	}
 
-	<tear-down>
-		<execute macro="Site#tearDownCP" />
-	</tear-down>
-</definition>
+	tearDown {
+		Site.tearDownCP();
+	}
+}

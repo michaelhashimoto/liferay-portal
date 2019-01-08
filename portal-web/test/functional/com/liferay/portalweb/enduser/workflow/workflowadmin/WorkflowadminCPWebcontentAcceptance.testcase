@@ -1,135 +1,117 @@
-<definition component-name="portal-workflow">
-	<property name="hook.plugins.includes" value="kaleo-upgrade-hook" />
-	<property name="portal.release" value="true" />
-	<property name="portal.upstream" value="true" />
-	<property name="testray.main.component.name" value="Workflow" />
-	<property name="web.plugins.includes" value="kaleo-web" />
+@component-name = "portal-workflow"
+definition {
+	property hook.plugins.includes = "kaleo-upgrade-hook";
+	property portal.release = "true";
+	property portal.upstream = "true";
+	property testray.main.component.name = "Workflow";
+	property web.plugins.includes = "kaleo-web";
+	var workflowAssetType = "Web Content";
 
-	<var name="workflowAssetType" value="Web Content" />
+	setUp {
+		User.firstLoginPG();
 
-	<set-up>
-		<execute macro="User#firstLoginPG" />
+		Page.gotoCP(portletName = "Workflow Configuration");
 
-		<execute macro="Page#gotoCP">
-			<var name="portletName" value="Workflow Configuration" />
-		</execute>
+		Workflow.configureSiteWorkflow(
+			workflowDefinition = "Single Approver (Version 1)",
+			workflowResourceKey = "RESOURCE_TABLE_WEB_CONTENT_SELECT"
+		);
+	}
 
-		<execute macro="Workflow#configureSiteWorkflow">
-			<var name="workflowDefinition" value="Single Approver (Version 1)" />
-			<var name="workflowResourceKey" value="RESOURCE_TABLE_WEB_CONTENT_SELECT" />
-		</execute>
-	</set-up>
+	@priority = "5"
+	test ApproveWebContentCP {
+		var webContentContent = "WC WebContent Content";
+		var webContentTitle = "WC WebContent Title";
 
-	<command name="ApproveWebContentCP" priority="5">
-		<var name="webContentContent" value="WC WebContent Content" />
-		<var name="webContentTitle" value="WC WebContent Title" />
+		Page.gotoCP(portletName = "Web Content");
 
-		<execute macro="Page#gotoCP">
-			<var name="portletName" value="Web Content" />
-		</execute>
+		WebContent.addCPWithWorkflow(
+			webContentContent = "${webContentContent}",
+			webContentTitle = "${webContentTitle}"
+		);
 
-		<execute macro="WebContent#addCPWithWorkflow">
-			<var name="webContentContent" value="${webContentContent}" />
-			<var name="webContentTitle" value="${webContentTitle}" />
-		</execute>
+		WebContent.viewCPWithWorkflow(
+			webContentContent = "${webContentContent}",
+			webContentTitle = "${webContentTitle}"
+		);
 
-		<execute macro="WebContent#viewCPWithWorkflow">
-			<var name="webContentContent" value="${webContentContent}" />
-			<var name="webContentTitle" value="${webContentTitle}" />
-		</execute>
+		Page.gotoCP(portletName = "My Workflow Tasks");
 
-		<execute macro="Page#gotoCP">
-			<var name="portletName" value="My Workflow Tasks" />
-		</execute>
+		Workflow.assignToMeTaskByActions(
+			workflowAssetTitle = "${webContentTitle}",
+			workflowAssetType = "${workflowAssetType}",
+			workflowTask = "Review"
+		);
 
-		<execute macro="Workflow#assignToMeTaskByActions">
-			<var name="workflowAssetTitle" value="${webContentTitle}" />
-			<var name="workflowAssetType" value="${workflowAssetType}" />
-			<var name="workflowTask" value="Review" />
-		</execute>
+		Page.gotoCP(portletName = "Web Content");
 
-		<execute macro="Page#gotoCP">
-			<var name="portletName" value="Web Content" />
-		</execute>
+		WebContent.viewCPWithWorkflow(
+			webContentContent = "${webContentContent}",
+			webContentTitle = "${webContentTitle}"
+		);
 
-		<execute macro="WebContent#viewCPWithWorkflow">
-			<var name="webContentContent" value="${webContentContent}" />
-			<var name="webContentTitle" value="${webContentTitle}" />
-		</execute>
+		Page.gotoCP(portletName = "My Workflow Tasks");
 
-		<execute macro="Page#gotoCP">
-			<var name="portletName" value="My Workflow Tasks" />
-		</execute>
+		Workflow.approveTaskByActions(
+			workflowAssetTitle = "${webContentTitle}",
+			workflowAssetType = "${workflowAssetType}",
+			workflowTask = "Review"
+		);
 
-		<execute macro="Workflow#approveTaskByActions">
-			<var name="workflowAssetTitle" value="${webContentTitle}" />
-			<var name="workflowAssetType" value="${workflowAssetType}" />
-			<var name="workflowTask" value="Review" />
-		</execute>
+		Page.gotoCP(portletName = "Web Content");
 
-		<execute macro="Page#gotoCP">
-			<var name="portletName" value="Web Content" />
-		</execute>
+		WebContent.viewCP(
+			webContentContent = "${webContentContent}",
+			webContentTitle = "${webContentTitle}"
+		);
+	}
 
-		<execute macro="WebContent#viewCP">
-			<var name="webContentContent" value="${webContentContent}" />
-			<var name="webContentTitle" value="${webContentTitle}" />
-		</execute>
-	</command>
+	@priority = "5"
+	test RejectWebContentCP {
+		var webContentContent = "WC WebContent Content";
+		var webContentTitle = "WC WebContent Title";
 
-	<command name="RejectWebContentCP" priority="5">
-		<var name="webContentContent" value="WC WebContent Content" />
-		<var name="webContentTitle" value="WC WebContent Title" />
+		Page.gotoCP(portletName = "Web Content");
 
-		<execute macro="Page#gotoCP">
-			<var name="portletName" value="Web Content" />
-		</execute>
+		WebContent.addCPWithWorkflow(
+			webContentContent = "${webContentContent}",
+			webContentTitle = "${webContentTitle}"
+		);
 
-		<execute macro="WebContent#addCPWithWorkflow">
-			<var name="webContentContent" value="${webContentContent}" />
-			<var name="webContentTitle" value="${webContentTitle}" />
-		</execute>
+		Page.gotoCP(portletName = "My Workflow Tasks");
 
-		<execute macro="Page#gotoCP">
-			<var name="portletName" value="My Workflow Tasks" />
-		</execute>
+		Workflow.assignToMeTaskByActions(
+			workflowAssetTitle = "${webContentTitle}",
+			workflowAssetType = "${workflowAssetType}",
+			workflowTask = "Review"
+		);
 
-		<execute macro="Workflow#assignToMeTaskByActions">
-			<var name="workflowAssetTitle" value="${webContentTitle}" />
-			<var name="workflowAssetType" value="${workflowAssetType}" />
-			<var name="workflowTask" value="Review" />
-		</execute>
+		Workflow.rejectTaskByActions(
+			workflowAssetTitle = "${webContentTitle}",
+			workflowAssetType = "${workflowAssetType}",
+			workflowTask = "Review"
+		);
 
-		<execute macro="Workflow#rejectTaskByActions">
-			<var name="workflowAssetTitle" value="${webContentTitle}" />
-			<var name="workflowAssetType" value="${workflowAssetType}" />
-			<var name="workflowTask" value="Review" />
-		</execute>
+		Page.gotoCP(portletName = "My Workflow Tasks");
 
-		<execute macro="Page#gotoCP">
-			<var name="portletName" value="My Workflow Tasks" />
-		</execute>
+		Workflow.viewRejectTask(
+			workflowAssetTitle = "${webContentTitle}",
+			workflowAssetType = "${workflowAssetType}"
+		);
 
-		<execute macro="Workflow#viewRejectTask">
-			<var name="workflowAssetTitle" value="${webContentTitle}" />
-			<var name="workflowAssetType" value="${workflowAssetType}" />
-		</execute>
+		Page.gotoCP(portletName = "Web Content");
 
-		<execute macro="Page#gotoCP">
-			<var name="portletName" value="Web Content" />
-		</execute>
+		WebContent.viewCPWithWorkflow(
+			webContentContent = "${webContentContent}",
+			webContentTitle = "${webContentTitle}"
+		);
+	}
 
-		<execute macro="WebContent#viewCPWithWorkflow">
-			<var name="webContentContent" value="${webContentContent}" />
-			<var name="webContentTitle" value="${webContentTitle}" />
-		</execute>
-	</command>
+	tearDown {
+		WebContent.tearDownCP();
 
-	<tear-down>
-		<execute macro="WebContent#tearDownCP" />
+		Workflow.tearDownPortalWorkflow();
 
-		<execute macro="Workflow#tearDownPortalWorkflow" />
-
-		<execute macro="Workflow#tearDownSiteWorkflow" />
-	</tear-down>
-</definition>
+		Workflow.tearDownSiteWorkflow();
+	}
+}

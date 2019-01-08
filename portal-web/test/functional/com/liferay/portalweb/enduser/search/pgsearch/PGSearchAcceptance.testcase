@@ -1,165 +1,136 @@
-<definition component-name="portal-search">
-	<property name="portal.release" value="true" />
-	<property name="portal.upstream" value="true" />
-	<property name="testray.main.component.name" value="Search" />
+@component-name = "portal-search"
+definition {
+	property portal.release = "true";
+	property portal.upstream = "true";
+	property testray.main.component.name = "Search";
+	var searchPageName = "Search Page";
+	var searchPortletName = "Search";
 
-	<var name="searchPageName" value="Search Page" />
-	<var name="searchPortletName" value="Search" />
+	setUp {
+		User.firstLoginPG();
 
-	<set-up>
-		<execute macro="User#firstLoginPG" />
+		Page.addPG(pageName = "${searchPageName}");
 
-		<execute macro="Page#addPG">
-			<var name="pageName" value="${searchPageName}" />
-		</execute>
+		Portlet.addPG(
+			pageName = "${searchPageName}",
+			portletName = "${searchPortletName}"
+		);
+	}
 
-		<execute macro="Portlet#addPG">
-			<var name="pageName" value="${searchPageName}" />
-			<var name="portletName" value="${searchPortletName}" />
-		</execute>
-	</set-up>
+	@priority = "5"
+	test SearchBlogsEntry {
+		var entryContent = "Blogs Entry Content";
+		var entryTitle = "Blogs Entry Title";
+		var pageName = "Blogs Page";
+		var portletName = "Blogs";
 
-	<command name="SearchBlogsEntry" priority="5">
-		<var name="entryContent" value="Blogs Entry Content" />
-		<var name="entryTitle" value="Blogs Entry Title" />
-		<var name="pageName" value="Blogs Page" />
-		<var name="portletName" value="Blogs" />
+		Page.addPG(pageName = "${pageName}");
 
-		<execute macro="Page#addPG">
-			<var name="pageName" value="${pageName}" />
-		</execute>
+		Portlet.addPG(pageName = "${pageName}", portletName = "${portletName}");
 
-		<execute macro="Portlet#addPG">
-			<var name="pageName" value="${pageName}" />
-			<var name="portletName" value="${portletName}" />
-		</execute>
+		Page.gotoPG(pageName = "${pageName}");
 
-		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${pageName}" />
-		</execute>
+		BlogsEntry.addPG(
+			entryContent = "${entryContent}",
+			entryTitle = "${entryTitle}",
+			portletName = "${portletName}"
+		);
 
-		<execute macro="BlogsEntry#addPG">
-			<var name="entryContent" value="${entryContent}" />
-			<var name="entryTitle" value="${entryTitle}" />
-			<var name="portletName" value="${portletName}" />
-		</execute>
+		Page.gotoPG(pageName = "${searchPageName}");
 
-		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${searchPageName}" />
-		</execute>
+		Search.blogsEntryPG(
+			entryContent = "${entryContent}",
+			entryTitle = "${entryTitle}"
+		);
+	}
 
-		<execute macro="Search#blogsEntryPG">
-			<var name="entryContent" value="${entryContent}" />
-			<var name="entryTitle" value="${entryTitle}" />
-		</execute>
-	</command>
+	@priority = "5"
+	test SearchMessageBoardsThread {
+		var pageName = "Message Boards Page";
+		var portletName = "Message Boards";
+		var threadBody = "MB Thread Message Body";
+		var threadSubject = "MB Thread Message Subject";
 
-	<command name="SearchMessageBoardsThread" priority="5">
-		<var name="pageName" value="Message Boards Page" />
-		<var name="portletName" value="Message Boards" />
-		<var name="threadBody" value="MB Thread Message Body" />
-		<var name="threadSubject" value="MB Thread Message Subject" />
+		Page.addPG(pageName = "${pageName}");
 
-		<execute macro="Page#addPG">
-			<var name="pageName" value="${pageName}" />
-		</execute>
+		Portlet.addPG(pageName = "${pageName}", portletName = "${portletName}");
 
-		<execute macro="Portlet#addPG">
-			<var name="pageName" value="${pageName}" />
-			<var name="portletName" value="${portletName}" />
-		</execute>
+		Page.gotoPG(pageName = "${pageName}");
 
-		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${pageName}" />
-		</execute>
+		MessageboardsThread.addPG(
+			pageName = "${pageName}",
+			threadBody = "${threadBody}",
+			threadSubject = "${threadSubject}"
+		);
 
-		<execute macro="MessageboardsThread#addPG">
-			<var name="pageName" value="${pageName}" />
-			<var name="threadBody" value="${threadBody}" />
-			<var name="threadSubject" value="${threadSubject}" />
-		</execute>
+		Page.gotoPG(pageName = "${searchPageName}");
 
-		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${searchPageName}" />
-		</execute>
+		Search.messageboardsThreadPG(
+			threadBody = "${threadBody}",
+			threadSubject = "${threadSubject}"
+		);
+	}
 
-		<execute macro="Search#messageboardsThreadPG">
-			<var name="threadBody" value="${threadBody}" />
-			<var name="threadSubject" value="${threadSubject}" />
-		</execute>
-	</command>
+	@priority = "5"
+	test SearchUser {
+		var userEmailAddress = "userea@liferay.com";
+		var userFirstName = "userfn";
+		var userLastName = "userln";
+		var userScreenName = "usersn";
 
-	<command name="SearchUser" priority="5">
-		<var name="userEmailAddress" value="userea@liferay.com" />
-		<var name="userFirstName" value="userfn" />
-		<var name="userLastName" value="userln" />
-		<var name="userScreenName" value="usersn" />
+		Page.gotoCP(portletName = "Users and Organizations");
 
-		<execute macro="Page#gotoCP">
-			<var name="portletName" value="Users and Organizations" />
-		</execute>
+		User.addCP(
+			userEmailAddress = "${userEmailAddress}",
+			userFirstName = "${userFirstName}",
+			userLastName = "${userLastName}",
+			userScreenName = "${userScreenName}"
+		);
 
-		<execute macro="User#addCP">
-			<var name="userEmailAddress" value="${userEmailAddress}" />
-			<var name="userFirstName" value="${userFirstName}" />
-			<var name="userLastName" value="${userLastName}" />
-			<var name="userScreenName" value="${userScreenName}" />
-		</execute>
+		Page.gotoPG(pageName = "${searchPageName}");
 
-		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${searchPageName}" />
-		</execute>
+		Search.userPG(
+			userFirstName = "${userFirstName}",
+			userLastName = "${userLastName}"
+		);
+	}
 
-		<execute macro="Search#userPG">
-			<var name="userFirstName" value="${userFirstName}" />
-			<var name="userLastName" value="${userLastName}" />
-		</execute>
-	</command>
+	@priority = "5"
+	test SearchWikiPage {
+		var pageName = "Wiki Test Page";
+		var portletName = "Wiki";
+		var wikiPageContent = "Wiki Page Content";
+		var wikiPageTitle = "Wiki Page Title";
 
-	<command name="SearchWikiPage" priority="5">
-		<var name="pageName" value="Wiki Test Page" />
-		<var name="portletName" value="Wiki" />
-		<var name="wikiPageContent" value="Wiki Page Content" />
-		<var name="wikiPageTitle" value="Wiki Page Title" />
+		Page.addPG(pageName = "${pageName}");
 
-		<execute macro="Page#addPG">
-			<var name="pageName" value="${pageName}" />
-		</execute>
+		Portlet.addPG(pageName = "${pageName}", portletName = "${portletName}");
 
-		<execute macro="Portlet#addPG">
-			<var name="pageName" value="${pageName}" />
-			<var name="portletName" value="${portletName}" />
-		</execute>
+		Page.gotoPG(pageName = "${pageName}");
 
-		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${pageName}" />
-		</execute>
+		WikiPage.addPagePG(
+			pageName = "${pageName}",
+			wikiPageContent = "${wikiPageContent}",
+			wikiPageTitle = "${wikiPageTitle}"
+		);
 
-		<execute macro="WikiPage#addPagePG">
-			<var name="pageName" value="${pageName}" />
-			<var name="wikiPageContent" value="${wikiPageContent}" />
-			<var name="wikiPageTitle" value="${wikiPageTitle}" />
-		</execute>
+		Page.gotoPG(pageName = "${searchPageName}");
 
-		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${searchPageName}" />
-		</execute>
+		Search.wikiPagePG(
+			wikiPageContent = "${wikiPageContent}",
+			wikiPageTitle = "${wikiPageTitle}"
+		);
+	}
 
-		<execute macro="Search#wikiPagePG">
-			<var name="wikiPageContent" value="${wikiPageContent}" />
-			<var name="wikiPageTitle" value="${wikiPageTitle}" />
-		</execute>
-	</command>
+	tearDown {
+		BlogsEntry.tearDownCP();
 
-	<tear-down>
-		<execute macro="BlogsEntry#tearDownCP" />
+		MessageboardsThread.tearDownCP();
 
-		<execute macro="MessageboardsThread#tearDownCP" />
+		User.tearDownCP();
 
-		<execute macro="User#tearDownCP" />
+		WikiPage.tearDownCP();
 
-		<execute macro="WikiPage#tearDownCP" />
-
-		<execute macro="Page#tearDownPG" />
-	</tear-down>
-</definition>
+		Page.tearDownPG();
+	}
+}

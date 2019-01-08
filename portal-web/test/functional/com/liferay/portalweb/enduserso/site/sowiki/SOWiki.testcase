@@ -1,146 +1,107 @@
-<definition component-name="social-office-site">
-	<property name="hook.plugins.includes" value="deploy-listener-hook,portal-compat-hook,so-activities-hook,so-hook" />
-	<property name="portlet.plugins.includes" value="chat-portlet,contacts-portlet,events-display-portlet,microblogs-portlet,private-messaging-portlet,so-announcements-portlet,so-configurations-portlet,so-portlet,tasks-portlet,wysiwyg-portlet" />
-	<property name="testray.main.component.name" value="Social Office EE" />
-	<property name="theme.plugins.includes" value="so-theme" />
+@component-name = "social-office-site"
+definition {
+	property hook.plugins.includes = "deploy-listener-hook,portal-compat-hook,so-activities-hook,so-hook";
+	property portlet.plugins.includes = "chat-portlet,contacts-portlet,events-display-portlet,microblogs-portlet,private-messaging-portlet,so-announcements-portlet,so-configurations-portlet,so-portlet,tasks-portlet,wysiwyg-portlet";
+	property testray.main.component.name = "Social Office EE";
+	property theme.plugins.includes = "so-theme";
+	var key_siteName = "${siteName}";
+	var pageName = "Wiki";
+	var pageType = "Open Site";
+	var siteDescription = "Open Site Description";
+	var siteName = "Open Site Name";
+	var siteType = "Open";
 
-	<var name="key_siteName" value="${siteName}" />
-	<var name="pageName" value="Wiki" />
-	<var name="pageType" value="Open Site" />
-	<var name="siteDescription" value="Open Site Description" />
-	<var name="siteName" value="Open Site Name" />
-	<var name="siteType" value="Open" />
+	setUp {
+		SOUser.firstLoginPG();
 
-	<set-up>
-		<execute macro="SOUser#firstLoginPG" />
+		SOUserBar.addSOSite(
+			siteDescription = "${siteDescription}",
+			siteName = "${siteName}",
+			siteType = "${siteType}"
+		);
+	}
 
-		<execute macro="SOUserBar#addSOSite">
-			<var name="siteDescription" value="${siteDescription}" />
-			<var name="siteName" value="${siteName}" />
-			<var name="siteType" value="${siteType}" />
-		</execute>
-	</set-up>
+	var wikiChildPageContent = "Wiki FrontPage Child Page Content";
+	var wikiChildPageTitle = "Wiki FrontPage Child Page Title";
+	var wikiPageAttachmentName = "Document_1.jpg";
+	var wikiPageAttachmentSize = "12.9k";
+	var wikiPageContent = "Wiki FrontPage Content";
+	var wikiPageContentEdit = "Wiki FrontPage Content Edit";
 
-	<var name="wikiChildPageContent" value="Wiki FrontPage Child Page Content" />
-	<var name="wikiChildPageTitle" value="Wiki FrontPage Child Page Title" />
-	<var name="wikiPageAttachmentName" value="Document_1.jpg" />
-	<var name="wikiPageAttachmentSize" value="12.9k" />
-	<var name="wikiPageContent" value="Wiki FrontPage Content" />
-	<var name="wikiPageContentEdit" value="Wiki FrontPage Content Edit" />
+	@priority = "5"
+	test AddSOWikiFrontPage {
+		Page.gotoPG(pageName = "${pageName}", pageType = "Open Site");
 
-	<command name="AddSOWikiFrontPage" priority="5">
-		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${pageName}" />
-			<var name="pageType" value="Open Site" />
-		</execute>
+		WikiPage.addFrontPagePG(wikiPageContent = "${wikiPageContent}");
+	}
 
-		<execute macro="WikiPage#addFrontPagePG">
-			<var name="wikiPageContent" value="${wikiPageContent}" />
-		</execute>
-	</command>
+	@priority = "5"
+	test AddSOWikiFrontPageAttachment {
+		Page.gotoPG(pageName = "${pageName}", pageType = "Open Site");
 
-	<command name="AddSOWikiFrontPageAttachment" priority="5">
-		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${pageName}" />
-			<var name="pageType" value="Open Site" />
-		</execute>
+		WikiPage.addFrontPagePG(wikiPageContent = "${wikiPageContent}");
 
-		<execute macro="WikiPage#addFrontPagePG">
-			<var name="wikiPageContent" value="${wikiPageContent}" />
-		</execute>
+		Page.gotoPG(pageName = "${pageName}", pageType = "Open Site");
 
-		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${pageName}" />
-			<var name="pageType" value="Open Site" />
-		</execute>
+		WikiPage.addFrontPageAttachmentPG(
+			wikiPageAttachmentName = "${wikiPageAttachmentName}",
+			wikiPageAttachmentSize = "${wikiPageAttachmentSize}",
+			wikiPageContent = "${wikiPageContent}"
+		);
 
-		<execute macro="WikiPage#addFrontPageAttachmentPG">
-			<var name="wikiPageAttachmentName" value="${wikiPageAttachmentName}" />
-			<var name="wikiPageAttachmentSize" value="${wikiPageAttachmentSize}" />
-			<var name="wikiPageContent" value="${wikiPageContent}" />
-		</execute>
+		Page.gotoPG(pageName = "${pageName}", pageType = "Open Site");
 
-		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${pageName}" />
-			<var name="pageType" value="Open Site" />
-		</execute>
+		WikiPage.viewFrontPageAttachmentPG(
+			wikiPageAttachmentName = "${wikiPageAttachmentName}",
+			wikiPageAttachmentSize = "${wikiPageAttachmentSize}",
+			wikiPageContent = "${wikiPageContent}"
+		);
+	}
 
-		<execute macro="WikiPage#viewFrontPageAttachmentPG">
-			<var name="wikiPageAttachmentName" value="${wikiPageAttachmentName}" />
-			<var name="wikiPageAttachmentSize" value="${wikiPageAttachmentSize}" />
-			<var name="wikiPageContent" value="${wikiPageContent}" />
-		</execute>
-	</command>
+	@priority = "5"
+	test AddSOWikiFrontPageChildPage {
+		Page.gotoPG(pageName = "${pageName}", pageType = "Open Site");
 
-	<command name="AddSOWikiFrontPageChildPage" priority="5">
-		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${pageName}" />
-			<var name="pageType" value="Open Site" />
-		</execute>
+		WikiPage.addFrontPagePG(wikiPageContent = "${wikiPageContent}");
 
-		<execute macro="WikiPage#addFrontPagePG">
-			<var name="wikiPageContent" value="${wikiPageContent}" />
-		</execute>
+		Page.gotoPG(pageName = "${pageName}", pageType = "Open Site");
 
-		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${pageName}" />
-			<var name="pageType" value="Open Site" />
-		</execute>
+		WikiPage.addChildPagePG(
+			wikiChildPageContent = "${wikiChildPageContent}",
+			wikiChildPageTitle = "${wikiChildPageTitle}",
+			wikiPageContent = "${wikiPageContent}",
+			wikiPageTitle = "FrontPage"
+		);
+	}
 
-		<execute macro="WikiPage#addChildPagePG">
-			<var name="wikiChildPageContent" value="${wikiChildPageContent}" />
-			<var name="wikiChildPageTitle" value="${wikiChildPageTitle}" />
-			<var name="wikiPageContent" value="${wikiPageContent}" />
-			<var name="wikiPageTitle" value="FrontPage" />
-		</execute>
-	</command>
+	@priority = "5"
+	test AddSOWikiFrontPageDraft {
+		Page.gotoPG(pageName = "${pageName}", pageType = "Open Site");
 
-	<command name="AddSOWikiFrontPageDraft" priority="5">
-		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${pageName}" />
-			<var name="pageType" value="Open Site" />
-		</execute>
+		WikiPage.saveAsDraftFrontPagePG(wikiPageContent = "${wikiPageContent}");
 
-		<execute macro="WikiPage#saveAsDraftFrontPagePG">
-			<var name="wikiPageContent" value="${wikiPageContent}" />
-		</execute>
+		Page.gotoPG(pageName = "${pageName}", pageType = "Open Site");
 
-		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${pageName}" />
-			<var name="pageType" value="Open Site" />
-		</execute>
+		WikiPage.viewSaveAsDraftFrontPagePG(wikiPageContent = "${wikiPageContent}");
 
-		<execute macro="WikiPage#viewSaveAsDraftFrontPagePG">
-			<var name="wikiPageContent" value="${wikiPageContent}" />
-		</execute>
+		Page.gotoPG(pageName = "${pageName}", pageType = "Open Site");
 
-		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${pageName}" />
-			<var name="pageType" value="Open Site" />
-		</execute>
+		WikiPage.addFrontPageDraftPG(wikiPageContent = "${wikiPageContent}");
+	}
 
-		<execute macro="WikiPage#addFrontPageDraftPG">
-			<var name="wikiPageContent" value="${wikiPageContent}" />
-		</execute>
-	</command>
+	@priority = "5"
+	test EditSOWikiFrontPage {
+		Page.gotoPG(pageName = "${pageName}", pageType = "Open Site");
 
-	<command name="EditSOWikiFrontPage" priority="5">
-		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${pageName}" />
-			<var name="pageType" value="Open Site" />
-		</execute>
+		WikiPage.addFrontPagePG(wikiPageContent = "${wikiPageContent}");
 
-		<execute macro="WikiPage#addFrontPagePG">
-			<var name="wikiPageContent" value="${wikiPageContent}" />
-		</execute>
+		WikiPage.editFrontPagePG(
+			pageName = "${pageName}",
+			wikiPageContentEdit = "${wikiPageContentEdit}"
+		);
+	}
 
-		<execute macro="WikiPage#editFrontPagePG">
-			<var name="pageName" value="${pageName}" />
-			<var name="wikiPageContentEdit" value="${wikiPageContentEdit}" />
-		</execute>
-	</command>
-
-	<tear-down>
-		<execute macro="SOUserBar#tearDownSites" />
-	</tear-down>
-</definition>
+	tearDown {
+		SOUserBar.tearDownSites();
+	}
+}

@@ -1,294 +1,260 @@
-<definition component-name="social-office-site">
-	<property name="hook.plugins.includes" value="deploy-listener-hook,portal-compat-hook,so-activities-hook,so-hook" />
-	<property name="portlet.plugins.includes" value="chat-portlet,contacts-portlet,events-display-portlet,microblogs-portlet,private-messaging-portlet,so-announcements-portlet,so-configurations-portlet,so-portlet,tasks-portlet,wysiwyg-portlet" />
-	<property name="testray.main.component.name" value="Social Office EE" />
-	<property name="theme.plugins.includes" value="so-theme" />
+@component-name = "social-office-site"
+definition {
+	property hook.plugins.includes = "deploy-listener-hook,portal-compat-hook,so-activities-hook,so-hook";
+	property portlet.plugins.includes = "chat-portlet,contacts-portlet,events-display-portlet,microblogs-portlet,private-messaging-portlet,so-announcements-portlet,so-configurations-portlet,so-portlet,tasks-portlet,wysiwyg-portlet";
+	property testray.main.component.name = "Social Office EE";
+	property theme.plugins.includes = "so-theme";
+	var adminEmailAddress = "test@liferay.com";
+	var adminName = "Joe Bloggs";
+	var key_siteName = "${siteName}";
+	var pageName = "Members";
+	var password = "test";
+	var siteDescription = "Open Site Description";
+	var siteName = "Open Site Name";
+	var siteType = "Open";
+	var userEmailAddress = "socialoffice01@liferay.com";
+	var userEmailAddress2 = "socialoffice02@liferay.com";
+	var userFirstName = "Social01";
+	var userFirstName2 = "Social02";
+	var userLastName = "User01";
+	var userLastName2 = "User02";
+	var userListName = "User01, Social01";
+	var userListName2 = "User02, Social02";
+	var userMiddleName = "Office01";
+	var userMiddleName2 = "Office02";
+	var userName = "Social01 Office01 User01";
+	var userName2 = "Social02 Office02 User02";
+	var userScreenName = "socialoffice01";
+	var userScreenName2 = "socialoffice02";
 
-	<var name="adminEmailAddress" value="test@liferay.com" />
-	<var name="adminName" value="Joe Bloggs" />
-	<var name="key_siteName" value="${siteName}" />
-	<var name="pageName" value="Members" />
-	<var name="password" value="test" />
-	<var name="siteDescription" value="Open Site Description" />
-	<var name="siteName" value="Open Site Name" />
-	<var name="siteType" value="Open" />
-	<var name="userEmailAddress" value="socialoffice01@liferay.com" />
-	<var name="userEmailAddress2" value="socialoffice02@liferay.com" />
-	<var name="userFirstName" value="Social01" />
-	<var name="userFirstName2" value="Social02" />
-	<var name="userLastName" value="User01" />
-	<var name="userLastName2" value="User02" />
-	<var name="userListName" value="User01, Social01" />
-	<var name="userListName2" value="User02, Social02" />
-	<var name="userMiddleName" value="Office01" />
-	<var name="userMiddleName2" value="Office02" />
-	<var name="userName" value="Social01 Office01 User01" />
-	<var name="userName2" value="Social02 Office02 User02" />
-	<var name="userScreenName" value="socialoffice01" />
-	<var name="userScreenName2" value="socialoffice02" />
+	setUp {
+		SOUser.firstLoginPG();
 
-	<set-up>
-		<execute macro="SOUser#firstLoginPG" />
+		SOUserBar.addSOSite(
+			siteDescription = "${siteDescription}",
+			siteName = "${siteName}",
+			siteType = "${siteType}"
+		);
 
-		<execute macro="SOUserBar#addSOSite">
-			<var name="siteDescription" value="${siteDescription}" />
-			<var name="siteName" value="${siteName}" />
-			<var name="siteType" value="${siteType}" />
-		</execute>
+		SOUser.addUserWithSORole(
+			adminEmailAddress = "${adminEmailAddress}",
+			password = "test",
+			userEmailAddress = "${userEmailAddress}",
+			userFirstName = "${userFirstName}",
+			userLastName = "${userLastName}",
+			userMiddleName = "${userMiddleName}",
+			userScreenName = "${userScreenName}"
+		);
+	}
 
-		<execute macro="SOUser#addUserWithSORole">
-			<var name="adminEmailAddress" value="${adminEmailAddress}" />
-			<var name="password" value="test" />
-			<var name="userEmailAddress" value="${userEmailAddress}" />
-			<var name="userFirstName" value="${userFirstName}" />
-			<var name="userLastName" value="${userLastName}" />
-			<var name="userMiddleName" value="${userMiddleName}" />
-			<var name="userScreenName" value="${userScreenName}" />
-		</execute>
-	</set-up>
+	@priority = "5"
+	test ConfirmMemberInviteSiteTest {
+		Page.gotoPG(pageName = "${pageName}", pageType = "Open Site");
 
-	<command name="ConfirmMemberInviteSiteTest" priority="5">
-		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${pageName}" />
-			<var name="pageType" value="Open Site" />
-		</execute>
+		SOMembers.inviteMember(
+			userEmailAddress = "${userEmailAddress}",
+			userFirstName = "${userFirstName}",
+			userLastName = "${userLastName}",
+			userMiddleName = "${userMiddleName}",
+			userName = "${userName}"
+		);
 
-		<execute macro="SOMembers#inviteMember">
-			<var name="userEmailAddress" value="${userEmailAddress}" />
-			<var name="userFirstName" value="${userFirstName}" />
-			<var name="userLastName" value="${userLastName}" />
-			<var name="userMiddleName" value="${userMiddleName}" />
-			<var name="userName" value="${userName}" />
-		</execute>
+		SOUser.logoutPG();
 
-		<execute macro="SOUser#logoutPG" />
+		SOUser.loginPG(password = "test", userEmailAddress = "${userEmailAddress}");
 
-		<execute macro="SOUser#loginPG">
-			<var name="password" value="test" />
-			<var name="userEmailAddress" value="${userEmailAddress}" />
-		</execute>
+		SOMembers.confirmMemberInvite(senderName = "${adminName}");
 
-		<execute macro="SOMembers#confirmMemberInvite">
-			<var name="senderName" value="${adminName}" />
-		</execute>
+		SOMembers.viewConfirmMemberInvite();
 
-		<execute macro="SOMembers#viewConfirmMemberInvite" />
+		SOUser.logoutPG();
 
-		<execute macro="SOUser#logoutPG" />
+		SOUser.loginPG(password = "test", userEmailAddress = "${adminEmailAddress}");
 
-		<execute macro="SOUser#loginPG">
-			<var name="password" value="test" />
-			<var name="userEmailAddress" value="${adminEmailAddress}" />
-		</execute>
+		Page.gotoPG(pageName = "${pageName}", pageType = "Open Site");
 
-		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${pageName}" />
-			<var name="pageType" value="Open Site" />
-		</execute>
+		SOMembers.viewMember();
+	}
 
-		<execute macro="SOMembers#viewMember" />
-	</command>
+	@priority = "5"
+	test IgnoreMemberInviteSiteTest {
+		Page.gotoPG(pageName = "${pageName}", pageType = "Open Site");
 
-	<command name="IgnoreMemberInviteSiteTest" priority="5">
-		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${pageName}" />
-			<var name="pageType" value="Open Site" />
-		</execute>
+		SOMembers.inviteMember(
+			userEmailAddress = "${userEmailAddress}",
+			userFirstName = "${userFirstName}",
+			userLastName = "${userLastName}",
+			userMiddleName = "${userMiddleName}",
+			userName = "${userName}"
+		);
 
-		<execute macro="SOMembers#inviteMember">
-			<var name="userEmailAddress" value="${userEmailAddress}" />
-			<var name="userFirstName" value="${userFirstName}" />
-			<var name="userLastName" value="${userLastName}" />
-			<var name="userMiddleName" value="${userMiddleName}" />
-			<var name="userName" value="${userName}" />
-		</execute>
+		SOUser.logoutPG();
 
-		<execute macro="SOUser#logoutPG" />
+		SOUser.loginPG(password = "test", userEmailAddress = "${userEmailAddress}");
 
-		<execute macro="SOUser#loginPG">
-			<var name="password" value="test" />
-			<var name="userEmailAddress" value="${userEmailAddress}" />
-		</execute>
+		SOMembers.ignoreMemberInvite(senderName = "${adminName}");
 
-		<execute macro="SOMembers#ignoreMemberInvite">
-			<var name="senderName" value="${adminName}" />
-		</execute>
+		SOMembers.viewIgnoreMemberInvite();
 
-		<execute macro="SOMembers#viewIgnoreMemberInvite" />
+		SOUser.logoutPG();
 
-		<execute macro="SOUser#logoutPG" />
+		SOUser.loginPG(password = "test", userEmailAddress = "${adminEmailAddress}");
 
-		<execute macro="SOUser#loginPG">
-			<var name="password" value="test" />
-			<var name="userEmailAddress" value="${adminEmailAddress}" />
-		</execute>
+		Page.gotoPG(pageName = "${pageName}", pageType = "Open Site");
 
-		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${pageName}" />
-			<var name="pageType" value="Open Site" />
-		</execute>
+		SOMembers.viewNonMember();
+	}
 
-		<execute macro="SOMembers#viewNonMember" />
-	</command>
+	@priority = "5"
+	test InviteConnectionSiteTest {
+		SOContactsCenter.requestToConnect(
+			userEmailAddress = "${userEmailAddress}",
+			userListName = "${userListName}",
+			userName = "${userName}",
+			userScreenName = "${userScreenName}"
+		);
 
-	<command name="InviteConnectionSiteTest" priority="5">
-		<execute macro="SOContactsCenter#requestToConnect">
-			<var name="userEmailAddress" value="${userEmailAddress}" />
-			<var name="userListName" value="${userListName}" />
-			<var name="userName" value="${userName}" />
-			<var name="userScreenName" value="${userScreenName}" />
-		</execute>
+		SOUser.logoutPG();
 
-		<execute macro="SOUser#logoutPG" />
+		SOUser.loginPG(password = "test", userEmailAddress = "${userEmailAddress}");
 
-		<execute macro="SOUser#loginPG">
-			<var name="password" value="test" />
-			<var name="userEmailAddress" value="${userEmailAddress}" />
-		</execute>
+		SOContactsCenter.confirmRequestToConnect(
+			senderName = "${adminName}",
+			userName = "${userName}"
+		);
 
-		<execute macro="SOContactsCenter#confirmRequestToConnect">
-			<var name="senderName" value="${adminName}" />
-			<var name="userName" value="${userName}" />
-		</execute>
+		SOUser.logoutPG();
 
-		<execute macro="SOUser#logoutPG" />
+		SOUser.loginPG(password = "test", userEmailAddress = "${adminEmailAddress}");
 
-		<execute macro="SOUser#loginPG">
-			<var name="password" value="test" />
-			<var name="userEmailAddress" value="${adminEmailAddress}" />
-		</execute>
+		Page.gotoPG(pageName = "${pageName}", pageType = "Open Site");
 
-		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${pageName}" />
-			<var name="pageType" value="Open Site" />
-		</execute>
+		SOMembers.inviteMember(
+			userEmailAddress = "${userEmailAddress}",
+			userFirstName = "${userFirstName}",
+			userLastName = "${userLastName}",
+			userMiddleName = "${userMiddleName}",
+			userName = "${userName}"
+		);
 
-		<execute macro="SOMembers#inviteMember">
-			<var name="userEmailAddress" value="${userEmailAddress}" />
-			<var name="userFirstName" value="${userFirstName}" />
-			<var name="userLastName" value="${userLastName}" />
-			<var name="userMiddleName" value="${userMiddleName}" />
-			<var name="userName" value="${userName}" />
-		</execute>
+		SOUser.logoutPG();
 
-		<execute macro="SOUser#logoutPG" />
+		SOUser.loginPG(password = "test", userEmailAddress = "${userEmailAddress}");
 
-		<execute macro="SOUser#loginPG">
-			<var name="password" value="test" />
-			<var name="userEmailAddress" value="${userEmailAddress}" />
-		</execute>
+		SOMembers.confirmMemberInvite(senderName = "${adminName}");
 
-		<execute macro="SOMembers#confirmMemberInvite">
-			<var name="senderName" value="${adminName}" />
-		</execute>
+		SOUser.logoutPG();
 
-		<execute macro="SOUser#logoutPG" />
+		SOUser.loginPG(password = "test", userEmailAddress = "${adminEmailAddress}");
 
-		<execute macro="SOUser#loginPG">
-			<var name="password" value="test" />
-			<var name="userEmailAddress" value="${adminEmailAddress}" />
-		</execute>
+		Page.gotoPG(pageName = "${pageName}", pageType = "Open Site");
 
-		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${pageName}" />
-			<var name="pageType" value="Open Site" />
-		</execute>
+		AssertTextEquals(
+			locator1 = "SOMembers#MEMBERS_LINK_ALL",
+			value1 = "View all 2 users."
+		);
 
-		<execute function="AssertTextEquals" locator1="SOMembers#MEMBERS_LINK_ALL" value1="View all 2 users." />
-		<execute function="AssertClick" locator1="SOMembers#MEMBERS_LINK_CONNECTIONS" value1="You have 1 connections in this site." />
-		<execute function="AssertTextEquals" locator1="SOMembers#MEMBERS_LIST_NAME" value1="${userLastName}, ${userFirstName}" />
-		<execute function="AssertTextEquals" locator1="SOMembers#MEMBERS_LIST_EMAIL" value1="${userEmailAddress}" />
-		<execute function="Click#pauseTextClickAt" locator1="SOMembers#MEMBERS_LIST_NAME" value1="${userLastName}, ${userFirstName}" />
+		AssertClick(
+			locator1 = "SOMembers#MEMBERS_LINK_CONNECTIONS",
+			value1 = "You have 1 connections in this site."
+		);
 
-		<execute function="AssertTextEquals" locator1="SOMembers#USER_DETAILS_NAME" value1="${userName}" />
-		<execute function="AssertTextEquals" locator1="SOMembers#USER_DETAILS_EMAIL" value1="${userEmailAddress}" />
-	</command>
+		AssertTextEquals(
+			locator1 = "SOMembers#MEMBERS_LIST_NAME",
+			value1 = "${userLastName}, ${userFirstName}"
+		);
 
-	<command name="InviteMembersSiteRolesSiteTest" priority="5">
-		<execute macro="SOUser#addUserWithSORole">
-			<var name="adminEmailAddress" value="${adminEmailAddress}" />
-			<var name="password" value="test" />
-			<var name="userEmailAddress" value="${userEmailAddress2}" />
-			<var name="userFirstName" value="${userFirstName2}" />
-			<var name="userLastName" value="${userLastName2}" />
-			<var name="userMiddleName" value="${userMiddleName2}" />
-			<var name="userScreenName" value="${userScreenName2}" />
-		</execute>
+		AssertTextEquals(
+			locator1 = "SOMembers#MEMBERS_LIST_EMAIL",
+			value1 = "${userEmailAddress}"
+		);
 
-		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${pageName}" />
-			<var name="pageType" value="Open Site" />
-		</execute>
+		Click.pauseTextClickAt(
+			locator1 = "SOMembers#MEMBERS_LIST_NAME",
+			value1 = "${userLastName}, ${userFirstName}"
+		);
 
-		<execute macro="SOMembers#inviteMember">
-			<var name="siteRoleInvite" value="Site Owner" />
-			<var name="userEmailAddress" value="${userEmailAddress}" />
-			<var name="userFirstName" value="${userFirstName}" />
-			<var name="userLastName" value="${userLastName}" />
-			<var name="userMiddleName" value="${userMiddleName}" />
-			<var name="userName" value="${userName}" />
-		</execute>
+		AssertTextEquals(
+			locator1 = "SOMembers#USER_DETAILS_NAME",
+			value1 = "${userName}"
+		);
 
-		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${pageName}" />
-			<var name="pageType" value="Open Site" />
-		</execute>
+		AssertTextEquals(
+			locator1 = "SOMembers#USER_DETAILS_EMAIL",
+			value1 = "${userEmailAddress}"
+		);
+	}
 
-		<execute macro="SOMembers#inviteMember">
-			<var name="siteRoleInvite" value="Site Administrator" />
-			<var name="userEmailAddress" value="${userEmailAddress2}" />
-			<var name="userFirstName" value="${userFirstName2}" />
-			<var name="userLastName" value="${userLastName2}" />
-			<var name="userMiddleName" value="${userMiddleName2}" />
-			<var name="userName" value="${userName2}" />
-		</execute>
+	@priority = "5"
+	test InviteMembersSiteRolesSiteTest {
+		SOUser.addUserWithSORole(
+			adminEmailAddress = "${adminEmailAddress}",
+			password = "test",
+			userEmailAddress = "${userEmailAddress2}",
+			userFirstName = "${userFirstName2}",
+			userLastName = "${userLastName2}",
+			userMiddleName = "${userMiddleName2}",
+			userScreenName = "${userScreenName2}"
+		);
 
-		<execute macro="SOUser#logoutPG" />
+		Page.gotoPG(pageName = "${pageName}", pageType = "Open Site");
 
-		<execute macro="SOUser#loginPG">
-			<var name="password" value="test" />
-			<var name="userEmailAddress" value="${userEmailAddress}" />
-		</execute>
+		SOMembers.inviteMember(
+			siteRoleInvite = "Site Owner",
+			userEmailAddress = "${userEmailAddress}",
+			userFirstName = "${userFirstName}",
+			userLastName = "${userLastName}",
+			userMiddleName = "${userMiddleName}",
+			userName = "${userName}"
+		);
 
-		<execute macro="SOMembers#confirmMemberInvite">
-			<var name="senderName" value="${adminName}" />
-		</execute>
+		Page.gotoPG(pageName = "${pageName}", pageType = "Open Site");
 
-		<execute macro="SOMembers#viewConfirmMemberInvite">
-			<var name="siteRoleInvite" value="Site Owner" />
-			<var name="userEmailAddress" value="${userEmailAddress}" />
-			<var name="userFirstName" value="${userFirstName}" />
-			<var name="userLastName" value="${userLastName}" />
-			<var name="userMiddleName" value="${userMiddleName}" />
-			<var name="userName" value="${userName}" />
-			<var name="userScreenName" value="${userScreenName}" />
-		</execute>
+		SOMembers.inviteMember(
+			siteRoleInvite = "Site Administrator",
+			userEmailAddress = "${userEmailAddress2}",
+			userFirstName = "${userFirstName2}",
+			userLastName = "${userLastName2}",
+			userMiddleName = "${userMiddleName2}",
+			userName = "${userName2}"
+		);
 
-		<execute macro="SOUser#logoutPG" />
+		SOUser.logoutPG();
 
-		<execute macro="SOUser#loginPG">
-			<var name="password" value="test" />
-			<var name="userEmailAddress" value="${userEmailAddress2}" />
-		</execute>
+		SOUser.loginPG(password = "test", userEmailAddress = "${userEmailAddress}");
 
-		<execute macro="SOMembers#confirmMemberInvite">
-			<var name="senderName" value="${adminName}" />
-		</execute>
+		SOMembers.confirmMemberInvite(senderName = "${adminName}");
 
-		<execute macro="SOMembers#viewConfirmMemberInvite">
-			<var name="siteRoleInvite" value="Site Administrator" />
-			<var name="userEmailAddress" value="${userEmailAddress2}" />
-			<var name="userFirstName" value="${userFirstName2}" />
-			<var name="userLastName" value="${userLastName2}" />
-			<var name="userMiddleName" value="${userMiddleName2}" />
-			<var name="userName" value="${userName2}" />
-			<var name="userScreenName" value="${userScreenName2}" />
-		</execute>
-	</command>
+		SOMembers.viewConfirmMemberInvite(
+			siteRoleInvite = "Site Owner",
+			userEmailAddress = "${userEmailAddress}",
+			userFirstName = "${userFirstName}",
+			userLastName = "${userLastName}",
+			userMiddleName = "${userMiddleName}",
+			userName = "${userName}",
+			userScreenName = "${userScreenName}"
+		);
 
-	<tear-down>
-		<execute macro="SOUser#tearDownCP" />
+		SOUser.logoutPG();
 
-		<execute macro="SOUserBar#tearDownSites" />
-	</tear-down>
-</definition>
+		SOUser.loginPG(password = "test", userEmailAddress = "${userEmailAddress2}");
+
+		SOMembers.confirmMemberInvite(senderName = "${adminName}");
+
+		SOMembers.viewConfirmMemberInvite(
+			siteRoleInvite = "Site Administrator",
+			userEmailAddress = "${userEmailAddress2}",
+			userFirstName = "${userFirstName2}",
+			userLastName = "${userLastName2}",
+			userMiddleName = "${userMiddleName2}",
+			userName = "${userName2}",
+			userScreenName = "${userScreenName2}"
+		);
+	}
+
+	tearDown {
+		SOUser.tearDownCP();
+
+		SOUserBar.tearDownSites();
+	}
+}

@@ -1,73 +1,54 @@
-<definition component-name="portal-collaboration">
-	<property name="portal.release" value="true" />
-	<property name="portal.upstream" value="true" />
-	<property name="testray.main.component.name" value="Collaboration" />
+@component-name = "portal-collaboration"
+definition {
+	property portal.release = "true";
+	property portal.upstream = "true";
+	property testray.main.component.name = "Collaboration";
+	var pageName = "Calendar Page";
+	var portletName = "Calendar";
 
-	<var name="pageName" value="Calendar Page" />
-	<var name="portletName" value="Calendar" />
+	setUp {
+		User.firstLoginPG();
 
-	<set-up>
-		<execute macro="User#firstLoginPG" />
+		Page.addPG(pageName = "${pageName}");
 
-		<execute macro="Page#addPG">
-			<var name="pageName" value="${pageName}" />
-		</execute>
+		Portlet.addPG(pageName = "${pageName}", portletName = "${portletName}");
+	}
 
-		<execute macro="Portlet#addPG">
-			<var name="pageName" value="${pageName}" />
-			<var name="portletName" value="${portletName}" />
-		</execute>
-	</set-up>
+	@priority = "5"
+	test AddCalendarEvent {
+		var eventTitle = "Calendar Event Title";
 
-	<command name="AddCalendarEvent" priority="5">
-		<var name="eventTitle" value="Calendar Event Title" />
+		Page.gotoCP(portletName = "Calendar");
 
-		<execute macro="Page#gotoCP">
-			<var name="portletName" value="Calendar" />
-		</execute>
+		Event.addPG(eventTitle = "${eventTitle}");
+	}
 
-		<execute macro="Event#addPG">
-			<var name="eventTitle" value="${eventTitle}" />
-		</execute>
-	</command>
+	@priority = "5"
+	test DeleteCalendarEvent {
+		var eventTitle = "Calendar Event Title";
 
-	<command name="DeleteCalendarEvent" priority="5">
-		<var name="eventTitle" value="Calendar Event Title" />
+		Page.gotoCP(portletName = "Calendar");
 
-		<execute macro="Page#gotoCP">
-			<var name="portletName" value="Calendar" />
-		</execute>
+		Event.addPG(eventTitle = "${eventTitle}");
 
-		<execute macro="Event#addPG">
-			<var name="eventTitle" value="${eventTitle}" />
-		</execute>
+		Event.deletePG(eventTitle = "${eventTitle}");
+	}
 
-		<execute macro="Event#deletePG">
-			<var name="eventTitle" value="${eventTitle}" />
-		</execute>
-	</command>
+	@priority = "5"
+	test EditCalendarEvent {
+		var eventTitle = "Calendar Event Title";
+		var eventTitleEdit = "Calendar Event Title Edit";
 
-	<command name="EditCalendarEvent" priority="5">
-		<var name="eventTitle" value="Calendar Event Title" />
-		<var name="eventTitleEdit" value="Calendar Event Title Edit" />
+		Page.gotoCP(portletName = "Calendar");
 
-		<execute macro="Page#gotoCP">
-			<var name="portletName" value="Calendar" />
-		</execute>
+		Event.addPG(eventTitle = "${eventTitle}");
 
-		<execute macro="Event#addPG">
-			<var name="eventTitle" value="${eventTitle}" />
-		</execute>
+		Event.editPG(eventTitle = "${eventTitle}", eventTitleEdit = "${eventTitleEdit}");
+	}
 
-		<execute macro="Event#editPG">
-			<var name="eventTitle" value="${eventTitle}" />
-			<var name="eventTitleEdit" value="${eventTitleEdit}" />
-		</execute>
-	</command>
+	tearDown {
+		Event.tearDownCP();
 
-	<tear-down>
-		<execute macro="Event#tearDownCP" />
-
-		<execute macro="Page#tearDownPG" />
-	</tear-down>
-</definition>
+		Page.tearDownPG();
+	}
+}

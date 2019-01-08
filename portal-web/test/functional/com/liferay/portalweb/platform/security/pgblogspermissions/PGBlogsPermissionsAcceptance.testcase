@@ -1,43 +1,35 @@
-<definition component-name="portal-security">
-	<property name="portal.release" value="true" />
-	<property name="portal.upstream" value="true" />
-	<property name="testray.main.component.name" value="Security" />
+@component-name = "portal-security"
+definition {
+	property portal.release = "true";
+	property portal.upstream = "true";
+	property testray.main.component.name = "Security";
+	var pageName = "Blogs Page";
+	var portletName = "Blogs";
 
-	<var name="pageName" value="Blogs Page" />
-	<var name="portletName" value="Blogs" />
+	setUp {
+		User.firstLoginPG();
 
-	<set-up>
-		<execute macro="User#firstLoginPG" />
+		Page.addPG(pageName = "${pageName}");
 
-		<execute macro="Page#addPG">
-			<var name="pageName" value="${pageName}" />
-		</execute>
+		Portlet.addPG(pageName = "${pageName}", portletName = "${portletName}");
+	}
 
-		<execute macro="Portlet#addPG">
-			<var name="pageName" value="${pageName}" />
-			<var name="portletName" value="${portletName}" />
-		</execute>
-	</set-up>
+	@priority = "5"
+	test Guest_ViewPortletBlogsPermissionsNoTest {
+		Page.gotoPG(pageName = "${pageName}");
 
-	<command name="Guest_ViewPortletBlogsPermissionsNoTest" priority="5">
-		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${pageName}" />
-		</execute>
+		BlogsEntry.viewPortletPG();
 
-		<execute macro="BlogsEntry#viewPortletPG" />
+		User.logoutPG();
 
-		<execute macro="User#logoutPG" />
+		Page.gotoPG(pageName = "${pageName}");
 
-		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${pageName}" />
-		</execute>
+		BlogsEntry.viewPortletPGasGuest();
+	}
 
-		<execute macro="BlogsEntry#viewPortletPGasGuest" />
-	</command>
+	tearDown {
+		User.firstLoginPG();
 
-	<tear-down>
-		<execute macro="User#firstLoginPG" />
-
-		<execute macro="Page#tearDownPG" />
-	</tear-down>
-</definition>
+		Page.tearDownPG();
+	}
+}

@@ -1,337 +1,275 @@
-<definition component-name="portal-web-forms-and-data-lists">
-	<property name="portal.release" value="true" />
-	<property name="portal.upstream" value="true" />
-	<property name="testray.main.component.name" value="Web Forms and Data Lists" />
-
-	<set-up>
-		<execute macro="User#firstLoginPG" />
-	</set-up>
-
-	<tear-down>
-		<execute macro="List#tearDownCP" />
-
-		<execute macro="DataDefinition#tearDownCP" />
-	</tear-down>
-
-	<command name="AddDataDefinition" priority="5">
-		<var name="dataDefinitionDescription" value="Data Definition Description" />
-		<var name="dataDefinitionName" value="Data Definition Name" />
-
-		<execute macro="Page#gotoCP">
-			<var name="portletName" value="Dynamic Data Lists" />
-		</execute>
-
-		<execute macro="DataDefinition#addCP">
-			<var name="dataDefinitionDescription" value="${dataDefinitionDescription}" />
-			<var name="dataDefinitionName" value="${dataDefinitionName}" />
-		</execute>
-
-		<execute macro="Page#gotoCP">
-			<var name="portletName" value="Dynamic Data Lists" />
-		</execute>
-
-		<execute macro="DataDefinition#viewCP">
-			<var name="dataDefinitionDescription" value="${dataDefinitionDescription}" />
-			<var name="dataDefinitionName" value="${dataDefinitionName}" />
-		</execute>
-	</command>
-
-	<command name="AddList" priority="5">
-		<var name="dataDefinitionDescription" value="Data Definition Description" />
-		<var name="dataDefinitionName" value="Data Definition Name" />
-		<var name="listDescription" value="List Description" />
-		<var name="listName" value="List Name" />
-
-		<execute macro="Page#gotoCP">
-			<var name="portletName" value="Dynamic Data Lists" />
-		</execute>
-
-		<execute macro="DataDefinition#addCP">
-			<var name="dataDefinitionDescription" value="${dataDefinitionDescription}" />
-			<var name="dataDefinitionName" value="${dataDefinitionName}" />
-		</execute>
-
-		<execute macro="Page#gotoCP">
-			<var name="portletName" value="Dynamic Data Lists" />
-		</execute>
-
-		<execute macro="List#addCP">
-			<var name="dataDefinitionName" value="${dataDefinitionName}" />
-			<var name="listDescription" value="${listDescription}" />
-			<var name="listName" value="${listName}" />
-		</execute>
-
-		<execute macro="List#viewCP">
-			<var name="listDescription" value="${listDescription}" />
-			<var name="listName" value="${listName}" />
-		</execute>
-	</command>
-
-	<command name="AddRecord" priority="5">
-		<var name="dataDefinitionDescription" value="Data Definition Description" />
-		<var name="dataDefinitionName" value="Data Definition Name" />
-		<var name="listDescription" value="List Description" />
-		<var name="listName" value="List Name" />
-		<var name="recordText" value="Text Field" />
-
-		<execute macro="Page#gotoCP">
-			<var name="portletName" value="Dynamic Data Lists" />
-		</execute>
-
-		<execute macro="DataDefinition#addCP">
-			<var name="dataDefinitionDescription" value="${dataDefinitionDescription}" />
-			<var name="dataDefinitionName" value="${dataDefinitionName}" />
-		</execute>
-
-		<execute macro="Page#gotoCP">
-			<var name="portletName" value="Dynamic Data Lists" />
-		</execute>
-
-		<execute macro="List#addCP">
-			<var name="dataDefinitionName" value="${dataDefinitionName}" />
-			<var name="listDescription" value="${listDescription}" />
-			<var name="listName" value="${listName}" />
-		</execute>
-
-		<execute macro="ListRecord#addCP">
-			<var name="listName" value="${listName}" />
-			<var name="recordText" value="${recordText}" />
-		</execute>
-
-		<execute macro="Page#gotoCP">
-			<var name="portletName" value="Dynamic Data Lists" />
-		</execute>
-
-		<execute macro="ListRecord#viewCP">
-			<var name="listName" value="${listName}" />
-			<var name="recordText" value="${recordText}" />
-		</execute>
-
-		<execute macro="Page#gotoCP">
-			<var name="portletName" value="Dynamic Data Lists" />
-		</execute>
-
-		<execute macro="ListRecord#spreadsheetViewCP">
-			<var name="listName" value="${listName}" />
-			<var name="recordText" value="${recordText}" />
-		</execute>
-	</command>
-
-	<command name="DeleteDataDefinition" priority="5">
-		<var name="dataDefinitionDescription" value="Data Definition Description" />
-		<var name="dataDefinitionName" value="Data Definition Name" />
-
-		<execute macro="Page#gotoCP">
-			<var name="portletName" value="Dynamic Data Lists" />
-		</execute>
-
-		<execute macro="DataDefinition#addCP">
-			<var name="dataDefinitionDescription" value="${dataDefinitionDescription}" />
-			<var name="dataDefinitionName" value="${dataDefinitionName}" />
-		</execute>
-
-		<execute macro="Page#gotoCP">
-			<var name="portletName" value="Dynamic Data Lists" />
-		</execute>
-
-		<execute macro="DataDefinition#deleteCP">
-			<var name="dataDefinitionName" value="${dataDefinitionName}" />
-		</execute>
-	</command>
-
-	<command name="DeleteList" priority="5">
-		<var name="dataDefinitionDescription" value="Data Definition Description" />
-		<var name="dataDefinitionName" value="Data Definition Name" />
-		<var name="listDescription" value="List Description" />
-		<var name="listName" value="List Name" />
-
-		<execute macro="Page#gotoCP">
-			<var name="portletName" value="Dynamic Data Lists" />
-		</execute>
-
-		<execute macro="DataDefinition#addCP">
-			<var name="dataDefinitionDescription" value="${dataDefinitionDescription}" />
-			<var name="dataDefinitionName" value="${dataDefinitionName}" />
-		</execute>
-
-		<execute macro="Page#gotoCP">
-			<var name="portletName" value="Dynamic Data Lists" />
-		</execute>
-
-		<execute macro="List#addCP">
-			<var name="dataDefinitionName" value="${dataDefinitionName}" />
-			<var name="listDescription" value="${listDescription}" />
-			<var name="listName" value="${listName}" />
-		</execute>
-
-		<execute macro="List#deleteCP">
-			<var name="listName" value="${listName}" />
-		</execute>
-	</command>
-
-	<command name="DeleteRecord" priority="5">
-		<var name="dataDefinitionDescription" value="Data Definition Description" />
-		<var name="dataDefinitionName" value="Data Definition Name" />
-		<var name="listDescription" value="List Description" />
-		<var name="listName" value="List Name" />
-		<var name="recordText" value="Text Field" />
-
-		<execute macro="Page#gotoCP">
-			<var name="portletName" value="Dynamic Data Lists" />
-		</execute>
-
-		<execute macro="DataDefinition#addCP">
-			<var name="dataDefinitionDescription" value="${dataDefinitionDescription}" />
-			<var name="dataDefinitionName" value="${dataDefinitionName}" />
-		</execute>
-
-		<execute macro="Page#gotoCP">
-			<var name="portletName" value="Dynamic Data Lists" />
-		</execute>
-
-		<execute macro="List#addCP">
-			<var name="dataDefinitionName" value="${dataDefinitionName}" />
-			<var name="listDescription" value="${listDescription}" />
-			<var name="listName" value="${listName}" />
-		</execute>
-
-		<execute macro="ListRecord#addCP">
-			<var name="listName" value="${listName}" />
-			<var name="recordText" value="${recordText}" />
-		</execute>
-
-		<execute macro="Page#gotoCP">
-			<var name="portletName" value="Dynamic Data Lists" />
-		</execute>
-
-		<execute macro="ListRecord#deleteCP">
-			<var name="listName" value="${listName}" />
-		</execute>
-	</command>
-
-	<command name="EditDataDefinition" priority="5">
-		<var name="dataDefinitionDescription" value="Data Definition Description" />
-		<var name="dataDefinitionDescriptionEdit" value="Data Definition Description Edit" />
-		<var name="dataDefinitionName" value="Data Definition Name" />
-		<var name="dataDefinitionNameEdit" value="Data Definition Edit" />
-
-		<execute macro="Page#gotoCP">
-			<var name="portletName" value="Dynamic Data Lists" />
-		</execute>
-
-		<execute macro="DataDefinition#addCP">
-			<var name="dataDefinitionDescription" value="${dataDefinitionDescription}" />
-			<var name="dataDefinitionName" value="${dataDefinitionName}" />
-		</execute>
-
-		<execute macro="Page#gotoCP">
-			<var name="portletName" value="Dynamic Data Lists" />
-		</execute>
-
-		<execute macro="DataDefinition#editCP">
-			<var name="dataDefinitionDescriptionEdit" value="${dataDefinitionDescriptionEdit}" />
-			<var name="dataDefinitionName" value="${dataDefinitionName}" />
-			<var name="dataDefinitionNameEdit" value="${dataDefinitionNameEdit}" />
-		</execute>
-
-		<execute macro="Page#gotoCP">
-			<var name="portletName" value="Dynamic Data Lists" />
-		</execute>
-
-		<execute macro="DataDefinition#viewCP">
-			<var name="dataDefinitionDescription" value="${dataDefinitionDescriptionEdit}" />
-			<var name="dataDefinitionName" value="${dataDefinitionNameEdit}" />
-		</execute>
-	</command>
-
-	<command name="EditList" priority="5">
-		<var name="dataDefinitionDescription" value="Data Definition Description" />
-		<var name="dataDefinitionName" value="Data Definition Name" />
-		<var name="listDescription" value="List Description" />
-		<var name="listDescriptionEdit" value="List Description Edit" />
-		<var name="listName" value="List Name" />
-		<var name="listNameEdit" value="List Name Edit" />
-
-		<execute macro="Page#gotoCP">
-			<var name="portletName" value="Dynamic Data Lists" />
-		</execute>
-
-		<execute macro="DataDefinition#addCP">
-			<var name="dataDefinitionDescription" value="${dataDefinitionDescription}" />
-			<var name="dataDefinitionName" value="${dataDefinitionName}" />
-		</execute>
-
-		<execute macro="Page#gotoCP">
-			<var name="portletName" value="Dynamic Data Lists" />
-		</execute>
-
-		<execute macro="List#addCP">
-			<var name="dataDefinitionName" value="${dataDefinitionName}" />
-			<var name="listDescription" value="${listDescription}" />
-			<var name="listName" value="${listName}" />
-		</execute>
-
-		<execute macro="List#editCP">
-			<var name="listDescription" value="${listDescription}" />
-			<var name="listDescriptionEdit" value="${listDescriptionEdit}" />
-			<var name="listName" value="${listName}" />
-			<var name="listNameEdit" value="${listNameEdit}" />
-		</execute>
-
-		<execute macro="List#viewCP">
-			<var name="listDescription" value="${listDescriptionEdit}" />
-			<var name="listName" value="${listNameEdit}" />
-		</execute>
-	</command>
-
-	<command name="EditRecord" priority="5">
-		<var name="dataDefinitionDescription" value="Data Definition Description" />
-		<var name="dataDefinitionName" value="Data Definition Name" />
-		<var name="listDescription" value="List Description" />
-		<var name="listName" value="List Name" />
-		<var name="recordText" value="Text Field" />
-		<var name="recordTextEdit" value="Text Field Edit" />
-
-		<execute macro="Page#gotoCP">
-			<var name="portletName" value="Dynamic Data Lists" />
-		</execute>
-
-		<execute macro="DataDefinition#addCP">
-			<var name="dataDefinitionDescription" value="${dataDefinitionDescription}" />
-			<var name="dataDefinitionName" value="${dataDefinitionName}" />
-		</execute>
-
-		<execute macro="Page#gotoCP">
-			<var name="portletName" value="Dynamic Data Lists" />
-		</execute>
-
-		<execute macro="List#addCP">
-			<var name="dataDefinitionName" value="${dataDefinitionName}" />
-			<var name="listDescription" value="${listDescription}" />
-			<var name="listName" value="${listName}" />
-		</execute>
-
-		<execute macro="ListRecord#addCP">
-			<var name="listName" value="${listName}" />
-			<var name="recordText" value="${recordText}" />
-		</execute>
-
-		<execute macro="Page#gotoCP">
-			<var name="portletName" value="Dynamic Data Lists" />
-		</execute>
-
-		<execute macro="ListRecord#editCP">
-			<var name="listName" value="${listName}" />
-			<var name="recordTextEdit" value="${recordTextEdit}" />
-		</execute>
-
-		<execute macro="Page#gotoCP">
-			<var name="portletName" value="Dynamic Data Lists" />
-		</execute>
-
-		<execute macro="ListRecord#viewCP">
-			<var name="listName" value="${listName}" />
-			<var name="recordText" value="${recordTextEdit}" />
-		</execute>
-	</command>
-</definition>
+@component-name = "portal-web-forms-and-data-lists"
+definition {
+	property portal.release = "true";
+	property portal.upstream = "true";
+	property testray.main.component.name = "Web Forms and Data Lists";
+
+	setUp {
+		User.firstLoginPG();
+	}
+
+	tearDown {
+		List.tearDownCP();
+
+		DataDefinition.tearDownCP();
+	}
+
+	@priority = "5"
+	test AddDataDefinition {
+		var dataDefinitionDescription = "Data Definition Description";
+		var dataDefinitionName = "Data Definition Name";
+
+		Page.gotoCP(portletName = "Dynamic Data Lists");
+
+		DataDefinition.addCP(
+			dataDefinitionDescription = "${dataDefinitionDescription}",
+			dataDefinitionName = "${dataDefinitionName}"
+		);
+
+		Page.gotoCP(portletName = "Dynamic Data Lists");
+
+		DataDefinition.viewCP(
+			dataDefinitionDescription = "${dataDefinitionDescription}",
+			dataDefinitionName = "${dataDefinitionName}"
+		);
+	}
+
+	@priority = "5"
+	test AddList {
+		var dataDefinitionDescription = "Data Definition Description";
+		var dataDefinitionName = "Data Definition Name";
+		var listDescription = "List Description";
+		var listName = "List Name";
+
+		Page.gotoCP(portletName = "Dynamic Data Lists");
+
+		DataDefinition.addCP(
+			dataDefinitionDescription = "${dataDefinitionDescription}",
+			dataDefinitionName = "${dataDefinitionName}"
+		);
+
+		Page.gotoCP(portletName = "Dynamic Data Lists");
+
+		List.addCP(
+			dataDefinitionName = "${dataDefinitionName}",
+			listDescription = "${listDescription}",
+			listName = "${listName}"
+		);
+
+		List.viewCP(listDescription = "${listDescription}", listName = "${listName}");
+	}
+
+	@priority = "5"
+	test AddRecord {
+		var dataDefinitionDescription = "Data Definition Description";
+		var dataDefinitionName = "Data Definition Name";
+		var listDescription = "List Description";
+		var listName = "List Name";
+		var recordText = "Text Field";
+
+		Page.gotoCP(portletName = "Dynamic Data Lists");
+
+		DataDefinition.addCP(
+			dataDefinitionDescription = "${dataDefinitionDescription}",
+			dataDefinitionName = "${dataDefinitionName}"
+		);
+
+		Page.gotoCP(portletName = "Dynamic Data Lists");
+
+		List.addCP(
+			dataDefinitionName = "${dataDefinitionName}",
+			listDescription = "${listDescription}",
+			listName = "${listName}"
+		);
+
+		ListRecord.addCP(listName = "${listName}", recordText = "${recordText}");
+
+		Page.gotoCP(portletName = "Dynamic Data Lists");
+
+		ListRecord.viewCP(listName = "${listName}", recordText = "${recordText}");
+
+		Page.gotoCP(portletName = "Dynamic Data Lists");
+
+		ListRecord.spreadsheetViewCP(
+			listName = "${listName}",
+			recordText = "${recordText}"
+		);
+	}
+
+	@priority = "5"
+	test DeleteDataDefinition {
+		var dataDefinitionDescription = "Data Definition Description";
+		var dataDefinitionName = "Data Definition Name";
+
+		Page.gotoCP(portletName = "Dynamic Data Lists");
+
+		DataDefinition.addCP(
+			dataDefinitionDescription = "${dataDefinitionDescription}",
+			dataDefinitionName = "${dataDefinitionName}"
+		);
+
+		Page.gotoCP(portletName = "Dynamic Data Lists");
+
+		DataDefinition.deleteCP(dataDefinitionName = "${dataDefinitionName}");
+	}
+
+	@priority = "5"
+	test DeleteList {
+		var dataDefinitionDescription = "Data Definition Description";
+		var dataDefinitionName = "Data Definition Name";
+		var listDescription = "List Description";
+		var listName = "List Name";
+
+		Page.gotoCP(portletName = "Dynamic Data Lists");
+
+		DataDefinition.addCP(
+			dataDefinitionDescription = "${dataDefinitionDescription}",
+			dataDefinitionName = "${dataDefinitionName}"
+		);
+
+		Page.gotoCP(portletName = "Dynamic Data Lists");
+
+		List.addCP(
+			dataDefinitionName = "${dataDefinitionName}",
+			listDescription = "${listDescription}",
+			listName = "${listName}"
+		);
+
+		List.deleteCP(listName = "${listName}");
+	}
+
+	@priority = "5"
+	test DeleteRecord {
+		var dataDefinitionDescription = "Data Definition Description";
+		var dataDefinitionName = "Data Definition Name";
+		var listDescription = "List Description";
+		var listName = "List Name";
+		var recordText = "Text Field";
+
+		Page.gotoCP(portletName = "Dynamic Data Lists");
+
+		DataDefinition.addCP(
+			dataDefinitionDescription = "${dataDefinitionDescription}",
+			dataDefinitionName = "${dataDefinitionName}"
+		);
+
+		Page.gotoCP(portletName = "Dynamic Data Lists");
+
+		List.addCP(
+			dataDefinitionName = "${dataDefinitionName}",
+			listDescription = "${listDescription}",
+			listName = "${listName}"
+		);
+
+		ListRecord.addCP(listName = "${listName}", recordText = "${recordText}");
+
+		Page.gotoCP(portletName = "Dynamic Data Lists");
+
+		ListRecord.deleteCP(listName = "${listName}");
+	}
+
+	@priority = "5"
+	test EditDataDefinition {
+		var dataDefinitionDescription = "Data Definition Description";
+		var dataDefinitionDescriptionEdit = "Data Definition Description Edit";
+		var dataDefinitionName = "Data Definition Name";
+		var dataDefinitionNameEdit = "Data Definition Edit";
+
+		Page.gotoCP(portletName = "Dynamic Data Lists");
+
+		DataDefinition.addCP(
+			dataDefinitionDescription = "${dataDefinitionDescription}",
+			dataDefinitionName = "${dataDefinitionName}"
+		);
+
+		Page.gotoCP(portletName = "Dynamic Data Lists");
+
+		DataDefinition.editCP(
+			dataDefinitionDescriptionEdit = "${dataDefinitionDescriptionEdit}",
+			dataDefinitionName = "${dataDefinitionName}",
+			dataDefinitionNameEdit = "${dataDefinitionNameEdit}"
+		);
+
+		Page.gotoCP(portletName = "Dynamic Data Lists");
+
+		DataDefinition.viewCP(
+			dataDefinitionDescription = "${dataDefinitionDescriptionEdit}",
+			dataDefinitionName = "${dataDefinitionNameEdit}"
+		);
+	}
+
+	@priority = "5"
+	test EditList {
+		var dataDefinitionDescription = "Data Definition Description";
+		var dataDefinitionName = "Data Definition Name";
+		var listDescription = "List Description";
+		var listDescriptionEdit = "List Description Edit";
+		var listName = "List Name";
+		var listNameEdit = "List Name Edit";
+
+		Page.gotoCP(portletName = "Dynamic Data Lists");
+
+		DataDefinition.addCP(
+			dataDefinitionDescription = "${dataDefinitionDescription}",
+			dataDefinitionName = "${dataDefinitionName}"
+		);
+
+		Page.gotoCP(portletName = "Dynamic Data Lists");
+
+		List.addCP(
+			dataDefinitionName = "${dataDefinitionName}",
+			listDescription = "${listDescription}",
+			listName = "${listName}"
+		);
+
+		List.editCP(
+			listDescription = "${listDescription}",
+			listDescriptionEdit = "${listDescriptionEdit}",
+			listName = "${listName}",
+			listNameEdit = "${listNameEdit}"
+		);
+
+		List.viewCP(
+			listDescription = "${listDescriptionEdit}",
+			listName = "${listNameEdit}"
+		);
+	}
+
+	@priority = "5"
+	test EditRecord {
+		var dataDefinitionDescription = "Data Definition Description";
+		var dataDefinitionName = "Data Definition Name";
+		var listDescription = "List Description";
+		var listName = "List Name";
+		var recordText = "Text Field";
+		var recordTextEdit = "Text Field Edit";
+
+		Page.gotoCP(portletName = "Dynamic Data Lists");
+
+		DataDefinition.addCP(
+			dataDefinitionDescription = "${dataDefinitionDescription}",
+			dataDefinitionName = "${dataDefinitionName}"
+		);
+
+		Page.gotoCP(portletName = "Dynamic Data Lists");
+
+		List.addCP(
+			dataDefinitionName = "${dataDefinitionName}",
+			listDescription = "${listDescription}",
+			listName = "${listName}"
+		);
+
+		ListRecord.addCP(listName = "${listName}", recordText = "${recordText}");
+
+		Page.gotoCP(portletName = "Dynamic Data Lists");
+
+		ListRecord.editCP(
+			listName = "${listName}",
+			recordTextEdit = "${recordTextEdit}"
+		);
+
+		Page.gotoCP(portletName = "Dynamic Data Lists");
+
+		ListRecord.viewCP(listName = "${listName}", recordText = "${recordTextEdit}");
+	}
+}

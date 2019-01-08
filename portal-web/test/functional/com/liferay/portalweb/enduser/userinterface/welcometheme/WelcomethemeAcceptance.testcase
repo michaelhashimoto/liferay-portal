@@ -1,91 +1,271 @@
-<definition component-name="portal-user-interface">
-	<property name="portal.release" value="true" />
-	<property name="portal.upstream" value="true" />
-	<property name="setup.wizard.enabled" value="true" />
-	<property name="testray.main.component.name" value="User Interface" />
-	<property name="theme.plugins.includes" value="welcome-theme" />
-	<property name="web.plugins.includes" value="resources-importer-web" />
+@component-name = "portal-user-interface"
+definition {
+	property portal.release = "true";
+	property portal.upstream = "true";
+	property setup.wizard.enabled = "true";
+	property testray.main.component.name = "User Interface";
+	property theme.plugins.includes = "welcome-theme";
+	property web.plugins.includes = "resources-importer-web";
 
-	<set-up>
-		<var name="administratorEmail" value="test@liferay.com" />
-		<var name="administratorFirstName" value="Test" />
-		<var name="administratorLastName" value="Test" />
-		<var name="newPassword" value="test1" />
-		<var name="pageName" value="Blogs Page" />
-		<var name="passwordReminder" value="test" />
-		<var name="portalDefaultLanguage" value="English (United States)" />
-		<var name="portalName" value="Liferay" />
-		<var name="portletName" value="Blogs" />
+	setUp {
+		var administratorEmail = "test@liferay.com";
+		var administratorFirstName = "Test";
+		var administratorLastName = "Test";
+		var newPassword = "test1";
+		var pageName = "Blogs Page";
+		var passwordReminder = "test";
+		var portalDefaultLanguage = "English (United States)";
+		var portalName = "Liferay";
+		var portletName = "Blogs";
 
-		<execute macro="Page#openURL" />
+		Page.openURL();
 
-		<execute function="AssertTextEquals" locator1="Setupwizard#PORTAL_PORTAL_NAME_FIELD" value1="${portalName}" />
-		<execute function="AssertSelectedLabel" locator1="Setupwizard#PORTAL_DEFAULT_LANGUAGE_SELECT" value1="${portalDefaultLanguage}" />
-		<execute function="AssertTextEquals" locator1="Setupwizard#ADMINISTRATOR_USER_FIRST_NAME_FIELD" value1="${administratorFirstName}" />
-		<execute function="AssertTextEquals" locator1="Setupwizard#ADMINISTRATOR_USER_LAST_NAME_FIELD" value1="${administratorLastName}" />
-		<execute function="AssertTextEquals" locator1="Setupwizard#ADMINISTRATOR_USER_EMAIL_FIELD" value1="${administratorEmail}" />
-		<execute function="AssertTextEquals" locator1="Setupwizard#DATABASE_CONFIGURED_JDBC_URL_LABEL" value1="JDBC URL" />
-		<execute function="AssertTextEquals" locator1="Setupwizard#DATABASE_CONFIGURED_JDBC_DRIVER_CLASS_NAME_LABEL" value1="JDBC Driver Class Name" />
-		<execute function="AssertTextEquals" locator1="Setupwizard#DATABASE_CONFIGURED_USER_NAME_LABEL" value1="User Name" />
-		<execute function="AssertTextEquals" locator1="Setupwizard#DATABASE_CONFIGURED_PASSWORD_LABEL" value1="Password" />
-		<execute function="AssertClick" locator1="Setupwizard#DATABASE_CHANGE_LINK" value1="(Change)" />
-		<execute function="AssertTextEquals" locator1="Setupwizard#DATABASE_CHANGE_DATABASE_TYPE_LABEL" value1="Database Type" />
-		<execute function="AssertTextEquals" locator1="Setupwizard#DATABASE_CHANGE_JDBC_URL_LABEL" value1="JDBC URL (Required)" />
-		<execute function="AssertTextEquals" locator1="Setupwizard#DATABASE_CHANGE_JDBC_DRIVER_CLASS_NAME_LABEL" value1="JDBC Driver Class Name (Required)" />
-		<execute function="AssertTextEquals" locator1="Setupwizard#DATABASE_CHANGE_USER_NAME_LABEL" value1="User Name" />
-		<execute function="AssertTextEquals" locator1="Setupwizard#DATABASE_CHANGE_PASSWORD_LABEL" value1="Password" />
-		<execute function="AssertClick#assertValueClickAt" locator1="Setupwizard#FINISH_CONFIGURATION_BUTTON" value1="Finish Configuration" />
+		AssertTextEquals(
+			locator1 = "Setupwizard#PORTAL_PORTAL_NAME_FIELD",
+			value1 = "${portalName}"
+		);
 
-		<execute function="AssertTextEquals" locator1="SetupwizardFinishconfiguration#SUCCESS_MESSAGE" value1="Your configuration was saved successfully." />
-		<execute function="AssertTextEquals#assertPartialText" locator1="SetupwizardFinishconfiguration#CONFIGURATION_SAVE_MESSAGE" value1="The configuration was saved in" />
-		<execute function="AssertTextEquals#assertPartialText" locator1="SetupwizardFinishconfiguration#CONFIGURATION_SAVE_LOCATION" value1="portal-setup-wizard.properties" />
-		<execute function="AssertClick#assertValueClickAt" locator1="SetupwizardFinishconfiguration#GO_TO_MY_PORTAL_BUTTON" value1="Go to My Portal" />
+		AssertSelectedLabel(
+			locator1 = "Setupwizard#PORTAL_DEFAULT_LANGUAGE_SELECT",
+			value1 = "${portalDefaultLanguage}"
+		);
 
-		<execute function="AssertClick#assertValueClickAt" locator1="PGLoginTermsofservice#I_AGREE_BUTTON" value1="I Agree" />
+		AssertTextEquals(
+			locator1 = "Setupwizard#ADMINISTRATOR_USER_FIRST_NAME_FIELD",
+			value1 = "${administratorFirstName}"
+		);
 
-		<execute function="Type" locator1="PGLoginNewpassword#PASSWORD_FIELD" value1="${newPassword}" />
-		<execute function="Type" locator1="PGLoginNewpassword#ENTER_AGAIN_FIELD" value1="${newPassword}" />
-		<execute function="AssertClick#assertValueClickAt" locator1="PGLoginNewpassword#SAVE_BUTTON" value1="Save" />
+		AssertTextEquals(
+			locator1 = "Setupwizard#ADMINISTRATOR_USER_LAST_NAME_FIELD",
+			value1 = "${administratorLastName}"
+		);
 
-		<execute function="Type" locator1="PGLoginPasswordreminder#ANSWER_FIELD" value1="${passwordReminder}" />
-		<execute function="AssertClick#assertValueClickAt" locator1="PGLoginPasswordreminder#SAVE_BUTTON" value1="Save" />
-	</set-up>
+		AssertTextEquals(
+			locator1 = "Setupwizard#ADMINISTRATOR_USER_EMAIL_FIELD",
+			value1 = "${administratorEmail}"
+		);
 
-	<command name="WelcomeThemeView" priority="5">
-		<execute function="AssertElementPresent#assertVisible" locator1="PGWelcomePage1#GO_TO_LIFERAY" />
-		<execute function="AssertTextEquals" locator1="PGWelcomePage1#PAGE_1" value1="What We Do" />
-		<execute function="AssertTextEquals" locator1="PGWelcomePage1#PAGE_2" value1="Who Is Using Liferay" />
-		<execute function="AssertTextEquals" locator1="PGWelcomePage1#PAGE_3" value1="Liferay Benefits" />
-		<execute function="AssertTextEquals" locator1="PGWelcomePage1#MENU_TAGLINE" value1="Liferay helps you build feature-rich, easy-to-use web applications quickly." />
-		<execute function="AssertTextEquals" locator1="PGWelcomePage1#MENU_PAGE_1" value1="A Foundation for Apps" />
-		<execute function="AssertTextEquals" locator1="PGWelcomePage1#MENU_PAGE_2" value1="Dynamic Websites" />
-		<execute function="AssertTextEquals" locator1="PGWelcomePage1#MENU_PAGE_3" value1="Centralized Document Management" />
-		<execute function="AssertTextEquals" locator1="PGWelcomePage1#MENU_PAGE_4" value1="Intuitive Team Collaboration" />
-		<execute function="AssertTextEquals" locator1="PGWelcomePage1#MENU_PAGE_5" value1="Tools for Business" />
-		<execute function="AssertTextEquals" locator1="PGWelcomePage1#MENU_PAGE_6" value1="Desktop &amp; Mobile Access" />
-		<execute function="AssertTextEquals" locator1="PGWelcomePage1#MENU_PAGE_7" value1="Liferay Marketplace" />
-		<execute function="AssertElementPresent" locator1="PGWelcomePage1#INFO_LINK" value1="See how Liferay makes creating apps easier" />
-		<execute function="AssertTextEquals" locator1="PGWelcomePage1#SOCIAL_OFFICE" value1="Want Easy Social Collaboration?" />
-		<execute function="AssertTextEquals" locator1="PGWelcomePage1#GETTING_STARTED" value1="Need Help Getting Started?" />
-		<execute function="AssertTextEquals" locator1="PGWelcomePage1#DEVELOP_FASTER" value1="Develop Faster." />
+		AssertTextEquals(
+			locator1 = "Setupwizard#DATABASE_CONFIGURED_JDBC_URL_LABEL",
+			value1 = "JDBC URL"
+		);
 
-		<execute function="Click#clickAt" locator1="PGWelcomePage1#PAGE_2" />
+		AssertTextEquals(
+			locator1 = "Setupwizard#DATABASE_CONFIGURED_JDBC_DRIVER_CLASS_NAME_LABEL",
+			value1 = "JDBC Driver Class Name"
+		);
 
-		<execute function="AssertElementPresent#assertVisible" locator1="PGWelcomePage2#CUSTOMERS_1" />
-		<execute function="AssertElementPresent#assertVisible" locator1="PGWelcomePage2#CUSTOMERS_2" />
-		<execute function="AssertTextEquals" locator1="PGWelcomePage2#HEADER" value1="Liferay helps you build feature-rich, easy-to-use web applications quickly." />
+		AssertTextEquals(
+			locator1 = "Setupwizard#DATABASE_CONFIGURED_USER_NAME_LABEL",
+			value1 = "User Name"
+		);
 
-		<execute function="Click#clickAt" locator1="PGWelcomePage1#PAGE_3" />
+		AssertTextEquals(
+			locator1 = "Setupwizard#DATABASE_CONFIGURED_PASSWORD_LABEL",
+			value1 = "Password"
+		);
 
-		<execute function="AssertTextEquals" locator1="PGWelcomePage3#HEADER" value1="See how Liferay can change the way you do business." />
-		<execute function="AssertTextEquals" locator1="PGWelcomePage3#MENU_PAGE_1" value1="Open Source: A Better Way" />
-		<execute function="AssertTextEquals" locator1="PGWelcomePage3#MENU_PAGE_2" value1="Ready to Go" />
-		<execute function="AssertTextEquals" locator1="PGWelcomePage3#MENU_PAGE_3" value1="Ready to Grow" />
-		<execute function="AssertTextEquals" locator1="PGWelcomePage3#MENU_PAGE_4" value1="Approved by IT" />
-		<execute function="AssertTextEquals" locator1="PGWelcomePage3#MENU_PAGE_5" value1="Open for Business" />
-	</command>
+		AssertClick(locator1 = "Setupwizard#DATABASE_CHANGE_LINK", value1 = "(Change)");
 
-	<tear-down>
-		<execute function="Click" locator1="Dockbar#USER_SIGN_OUT" />
-	</tear-down>
-</definition>
+		AssertTextEquals(
+			locator1 = "Setupwizard#DATABASE_CHANGE_DATABASE_TYPE_LABEL",
+			value1 = "Database Type"
+		);
+
+		AssertTextEquals(
+			locator1 = "Setupwizard#DATABASE_CHANGE_JDBC_URL_LABEL",
+			value1 = "JDBC URL (Required)"
+		);
+
+		AssertTextEquals(
+			locator1 = "Setupwizard#DATABASE_CHANGE_JDBC_DRIVER_CLASS_NAME_LABEL",
+			value1 = "JDBC Driver Class Name (Required)"
+		);
+
+		AssertTextEquals(
+			locator1 = "Setupwizard#DATABASE_CHANGE_USER_NAME_LABEL",
+			value1 = "User Name"
+		);
+
+		AssertTextEquals(
+			locator1 = "Setupwizard#DATABASE_CHANGE_PASSWORD_LABEL",
+			value1 = "Password"
+		);
+
+		AssertClick.assertValueClickAt(
+			locator1 = "Setupwizard#FINISH_CONFIGURATION_BUTTON",
+			value1 = "Finish Configuration"
+		);
+
+		AssertTextEquals(
+			locator1 = "SetupwizardFinishconfiguration#SUCCESS_MESSAGE",
+			value1 = "Your configuration was saved successfully."
+		);
+
+		AssertTextEquals.assertPartialText(
+			locator1 = "SetupwizardFinishconfiguration#CONFIGURATION_SAVE_MESSAGE",
+			value1 = "The configuration was saved in"
+		);
+
+		AssertTextEquals.assertPartialText(
+			locator1 = "SetupwizardFinishconfiguration#CONFIGURATION_SAVE_LOCATION",
+			value1 = "portal-setup-wizard.properties"
+		);
+
+		AssertClick.assertValueClickAt(
+			locator1 = "SetupwizardFinishconfiguration#GO_TO_MY_PORTAL_BUTTON",
+			value1 = "Go to My Portal"
+		);
+
+		AssertClick.assertValueClickAt(
+			locator1 = "PGLoginTermsofservice#I_AGREE_BUTTON",
+			value1 = "I Agree"
+		);
+
+		Type(locator1 = "PGLoginNewpassword#PASSWORD_FIELD", value1 = "${newPassword}");
+
+		Type(
+			locator1 = "PGLoginNewpassword#ENTER_AGAIN_FIELD",
+			value1 = "${newPassword}"
+		);
+
+		AssertClick.assertValueClickAt(
+			locator1 = "PGLoginNewpassword#SAVE_BUTTON",
+			value1 = "Save"
+		);
+
+		Type(
+			locator1 = "PGLoginPasswordreminder#ANSWER_FIELD",
+			value1 = "${passwordReminder}"
+		);
+
+		AssertClick.assertValueClickAt(
+			locator1 = "PGLoginPasswordreminder#SAVE_BUTTON",
+			value1 = "Save"
+		);
+	}
+
+	@priority = "5"
+	test WelcomeThemeView {
+		AssertElementPresent.assertVisible(locator1 = "PGWelcomePage1#GO_TO_LIFERAY");
+
+		AssertTextEquals(locator1 = "PGWelcomePage1#PAGE_1", value1 = "What We Do");
+
+		AssertTextEquals(
+			locator1 = "PGWelcomePage1#PAGE_2",
+			value1 = "Who Is Using Liferay"
+		);
+
+		AssertTextEquals(
+			locator1 = "PGWelcomePage1#PAGE_3",
+			value1 = "Liferay Benefits"
+		);
+
+		AssertTextEquals(
+			locator1 = "PGWelcomePage1#MENU_TAGLINE",
+			value1 = "Liferay helps you build feature-rich, easy-to-use web applications quickly."
+		);
+
+		AssertTextEquals(
+			locator1 = "PGWelcomePage1#MENU_PAGE_1",
+			value1 = "A Foundation for Apps"
+		);
+
+		AssertTextEquals(
+			locator1 = "PGWelcomePage1#MENU_PAGE_2",
+			value1 = "Dynamic Websites"
+		);
+
+		AssertTextEquals(
+			locator1 = "PGWelcomePage1#MENU_PAGE_3",
+			value1 = "Centralized Document Management"
+		);
+
+		AssertTextEquals(
+			locator1 = "PGWelcomePage1#MENU_PAGE_4",
+			value1 = "Intuitive Team Collaboration"
+		);
+
+		AssertTextEquals(
+			locator1 = "PGWelcomePage1#MENU_PAGE_5",
+			value1 = "Tools for Business"
+		);
+
+		AssertTextEquals(
+			locator1 = "PGWelcomePage1#MENU_PAGE_6",
+			value1 = "Desktop & Mobile Access"
+		);
+
+		AssertTextEquals(
+			locator1 = "PGWelcomePage1#MENU_PAGE_7",
+			value1 = "Liferay Marketplace"
+		);
+
+		AssertElementPresent(
+			locator1 = "PGWelcomePage1#INFO_LINK",
+			value1 = "See how Liferay makes creating apps easier"
+		);
+
+		AssertTextEquals(
+			locator1 = "PGWelcomePage1#SOCIAL_OFFICE",
+			value1 = "Want Easy Social Collaboration?"
+		);
+
+		AssertTextEquals(
+			locator1 = "PGWelcomePage1#GETTING_STARTED",
+			value1 = "Need Help Getting Started?"
+		);
+
+		AssertTextEquals(
+			locator1 = "PGWelcomePage1#DEVELOP_FASTER",
+			value1 = "Develop Faster."
+		);
+
+		Click.clickAt(locator1 = "PGWelcomePage1#PAGE_2");
+
+		AssertElementPresent.assertVisible(locator1 = "PGWelcomePage2#CUSTOMERS_1");
+
+		AssertElementPresent.assertVisible(locator1 = "PGWelcomePage2#CUSTOMERS_2");
+
+		AssertTextEquals(
+			locator1 = "PGWelcomePage2#HEADER",
+			value1 = "Liferay helps you build feature-rich, easy-to-use web applications quickly."
+		);
+
+		Click.clickAt(locator1 = "PGWelcomePage1#PAGE_3");
+
+		AssertTextEquals(
+			locator1 = "PGWelcomePage3#HEADER",
+			value1 = "See how Liferay can change the way you do business."
+		);
+
+		AssertTextEquals(
+			locator1 = "PGWelcomePage3#MENU_PAGE_1",
+			value1 = "Open Source: A Better Way"
+		);
+
+		AssertTextEquals(
+			locator1 = "PGWelcomePage3#MENU_PAGE_2",
+			value1 = "Ready to Go"
+		);
+
+		AssertTextEquals(
+			locator1 = "PGWelcomePage3#MENU_PAGE_3",
+			value1 = "Ready to Grow"
+		);
+
+		AssertTextEquals(
+			locator1 = "PGWelcomePage3#MENU_PAGE_4",
+			value1 = "Approved by IT"
+		);
+
+		AssertTextEquals(
+			locator1 = "PGWelcomePage3#MENU_PAGE_5",
+			value1 = "Open for Business"
+		);
+	}
+
+	tearDown {
+		Click(locator1 = "Dockbar#USER_SIGN_OUT");
+	}
+}

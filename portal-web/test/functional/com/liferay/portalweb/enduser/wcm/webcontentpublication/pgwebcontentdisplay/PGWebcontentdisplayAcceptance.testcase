@@ -1,66 +1,57 @@
-<definition component-name="portal-wcm">
-	<property name="portal.release" value="true" />
-	<property name="portal.upstream" value="true" />
-	<property name="testray.main.component.name" value="WCM" />
+@component-name = "portal-wcm"
+definition {
+	property portal.release = "true";
+	property portal.upstream = "true";
+	property testray.main.component.name = "WCM";
+	var pageName = "Web Content Display Page";
+	var portletName = "Web Content Display";
 
-	<var name="pageName" value="Web Content Display Page" />
-	<var name="portletName" value="Web Content Display" />
+	setUp {
+		User.firstLoginPG();
 
-	<set-up>
-		<execute macro="User#firstLoginPG" />
+		Page.addPG(pageName = "${pageName}");
 
-		<execute macro="Page#addPG">
-			<var name="pageName" value="${pageName}" />
-		</execute>
+		Portlet.addPG(pageName = "${pageName}", portletName = "${portletName}");
+	}
 
-		<execute macro="Portlet#addPG">
-			<var name="pageName" value="${pageName}" />
-			<var name="portletName" value="${portletName}" />
-		</execute>
-	</set-up>
+	@priority = "5"
+	test AddWebContent {
+		var webContentContent = "WC WebContent Content";
+		var webContentTitle = "WC WebContent Title";
 
-	<command name="AddWebContent" priority="5">
-		<var name="webContentContent" value="WC WebContent Content" />
-		<var name="webContentTitle" value="WC WebContent Title" />
+		Page.gotoPG(pageName = "${pageName}");
 
-		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${pageName}" />
-		</execute>
+		WebContent.addPGviaWCD(
+			webContentContent = "${webContentContent}",
+			webContentTitle = "${webContentTitle}"
+		);
+	}
 
-		<execute macro="WebContent#addPGviaWCD">
-			<var name="webContentContent" value="${webContentContent}" />
-			<var name="webContentTitle" value="${webContentTitle}" />
-		</execute>
-	</command>
+	@priority = "5"
+	test EditWebContent {
+		var webContentContent = "WC WebContent Content";
+		var webContentContentEdit = "WC WebContent Content Edit";
+		var webContentTitle = "WC WebContent Title";
+		var webContentTitleEdit = "WC WebContent Title Edit";
 
-	<command name="EditWebContent" priority="5">
-		<var name="webContentContent" value="WC WebContent Content" />
-		<var name="webContentContentEdit" value="WC WebContent Content Edit" />
-		<var name="webContentTitle" value="WC WebContent Title" />
-		<var name="webContentTitleEdit" value="WC WebContent Title Edit" />
+		Page.gotoPG(pageName = "${pageName}");
 
-		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${pageName}" />
-		</execute>
+		WebContent.addPGviaWCD(
+			webContentContent = "${webContentContent}",
+			webContentTitle = "${webContentTitle}"
+		);
 
-		<execute macro="WebContent#addPGviaWCD">
-			<var name="webContentContent" value="${webContentContent}" />
-			<var name="webContentTitle" value="${webContentTitle}" />
-		</execute>
+		Page.gotoPG(pageName = "${pageName}");
 
-		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${pageName}" />
-		</execute>
+		WebContent.editPGviaWCD(
+			webContentContentEdit = "${webContentContentEdit}",
+			webContentTitleEdit = "${webContentTitleEdit}"
+		);
+	}
 
-		<execute macro="WebContent#editPGviaWCD">
-			<var name="webContentContentEdit" value="${webContentContentEdit}" />
-			<var name="webContentTitleEdit" value="${webContentTitleEdit}" />
-		</execute>
-	</command>
+	tearDown {
+		WebContent.tearDownCP();
 
-	<tear-down>
-		<execute macro="WebContent#tearDownCP" />
-
-		<execute macro="Page#tearDownPG" />
-	</tear-down>
-</definition>
+		Page.tearDownPG();
+	}
+}

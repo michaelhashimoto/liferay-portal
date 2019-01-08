@@ -1,79 +1,83 @@
-<definition component-name="portal-tools">
-	<property name="portal.release" value="true" />
-	<property name="portal.upstream" value="true" />
-	<property name="testray.main.component.name" value="Tools" />
+@component-name = "portal-tools"
+definition {
+	property portal.release = "true";
+	property portal.upstream = "true";
+	property testray.main.component.name = "Tools";
 
-	<set-up>
-		<execute macro="User#firstLoginPG" />
-	</set-up>
+	setUp {
+		User.firstLoginPG();
+	}
 
-	<tear-down>
-		<execute macro="Page#tearDownPG" />
-	</tear-down>
+	tearDown {
+		Page.tearDownPG();
+	}
 
-	<command name="ContainsConditionalWithUTF8Characters" priority="5">
-		<echo message="Test UTF8 Characters: 'contains' conditional clause values" />
+	@priority = "5"
+	test ContainsConditionalWithUTF8Characters {
+		echo("Test UTF8 Characters: 'contains' conditional clause values");
 
-		<if>
-			<contains string="りんご" substring="りんご" />
-			<then>
-				<execute macro="TestUtils#pass" />
-			</then>
-		</if>
-	</command>
+		if (contains("りんご", "りんご")) {
+			TestUtils.pass();
+		}
+	}
 
-	<command name="EchoUTF8Characters" priority="5">
-		<echo message="Test UTF8 Characters: echo message" />
+	@priority = "5"
+	test EchoUTF8Characters {
+		echo("Test UTF8 Characters: echo message");
 
-		<echo message="りんご" />
-	</command>
+		echo("りんご");
+	}
 
-	<command name="EqualsConditionalWithUTF8Characters" priority="5">
-		<echo message="Test UTF8 Characters: 'equals' conditional clause values" />
+	@priority = "5"
+	test EqualsConditionalWithUTF8Characters {
+		echo("Test UTF8 Characters: 'equals' conditional clause values");
 
-		<if>
-			<equals arg1="りんご" arg2="りんご" />
-			<then>
-				<execute macro="TestUtils#pass" />
-			</then>
-		</if>
-	</command>
+		if ("りんご" == "りんご") {
+			TestUtils.pass();
+		}
+	}
 
-	<command name="TypeAndAssertInlineUTF8Characters" priority="5">
-		<echo message="Test UTF8 Characters: typing and asserting inline values" />
+	@priority = "5"
+	test TypeAndAssertInlineUTF8Characters {
+		echo("Test UTF8 Characters: typing and asserting inline values");
 
-		<execute macro="Page#openURL" />
+		Page.openURL();
 
-		<execute function="Click" locator1="Dockbar#ADD" value1="Add" />
-		<execute function="AssertClick#assertTextClickAt" locator1="Dockbar#ADD_PAGE" value1="Page" />
+		Click(locator1 = "Dockbar#ADD", value1 = "Add");
 
-		<execute function="Type" locator1="Home#NEW_PAGE_FIELD" value1="りんご" />
-		<execute function="Click" locator1="Home#NEW_PAGE_SAVE" />
+		AssertClick.assertTextClickAt(locator1 = "Dockbar#ADD_PAGE", value1 = "Page");
 
-		<var name="key_pageName" value="りんご" />
+		Type(locator1 = "Home#NEW_PAGE_FIELD", value1 = "りんご");
 
-		<execute function="AssertClick#assertTextClickAt" locator1="Home#PAGE" value1="りんご" />
+		Click(locator1 = "Home#NEW_PAGE_SAVE");
 
-		<execute macro="TestUtils#pass" />
-	</command>
+		var key_pageName = "りんご";
 
-	<command name="TypeAndAssertUTF8CharactersSavedInVariable" priority="5">
-		<echo message="Test UTF8 Characters: typing and asserting a variable value" />
+		AssertClick.assertTextClickAt(locator1 = "Home#PAGE", value1 = "りんご");
 
-		<var name="test" value="りんご" />
+		TestUtils.pass();
+	}
 
-		<execute macro="Page#openURL" />
+	@priority = "5"
+	test TypeAndAssertUTF8CharactersSavedInVariable {
+		echo("Test UTF8 Characters: typing and asserting a variable value");
 
-		<execute function="Click" locator1="Dockbar#ADD" value1="Add" />
-		<execute function="AssertClick#assertTextClickAt" locator1="Dockbar#ADD_PAGE" value1="Page" />
+		var test = "りんご";
 
-		<execute function="Type" locator1="Home#NEW_PAGE_FIELD" value1="${test}" />
-		<execute function="Click" locator1="Home#NEW_PAGE_SAVE" />
+		Page.openURL();
 
-		<var name="key_pageName" value="${test}" />
+		Click(locator1 = "Dockbar#ADD", value1 = "Add");
 
-		<execute function="AssertClick#assertTextClickAt" locator1="Home#PAGE" value1="${test}" />
+		AssertClick.assertTextClickAt(locator1 = "Dockbar#ADD_PAGE", value1 = "Page");
 
-		<execute macro="TestUtils#pass" />
-	</command>
-</definition>
+		Type(locator1 = "Home#NEW_PAGE_FIELD", value1 = "${test}");
+
+		Click(locator1 = "Home#NEW_PAGE_SAVE");
+
+		var key_pageName = "${test}";
+
+		AssertClick.assertTextClickAt(locator1 = "Home#PAGE", value1 = "${test}");
+
+		TestUtils.pass();
+	}
+}

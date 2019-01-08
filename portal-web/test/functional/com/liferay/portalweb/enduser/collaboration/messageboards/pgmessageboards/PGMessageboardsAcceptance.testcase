@@ -1,186 +1,152 @@
-<definition component-name="portal-collaboration">
-	<property name="portal.release" value="true" />
-	<property name="portal.upstream" value="true" />
-	<property name="testray.main.component.name" value="Collaboration" />
+@component-name = "portal-collaboration"
+definition {
+	property portal.release = "true";
+	property portal.upstream = "true";
+	property testray.main.component.name = "Collaboration";
+	var pageName = "Message Boards Page";
+	var portletName = "Message Boards";
 
-	<var name="pageName" value="Message Boards Page" />
-	<var name="portletName" value="Message Boards" />
+	setUp {
+		User.firstLoginPG();
 
-	<set-up>
-		<execute macro="User#firstLoginPG" />
+		Page.addPG(pageName = "${pageName}");
 
-		<execute macro="Page#addPG">
-			<var name="pageName" value="${pageName}" />
-		</execute>
+		Portlet.addPG(pageName = "${pageName}", portletName = "${portletName}");
+	}
 
-		<execute macro="Portlet#addPG">
-			<var name="pageName" value="${pageName}" />
-			<var name="portletName" value="${portletName}" />
-		</execute>
-	</set-up>
+	@priority = "5"
+	test AddMBCategory {
+		var categoryName = "MB Category Name";
 
-	<command name="AddMBCategory" priority="5">
-		<var name="categoryName" value="MB Category Name" />
+		Page.gotoPG(pageName = "${pageName}");
 
-		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${pageName}" />
-		</execute>
+		MessageboardsCategory.addPG(categoryName = "${categoryName}");
 
-		<execute macro="MessageboardsCategory#addPG">
-			<var name="categoryName" value="${categoryName}" />
-		</execute>
+		MessageboardsCategory.viewPG(categoryName = "${categoryName}");
+	}
 
-		<execute macro="MessageboardsCategory#viewPG">
-			<var name="categoryName" value="${categoryName}" />
-		</execute>
-	</command>
+	@priority = "5"
+	test AddMBThread {
+		var threadBody = "MB Thread Message Body";
+		var threadSubject = "MB Thread Message Subject";
 
-	<command name="AddMBThread" priority="5">
-		<var name="threadBody" value="MB Thread Message Body" />
-		<var name="threadSubject" value="MB Thread Message Subject" />
+		Page.gotoPG(pageName = "${pageName}");
 
-		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${pageName}" />
-		</execute>
+		MessageboardsThread.addPG(
+			threadBody = "${threadBody}",
+			threadSubject = "${threadSubject}"
+		);
 
-		<execute macro="MessageboardsThread#addPG">
-			<var name="threadBody" value="${threadBody}" />
-			<var name="threadSubject" value="${threadSubject}" />
-		</execute>
+		Page.gotoPG(pageName = "${pageName}");
 
-		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${pageName}" />
-		</execute>
+		MessageboardsThread.viewPG(
+			threadBody = "${threadBody}",
+			threadSubject = "${threadSubject}"
+		);
+	}
 
-		<execute macro="MessageboardsThread#viewPG">
-			<var name="threadBody" value="${threadBody}" />
-			<var name="threadSubject" value="${threadSubject}" />
-		</execute>
-	</command>
+	@priority = "5"
+	test DeleteMBCategory {
+		var categoryName = "MB Category Name";
 
-	<command name="DeleteMBCategory" priority="5">
-		<var name="categoryName" value="MB Category Name" />
+		Page.gotoPG(pageName = "${pageName}");
 
-		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${pageName}" />
-		</execute>
+		MessageboardsCategory.addPG(categoryName = "${categoryName}");
 
-		<execute macro="MessageboardsCategory#addPG">
-			<var name="categoryName" value="${categoryName}" />
-		</execute>
+		MessageboardsCategory.deletePG(categoryName = "${categoryName}");
+	}
 
-		<execute macro="MessageboardsCategory#deletePG">
-			<var name="categoryName" value="${categoryName}" />
-		</execute>
-	</command>
+	@priority = "5"
+	test DeleteMBThread {
+		var threadBody = "MB Thread Message Body";
+		var threadSubject = "MB Thread Message Subject";
 
-	<command name="DeleteMBThread" priority="5">
-		<var name="threadBody" value="MB Thread Message Body" />
-		<var name="threadSubject" value="MB Thread Message Subject" />
+		Page.gotoPG(pageName = "${pageName}");
 
-		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${pageName}" />
-		</execute>
+		MessageboardsThread.addPG(
+			threadBody = "${threadBody}",
+			threadSubject = "${threadSubject}"
+		);
 
-		<execute macro="MessageboardsThread#addPG">
-			<var name="threadBody" value="${threadBody}" />
-			<var name="threadSubject" value="${threadSubject}" />
-		</execute>
+		Page.gotoPG(pageName = "${pageName}");
 
-		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${pageName}" />
-		</execute>
+		MessageboardsThread.deletePG(threadSubject = "${threadSubject}");
+	}
 
-		<execute macro="MessageboardsThread#deletePG">
-			<var name="threadSubject" value="${threadSubject}" />
-		</execute>
-	</command>
+	@priority = "5"
+	test EditMBCategory {
+		var categoryName = "MB Category Name";
+		var categoryNameEdit = "MB Category Name Edit";
 
-	<command name="EditMBCategory" priority="5">
-		<var name="categoryName" value="MB Category Name" />
-		<var name="categoryNameEdit" value="MB Category Name Edit" />
+		Page.gotoPG(pageName = "${pageName}");
 
-		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${pageName}" />
-		</execute>
+		MessageboardsCategory.addPG(categoryName = "${categoryName}");
 
-		<execute macro="MessageboardsCategory#addPG">
-			<var name="categoryName" value="${categoryName}" />
-		</execute>
+		MessageboardsCategory.editPG(
+			categoryName = "${categoryName}",
+			categoryNameEdit = "${categoryNameEdit}"
+		);
+	}
 
-		<execute macro="MessageboardsCategory#editPG">
-			<var name="categoryName" value="${categoryName}" />
-			<var name="categoryNameEdit" value="${categoryNameEdit}" />
-		</execute>
-	</command>
+	@priority = "5"
+	test EditMBThreadBody {
+		var threadBody = "MB Thread Message Body";
+		var threadBodyEdit = "MB Thread Message Body Edit";
+		var threadSubject = "MB Thread Message Subject";
+		var threadSubjectEdit = "MB Thread Message Subject Edit";
 
-	<command name="EditMBThreadBody" priority="5">
-		<var name="threadBody" value="MB Thread Message Body" />
-		<var name="threadBodyEdit" value="MB Thread Message Body Edit" />
-		<var name="threadSubject" value="MB Thread Message Subject" />
-		<var name="threadSubjectEdit" value="MB Thread Message Subject Edit" />
+		Page.gotoPG(pageName = "${pageName}");
 
-		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${pageName}" />
-		</execute>
+		MessageboardsThread.addPG(
+			threadBody = "${threadBody}",
+			threadSubject = "${threadSubject}"
+		);
 
-		<execute macro="MessageboardsThread#addPG">
-			<var name="threadBody" value="${threadBody}" />
-			<var name="threadSubject" value="${threadSubject}" />
-		</execute>
+		Page.gotoPG(pageName = "${pageName}");
 
-		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${pageName}" />
-		</execute>
+		MessageboardsThread.editPG(
+			threadBody = "${threadBody}",
+			threadBodyEdit = "${threadBodyEdit}",
+			threadSubject = "${threadSubject}",
+			threadSubjectEdit = "${threadSubjectEdit}"
+		);
+	}
 
-		<execute macro="MessageboardsThread#editPG">
-			<var name="threadBody" value="${threadBody}" />
-			<var name="threadBodyEdit" value="${threadBodyEdit}" />
-			<var name="threadSubject" value="${threadSubject}" />
-			<var name="threadSubjectEdit" value="${threadSubjectEdit}" />
-		</execute>
-	</command>
+	@priority = "5"
+	test ReplyMBThread {
+		var threadBody = "MB Thread Message Body";
+		var threadReplyBody = "MB Thread Reply Body";
+		var threadSubject = "MB Thread Message Subject";
 
-	<command name="ReplyMBThread" priority="5">
-		<var name="threadBody" value="MB Thread Message Body" />
-		<var name="threadReplyBody" value="MB Thread Reply Body" />
-		<var name="threadSubject" value="MB Thread Message Subject" />
+		Page.gotoPG(pageName = "${pageName}");
 
-		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${pageName}" />
-		</execute>
+		MessageboardsThread.addPG(
+			threadBody = "${threadBody}",
+			threadSubject = "${threadSubject}"
+		);
 
-		<execute macro="MessageboardsThread#addPG">
-			<var name="threadBody" value="${threadBody}" />
-			<var name="threadSubject" value="${threadSubject}" />
-		</execute>
+		Page.gotoPG(pageName = "${pageName}");
 
-		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${pageName}" />
-		</execute>
+		MessageboardsThread.replyPG(
+			threadBody = "${threadBody}",
+			threadReplyBody = "${threadReplyBody}",
+			threadSubject = "${threadSubject}"
+		);
 
-		<execute macro="MessageboardsThread#replyPG">
-			<var name="threadBody" value="${threadBody}" />
-			<var name="threadReplyBody" value="${threadReplyBody}" />
-			<var name="threadSubject" value="${threadSubject}" />
-		</execute>
+		Page.gotoPG(pageName = "${pageName}");
 
-		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${pageName}" />
-		</execute>
+		MessageboardsThread.viewReplyPG(
+			threadBody = "${threadBody}",
+			threadReplyBody = "${threadReplyBody}",
+			threadSubject = "${threadSubject}"
+		);
+	}
 
-		<execute macro="MessageboardsThread#viewReplyPG">
-			<var name="threadBody" value="${threadBody}" />
-			<var name="threadReplyBody" value="${threadReplyBody}" />
-			<var name="threadSubject" value="${threadSubject}" />
-		</execute>
-	</command>
+	tearDown {
+		MessageboardsCategory.tearDownCP();
 
-	<tear-down>
-		<execute macro="MessageboardsCategory#tearDownCP" />
+		MessageboardsThread.tearDownCP();
 
-		<execute macro="MessageboardsThread#tearDownCP" />
-
-		<execute macro="Page#tearDownPG" />
-	</tear-down>
-</definition>
+		Page.tearDownPG();
+	}
+}

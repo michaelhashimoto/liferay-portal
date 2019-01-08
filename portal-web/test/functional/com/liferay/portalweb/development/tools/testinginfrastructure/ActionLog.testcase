@@ -1,160 +1,97 @@
-<definition component-name="portal-tools">
-	<property name="portal.release" value="true" />
-	<property name="portal.upstream" value="true" />
-	<property name="testcase.url" value="http://the-internet.herokuapp.com/status_codes" />
-	<property name="testray.main.component.name" value="Tools" />
+@component-name = "portal-tools"
+definition {
+	property portal.release = "true";
+	property portal.upstream = "true";
+	property testcase.url = "http://the-internet.herokuapp.com/status_codes";
+	property testray.main.component.name = "Tools";
 
-	<command name="EchoStatement" priority="5">
-		<echo message="echoMessage" />
-	</command>
+	@priority = "5"
+	test EchoStatement {
+		echo("echoMessage");
+	}
 
-	<command name="ForLoops" priority="5">
-		<var name="list" value="1,2,3" />
+	@priority = "5"
+	test ForLoops {
+		var list = "1,2,3";
 
-		<for list="${list}" param="param">
-			<echo message="${param}" />
-		</for>
+		for (var param : list "${list}") {
+			echo("${param}");
+		}
 
-		<for list="a,b,c" param="param">
-			<echo message="${param}" />
-		</for>
-	</command>
+		for (var param : list "a,b,c") {
+			echo("${param}");
+		}
+	}
 
-	<command name="IfStatements" priority="5">
-		<if>
-			<condition function="IsElementPresent" locator1="ActionLog#PAGE_TITLE" />
-			<then>
-				<execute macro="TestUtils#pass">
-					<var name="message" value="Webpage title element was found: PASS" />
-				</execute>
-			</then>
-			<else>
-				<execute macro="TestUtils#fail">
-					<var name="message" value="Webpage title element was not found: FAIL" />
-				</execute>
-			</else>
-		</if>
+	@priority = "5"
+	test IfStatements {
+		if (IsElementPresent(locator1 = "ActionLog#PAGE_TITLE")) {
+			TestUtils.pass(message = "Webpage title element was found: PASS");
+		}
+		else {
+			TestUtils.fail(message = "Webpage title element was not found: FAIL");
+		}
 
-		<if>
-			<contains string="string" substring="substring" />
-			<then>
-				<execute macro="TestUtils#fail">
-					<var name="message" value="Matched incorrect substring to string: FAIL" />
-				</execute>
-			</then>
-			<else>
-				<execute macro="TestUtils#pass">
-					<var name="message" value="Did not match incorrect substring: PASS" />
-				</execute>
-			</else>
-		</if>
+		if (contains("string", "substring")) {
+			TestUtils.fail(message = "Matched incorrect substring to string: FAIL");
+		}
+		else {
+			TestUtils.pass(message = "Did not match incorrect substring: PASS");
+		}
 
-		<if>
-			<equals arg1="arg1" arg2="arg2" />
-			<then>
-				<execute macro="TestUtils#fail">
-					<var name="message" value="Incorrectly matched arg1 to arg2: FAIL" />
-				</execute>
-			</then>
-			<else>
-				<execute macro="TestUtils#pass">
-					<var name="message" value="Did not match arg1 to arg2: PASS" />
-				</execute>
-			</else>
-		</if>
+		if ("arg1" == "arg2") {
+			TestUtils.fail(message = "Incorrectly matched arg1 to arg2: FAIL");
+		}
+		else {
+			TestUtils.pass(message = "Did not match arg1 to arg2: PASS");
+		}
 
-		<if>
-			<isset var="var" />
-			<then>
-				<execute macro="TestUtils#fail">
-					<var name="message" value="Detected non-set variable var as set: FAIL" />
-				</execute>
-			</then>
-			<else>
-				<execute macro="TestUtils#pass">
-					<var name="message" value="Detected variable var is not set: PASS" />
-				</execute>
-			</else>
-		</if>
+		if (isSet(var)) {
+			TestUtils.fail(message = "Detected non-set variable var as set: FAIL");
+		}
+		else {
+			TestUtils.pass(message = "Detected variable var is not set: PASS");
+		}
 
-		<if>
-			<and>
-				<equals arg1="a" arg2="a" />
-				<equals arg1="b" arg2="b" />
-			</and>
-			<then>
-				<execute macro="TestUtils#pass">
-					<var name="message" value="Both condition cases match: PASS" />
-				</execute>
-			</then>
-			<else>
-				<execute macro="TestUtils#fail">
-					<var name="message" value="One or both condition cases did not match: FAIL" />
-				</execute>
-			</else>
-		</if>
-	</command>
+		if (("a" == "a") && ("b" == "b")) {
+			TestUtils.pass(message = "Both condition cases match: PASS");
+		}
+		else {
+			TestUtils.fail(message = "One or both condition cases did not match: FAIL");
+		}
+	}
 
-	<command name="WhileLoops" priority="5">
-		<while>
-			<condition function="IsElementNotPresent" locator1="ActionLog#PAGE_TITLE" />
-			<then>
-				<execute macro="TestUtils#fail">
-					<var name="message" value="Element is present and should not go into this while loop: FAIL" />
-				</execute>
-			</then>
-		</while>
+	@priority = "5"
+	test WhileLoops {
+		while (IsElementNotPresent(locator1 = "ActionLog#PAGE_TITLE")) {
+			TestUtils.fail(
+				message = "Element is present and should not go into this while loop: FAIL"
+			);
+		}
 
-		<while>
-			<contains string="string" substring="substring" />
-			<then>
-				<execute macro="TestUtils#fail">
-					<var name="message" value="Matched an incorrect substring: FAIL" />
-				</execute>
-			</then>
-		</while>
+		while (contains("string", "substring")) {
+			TestUtils.fail(message = "Matched an incorrect substring: FAIL");
+		}
 
-		<while>
-			<equals arg1="arg1" arg2="arg2" />
-			<then>
-				<execute macro="TestUtils#fail">
-					<var name="message" value="arg1 does not equal arg2: FAIL" />
-				</execute>
-			</then>
-		</while>
+		while ("arg1" == "arg2") {
+			TestUtils.fail(message = "arg1 does not equal arg2: FAIL");
+		}
 
-		<var name="number" value="0" />
+		var number = "0";
 
-		<while>
-			<not>
-				<equals arg1="${number}" arg2="4" />
-			</not>
-			<then>
-				<var method="MathUtil#sum('1', '${number}')" name="number" />
-			</then>
-		</while>
+		while (!("${number}" == "4")) {
+			var number = MathUtil.sum("1", "${number}");
+		}
 
-		<if>
-			<equals arg1="${number}" arg2="4" />
-			<then>
-				<execute macro="TestUtils#pass">
-					<var name="message" value="Ending condition sum was 4: PASS" />
-				</execute>
-			</then>
-			<else>
-				<execute macro="TestUtils#fail">
-					<var name="message" value="Ending condition sum was NOT 4: FAIL" />
-				</execute>
-			</else>
-		</if>
+		if ("${number}" == "4") {
+			TestUtils.pass(message = "Ending condition sum was 4: PASS");
+		}
+		else {
+			TestUtils.fail(message = "Ending condition sum was NOT 4: FAIL");
+		}
 
-		<while>
-			<isset var="var" />
-			<then>
-				<execute macro="TestUtils#fail">
-					<var name="message" value="var is not set: FAIL" />
-				</execute>
-			</then>
-		</while>
-	</command>
-</definition>
+		while (isSet(var)) {
+			TestUtils.fail(message = "var is not set: FAIL");
+		}
+	}
+}

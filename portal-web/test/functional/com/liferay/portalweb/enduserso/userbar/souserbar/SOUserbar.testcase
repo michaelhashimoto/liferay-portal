@@ -1,68 +1,66 @@
-<definition component-name="social-office-user-bar">
-	<property name="hook.plugins.includes" value="deploy-listener-hook,portal-compat-hook,so-activities-hook,so-hook" />
-	<property name="portlet.plugins.includes" value="chat-portlet,contacts-portlet,events-display-portlet,microblogs-portlet,private-messaging-portlet,so-announcements-portlet,so-configurations-portlet,so-portlet,tasks-portlet,wysiwyg-portlet" />
-	<property name="testray.main.component.name" value="Social Office EE" />
-	<property name="theme.plugins.includes" value="so-theme" />
+@component-name = "social-office-user-bar"
+definition {
+	property hook.plugins.includes = "deploy-listener-hook,portal-compat-hook,so-activities-hook,so-hook";
+	property portlet.plugins.includes = "chat-portlet,contacts-portlet,events-display-portlet,microblogs-portlet,private-messaging-portlet,so-announcements-portlet,so-configurations-portlet,so-portlet,tasks-portlet,wysiwyg-portlet";
+	property testray.main.component.name = "Social Office EE";
+	property theme.plugins.includes = "so-theme";
 
-	<set-up>
-		<execute macro="SOUser#firstLoginPG" />
-	</set-up>
+	setUp {
+		SOUser.firstLoginPG();
+	}
 
-	<command name="ViewLinkContactscenter" priority="5">
-		<execute macro="SOUserBar#dashboardPG">
-			<var name="userName" value="Joe Bloggs" />
-		</execute>
+	@priority = "5"
+	test ViewLinkContactscenter {
+		SOUserBar.dashboardPG(userName = "Joe Bloggs");
 
-		<execute function="Click" locator1="SOUserBar#CONTACT_CENTER" value1="Contacts Center" />
+		Click(locator1 = "SOUserBar#CONTACT_CENTER", value1 = "Contacts Center");
 
-		<execute macro="SODashboard#viewLinkContactscenter" />
-	</command>
+		SODashboard.viewLinkContactscenter();
+	}
 
-	<command name="ViewLinkHome" priority="5">
-		<execute macro="SOUserBar#dashboardPG">
-			<var name="userName" value="Joe Bloggs" />
-		</execute>
+	@priority = "5"
+	test ViewLinkHome {
+		SOUserBar.dashboardPG(userName = "Joe Bloggs");
 
-		<execute macro="SODashboard#viewLinkHome" />
-	</command>
+		SODashboard.viewLinkHome();
+	}
 
-	<command name="ViewLinkMicroblogs" priority="5">
-		<execute macro="SOUserBar#dashboardPG">
-			<var name="userName" value="Joe Bloggs" />
-		</execute>
+	@priority = "5"
+	test ViewLinkMicroblogs {
+		SOUserBar.dashboardPG(userName = "Joe Bloggs");
 
-		<execute function="Click" locator1="SOUserBar#MICROBLOGS" value1="Microblogs" />
+		Click(locator1 = "SOUserBar#MICROBLOGS", value1 = "Microblogs");
 
-		<execute macro="SODashboard#viewLinkMicroblogs" />
-	</command>
+		SODashboard.viewLinkMicroblogs();
+	}
 
-	<command name="ViewLinkMydocuments" priority="5">
-		<execute macro="SOUserBar#dashboardPG">
-			<var name="userName" value="Joe Bloggs" />
-		</execute>
+	@priority = "5"
+	test ViewLinkMydocuments {
+		SOUserBar.dashboardPG(userName = "Joe Bloggs");
 
-		<execute function="Click" locator1="SOUserBar#MY_DOCUMENTS" value1="My Documents" />
+		Click(locator1 = "SOUserBar#MY_DOCUMENTS", value1 = "My Documents");
 
-		<execute macro="SODashboard#viewLinkMydocuments" />
-	</command>
+		SODashboard.viewLinkMydocuments();
+	}
 
-	<command name="ViewLinkPrivateMessaging" priority="5">
-		<execute macro="SOUserBar#dashboardPG">
-			<var name="userName" value="Joe Bloggs" />
-		</execute>
+	@priority = "5"
+	test ViewLinkPrivateMessaging {
+		SOUserBar.dashboardPG(userName = "Joe Bloggs");
 
-		<execute function="Click" locator1="SOUserBar#MESSAGES" value1="Messages" />
+		Click(locator1 = "SOUserBar#MESSAGES", value1 = "Messages");
 
-		<execute macro="SODashboard#viewLinkPrivateMessaging" />
-	</command>
+		SODashboard.viewLinkPrivateMessaging();
+	}
 
-	<command name="ViewLinkTasks" priority="5">
-		<execute macro="SOUserBar#dashboardPG">
-			<var name="userName" value="Joe Bloggs" />
-		</execute>
+	@priority = "5"
+	test ViewLinkTasks {
+		SOUserBar.dashboardPG(userName = "Joe Bloggs");
 
-		<execute function="AssertClick#assertTextClickAt" locator1="SODashboard#NAVIGATION_TASKS" value1="Tasks" />
+		AssertClick.assertTextClickAt(
+			locator1 = "SODashboard#NAVIGATION_TASKS",
+			value1 = "Tasks"
+		);
 
-		<execute macro="SODashboard#viewLinkTasks" />
-	</command>
-</definition>
+		SODashboard.viewLinkTasks();
+	}
+}

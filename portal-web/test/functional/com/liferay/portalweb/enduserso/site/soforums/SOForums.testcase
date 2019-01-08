@@ -1,230 +1,192 @@
-<definition component-name="social-office-site">
-	<property name="hook.plugins.includes" value="deploy-listener-hook,portal-compat-hook,so-activities-hook,so-hook" />
-	<property name="portlet.plugins.includes" value="chat-portlet,contacts-portlet,events-display-portlet,microblogs-portlet,private-messaging-portlet,so-announcements-portlet,so-configurations-portlet,so-portlet,tasks-portlet,wysiwyg-portlet" />
-	<property name="testray.main.component.name" value="Social Office EE" />
-	<property name="theme.plugins.includes" value="so-theme" />
+@component-name = "social-office-site"
+definition {
+	property hook.plugins.includes = "deploy-listener-hook,portal-compat-hook,so-activities-hook,so-hook";
+	property portlet.plugins.includes = "chat-portlet,contacts-portlet,events-display-portlet,microblogs-portlet,private-messaging-portlet,so-announcements-portlet,so-configurations-portlet,so-portlet,tasks-portlet,wysiwyg-portlet";
+	property testray.main.component.name = "Social Office EE";
+	property theme.plugins.includes = "so-theme";
+	var key_siteName = "${siteName}";
+	var pageName = "Forums";
+	var siteDescription = "Open Site Description";
+	var siteName = "Open Site Name";
+	var siteType = "Open";
 
-	<var name="key_siteName" value="${siteName}" />
-	<var name="pageName" value="Forums" />
-	<var name="siteDescription" value="Open Site Description" />
-	<var name="siteName" value="Open Site Name" />
-	<var name="siteType" value="Open" />
+	setUp {
+		SOUser.firstLoginPG();
 
-	<set-up>
-		<execute macro="SOUser#firstLoginPG" />
+		SOUserBar.addSOSite(
+			siteDescription = "${siteDescription}",
+			siteName = "${siteName}",
+			siteType = "${siteType}"
+		);
+	}
 
-		<execute macro="SOUserBar#addSOSite">
-			<var name="siteDescription" value="${siteDescription}" />
-			<var name="siteName" value="${siteName}" />
-			<var name="siteType" value="${siteType}" />
-		</execute>
-	</set-up>
+	var categoryName = "MB Category Name";
+	var threadBody = "MB Category Thread Message Body";
+	var threadBodyEdit = "MB Category Thread Message Body Edit";
+	var threadReplyBody = "MB Category Thread Message Reply Body";
+	var threadSubject = "MB Category Thread Message Subject";
+	var threadSubjectEdit = "MB Category Thread Message Subject Edit";
+	var userName = "Joe Bloggs";
 
-	<var name="categoryName" value="MB Category Name" />
-	<var name="threadBody" value="MB Category Thread Message Body" />
-	<var name="threadBodyEdit" value="MB Category Thread Message Body Edit" />
-	<var name="threadReplyBody" value="MB Category Thread Message Reply Body" />
-	<var name="threadSubject" value="MB Category Thread Message Subject" />
-	<var name="threadSubjectEdit" value="MB Category Thread Message Subject Edit" />
-	<var name="userName" value="Joe Bloggs" />
+	@priority = "5"
+	test AddMBCategoryThread {
+		var categoryName = "${categoryName}";
+		var key_siteName = "${key_siteName}";
+		var pageName = "${pageName}";
+		var pageType = "${pageType}";
+		var siteName = "${siteName}";
+		var threadBody = "${threadBody}";
+		var threadSubject = "${threadSubject}";
 
-	<command name="AddMBCategoryThread" priority="5">
-		<var name="categoryName" value="${categoryName}" />
-		<var name="key_siteName" value="${key_siteName}" />
-		<var name="pageName" value="${pageName}" />
-		<var name="pageType" value="${pageType}" />
-		<var name="siteName" value="${siteName}" />
-		<var name="threadBody" value="${threadBody}" />
-		<var name="threadSubject" value="${threadSubject}" />
+		Page.gotoPG(pageName = "${pageName}", pageType = "Open Site");
 
-		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${pageName}" />
-			<var name="pageType" value="Open Site" />
-		</execute>
+		MessageboardsCategory.addPG();
 
-		<execute macro="MessageboardsCategory#addPG" />
+		Page.gotoPG(pageName = "${pageName}", pageType = "Open Site");
 
-		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${pageName}" />
-			<var name="pageType" value="Open Site" />
-		</execute>
+		MessageboardsCategory.gotoPG(categoryName = "${categoryName}");
 
-		<execute macro="MessageboardsCategory#gotoPG">
-			<var name="categoryName" value="${categoryName}" />
-		</execute>
+		MessageboardsThread.addPG();
 
-		<execute macro="MessageboardsThread#addPG" />
+		Page.gotoPG(pageName = "${pageName}", pageType = "Open Site");
 
-		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${pageName}" />
-			<var name="pageType" value="Open Site" />
-		</execute>
+		SOForumsCategoryThread.viewPG();
 
-		<execute macro="SOForumsCategoryThread#viewPG" />
+		Page.gotoPG(pageName = "${pageName}", pageType = "Open Site");
 
-		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${pageName}" />
-			<var name="pageType" value="Open Site" />
-		</execute>
+		SOForumsCategoryThread.viewMyPostsPG();
 
-		<execute macro="SOForumsCategoryThread#viewMyPostsPG" />
+		Page.gotoPG(pageName = "${pageName}", pageType = "Open Site");
 
-		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${pageName}" />
-			<var name="pageType" value="Open Site" />
-		</execute>
+		SOForumsCategoryThread.viewRecentPostsPG();
+	}
 
-		<execute macro="SOForumsCategoryThread#viewRecentPostsPG" />
-	</command>
+	@priority = "5"
+	test DeleteMBCategoryThread {
+		var categoryName = "${categoryName}";
+		var key_categoryName = "${categoryName}";
+		var key_siteName = "${key_siteName}";
+		var pageName = "${pageName}";
+		var pageType = "${pageType}";
+		var siteName = "${siteName}";
+		var threadBody = "${threadBody}";
+		var threadSubject = "${threadSubject}";
 
-	<command name="DeleteMBCategoryThread" priority="5">
-		<var name="categoryName" value="${categoryName}" />
-		<var name="key_categoryName" value="${categoryName}" />
-		<var name="key_siteName" value="${key_siteName}" />
-		<var name="pageName" value="${pageName}" />
-		<var name="pageType" value="${pageType}" />
-		<var name="siteName" value="${siteName}" />
-		<var name="threadBody" value="${threadBody}" />
-		<var name="threadSubject" value="${threadSubject}" />
+		Page.gotoPG(pageName = "${pageName}", pageType = "Open Site");
 
-		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${pageName}" />
-			<var name="pageType" value="Open Site" />
-		</execute>
+		MessageboardsCategory.addPG();
 
-		<execute macro="MessageboardsCategory#addPG" />
+		Page.gotoPG(pageName = "${pageName}", pageType = "Open Site");
 
-		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${pageName}" />
-			<var name="pageType" value="Open Site" />
-		</execute>
+		MessageboardsCategory.gotoPG(categoryName = "${categoryName}");
 
-		<execute macro="MessageboardsCategory#gotoPG">
-			<var name="categoryName" value="${categoryName}" />
-		</execute>
+		MessageboardsThread.addPG();
 
-		<execute macro="MessageboardsThread#addPG" />
+		Page.gotoPG(pageName = "${pageName}", pageType = "Open Site");
 
-		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${pageName}" />
-			<var name="pageType" value="Open Site" />
-		</execute>
+		MessageboardsCategory.gotoPG(categoryName = "${categoryName}");
 
-		<execute macro="MessageboardsCategory#gotoPG">
-			<var name="categoryName" value="${categoryName}" />
-		</execute>
+		SOForumsCategoryThread.deletePG();
 
-		<execute macro="SOForumsCategoryThread#deletePG" />
+		Page.gotoPG(pageName = "${pageName}", pageType = "Open Site");
 
-		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${pageName}" />
-			<var name="pageType" value="Open Site" />
-		</execute>
+		AssertTextEquals(
+			locator1 = "PGMessageboards#CATEGORY_TABLE_CATEGORY",
+			value1 = "${categoryName}"
+		);
 
-		<execute function="AssertTextEquals" locator1="PGMessageboards#CATEGORY_TABLE_CATEGORY" value1="${categoryName}" />
-		<execute function="AssertTextEquals" locator1="PGMessageboards#CATEGORY_TABLE_CATEGORIES" value1="0" />
-		<execute function="AssertTextEquals" locator1="PGMessageboards#CATEGORY_TABLE_THREADS" value1="0" />
-		<execute function="AssertTextEquals" locator1="PGMessageboards#CATEGORY_TABLE_POSTS" value1="0" />
-		<execute function="AssertClick" locator1="PGMessageboards#CATEGORY_TABLE_CATEGORY" value1="${categoryName}" />
+		AssertTextEquals(
+			locator1 = "PGMessageboards#CATEGORY_TABLE_CATEGORIES",
+			value1 = "0"
+		);
 
-		<execute function="AssertTextEquals" locator1="PGMessageboards#INFO_MESSAGE" value1="There are no threads in this category." />
-		<execute function="AssertTextNotPresent" value1="${threadSubject}" />
-	</command>
+		AssertTextEquals(
+			locator1 = "PGMessageboards#CATEGORY_TABLE_THREADS",
+			value1 = "0"
+		);
 
-	<command name="EditMBCategoryThread" priority="5">
-		<var name="categoryName" value="${categoryName}" />
-		<var name="key_siteName" value="${key_siteName}" />
-		<var name="pageName" value="${pageName}" />
-		<var name="pageType" value="${pageType}" />
-		<var name="siteName" value="${siteName}" />
-		<var name="threadBody" value="${threadBody}" />
-		<var name="threadBodyEdit" value="${threadBodyEdit}" />
-		<var name="threadSubject" value="${threadSubject}" />
-		<var name="threadSubjectEdit" value="${threadSubjectEdit}" />
+		AssertTextEquals(
+			locator1 = "PGMessageboards#CATEGORY_TABLE_POSTS",
+			value1 = "0"
+		);
 
-		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${pageName}" />
-			<var name="pageType" value="Open Site" />
-		</execute>
+		AssertClick(
+			locator1 = "PGMessageboards#CATEGORY_TABLE_CATEGORY",
+			value1 = "${categoryName}"
+		);
 
-		<execute macro="MessageboardsCategory#addPG" />
+		AssertTextEquals(
+			locator1 = "PGMessageboards#INFO_MESSAGE",
+			value1 = "There are no threads in this category."
+		);
 
-		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${pageName}" />
-			<var name="pageType" value="Open Site" />
-		</execute>
+		AssertTextNotPresent(value1 = "${threadSubject}");
+	}
 
-		<execute macro="MessageboardsCategory#gotoPG">
-			<var name="categoryName" value="${categoryName}" />
-		</execute>
+	@priority = "5"
+	test EditMBCategoryThread {
+		var categoryName = "${categoryName}";
+		var key_siteName = "${key_siteName}";
+		var pageName = "${pageName}";
+		var pageType = "${pageType}";
+		var siteName = "${siteName}";
+		var threadBody = "${threadBody}";
+		var threadBodyEdit = "${threadBodyEdit}";
+		var threadSubject = "${threadSubject}";
+		var threadSubjectEdit = "${threadSubjectEdit}";
 
-		<execute macro="MessageboardsThread#addPG" />
+		Page.gotoPG(pageName = "${pageName}", pageType = "Open Site");
 
-		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${pageName}" />
-			<var name="pageType" value="Open Site" />
-		</execute>
+		MessageboardsCategory.addPG();
 
-		<execute macro="MessageboardsCategory#gotoPG">
-			<var name="categoryName" value="${categoryName}" />
-		</execute>
+		Page.gotoPG(pageName = "${pageName}", pageType = "Open Site");
 
-		<execute macro="MessageboardsThread#editPG" />
+		MessageboardsCategory.gotoPG(categoryName = "${categoryName}");
 
-		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${pageName}" />
-			<var name="pageType" value="Open Site" />
-		</execute>
+		MessageboardsThread.addPG();
 
-		<execute macro="SOForumsCategoryThread#viewPG">
-			<var name="threadBody" value="${threadBodyEdit}" />
-			<var name="threadSubject" value="${threadSubjectEdit}" />
-		</execute>
-	</command>
+		Page.gotoPG(pageName = "${pageName}", pageType = "Open Site");
 
-	<command name="ReplyMBCategoryThread" priority="5">
-		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${pageName}" />
-			<var name="pageType" value="Open Site" />
-		</execute>
+		MessageboardsCategory.gotoPG(categoryName = "${categoryName}");
 
-		<execute macro="MessageboardsCategory#addPG" />
+		MessageboardsThread.editPG();
 
-		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${pageName}" />
-			<var name="pageType" value="Open Site" />
-		</execute>
+		Page.gotoPG(pageName = "${pageName}", pageType = "Open Site");
 
-		<execute macro="MessageboardsCategory#gotoPG">
-			<var name="categoryName" value="${categoryName}" />
-		</execute>
+		SOForumsCategoryThread.viewPG(
+			threadBody = "${threadBodyEdit}",
+			threadSubject = "${threadSubjectEdit}"
+		);
+	}
 
-		<execute macro="MessageboardsThread#addPG" />
+	@priority = "5"
+	test ReplyMBCategoryThread {
+		Page.gotoPG(pageName = "${pageName}", pageType = "Open Site");
 
-		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${pageName}" />
-			<var name="pageType" value="Open Site" />
-		</execute>
+		MessageboardsCategory.addPG();
 
-		<execute macro="MessageboardsCategory#gotoPG">
-			<var name="categoryName" value="${categoryName}" />
-		</execute>
+		Page.gotoPG(pageName = "${pageName}", pageType = "Open Site");
 
-		<execute macro="MessageboardsThread#replyPG">
-			<var name="threadBody" value="${threadBody}" />
-			<var name="threadReplyBody" value="${threadReplyBody}" />
-			<var name="threadSubject" value="${threadSubject}" />
-		</execute>
+		MessageboardsCategory.gotoPG(categoryName = "${categoryName}");
 
-		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${pageName}" />
-			<var name="pageType" value="Open Site" />
-		</execute>
+		MessageboardsThread.addPG();
 
-		<execute macro="SOForumsCategoryThread#viewReplyPG" />
-	</command>
+		Page.gotoPG(pageName = "${pageName}", pageType = "Open Site");
 
-	<tear-down>
-		<execute macro="SOUserBar#tearDownSites" />
-	</tear-down>
-</definition>
+		MessageboardsCategory.gotoPG(categoryName = "${categoryName}");
+
+		MessageboardsThread.replyPG(
+			threadBody = "${threadBody}",
+			threadReplyBody = "${threadReplyBody}",
+			threadSubject = "${threadSubject}"
+		);
+
+		Page.gotoPG(pageName = "${pageName}", pageType = "Open Site");
+
+		SOForumsCategoryThread.viewReplyPG();
+	}
+
+	tearDown {
+		SOUserBar.tearDownSites();
+	}
+}

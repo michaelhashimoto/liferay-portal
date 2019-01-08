@@ -1,118 +1,88 @@
-<definition component-name="portal-wcm">
-	<property name="portal.release" value="true" />
-	<property name="portal.upstream" value="true" />
-	<property name="testray.main.component.name" value="WCM" />
+@component-name = "portal-wcm"
+definition {
+	property portal.release = "true";
+	property portal.upstream = "true";
+	property testray.main.component.name = "WCM";
+	var siteName = "Liferay";
 
-	<var name="siteName" value="Liferay" />
+	setUp {
+		User.firstLoginPG();
+	}
 
-	<set-up>
-		<execute macro="User#firstLoginPG" />
-	</set-up>
+	tearDown {
+		Page.gotoCP(portletName = "Site Settings");
 
-	<tear-down>
-		<execute macro="Page#gotoCP">
-			<var name="portletName" value="Site Settings" />
-		</execute>
+		Staging.deactivateStagingCP(siteName = "${siteName}");
 
-		<execute macro="Staging#deactivateStagingCP">
-			<var name="siteName" value="${siteName}" />
-		</execute>
+		Page.tearDownPG();
+	}
 
-		<execute macro="Page#tearDownPG" />
-	</tear-down>
+	@priority = "5"
+	test ActivateStaging {
+		Page.gotoCP(portletName = "Site Settings");
 
-	<command name="ActivateStaging" priority="5">
-		<execute macro="Page#gotoCP">
-			<var name="portletName" value="Site Settings" />
-		</execute>
+		Staging.activateStagingCP(siteName = "${siteName}");
+	}
 
-		<execute macro="Staging#activateStagingCP">
-			<var name="siteName" value="${siteName}" />
-		</execute>
-	</command>
+	@priority = "5"
+	test DeactivateStaging {
+		Page.gotoCP(portletName = "Site Settings");
 
-	<command name="DeactivateStaging" priority="5">
-		<execute macro="Page#gotoCP">
-			<var name="portletName" value="Site Settings" />
-		</execute>
+		Staging.activateStagingCP(siteName = "${siteName}");
 
-		<execute macro="Staging#activateStagingCP">
-			<var name="siteName" value="${siteName}" />
-		</execute>
+		Page.gotoCP(portletName = "Site Settings");
 
-		<execute macro="Page#gotoCP">
-			<var name="portletName" value="Site Settings" />
-		</execute>
+		Staging.deactivateStagingCP(siteName = "${siteName}");
+	}
 
-		<execute macro="Staging#deactivateStagingCP">
-			<var name="siteName" value="${siteName}" />
-		</execute>
-	</command>
+	@priority = "5"
+	test EnablePageVersioning {
+		Page.gotoCP(portletName = "Site Settings");
 
-	<command name="EnablePageVersioning" priority="5">
-		<execute macro="Page#gotoCP">
-			<var name="portletName" value="Site Settings" />
-		</execute>
+		Staging.activateStagingCP(
+			pageVersioningEnabled = "true",
+			siteName = "${siteName}"
+		);
+	}
 
-		<execute macro="Staging#activateStagingCP">
-			<var name="pageVersioningEnabled" value="true" />
-			<var name="siteName" value="${siteName}" />
-		</execute>
-	</command>
+	@priority = "5"
+	test StagingAddPortlet {
+		var pageName = "Blogs Page";
+		var portletName = "Blogs";
 
-	<command name="StagingAddPortlet" priority="5">
-		<var name="pageName" value="Blogs Page" />
-		<var name="portletName" value="Blogs" />
+		Page.gotoCP(portletName = "Site Settings");
 
-		<execute macro="Page#gotoCP">
-			<var name="portletName" value="Site Settings" />
-		</execute>
+		Staging.activateStagingCP(siteName = "${siteName}");
 
-		<execute macro="Staging#activateStagingCP">
-			<var name="siteName" value="${siteName}" />
-		</execute>
+		Page.addPG(pageName = "${pageName}", pageStaging = "true");
 
-		<execute macro="Page#addPG">
-			<var name="pageName" value="${pageName}" />
-			<var name="pageStaging" value="true" />
-		</execute>
+		Portlet.addPG(
+			pageName = "${pageName}",
+			pageStaging = "true",
+			portletName = "${portletName}"
+		);
 
-		<execute macro="Portlet#addPG">
-			<var name="pageName" value="${pageName}" />
-			<var name="pageStaging" value="true" />
-			<var name="portletName" value="${portletName}" />
-		</execute>
+		Page.gotoPG(pageStaging = "true");
 
-		<execute macro="Page#gotoPG">
-			<var name="pageStaging" value="true" />
-		</execute>
+		Staging.publishToLiveNowPG();
 
-		<execute macro="Staging#publishToLiveNowPG" />
+		AssertClick(locator1 = "Staging#LIVE_BUTTON", value1 = "Live");
 
-		<execute function="AssertClick" locator1="Staging#LIVE_BUTTON" value1="Live" />
+		var key_pageName = "${pageName}";
 
-		<var name="key_pageName" value="${pageName}" />
+		AssertClick.assertTextClickAt(locator1 = "Home#PAGE", value1 = "${pageName}");
 
-		<execute function="AssertClick#assertTextClickAt" locator1="Home#PAGE" value1="${pageName}" />
-		<execute function="AssertElementPresent" locator1="Home#PORTLET_1" />
-	</command>
+		AssertElementPresent(locator1 = "Home#PORTLET_1");
+	}
 
-	<command name="StagingPublishToLive" priority="5">
-		<execute macro="Page#gotoCP">
-			<var name="portletName" value="Site Settings" />
-		</execute>
+	@priority = "5"
+	test StagingPublishToLive {
+		Page.gotoCP(portletName = "Site Settings");
 
-		<execute macro="Staging#activateStagingCP">
-			<var name="siteName" value="${siteName}" />
-		</execute>
+		Staging.activateStagingCP(siteName = "${siteName}");
 
-		<execute macro="Page#gotoPG">
-			<var name="pageName" value="Welcome" />
-			<var name="pageStaging" value="true" />
-		</execute>
+		Page.gotoPG(pageName = "Welcome", pageStaging = "true");
 
-		<execute macro="Staging#publishToLiveNowPG">
-			<var name="pageName" value="Welcome" />
-		</execute>
-	</command>
-</definition>
+		Staging.publishToLiveNowPG(pageName = "Welcome");
+	}
+}

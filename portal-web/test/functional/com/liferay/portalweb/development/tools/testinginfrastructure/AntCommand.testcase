@@ -1,13 +1,15 @@
-<definition component-name="portal-tools">
-	<property name="portal.release" value="true" />
-	<property name="portal.upstream" value="true" />
-	<property name="testray.main.component.name" value="Tools" />
+@component-name = "portal-tools"
+definition {
+	property portal.release = "true";
+	property portal.upstream = "true";
+	property testray.main.component.name = "Tools";
 
-	<command name="StopAndStartAppServer" priority="5">
-		<execute function="AntCommand" locator1="build-test.xml" value1="stop-app-server" />
+	@priority = "5"
+	test StopAndStartAppServer {
+		AntCommand(locator1 = "build-test.xml", value1 = "stop-app-server");
 
-		<execute function="AntCommand" locator1="build-test.xml" value1="start-app-server" />
+		AntCommand(locator1 = "build-test.xml", value1 = "start-app-server");
 
-		<execute macro="User#firstLoginPG" />
-	</command>
-</definition>
+		User.firstLoginPG();
+	}
+}

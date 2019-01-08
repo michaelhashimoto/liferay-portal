@@ -1,106 +1,88 @@
-<definition component-name="portal-collaboration">
-	<property name="portal.release" value="true" />
-	<property name="portal.upstream" value="true" />
-	<property name="testray.main.component.name" value="Collaboration" />
+@component-name = "portal-collaboration"
+definition {
+	property portal.release = "true";
+	property portal.upstream = "true";
+	property testray.main.component.name = "Collaboration";
+	var pageName = "Blogs Page";
+	var portletName = "Blogs";
 
-	<var name="pageName" value="Blogs Page" />
-	<var name="portletName" value="Blogs" />
+	setUp {
+		User.firstLoginPG();
 
-	<set-up>
-		<execute macro="User#firstLoginPG" />
+		Page.addPG(pageName = "${pageName}");
 
-		<execute macro="Page#addPG">
-			<var name="pageName" value="${pageName}" />
-		</execute>
+		Portlet.addPG(pageName = "${pageName}", portletName = "${portletName}");
+	}
 
-		<execute macro="Portlet#addPG">
-			<var name="pageName" value="${pageName}" />
-			<var name="portletName" value="${portletName}" />
-		</execute>
-	</set-up>
+	tearDown {
+		BlogsEntry.tearDownCP();
 
-	<tear-down>
-		<execute macro="BlogsEntry#tearDownCP" />
+		Page.tearDownPG();
+	}
 
-		<execute macro="Page#tearDownPG" />
-	</tear-down>
+	@priority = "5"
+	test AddBlogsEntry {
+		var entryContent = "Blogs Entry Content";
+		var entryTitle = "Blogs Entry Title";
 
-	<command name="AddBlogsEntry" priority="5">
-		<var name="entryContent" value="Blogs Entry Content" />
-		<var name="entryTitle" value="Blogs Entry Title" />
+		Page.gotoPG(pageName = "${pageName}");
 
-		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${pageName}" />
-		</execute>
+		BlogsEntry.addPG(entryContent = "${entryContent}", entryTitle = "${entryTitle}");
+	}
 
-		<execute macro="BlogsEntry#addPG">
-			<var name="entryContent" value="${entryContent}" />
-			<var name="entryTitle" value="${entryTitle}" />
-		</execute>
-	</command>
+	@priority = "5"
+	test AddBlogsEntryComment {
+		var entryComment = "Blogs Entry Comment";
+		var entryContent = "Blogs Entry Content";
+		var entryTitle = "Blogs Entry Title";
 
-	<command name="AddBlogsEntryComment" priority="5">
-		<var name="entryComment" value="Blogs Entry Comment" />
-		<var name="entryContent" value="Blogs Entry Content" />
-		<var name="entryTitle" value="Blogs Entry Title" />
+		Page.gotoPG(pageName = "${pageName}");
 
-		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${pageName}" />
-		</execute>
+		BlogsEntry.addPG(entryContent = "${entryContent}", entryTitle = "${entryTitle}");
 
-		<execute macro="BlogsEntry#addPG">
-			<var name="entryContent" value="${entryContent}" />
-			<var name="entryTitle" value="${entryTitle}" />
-		</execute>
+		BlogsEntryComment.addPG(
+			entryComment = "${entryComment}",
+			entryContent = "${entryContent}",
+			entryTitle = "${entryTitle}"
+		);
+	}
 
-		<execute macro="BlogsEntryComment#addPG">
-			<var name="entryComment" value="${entryComment}" />
-			<var name="entryContent" value="${entryContent}" />
-			<var name="entryTitle" value="${entryTitle}" />
-		</execute>
-	</command>
+	@priority = "5"
+	test DeleteBlogsEntry {
+		var entryContent = "Blogs Entry Content";
+		var entryTitle = "Blogs Entry Title";
 
-	<command name="DeleteBlogsEntry" priority="5">
-		<var name="entryContent" value="Blogs Entry Content" />
-		<var name="entryTitle" value="Blogs Entry Title" />
+		Page.gotoPG(pageName = "${pageName}");
 
-		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${pageName}" />
-		</execute>
+		BlogsEntry.addPG(
+			entryContent = "${entryContent}",
+			entryTitle = "${entryTitle}",
+			pageName = "${pageName}"
+		);
 
-		<execute macro="BlogsEntry#addPG">
-			<var name="entryContent" value="${entryContent}" />
-			<var name="entryTitle" value="${entryTitle}" />
-			<var name="pageName" value="${pageName}" />
-		</execute>
+		BlogsEntry.deletePG(
+			entryContent = "${entryContent}",
+			entryTitle = "${entryTitle}",
+			pageName = "${pageName}"
+		);
+	}
 
-		<execute macro="BlogsEntry#deletePG">
-			<var name="entryContent" value="${entryContent}" />
-			<var name="entryTitle" value="${entryTitle}" />
-			<var name="pageName" value="${pageName}" />
-		</execute>
-	</command>
+	@priority = "5"
+	test EditBlogsEntry {
+		var entryContent = "Blogs Entry Content";
+		var entryContentEdit = "Blogs Entry ContentEdit";
+		var entryTitle = "Blogs Entry Title";
+		var entryTitleEdit = "Blogs Entry TitleEdit";
 
-	<command name="EditBlogsEntry" priority="5">
-		<var name="entryContent" value="Blogs Entry Content" />
-		<var name="entryContentEdit" value="Blogs Entry ContentEdit" />
-		<var name="entryTitle" value="Blogs Entry Title" />
-		<var name="entryTitleEdit" value="Blogs Entry TitleEdit" />
+		Page.gotoPG(pageName = "${pageName}");
 
-		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${pageName}" />
-		</execute>
+		BlogsEntry.addPG(entryContent = "${entryContent}", entryTitle = "${entryTitle}");
 
-		<execute macro="BlogsEntry#addPG">
-			<var name="entryContent" value="${entryContent}" />
-			<var name="entryTitle" value="${entryTitle}" />
-		</execute>
-
-		<execute macro="BlogsEntry#editPG">
-			<var name="entryContent" value="${entryContent}" />
-			<var name="entryContentEdit" value="${entryContentEdit}" />
-			<var name="entryTitle" value="${entryTitle}" />
-			<var name="entryTitleEdit" value="${entryTitleEdit}" />
-		</execute>
-	</command>
-</definition>
+		BlogsEntry.editPG(
+			entryContent = "${entryContent}",
+			entryContentEdit = "${entryContentEdit}",
+			entryTitle = "${entryTitle}",
+			entryTitleEdit = "${entryTitleEdit}"
+		);
+	}
+}

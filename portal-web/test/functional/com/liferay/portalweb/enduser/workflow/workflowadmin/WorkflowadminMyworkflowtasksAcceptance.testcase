@@ -1,151 +1,133 @@
-<definition component-name="portal-workflow">
-	<property name="hook.plugins.includes" value="kaleo-upgrade-hook" />
-	<property name="portal.release" value="true" />
-	<property name="portal.upstream" value="true" />
-	<property name="testray.main.component.name" value="Workflow" />
-	<property name="web.plugins.includes" value="kaleo-web" />
+@component-name = "portal-workflow"
+definition {
+	property hook.plugins.includes = "kaleo-upgrade-hook";
+	property portal.release = "true";
+	property portal.upstream = "true";
+	property testray.main.component.name = "Workflow";
+	property web.plugins.includes = "kaleo-web";
 
-	<set-up>
-		<execute macro="User#firstLoginPG" />
+	setUp {
+		User.firstLoginPG();
 
-		<execute macro="Page#gotoCP">
-			<var name="portletName" value="Workflow Configuration" />
-		</execute>
+		Page.gotoCP(portletName = "Workflow Configuration");
 
-		<execute macro="Workflow#configureSiteWorkflow">
-			<var name="workflowDefinition" value="Single Approver (Version 1)" />
-			<var name="workflowResourceKey" value="RESOURCE_TABLE_BLOGS_ENTRY_SELECT" />
-		</execute>
-	</set-up>
+		Workflow.configureSiteWorkflow(
+			workflowDefinition = "Single Approver (Version 1)",
+			workflowResourceKey = "RESOURCE_TABLE_BLOGS_ENTRY_SELECT"
+		);
+	}
 
-	<command name="ApproveTaskByDetails" priority="5">
-		<var name="entryContent" value="Blogs Entry Content" />
-		<var name="entryTitle" value="Blogs Entry Title" />
+	@priority = "5"
+	test ApproveTaskByDetails {
+		var entryContent = "Blogs Entry Content";
+		var entryTitle = "Blogs Entry Title";
 
-		<execute macro="Page#gotoCP">
-			<var name="portletName" value="Blogs" />
-		</execute>
+		Page.gotoCP(portletName = "Blogs");
 
-		<execute macro="BlogsEntry#addCPWithWorkflow">
-			<var name="entryContent" value="${entryContent}" />
-			<var name="entryTitle" value="${entryTitle}" />
-		</execute>
+		BlogsEntry.addCPWithWorkflow(
+			entryContent = "${entryContent}",
+			entryTitle = "${entryTitle}"
+		);
 
-		<execute macro="Page#gotoCP">
-			<var name="portletName" value="My Workflow Tasks" />
-		</execute>
+		Page.gotoCP(portletName = "My Workflow Tasks");
 
-		<execute macro="Workflow#assignToMeTaskByActions">
-			<var name="workflowAssetTitle" value="${entryTitle}" />
-			<var name="workflowAssetType" value="Blogs Entry" />
-			<var name="workflowTask" value="Review" />
-		</execute>
+		Workflow.assignToMeTaskByActions(
+			workflowAssetTitle = "${entryTitle}",
+			workflowAssetType = "Blogs Entry",
+			workflowTask = "Review"
+		);
 
-		<execute macro="Workflow#approveTaskByDetails">
-			<var name="workflowAssetContent" value="${entryContent}" />
-			<var name="workflowAssetTitle" value="${entryTitle}" />
-			<var name="workflowAssetType" value="Blogs Entry" />
-			<var name="workflowTask" value="Review" />
-		</execute>
+		Workflow.approveTaskByDetails(
+			workflowAssetContent = "${entryContent}",
+			workflowAssetTitle = "${entryTitle}",
+			workflowAssetType = "Blogs Entry",
+			workflowTask = "Review"
+		);
 
-		<execute macro="Page#gotoCP">
-			<var name="portletName" value="Blogs" />
-		</execute>
+		Page.gotoCP(portletName = "Blogs");
 
-		<execute macro="BlogsEntry#viewCP">
-			<var name="entryContent" value="${entryContent}" />
-			<var name="entryTitle" value="${entryTitle}" />
-		</execute>
-	</command>
+		BlogsEntry.viewCP(
+			entryContent = "${entryContent}",
+			entryTitle = "${entryTitle}"
+		);
+	}
 
-	<command name="AssignToMeTaskByDetails" priority="5">
-		<var name="entryContent" value="Blogs Entry Content" />
-		<var name="entryTitle" value="Blogs Entry Title" />
+	@priority = "5"
+	test AssignToMeTaskByDetails {
+		var entryContent = "Blogs Entry Content";
+		var entryTitle = "Blogs Entry Title";
 
-		<execute macro="Page#gotoCP">
-			<var name="portletName" value="Blogs" />
-		</execute>
+		Page.gotoCP(portletName = "Blogs");
 
-		<execute macro="BlogsEntry#addCPWithWorkflow">
-			<var name="entryContent" value="${entryContent}" />
-			<var name="entryTitle" value="${entryTitle}" />
-		</execute>
+		BlogsEntry.addCPWithWorkflow(
+			entryContent = "${entryContent}",
+			entryTitle = "${entryTitle}"
+		);
 
-		<execute macro="Page#gotoCP">
-			<var name="portletName" value="My Workflow Tasks" />
-		</execute>
+		Page.gotoCP(portletName = "My Workflow Tasks");
 
-		<execute macro="Workflow#assignToMeTaskByDetails">
-			<var name="workflowAssetContent" value="${entryContent}" />
-			<var name="workflowAssetTitle" value="${entryTitle}" />
-			<var name="workflowAssetType" value="Blogs Entry" />
-			<var name="workflowTask" value="Review" />
-		</execute>
+		Workflow.assignToMeTaskByDetails(
+			workflowAssetContent = "${entryContent}",
+			workflowAssetTitle = "${entryTitle}",
+			workflowAssetType = "Blogs Entry",
+			workflowTask = "Review"
+		);
 
-		<execute macro="Page#gotoCP">
-			<var name="portletName" value="Blogs" />
-		</execute>
+		Page.gotoCP(portletName = "Blogs");
 
-		<execute macro="BlogsEntry#viewCPWithWorkflow">
-			<var name="entryContent" value="${entryContent}" />
-			<var name="entryTitle" value="${entryTitle}" />
-		</execute>
-	</command>
+		BlogsEntry.viewCPWithWorkflow(
+			entryContent = "${entryContent}",
+			entryTitle = "${entryTitle}"
+		);
+	}
 
-	<command name="RejectTaskByDetails" priority="5">
-		<var name="entryContent" value="Blogs Entry Content" />
-		<var name="entryTitle" value="Blogs Entry Title" />
+	@priority = "5"
+	test RejectTaskByDetails {
+		var entryContent = "Blogs Entry Content";
+		var entryTitle = "Blogs Entry Title";
 
-		<execute macro="Page#gotoCP">
-			<var name="portletName" value="Blogs" />
-		</execute>
+		Page.gotoCP(portletName = "Blogs");
 
-		<execute macro="BlogsEntry#addCPWithWorkflow">
-			<var name="entryContent" value="${entryContent}" />
-			<var name="entryTitle" value="${entryTitle}" />
-		</execute>
+		BlogsEntry.addCPWithWorkflow(
+			entryContent = "${entryContent}",
+			entryTitle = "${entryTitle}"
+		);
 
-		<execute macro="Page#gotoCP">
-			<var name="portletName" value="My Workflow Tasks" />
-		</execute>
+		Page.gotoCP(portletName = "My Workflow Tasks");
 
-		<execute macro="Workflow#assignToMeTaskByActions">
-			<var name="workflowAssetTitle" value="${entryTitle}" />
-			<var name="workflowAssetType" value="Blogs Entry" />
-			<var name="workflowTask" value="Review" />
-		</execute>
+		Workflow.assignToMeTaskByActions(
+			workflowAssetTitle = "${entryTitle}",
+			workflowAssetType = "Blogs Entry",
+			workflowTask = "Review"
+		);
 
-		<execute macro="Workflow#rejectTaskByDetails">
-			<var name="workflowAssetContent" value="${entryContent}" />
-			<var name="workflowAssetTitle" value="${entryTitle}" />
-			<var name="workflowAssetType" value="Blogs Entry" />
-			<var name="workflowTask" value="Review" />
-		</execute>
+		Workflow.rejectTaskByDetails(
+			workflowAssetContent = "${entryContent}",
+			workflowAssetTitle = "${entryTitle}",
+			workflowAssetType = "Blogs Entry",
+			workflowTask = "Review"
+		);
 
-		<execute macro="Page#gotoCP">
-			<var name="portletName" value="My Workflow Tasks" />
-		</execute>
+		Page.gotoCP(portletName = "My Workflow Tasks");
 
-		<execute macro="Workflow#viewRejectTask">
-			<var name="workflowAssetTitle" value="${entryTitle}" />
-			<var name="workflowAssetType" value="Blogs Entry" />
-		</execute>
+		Workflow.viewRejectTask(
+			workflowAssetTitle = "${entryTitle}",
+			workflowAssetType = "Blogs Entry"
+		);
 
-		<execute macro="Page#gotoCP">
-			<var name="portletName" value="Blogs" />
-		</execute>
+		Page.gotoCP(portletName = "Blogs");
 
-		<execute macro="BlogsEntry#viewCPWithWorkflow">
-			<var name="entryContent" value="${entryContent}" />
-			<var name="entryTitle" value="${entryTitle}" />
-		</execute>
-	</command>
+		BlogsEntry.viewCPWithWorkflow(
+			entryContent = "${entryContent}",
+			entryTitle = "${entryTitle}"
+		);
+	}
 
-	<tear-down>
-		<execute macro="BlogsEntry#tearDownCP" />
+	tearDown {
+		BlogsEntry.tearDownCP();
 
-		<execute macro="Workflow#tearDownPortalWorkflow" />
+		Workflow.tearDownPortalWorkflow();
 
-		<execute macro="Workflow#tearDownSiteWorkflow" />
-	</tear-down>
-</definition>
+		Workflow.tearDownSiteWorkflow();
+	}
+}

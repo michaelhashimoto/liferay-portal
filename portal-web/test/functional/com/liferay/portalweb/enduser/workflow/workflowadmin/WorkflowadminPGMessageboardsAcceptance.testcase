@@ -1,157 +1,130 @@
-<definition component-name="portal-workflow">
-	<property name="hook.plugins.includes" value="kaleo-upgrade-hook" />
-	<property name="portal.release" value="true" />
-	<property name="portal.upstream" value="true" />
-	<property name="testray.main.component.name" value="Workflow" />
-	<property name="web.plugins.includes" value="kaleo-web" />
+@component-name = "portal-workflow"
+definition {
+	property hook.plugins.includes = "kaleo-upgrade-hook";
+	property portal.release = "true";
+	property portal.upstream = "true";
+	property testray.main.component.name = "Workflow";
+	property web.plugins.includes = "kaleo-web";
+	var pageName = "Message Boards Page";
+	var portletName = "Message Boards";
+	var workflowAssetType = "Message Boards Message";
 
-	<var name="pageName" value="Message Boards Page" />
-	<var name="portletName" value="Message Boards" />
-	<var name="workflowAssetType" value="Message Boards Message" />
+	setUp {
+		User.firstLoginPG();
 
-	<set-up>
-		<execute macro="User#firstLoginPG" />
+		Page.gotoCP(portletName = "Workflow Configuration");
 
-		<execute macro="Page#gotoCP">
-			<var name="portletName" value="Workflow Configuration" />
-		</execute>
+		Workflow.configureSiteWorkflow(
+			workflowDefinition = "Single Approver (Version 1)",
+			workflowResourceKey = "RESOURCE_TABLE_MESSAGE_BOARDS_MESSAGE_SELECT"
+		);
 
-		<execute macro="Workflow#configureSiteWorkflow">
-			<var name="workflowDefinition" value="Single Approver (Version 1)" />
-			<var name="workflowResourceKey" value="RESOURCE_TABLE_MESSAGE_BOARDS_MESSAGE_SELECT" />
-		</execute>
+		Page.addPG(pageName = "${pageName}");
 
-		<execute macro="Page#addPG">
-			<var name="pageName" value="${pageName}" />
-		</execute>
+		Portlet.addPG(pageName = "${pageName}", portletName = "${portletName}");
+	}
 
-		<execute macro="Portlet#addPG">
-			<var name="pageName" value="${pageName}" />
-			<var name="portletName" value="${portletName}" />
-		</execute>
-	</set-up>
+	@priority = "5"
+	test ApproveMessageBoardsThreadPG {
+		var threadBody = "MB Thread Body";
+		var threadSubject = "MB Thread Subject";
 
-	<command name="ApproveMessageBoardsThreadPG" priority="5">
-		<var name="threadBody" value="MB Thread Body" />
-		<var name="threadSubject" value="MB Thread Subject" />
+		Page.gotoPG(pageName = "${pageName}");
 
-		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${pageName}" />
-		</execute>
+		MessageboardsThread.addPGWithWorkflow(
+			threadBody = "${threadBody}",
+			threadSubject = "${threadSubject}"
+		);
 
-		<execute macro="MessageboardsThread#addPGWithWorkflow">
-			<var name="threadBody" value="${threadBody}" />
-			<var name="threadSubject" value="${threadSubject}" />
-		</execute>
+		Page.gotoPG(pageName = "${pageName}");
 
-		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${pageName}" />
-		</execute>
+		MessageboardsThread.viewPGWithWorkflow(
+			threadBody = "${threadBody}",
+			threadSubject = "${threadSubject}",
+			workflowTask = "Review"
+		);
 
-		<execute macro="MessageboardsThread#viewPGWithWorkflow">
-			<var name="threadBody" value="${threadBody}" />
-			<var name="threadSubject" value="${threadSubject}" />
-			<var name="workflowTask" value="Review" />
-		</execute>
+		Page.gotoCP(portletName = "My Workflow Tasks");
 
-		<execute macro="Page#gotoCP">
-			<var name="portletName" value="My Workflow Tasks" />
-		</execute>
+		Workflow.assignToMeTaskByActions(
+			workflowAssetTitle = "${threadSubject}",
+			workflowAssetType = "${workflowAssetType}",
+			workflowTask = "Review"
+		);
 
-		<execute macro="Workflow#assignToMeTaskByActions">
-			<var name="workflowAssetTitle" value="${threadSubject}" />
-			<var name="workflowAssetType" value="${workflowAssetType}" />
-			<var name="workflowTask" value="Review" />
-		</execute>
+		Page.gotoPG(pageName = "${pageName}");
 
-		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${pageName}" />
-		</execute>
+		MessageboardsThread.viewPGWithWorkflow(
+			threadBody = "${threadBody}",
+			threadSubject = "${threadSubject}",
+			workflowTask = "Review"
+		);
 
-		<execute macro="MessageboardsThread#viewPGWithWorkflow">
-			<var name="threadBody" value="${threadBody}" />
-			<var name="threadSubject" value="${threadSubject}" />
-			<var name="workflowTask" value="Review" />
-		</execute>
+		Page.gotoCP(portletName = "My Workflow Tasks");
 
-		<execute macro="Page#gotoCP">
-			<var name="portletName" value="My Workflow Tasks" />
-		</execute>
+		Workflow.approveTaskByActions(
+			workflowAssetTitle = "${threadSubject}",
+			workflowAssetType = "${workflowAssetType}",
+			workflowTask = "Review"
+		);
 
-		<execute macro="Workflow#approveTaskByActions">
-			<var name="workflowAssetTitle" value="${threadSubject}" />
-			<var name="workflowAssetType" value="${workflowAssetType}" />
-			<var name="workflowTask" value="Review" />
-		</execute>
+		Page.gotoPG(pageName = "${pageName}");
 
-		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${pageName}" />
-		</execute>
+		MessageboardsThread.viewPG(
+			threadBody = "${threadBody}",
+			threadSubject = "${threadSubject}"
+		);
+	}
 
-		<execute macro="MessageboardsThread#viewPG">
-			<var name="threadBody" value="${threadBody}" />
-			<var name="threadSubject" value="${threadSubject}" />
-		</execute>
-	</command>
+	@priority = "5"
+	test RejectMessageBoardsThreadPG {
+		var threadBody = "MB Thread Body";
+		var threadSubject = "MB Thread Subject";
 
-	<command name="RejectMessageBoardsThreadPG" priority="5">
-		<var name="threadBody" value="MB Thread Body" />
-		<var name="threadSubject" value="MB Thread Subject" />
+		Page.gotoPG(pageName = "${pageName}");
 
-		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${pageName}" />
-		</execute>
+		MessageboardsThread.addPGWithWorkflow(
+			threadBody = "${threadBody}",
+			threadSubject = "${threadSubject}"
+		);
 
-		<execute macro="MessageboardsThread#addPGWithWorkflow">
-			<var name="threadBody" value="${threadBody}" />
-			<var name="threadSubject" value="${threadSubject}" />
-		</execute>
+		Page.gotoCP(portletName = "My Workflow Tasks");
 
-		<execute macro="Page#gotoCP">
-			<var name="portletName" value="My Workflow Tasks" />
-		</execute>
+		Workflow.assignToMeTaskByActions(
+			workflowAssetTitle = "${threadSubject}",
+			workflowAssetType = "${workflowAssetType}",
+			workflowTask = "Review"
+		);
 
-		<execute macro="Workflow#assignToMeTaskByActions">
-			<var name="workflowAssetTitle" value="${threadSubject}" />
-			<var name="workflowAssetType" value="${workflowAssetType}" />
-			<var name="workflowTask" value="Review" />
-		</execute>
+		Workflow.rejectTaskByActions(
+			workflowAssetTitle = "${threadSubject}",
+			workflowAssetType = "${workflowAssetType}",
+			workflowTask = "Review"
+		);
 
-		<execute macro="Workflow#rejectTaskByActions">
-			<var name="workflowAssetTitle" value="${threadSubject}" />
-			<var name="workflowAssetType" value="${workflowAssetType}" />
-			<var name="workflowTask" value="Review" />
-		</execute>
+		Page.gotoCP(portletName = "My Workflow Tasks");
 
-		<execute macro="Page#gotoCP">
-			<var name="portletName" value="My Workflow Tasks" />
-		</execute>
+		Workflow.viewRejectTask(
+			workflowAssetTitle = "${threadSubject}",
+			workflowAssetType = "${workflowAssetType}"
+		);
 
-		<execute macro="Workflow#viewRejectTask">
-			<var name="workflowAssetTitle" value="${threadSubject}" />
-			<var name="workflowAssetType" value="${workflowAssetType}" />
-		</execute>
+		Page.gotoPG(pageName = "${pageName}");
 
-		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${pageName}" />
-		</execute>
+		MessageboardsThread.viewPGWithWorkflow(
+			threadBody = "${threadBody}",
+			threadSubject = "${threadSubject}",
+			workflowTask = "Update"
+		);
+	}
 
-		<execute macro="MessageboardsThread#viewPGWithWorkflow">
-			<var name="threadBody" value="${threadBody}" />
-			<var name="threadSubject" value="${threadSubject}" />
-			<var name="workflowTask" value="Update" />
-		</execute>
-	</command>
+	tearDown {
+		MessageboardsThread.tearDownPG(pageName = "${pageName}");
 
-	<tear-down>
-		<execute macro="MessageboardsThread#tearDownPG">
-			<var name="pageName" value="${pageName}" />
-		</execute>
+		Page.tearDownPG();
 
-		<execute macro="Page#tearDownPG" />
+		Workflow.tearDownPortalWorkflow();
 
-		<execute macro="Workflow#tearDownPortalWorkflow" />
-
-		<execute macro="Workflow#tearDownSiteWorkflow" />
-	</tear-down>
-</definition>
+		Workflow.tearDownSiteWorkflow();
+	}
+}

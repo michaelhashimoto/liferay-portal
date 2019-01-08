@@ -1,763 +1,793 @@
-<definition component-name="social-office-dashboard">
-	<property name="hook.plugins.includes" value="deploy-listener-hook,portal-compat-hook,so-activities-hook,so-hook" />
-	<property name="portlet.plugins.includes" value="chat-portlet,contacts-portlet,events-display-portlet,microblogs-portlet,private-messaging-portlet,so-announcements-portlet,so-configurations-portlet,so-portlet,tasks-portlet,wysiwyg-portlet" />
-	<property name="testray.main.component.name" value="Social Office EE" />
-	<property name="theme.plugins.includes" value="so-theme" />
-
-	<set-up>
-		<execute macro="SOUser#firstLoginPG" />
-	</set-up>
-
-	<var name="adminEmailAddress" value="test@liferay.com" />
-	<var name="adminFirstName" value="Joe" />
-	<var name="adminListName" value="Bloggs, Joe" />
-	<var name="adminName" value="Joe Bloggs" />
-	<var name="adminScreenName" value="joebloggs" />
-	<var name="microblogsEntryAuthorFirstName" value="Joe" />
-	<var name="microblogsEntryAuthorLastName" value="Bloggs" />
-	<var name="microblogsEntryAuthorScreenName" value="joebloggs" />
-	<var name="microblogsEntryCommentContent" value="Microblogs Post Comment" />
-	<var name="microblogsEntryContent" value="Microblogs Post" />
-	<var name="microblogsEntryTagValue" value="Microblogs" />
-	<var name="userEmailAddress" value="socialoffice01@liferay.com" />
-	<var name="userFirstName" value="Social01" />
-	<var name="userLastName" value="User01" />
-	<var name="userListName" value="User01, Social01" />
-	<var name="userMiddleName" value="Office01" />
-	<var name="userName" value="Social01 Office01 User01" />
-	<var name="userScreenName" value="socialoffice01" />
-
-	<command name="AddMicroblogsEntriesTag" priority="5">
-		<execute macro="SOMicroblogs#gotoMicroblogsContentField" />
-
-		<execute macro="SOMicroblogs#addMicroblogsEntryHashtag">
-			<var name="microblogsEntryContent" value="${microblogsEntryContent}" />
-			<var name="microblogsEntryTagValue" value="${microblogsEntryTagValue}" />
-			<var name="number" value="01" />
-		</execute>
-
-		<execute macro="SOMicroblogs#gotoMicroblogsContentField" />
-
-		<execute macro="SOMicroblogs#addMicroblogsEntryHashtag">
-			<var name="microblogsEntryContent" value="${microblogsEntryContent}" />
-			<var name="microblogsEntryTagValue" value="${microblogsEntryTagValue}" />
-			<var name="number" value="02" />
-		</execute>
-
-		<execute macro="SOMicroblogs#gotoMicroblogsContentField" />
-
-		<execute macro="SOMicroblogs#addMicroblogsEntryHashtag">
-			<var name="microblogsEntryContent" value="${microblogsEntryContent}" />
-			<var name="microblogsEntryTagValue" value="${microblogsEntryTagValue}" />
-			<var name="number" value="03" />
-		</execute>
-
-		<execute macro="SOMicroblogs#viewOwnMicroblogsEntryTag">
-			<var name="microblogsEntryAuthorFirstName" value="${microblogsEntryAuthorFirstName}" />
-			<var name="microblogsEntryAuthorLastName" value="${microblogsEntryAuthorLastName}" />
-			<var name="microblogsEntryContent" value="${microblogsEntryContent}" />
-			<var name="microblogsEntryTagValue" value="${microblogsEntryTagValue}" />
-			<var name="number" value="01" />
-			<var name="whatsHappeningNumber" value="03" />
-		</execute>
-
-		<execute macro="SOMicroblogs#viewOwnMicroblogsEntryTag">
-			<var name="microblogsEntryAuthorFirstName" value="${microblogsEntryAuthorFirstName}" />
-			<var name="microblogsEntryAuthorLastName" value="${microblogsEntryAuthorLastName}" />
-			<var name="microblogsEntryContent" value="${microblogsEntryContent}" />
-			<var name="microblogsEntryTagValue" value="${microblogsEntryTagValue}" />
-			<var name="number" value="02" />
-			<var name="whatsHappeningNumber" value="03" />
-		</execute>
-
-		<execute macro="SOMicroblogs#viewOwnMicroblogsEntryTag">
-			<var name="microblogsEntryAuthorFirstName" value="${microblogsEntryAuthorFirstName}" />
-			<var name="microblogsEntryAuthorLastName" value="${microblogsEntryAuthorLastName}" />
-			<var name="microblogsEntryContent" value="${microblogsEntryContent}" />
-			<var name="microblogsEntryTagValue" value="${microblogsEntryTagValue}" />
-			<var name="number" value="03" />
-			<var name="whatsHappeningNumber" value="03" />
-		</execute>
-	</command>
-
-	<command name="AddMicroblogsEntryMentions" priority="5">
-		<execute macro="SOContactsCenter#addConnection">
-			<var name="adminEmailAddress" value="${adminEmailAddress}" />
-			<var name="senderName" value="${adminName}" />
-			<var name="userEmailAddress" value="${userEmailAddress}" />
-			<var name="userFirstName" value="${userFirstName}" />
-			<var name="userLastName" value="${userLastName}" />
-			<var name="userListName" value="${userLastName}, ${userFirstName}" />
-			<var name="userMiddleName" value="${userMiddleName}" />
-			<var name="userName" value="${userName}" />
-			<var name="userScreenName" value="${userScreenName}" />
-		</execute>
-
-		<execute macro="SOUser#logoutPG" />
-
-		<execute macro="SOUser#loginPG">
-			<var name="password" value="test" />
-			<var name="userEmailAddress" value="${adminEmailAddress}" />
-		</execute>
-
-		<execute macro="SOMicroblogs#gotoMicroblogsContentField" />
-
-		<execute macro="SOMicroblogs#addMicroblogsEntryMention">
-			<var name="mentionUserEmailAddress" value="${userEmailAddress}" />
-			<var name="mentionUserFirstName" value="${userFirstName}" />
-			<var name="mentionUserLastName" value="${userLastName}" />
-			<var name="mentionUserListName" value="${userListName}" />
-			<var name="mentionUserMiddleName" value="${userMiddleName}" />
-			<var name="mentionUserName" value="${userName}" />
-			<var name="mentionUserScreenName" value="${userScreenName}" />
-		</execute>
-
-		<execute macro="SOMicroblogs#viewOwnMicroblogsEntryMention">
-			<var name="mentionUserName" value="${userName}" />
-			<var name="microblogsEntryAuthorFirstName" value="${microblogsEntryAuthorFirstName}" />
-			<var name="microblogsEntryAuthorLastName" value="${microblogsEntryAuthorLastName}" />
-		</execute>
-
-		<execute macro="SOUser#logoutPG" />
-
-		<execute macro="SOUser#loginPG">
-			<var name="password" value="test" />
-			<var name="userEmailAddress" value="${userEmailAddress}" />
-		</execute>
-
-		<execute macro="SOMicroblogs#viewMicroblogsEntryMention">
-			<var name="mentionUserEmailAddress" value="${userEmailAddress}" />
-			<var name="mentionUserName" value="${userName}" />
-			<var name="microblogsEntryAuthorFirstName" value="${microblogsEntryAuthorFirstName}" />
-			<var name="microblogsEntryAuthorLastName" value="${microblogsEntryAuthorLastName}" />
-		</execute>
-	</command>
-
-	<command name="AddMicroblogsEntryTag" priority="5">
-		<execute macro="SOMicroblogs#gotoMicroblogsContentField" />
-
-		<execute macro="SOMicroblogs#addMicroblogsEntryHashtag">
-			<var name="microblogsEntryContent" value="${microblogsEntryContent}" />
-			<var name="microblogsEntryTagValue" value="${microblogsEntryTagValue}" />
-		</execute>
-
-		<execute macro="SOMicroblogs#viewOwnMicroblogsEntryTag">
-			<var name="microblogsEntryAuthorFirstName" value="${microblogsEntryAuthorFirstName}" />
-			<var name="microblogsEntryAuthorLastName" value="${microblogsEntryAuthorLastName}" />
-			<var name="microblogsEntryContent" value="${microblogsEntryContent}" />
-			<var name="microblogsEntryTagValue" value="${microblogsEntryTagValue}" />
-		</execute>
-	</command>
-
-	<command name="AddMicroblogsEntryViewableByConnections" priority="5">
-		<execute macro="SOUser#addUserWithSORole">
-			<var name="adminEmailAddress" value="${adminEmailAddress}" />
-			<var name="password" value="test" />
-			<var name="userEmailAddress" value="${userEmailAddress}" />
-			<var name="userFirstName" value="${userFirstName}" />
-			<var name="userLastName" value="${userLastName}" />
-			<var name="userMiddleName" value="${userMiddleName}" />
-			<var name="userScreenName" value="${userScreenName}" />
-		</execute>
-
-		<execute macro="SOUser#logoutPG" />
-
-		<execute macro="SOUser#loginPG">
-			<var name="password" value="test" />
-			<var name="userEmailAddress" value="${adminEmailAddress}" />
-		</execute>
-
-		<execute macro="SOMicroblogs#gotoMicroblogsContentField" />
-
-		<execute macro="SOMicroblogs#addMicroblogsEntry">
-			<var name="microblogsEntryContent" value="${microblogsEntryContent}" />
-			<var name="microblogsEntryViewableBy" value="Connections" />
-		</execute>
-
-		<execute macro="SOMicroblogs#viewOwnMicroblogsEntry">
-			<var name="microblogsEntryAuthorFirstName" value="${microblogsEntryAuthorFirstName}" />
-			<var name="microblogsEntryAuthorLastName" value="${microblogsEntryAuthorLastName}" />
-		</execute>
-
-		<execute macro="SOUser#logoutPG" />
-
-		<execute macro="SOUser#loginPG">
-			<var name="password" value="test" />
-			<var name="userEmailAddress" value="${userEmailAddress}" />
-		</execute>
-
-		<execute macro="SOMicroblogs#viewMicroblogsEntryNone" />
-
-		<execute macro="SOUser#logoutPG" />
-
-		<execute macro="SOUser#loginPG">
-			<var name="password" value="test" />
-			<var name="userEmailAddress" value="${adminEmailAddress}" />
-		</execute>
-
-		<execute macro="SOContactsCenter#requestToConnect">
-			<var name="userEmailAddress" value="${userEmailAddress}" />
-			<var name="userListName" value="${userListName}" />
-			<var name="userName" value="${userName}" />
-			<var name="userScreenName" value="${userScreenName}" />
-		</execute>
-
-		<execute macro="SOUser#logoutPG" />
-
-		<execute macro="SOUser#loginPG">
-			<var name="password" value="test" />
-			<var name="userEmailAddress" value="${userEmailAddress}" />
-		</execute>
-
-		<execute macro="SOContactsCenter#confirmRequestToConnect">
-			<var name="senderName" value="${adminName}" />
-			<var name="userName" value="${userName}" />
-		</execute>
-
-		<execute function="Click#textClickAt" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
-
-		<execute function="AssertClick#assertTextClickAt" locator1="SOActivities#NAVIGATION_CONNECTIONS" value1="Connections" />
-
-		<execute macro="SOActivities#viewMicroblogsNotViewableByEveryoneActivityEntry">
-			<var name="userFirstName" value="${microblogsEntryAuthorFirstName}" />
-			<var name="userName" value="${microblogsEntryAuthorFirstName} ${microblogsEntryAuthorLastName}" />
-		</execute>
-
-		<execute macro="SOMicroblogs#viewMicroblogsEntryNotViewableByEveryone">
-			<var name="microblogsEntryAuthor" value="${microblogsEntryAuthor}" />
-			<var name="microblogsEntryAuthorFirstName" value="${microblogsEntryAuthorFirstName}" />
-			<var name="microblogsEntryAuthorLastName" value="${microblogsEntryAuthorLastName}" />
-			<var name="microblogsEntryContent" value="${microblogsEntryContent}" />
-		</execute>
-	</command>
-
-	<command name="AddMicroblogsEntryViewableByConnectionsComment" priority="5">
-		<execute macro="SOContactsCenter#addConnection">
-			<var name="adminEmailAddress" value="${adminEmailAddress}" />
-			<var name="senderName" value="${adminName}" />
-			<var name="userEmailAddress" value="${userEmailAddress}" />
-			<var name="userFirstName" value="${userFirstName}" />
-			<var name="userLastName" value="${userLastName}" />
-			<var name="userListName" value="${userListName}" />
-			<var name="userMiddleName" value="${userMiddleName}" />
-			<var name="userName" value="${userName}" />
-			<var name="userScreenName" value="${userScreenName}" />
-		</execute>
-
-		<execute macro="SOUser#logoutPG" />
-
-		<execute macro="SOUser#loginPG">
-			<var name="password" value="test" />
-			<var name="userEmailAddress" value="${adminEmailAddress}" />
-		</execute>
-
-		<execute macro="SOMicroblogs#gotoMicroblogsContentField" />
-
-		<execute macro="SOMicroblogs#addMicroblogsEntry">
-			<var name="microblogsEntryContent" value="${microblogsEntryContent}" />
-			<var name="microblogsEntryViewableBy" value="Connections" />
-		</execute>
-
-		<execute macro="SOUser#logoutPG" />
-
-		<execute macro="SOUser#loginPG">
-			<var name="password" value="test" />
-			<var name="userEmailAddress" value="${userEmailAddress}" />
-		</execute>
-
-		<execute function="Click#textClickAt" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
-
-		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_MICROBLOGS" value1="Microblogs" />
-
-		<execute macro="SOMicroblogs#addMicroblogsEntryComment">
-			<var name="microblogsEntryAuthorFirstName" value="${microblogsEntryAuthorFirstName}" />
-			<var name="microblogsEntryAuthorLastName" value="${microblogsEntryAuthorLastName}" />
-			<var name="microblogsEntryCommentContent" value="${microblogsEntryCommentContent}" />
-			<var name="microblogsEntryContent" value="${microblogsEntryContent}" />
-		</execute>
-
-		<execute macro="SOMicroblogs#viewMicroblogsEntryNotViewableByEveryone">
-			<var name="commentCount" value="1" />
-			<var name="microblogsEntryAuthor" value="${microblogsEntryAuthor}" />
-			<var name="microblogsEntryAuthorFirstName" value="${microblogsEntryAuthorFirstName}" />
-			<var name="microblogsEntryAuthorLastName" value="${microblogsEntryAuthorLastName}" />
-			<var name="microblogsEntryContent" value="${microblogsEntryContent}" />
-		</execute>
-
-		<execute macro="SOMicroblogs#viewMicroblogsEntryComment">
-			<var name="commentCount" value="1" />
-			<var name="microblogsEntryCommentAuthorFirstName" value="${userFirstName}" />
-			<var name="microblogsEntryCommentAuthorLastName" value="${userLastName}" />
-			<var name="microblogsEntryCommentAuthorMiddleName" value="${userMiddleName}" />
-			<var name="microblogsEntryCommentContent" value="${microblogsEntryCommentContent}" />
-		</execute>
-
-		<execute macro="SOUser#logoutPG" />
-
-		<execute macro="SOUser#loginPG">
-			<var name="password" value="test" />
-			<var name="userEmailAddress" value="${adminEmailAddress}" />
-		</execute>
-
-		<execute macro="SOMicroblogs#viewOwnMicroblogsEntry">
-			<var name="commentCount" value="1" />
-			<var name="microblogsEntryAuthorFirstName" value="${microblogsEntryAuthorFirstName}" />
-			<var name="microblogsEntryAuthorLastName" value="${microblogsEntryAuthorLastName}" />
-		</execute>
-
-		<execute macro="SOMicroblogs#viewMicroblogsEntryComment">
-			<var name="commentCount" value="1" />
-			<var name="microblogsEntryCommentAuthorFirstName" value="${userFirstName}" />
-			<var name="microblogsEntryCommentAuthorLastName" value="${userLastName}" />
-			<var name="microblogsEntryCommentAuthorMiddleName" value="${userMiddleName}" />
-			<var name="microblogsEntryCommentContent" value="${microblogsEntryCommentContent}" />
-		</execute>
-
-		<execute macro="SOMicroblogs#viewMicroblogsEntryCommentNotification">
-			<var name="microblogsEntryCommentAuthorFirstName" value="${userFirstName}" />
-			<var name="microblogsEntryCommentAuthorLastName" value="${userLastName}" />
-			<var name="microblogsEntryCommentAuthorMiddleName" value="${userMiddleName}" />
-			<var name="microblogsEntryCommentContent" value="${microblogsEntryCommentContent}" />
-		</execute>
-	</command>
-
-	<command name="AddMicroblogsEntryViewableByEveryone" priority="5">
-		<execute macro="SOUser#addUserWithSORole">
-			<var name="adminEmailAddress" value="${adminEmailAddress}" />
-			<var name="password" value="test" />
-			<var name="userEmailAddress" value="${userEmailAddress}" />
-			<var name="userFirstName" value="${userFirstName}" />
-			<var name="userLastName" value="${userLastName}" />
-			<var name="userMiddleName" value="${userMiddleName}" />
-			<var name="userScreenName" value="${userScreenName}" />
-		</execute>
-
-		<execute macro="SOMicroblogs#gotoMicroblogsContentField" />
-
-		<execute macro="SOMicroblogs#addMicroblogsEntry">
-			<var name="microblogsEntryContent" value="${microblogsEntryContent}" />
-		</execute>
-
-		<execute macro="SOMicroblogs#viewOwnMicroblogsEntry">
-			<var name="microblogsEntryAuthorFirstName" value="${microblogsEntryAuthorFirstName}" />
-			<var name="microblogsEntryAuthorLastName" value="${microblogsEntryAuthorLastName}" />
-			<var name="microblogsEntryContent" value="${microblogsEntryContent}" />
-		</execute>
-
-		<execute macro="SOUser#logoutPG" />
-
-		<execute macro="SOUser#loginPG">
-			<var name="password" value="test" />
-			<var name="userEmailAddress" value="${userEmailAddress}" />
-		</execute>
-
-		<execute macro="SOMicroblogs#viewMicroblogsEntryViewableByEveryone">
-			<var name="microblogsEntryAuthor" value="${microblogsEntryAuthor}" />
-			<var name="microblogsEntryContent" value="${microblogsEntryContent}" />
-		</execute>
-	</command>
-
-	<command name="AddMicroblogsEntryViewableByEveryoneCommentMention" priority="5">
-		<execute macro="SOContactsCenter#addConnection">
-			<var name="adminEmailAddress" value="${adminEmailAddress}" />
-			<var name="senderName" value="${adminName}" />
-			<var name="userEmailAddress" value="${userEmailAddress}" />
-			<var name="userFirstName" value="${userFirstName}" />
-			<var name="userLastName" value="${userLastName}" />
-			<var name="userListName" value="${userListName}" />
-			<var name="userMiddleName" value="${userMiddleName}" />
-			<var name="userName" value="${userName}" />
-			<var name="userScreenName" value="${userScreenName}" />
-		</execute>
-
-		<execute macro="SOUser#logoutPG" />
-
-		<execute macro="SOUser#loginPG">
-			<var name="password" value="test" />
-			<var name="userEmailAddress" value="${adminEmailAddress}" />
-		</execute>
-
-		<execute macro="SOMicroblogs#gotoMicroblogsContentField" />
-
-		<execute macro="SOMicroblogs#addMicroblogsEntry">
-			<var name="microblogsEntryContent" value="${microblogsEntryContent}" />
-		</execute>
-
-		<execute macro="SOUser#logoutPG" />
-
-		<execute macro="SOUser#loginPG">
-			<var name="password" value="test" />
-			<var name="userEmailAddress" value="${userEmailAddress}" />
-		</execute>
-
-		<var name="profileScreenName" value="${microblogsEntryAuthorScreenName}" />
-
-		<execute function="Open" locator1="SOProfile#PROFILE_URL" />
-
-		<execute function="Click" locator1="SOProfile#NAVIGATION_MICROBLOGS" />
-
-		<execute macro="SOMicroblogs#addMicroblogsEntryCommentMention">
-			<var name="mentionUserEmailAddress" value="${adminEmailAddress}" />
-			<var name="mentionUserFirstName" value="${adminFirstName}" />
-			<var name="mentionUserName" value="${adminName}" />
-			<var name="microblogsEntryCommentContent" value="${microblogsEntryCommentContent}" />
-		</execute>
-
-		<execute function="Click#textClickAt" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
-
-		<execute macro="SOActivities#viewMicroblogsCommentActivityEntry">
-			<var name="commentCount" value="1" />
-			<var name="microblogsEntryCommentContent" value="${microblogsEntryCommentContent} [@${adminScreenName}]" />
-		</execute>
-
-		<execute macro="SOUser#logoutPG" />
-
-		<execute macro="SOUser#loginPG">
-			<var name="password" value="test" />
-			<var name="userEmailAddress" value="${adminEmailAddress}" />
-		</execute>
-
-		<execute macro="SOMicroblogs#viewMicroblogsEntryCommentNotification">
-			<var name="microblogsEntryCommentAuthorFirstName" value="${userFirstName}" />
-			<var name="microblogsEntryCommentAuthorLastName" value="${userLastName}" />
-			<var name="microblogsEntryCommentAuthorMiddleName" value="${userMiddleName}" />
-			<var name="microblogsEntryCommentContent" value="${microblogsEntryCommentContent} [@${adminScreenName}]" />
-		</execute>
-
-		<execute function="Click#textClickAt" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
-
-		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_MICROBLOGS" value1="Microblogs" />
-
-		<execute function="AssertClick#assertTextClickAt" locator1="SOMicroblogs#TAB_MENTIONS" value1="Mentions" />
-
-		<execute macro="SOMicroblogs#viewMicroblogsEntryAuthor">
-			<var name="microblogsEntryAuthorFirstName" value="${userFirstName}" />
-			<var name="microblogsEntryAuthorLastName" value="${userLastName}" />
-			<var name="microblogsEntryAuthorMiddleName" value="${userMiddleName}" />
-		</execute>
-
-		<execute function="AssertTextEquals" locator1="SOMicroblogs#MICROBLOGS_ENTRY_CONTENT" value1="${microblogsEntryCommentContent} ${adminName}" />
-		<execute function="AssertTextEquals" locator1="SOMicroblogs#MICROBLOGS_ENTRY_CONTENT_TAG" value1="${adminName}" />
-	</command>
-
-	<command name="AddMicroblogsEntryViewableByFollowers" priority="5">
-		<execute macro="SOUser#addUserWithSORole">
-			<var name="adminEmailAddress" value="${adminEmailAddress}" />
-			<var name="password" value="test" />
-			<var name="userEmailAddress" value="${userEmailAddress}" />
-			<var name="userFirstName" value="${userFirstName}" />
-			<var name="userLastName" value="${userLastName}" />
-			<var name="userMiddleName" value="${userMiddleName}" />
-			<var name="userScreenName" value="${userScreenName}" />
-		</execute>
-
-		<execute macro="SOUser#logoutPG" />
-
-		<execute macro="SOUser#loginPG">
-			<var name="password" value="test" />
-			<var name="userEmailAddress" value="${adminEmailAddress}" />
-		</execute>
-
-		<execute macro="SOMicroblogs#gotoMicroblogsContentField" />
-
-		<execute macro="SOMicroblogs#addMicroblogsEntry">
-			<var name="microblogsEntryContent" value="${microblogsEntryContent}" />
-			<var name="microblogsEntryViewableBy" value="Followers" />
-		</execute>
-
-		<execute macro="SOMicroblogs#viewOwnMicroblogsEntry">
-			<var name="microblogsEntryAuthorFirstName" value="${microblogsEntryAuthorFirstName}" />
-			<var name="microblogsEntryAuthorLastName" value="${microblogsEntryAuthorLastName}" />
-		</execute>
-
-		<execute macro="SOUser#logoutPG" />
-
-		<execute macro="SOUser#loginPG">
-			<var name="password" value="test" />
-			<var name="userEmailAddress" value="${userEmailAddress}" />
-		</execute>
-
-		<execute macro="SOMicroblogs#viewMicroblogsEntryNone" />
-
-		<execute macro="SOContactsCenter#followUser">
-			<var name="adminEmailAddress" value="${adminEmailAddress}" />
-			<var name="adminListName" value="${adminListName}" />
-			<var name="adminName" value="${adminName}" />
-		</execute>
-
-		<execute function="Click#textClickAt" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
-
-		<execute function="AssertClick#assertTextClickAt" locator1="SOActivities#NAVIGATION_FOLLOWING" value1="Following" />
-
-		<execute macro="SOActivities#viewMicroblogsNotViewableByEveryoneActivityEntry">
-			<var name="userFirstName" value="${microblogsEntryAuthorFirstName}" />
-			<var name="userName" value="${microblogsEntryAuthorFirstName} ${microblogsEntryAuthorLastName}" />
-		</execute>
-
-		<execute macro="SOMicroblogs#viewMicroblogsEntryNotViewableByEveryone">
-			<var name="microblogsEntryAuthor" value="${microblogsEntryAuthor}" />
-			<var name="microblogsEntryAuthorFirstName" value="${microblogsEntryAuthorFirstName}" />
-			<var name="microblogsEntryAuthorLastName" value="${microblogsEntryAuthorLastName}" />
-			<var name="microblogsEntryContent" value="${microblogsEntryContent}" />
-		</execute>
-	</command>
-
-	<command name="AddMicroblogsEntryViewableByFollowersComment" priority="5">
-		<execute macro="SOContactsCenter#addFollower">
-			<var name="adminEmailAddress" value="${adminEmailAddress}" />
-			<var name="adminListName" value="${adminListName}" />
-			<var name="adminName" value="${adminName}" />
-			<var name="userEmailAddress" value="${userEmailAddress}" />
-			<var name="userFirstName" value="${userFirstName}" />
-			<var name="userLastName" value="${userLastName}" />
-			<var name="userListName" value="${userListName}" />
-			<var name="userMiddleName" value="${userMiddleName}" />
-			<var name="userName" value="${userName}" />
-			<var name="userScreenName" value="${userScreenName}" />
-		</execute>
-
-		<execute macro="SOUser#logoutPG" />
-
-		<execute macro="SOUser#loginPG">
-			<var name="password" value="test" />
-			<var name="userEmailAddress" value="${adminEmailAddress}" />
-		</execute>
-
-		<execute macro="SOMicroblogs#gotoMicroblogsContentField" />
-
-		<execute macro="SOMicroblogs#addMicroblogsEntry">
-			<var name="microblogsEntryContent" value="${microblogsEntryContent}" />
-			<var name="microblogsEntryViewableBy" value="Followers" />
-		</execute>
-
-		<execute macro="SOUser#logoutPG" />
-
-		<execute macro="SOUser#loginPG">
-			<var name="password" value="test" />
-			<var name="userEmailAddress" value="${userEmailAddress}" />
-		</execute>
-
-		<execute function="Click#textClickAt" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
-
-		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_MICROBLOGS" value1="Microblogs" />
-
-		<execute macro="SOMicroblogs#addMicroblogsEntryComment">
-			<var name="microblogsEntryCommentContent" value="${microblogsEntryCommentContent}" />
-			<var name="microblogsEntryContent" value="${microblogsEntryContent}" />
-		</execute>
-
-		<execute macro="SOMicroblogs#viewMicroblogsEntryNotViewableByEveryone">
-			<var name="commentCount" value="1" />
-			<var name="microblogsEntryAuthor" value="${microblogsEntryAuthor}" />
-			<var name="microblogsEntryAuthorFirstName" value="${microblogsEntryAuthorFirstName}" />
-			<var name="microblogsEntryAuthorLastName" value="${microblogsEntryAuthorLastName}" />
-			<var name="microblogsEntryContent" value="${microblogsEntryContent}" />
-		</execute>
-
-		<execute macro="SOMicroblogs#viewMicroblogsEntryComment">
-			<var name="commentCount" value="1" />
-			<var name="microblogsEntryCommentAuthorFirstName" value="${userFirstName}" />
-			<var name="microblogsEntryCommentAuthorLastName" value="${userLastName}" />
-			<var name="microblogsEntryCommentAuthorMiddleName" value="${userMiddleName}" />
-			<var name="microblogsEntryCommentContent" value="${microblogsEntryCommentContent}" />
-		</execute>
-
-		<execute macro="SOUser#logoutPG" />
-
-		<execute macro="SOUser#loginPG">
-			<var name="password" value="test" />
-			<var name="userEmailAddress" value="${adminEmailAddress}" />
-		</execute>
-
-		<execute macro="SOMicroblogs#viewOwnMicroblogsEntry">
-			<var name="commentCount" value="1" />
-			<var name="microblogsEntryAuthorFirstName" value="${microblogsEntryAuthorFirstName}" />
-			<var name="microblogsEntryAuthorLastName" value="${microblogsEntryAuthorLastName}" />
-		</execute>
-
-		<execute macro="SOMicroblogs#viewMicroblogsEntryComment">
-			<var name="commentCount" value="1" />
-			<var name="microblogsEntryCommentAuthorFirstName" value="${userFirstName}" />
-			<var name="microblogsEntryCommentAuthorLastName" value="${userLastName}" />
-			<var name="microblogsEntryCommentAuthorMiddleName" value="${userMiddleName}" />
-			<var name="microblogsEntryCommentContent" value="${microblogsEntryCommentContent}" />
-		</execute>
-
-		<execute macro="SOMicroblogs#viewMicroblogsEntryCommentNotification">
-			<var name="microblogsEntryCommentAuthorFirstName" value="${userFirstName}" />
-			<var name="microblogsEntryCommentAuthorLastName" value="${userLastName}" />
-			<var name="microblogsEntryCommentAuthorMiddleName" value="${userMiddleName}" />
-			<var name="microblogsEntryCommentContent" value="${microblogsEntryCommentContent}" />
-		</execute>
-	</command>
-
-	<command name="DeleteMicroblogsEntry" priority="5">
-		<execute macro="SOMicroblogs#gotoMicroblogsContentField" />
-
-		<execute macro="SOMicroblogs#addMicroblogsEntry">
-			<var name="microblogsEntryContent" value="${microblogsEntryContent}" />
-		</execute>
-
-		<execute function="Click#textClickAt" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
-
-		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_MICROBLOGS" value1="Microblogs" />
-
-		<execute macro="SOMicroblogs#deleteMicroblogsEntry" />
-
-		<execute function="AssertTextEquals" locator1="SOMicroblogs#INFO_MESSAGE" value1="You do not have any microblog entries." />
-		<execute function="AssertElementNotPresent" locator1="SOMicroblogs#MICROBLOGS_ENTRY_CONTENT" value1="${microblogsEntryContent}" />
-	</command>
-
-	<command name="RepostMicroblogsEntry" priority="5">
-		<execute macro="SOUser#addUserWithSORole">
-			<var name="adminEmailAddress" value="${adminEmailAddress}" />
-			<var name="password" value="test" />
-			<var name="userEmailAddress" value="${userEmailAddress}" />
-			<var name="userFirstName" value="${userFirstName}" />
-			<var name="userLastName" value="${userLastName}" />
-			<var name="userMiddleName" value="${userMiddleName}" />
-			<var name="userScreenName" value="${userScreenName}" />
-		</execute>
-
-		<execute macro="SOMicroblogs#gotoMicroblogsContentField" />
-
-		<execute macro="SOMicroblogs#addMicroblogsEntry">
-			<var name="microblogsEntryContent" value="${microblogsEntryContent}" />
-		</execute>
-
-		<execute macro="SOMicroblogs#viewOwnMicroblogsEntry">
-			<var name="microblogsEntryAuthorFirstName" value="${microblogsEntryAuthorFirstName}" />
-			<var name="microblogsEntryAuthorLastName" value="${microblogsEntryAuthorLastName}" />
-			<var name="microblogsEntryContent" value="${microblogsEntryContent}" />
-		</execute>
-
-		<execute macro="SOUser#logoutPG" />
-
-		<execute macro="SOUser#loginPG">
-			<var name="password" value="test" />
-			<var name="userEmailAddress" value="${userEmailAddress}" />
-		</execute>
-
-		<execute macro="SOMicroblogs#repostMicroblogsEntry">
-			<var name="microblogsEntryAuthorFirstName" value="${microblogsEntryAuthorFirstName}" />
-			<var name="microblogsEntryAuthorLastName" value="${microblogsEntryAuthorLastName}" />
-			<var name="microblogsEntryContent" value="${microblogsEntryContent}" />
-		</execute>
-
-		<execute function="Click#textClickAt" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
-
-		<execute function="AssertClick" locator1="SOActivities#NAVIGATION_ME" value1="Me" />
-
-		<execute macro="SOActivities#viewMicroblogsRepostActivityEntry">
-			<var name="microblogsEntryAuthorFirstName" value="${microblogsEntryAuthorFirstName}" />
-			<var name="microblogsEntryAuthorLastName" value="${microblogsEntryAuthorLastName}" />
-			<var name="microblogsEntryContent" value="${microblogsEntryContent}" />
-			<var name="microblogsEntryRepostAuthorFirstName" value="${userFirstName}" />
-			<var name="microblogsEntryRepostAuthorLastName" value="${userLastName}" />
-			<var name="microblogsEntryRepostAuthorMiddleName" value="${userMiddleName}" />
-		</execute>
-
-		<execute macro="SOMicroblogs#viewOwnMicroblogsRepost">
-			<var name="microblogsEntryAuthorFirstName" value="${microblogsEntryAuthorFirstName}" />
-			<var name="microblogsEntryAuthorLastName" value="${microblogsEntryAuthorLastName}" />
-			<var name="microblogsEntryContent" value="${microblogsEntryContent}" />
-			<var name="microblogsEntryRepostAuthorFirstName" value="${userFirstName}" />
-			<var name="microblogsEntryRepostAuthorLastName" value="${userLastName}" />
-			<var name="microblogsEntryRepostAuthorMiddleName" value="${userMiddleName}" />
-		</execute>
-
-		<execute macro="SOUser#logoutPG" />
-
-		<execute macro="SOUser#loginPG">
-			<var name="password" value="test" />
-			<var name="userEmailAddress" value="${adminEmailAddress}" />
-		</execute>
-
-		<execute macro="SOActivities#viewMicroblogsActivityEntryProfile">
-			<var name="microblogsEntryAuthorFirstName" value="${microblogsEntryAuthorFirstName}" />
-			<var name="microblogsEntryAuthorLastName" value="${microblogsEntryAuthorLastName}" />
-			<var name="microblogsEntryContent" value="${microblogsEntryContent}" />
-		</execute>
-
-		<execute macro="SOActivities#viewMicroblogsRepostActivityEntryProfile">
-			<var name="microblogsEntryAuthorFirstName" value="${microblogsEntryAuthorFirstName}" />
-			<var name="microblogsEntryAuthorLastName" value="${microblogsEntryAuthorLastName}" />
-			<var name="microblogsEntryContent" value="${microblogsEntryContent}" />
-			<var name="microblogsEntryRepostAuthorFirstName" value="${userFirstName}" />
-			<var name="microblogsEntryRepostAuthorLastName" value="${userLastName}" />
-			<var name="microblogsEntryRepostAuthorMiddleName" value="${userMiddleName}" />
-			<var name="profileScreenName" value="${userScreenName}" />
-		</execute>
-
-		<execute function="Click" locator1="SOProfile#NAVIGATION_MICROBLOGS" />
-
-		<execute macro="SOMicroblogs#viewMicroblogsEntryAuthor">
-			<var name="microblogsEntryAuthorFirstName" value="${microblogsEntryAuthorFirstName}" />
-			<var name="microblogsEntryAuthorLastName" value="${microblogsEntryAuthorLastName}" />
-			<var name="microblogsEntryRepostAuthorFirstName" value="${userFirstName}" />
-			<var name="microblogsEntryRepostAuthorLastName" value="${userLastName}" />
-			<var name="microblogsEntryRepostAuthorMiddleName" value="${userMiddleName}" />
-		</execute>
-
-		<execute function="AssertTextEquals" locator1="SOMicroblogs#MICROBLOGS_ENTRY_CONTENT" value1="${microblogsEntryContent}" />
-	</command>
-
-	<command name="ViewMicroblogsTimeline" priority="5">
-		<execute macro="SOMicroblogs#gotoMicroblogsContentField" />
-
-		<execute macro="SOMicroblogs#addMicroblogsEntry">
-			<var name="microblogsEntryContent" value="${microblogsEntryContent}" />
-			<var name="microblogsEntryViewableBy" value="Connections" />
-			<var name="number" value="01" />
-		</execute>
-
-		<execute macro="SOMicroblogs#gotoMicroblogsContentField" />
-
-		<execute macro="SOMicroblogs#addMicroblogsEntry">
-			<var name="microblogsEntryContent" value="${microblogsEntryContent}" />
-			<var name="microblogsEntryViewableBy" value="Followers" />
-			<var name="number" value="02" />
-		</execute>
-
-		<execute macro="SOMicroblogs#gotoMicroblogsContentField" />
-
-		<execute macro="SOMicroblogs#addMicroblogsEntry">
-			<var name="microblogsEntryContent" value="${microblogsEntryContent}" />
-			<var name="number" value="03" />
-		</execute>
-
-		<execute function="Click#textClickAt" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
-
-		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_MICROBLOGS" value1="Microblogs" />
-
-		<execute function="AssertClick#assertTextClickAt" locator1="SOMicroblogs#TAB_TIMELINE" value1="Timeline" />
-
-		<execute function="Pause" value1="1000" />
-
-		<var name="number" value="01" />
-
-		<execute function="AssertTextEquals" locator1="SOMicroblogs#MICROBLOGS_ENTRY_AUTHOR_INCREMENT" value1="${microblogsEntryAuthorFirstName} ${microblogsEntryAuthorLastName}" />
-		<execute function="AssertTextEquals" locator1="SOMicroblogs#MICROBLOGS_ENTRY_CONTENT_INCREMENT" value1="${microblogsEntryContent}${number}" />
-		<execute function="AssertTextEquals" locator1="SOMicroblogs#MICROBLOGS_ENTRY_COMMENT_LINK_INCREMENT" value1="Comment" />
-
-		<var name="number" value="02" />
-
-		<execute function="AssertTextEquals" locator1="SOMicroblogs#MICROBLOGS_ENTRY_AUTHOR_INCREMENT" value1="${microblogsEntryAuthorFirstName} ${microblogsEntryAuthorLastName}" />
-		<execute function="AssertTextEquals" locator1="SOMicroblogs#MICROBLOGS_ENTRY_CONTENT_INCREMENT" value1="${microblogsEntryContent}${number}" />
-		<execute function="AssertTextEquals" locator1="SOMicroblogs#MICROBLOGS_ENTRY_COMMENT_LINK_INCREMENT" value1="Comment" />
-
-		<var name="number" value="03" />
-
-		<execute function="AssertTextEquals" locator1="SOMicroblogs#MICROBLOGS_ENTRY_AUTHOR_INCREMENT" value1="${microblogsEntryAuthorFirstName} ${microblogsEntryAuthorLastName}" />
-		<execute function="AssertTextEquals" locator1="SOMicroblogs#MICROBLOGS_ENTRY_CONTENT_INCREMENT" value1="${microblogsEntryContent}${number}" />
-		<execute function="AssertTextEquals" locator1="SOMicroblogs#MICROBLOGS_ENTRY_COMMENT_LINK_INCREMENT" value1="Comment" />
-	</command>
-
-	<tear-down>
-		<execute macro="SOMicroblogs#tearDownMicroblogsEntry" />
-
-		<execute macro="SOUser#tearDownCP" />
-
-		<execute macro="SOUserBar#tearDownNotifications" />
-	</tear-down>
-</definition>
+@component-name = "social-office-dashboard"
+definition {
+	property hook.plugins.includes = "deploy-listener-hook,portal-compat-hook,so-activities-hook,so-hook";
+	property portlet.plugins.includes = "chat-portlet,contacts-portlet,events-display-portlet,microblogs-portlet,private-messaging-portlet,so-announcements-portlet,so-configurations-portlet,so-portlet,tasks-portlet,wysiwyg-portlet";
+	property testray.main.component.name = "Social Office EE";
+	property theme.plugins.includes = "so-theme";
+
+	setUp {
+		SOUser.firstLoginPG();
+	}
+
+	var adminEmailAddress = "test@liferay.com";
+	var adminFirstName = "Joe";
+	var adminListName = "Bloggs, Joe";
+	var adminName = "Joe Bloggs";
+	var adminScreenName = "joebloggs";
+	var microblogsEntryAuthorFirstName = "Joe";
+	var microblogsEntryAuthorLastName = "Bloggs";
+	var microblogsEntryAuthorScreenName = "joebloggs";
+	var microblogsEntryCommentContent = "Microblogs Post Comment";
+	var microblogsEntryContent = "Microblogs Post";
+	var microblogsEntryTagValue = "Microblogs";
+	var userEmailAddress = "socialoffice01@liferay.com";
+	var userFirstName = "Social01";
+	var userLastName = "User01";
+	var userListName = "User01, Social01";
+	var userMiddleName = "Office01";
+	var userName = "Social01 Office01 User01";
+	var userScreenName = "socialoffice01";
+
+	@priority = "5"
+	test AddMicroblogsEntriesTag {
+		SOMicroblogs.gotoMicroblogsContentField();
+
+		SOMicroblogs.addMicroblogsEntryHashtag(
+			microblogsEntryContent = "${microblogsEntryContent}",
+			microblogsEntryTagValue = "${microblogsEntryTagValue}",
+			number = "01"
+		);
+
+		SOMicroblogs.gotoMicroblogsContentField();
+
+		SOMicroblogs.addMicroblogsEntryHashtag(
+			microblogsEntryContent = "${microblogsEntryContent}",
+			microblogsEntryTagValue = "${microblogsEntryTagValue}",
+			number = "02"
+		);
+
+		SOMicroblogs.gotoMicroblogsContentField();
+
+		SOMicroblogs.addMicroblogsEntryHashtag(
+			microblogsEntryContent = "${microblogsEntryContent}",
+			microblogsEntryTagValue = "${microblogsEntryTagValue}",
+			number = "03"
+		);
+
+		SOMicroblogs.viewOwnMicroblogsEntryTag(
+			microblogsEntryAuthorFirstName = "${microblogsEntryAuthorFirstName}",
+			microblogsEntryAuthorLastName = "${microblogsEntryAuthorLastName}",
+			microblogsEntryContent = "${microblogsEntryContent}",
+			microblogsEntryTagValue = "${microblogsEntryTagValue}",
+			number = "01",
+			whatsHappeningNumber = "03"
+		);
+
+		SOMicroblogs.viewOwnMicroblogsEntryTag(
+			microblogsEntryAuthorFirstName = "${microblogsEntryAuthorFirstName}",
+			microblogsEntryAuthorLastName = "${microblogsEntryAuthorLastName}",
+			microblogsEntryContent = "${microblogsEntryContent}",
+			microblogsEntryTagValue = "${microblogsEntryTagValue}",
+			number = "02",
+			whatsHappeningNumber = "03"
+		);
+
+		SOMicroblogs.viewOwnMicroblogsEntryTag(
+			microblogsEntryAuthorFirstName = "${microblogsEntryAuthorFirstName}",
+			microblogsEntryAuthorLastName = "${microblogsEntryAuthorLastName}",
+			microblogsEntryContent = "${microblogsEntryContent}",
+			microblogsEntryTagValue = "${microblogsEntryTagValue}",
+			number = "03",
+			whatsHappeningNumber = "03"
+		);
+	}
+
+	@priority = "5"
+	test AddMicroblogsEntryMentions {
+		SOContactsCenter.addConnection(
+			adminEmailAddress = "${adminEmailAddress}",
+			senderName = "${adminName}",
+			userEmailAddress = "${userEmailAddress}",
+			userFirstName = "${userFirstName}",
+			userLastName = "${userLastName}",
+			userListName = "${userLastName}, ${userFirstName}",
+			userMiddleName = "${userMiddleName}",
+			userName = "${userName}",
+			userScreenName = "${userScreenName}"
+		);
+
+		SOUser.logoutPG();
+
+		SOUser.loginPG(password = "test", userEmailAddress = "${adminEmailAddress}");
+
+		SOMicroblogs.gotoMicroblogsContentField();
+
+		SOMicroblogs.addMicroblogsEntryMention(
+			mentionUserEmailAddress = "${userEmailAddress}",
+			mentionUserFirstName = "${userFirstName}",
+			mentionUserLastName = "${userLastName}",
+			mentionUserListName = "${userListName}",
+			mentionUserMiddleName = "${userMiddleName}",
+			mentionUserName = "${userName}",
+			mentionUserScreenName = "${userScreenName}"
+		);
+
+		SOMicroblogs.viewOwnMicroblogsEntryMention(
+			mentionUserName = "${userName}",
+			microblogsEntryAuthorFirstName = "${microblogsEntryAuthorFirstName}",
+			microblogsEntryAuthorLastName = "${microblogsEntryAuthorLastName}"
+		);
+
+		SOUser.logoutPG();
+
+		SOUser.loginPG(password = "test", userEmailAddress = "${userEmailAddress}");
+
+		SOMicroblogs.viewMicroblogsEntryMention(
+			mentionUserEmailAddress = "${userEmailAddress}",
+			mentionUserName = "${userName}",
+			microblogsEntryAuthorFirstName = "${microblogsEntryAuthorFirstName}",
+			microblogsEntryAuthorLastName = "${microblogsEntryAuthorLastName}"
+		);
+	}
+
+	@priority = "5"
+	test AddMicroblogsEntryTag {
+		SOMicroblogs.gotoMicroblogsContentField();
+
+		SOMicroblogs.addMicroblogsEntryHashtag(
+			microblogsEntryContent = "${microblogsEntryContent}",
+			microblogsEntryTagValue = "${microblogsEntryTagValue}"
+		);
+
+		SOMicroblogs.viewOwnMicroblogsEntryTag(
+			microblogsEntryAuthorFirstName = "${microblogsEntryAuthorFirstName}",
+			microblogsEntryAuthorLastName = "${microblogsEntryAuthorLastName}",
+			microblogsEntryContent = "${microblogsEntryContent}",
+			microblogsEntryTagValue = "${microblogsEntryTagValue}"
+		);
+	}
+
+	@priority = "5"
+	test AddMicroblogsEntryViewableByConnections {
+		SOUser.addUserWithSORole(
+			adminEmailAddress = "${adminEmailAddress}",
+			password = "test",
+			userEmailAddress = "${userEmailAddress}",
+			userFirstName = "${userFirstName}",
+			userLastName = "${userLastName}",
+			userMiddleName = "${userMiddleName}",
+			userScreenName = "${userScreenName}"
+		);
+
+		SOUser.logoutPG();
+
+		SOUser.loginPG(password = "test", userEmailAddress = "${adminEmailAddress}");
+
+		SOMicroblogs.gotoMicroblogsContentField();
+
+		SOMicroblogs.addMicroblogsEntry(
+			microblogsEntryContent = "${microblogsEntryContent}",
+			microblogsEntryViewableBy = "Connections"
+		);
+
+		SOMicroblogs.viewOwnMicroblogsEntry(
+			microblogsEntryAuthorFirstName = "${microblogsEntryAuthorFirstName}",
+			microblogsEntryAuthorLastName = "${microblogsEntryAuthorLastName}"
+		);
+
+		SOUser.logoutPG();
+
+		SOUser.loginPG(password = "test", userEmailAddress = "${userEmailAddress}");
+
+		SOMicroblogs.viewMicroblogsEntryNone();
+
+		SOUser.logoutPG();
+
+		SOUser.loginPG(password = "test", userEmailAddress = "${adminEmailAddress}");
+
+		SOContactsCenter.requestToConnect(
+			userEmailAddress = "${userEmailAddress}",
+			userListName = "${userListName}",
+			userName = "${userName}",
+			userScreenName = "${userScreenName}"
+		);
+
+		SOUser.logoutPG();
+
+		SOUser.loginPG(password = "test", userEmailAddress = "${userEmailAddress}");
+
+		SOContactsCenter.confirmRequestToConnect(
+			senderName = "${adminName}",
+			userName = "${userName}"
+		);
+
+		Click.textClickAt(locator1 = "SOUserBar#DASHBOARD", value1 = "Dashboard");
+
+		AssertClick.assertTextClickAt(
+			locator1 = "SOActivities#NAVIGATION_CONNECTIONS",
+			value1 = "Connections"
+		);
+
+		SOActivities.viewMicroblogsNotViewableByEveryoneActivityEntry(
+			userFirstName = "${microblogsEntryAuthorFirstName}",
+			userName = "${microblogsEntryAuthorFirstName} ${microblogsEntryAuthorLastName}"
+		);
+
+		SOMicroblogs.viewMicroblogsEntryNotViewableByEveryone(
+			microblogsEntryAuthor = "${microblogsEntryAuthor}",
+			microblogsEntryAuthorFirstName = "${microblogsEntryAuthorFirstName}",
+			microblogsEntryAuthorLastName = "${microblogsEntryAuthorLastName}",
+			microblogsEntryContent = "${microblogsEntryContent}"
+		);
+	}
+
+	@priority = "5"
+	test AddMicroblogsEntryViewableByConnectionsComment {
+		SOContactsCenter.addConnection(
+			adminEmailAddress = "${adminEmailAddress}",
+			senderName = "${adminName}",
+			userEmailAddress = "${userEmailAddress}",
+			userFirstName = "${userFirstName}",
+			userLastName = "${userLastName}",
+			userListName = "${userListName}",
+			userMiddleName = "${userMiddleName}",
+			userName = "${userName}",
+			userScreenName = "${userScreenName}"
+		);
+
+		SOUser.logoutPG();
+
+		SOUser.loginPG(password = "test", userEmailAddress = "${adminEmailAddress}");
+
+		SOMicroblogs.gotoMicroblogsContentField();
+
+		SOMicroblogs.addMicroblogsEntry(
+			microblogsEntryContent = "${microblogsEntryContent}",
+			microblogsEntryViewableBy = "Connections"
+		);
+
+		SOUser.logoutPG();
+
+		SOUser.loginPG(password = "test", userEmailAddress = "${userEmailAddress}");
+
+		Click.textClickAt(locator1 = "SOUserBar#DASHBOARD", value1 = "Dashboard");
+
+		Click.textClickAt(
+			locator1 = "SODashboard#NAVIGATION_MICROBLOGS",
+			value1 = "Microblogs"
+		);
+
+		SOMicroblogs.addMicroblogsEntryComment(
+			microblogsEntryAuthorFirstName = "${microblogsEntryAuthorFirstName}",
+			microblogsEntryAuthorLastName = "${microblogsEntryAuthorLastName}",
+			microblogsEntryCommentContent = "${microblogsEntryCommentContent}",
+			microblogsEntryContent = "${microblogsEntryContent}"
+		);
+
+		SOMicroblogs.viewMicroblogsEntryNotViewableByEveryone(
+			commentCount = "1",
+			microblogsEntryAuthor = "${microblogsEntryAuthor}",
+			microblogsEntryAuthorFirstName = "${microblogsEntryAuthorFirstName}",
+			microblogsEntryAuthorLastName = "${microblogsEntryAuthorLastName}",
+			microblogsEntryContent = "${microblogsEntryContent}"
+		);
+
+		SOMicroblogs.viewMicroblogsEntryComment(
+			commentCount = "1",
+			microblogsEntryCommentAuthorFirstName = "${userFirstName}",
+			microblogsEntryCommentAuthorLastName = "${userLastName}",
+			microblogsEntryCommentAuthorMiddleName = "${userMiddleName}",
+			microblogsEntryCommentContent = "${microblogsEntryCommentContent}"
+		);
+
+		SOUser.logoutPG();
+
+		SOUser.loginPG(password = "test", userEmailAddress = "${adminEmailAddress}");
+
+		SOMicroblogs.viewOwnMicroblogsEntry(
+			commentCount = "1",
+			microblogsEntryAuthorFirstName = "${microblogsEntryAuthorFirstName}",
+			microblogsEntryAuthorLastName = "${microblogsEntryAuthorLastName}"
+		);
+
+		SOMicroblogs.viewMicroblogsEntryComment(
+			commentCount = "1",
+			microblogsEntryCommentAuthorFirstName = "${userFirstName}",
+			microblogsEntryCommentAuthorLastName = "${userLastName}",
+			microblogsEntryCommentAuthorMiddleName = "${userMiddleName}",
+			microblogsEntryCommentContent = "${microblogsEntryCommentContent}"
+		);
+
+		SOMicroblogs.viewMicroblogsEntryCommentNotification(
+			microblogsEntryCommentAuthorFirstName = "${userFirstName}",
+			microblogsEntryCommentAuthorLastName = "${userLastName}",
+			microblogsEntryCommentAuthorMiddleName = "${userMiddleName}",
+			microblogsEntryCommentContent = "${microblogsEntryCommentContent}"
+		);
+	}
+
+	@priority = "5"
+	test AddMicroblogsEntryViewableByEveryone {
+		SOUser.addUserWithSORole(
+			adminEmailAddress = "${adminEmailAddress}",
+			password = "test",
+			userEmailAddress = "${userEmailAddress}",
+			userFirstName = "${userFirstName}",
+			userLastName = "${userLastName}",
+			userMiddleName = "${userMiddleName}",
+			userScreenName = "${userScreenName}"
+		);
+
+		SOMicroblogs.gotoMicroblogsContentField();
+
+		SOMicroblogs.addMicroblogsEntry(
+			microblogsEntryContent = "${microblogsEntryContent}"
+		);
+
+		SOMicroblogs.viewOwnMicroblogsEntry(
+			microblogsEntryAuthorFirstName = "${microblogsEntryAuthorFirstName}",
+			microblogsEntryAuthorLastName = "${microblogsEntryAuthorLastName}",
+			microblogsEntryContent = "${microblogsEntryContent}"
+		);
+
+		SOUser.logoutPG();
+
+		SOUser.loginPG(password = "test", userEmailAddress = "${userEmailAddress}");
+
+		SOMicroblogs.viewMicroblogsEntryViewableByEveryone(
+			microblogsEntryAuthor = "${microblogsEntryAuthor}",
+			microblogsEntryContent = "${microblogsEntryContent}"
+		);
+	}
+
+	@priority = "5"
+	test AddMicroblogsEntryViewableByEveryoneCommentMention {
+		SOContactsCenter.addConnection(
+			adminEmailAddress = "${adminEmailAddress}",
+			senderName = "${adminName}",
+			userEmailAddress = "${userEmailAddress}",
+			userFirstName = "${userFirstName}",
+			userLastName = "${userLastName}",
+			userListName = "${userListName}",
+			userMiddleName = "${userMiddleName}",
+			userName = "${userName}",
+			userScreenName = "${userScreenName}"
+		);
+
+		SOUser.logoutPG();
+
+		SOUser.loginPG(password = "test", userEmailAddress = "${adminEmailAddress}");
+
+		SOMicroblogs.gotoMicroblogsContentField();
+
+		SOMicroblogs.addMicroblogsEntry(
+			microblogsEntryContent = "${microblogsEntryContent}"
+		);
+
+		SOUser.logoutPG();
+
+		SOUser.loginPG(password = "test", userEmailAddress = "${userEmailAddress}");
+
+		var profileScreenName = "${microblogsEntryAuthorScreenName}";
+
+		Open(locator1 = "SOProfile#PROFILE_URL");
+
+		Click(locator1 = "SOProfile#NAVIGATION_MICROBLOGS");
+
+		SOMicroblogs.addMicroblogsEntryCommentMention(
+			mentionUserEmailAddress = "${adminEmailAddress}",
+			mentionUserFirstName = "${adminFirstName}",
+			mentionUserName = "${adminName}",
+			microblogsEntryCommentContent = "${microblogsEntryCommentContent}"
+		);
+
+		Click.textClickAt(locator1 = "SOUserBar#DASHBOARD", value1 = "Dashboard");
+
+		SOActivities.viewMicroblogsCommentActivityEntry(
+			commentCount = "1",
+			microblogsEntryCommentContent = "${microblogsEntryCommentContent} [@${adminScreenName}]"
+		);
+
+		SOUser.logoutPG();
+
+		SOUser.loginPG(password = "test", userEmailAddress = "${adminEmailAddress}");
+
+		SOMicroblogs.viewMicroblogsEntryCommentNotification(
+			microblogsEntryCommentAuthorFirstName = "${userFirstName}",
+			microblogsEntryCommentAuthorLastName = "${userLastName}",
+			microblogsEntryCommentAuthorMiddleName = "${userMiddleName}",
+			microblogsEntryCommentContent = "${microblogsEntryCommentContent} [@${adminScreenName}]"
+		);
+
+		Click.textClickAt(locator1 = "SOUserBar#DASHBOARD", value1 = "Dashboard");
+
+		Click.textClickAt(
+			locator1 = "SODashboard#NAVIGATION_MICROBLOGS",
+			value1 = "Microblogs"
+		);
+
+		AssertClick.assertTextClickAt(
+			locator1 = "SOMicroblogs#TAB_MENTIONS",
+			value1 = "Mentions"
+		);
+
+		SOMicroblogs.viewMicroblogsEntryAuthor(
+			microblogsEntryAuthorFirstName = "${userFirstName}",
+			microblogsEntryAuthorLastName = "${userLastName}",
+			microblogsEntryAuthorMiddleName = "${userMiddleName}"
+		);
+
+		AssertTextEquals(
+			locator1 = "SOMicroblogs#MICROBLOGS_ENTRY_CONTENT",
+			value1 = "${microblogsEntryCommentContent} ${adminName}"
+		);
+
+		AssertTextEquals(
+			locator1 = "SOMicroblogs#MICROBLOGS_ENTRY_CONTENT_TAG",
+			value1 = "${adminName}"
+		);
+	}
+
+	@priority = "5"
+	test AddMicroblogsEntryViewableByFollowers {
+		SOUser.addUserWithSORole(
+			adminEmailAddress = "${adminEmailAddress}",
+			password = "test",
+			userEmailAddress = "${userEmailAddress}",
+			userFirstName = "${userFirstName}",
+			userLastName = "${userLastName}",
+			userMiddleName = "${userMiddleName}",
+			userScreenName = "${userScreenName}"
+		);
+
+		SOUser.logoutPG();
+
+		SOUser.loginPG(password = "test", userEmailAddress = "${adminEmailAddress}");
+
+		SOMicroblogs.gotoMicroblogsContentField();
+
+		SOMicroblogs.addMicroblogsEntry(
+			microblogsEntryContent = "${microblogsEntryContent}",
+			microblogsEntryViewableBy = "Followers"
+		);
+
+		SOMicroblogs.viewOwnMicroblogsEntry(
+			microblogsEntryAuthorFirstName = "${microblogsEntryAuthorFirstName}",
+			microblogsEntryAuthorLastName = "${microblogsEntryAuthorLastName}"
+		);
+
+		SOUser.logoutPG();
+
+		SOUser.loginPG(password = "test", userEmailAddress = "${userEmailAddress}");
+
+		SOMicroblogs.viewMicroblogsEntryNone();
+
+		SOContactsCenter.followUser(
+			adminEmailAddress = "${adminEmailAddress}",
+			adminListName = "${adminListName}",
+			adminName = "${adminName}"
+		);
+
+		Click.textClickAt(locator1 = "SOUserBar#DASHBOARD", value1 = "Dashboard");
+
+		AssertClick.assertTextClickAt(
+			locator1 = "SOActivities#NAVIGATION_FOLLOWING",
+			value1 = "Following"
+		);
+
+		SOActivities.viewMicroblogsNotViewableByEveryoneActivityEntry(
+			userFirstName = "${microblogsEntryAuthorFirstName}",
+			userName = "${microblogsEntryAuthorFirstName} ${microblogsEntryAuthorLastName}"
+		);
+
+		SOMicroblogs.viewMicroblogsEntryNotViewableByEveryone(
+			microblogsEntryAuthor = "${microblogsEntryAuthor}",
+			microblogsEntryAuthorFirstName = "${microblogsEntryAuthorFirstName}",
+			microblogsEntryAuthorLastName = "${microblogsEntryAuthorLastName}",
+			microblogsEntryContent = "${microblogsEntryContent}"
+		);
+	}
+
+	@priority = "5"
+	test AddMicroblogsEntryViewableByFollowersComment {
+		SOContactsCenter.addFollower(
+			adminEmailAddress = "${adminEmailAddress}",
+			adminListName = "${adminListName}",
+			adminName = "${adminName}",
+			userEmailAddress = "${userEmailAddress}",
+			userFirstName = "${userFirstName}",
+			userLastName = "${userLastName}",
+			userListName = "${userListName}",
+			userMiddleName = "${userMiddleName}",
+			userName = "${userName}",
+			userScreenName = "${userScreenName}"
+		);
+
+		SOUser.logoutPG();
+
+		SOUser.loginPG(password = "test", userEmailAddress = "${adminEmailAddress}");
+
+		SOMicroblogs.gotoMicroblogsContentField();
+
+		SOMicroblogs.addMicroblogsEntry(
+			microblogsEntryContent = "${microblogsEntryContent}",
+			microblogsEntryViewableBy = "Followers"
+		);
+
+		SOUser.logoutPG();
+
+		SOUser.loginPG(password = "test", userEmailAddress = "${userEmailAddress}");
+
+		Click.textClickAt(locator1 = "SOUserBar#DASHBOARD", value1 = "Dashboard");
+
+		Click.textClickAt(
+			locator1 = "SODashboard#NAVIGATION_MICROBLOGS",
+			value1 = "Microblogs"
+		);
+
+		SOMicroblogs.addMicroblogsEntryComment(
+			microblogsEntryCommentContent = "${microblogsEntryCommentContent}",
+			microblogsEntryContent = "${microblogsEntryContent}"
+		);
+
+		SOMicroblogs.viewMicroblogsEntryNotViewableByEveryone(
+			commentCount = "1",
+			microblogsEntryAuthor = "${microblogsEntryAuthor}",
+			microblogsEntryAuthorFirstName = "${microblogsEntryAuthorFirstName}",
+			microblogsEntryAuthorLastName = "${microblogsEntryAuthorLastName}",
+			microblogsEntryContent = "${microblogsEntryContent}"
+		);
+
+		SOMicroblogs.viewMicroblogsEntryComment(
+			commentCount = "1",
+			microblogsEntryCommentAuthorFirstName = "${userFirstName}",
+			microblogsEntryCommentAuthorLastName = "${userLastName}",
+			microblogsEntryCommentAuthorMiddleName = "${userMiddleName}",
+			microblogsEntryCommentContent = "${microblogsEntryCommentContent}"
+		);
+
+		SOUser.logoutPG();
+
+		SOUser.loginPG(password = "test", userEmailAddress = "${adminEmailAddress}");
+
+		SOMicroblogs.viewOwnMicroblogsEntry(
+			commentCount = "1",
+			microblogsEntryAuthorFirstName = "${microblogsEntryAuthorFirstName}",
+			microblogsEntryAuthorLastName = "${microblogsEntryAuthorLastName}"
+		);
+
+		SOMicroblogs.viewMicroblogsEntryComment(
+			commentCount = "1",
+			microblogsEntryCommentAuthorFirstName = "${userFirstName}",
+			microblogsEntryCommentAuthorLastName = "${userLastName}",
+			microblogsEntryCommentAuthorMiddleName = "${userMiddleName}",
+			microblogsEntryCommentContent = "${microblogsEntryCommentContent}"
+		);
+
+		SOMicroblogs.viewMicroblogsEntryCommentNotification(
+			microblogsEntryCommentAuthorFirstName = "${userFirstName}",
+			microblogsEntryCommentAuthorLastName = "${userLastName}",
+			microblogsEntryCommentAuthorMiddleName = "${userMiddleName}",
+			microblogsEntryCommentContent = "${microblogsEntryCommentContent}"
+		);
+	}
+
+	@priority = "5"
+	test DeleteMicroblogsEntry {
+		SOMicroblogs.gotoMicroblogsContentField();
+
+		SOMicroblogs.addMicroblogsEntry(
+			microblogsEntryContent = "${microblogsEntryContent}"
+		);
+
+		Click.textClickAt(locator1 = "SOUserBar#DASHBOARD", value1 = "Dashboard");
+
+		Click.textClickAt(
+			locator1 = "SODashboard#NAVIGATION_MICROBLOGS",
+			value1 = "Microblogs"
+		);
+
+		SOMicroblogs.deleteMicroblogsEntry();
+
+		AssertTextEquals(
+			locator1 = "SOMicroblogs#INFO_MESSAGE",
+			value1 = "You do not have any microblog entries."
+		);
+
+		AssertElementNotPresent(
+			locator1 = "SOMicroblogs#MICROBLOGS_ENTRY_CONTENT",
+			value1 = "${microblogsEntryContent}"
+		);
+	}
+
+	@priority = "5"
+	test RepostMicroblogsEntry {
+		SOUser.addUserWithSORole(
+			adminEmailAddress = "${adminEmailAddress}",
+			password = "test",
+			userEmailAddress = "${userEmailAddress}",
+			userFirstName = "${userFirstName}",
+			userLastName = "${userLastName}",
+			userMiddleName = "${userMiddleName}",
+			userScreenName = "${userScreenName}"
+		);
+
+		SOMicroblogs.gotoMicroblogsContentField();
+
+		SOMicroblogs.addMicroblogsEntry(
+			microblogsEntryContent = "${microblogsEntryContent}"
+		);
+
+		SOMicroblogs.viewOwnMicroblogsEntry(
+			microblogsEntryAuthorFirstName = "${microblogsEntryAuthorFirstName}",
+			microblogsEntryAuthorLastName = "${microblogsEntryAuthorLastName}",
+			microblogsEntryContent = "${microblogsEntryContent}"
+		);
+
+		SOUser.logoutPG();
+
+		SOUser.loginPG(password = "test", userEmailAddress = "${userEmailAddress}");
+
+		SOMicroblogs.repostMicroblogsEntry(
+			microblogsEntryAuthorFirstName = "${microblogsEntryAuthorFirstName}",
+			microblogsEntryAuthorLastName = "${microblogsEntryAuthorLastName}",
+			microblogsEntryContent = "${microblogsEntryContent}"
+		);
+
+		Click.textClickAt(locator1 = "SOUserBar#DASHBOARD", value1 = "Dashboard");
+
+		AssertClick(locator1 = "SOActivities#NAVIGATION_ME", value1 = "Me");
+
+		SOActivities.viewMicroblogsRepostActivityEntry(
+			microblogsEntryAuthorFirstName = "${microblogsEntryAuthorFirstName}",
+			microblogsEntryAuthorLastName = "${microblogsEntryAuthorLastName}",
+			microblogsEntryContent = "${microblogsEntryContent}",
+			microblogsEntryRepostAuthorFirstName = "${userFirstName}",
+			microblogsEntryRepostAuthorLastName = "${userLastName}",
+			microblogsEntryRepostAuthorMiddleName = "${userMiddleName}"
+		);
+
+		SOMicroblogs.viewOwnMicroblogsRepost(
+			microblogsEntryAuthorFirstName = "${microblogsEntryAuthorFirstName}",
+			microblogsEntryAuthorLastName = "${microblogsEntryAuthorLastName}",
+			microblogsEntryContent = "${microblogsEntryContent}",
+			microblogsEntryRepostAuthorFirstName = "${userFirstName}",
+			microblogsEntryRepostAuthorLastName = "${userLastName}",
+			microblogsEntryRepostAuthorMiddleName = "${userMiddleName}"
+		);
+
+		SOUser.logoutPG();
+
+		SOUser.loginPG(password = "test", userEmailAddress = "${adminEmailAddress}");
+
+		SOActivities.viewMicroblogsActivityEntryProfile(
+			microblogsEntryAuthorFirstName = "${microblogsEntryAuthorFirstName}",
+			microblogsEntryAuthorLastName = "${microblogsEntryAuthorLastName}",
+			microblogsEntryContent = "${microblogsEntryContent}"
+		);
+
+		SOActivities.viewMicroblogsRepostActivityEntryProfile(
+			microblogsEntryAuthorFirstName = "${microblogsEntryAuthorFirstName}",
+			microblogsEntryAuthorLastName = "${microblogsEntryAuthorLastName}",
+			microblogsEntryContent = "${microblogsEntryContent}",
+			microblogsEntryRepostAuthorFirstName = "${userFirstName}",
+			microblogsEntryRepostAuthorLastName = "${userLastName}",
+			microblogsEntryRepostAuthorMiddleName = "${userMiddleName}",
+			profileScreenName = "${userScreenName}"
+		);
+
+		Click(locator1 = "SOProfile#NAVIGATION_MICROBLOGS");
+
+		SOMicroblogs.viewMicroblogsEntryAuthor(
+			microblogsEntryAuthorFirstName = "${microblogsEntryAuthorFirstName}",
+			microblogsEntryAuthorLastName = "${microblogsEntryAuthorLastName}",
+			microblogsEntryRepostAuthorFirstName = "${userFirstName}",
+			microblogsEntryRepostAuthorLastName = "${userLastName}",
+			microblogsEntryRepostAuthorMiddleName = "${userMiddleName}"
+		);
+
+		AssertTextEquals(
+			locator1 = "SOMicroblogs#MICROBLOGS_ENTRY_CONTENT",
+			value1 = "${microblogsEntryContent}"
+		);
+	}
+
+	@priority = "5"
+	test ViewMicroblogsTimeline {
+		SOMicroblogs.gotoMicroblogsContentField();
+
+		SOMicroblogs.addMicroblogsEntry(
+			microblogsEntryContent = "${microblogsEntryContent}",
+			microblogsEntryViewableBy = "Connections",
+			number = "01"
+		);
+
+		SOMicroblogs.gotoMicroblogsContentField();
+
+		SOMicroblogs.addMicroblogsEntry(
+			microblogsEntryContent = "${microblogsEntryContent}",
+			microblogsEntryViewableBy = "Followers",
+			number = "02"
+		);
+
+		SOMicroblogs.gotoMicroblogsContentField();
+
+		SOMicroblogs.addMicroblogsEntry(
+			microblogsEntryContent = "${microblogsEntryContent}",
+			number = "03"
+		);
+
+		Click.textClickAt(locator1 = "SOUserBar#DASHBOARD", value1 = "Dashboard");
+
+		Click.textClickAt(
+			locator1 = "SODashboard#NAVIGATION_MICROBLOGS",
+			value1 = "Microblogs"
+		);
+
+		AssertClick.assertTextClickAt(
+			locator1 = "SOMicroblogs#TAB_TIMELINE",
+			value1 = "Timeline"
+		);
+
+		Pause(value1 = "1000");
+
+		var number = "01";
+
+		AssertTextEquals(
+			locator1 = "SOMicroblogs#MICROBLOGS_ENTRY_AUTHOR_INCREMENT",
+			value1 = "${microblogsEntryAuthorFirstName} ${microblogsEntryAuthorLastName}"
+		);
+
+		AssertTextEquals(
+			locator1 = "SOMicroblogs#MICROBLOGS_ENTRY_CONTENT_INCREMENT",
+			value1 = "${microblogsEntryContent}${number}"
+		);
+
+		AssertTextEquals(
+			locator1 = "SOMicroblogs#MICROBLOGS_ENTRY_COMMENT_LINK_INCREMENT",
+			value1 = "Comment"
+		);
+
+		var number = "02";
+
+		AssertTextEquals(
+			locator1 = "SOMicroblogs#MICROBLOGS_ENTRY_AUTHOR_INCREMENT",
+			value1 = "${microblogsEntryAuthorFirstName} ${microblogsEntryAuthorLastName}"
+		);
+
+		AssertTextEquals(
+			locator1 = "SOMicroblogs#MICROBLOGS_ENTRY_CONTENT_INCREMENT",
+			value1 = "${microblogsEntryContent}${number}"
+		);
+
+		AssertTextEquals(
+			locator1 = "SOMicroblogs#MICROBLOGS_ENTRY_COMMENT_LINK_INCREMENT",
+			value1 = "Comment"
+		);
+
+		var number = "03";
+
+		AssertTextEquals(
+			locator1 = "SOMicroblogs#MICROBLOGS_ENTRY_AUTHOR_INCREMENT",
+			value1 = "${microblogsEntryAuthorFirstName} ${microblogsEntryAuthorLastName}"
+		);
+
+		AssertTextEquals(
+			locator1 = "SOMicroblogs#MICROBLOGS_ENTRY_CONTENT_INCREMENT",
+			value1 = "${microblogsEntryContent}${number}"
+		);
+
+		AssertTextEquals(
+			locator1 = "SOMicroblogs#MICROBLOGS_ENTRY_COMMENT_LINK_INCREMENT",
+			value1 = "Comment"
+		);
+	}
+
+	tearDown {
+		SOMicroblogs.tearDownMicroblogsEntry();
+
+		SOUser.tearDownCP();
+
+		SOUserBar.tearDownNotifications();
+	}
+}

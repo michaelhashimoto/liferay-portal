@@ -1,123 +1,118 @@
-<definition component-name="social-office-site">
-	<property name="hook.plugins.includes" value="deploy-listener-hook,portal-compat-hook,so-activities-hook,so-hook" />
-	<property name="portlet.plugins.includes" value="chat-portlet,contacts-portlet,events-display-portlet,microblogs-portlet,private-messaging-portlet,so-announcements-portlet,so-configurations-portlet,so-portlet,tasks-portlet,wysiwyg-portlet" />
-	<property name="testray.main.component.name" value="Social Office EE" />
-	<property name="theme.plugins.includes" value="so-theme" />
+@component-name = "social-office-site"
+definition {
+	property hook.plugins.includes = "deploy-listener-hook,portal-compat-hook,so-activities-hook,so-hook";
+	property portlet.plugins.includes = "chat-portlet,contacts-portlet,events-display-portlet,microblogs-portlet,private-messaging-portlet,so-announcements-portlet,so-configurations-portlet,so-portlet,tasks-portlet,wysiwyg-portlet";
+	property testray.main.component.name = "Social Office EE";
+	property theme.plugins.includes = "so-theme";
+	var eventDescription = "Calendar Event Description";
+	var eventDescriptionEdit = "Calendar Event Description Edit";
+	var eventTitle = "Calendar Event Title";
+	var eventTitleEdit = "Calendar Event Title Edit";
+	var key_siteName = "${siteName}";
+	var pageName = "Calendar";
+	var siteDescription = "Open Site Description";
+	var siteName = "Open Site Name";
+	var siteType = "Open";
+	var userName = "Joe Bloggs";
 
-	<var name="eventDescription" value="Calendar Event Description" />
-	<var name="eventDescriptionEdit" value="Calendar Event Description Edit" />
-	<var name="eventTitle" value="Calendar Event Title" />
-	<var name="eventTitleEdit" value="Calendar Event Title Edit" />
-	<var name="key_siteName" value="${siteName}" />
-	<var name="pageName" value="Calendar" />
-	<var name="siteDescription" value="Open Site Description" />
-	<var name="siteName" value="Open Site Name" />
-	<var name="siteType" value="Open" />
-	<var name="userName" value="Joe Bloggs" />
+	setUp {
+		SOUser.firstLoginPG();
 
-	<set-up>
-		<execute macro="SOUser#firstLoginPG" />
+		SOUserBar.addSOSite(
+			siteDescription = "${siteDescription}",
+			siteName = "${siteName}",
+			siteType = "${siteType}"
+		);
+	}
 
-		<execute macro="SOUserBar#addSOSite">
-			<var name="siteDescription" value="${siteDescription}" />
-			<var name="siteName" value="${siteName}" />
-			<var name="siteType" value="${siteType}" />
-		</execute>
-	</set-up>
+	@priority = "5"
+	test AddCalendarEvent {
+		var eventDescription = "${eventDescription}";
+		var eventTitle = "${eventTitle}";
 
-	<command name="AddCalendarEvent" priority="5">
-		<var name="eventDescription" value="${eventDescription}" />
-		<var name="eventTitle" value="${eventTitle}" />
+		Page.gotoPG(pageName = "${pageName}", pageType = "Open Site");
 
-		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${pageName}" />
-			<var name="pageType" value="Open Site" />
-		</execute>
+		Event.addPG();
 
-		<execute macro="Event#addPG" />
+		Page.openURL(pageType = "Open Site");
 
-		<execute macro="Page#openURL">
-			<var name="pageType" value="Open Site" />
-		</execute>
+		AssertTextEquals(
+			locator1 = "SOSiteHome#EVENTS_DISPLAY_TODAYS_EVENTS_EVENT_TITLE",
+			value1 = "${eventTitle}"
+		);
 
-		<execute function="AssertTextEquals" locator1="SOSiteHome#EVENTS_DISPLAY_TODAYS_EVENTS_EVENT_TITLE" value1="${eventTitle}" />
-		<execute function="AssertElementPresent" locator1="SODashboard#EVENTS_DISPLAY_TODAYS_EVENTS_EVENT_TIME" />
-		<execute function="Click" locator1="SOSiteHome#EVENTS_DISPLAY_TODAYS_EVENTS_EVENT_TITLE" value1="${eventTitle}" />
+		AssertElementPresent(
+			locator1 = "SODashboard#EVENTS_DISPLAY_TODAYS_EVENTS_EVENT_TIME"
+		);
 
-		<execute macro="Event#viewDetailsPG" />
+		Click(
+			locator1 = "SOSiteHome#EVENTS_DISPLAY_TODAYS_EVENTS_EVENT_TITLE",
+			value1 = "${eventTitle}"
+		);
 
-		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${pageName}" />
-			<var name="pageType" value="Open Site" />
-		</execute>
+		Event.viewDetailsPG();
 
-		<execute macro="Event#viewPG" />
-	</command>
+		Page.gotoPG(pageName = "${pageName}", pageType = "Open Site");
 
-	<command name="DeleteCalendarEvent" priority="5">
-		<var name="eventDescription" value="${eventDescription}" />
-		<var name="eventTitle" value="${eventTitle}" />
+		Event.viewPG();
+	}
 
-		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${pageName}" />
-			<var name="pageType" value="Open Site" />
-		</execute>
+	@priority = "5"
+	test DeleteCalendarEvent {
+		var eventDescription = "${eventDescription}";
+		var eventTitle = "${eventTitle}";
 
-		<execute macro="Event#addPG" />
+		Page.gotoPG(pageName = "${pageName}", pageType = "Open Site");
 
-		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${pageName}" />
-			<var name="pageType" value="Open Site" />
-		</execute>
+		Event.addPG();
 
-		<execute macro="Event#deletePG" />
-	</command>
+		Page.gotoPG(pageName = "${pageName}", pageType = "Open Site");
 
-	<command name="EditCalendarEvent" priority="5">
-		<var name="eventDescription" value="${eventDescription}" />
-		<var name="eventDescriptionEdit" value="${eventDescriptionEdit}" />
-		<var name="eventTitle" value="${eventTitle}" />
-		<var name="eventTitleEdit" value="${eventTitleEdit}" />
+		Event.deletePG();
+	}
 
-		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${pageName}" />
-			<var name="pageType" value="Open Site" />
-		</execute>
+	@priority = "5"
+	test EditCalendarEvent {
+		var eventDescription = "${eventDescription}";
+		var eventDescriptionEdit = "${eventDescriptionEdit}";
+		var eventTitle = "${eventTitle}";
+		var eventTitleEdit = "${eventTitleEdit}";
 
-		<execute macro="Event#addPG" />
+		Page.gotoPG(pageName = "${pageName}", pageType = "Open Site");
 
-		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${pageName}" />
-			<var name="pageType" value="Open Site" />
-		</execute>
+		Event.addPG();
 
-		<execute macro="Event#editPG" />
+		Page.gotoPG(pageName = "${pageName}", pageType = "Open Site");
 
-		<execute macro="Page#openURL">
-			<var name="pageType" value="Open Site" />
-		</execute>
+		Event.editPG();
 
-		<execute function="AssertTextEquals" locator1="SOSiteHome#EVENTS_DISPLAY_TODAYS_EVENTS_EVENT_TITLE" value1="${eventTitleEdit}" />
-		<execute function="AssertElementPresent" locator1="SODashboard#EVENTS_DISPLAY_TODAYS_EVENTS_EVENT_TIME" />
-		<execute function="Click" locator1="SOSiteHome#EVENTS_DISPLAY_TODAYS_EVENTS_EVENT_TITLE" />
+		Page.openURL(pageType = "Open Site");
 
-		<execute macro="Event#viewDetailsPG">
-			<var name="eventDescription" value="${eventDescriptionEdit}" />
-			<var name="eventTitle" value="${eventTitleEdit}" />
-		</execute>
+		AssertTextEquals(
+			locator1 = "SOSiteHome#EVENTS_DISPLAY_TODAYS_EVENTS_EVENT_TITLE",
+			value1 = "${eventTitleEdit}"
+		);
 
-		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${pageName}" />
-			<var name="pageType" value="Open Site" />
-		</execute>
+		AssertElementPresent(
+			locator1 = "SODashboard#EVENTS_DISPLAY_TODAYS_EVENTS_EVENT_TIME"
+		);
 
-		<execute macro="Event#viewPG">
-			<var name="eventDescription" value="${eventDescriptionEdit}" />
-			<var name="eventTitle" value="${eventTitleEdit}" />
-		</execute>
-	</command>
+		Click(locator1 = "SOSiteHome#EVENTS_DISPLAY_TODAYS_EVENTS_EVENT_TITLE");
 
-	<tear-down>
-		<execute macro="SOUserBar#tearDownSites" />
-	</tear-down>
-</definition>
+		Event.viewDetailsPG(
+			eventDescription = "${eventDescriptionEdit}",
+			eventTitle = "${eventTitleEdit}"
+		);
+
+		Page.gotoPG(pageName = "${pageName}", pageType = "Open Site");
+
+		Event.viewPG(
+			eventDescription = "${eventDescriptionEdit}",
+			eventTitle = "${eventTitleEdit}"
+		);
+	}
+
+	tearDown {
+		SOUserBar.tearDownSites();
+	}
+}

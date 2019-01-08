@@ -1,1085 +1,1179 @@
-<definition component-name="social-office-site">
-	<property name="hook.plugins.includes" value="deploy-listener-hook,portal-compat-hook,so-activities-hook,so-hook" />
-	<property name="portlet.plugins.includes" value="chat-portlet,contacts-portlet,events-display-portlet,microblogs-portlet,private-messaging-portlet,so-announcements-portlet,so-configurations-portlet,so-portlet,tasks-portlet,wysiwyg-portlet" />
-	<property name="testray.main.component.name" value="Social Office EE" />
-	<property name="theme.plugins.includes" value="so-theme" />
-
-	<var name="adminEmailAddress" value="test@liferay.com" />
-	<var name="adminName" value="Joe Bloggs" />
-	<var name="bookmarksEntryDescription" value="Bookmarks Entry Description" />
-	<var name="bookmarksEntryName" value="Bookmarks Entry Name" />
-	<var name="bookmarksEntryUrl" value="http://www.google.com" />
-	<var name="entryContent" value="Announcements Entry Content" />
-	<var name="entryContentEdit" value="Announcements Entry Content Edit" />
-	<var name="entryTitle" value="Announcements Entry Title" />
-	<var name="entryTitleEdit" value="Announcements Entry Title Edit" />
-	<var name="entryURL" value="http://www.liferay.com" />
-	<var name="eventDescription" value="Calendar Event Description" />
-	<var name="eventTitle" value="Calendar Event Title" />
-	<var name="key_siteName" value="${siteName}" />
-	<var name="password" value="test" />
-	<var name="siteDescription" value="Open Site Description" />
-	<var name="siteName" value="Open Site Name" />
-	<var name="siteType" value="Open" />
-	<var name="userEmailAddress" value="socialoffice01@liferay.com" />
-	<var name="userFirstName" value="Social01" />
-	<var name="userLastName" value="User01" />
-	<var name="userListName" value="User01, Social01" />
-	<var name="userMiddleName" value="Office01" />
-	<var name="userName" value="Social01 Office01 User01" />
-	<var name="userScreenName" value="socialoffice01" />
-
-	<set-up>
-		<execute macro="SOUser#firstLoginPG" />
-	</set-up>
-
-	<tear-down>
-		<execute macro="SOAnnouncementsEntry#tearDownSitePG" />
-
-		<execute macro="SOUserBar#tearDownNotifications" />
-
-		<execute macro="SOUserBar#tearDownSites" />
-
-		<execute macro="SOUser#tearDownCP" />
-	</tear-down>
-
-	<command name="AddBookmarksEntryTest" priority="5">
-		<execute macro="SOUserBar#addSOSite">
-			<var name="siteDescription" value="${siteDescription}" />
-			<var name="siteName" value="${siteName}" />
-			<var name="siteType" value="${siteType}" />
-		</execute>
-
-		<execute macro="Page#openURL">
-			<var name="pageType" value="Open Site" />
-		</execute>
-
-		<execute macro="SOBookmarks#addBookmarksEntry">
-			<var name="bookmarksEntryDescription" value="${bookmarksEntryDescription}" />
-			<var name="bookmarksEntryName" value="${bookmarksEntryName}" />
-			<var name="bookmarksEntryUrl" value="${bookmarksEntryUrl}" />
-		</execute>
-
-		<execute macro="Page#openURL">
-			<var name="pageType" value="Open Site" />
-		</execute>
-
-		<execute macro="SOBookmarks#viewBookmarksEntry">
-			<var name="bookmarksEntryDescription" value="${bookmarksEntryDescription}" />
-			<var name="bookmarksEntryName" value="${bookmarksEntryName}" />
-			<var name="bookmarksEntryUrl" value="${bookmarksEntryUrl}" />
-		</execute>
-	</command>
-
-	<command name="AddRssFeed" priority="5">
-		<var name="entriesPerFeed" value="3" />
-		<var name="expandedEntriesPerFeed" value="1" />
-		<var name="feedTitle" value="CNET" />
-		<var name="feedUrl" value="http://feeds.feedburner.com/cnet/tcoc" />
-
-		<execute macro="SOUser#addUserWithSORole">
-			<var name="adminEmailAddress" value="test@liferay.com" />
-			<var name="password" value="test" />
-			<var name="userEmailAddress" value="${userEmailAddress}" />
-			<var name="userFirstName" value="${userFirstName}" />
-			<var name="userLastName" value="${userLastName}" />
-			<var name="userMiddleName" value="${userMiddleName}" />
-			<var name="userScreenName" value="${userScreenName}" />
-		</execute>
-
-		<execute macro="SOUserBar#addSOSite">
-			<var name="siteDescription" value="${siteDescription}" />
-			<var name="siteName" value="${siteName}" />
-			<var name="siteType" value="${siteType}" />
-		</execute>
-
-		<execute macro="Page#openURL">
-			<var name="pageType" value="Open Site" />
-		</execute>
-
-		<execute macro="SORss#addRssFeed">
-			<var name="entriesPerFeed" value="${entriesPerFeed}" />
-			<var name="expandedEntriesPerFeed" value="${expandedEntriesPerFeed}" />
-			<var name="feedTitle" value="${feedTitle}" />
-			<var name="feedUrl" value="${feedUrl}" />
-		</execute>
-
-		<execute macro="Page#openURL">
-			<var name="pageType" value="Open Site" />
-		</execute>
-
-		<execute macro="SORss#viewRssFeed">
-			<var name="entriesPerFeed" value="${entriesPerFeed}" />
-			<var name="expandedEntriesPerFeed" value="${expandedEntriesPerFeed}" />
-			<var name="feedTitle" value="${feedTitle}" />
-			<var name="feedUrl" value="${feedUrl}" />
-		</execute>
-
-		<execute macro="SOUser#logoutPG" />
-
-		<execute macro="SOUser#loginPG">
-			<var name="password" value="test" />
-			<var name="userEmailAddress" value="${userEmailAddress}" />
-		</execute>
-
-		<execute macro="Page#openURL">
-			<var name="pageType" value="Open Site" />
-		</execute>
-
-		<execute macro="SORss#viewRssFeed">
-			<var name="entriesPerFeed" value="${entriesPerFeed}" />
-			<var name="expandedEntriesPerFeed" value="${expandedEntriesPerFeed}" />
-			<var name="feedTitle" value="${feedTitle}" />
-			<var name="feedUrl" value="${feedUrl}" />
-		</execute>
-	</command>
-
-	<command name="AddSOAnnouncementsEntry" priority="5">
-		<execute macro="SOUserBar#addSOSite">
-			<var name="siteDescription" value="${siteDescription}" />
-			<var name="siteName" value="${siteName}" />
-			<var name="siteType" value="${siteType}" />
-		</execute>
-
-		<execute macro="Page#openURL">
-			<var name="pageType" value="Open Site" />
-		</execute>
-
-		<execute macro="SOAnnouncementsEntry#addPG">
-			<var name="distributionScope" value="General" />
-			<var name="entryContent" value="${entryContent}" />
-			<var name="entryTitle" value="${entryTitle}" />
-			<var name="entryURL" value="${entryURL}" />
-		</execute>
-
-		<execute macro="Page#openURL">
-			<var name="pageType" value="Open Site" />
-		</execute>
-
-		<execute macro="SOAnnouncementsEntry#viewNotificationPG">
-			<var name="entryAuthor" value="${adminName}" />
-			<var name="entryTitle" value="${entryTitle}" />
-		</execute>
-
-		<execute macro="Page#openURL">
-			<var name="pageType" value="Open Site" />
-		</execute>
-
-		<execute macro="SOAnnouncementsEntry#viewPG">
-			<var name="distributionScope" value="General" />
-			<var name="entryAuthor" value="${adminName}" />
-			<var name="entryContent" value="${entryContent}" />
-			<var name="entryTitle" value="${entryTitle}" />
-			<var name="entryURL" value="${entryURL}" />
-		</execute>
-	</command>
-
-	<command name="AddSOAnnouncementsEntrySOUser" priority="5">
-		<execute macro="SOUser#addUserWithSORole">
-			<var name="adminEmailAddress" value="test@liferay.com" />
-			<var name="password" value="test" />
-			<var name="userEmailAddress" value="${userEmailAddress}" />
-			<var name="userFirstName" value="${userFirstName}" />
-			<var name="userLastName" value="${userLastName}" />
-			<var name="userMiddleName" value="${userMiddleName}" />
-			<var name="userScreenName" value="${userScreenName}" />
-		</execute>
-
-		<execute macro="SOUser#logoutPG" />
-
-		<execute macro="SOUser#loginPG">
-			<var name="password" value="test" />
-			<var name="userEmailAddress" value="${userEmailAddress}" />
-		</execute>
-
-		<execute macro="SOUserBar#addSOSite">
-			<var name="siteDescription" value="${siteDescription}" />
-			<var name="siteName" value="${siteName}" />
-			<var name="siteType" value="${siteType}" />
-		</execute>
-
-		<execute macro="Page#openURL">
-			<var name="pageType" value="Open Site" />
-		</execute>
-
-		<execute macro="SOAnnouncementsEntry#addPG">
-			<var name="distributionScope" value="Open Site Name" />
-			<var name="entryContent" value="${entryContent}" />
-			<var name="entryTitle" value="${entryTitle}" />
-			<var name="entryURL" value="${entryURL}" />
-		</execute>
-
-		<execute macro="Page#openURL">
-			<var name="pageType" value="Open Site" />
-		</execute>
-
-		<execute macro="SOAnnouncementsEntry#viewNotificationPG">
-			<var name="entryAuthor" value="${userName}" />
-			<var name="entryTitle" value="${entryTitle}" />
-		</execute>
-
-		<execute macro="Page#openURL">
-			<var name="pageType" value="Open Site" />
-		</execute>
-
-		<execute macro="SOAnnouncementsEntry#viewPG">
-			<var name="distributionScope" value="Open Site Name" />
-			<var name="entryAuthor" value="${userName}" />
-			<var name="entryContent" value="${entryContent}" />
-			<var name="entryTitle" value="${entryTitle}" />
-			<var name="entryURL" value="${entryURL}" />
-		</execute>
-	</command>
-
-	<command name="DeleteBookmarksEntryTest" priority="5">
-		<execute macro="SOUserBar#addSOSite">
-			<var name="siteDescription" value="${siteDescription}" />
-			<var name="siteName" value="${siteName}" />
-			<var name="siteType" value="${siteType}" />
-		</execute>
-
-		<execute macro="Page#openURL">
-			<var name="pageType" value="Open Site" />
-		</execute>
-
-		<execute macro="SOBookmarks#addBookmarksEntry">
-			<var name="bookmarksEntryDescription" value="${bookmarksEntryDescription}" />
-			<var name="bookmarksEntryName" value="${bookmarksEntryName}" />
-			<var name="bookmarksEntryUrl" value="${bookmarksEntryUrl}" />
-		</execute>
-
-		<execute macro="Page#openURL">
-			<var name="pageType" value="Open Site" />
-		</execute>
-
-		<execute macro="SOBookmarks#deleteBookmarksEntry" />
-	</command>
-
-	<command name="DeleteSOAnnouncementsEntry" priority="5">
-		<execute macro="SOUserBar#addSOSite">
-			<var name="siteDescription" value="${siteDescription}" />
-			<var name="siteName" value="${siteName}" />
-			<var name="siteType" value="${siteType}" />
-		</execute>
-
-		<execute macro="Page#openURL">
-			<var name="pageType" value="Open Site" />
-		</execute>
-
-		<execute macro="SOAnnouncementsEntry#addPG">
-			<var name="distributionScope" value="General" />
-			<var name="entryContent" value="${entryContent}" />
-			<var name="entryTitle" value="${entryTitle}" />
-			<var name="entryURL" value="${entryURL}" />
-		</execute>
-
-		<execute macro="Page#openURL">
-			<var name="pageType" value="Open Site" />
-		</execute>
-
-		<execute macro="SOAnnouncementsEntry#deletePG" />
-	</command>
-
-	<command name="DeleteSOAnnouncementsEntrySOUser" priority="5">
-		<execute macro="SOUser#addUserWithSORole">
-			<var name="adminEmailAddress" value="test@liferay.com" />
-			<var name="password" value="test" />
-			<var name="userEmailAddress" value="${userEmailAddress}" />
-			<var name="userFirstName" value="${userFirstName}" />
-			<var name="userLastName" value="${userLastName}" />
-			<var name="userMiddleName" value="${userMiddleName}" />
-			<var name="userScreenName" value="${userScreenName}" />
-		</execute>
-
-		<execute macro="SOUser#logoutPG" />
-
-		<execute macro="SOUser#loginPG">
-			<var name="password" value="test" />
-			<var name="userEmailAddress" value="${userEmailAddress}" />
-		</execute>
-
-		<execute macro="SOUserBar#addSOSite">
-			<var name="siteDescription" value="${siteDescription}" />
-			<var name="siteName" value="${siteName}" />
-			<var name="siteType" value="${siteType}" />
-		</execute>
-
-		<execute macro="Page#openURL">
-			<var name="pageType" value="Open Site" />
-		</execute>
-
-		<execute macro="SOAnnouncementsEntry#addPG">
-			<var name="distributionScope" value="Open Site Name" />
-			<var name="entryContent" value="${entryContent}" />
-			<var name="entryTitle" value="${entryTitle}" />
-			<var name="entryURL" value="${entryURL}" />
-		</execute>
-
-		<execute macro="Page#openURL">
-			<var name="pageType" value="Open Site" />
-		</execute>
-
-		<execute macro="SOAnnouncementsEntry#deletePG" />
-	</command>
-
-	<command name="EditBookmarksEntryTest" priority="5">
-		<var name="bookmarksEntryDescriptionEdit" value="Bookmarks Entry Description Edit" />
-		<var name="bookmarksEntryNameEdit" value="Bookmarks Entry Name Edit" />
-		<var name="bookmarksEntryUrlEdit" value="http://www.yahoo.com" />
-
-		<execute macro="SOUserBar#addSOSite">
-			<var name="siteDescription" value="${siteDescription}" />
-			<var name="siteName" value="${siteName}" />
-			<var name="siteType" value="${siteType}" />
-		</execute>
-
-		<execute macro="Page#openURL">
-			<var name="pageType" value="Open Site" />
-		</execute>
-
-		<execute macro="SOBookmarks#addBookmarksEntry">
-			<var name="bookmarksEntryDescription" value="${bookmarksEntryDescription}" />
-			<var name="bookmarksEntryName" value="${bookmarksEntryName}" />
-			<var name="bookmarksEntryUrl" value="${bookmarksEntryUrl}" />
-		</execute>
-
-		<execute macro="Page#openURL">
-			<var name="pageType" value="Open Site" />
-		</execute>
-
-		<execute macro="SOBookmarks#editBookmarksEntry">
-			<var name="bookmarksEntryDescriptionEdit" value="${bookmarksEntryDescriptionEdit}" />
-			<var name="bookmarksEntryNameEdit" value="${bookmarksEntryNameEdit}" />
-			<var name="bookmarksEntryUrlEdit" value="${bookmarksEntryUrlEdit}" />
-		</execute>
-
-		<execute macro="Page#openURL">
-			<var name="pageType" value="Open Site" />
-		</execute>
-
-		<execute macro="SOBookmarks#viewBookmarksEntry">
-			<var name="bookmarksEntryDescription" value="${bookmarksEntryDescriptionEdit}" />
-			<var name="bookmarksEntryName" value="${bookmarksEntryNameEdit}" />
-			<var name="bookmarksEntryUrl" value="${bookmarksEntryUrlEdit}" />
-		</execute>
-	</command>
-
-	<command name="EditSOAnnouncementsEntry" priority="5">
-		<execute macro="SOUserBar#addSOSite">
-			<var name="siteDescription" value="${siteDescription}" />
-			<var name="siteName" value="${siteName}" />
-			<var name="siteType" value="${siteType}" />
-		</execute>
-
-		<execute macro="Page#openURL">
-			<var name="pageType" value="Open Site" />
-		</execute>
-
-		<execute macro="SOAnnouncementsEntry#addPG">
-			<var name="distributionScope" value="General" />
-			<var name="entryContent" value="${entryContent}" />
-			<var name="entryTitle" value="${entryTitle}" />
-			<var name="entryURL" value="${entryURL}" />
-		</execute>
-
-		<execute macro="Page#openURL">
-			<var name="pageType" value="Open Site" />
-		</execute>
-
-		<execute macro="SOAnnouncementsEntry#editPG">
-			<var name="distributionScope" value="General" />
-			<var name="entryContentEdit" value="${entryContentEdit}" />
-			<var name="entryTitleEdit" value="${entryTitleEdit}" />
-			<var name="entryURL" value="${entryURL}" />
-		</execute>
-
-		<execute macro="Page#openURL">
-			<var name="pageType" value="Open Site" />
-		</execute>
-
-		<execute macro="SOAnnouncementsEntry#viewPG">
-			<var name="distributionScope" value="General" />
-			<var name="entryAuthor" value="${adminName}" />
-			<var name="entryContent" value="${entryContentEdit}" />
-			<var name="entryTitle" value="${entryTitleEdit}" />
-			<var name="entryURL" value="${entryURL}" />
-		</execute>
-	</command>
-
-	<command name="EditSOAnnouncementsEntrySOUser" priority="5">
-		<execute macro="SOUser#addUserWithSORole">
-			<var name="adminEmailAddress" value="test@liferay.com" />
-			<var name="password" value="test" />
-			<var name="userEmailAddress" value="${userEmailAddress}" />
-			<var name="userFirstName" value="${userFirstName}" />
-			<var name="userLastName" value="${userLastName}" />
-			<var name="userMiddleName" value="${userMiddleName}" />
-			<var name="userScreenName" value="${userScreenName}" />
-		</execute>
-
-		<execute macro="SOUser#logoutPG" />
-
-		<execute macro="SOUser#loginPG">
-			<var name="password" value="test" />
-			<var name="userEmailAddress" value="${userEmailAddress}" />
-		</execute>
-
-		<execute macro="SOUserBar#addSOSite">
-			<var name="siteDescription" value="${siteDescription}" />
-			<var name="siteName" value="${siteName}" />
-			<var name="siteType" value="${siteType}" />
-		</execute>
-
-		<execute macro="Page#openURL">
-			<var name="pageType" value="Open Site" />
-		</execute>
-
-		<execute macro="SOAnnouncementsEntry#addPG">
-			<var name="distributionScope" value="Open Site Name" />
-			<var name="entryContent" value="${entryContent}" />
-			<var name="entryTitle" value="${entryTitle}" />
-			<var name="entryURL" value="${entryURL}" />
-		</execute>
-
-		<execute macro="Page#openURL">
-			<var name="pageType" value="Open Site" />
-		</execute>
-
-		<execute macro="SOAnnouncementsEntry#editPG">
-			<var name="distributionScope" value="Open Site Name" />
-			<var name="entryContentEdit" value="${entryContentEdit}" />
-			<var name="entryTitleEdit" value="${entryTitleEdit}" />
-			<var name="entryURL" value="${entryURL}" />
-		</execute>
-
-		<execute macro="Page#openURL">
-			<var name="pageType" value="Open Site" />
-		</execute>
-
-		<execute macro="SOAnnouncementsEntry#viewPG">
-			<var name="distributionScope" value="Open Site Name" />
-			<var name="entryAuthor" value="${userName}" />
-			<var name="entryContent" value="${entryContentEdit}" />
-			<var name="entryTitle" value="${entryTitleEdit}" />
-			<var name="entryURL" value="${entryURL}" />
-		</execute>
-	</command>
-
-	<command name="MarkAsReadSOAnnouncementsEntry" priority="5">
-		<execute macro="SOUserBar#addSOSite">
-			<var name="siteDescription" value="${siteDescription}" />
-			<var name="siteName" value="${siteName}" />
-			<var name="siteType" value="${siteType}" />
-		</execute>
-
-		<execute macro="Page#openURL">
-			<var name="pageType" value="Open Site" />
-		</execute>
-
-		<execute macro="SOAnnouncementsEntry#addPG">
-			<var name="distributionScope" value="General" />
-			<var name="entryContent" value="${entryContent}" />
-			<var name="entryTitle" value="${entryTitle}" />
-			<var name="entryURL" value="${entryURL}" />
-		</execute>
-
-		<execute macro="Page#openURL">
-			<var name="pageType" value="Open Site" />
-		</execute>
-
-		<execute macro="SOAnnouncementsEntry#markAsReadPG">
-			<var name="distributionScope" value="General" />
-			<var name="entryAuthor" value="${adminName}" />
-			<var name="entryContent" value="${entryContent}" />
-			<var name="entryTitle" value="${entryTitle}" />
-			<var name="entryURL" value="${entryURL}" />
-		</execute>
-	</command>
-
-	<command name="MarkAsReadSOAnnouncementsEntrySOUser" priority="5">
-		<execute macro="SOUser#addUserWithSORole">
-			<var name="adminEmailAddress" value="test@liferay.com" />
-			<var name="password" value="test" />
-			<var name="userEmailAddress" value="${userEmailAddress}" />
-			<var name="userFirstName" value="${userFirstName}" />
-			<var name="userLastName" value="${userLastName}" />
-			<var name="userMiddleName" value="${userMiddleName}" />
-			<var name="userScreenName" value="${userScreenName}" />
-		</execute>
-
-		<execute macro="SOUser#logoutPG" />
-
-		<execute macro="SOUser#loginPG">
-			<var name="password" value="test" />
-			<var name="userEmailAddress" value="${userEmailAddress}" />
-		</execute>
-
-		<execute macro="SOUserBar#addSOSite">
-			<var name="siteDescription" value="${siteDescription}" />
-			<var name="siteName" value="${siteName}" />
-			<var name="siteType" value="${siteType}" />
-		</execute>
-
-		<execute macro="Page#openURL">
-			<var name="pageType" value="Open Site" />
-		</execute>
-
-		<execute macro="SOAnnouncementsEntry#addPG">
-			<var name="distributionScope" value="Open Site Name" />
-			<var name="entryContent" value="${entryContent}" />
-			<var name="entryTitle" value="${entryTitle}" />
-			<var name="entryURL" value="${entryURL}" />
-		</execute>
-
-		<execute macro="Page#openURL">
-			<var name="pageType" value="Open Site" />
-		</execute>
-
-		<execute macro="SOAnnouncementsEntry#markAsReadPG">
-			<var name="distributionScope" value="Open Site Name" />
-			<var name="entryAuthor" value="${userName}" />
-			<var name="entryContentEdit" value="${entryContent}" />
-			<var name="entryTitleEdit" value="${entryTitle}" />
-			<var name="entryURL" value="${entryURL}" />
-		</execute>
-	</command>
-
-	<command name="MarkAsUnreadSOAnnouncementsEntry" priority="5">
-		<execute macro="SOUserBar#addSOSite">
-			<var name="siteDescription" value="${siteDescription}" />
-			<var name="siteName" value="${siteName}" />
-			<var name="siteType" value="${siteType}" />
-		</execute>
-
-		<execute macro="Page#openURL">
-			<var name="pageType" value="Open Site" />
-		</execute>
-
-		<execute macro="SOAnnouncementsEntry#addPG">
-			<var name="distributionScope" value="General" />
-			<var name="entryContent" value="${entryContent}" />
-			<var name="entryTitle" value="${entryTitle}" />
-			<var name="entryURL" value="${entryURL}" />
-		</execute>
-
-		<execute macro="Page#openURL">
-			<var name="pageType" value="Open Site" />
-		</execute>
-
-		<execute macro="SOAnnouncementsEntry#markAsReadPG">
-			<var name="distributionScope" value="General" />
-			<var name="entryAuthor" value="${adminName}" />
-			<var name="entryContent" value="${entryContent}" />
-			<var name="entryTitle" value="${entryTitle}" />
-			<var name="entryURL" value="${entryURL}" />
-		</execute>
-
-		<execute macro="Page#openURL">
-			<var name="pageType" value="Open Site" />
-		</execute>
-
-		<execute macro="SOAnnouncementsEntry#markAsUnreadPG">
-			<var name="distributionScope" value="General" />
-			<var name="entryAuthor" value="${adminName}" />
-			<var name="entryContent" value="${entryContent}" />
-			<var name="entryTitle" value="${entryTitle}" />
-			<var name="entryURL" value="${entryURL}" />
-		</execute>
-	</command>
-
-	<command name="MarkAsUnreadSOAnnouncementsEntrySOUser" priority="5">
-		<execute macro="SOUser#addUserWithSORole">
-			<var name="adminEmailAddress" value="test@liferay.com" />
-			<var name="password" value="test" />
-			<var name="userEmailAddress" value="${userEmailAddress}" />
-			<var name="userFirstName" value="${userFirstName}" />
-			<var name="userLastName" value="${userLastName}" />
-			<var name="userMiddleName" value="${userMiddleName}" />
-			<var name="userScreenName" value="${userScreenName}" />
-		</execute>
-
-		<execute macro="SOUser#logoutPG" />
-
-		<execute macro="SOUser#loginPG">
-			<var name="password" value="test" />
-			<var name="userEmailAddress" value="${userEmailAddress}" />
-		</execute>
-
-		<execute macro="SOUserBar#addSOSite">
-			<var name="siteDescription" value="${siteDescription}" />
-			<var name="siteName" value="${siteName}" />
-			<var name="siteType" value="${siteType}" />
-		</execute>
-
-		<execute macro="Page#openURL">
-			<var name="pageType" value="Open Site" />
-		</execute>
-
-		<execute macro="SOAnnouncementsEntry#addPG">
-			<var name="distributionScope" value="Open Site Name" />
-			<var name="entryContent" value="${entryContent}" />
-			<var name="entryTitle" value="${entryTitle}" />
-			<var name="entryURL" value="${entryURL}" />
-		</execute>
-
-		<execute macro="Page#openURL">
-			<var name="pageType" value="Open Site" />
-		</execute>
-
-		<execute macro="SOAnnouncementsEntry#markAsReadPG">
-			<var name="distributionScope" value="Open Site Name" />
-			<var name="entryAuthor" value="${userName}" />
-			<var name="entryContentEdit" value="${entryContent}" />
-			<var name="entryTitleEdit" value="${entryTitle}" />
-			<var name="entryURL" value="${entryURL}" />
-		</execute>
-
-		<execute macro="Page#openURL">
-			<var name="pageType" value="Open Site" />
-		</execute>
-
-		<execute macro="SOAnnouncementsEntry#markAsUnreadPG">
-			<var name="distributionScope" value="Open Site Name" />
-			<var name="entryAuthor" value="${userName}" />
-			<var name="entryContent" value="${entryContent}" />
-			<var name="entryTitle" value="${entryTitle}" />
-			<var name="entryURL" value="${entryURL}" />
-		</execute>
-	</command>
-
-	<command name="ViewCalendarEvent2GuestNoViewEventsDisplay" priority="5">
-		<var name="eventDescription" value="${eventDescription}" />
-		<var name="eventTitle" value="${eventTitle}" />
-		<var name="key_eventTitle" value="${eventTitle}" />
-		<var name="pageName" value="Calendar" />
-
-		<execute macro="SOUser#addUserWithSORole">
-			<var name="adminEmailAddress" value="test@liferay.com" />
-			<var name="password" value="test" />
-			<var name="userEmailAddress" value="${userEmailAddress}" />
-			<var name="userFirstName" value="${userFirstName}" />
-			<var name="userLastName" value="${userLastName}" />
-			<var name="userMiddleName" value="${userMiddleName}" />
-			<var name="userScreenName" value="${userScreenName}" />
-		</execute>
-
-		<execute macro="SOUserBar#addSOSite">
-			<var name="siteDescription" value="${siteDescription}" />
-			<var name="siteName" value="${siteName}" />
-			<var name="siteType" value="${siteType}" />
-		</execute>
-
-		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${pageName}" />
-			<var name="pageType" value="Open Site" />
-		</execute>
-
-		<execute macro="Event#addPG" />
-
-		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${pageName}" />
-			<var name="pageType" value="Open Site" />
-		</execute>
-
-		<execute macro="Event#addPG">
-			<var name="daysIntoFuture" value="1" />
-			<var name="number" value="01" />
-		</execute>
-
-		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${pageName}" />
-			<var name="pageType" value="Open Site" />
-		</execute>
-
-		<execute macro="Event#addPG">
-			<var name="daysIntoFuture" value="2" />
-			<var name="number" value="02" />
-		</execute>
-
-		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${pageName}" />
-			<var name="pageType" value="Open Site" />
-		</execute>
-
-		<execute macro="Event#addPG">
-			<var name="daysIntoFuture" value="3" />
-			<var name="number" value="03" />
-		</execute>
-
-		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${pageName}" />
-			<var name="pageType" value="Open Site" />
-		</execute>
-
-		<var name="key_number" value="02" />
-
-		<execute function="AssertClick#assertTextClickAt" locator1="PGCalendar#VIEW_EVENTS" value1="Events" />
-		<execute function="AssertElementPresent" locator1="PGCalendar#EVENTS_EVENT_TABLE_DATE_INCREMENT" />
-		<execute function="AssertElementPresent" locator1="PGCalendar#EVENTS_EVENT_TABLE_TIME_INCREMENT" />
-		<execute function="AssertTextEquals" locator1="PGCalendar#EVENTS_EVENT_TABLE_TITLE_INCREMENT" value1="${eventTitle}02" />
-		<execute function="AssertTextEquals" locator1="PGCalendar#EVENTS_EVENT_TABLE_TYPE_INCREMENT" value1="Anniversary" />
-		<execute function="Click" locator1="PGCalendar#EVENTS_EVENT_TABLE_ACTIONS_INCREMENT" />
-		<execute function="Click" locator1="PGCalendar#EVENT_MENULIST_PERMISSIONS" />
-		<execute function="Uncheck" locator1="//input[@id='guest_ACTION_VIEW']" />
-		<execute function="Click" locator1="//input[@value='Save']" />
-		<execute function="AssertTextEquals" locator1="PGCalendar#SUCCESS_MESSAGE" value1="Your request completed successfully." />
-
-		<execute macro="Page#openURL">
-			<var name="pageType" value="Open Site" />
-		</execute>
-
-		<execute macro="SOEvents#configureEventsPortletDisplayDays">
-			<var name="maxDisplayDays" value="4" />
-		</execute>
-
-		<var name="number" value="01" />
-
-		<execute function="AssertTextEquals" locator1="SOSiteHome#EVENTS_DISPLAY_TODAYS_EVENTS_EVENT_TITLE" value1="${eventTitle}" />
-		<execute function="AssertElementPresent" locator1="SOSiteHome#EVENTS_DISPLAY_TODAYS_EVENTS_EVENT_TIME" />
-		<execute function="AssertTextEquals" locator1="SOSiteHome#EVENTS_DISPLAY_UPCOMING_EVENTS_EVENT_TITLE_INCREMENT" value1="${eventTitle}01" />
-		<execute function="AssertElementPresent" locator1="SOSiteHome#EVENTS_DISPLAY_UPCOMING_EVENTS_EVENT_TIME_INCREMENT" />
-
-		<var name="number" value="02" />
-
-		<execute function="AssertTextEquals" locator1="SOSiteHome#EVENTS_DISPLAY_UPCOMING_EVENTS_EVENT_TITLE_INCREMENT" value1="${eventTitle}02" />
-		<execute function="AssertElementPresent" locator1="SOSiteHome#EVENTS_DISPLAY_UPCOMING_EVENTS_EVENT_TIME_INCREMENT" />
-
-		<var name="number" value="03" />
-
-		<execute function="AssertTextEquals" locator1="SOSiteHome#EVENTS_DISPLAY_UPCOMING_EVENTS_EVENT_TITLE_INCREMENT" value1="${eventTitle}03" />
-		<execute function="AssertElementPresent" locator1="SOSiteHome#EVENTS_DISPLAY_UPCOMING_EVENTS_EVENT_TIME_INCREMENT" />
-
-		<var name="number" value="02" />
-
-		<execute function="AssertClick#assertTextClickAt" locator1="SOSiteHome#EVENTS_DISPLAY_UPCOMING_EVENTS_EVENT_TITLE_INCREMENT" value1="${eventTitle}02" />
-
-		<execute macro="Event#viewDetailsPG" />
-
-		<execute macro="SOUser#logoutPG" />
-
-		<execute macro="SOUser#loginPG">
-			<var name="password" value="test" />
-			<var name="userEmailAddress" value="${userEmailAddress}" />
-		</execute>
-
-		<execute macro="Page#openURL">
-			<var name="pageType" value="Open Site" />
-		</execute>
-
-		<var name="number" value="01" />
-
-		<execute function="AssertTextEquals" locator1="SOSiteHome#EVENTS_DISPLAY_TODAYS_EVENTS_EVENT_TITLE" value1="${eventTitle}" />
-		<execute function="AssertElementPresent" locator1="SOSiteHome#EVENTS_DISPLAY_TODAYS_EVENTS_EVENT_TIME" />
-		<execute function="AssertTextEquals" locator1="SOSiteHome#EVENTS_DISPLAY_UPCOMING_EVENTS_EVENT_TITLE_INCREMENT" value1="${eventTitle}01" />
-		<execute function="AssertElementPresent" locator1="SOSiteHome#EVENTS_DISPLAY_UPCOMING_EVENTS_EVENT_TIME_INCREMENT" />
-		<execute function="AssertTextNotEquals#assertNotPartialText" locator1="SOSiteHome#EVENTS_DISPLAY_TODAYS_EVENTS" value1="${eventTitle}02" />
-		<execute function="AssertTextNotEquals#assertNotPartialText" locator1="SOSiteHome#EVENTS_DISPLAY_UPCOMING_EVENTS" value1="${eventTitle}02" />
-
-		<var name="number" value="03" />
-
-		<execute function="AssertTextEquals" locator1="SOSiteHome#EVENTS_DISPLAY_UPCOMING_EVENTS_EVENT_TITLE_INCREMENT" value1="${eventTitle}03" />
-		<execute function="AssertElementPresent" locator1="SOSiteHome#EVENTS_DISPLAY_UPCOMING_EVENTS_EVENT_TIME_INCREMENT" />
-	</command>
-
-	<command name="ViewCalendarEventsEventsDisplay" priority="5">
-		<var name="eventDescription" value="${eventDescription}" />
-		<var name="eventTitle" value="${eventTitle}" />
-		<var name="pageName" value="Calendar" />
-
-		<execute macro="SOUser#addUserWithSORole">
-			<var name="adminEmailAddress" value="test@liferay.com" />
-			<var name="password" value="test" />
-			<var name="userEmailAddress" value="${userEmailAddress}" />
-			<var name="userFirstName" value="${userFirstName}" />
-			<var name="userLastName" value="${userLastName}" />
-			<var name="userMiddleName" value="${userMiddleName}" />
-			<var name="userScreenName" value="${userScreenName}" />
-		</execute>
-
-		<execute macro="SOUserBar#addSOSite">
-			<var name="siteDescription" value="${siteDescription}" />
-			<var name="siteName" value="${siteName}" />
-			<var name="siteType" value="${siteType}" />
-		</execute>
-
-		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${pageName}" />
-			<var name="pageType" value="Open Site" />
-		</execute>
-
-		<execute macro="Event#addPG" />
-
-		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${pageName}" />
-			<var name="pageType" value="Open Site" />
-		</execute>
-
-		<execute macro="Event#addPG">
-			<var name="daysIntoFuture" value="1" />
-			<var name="number" value="01" />
-		</execute>
-
-		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${pageName}" />
-			<var name="pageType" value="Open Site" />
-		</execute>
-
-		<execute macro="Event#addPG">
-			<var name="daysIntoFuture" value="2" />
-			<var name="number" value="02" />
-		</execute>
-
-		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${pageName}" />
-			<var name="pageType" value="Open Site" />
-		</execute>
-
-		<execute macro="Event#addPG">
-			<var name="daysIntoFuture" value="3" />
-			<var name="number" value="03" />
-		</execute>
-
-		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${pageName}" />
-			<var name="pageType" value="Open Site" />
-		</execute>
-
-		<execute macro="Event#addPG">
-			<var name="daysIntoFuture" value="4" />
-			<var name="number" value="04" />
-		</execute>
-
-		<execute macro="Page#openURL">
-			<var name="pageType" value="Open Site" />
-		</execute>
-
-		<execute function="AssertTextEquals" locator1="SOSiteHome#EVENTS_DISPLAY_TODAYS_EVENTS_EVENT_TITLE" value1="${eventTitle}" />
-		<execute function="AssertElementPresent" locator1="SOSiteHome#EVENTS_DISPLAY_TODAYS_EVENTS_EVENT_TIME" />
-		<execute function="AssertElementNotPresent" locator1="SOSiteHome#EVENTS_DISPLAY_UPCOMING_EVENTS_EVENT_TITLE" />
-		<execute function="AssertElementNotPresent" locator1="SOSiteHome#EVENTS_DISPLAY_UPCOMING_EVENTS_EVENT_TIME" />
-		<execute function="AssertClick#assertTextClickAt" locator1="SOSiteHome#EVENTS_DISPLAY_TODAYS_EVENTS_EVENT_TITLE" value1="${eventTitle}" />
-
-		<execute macro="Event#viewDetailsPG" />
-
-		<execute macro="Page#openURL">
-			<var name="pageType" value="Open Site" />
-		</execute>
-
-		<execute macro="SOEvents#configureEventsPortletDisplayDays">
-			<var name="maxDisplayDays" value="2" />
-		</execute>
-
-		<var name="number" value="01" />
-
-		<execute function="AssertTextEquals" locator1="SOSiteHome#EVENTS_DISPLAY_TODAYS_EVENTS_EVENT_TITLE" value1="${eventTitle}" />
-		<execute function="AssertElementPresent" locator1="SOSiteHome#EVENTS_DISPLAY_TODAYS_EVENTS_EVENT_TIME" />
-		<execute function="AssertTextEquals" locator1="SOSiteHome#EVENTS_DISPLAY_UPCOMING_EVENTS_EVENT_TITLE_INCREMENT" value1="${eventTitle}01" />
-		<execute function="AssertElementPresent" locator1="SOSiteHome#EVENTS_DISPLAY_UPCOMING_EVENTS_EVENT_TIME_INCREMENT" />
-		<execute function="AssertTextNotEquals#assertNotPartialText" locator1="SOSiteHome#EVENTS_DISPLAY_TODAYS_EVENTS" value1="${eventTitle}02" />
-		<execute function="AssertTextNotEquals#assertNotPartialText" locator1="SOSiteHome#EVENTS_DISPLAY_UPCOMING_EVENTS" value1="${eventTitle}02" />
-		<execute function="AssertClick#assertTextClickAt" locator1="SOSiteHome#EVENTS_DISPLAY_UPCOMING_EVENTS_EVENT_TITLE_INCREMENT" value1="${eventTitle}01" />
-
-		<execute macro="Event#viewDetailsPG" />
-
-		<execute macro="Page#openURL">
-			<var name="pageType" value="Open Site" />
-		</execute>
-
-		<execute macro="SOEvents#configureEventsPortletDisplayDays">
-			<var name="maxDisplayDays" value="3" />
-		</execute>
-
-		<var name="number" value="01" />
-
-		<execute function="AssertTextEquals" locator1="SOSiteHome#EVENTS_DISPLAY_TODAYS_EVENTS_EVENT_TITLE" value1="${eventTitle}" />
-		<execute function="AssertElementPresent" locator1="SOSiteHome#EVENTS_DISPLAY_TODAYS_EVENTS_EVENT_TIME" />
-		<execute function="AssertTextEquals" locator1="SOSiteHome#EVENTS_DISPLAY_UPCOMING_EVENTS_EVENT_TITLE_INCREMENT" value1="${eventTitle}01" />
-		<execute function="AssertElementPresent" locator1="SOSiteHome#EVENTS_DISPLAY_UPCOMING_EVENTS_EVENT_TIME_INCREMENT" />
-
-		<var name="number" value="02" />
-
-		<execute function="AssertTextEquals" locator1="SOSiteHome#EVENTS_DISPLAY_UPCOMING_EVENTS_EVENT_TITLE_INCREMENT" value1="${eventTitle}02" />
-		<execute function="AssertElementPresent" locator1="SOSiteHome#EVENTS_DISPLAY_UPCOMING_EVENTS_EVENT_TIME_INCREMENT" />
-		<execute function="AssertTextNotEquals#assertNotPartialText" locator1="SOSiteHome#EVENTS_DISPLAY_TODAYS_EVENTS" value1="${eventTitle}03" />
-		<execute function="AssertTextNotEquals#assertNotPartialText" locator1="SOSiteHome#EVENTS_DISPLAY_UPCOMING_EVENTS" value1="${eventTitle}03" />
-		<execute function="AssertClick#assertTextClickAt" locator1="SOSiteHome#EVENTS_DISPLAY_UPCOMING_EVENTS_EVENT_TITLE_INCREMENT" value1="${eventTitle}02" />
-
-		<execute macro="Event#viewDetailsPG" />
-
-		<execute macro="Page#openURL">
-			<var name="pageType" value="Open Site" />
-		</execute>
-
-		<execute macro="SOEvents#configureEventsPortletDisplayDays">
-			<var name="maxDisplayDays" value="4" />
-		</execute>
-
-		<var name="number" value="01" />
-
-		<execute function="AssertTextEquals" locator1="SOSiteHome#EVENTS_DISPLAY_TODAYS_EVENTS_EVENT_TITLE" value1="${eventTitle}" />
-		<execute function="AssertElementPresent" locator1="SOSiteHome#EVENTS_DISPLAY_TODAYS_EVENTS_EVENT_TIME" />
-		<execute function="AssertTextEquals" locator1="SOSiteHome#EVENTS_DISPLAY_UPCOMING_EVENTS_EVENT_TITLE_INCREMENT" value1="${eventTitle}01" />
-		<execute function="AssertElementPresent" locator1="SOSiteHome#EVENTS_DISPLAY_UPCOMING_EVENTS_EVENT_TIME_INCREMENT" />
-
-		<var name="number" value="02" />
-
-		<execute function="AssertTextEquals" locator1="SOSiteHome#EVENTS_DISPLAY_UPCOMING_EVENTS_EVENT_TITLE_INCREMENT" value1="${eventTitle}02" />
-		<execute function="AssertElementPresent" locator1="SOSiteHome#EVENTS_DISPLAY_UPCOMING_EVENTS_EVENT_TIME_INCREMENT" />
-
-		<var name="number" value="03" />
-
-		<execute function="AssertTextEquals" locator1="SOSiteHome#EVENTS_DISPLAY_UPCOMING_EVENTS_EVENT_TITLE_INCREMENT" value1="${eventTitle}03" />
-		<execute function="AssertElementPresent" locator1="SOSiteHome#EVENTS_DISPLAY_UPCOMING_EVENTS_EVENT_TIME_INCREMENT" />
-		<execute function="AssertTextNotEquals#assertNotPartialText" locator1="SOSiteHome#EVENTS_DISPLAY_TODAYS_EVENTS" value1="${eventTitle}04" />
-		<execute function="AssertTextNotEquals#assertNotPartialText" locator1="SOSiteHome#EVENTS_DISPLAY_UPCOMING_EVENTS" value1="${eventTitle}04" />
-		<execute function="AssertClick#assertTextClickAt" locator1="SOSiteHome#EVENTS_DISPLAY_UPCOMING_EVENTS_EVENT_TITLE_INCREMENT" value1="${eventTitle}03" />
-
-		<execute macro="Event#viewDetailsPG" />
-
-		<execute macro="Page#openURL">
-			<var name="pageType" value="Open Site" />
-		</execute>
-
-		<execute macro="SOEvents#configureEventsPortletDisplayDays">
-			<var name="maxDisplayDays" value="5" />
-		</execute>
-
-		<var name="number" value="01" />
-
-		<execute function="AssertTextEquals" locator1="SOSiteHome#EVENTS_DISPLAY_TODAYS_EVENTS_EVENT_TITLE" value1="${eventTitle}" />
-		<execute function="AssertElementPresent" locator1="SOSiteHome#EVENTS_DISPLAY_TODAYS_EVENTS_EVENT_TIME" />
-		<execute function="AssertTextEquals" locator1="SOSiteHome#EVENTS_DISPLAY_UPCOMING_EVENTS_EVENT_TITLE_INCREMENT" value1="${eventTitle}01" />
-		<execute function="AssertElementPresent" locator1="SOSiteHome#EVENTS_DISPLAY_UPCOMING_EVENTS_EVENT_TIME_INCREMENT" />
-
-		<var name="number" value="02" />
-
-		<execute function="AssertTextEquals" locator1="SOSiteHome#EVENTS_DISPLAY_UPCOMING_EVENTS_EVENT_TITLE_INCREMENT" value1="${eventTitle}02" />
-		<execute function="AssertElementPresent" locator1="SOSiteHome#EVENTS_DISPLAY_UPCOMING_EVENTS_EVENT_TIME_INCREMENT" />
-
-		<var name="number" value="03" />
-
-		<execute function="AssertTextEquals" locator1="SOSiteHome#EVENTS_DISPLAY_UPCOMING_EVENTS_EVENT_TITLE_INCREMENT" value1="${eventTitle}03" />
-		<execute function="AssertElementPresent" locator1="SOSiteHome#EVENTS_DISPLAY_UPCOMING_EVENTS_EVENT_TIME_INCREMENT" />
-
-		<var name="number" value="04" />
-
-		<execute function="AssertTextEquals" locator1="SOSiteHome#EVENTS_DISPLAY_UPCOMING_EVENTS_EVENT_TITLE_INCREMENT" value1="${eventTitle}04" />
-		<execute function="AssertElementPresent" locator1="SOSiteHome#EVENTS_DISPLAY_UPCOMING_EVENTS_EVENT_TIME_INCREMENT" />
-		<execute function="AssertClick#assertTextClickAt" locator1="SOSiteHome#EVENTS_DISPLAY_UPCOMING_EVENTS_EVENT_TITLE_INCREMENT" value1="${eventTitle}04" />
-
-		<execute macro="Event#viewDetailsPG" />
-
-		<execute macro="SOUser#logoutPG" />
-
-		<execute macro="SOUser#loginPG">
-			<var name="password" value="test" />
-			<var name="userEmailAddress" value="${userEmailAddress}" />
-		</execute>
-
-		<execute macro="Page#openURL">
-			<var name="pageType" value="Open Site" />
-		</execute>
-
-		<var name="number" value="01" />
-
-		<execute function="AssertTextEquals" locator1="SOSiteHome#EVENTS_DISPLAY_TODAYS_EVENTS_EVENT_TITLE" value1="${eventTitle}" />
-		<execute function="AssertElementPresent" locator1="SOSiteHome#EVENTS_DISPLAY_TODAYS_EVENTS_EVENT_TIME" />
-		<execute function="AssertTextEquals" locator1="SOSiteHome#EVENTS_DISPLAY_UPCOMING_EVENTS_EVENT_TITLE_INCREMENT" value1="${eventTitle}01" />
-		<execute function="AssertElementPresent" locator1="SOSiteHome#EVENTS_DISPLAY_UPCOMING_EVENTS_EVENT_TIME_INCREMENT" />
-
-		<var name="number" value="02" />
-
-		<execute function="AssertTextEquals" locator1="SOSiteHome#EVENTS_DISPLAY_UPCOMING_EVENTS_EVENT_TITLE_INCREMENT" value1="${eventTitle}02" />
-		<execute function="AssertElementPresent" locator1="SOSiteHome#EVENTS_DISPLAY_UPCOMING_EVENTS_EVENT_TIME_INCREMENT" />
-
-		<var name="number" value="03" />
-
-		<execute function="AssertTextEquals" locator1="SOSiteHome#EVENTS_DISPLAY_UPCOMING_EVENTS_EVENT_TITLE_INCREMENT" value1="${eventTitle}03" />
-		<execute function="AssertElementPresent" locator1="SOSiteHome#EVENTS_DISPLAY_UPCOMING_EVENTS_EVENT_TIME_INCREMENT" />
-
-		<var name="number" value="04" />
-
-		<execute function="AssertTextEquals" locator1="SOSiteHome#EVENTS_DISPLAY_UPCOMING_EVENTS_EVENT_TITLE_INCREMENT" value1="${eventTitle}04" />
-		<execute function="AssertElementPresent" locator1="SOSiteHome#EVENTS_DISPLAY_UPCOMING_EVENTS_EVENT_TIME_INCREMENT" />
-		<execute function="AssertClick#assertTextClickAt" locator1="SOSiteHome#EVENTS_DISPLAY_UPCOMING_EVENTS_EVENT_TITLE_INCREMENT" value1="${eventTitle}04" />
-
-		<execute macro="Event#viewDetailsPG" />
-	</command>
-
-	<command name="ViewSOAnnouncementsEntryNotificationSOUser" priority="5">
-		<execute macro="SOUser#addUserWithSORole">
-			<var name="adminEmailAddress" value="test@liferay.com" />
-			<var name="password" value="test" />
-			<var name="userEmailAddress" value="${userEmailAddress}" />
-			<var name="userFirstName" value="${userFirstName}" />
-			<var name="userLastName" value="${userLastName}" />
-			<var name="userMiddleName" value="${userMiddleName}" />
-			<var name="userScreenName" value="${userScreenName}" />
-		</execute>
-
-		<execute macro="SOUserBar#addSOSite">
-			<var name="siteDescription" value="${siteDescription}" />
-			<var name="siteName" value="${siteName}" />
-			<var name="siteType" value="${siteType}" />
-		</execute>
-
-		<execute macro="SOUser#logoutPG" />
-
-		<execute macro="SOUser#loginPG">
-			<var name="password" value="test" />
-			<var name="userEmailAddress" value="${userEmailAddress}" />
-		</execute>
-
-		<execute macro="SOUserBar#joinSOSite">
-			<var name="siteName" value="${siteName}" />
-			<var name="siteType" value="${siteType}" />
-		</execute>
-
-		<execute macro="SOUser#logoutPG" />
-
-		<execute macro="SOUser#loginPG">
-			<var name="password" value="test" />
-			<var name="userEmailAddress" value="${adminEmailAddress}" />
-		</execute>
-
-		<execute macro="Page#openURL">
-			<var name="pageType" value="Open Site" />
-		</execute>
-
-		<execute macro="SOAnnouncementsEntry#addPG">
-			<var name="distributionScope" value="General" />
-			<var name="entryContent" value="${entryContent}" />
-			<var name="entryTitle" value="${entryTitle}" />
-			<var name="entryURL" value="${entryURL}" />
-		</execute>
-
-		<execute macro="SOUser#logoutPG" />
-
-		<execute macro="SOUser#loginPG">
-			<var name="password" value="test" />
-			<var name="userEmailAddress" value="${userEmailAddress}" />
-		</execute>
-
-		<execute macro="SOAnnouncementsEntry#viewNotificationPG">
-			<var name="entryAuthor" value="${adminName}" />
-			<var name="entryTitle" value="${entryTitle}" />
-		</execute>
-
-		<execute macro="SOUser#logoutPG" />
-
-		<execute macro="SOUser#loginPG">
-			<var name="password" value="test" />
-			<var name="userEmailAddress" value="${userEmailAddress}" />
-		</execute>
-
-		<var name="entryAuthor" value="${adminName}" />
-
-		<execute function="Click#textClickAt" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
-		<execute function="AssertElementPresent#assertElementPresent" locator1="SOUserBar#NOTIFICATION" />
-		<execute function="AssertTextEquals" locator1="SOUserBar#NOTIFICATION_MENU_COUNT" value1="0" />
-		<execute function="MouseOver" locator1="SOUserBar#NOTIFICATION" />
-		<execute function="AssertTextEquals" locator1="SOUserBar#NOTIFICATION_MENU_EMPTY" value1="You have no new notifications." />
-		<execute function="AssertTextNotPresent" value1="${entryAuthor} sent a new announcement." />
-		<execute function="AssertElementNotPresent" locator1="SOUserBar#NOTIFICATION_MENU_ENTRY_SUBCONTENT" value1="${entryTitle}" />
-	</command>
-</definition>
+@component-name = "social-office-site"
+definition {
+	property hook.plugins.includes = "deploy-listener-hook,portal-compat-hook,so-activities-hook,so-hook";
+	property portlet.plugins.includes = "chat-portlet,contacts-portlet,events-display-portlet,microblogs-portlet,private-messaging-portlet,so-announcements-portlet,so-configurations-portlet,so-portlet,tasks-portlet,wysiwyg-portlet";
+	property testray.main.component.name = "Social Office EE";
+	property theme.plugins.includes = "so-theme";
+	var adminEmailAddress = "test@liferay.com";
+	var adminName = "Joe Bloggs";
+	var bookmarksEntryDescription = "Bookmarks Entry Description";
+	var bookmarksEntryName = "Bookmarks Entry Name";
+	var bookmarksEntryUrl = "http://www.google.com";
+	var entryContent = "Announcements Entry Content";
+	var entryContentEdit = "Announcements Entry Content Edit";
+	var entryTitle = "Announcements Entry Title";
+	var entryTitleEdit = "Announcements Entry Title Edit";
+	var entryURL = "http://www.liferay.com";
+	var eventDescription = "Calendar Event Description";
+	var eventTitle = "Calendar Event Title";
+	var key_siteName = "${siteName}";
+	var password = "test";
+	var siteDescription = "Open Site Description";
+	var siteName = "Open Site Name";
+	var siteType = "Open";
+	var userEmailAddress = "socialoffice01@liferay.com";
+	var userFirstName = "Social01";
+	var userLastName = "User01";
+	var userListName = "User01, Social01";
+	var userMiddleName = "Office01";
+	var userName = "Social01 Office01 User01";
+	var userScreenName = "socialoffice01";
+
+	setUp {
+		SOUser.firstLoginPG();
+	}
+
+	tearDown {
+		SOAnnouncementsEntry.tearDownSitePG();
+
+		SOUserBar.tearDownNotifications();
+
+		SOUserBar.tearDownSites();
+
+		SOUser.tearDownCP();
+	}
+
+	@priority = "5"
+	test AddBookmarksEntryTest {
+		SOUserBar.addSOSite(
+			siteDescription = "${siteDescription}",
+			siteName = "${siteName}",
+			siteType = "${siteType}"
+		);
+
+		Page.openURL(pageType = "Open Site");
+
+		SOBookmarks.addBookmarksEntry(
+			bookmarksEntryDescription = "${bookmarksEntryDescription}",
+			bookmarksEntryName = "${bookmarksEntryName}",
+			bookmarksEntryUrl = "${bookmarksEntryUrl}"
+		);
+
+		Page.openURL(pageType = "Open Site");
+
+		SOBookmarks.viewBookmarksEntry(
+			bookmarksEntryDescription = "${bookmarksEntryDescription}",
+			bookmarksEntryName = "${bookmarksEntryName}",
+			bookmarksEntryUrl = "${bookmarksEntryUrl}"
+		);
+	}
+
+	@priority = "5"
+	test AddRssFeed {
+		var entriesPerFeed = "3";
+		var expandedEntriesPerFeed = "1";
+		var feedTitle = "CNET";
+		var feedUrl = "http://feeds.feedburner.com/cnet/tcoc";
+
+		SOUser.addUserWithSORole(
+			adminEmailAddress = "test@liferay.com",
+			password = "test",
+			userEmailAddress = "${userEmailAddress}",
+			userFirstName = "${userFirstName}",
+			userLastName = "${userLastName}",
+			userMiddleName = "${userMiddleName}",
+			userScreenName = "${userScreenName}"
+		);
+
+		SOUserBar.addSOSite(
+			siteDescription = "${siteDescription}",
+			siteName = "${siteName}",
+			siteType = "${siteType}"
+		);
+
+		Page.openURL(pageType = "Open Site");
+
+		SORss.addRssFeed(
+			entriesPerFeed = "${entriesPerFeed}",
+			expandedEntriesPerFeed = "${expandedEntriesPerFeed}",
+			feedTitle = "${feedTitle}",
+			feedUrl = "${feedUrl}"
+		);
+
+		Page.openURL(pageType = "Open Site");
+
+		SORss.viewRssFeed(
+			entriesPerFeed = "${entriesPerFeed}",
+			expandedEntriesPerFeed = "${expandedEntriesPerFeed}",
+			feedTitle = "${feedTitle}",
+			feedUrl = "${feedUrl}"
+		);
+
+		SOUser.logoutPG();
+
+		SOUser.loginPG(password = "test", userEmailAddress = "${userEmailAddress}");
+
+		Page.openURL(pageType = "Open Site");
+
+		SORss.viewRssFeed(
+			entriesPerFeed = "${entriesPerFeed}",
+			expandedEntriesPerFeed = "${expandedEntriesPerFeed}",
+			feedTitle = "${feedTitle}",
+			feedUrl = "${feedUrl}"
+		);
+	}
+
+	@priority = "5"
+	test AddSOAnnouncementsEntry {
+		SOUserBar.addSOSite(
+			siteDescription = "${siteDescription}",
+			siteName = "${siteName}",
+			siteType = "${siteType}"
+		);
+
+		Page.openURL(pageType = "Open Site");
+
+		SOAnnouncementsEntry.addPG(
+			distributionScope = "General",
+			entryContent = "${entryContent}",
+			entryTitle = "${entryTitle}",
+			entryURL = "${entryURL}"
+		);
+
+		Page.openURL(pageType = "Open Site");
+
+		SOAnnouncementsEntry.viewNotificationPG(
+			entryAuthor = "${adminName}",
+			entryTitle = "${entryTitle}"
+		);
+
+		Page.openURL(pageType = "Open Site");
+
+		SOAnnouncementsEntry.viewPG(
+			distributionScope = "General",
+			entryAuthor = "${adminName}",
+			entryContent = "${entryContent}",
+			entryTitle = "${entryTitle}",
+			entryURL = "${entryURL}"
+		);
+	}
+
+	@priority = "5"
+	test AddSOAnnouncementsEntrySOUser {
+		SOUser.addUserWithSORole(
+			adminEmailAddress = "test@liferay.com",
+			password = "test",
+			userEmailAddress = "${userEmailAddress}",
+			userFirstName = "${userFirstName}",
+			userLastName = "${userLastName}",
+			userMiddleName = "${userMiddleName}",
+			userScreenName = "${userScreenName}"
+		);
+
+		SOUser.logoutPG();
+
+		SOUser.loginPG(password = "test", userEmailAddress = "${userEmailAddress}");
+
+		SOUserBar.addSOSite(
+			siteDescription = "${siteDescription}",
+			siteName = "${siteName}",
+			siteType = "${siteType}"
+		);
+
+		Page.openURL(pageType = "Open Site");
+
+		SOAnnouncementsEntry.addPG(
+			distributionScope = "Open Site Name",
+			entryContent = "${entryContent}",
+			entryTitle = "${entryTitle}",
+			entryURL = "${entryURL}"
+		);
+
+		Page.openURL(pageType = "Open Site");
+
+		SOAnnouncementsEntry.viewNotificationPG(
+			entryAuthor = "${userName}",
+			entryTitle = "${entryTitle}"
+		);
+
+		Page.openURL(pageType = "Open Site");
+
+		SOAnnouncementsEntry.viewPG(
+			distributionScope = "Open Site Name",
+			entryAuthor = "${userName}",
+			entryContent = "${entryContent}",
+			entryTitle = "${entryTitle}",
+			entryURL = "${entryURL}"
+		);
+	}
+
+	@priority = "5"
+	test DeleteBookmarksEntryTest {
+		SOUserBar.addSOSite(
+			siteDescription = "${siteDescription}",
+			siteName = "${siteName}",
+			siteType = "${siteType}"
+		);
+
+		Page.openURL(pageType = "Open Site");
+
+		SOBookmarks.addBookmarksEntry(
+			bookmarksEntryDescription = "${bookmarksEntryDescription}",
+			bookmarksEntryName = "${bookmarksEntryName}",
+			bookmarksEntryUrl = "${bookmarksEntryUrl}"
+		);
+
+		Page.openURL(pageType = "Open Site");
+
+		SOBookmarks.deleteBookmarksEntry();
+	}
+
+	@priority = "5"
+	test DeleteSOAnnouncementsEntry {
+		SOUserBar.addSOSite(
+			siteDescription = "${siteDescription}",
+			siteName = "${siteName}",
+			siteType = "${siteType}"
+		);
+
+		Page.openURL(pageType = "Open Site");
+
+		SOAnnouncementsEntry.addPG(
+			distributionScope = "General",
+			entryContent = "${entryContent}",
+			entryTitle = "${entryTitle}",
+			entryURL = "${entryURL}"
+		);
+
+		Page.openURL(pageType = "Open Site");
+
+		SOAnnouncementsEntry.deletePG();
+	}
+
+	@priority = "5"
+	test DeleteSOAnnouncementsEntrySOUser {
+		SOUser.addUserWithSORole(
+			adminEmailAddress = "test@liferay.com",
+			password = "test",
+			userEmailAddress = "${userEmailAddress}",
+			userFirstName = "${userFirstName}",
+			userLastName = "${userLastName}",
+			userMiddleName = "${userMiddleName}",
+			userScreenName = "${userScreenName}"
+		);
+
+		SOUser.logoutPG();
+
+		SOUser.loginPG(password = "test", userEmailAddress = "${userEmailAddress}");
+
+		SOUserBar.addSOSite(
+			siteDescription = "${siteDescription}",
+			siteName = "${siteName}",
+			siteType = "${siteType}"
+		);
+
+		Page.openURL(pageType = "Open Site");
+
+		SOAnnouncementsEntry.addPG(
+			distributionScope = "Open Site Name",
+			entryContent = "${entryContent}",
+			entryTitle = "${entryTitle}",
+			entryURL = "${entryURL}"
+		);
+
+		Page.openURL(pageType = "Open Site");
+
+		SOAnnouncementsEntry.deletePG();
+	}
+
+	@priority = "5"
+	test EditBookmarksEntryTest {
+		var bookmarksEntryDescriptionEdit = "Bookmarks Entry Description Edit";
+		var bookmarksEntryNameEdit = "Bookmarks Entry Name Edit";
+		var bookmarksEntryUrlEdit = "http://www.yahoo.com";
+
+		SOUserBar.addSOSite(
+			siteDescription = "${siteDescription}",
+			siteName = "${siteName}",
+			siteType = "${siteType}"
+		);
+
+		Page.openURL(pageType = "Open Site");
+
+		SOBookmarks.addBookmarksEntry(
+			bookmarksEntryDescription = "${bookmarksEntryDescription}",
+			bookmarksEntryName = "${bookmarksEntryName}",
+			bookmarksEntryUrl = "${bookmarksEntryUrl}"
+		);
+
+		Page.openURL(pageType = "Open Site");
+
+		SOBookmarks.editBookmarksEntry(
+			bookmarksEntryDescriptionEdit = "${bookmarksEntryDescriptionEdit}",
+			bookmarksEntryNameEdit = "${bookmarksEntryNameEdit}",
+			bookmarksEntryUrlEdit = "${bookmarksEntryUrlEdit}"
+		);
+
+		Page.openURL(pageType = "Open Site");
+
+		SOBookmarks.viewBookmarksEntry(
+			bookmarksEntryDescription = "${bookmarksEntryDescriptionEdit}",
+			bookmarksEntryName = "${bookmarksEntryNameEdit}",
+			bookmarksEntryUrl = "${bookmarksEntryUrlEdit}"
+		);
+	}
+
+	@priority = "5"
+	test EditSOAnnouncementsEntry {
+		SOUserBar.addSOSite(
+			siteDescription = "${siteDescription}",
+			siteName = "${siteName}",
+			siteType = "${siteType}"
+		);
+
+		Page.openURL(pageType = "Open Site");
+
+		SOAnnouncementsEntry.addPG(
+			distributionScope = "General",
+			entryContent = "${entryContent}",
+			entryTitle = "${entryTitle}",
+			entryURL = "${entryURL}"
+		);
+
+		Page.openURL(pageType = "Open Site");
+
+		SOAnnouncementsEntry.editPG(
+			distributionScope = "General",
+			entryContentEdit = "${entryContentEdit}",
+			entryTitleEdit = "${entryTitleEdit}",
+			entryURL = "${entryURL}"
+		);
+
+		Page.openURL(pageType = "Open Site");
+
+		SOAnnouncementsEntry.viewPG(
+			distributionScope = "General",
+			entryAuthor = "${adminName}",
+			entryContent = "${entryContentEdit}",
+			entryTitle = "${entryTitleEdit}",
+			entryURL = "${entryURL}"
+		);
+	}
+
+	@priority = "5"
+	test EditSOAnnouncementsEntrySOUser {
+		SOUser.addUserWithSORole(
+			adminEmailAddress = "test@liferay.com",
+			password = "test",
+			userEmailAddress = "${userEmailAddress}",
+			userFirstName = "${userFirstName}",
+			userLastName = "${userLastName}",
+			userMiddleName = "${userMiddleName}",
+			userScreenName = "${userScreenName}"
+		);
+
+		SOUser.logoutPG();
+
+		SOUser.loginPG(password = "test", userEmailAddress = "${userEmailAddress}");
+
+		SOUserBar.addSOSite(
+			siteDescription = "${siteDescription}",
+			siteName = "${siteName}",
+			siteType = "${siteType}"
+		);
+
+		Page.openURL(pageType = "Open Site");
+
+		SOAnnouncementsEntry.addPG(
+			distributionScope = "Open Site Name",
+			entryContent = "${entryContent}",
+			entryTitle = "${entryTitle}",
+			entryURL = "${entryURL}"
+		);
+
+		Page.openURL(pageType = "Open Site");
+
+		SOAnnouncementsEntry.editPG(
+			distributionScope = "Open Site Name",
+			entryContentEdit = "${entryContentEdit}",
+			entryTitleEdit = "${entryTitleEdit}",
+			entryURL = "${entryURL}"
+		);
+
+		Page.openURL(pageType = "Open Site");
+
+		SOAnnouncementsEntry.viewPG(
+			distributionScope = "Open Site Name",
+			entryAuthor = "${userName}",
+			entryContent = "${entryContentEdit}",
+			entryTitle = "${entryTitleEdit}",
+			entryURL = "${entryURL}"
+		);
+	}
+
+	@priority = "5"
+	test MarkAsReadSOAnnouncementsEntry {
+		SOUserBar.addSOSite(
+			siteDescription = "${siteDescription}",
+			siteName = "${siteName}",
+			siteType = "${siteType}"
+		);
+
+		Page.openURL(pageType = "Open Site");
+
+		SOAnnouncementsEntry.addPG(
+			distributionScope = "General",
+			entryContent = "${entryContent}",
+			entryTitle = "${entryTitle}",
+			entryURL = "${entryURL}"
+		);
+
+		Page.openURL(pageType = "Open Site");
+
+		SOAnnouncementsEntry.markAsReadPG(
+			distributionScope = "General",
+			entryAuthor = "${adminName}",
+			entryContent = "${entryContent}",
+			entryTitle = "${entryTitle}",
+			entryURL = "${entryURL}"
+		);
+	}
+
+	@priority = "5"
+	test MarkAsReadSOAnnouncementsEntrySOUser {
+		SOUser.addUserWithSORole(
+			adminEmailAddress = "test@liferay.com",
+			password = "test",
+			userEmailAddress = "${userEmailAddress}",
+			userFirstName = "${userFirstName}",
+			userLastName = "${userLastName}",
+			userMiddleName = "${userMiddleName}",
+			userScreenName = "${userScreenName}"
+		);
+
+		SOUser.logoutPG();
+
+		SOUser.loginPG(password = "test", userEmailAddress = "${userEmailAddress}");
+
+		SOUserBar.addSOSite(
+			siteDescription = "${siteDescription}",
+			siteName = "${siteName}",
+			siteType = "${siteType}"
+		);
+
+		Page.openURL(pageType = "Open Site");
+
+		SOAnnouncementsEntry.addPG(
+			distributionScope = "Open Site Name",
+			entryContent = "${entryContent}",
+			entryTitle = "${entryTitle}",
+			entryURL = "${entryURL}"
+		);
+
+		Page.openURL(pageType = "Open Site");
+
+		SOAnnouncementsEntry.markAsReadPG(
+			distributionScope = "Open Site Name",
+			entryAuthor = "${userName}",
+			entryContentEdit = "${entryContent}",
+			entryTitleEdit = "${entryTitle}",
+			entryURL = "${entryURL}"
+		);
+	}
+
+	@priority = "5"
+	test MarkAsUnreadSOAnnouncementsEntry {
+		SOUserBar.addSOSite(
+			siteDescription = "${siteDescription}",
+			siteName = "${siteName}",
+			siteType = "${siteType}"
+		);
+
+		Page.openURL(pageType = "Open Site");
+
+		SOAnnouncementsEntry.addPG(
+			distributionScope = "General",
+			entryContent = "${entryContent}",
+			entryTitle = "${entryTitle}",
+			entryURL = "${entryURL}"
+		);
+
+		Page.openURL(pageType = "Open Site");
+
+		SOAnnouncementsEntry.markAsReadPG(
+			distributionScope = "General",
+			entryAuthor = "${adminName}",
+			entryContent = "${entryContent}",
+			entryTitle = "${entryTitle}",
+			entryURL = "${entryURL}"
+		);
+
+		Page.openURL(pageType = "Open Site");
+
+		SOAnnouncementsEntry.markAsUnreadPG(
+			distributionScope = "General",
+			entryAuthor = "${adminName}",
+			entryContent = "${entryContent}",
+			entryTitle = "${entryTitle}",
+			entryURL = "${entryURL}"
+		);
+	}
+
+	@priority = "5"
+	test MarkAsUnreadSOAnnouncementsEntrySOUser {
+		SOUser.addUserWithSORole(
+			adminEmailAddress = "test@liferay.com",
+			password = "test",
+			userEmailAddress = "${userEmailAddress}",
+			userFirstName = "${userFirstName}",
+			userLastName = "${userLastName}",
+			userMiddleName = "${userMiddleName}",
+			userScreenName = "${userScreenName}"
+		);
+
+		SOUser.logoutPG();
+
+		SOUser.loginPG(password = "test", userEmailAddress = "${userEmailAddress}");
+
+		SOUserBar.addSOSite(
+			siteDescription = "${siteDescription}",
+			siteName = "${siteName}",
+			siteType = "${siteType}"
+		);
+
+		Page.openURL(pageType = "Open Site");
+
+		SOAnnouncementsEntry.addPG(
+			distributionScope = "Open Site Name",
+			entryContent = "${entryContent}",
+			entryTitle = "${entryTitle}",
+			entryURL = "${entryURL}"
+		);
+
+		Page.openURL(pageType = "Open Site");
+
+		SOAnnouncementsEntry.markAsReadPG(
+			distributionScope = "Open Site Name",
+			entryAuthor = "${userName}",
+			entryContentEdit = "${entryContent}",
+			entryTitleEdit = "${entryTitle}",
+			entryURL = "${entryURL}"
+		);
+
+		Page.openURL(pageType = "Open Site");
+
+		SOAnnouncementsEntry.markAsUnreadPG(
+			distributionScope = "Open Site Name",
+			entryAuthor = "${userName}",
+			entryContent = "${entryContent}",
+			entryTitle = "${entryTitle}",
+			entryURL = "${entryURL}"
+		);
+	}
+
+	@priority = "5"
+	test ViewCalendarEvent2GuestNoViewEventsDisplay {
+		var eventDescription = "${eventDescription}";
+		var eventTitle = "${eventTitle}";
+		var key_eventTitle = "${eventTitle}";
+		var pageName = "Calendar";
+
+		SOUser.addUserWithSORole(
+			adminEmailAddress = "test@liferay.com",
+			password = "test",
+			userEmailAddress = "${userEmailAddress}",
+			userFirstName = "${userFirstName}",
+			userLastName = "${userLastName}",
+			userMiddleName = "${userMiddleName}",
+			userScreenName = "${userScreenName}"
+		);
+
+		SOUserBar.addSOSite(
+			siteDescription = "${siteDescription}",
+			siteName = "${siteName}",
+			siteType = "${siteType}"
+		);
+
+		Page.gotoPG(pageName = "${pageName}", pageType = "Open Site");
+
+		Event.addPG();
+
+		Page.gotoPG(pageName = "${pageName}", pageType = "Open Site");
+
+		Event.addPG(daysIntoFuture = "1", number = "01");
+
+		Page.gotoPG(pageName = "${pageName}", pageType = "Open Site");
+
+		Event.addPG(daysIntoFuture = "2", number = "02");
+
+		Page.gotoPG(pageName = "${pageName}", pageType = "Open Site");
+
+		Event.addPG(daysIntoFuture = "3", number = "03");
+
+		Page.gotoPG(pageName = "${pageName}", pageType = "Open Site");
+
+		var key_number = "02";
+
+		AssertClick.assertTextClickAt(
+			locator1 = "PGCalendar#VIEW_EVENTS",
+			value1 = "Events"
+		);
+
+		AssertElementPresent(locator1 = "PGCalendar#EVENTS_EVENT_TABLE_DATE_INCREMENT");
+
+		AssertElementPresent(locator1 = "PGCalendar#EVENTS_EVENT_TABLE_TIME_INCREMENT");
+
+		AssertTextEquals(
+			locator1 = "PGCalendar#EVENTS_EVENT_TABLE_TITLE_INCREMENT",
+			value1 = "${eventTitle}02"
+		);
+
+		AssertTextEquals(
+			locator1 = "PGCalendar#EVENTS_EVENT_TABLE_TYPE_INCREMENT",
+			value1 = "Anniversary"
+		);
+
+		Click(locator1 = "PGCalendar#EVENTS_EVENT_TABLE_ACTIONS_INCREMENT");
+
+		Click(locator1 = "PGCalendar#EVENT_MENULIST_PERMISSIONS");
+
+		Uncheck(locator1 = "//input[@id='guest_ACTION_VIEW']");
+
+		Click(locator1 = "//input[@value='Save']");
+
+		AssertTextEquals(
+			locator1 = "PGCalendar#SUCCESS_MESSAGE",
+			value1 = "Your request completed successfully."
+		);
+
+		Page.openURL(pageType = "Open Site");
+
+		SOEvents.configureEventsPortletDisplayDays(maxDisplayDays = "4");
+
+		var number = "01";
+
+		AssertTextEquals(
+			locator1 = "SOSiteHome#EVENTS_DISPLAY_TODAYS_EVENTS_EVENT_TITLE",
+			value1 = "${eventTitle}"
+		);
+
+		AssertElementPresent(
+			locator1 = "SOSiteHome#EVENTS_DISPLAY_TODAYS_EVENTS_EVENT_TIME"
+		);
+
+		AssertTextEquals(
+			locator1 = "SOSiteHome#EVENTS_DISPLAY_UPCOMING_EVENTS_EVENT_TITLE_INCREMENT",
+			value1 = "${eventTitle}01"
+		);
+
+		AssertElementPresent(
+			locator1 = "SOSiteHome#EVENTS_DISPLAY_UPCOMING_EVENTS_EVENT_TIME_INCREMENT"
+		);
+
+		var number = "02";
+
+		AssertTextEquals(
+			locator1 = "SOSiteHome#EVENTS_DISPLAY_UPCOMING_EVENTS_EVENT_TITLE_INCREMENT",
+			value1 = "${eventTitle}02"
+		);
+
+		AssertElementPresent(
+			locator1 = "SOSiteHome#EVENTS_DISPLAY_UPCOMING_EVENTS_EVENT_TIME_INCREMENT"
+		);
+
+		var number = "03";
+
+		AssertTextEquals(
+			locator1 = "SOSiteHome#EVENTS_DISPLAY_UPCOMING_EVENTS_EVENT_TITLE_INCREMENT",
+			value1 = "${eventTitle}03"
+		);
+
+		AssertElementPresent(
+			locator1 = "SOSiteHome#EVENTS_DISPLAY_UPCOMING_EVENTS_EVENT_TIME_INCREMENT"
+		);
+
+		var number = "02";
+
+		AssertClick.assertTextClickAt(
+			locator1 = "SOSiteHome#EVENTS_DISPLAY_UPCOMING_EVENTS_EVENT_TITLE_INCREMENT",
+			value1 = "${eventTitle}02"
+		);
+
+		Event.viewDetailsPG();
+
+		SOUser.logoutPG();
+
+		SOUser.loginPG(password = "test", userEmailAddress = "${userEmailAddress}");
+
+		Page.openURL(pageType = "Open Site");
+
+		var number = "01";
+
+		AssertTextEquals(
+			locator1 = "SOSiteHome#EVENTS_DISPLAY_TODAYS_EVENTS_EVENT_TITLE",
+			value1 = "${eventTitle}"
+		);
+
+		AssertElementPresent(
+			locator1 = "SOSiteHome#EVENTS_DISPLAY_TODAYS_EVENTS_EVENT_TIME"
+		);
+
+		AssertTextEquals(
+			locator1 = "SOSiteHome#EVENTS_DISPLAY_UPCOMING_EVENTS_EVENT_TITLE_INCREMENT",
+			value1 = "${eventTitle}01"
+		);
+
+		AssertElementPresent(
+			locator1 = "SOSiteHome#EVENTS_DISPLAY_UPCOMING_EVENTS_EVENT_TIME_INCREMENT"
+		);
+
+		AssertTextNotEquals.assertNotPartialText(
+			locator1 = "SOSiteHome#EVENTS_DISPLAY_TODAYS_EVENTS",
+			value1 = "${eventTitle}02"
+		);
+
+		AssertTextNotEquals.assertNotPartialText(
+			locator1 = "SOSiteHome#EVENTS_DISPLAY_UPCOMING_EVENTS",
+			value1 = "${eventTitle}02"
+		);
+
+		var number = "03";
+
+		AssertTextEquals(
+			locator1 = "SOSiteHome#EVENTS_DISPLAY_UPCOMING_EVENTS_EVENT_TITLE_INCREMENT",
+			value1 = "${eventTitle}03"
+		);
+
+		AssertElementPresent(
+			locator1 = "SOSiteHome#EVENTS_DISPLAY_UPCOMING_EVENTS_EVENT_TIME_INCREMENT"
+		);
+	}
+
+	@priority = "5"
+	test ViewCalendarEventsEventsDisplay {
+		var eventDescription = "${eventDescription}";
+		var eventTitle = "${eventTitle}";
+		var pageName = "Calendar";
+
+		SOUser.addUserWithSORole(
+			adminEmailAddress = "test@liferay.com",
+			password = "test",
+			userEmailAddress = "${userEmailAddress}",
+			userFirstName = "${userFirstName}",
+			userLastName = "${userLastName}",
+			userMiddleName = "${userMiddleName}",
+			userScreenName = "${userScreenName}"
+		);
+
+		SOUserBar.addSOSite(
+			siteDescription = "${siteDescription}",
+			siteName = "${siteName}",
+			siteType = "${siteType}"
+		);
+
+		Page.gotoPG(pageName = "${pageName}", pageType = "Open Site");
+
+		Event.addPG();
+
+		Page.gotoPG(pageName = "${pageName}", pageType = "Open Site");
+
+		Event.addPG(daysIntoFuture = "1", number = "01");
+
+		Page.gotoPG(pageName = "${pageName}", pageType = "Open Site");
+
+		Event.addPG(daysIntoFuture = "2", number = "02");
+
+		Page.gotoPG(pageName = "${pageName}", pageType = "Open Site");
+
+		Event.addPG(daysIntoFuture = "3", number = "03");
+
+		Page.gotoPG(pageName = "${pageName}", pageType = "Open Site");
+
+		Event.addPG(daysIntoFuture = "4", number = "04");
+
+		Page.openURL(pageType = "Open Site");
+
+		AssertTextEquals(
+			locator1 = "SOSiteHome#EVENTS_DISPLAY_TODAYS_EVENTS_EVENT_TITLE",
+			value1 = "${eventTitle}"
+		);
+
+		AssertElementPresent(
+			locator1 = "SOSiteHome#EVENTS_DISPLAY_TODAYS_EVENTS_EVENT_TIME"
+		);
+
+		AssertElementNotPresent(
+			locator1 = "SOSiteHome#EVENTS_DISPLAY_UPCOMING_EVENTS_EVENT_TITLE"
+		);
+
+		AssertElementNotPresent(
+			locator1 = "SOSiteHome#EVENTS_DISPLAY_UPCOMING_EVENTS_EVENT_TIME"
+		);
+
+		AssertClick.assertTextClickAt(
+			locator1 = "SOSiteHome#EVENTS_DISPLAY_TODAYS_EVENTS_EVENT_TITLE",
+			value1 = "${eventTitle}"
+		);
+
+		Event.viewDetailsPG();
+
+		Page.openURL(pageType = "Open Site");
+
+		SOEvents.configureEventsPortletDisplayDays(maxDisplayDays = "2");
+
+		var number = "01";
+
+		AssertTextEquals(
+			locator1 = "SOSiteHome#EVENTS_DISPLAY_TODAYS_EVENTS_EVENT_TITLE",
+			value1 = "${eventTitle}"
+		);
+
+		AssertElementPresent(
+			locator1 = "SOSiteHome#EVENTS_DISPLAY_TODAYS_EVENTS_EVENT_TIME"
+		);
+
+		AssertTextEquals(
+			locator1 = "SOSiteHome#EVENTS_DISPLAY_UPCOMING_EVENTS_EVENT_TITLE_INCREMENT",
+			value1 = "${eventTitle}01"
+		);
+
+		AssertElementPresent(
+			locator1 = "SOSiteHome#EVENTS_DISPLAY_UPCOMING_EVENTS_EVENT_TIME_INCREMENT"
+		);
+
+		AssertTextNotEquals.assertNotPartialText(
+			locator1 = "SOSiteHome#EVENTS_DISPLAY_TODAYS_EVENTS",
+			value1 = "${eventTitle}02"
+		);
+
+		AssertTextNotEquals.assertNotPartialText(
+			locator1 = "SOSiteHome#EVENTS_DISPLAY_UPCOMING_EVENTS",
+			value1 = "${eventTitle}02"
+		);
+
+		AssertClick.assertTextClickAt(
+			locator1 = "SOSiteHome#EVENTS_DISPLAY_UPCOMING_EVENTS_EVENT_TITLE_INCREMENT",
+			value1 = "${eventTitle}01"
+		);
+
+		Event.viewDetailsPG();
+
+		Page.openURL(pageType = "Open Site");
+
+		SOEvents.configureEventsPortletDisplayDays(maxDisplayDays = "3");
+
+		var number = "01";
+
+		AssertTextEquals(
+			locator1 = "SOSiteHome#EVENTS_DISPLAY_TODAYS_EVENTS_EVENT_TITLE",
+			value1 = "${eventTitle}"
+		);
+
+		AssertElementPresent(
+			locator1 = "SOSiteHome#EVENTS_DISPLAY_TODAYS_EVENTS_EVENT_TIME"
+		);
+
+		AssertTextEquals(
+			locator1 = "SOSiteHome#EVENTS_DISPLAY_UPCOMING_EVENTS_EVENT_TITLE_INCREMENT",
+			value1 = "${eventTitle}01"
+		);
+
+		AssertElementPresent(
+			locator1 = "SOSiteHome#EVENTS_DISPLAY_UPCOMING_EVENTS_EVENT_TIME_INCREMENT"
+		);
+
+		var number = "02";
+
+		AssertTextEquals(
+			locator1 = "SOSiteHome#EVENTS_DISPLAY_UPCOMING_EVENTS_EVENT_TITLE_INCREMENT",
+			value1 = "${eventTitle}02"
+		);
+
+		AssertElementPresent(
+			locator1 = "SOSiteHome#EVENTS_DISPLAY_UPCOMING_EVENTS_EVENT_TIME_INCREMENT"
+		);
+
+		AssertTextNotEquals.assertNotPartialText(
+			locator1 = "SOSiteHome#EVENTS_DISPLAY_TODAYS_EVENTS",
+			value1 = "${eventTitle}03"
+		);
+
+		AssertTextNotEquals.assertNotPartialText(
+			locator1 = "SOSiteHome#EVENTS_DISPLAY_UPCOMING_EVENTS",
+			value1 = "${eventTitle}03"
+		);
+
+		AssertClick.assertTextClickAt(
+			locator1 = "SOSiteHome#EVENTS_DISPLAY_UPCOMING_EVENTS_EVENT_TITLE_INCREMENT",
+			value1 = "${eventTitle}02"
+		);
+
+		Event.viewDetailsPG();
+
+		Page.openURL(pageType = "Open Site");
+
+		SOEvents.configureEventsPortletDisplayDays(maxDisplayDays = "4");
+
+		var number = "01";
+
+		AssertTextEquals(
+			locator1 = "SOSiteHome#EVENTS_DISPLAY_TODAYS_EVENTS_EVENT_TITLE",
+			value1 = "${eventTitle}"
+		);
+
+		AssertElementPresent(
+			locator1 = "SOSiteHome#EVENTS_DISPLAY_TODAYS_EVENTS_EVENT_TIME"
+		);
+
+		AssertTextEquals(
+			locator1 = "SOSiteHome#EVENTS_DISPLAY_UPCOMING_EVENTS_EVENT_TITLE_INCREMENT",
+			value1 = "${eventTitle}01"
+		);
+
+		AssertElementPresent(
+			locator1 = "SOSiteHome#EVENTS_DISPLAY_UPCOMING_EVENTS_EVENT_TIME_INCREMENT"
+		);
+
+		var number = "02";
+
+		AssertTextEquals(
+			locator1 = "SOSiteHome#EVENTS_DISPLAY_UPCOMING_EVENTS_EVENT_TITLE_INCREMENT",
+			value1 = "${eventTitle}02"
+		);
+
+		AssertElementPresent(
+			locator1 = "SOSiteHome#EVENTS_DISPLAY_UPCOMING_EVENTS_EVENT_TIME_INCREMENT"
+		);
+
+		var number = "03";
+
+		AssertTextEquals(
+			locator1 = "SOSiteHome#EVENTS_DISPLAY_UPCOMING_EVENTS_EVENT_TITLE_INCREMENT",
+			value1 = "${eventTitle}03"
+		);
+
+		AssertElementPresent(
+			locator1 = "SOSiteHome#EVENTS_DISPLAY_UPCOMING_EVENTS_EVENT_TIME_INCREMENT"
+		);
+
+		AssertTextNotEquals.assertNotPartialText(
+			locator1 = "SOSiteHome#EVENTS_DISPLAY_TODAYS_EVENTS",
+			value1 = "${eventTitle}04"
+		);
+
+		AssertTextNotEquals.assertNotPartialText(
+			locator1 = "SOSiteHome#EVENTS_DISPLAY_UPCOMING_EVENTS",
+			value1 = "${eventTitle}04"
+		);
+
+		AssertClick.assertTextClickAt(
+			locator1 = "SOSiteHome#EVENTS_DISPLAY_UPCOMING_EVENTS_EVENT_TITLE_INCREMENT",
+			value1 = "${eventTitle}03"
+		);
+
+		Event.viewDetailsPG();
+
+		Page.openURL(pageType = "Open Site");
+
+		SOEvents.configureEventsPortletDisplayDays(maxDisplayDays = "5");
+
+		var number = "01";
+
+		AssertTextEquals(
+			locator1 = "SOSiteHome#EVENTS_DISPLAY_TODAYS_EVENTS_EVENT_TITLE",
+			value1 = "${eventTitle}"
+		);
+
+		AssertElementPresent(
+			locator1 = "SOSiteHome#EVENTS_DISPLAY_TODAYS_EVENTS_EVENT_TIME"
+		);
+
+		AssertTextEquals(
+			locator1 = "SOSiteHome#EVENTS_DISPLAY_UPCOMING_EVENTS_EVENT_TITLE_INCREMENT",
+			value1 = "${eventTitle}01"
+		);
+
+		AssertElementPresent(
+			locator1 = "SOSiteHome#EVENTS_DISPLAY_UPCOMING_EVENTS_EVENT_TIME_INCREMENT"
+		);
+
+		var number = "02";
+
+		AssertTextEquals(
+			locator1 = "SOSiteHome#EVENTS_DISPLAY_UPCOMING_EVENTS_EVENT_TITLE_INCREMENT",
+			value1 = "${eventTitle}02"
+		);
+
+		AssertElementPresent(
+			locator1 = "SOSiteHome#EVENTS_DISPLAY_UPCOMING_EVENTS_EVENT_TIME_INCREMENT"
+		);
+
+		var number = "03";
+
+		AssertTextEquals(
+			locator1 = "SOSiteHome#EVENTS_DISPLAY_UPCOMING_EVENTS_EVENT_TITLE_INCREMENT",
+			value1 = "${eventTitle}03"
+		);
+
+		AssertElementPresent(
+			locator1 = "SOSiteHome#EVENTS_DISPLAY_UPCOMING_EVENTS_EVENT_TIME_INCREMENT"
+		);
+
+		var number = "04";
+
+		AssertTextEquals(
+			locator1 = "SOSiteHome#EVENTS_DISPLAY_UPCOMING_EVENTS_EVENT_TITLE_INCREMENT",
+			value1 = "${eventTitle}04"
+		);
+
+		AssertElementPresent(
+			locator1 = "SOSiteHome#EVENTS_DISPLAY_UPCOMING_EVENTS_EVENT_TIME_INCREMENT"
+		);
+
+		AssertClick.assertTextClickAt(
+			locator1 = "SOSiteHome#EVENTS_DISPLAY_UPCOMING_EVENTS_EVENT_TITLE_INCREMENT",
+			value1 = "${eventTitle}04"
+		);
+
+		Event.viewDetailsPG();
+
+		SOUser.logoutPG();
+
+		SOUser.loginPG(password = "test", userEmailAddress = "${userEmailAddress}");
+
+		Page.openURL(pageType = "Open Site");
+
+		var number = "01";
+
+		AssertTextEquals(
+			locator1 = "SOSiteHome#EVENTS_DISPLAY_TODAYS_EVENTS_EVENT_TITLE",
+			value1 = "${eventTitle}"
+		);
+
+		AssertElementPresent(
+			locator1 = "SOSiteHome#EVENTS_DISPLAY_TODAYS_EVENTS_EVENT_TIME"
+		);
+
+		AssertTextEquals(
+			locator1 = "SOSiteHome#EVENTS_DISPLAY_UPCOMING_EVENTS_EVENT_TITLE_INCREMENT",
+			value1 = "${eventTitle}01"
+		);
+
+		AssertElementPresent(
+			locator1 = "SOSiteHome#EVENTS_DISPLAY_UPCOMING_EVENTS_EVENT_TIME_INCREMENT"
+		);
+
+		var number = "02";
+
+		AssertTextEquals(
+			locator1 = "SOSiteHome#EVENTS_DISPLAY_UPCOMING_EVENTS_EVENT_TITLE_INCREMENT",
+			value1 = "${eventTitle}02"
+		);
+
+		AssertElementPresent(
+			locator1 = "SOSiteHome#EVENTS_DISPLAY_UPCOMING_EVENTS_EVENT_TIME_INCREMENT"
+		);
+
+		var number = "03";
+
+		AssertTextEquals(
+			locator1 = "SOSiteHome#EVENTS_DISPLAY_UPCOMING_EVENTS_EVENT_TITLE_INCREMENT",
+			value1 = "${eventTitle}03"
+		);
+
+		AssertElementPresent(
+			locator1 = "SOSiteHome#EVENTS_DISPLAY_UPCOMING_EVENTS_EVENT_TIME_INCREMENT"
+		);
+
+		var number = "04";
+
+		AssertTextEquals(
+			locator1 = "SOSiteHome#EVENTS_DISPLAY_UPCOMING_EVENTS_EVENT_TITLE_INCREMENT",
+			value1 = "${eventTitle}04"
+		);
+
+		AssertElementPresent(
+			locator1 = "SOSiteHome#EVENTS_DISPLAY_UPCOMING_EVENTS_EVENT_TIME_INCREMENT"
+		);
+
+		AssertClick.assertTextClickAt(
+			locator1 = "SOSiteHome#EVENTS_DISPLAY_UPCOMING_EVENTS_EVENT_TITLE_INCREMENT",
+			value1 = "${eventTitle}04"
+		);
+
+		Event.viewDetailsPG();
+	}
+
+	@priority = "5"
+	test ViewSOAnnouncementsEntryNotificationSOUser {
+		SOUser.addUserWithSORole(
+			adminEmailAddress = "test@liferay.com",
+			password = "test",
+			userEmailAddress = "${userEmailAddress}",
+			userFirstName = "${userFirstName}",
+			userLastName = "${userLastName}",
+			userMiddleName = "${userMiddleName}",
+			userScreenName = "${userScreenName}"
+		);
+
+		SOUserBar.addSOSite(
+			siteDescription = "${siteDescription}",
+			siteName = "${siteName}",
+			siteType = "${siteType}"
+		);
+
+		SOUser.logoutPG();
+
+		SOUser.loginPG(password = "test", userEmailAddress = "${userEmailAddress}");
+
+		SOUserBar.joinSOSite(siteName = "${siteName}", siteType = "${siteType}");
+
+		SOUser.logoutPG();
+
+		SOUser.loginPG(password = "test", userEmailAddress = "${adminEmailAddress}");
+
+		Page.openURL(pageType = "Open Site");
+
+		SOAnnouncementsEntry.addPG(
+			distributionScope = "General",
+			entryContent = "${entryContent}",
+			entryTitle = "${entryTitle}",
+			entryURL = "${entryURL}"
+		);
+
+		SOUser.logoutPG();
+
+		SOUser.loginPG(password = "test", userEmailAddress = "${userEmailAddress}");
+
+		SOAnnouncementsEntry.viewNotificationPG(
+			entryAuthor = "${adminName}",
+			entryTitle = "${entryTitle}"
+		);
+
+		SOUser.logoutPG();
+
+		SOUser.loginPG(password = "test", userEmailAddress = "${userEmailAddress}");
+
+		var entryAuthor = "${adminName}";
+
+		Click.textClickAt(locator1 = "SOUserBar#DASHBOARD", value1 = "Dashboard");
+
+		AssertElementPresent.assertElementPresent(locator1 = "SOUserBar#NOTIFICATION");
+
+		AssertTextEquals(locator1 = "SOUserBar#NOTIFICATION_MENU_COUNT", value1 = "0");
+
+		MouseOver(locator1 = "SOUserBar#NOTIFICATION");
+
+		AssertTextEquals(
+			locator1 = "SOUserBar#NOTIFICATION_MENU_EMPTY",
+			value1 = "You have no new notifications."
+		);
+
+		AssertTextNotPresent(value1 = "${entryAuthor} sent a new announcement.");
+
+		AssertElementNotPresent(
+			locator1 = "SOUserBar#NOTIFICATION_MENU_ENTRY_SUBCONTENT",
+			value1 = "${entryTitle}"
+		);
+	}
+}

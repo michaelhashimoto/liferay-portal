@@ -1,76 +1,73 @@
-<definition component-name="portal-tools">
-	<property name="portal.release" value="true" />
-	<property name="portal.upstream" value="true" />
-	<property name="testcase.url" value="" />
-	<property name="testray.main.component.name" value="Tools" />
+@component-name = "portal-tools"
+definition {
+	property portal.release = "true";
+	property portal.upstream = "true";
+	property testcase.url = "";
+	property testray.main.component.name = "Tools";
 
-	<command name="ContainsConditionalUsingTwoEmptyStringVariables" priority="5">
-		<echo message="Test null values: 'contains' if clause comparing two empty string variables" />
+	@priority = "5"
+	test ContainsConditionalUsingTwoEmptyStringVariables {
+		echo("Test null values: 'contains' if clause comparing two empty string variables");
 
-		<var name="emptyString1" value="" />
-		<var name="emptyString2" value="" />
+		var emptyString1 = "";
+		var emptyString2 = "";
 
-		<if>
-			<contains string="${emptyString1}" substring="${emptyString2}" />
-			<then>
-				<execute macro="TestUtils#pass" />
-			</then>
-			<else>
-				<execute macro="TestUtils#fail" />
-			</else>
-		</if>
-	</command>
+		if (contains("${emptyString1}", "${emptyString2}")) {
+			TestUtils.pass();
+		}
+		else {
+			TestUtils.fail();
+		}
+	}
 
-	<command name="EchoEmptyStringAndEmptyStringVariable" priority="5">
-		<echo message="Test null values: echo the empty string and empty var" />
+	@priority = "5"
+	test EchoEmptyStringAndEmptyStringVariable {
+		echo("Test null values: echo the empty string and empty var");
 
-		<var name="emptyString" value="" />
+		var emptyString = "";
 
-		<echo message="${emptyString}" />
-		<echo message="" />
-		<echo message="PASSED if two new lines were outputted\n" />
-	</command>
+		echo("${emptyString}");
 
-	<command name="EqualsConditionalComparingEmptyStringVariableWithEmptyString" priority="5">
-		<echo message="Test null values: 'equals' if clause comparing one empty string var against the empty string" />
+		echo("");
 
-		<var name="emptyString" value="" />
+		echo("PASSED if two new lines were outputted\n");
+	}
 
-		<if>
-			<equals arg1="${emptyString}" arg2="" />
-			<then>
-				<execute macro="TestUtils#pass" />
-			</then>
-			<else>
-				<execute macro="TestUtils#fail" />
-			</else>
-		</if>
-	</command>
+	@priority = "5"
+	test EqualsConditionalComparingEmptyStringVariableWithEmptyString {
+		echo("Test null values: 'equals' if clause comparing one empty string var against the empty string");
 
-	<command name="EqualsConditionalUsingTwoEmptyStringVariables" priority="5">
-		<echo message="Test null values: 'equals' if clause comparing two empty string variables" />
+		var emptyString = "";
 
-		<var name="emptyString1" value="" />
-		<var name="emptyString2" value="" />
+		if ("${emptyString}" == "") {
+			TestUtils.pass();
+		}
+		else {
+			TestUtils.fail();
+		}
+	}
 
-		<if>
-			<equals arg1="${emptyString1}" arg2="${emptyString2}" />
-			<then>
-				<execute macro="TestUtils#pass" />
-			</then>
-			<else>
-				<execute macro="TestUtils#fail" />
-			</else>
-		</if>
-	</command>
+	@priority = "5"
+	test EqualsConditionalUsingTwoEmptyStringVariables {
+		echo("Test null values: 'equals' if clause comparing two empty string variables");
 
-	<command name="TypeEmptyString" priority="5">
-		<echo message="Test null values: typing the empty string into a field" />
+		var emptyString1 = "";
+		var emptyString2 = "";
 
-		<execute macro="TestUtils#typeIntoField">
-			<var name="text" value="" />
-		</execute>
+		if ("${emptyString1}" == "${emptyString2}") {
+			TestUtils.pass();
+		}
+		else {
+			TestUtils.fail();
+		}
+	}
 
-		<execute macro="TestUtils#pass" />
-	</command>
-</definition>
+	@priority = "5"
+	test TypeEmptyString {
+		echo("Test null values: typing the empty string into a field");
+
+		TestUtils.typeIntoField(text = "");
+
+		TestUtils.pass();
+	}
+}

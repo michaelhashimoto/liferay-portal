@@ -1,126 +1,112 @@
-<definition component-name="portal-collaboration">
-	<property name="portal.release" value="true" />
-	<property name="portal.upstream" value="true" />
-	<property name="testray.main.component.name" value="Collaboration" />
+@component-name = "portal-collaboration"
+definition {
+	property portal.release = "true";
+	property portal.upstream = "true";
+	property testray.main.component.name = "Collaboration";
+	var pageName = "Announcements Page";
+	var portletName = "Announcements";
 
-	<var name="pageName" value="Announcements Page" />
-	<var name="portletName" value="Announcements" />
+	setUp {
+		User.firstLoginPG();
 
-	<set-up>
-		<execute macro="User#firstLoginPG" />
+		Page.addPG(pageName = "${pageName}");
 
-		<execute macro="Page#addPG">
-			<var name="pageName" value="${pageName}" />
-		</execute>
+		Portlet.addPG(pageName = "${pageName}", portletName = "${portletName}");
+	}
 
-		<execute macro="Portlet#addPG">
-			<var name="pageName" value="${pageName}" />
-			<var name="portletName" value="${portletName}" />
-		</execute>
-	</set-up>
+	@priority = "5"
+	test AddAnnouncementsEntry {
+		var distributionScope = "General";
+		var entryContent = "Announcements Entry Content";
+		var entryTitle = "Announcements Entry Title";
+		var entryURL = "http://www.liferay.com";
 
-	<command name="AddAnnouncementsEntry" priority="5">
-		<var name="distributionScope" value="General" />
-		<var name="entryContent" value="Announcements Entry Content" />
-		<var name="entryTitle" value="Announcements Entry Title" />
-		<var name="entryURL" value="http://www.liferay.com" />
+		Page.gotoPG(pageName = "${pageName}");
 
-		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${pageName}" />
-		</execute>
+		AnnouncementsEntry.addPG(
+			distributionScope = "${distributionScope}",
+			entryContent = "${entryContent}",
+			entryTitle = "${entryTitle}",
+			entryURL = "${entryURL}"
+		);
 
-		<execute macro="AnnouncementsEntry#addPG">
-			<var name="distributionScope" value="${distributionScope}" />
-			<var name="entryContent" value="${entryContent}" />
-			<var name="entryTitle" value="${entryTitle}" />
-			<var name="entryURL" value="${entryURL}" />
-		</execute>
+		Page.gotoPG(pageName = "${pageName}");
 
-		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${pageName}" />
-		</execute>
+		AnnouncementsEntry.viewPG(
+			distributionScope = "${distributionScope}",
+			entryContent = "${entryContent}",
+			entryTitle = "${entryTitle}",
+			entryURL = "${entryURL}"
+		);
+	}
 
-		<execute macro="AnnouncementsEntry#viewPG">
-			<var name="distributionScope" value="${distributionScope}" />
-			<var name="entryContent" value="${entryContent}" />
-			<var name="entryTitle" value="${entryTitle}" />
-			<var name="entryURL" value="${entryURL}" />
-		</execute>
-	</command>
+	@priority = "5"
+	test DeleteAnnoucementsEntry {
+		var distributionScope = "General";
+		var entryContent = "Announcements Entry Content";
+		var entryTitle = "Announcements Entry Title";
+		var entryURL = "http://www.liferay.com";
 
-	<command name="DeleteAnnoucementsEntry" priority="5">
-		<var name="distributionScope" value="General" />
-		<var name="entryContent" value="Announcements Entry Content" />
-		<var name="entryTitle" value="Announcements Entry Title" />
-		<var name="entryURL" value="http://www.liferay.com" />
+		Page.gotoPG(pageName = "${pageName}");
 
-		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${pageName}" />
-		</execute>
+		AnnouncementsEntry.addPG(
+			distributionScope = "${distributionScope}",
+			entryContent = "${entryContent}",
+			entryTitle = "${entryTitle}"
+		);
 
-		<execute macro="AnnouncementsEntry#addPG">
-			<var name="distributionScope" value="${distributionScope}" />
-			<var name="entryContent" value="${entryContent}" />
-			<var name="entryTitle" value="${entryTitle}" />
-		</execute>
+		Page.gotoPG(pageName = "${pageName}");
 
-		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${pageName}" />
-		</execute>
+		AnnouncementsEntry.deletePG(
+			distributionScope = "${distributionScope}",
+			entryContent = "${entryContent}",
+			entryTitle = "${entryTitle}",
+			entryURL = "${entryURL}"
+		);
+	}
 
-		<execute macro="AnnouncementsEntry#deletePG">
-			<var name="distributionScope" value="${distributionScope}" />
-			<var name="entryContent" value="${entryContent}" />
-			<var name="entryTitle" value="${entryTitle}" />
-			<var name="entryURL" value="${entryURL}" />
-		</execute>
-	</command>
+	@priority = "5"
+	test EditAnnouncementsEntry {
+		var distributionScope = "General";
+		var entryContent = "Announcements Entry Content";
+		var entryContentEdit = "Announcements Entry Content Edit";
+		var entryTitle = "Announcements Entry Title";
+		var entryTitleEdit = "Announcements Entry Title Edit";
+		var entryURL = "http://www.liferay.com";
+		var entryURLEdit = "http://www.alloyui.com";
 
-	<command name="EditAnnouncementsEntry" priority="5">
-		<var name="distributionScope" value="General" />
-		<var name="entryContent" value="Announcements Entry Content" />
-		<var name="entryContentEdit" value="Announcements Entry Content Edit" />
-		<var name="entryTitle" value="Announcements Entry Title" />
-		<var name="entryTitleEdit" value="Announcements Entry Title Edit" />
-		<var name="entryURL" value="http://www.liferay.com" />
-		<var name="entryURLEdit" value="http://www.alloyui.com" />
+		Page.gotoPG(pageName = "${pageName}");
 
-		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${pageName}" />
-		</execute>
+		AnnouncementsEntry.addPG(
+			distributionScope = "${distributionScope}",
+			entryContent = "${entryContent}",
+			entryTitle = "${entryTitle}",
+			entryURL = "${entryURL}"
+		);
 
-		<execute macro="AnnouncementsEntry#addPG">
-			<var name="distributionScope" value="${distributionScope}" />
-			<var name="entryContent" value="${entryContent}" />
-			<var name="entryTitle" value="${entryTitle}" />
-			<var name="entryURL" value="${entryURL}" />
-		</execute>
+		Page.gotoPG(pageName = "${pageName}");
 
-		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${pageName}" />
-		</execute>
+		AnnouncementsEntry.editPG(
+			distributionScope = "${distributionScope}",
+			entryContent = "${entryContent}",
+			entryContentEdit = "${entryContentEdit}",
+			entryTitle = "${entryTitle}",
+			entryTitleEdit = "${entryTitleEdit}",
+			entryURL = "${entryURL}",
+			entryURLEdit = "${entryURLEdit}"
+		);
 
-		<execute macro="AnnouncementsEntry#editPG">
-			<var name="distributionScope" value="${distributionScope}" />
-			<var name="entryContent" value="${entryContent}" />
-			<var name="entryContentEdit" value="${entryContentEdit}" />
-			<var name="entryTitle" value="${entryTitle}" />
-			<var name="entryTitleEdit" value="${entryTitleEdit}" />
-			<var name="entryURL" value="${entryURL}" />
-			<var name="entryURLEdit" value="${entryURLEdit}" />
-		</execute>
+		AnnouncementsEntry.viewPG(
+			distributionScope = "${distributionScope}",
+			entryContent = "${entryContentEdit}",
+			entryTitle = "${entryTitleEdit}",
+			entryURL = "${entryURLEdit}"
+		);
+	}
 
-		<execute macro="AnnouncementsEntry#viewPG">
-			<var name="distributionScope" value="${distributionScope}" />
-			<var name="entryContent" value="${entryContentEdit}" />
-			<var name="entryTitle" value="${entryTitleEdit}" />
-			<var name="entryURL" value="${entryURLEdit}" />
-		</execute>
-	</command>
+	tearDown {
+		AnnouncementsEntry.tearDownPG();
 
-	<tear-down>
-		<execute macro="AnnouncementsEntry#tearDownPG" />
-
-		<execute macro="Page#tearDownPG" />
-	</tear-down>
-</definition>
+		Page.tearDownPG();
+	}
+}

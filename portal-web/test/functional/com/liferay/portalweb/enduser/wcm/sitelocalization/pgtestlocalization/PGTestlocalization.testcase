@@ -1,102 +1,333 @@
-<definition component-name="portal-wcm">
-	<property name="portal.release" value="true" />
-	<property name="portal.upstream" value="true" />
-	<property name="portlet.plugins.includes" value="test-localized-portlet" />
-	<property name="testray.main.component.name" value="WCM" />
+@component-name = "portal-wcm"
+definition {
+	property portal.release = "true";
+	property portal.upstream = "true";
+	property portlet.plugins.includes = "test-localized-portlet";
+	property testray.main.component.name = "WCM";
+	var pageName = "Test Localization";
+	var portletName = "Test Localized";
 
-	<var name="pageName" value="Test Localization" />
-	<var name="portletName" value="Test Localized" />
+	setUp {
+		User.firstLoginPG();
 
-	<set-up>
-		<execute macro="User#firstLoginPG" />
+		Page.addPG(pageName = "${pageName}");
 
-		<execute macro="Page#addPG">
-			<var name="pageName" value="${pageName}" />
-		</execute>
+		Portlet.addPG(pageName = "${pageName}", portletName = "${portletName}");
+	}
 
-		<execute macro="Portlet#addPG">
-			<var name="pageName" value="${pageName}" />
-			<var name="portletName" value="${portletName}" />
-		</execute>
-	</set-up>
+	@known-issues = "LPS-45313"
+	@priority = "5"
+	test CheckLocalizationChinese {
+		Click(locator1 = "PGTestlocalization#CHINESE_LOCALIZATION");
 
-	<command known-issues="LPS-45313" name="CheckLocalizationChinese" priority="5">
-		<execute function="Click" locator1="PGTestlocalization#CHINESE_LOCALIZATION" />
-		<execute function="AssertTextEquals" locator1="PGTestlocalization#LOCALIZATION_TEST_1" value1="PASSED" />
-		<execute function="AssertTextEquals" locator1="PGTestlocalization#LOCALIZATION_TEST_2" value1="PASSED" />
-		<execute function="AssertTextEquals" locator1="PGTestlocalization#LOCALIZATION_TEST_3" value1="PASSED" />
-		<execute function="AssertTextEquals" locator1="PGTestlocalization#LOCALIZATION_TEST_4" value1="PASSED" />
-		<execute function="AssertTextEquals" locator1="PGTestlocalization#LOCALIZATION_TEST_5" value1="PASSED" />
-		<execute function="AssertTextEquals" locator1="PGTestlocalization#LOCALIZATION_TEST_6" value1="PASSED" />
-		<execute function="AssertTextEquals" locator1="PGTestlocalization#LOCALIZATION_TEST_7" value1="PASSED" />
-		<execute function="AssertTextEquals" locator1="PGTestlocalization#LOCALIZATION_TEST_8" value1="PASSED" />
-		<execute function="AssertTextEquals" locator1="PGTestlocalization#LOCALIZATION_TEST_9" value1="PASSED" />
-		<execute function="AssertTextEquals" locator1="PGTestlocalization#LOCALIZATION_TEST_10" value1="PASSED" />
-		<execute function="AssertTextEquals" locator1="PGTestlocalization#LOCALIZATION_TEST_11" value1="PASSED" />
-		<execute function="AssertTextEquals" locator1="PGTestlocalization#LOCALIZATION_TEST_12" value1="PASSED" />
-		<execute function="AssertTextEquals" locator1="PGTestlocalization#LOCALIZATION_TEST_13" value1="PASSED" />
-		<execute function="AssertTextEquals" locator1="PGTestlocalization#LOCALIZATION_TEST_14" value1="PASSED" />
-		<execute function="AssertTextNotPresent" value1="FAILED" />
-	</command>
+		AssertTextEquals(
+			locator1 = "PGTestlocalization#LOCALIZATION_TEST_1",
+			value1 = "PASSED"
+		);
 
-	<command known-issues="LPS-45313" name="CheckLocalizationEnglish" priority="5">
-		<execute function="Click" locator1="PGTestlocalization#ENGLISH_LOCALIZATION" />
-		<execute function="AssertTextEquals" locator1="PGTestlocalization#LOCALIZATION_TEST_1" value1="PASSED" />
-		<execute function="AssertTextEquals" locator1="PGTestlocalization#LOCALIZATION_TEST_2" value1="PASSED" />
-		<execute function="AssertTextEquals" locator1="PGTestlocalization#LOCALIZATION_TEST_3" value1="PASSED" />
-		<execute function="AssertTextEquals" locator1="PGTestlocalization#LOCALIZATION_TEST_4" value1="PASSED" />
-		<execute function="AssertTextEquals" locator1="PGTestlocalization#LOCALIZATION_TEST_5" value1="PASSED" />
-		<execute function="AssertTextEquals" locator1="PGTestlocalization#LOCALIZATION_TEST_6" value1="PASSED" />
-		<execute function="AssertTextEquals" locator1="PGTestlocalization#LOCALIZATION_TEST_7" value1="PASSED" />
-		<execute function="AssertTextEquals" locator1="PGTestlocalization#LOCALIZATION_TEST_8" value1="PASSED" />
-		<execute function="AssertTextEquals" locator1="PGTestlocalization#LOCALIZATION_TEST_9" value1="PASSED" />
-		<execute function="AssertTextEquals" locator1="PGTestlocalization#LOCALIZATION_TEST_10" value1="PASSED" />
-		<execute function="AssertTextEquals" locator1="PGTestlocalization#LOCALIZATION_TEST_11" value1="PASSED" />
-		<execute function="AssertTextEquals" locator1="PGTestlocalization#LOCALIZATION_TEST_12" value1="PASSED" />
-		<execute function="AssertTextEquals" locator1="PGTestlocalization#LOCALIZATION_TEST_13" value1="PASSED" />
-		<execute function="AssertTextEquals" locator1="PGTestlocalization#LOCALIZATION_TEST_14" value1="PASSED" />
-		<execute function="AssertTextNotPresent" value1="FAILED" />
-	</command>
+		AssertTextEquals(
+			locator1 = "PGTestlocalization#LOCALIZATION_TEST_2",
+			value1 = "PASSED"
+		);
 
-	<command known-issues="LPS-45313" name="CheckLocalizationFrench" priority="5">
-		<execute function="Click" locator1="PGTestlocalization#FRENCH_LOCALIZATION" />
-		<execute function="AssertTextEquals" locator1="PGTestlocalization#LOCALIZATION_TEST_1" value1="PASSED" />
-		<execute function="AssertTextEquals" locator1="PGTestlocalization#LOCALIZATION_TEST_2" value1="PASSED" />
-		<execute function="AssertTextEquals" locator1="PGTestlocalization#LOCALIZATION_TEST_3" value1="PASSED" />
-		<execute function="AssertTextEquals" locator1="PGTestlocalization#LOCALIZATION_TEST_4" value1="PASSED" />
-		<execute function="AssertTextEquals" locator1="PGTestlocalization#LOCALIZATION_TEST_5" value1="PASSED" />
-		<execute function="AssertTextEquals" locator1="PGTestlocalization#LOCALIZATION_TEST_6" value1="PASSED" />
-		<execute function="AssertTextEquals" locator1="PGTestlocalization#LOCALIZATION_TEST_7" value1="PASSED" />
-		<execute function="AssertTextEquals" locator1="PGTestlocalization#LOCALIZATION_TEST_8" value1="PASSED" />
-		<execute function="AssertTextEquals" locator1="PGTestlocalization#LOCALIZATION_TEST_9" value1="PASSED" />
-		<execute function="AssertTextEquals" locator1="PGTestlocalization#LOCALIZATION_TEST_10" value1="PASSED" />
-		<execute function="AssertTextEquals" locator1="PGTestlocalization#LOCALIZATION_TEST_11" value1="PASSED" />
-		<execute function="AssertTextEquals" locator1="PGTestlocalization#LOCALIZATION_TEST_12" value1="PASSED" />
-		<execute function="AssertTextEquals" locator1="PGTestlocalization#LOCALIZATION_TEST_13" value1="PASSED" />
-		<execute function="AssertTextEquals" locator1="PGTestlocalization#LOCALIZATION_TEST_14" value1="PASSED" />
-		<execute function="AssertTextNotPresent" value1="FAILED" />
-	</command>
+		AssertTextEquals(
+			locator1 = "PGTestlocalization#LOCALIZATION_TEST_3",
+			value1 = "PASSED"
+		);
 
-	<command known-issues="LPS-45313" name="CheckLocalizationSpanish" priority="5">
-		<execute function="Click" locator1="PGTestlocalization#SPANISH_LOCALIZATION" />
-		<execute function="AssertTextEquals" locator1="PGTestlocalization#LOCALIZATION_TEST_1" value1="PASSED" />
-		<execute function="AssertTextEquals" locator1="PGTestlocalization#LOCALIZATION_TEST_2" value1="PASSED" />
-		<execute function="AssertTextEquals" locator1="PGTestlocalization#LOCALIZATION_TEST_3" value1="PASSED" />
-		<execute function="AssertTextEquals" locator1="PGTestlocalization#LOCALIZATION_TEST_4" value1="PASSED" />
-		<execute function="AssertTextEquals" locator1="PGTestlocalization#LOCALIZATION_TEST_5" value1="PASSED" />
-		<execute function="AssertTextEquals" locator1="PGTestlocalization#LOCALIZATION_TEST_6" value1="PASSED" />
-		<execute function="AssertTextEquals" locator1="PGTestlocalization#LOCALIZATION_TEST_7" value1="PASSED" />
-		<execute function="AssertTextEquals" locator1="PGTestlocalization#LOCALIZATION_TEST_8" value1="PASSED" />
-		<execute function="AssertTextEquals" locator1="PGTestlocalization#LOCALIZATION_TEST_9" value1="PASSED" />
-		<execute function="AssertTextEquals" locator1="PGTestlocalization#LOCALIZATION_TEST_10" value1="PASSED" />
-		<execute function="AssertTextEquals" locator1="PGTestlocalization#LOCALIZATION_TEST_11" value1="PASSED" />
-		<execute function="AssertTextEquals" locator1="PGTestlocalization#LOCALIZATION_TEST_12" value1="PASSED" />
-		<execute function="AssertTextEquals" locator1="PGTestlocalization#LOCALIZATION_TEST_13" value1="PASSED" />
-		<execute function="AssertTextEquals" locator1="PGTestlocalization#LOCALIZATION_TEST_14" value1="PASSED" />
-		<execute function="AssertTextNotPresent" value1="FAILED" />
-	</command>
+		AssertTextEquals(
+			locator1 = "PGTestlocalization#LOCALIZATION_TEST_4",
+			value1 = "PASSED"
+		);
 
-	<tear-down>
-		<execute macro="Page#tearDownPG" />
-	</tear-down>
-</definition>
+		AssertTextEquals(
+			locator1 = "PGTestlocalization#LOCALIZATION_TEST_5",
+			value1 = "PASSED"
+		);
+
+		AssertTextEquals(
+			locator1 = "PGTestlocalization#LOCALIZATION_TEST_6",
+			value1 = "PASSED"
+		);
+
+		AssertTextEquals(
+			locator1 = "PGTestlocalization#LOCALIZATION_TEST_7",
+			value1 = "PASSED"
+		);
+
+		AssertTextEquals(
+			locator1 = "PGTestlocalization#LOCALIZATION_TEST_8",
+			value1 = "PASSED"
+		);
+
+		AssertTextEquals(
+			locator1 = "PGTestlocalization#LOCALIZATION_TEST_9",
+			value1 = "PASSED"
+		);
+
+		AssertTextEquals(
+			locator1 = "PGTestlocalization#LOCALIZATION_TEST_10",
+			value1 = "PASSED"
+		);
+
+		AssertTextEquals(
+			locator1 = "PGTestlocalization#LOCALIZATION_TEST_11",
+			value1 = "PASSED"
+		);
+
+		AssertTextEquals(
+			locator1 = "PGTestlocalization#LOCALIZATION_TEST_12",
+			value1 = "PASSED"
+		);
+
+		AssertTextEquals(
+			locator1 = "PGTestlocalization#LOCALIZATION_TEST_13",
+			value1 = "PASSED"
+		);
+
+		AssertTextEquals(
+			locator1 = "PGTestlocalization#LOCALIZATION_TEST_14",
+			value1 = "PASSED"
+		);
+
+		AssertTextNotPresent(value1 = "FAILED");
+	}
+
+	@known-issues = "LPS-45313"
+	@priority = "5"
+	test CheckLocalizationEnglish {
+		Click(locator1 = "PGTestlocalization#ENGLISH_LOCALIZATION");
+
+		AssertTextEquals(
+			locator1 = "PGTestlocalization#LOCALIZATION_TEST_1",
+			value1 = "PASSED"
+		);
+
+		AssertTextEquals(
+			locator1 = "PGTestlocalization#LOCALIZATION_TEST_2",
+			value1 = "PASSED"
+		);
+
+		AssertTextEquals(
+			locator1 = "PGTestlocalization#LOCALIZATION_TEST_3",
+			value1 = "PASSED"
+		);
+
+		AssertTextEquals(
+			locator1 = "PGTestlocalization#LOCALIZATION_TEST_4",
+			value1 = "PASSED"
+		);
+
+		AssertTextEquals(
+			locator1 = "PGTestlocalization#LOCALIZATION_TEST_5",
+			value1 = "PASSED"
+		);
+
+		AssertTextEquals(
+			locator1 = "PGTestlocalization#LOCALIZATION_TEST_6",
+			value1 = "PASSED"
+		);
+
+		AssertTextEquals(
+			locator1 = "PGTestlocalization#LOCALIZATION_TEST_7",
+			value1 = "PASSED"
+		);
+
+		AssertTextEquals(
+			locator1 = "PGTestlocalization#LOCALIZATION_TEST_8",
+			value1 = "PASSED"
+		);
+
+		AssertTextEquals(
+			locator1 = "PGTestlocalization#LOCALIZATION_TEST_9",
+			value1 = "PASSED"
+		);
+
+		AssertTextEquals(
+			locator1 = "PGTestlocalization#LOCALIZATION_TEST_10",
+			value1 = "PASSED"
+		);
+
+		AssertTextEquals(
+			locator1 = "PGTestlocalization#LOCALIZATION_TEST_11",
+			value1 = "PASSED"
+		);
+
+		AssertTextEquals(
+			locator1 = "PGTestlocalization#LOCALIZATION_TEST_12",
+			value1 = "PASSED"
+		);
+
+		AssertTextEquals(
+			locator1 = "PGTestlocalization#LOCALIZATION_TEST_13",
+			value1 = "PASSED"
+		);
+
+		AssertTextEquals(
+			locator1 = "PGTestlocalization#LOCALIZATION_TEST_14",
+			value1 = "PASSED"
+		);
+
+		AssertTextNotPresent(value1 = "FAILED");
+	}
+
+	@known-issues = "LPS-45313"
+	@priority = "5"
+	test CheckLocalizationFrench {
+		Click(locator1 = "PGTestlocalization#FRENCH_LOCALIZATION");
+
+		AssertTextEquals(
+			locator1 = "PGTestlocalization#LOCALIZATION_TEST_1",
+			value1 = "PASSED"
+		);
+
+		AssertTextEquals(
+			locator1 = "PGTestlocalization#LOCALIZATION_TEST_2",
+			value1 = "PASSED"
+		);
+
+		AssertTextEquals(
+			locator1 = "PGTestlocalization#LOCALIZATION_TEST_3",
+			value1 = "PASSED"
+		);
+
+		AssertTextEquals(
+			locator1 = "PGTestlocalization#LOCALIZATION_TEST_4",
+			value1 = "PASSED"
+		);
+
+		AssertTextEquals(
+			locator1 = "PGTestlocalization#LOCALIZATION_TEST_5",
+			value1 = "PASSED"
+		);
+
+		AssertTextEquals(
+			locator1 = "PGTestlocalization#LOCALIZATION_TEST_6",
+			value1 = "PASSED"
+		);
+
+		AssertTextEquals(
+			locator1 = "PGTestlocalization#LOCALIZATION_TEST_7",
+			value1 = "PASSED"
+		);
+
+		AssertTextEquals(
+			locator1 = "PGTestlocalization#LOCALIZATION_TEST_8",
+			value1 = "PASSED"
+		);
+
+		AssertTextEquals(
+			locator1 = "PGTestlocalization#LOCALIZATION_TEST_9",
+			value1 = "PASSED"
+		);
+
+		AssertTextEquals(
+			locator1 = "PGTestlocalization#LOCALIZATION_TEST_10",
+			value1 = "PASSED"
+		);
+
+		AssertTextEquals(
+			locator1 = "PGTestlocalization#LOCALIZATION_TEST_11",
+			value1 = "PASSED"
+		);
+
+		AssertTextEquals(
+			locator1 = "PGTestlocalization#LOCALIZATION_TEST_12",
+			value1 = "PASSED"
+		);
+
+		AssertTextEquals(
+			locator1 = "PGTestlocalization#LOCALIZATION_TEST_13",
+			value1 = "PASSED"
+		);
+
+		AssertTextEquals(
+			locator1 = "PGTestlocalization#LOCALIZATION_TEST_14",
+			value1 = "PASSED"
+		);
+
+		AssertTextNotPresent(value1 = "FAILED");
+	}
+
+	@known-issues = "LPS-45313"
+	@priority = "5"
+	test CheckLocalizationSpanish {
+		Click(locator1 = "PGTestlocalization#SPANISH_LOCALIZATION");
+
+		AssertTextEquals(
+			locator1 = "PGTestlocalization#LOCALIZATION_TEST_1",
+			value1 = "PASSED"
+		);
+
+		AssertTextEquals(
+			locator1 = "PGTestlocalization#LOCALIZATION_TEST_2",
+			value1 = "PASSED"
+		);
+
+		AssertTextEquals(
+			locator1 = "PGTestlocalization#LOCALIZATION_TEST_3",
+			value1 = "PASSED"
+		);
+
+		AssertTextEquals(
+			locator1 = "PGTestlocalization#LOCALIZATION_TEST_4",
+			value1 = "PASSED"
+		);
+
+		AssertTextEquals(
+			locator1 = "PGTestlocalization#LOCALIZATION_TEST_5",
+			value1 = "PASSED"
+		);
+
+		AssertTextEquals(
+			locator1 = "PGTestlocalization#LOCALIZATION_TEST_6",
+			value1 = "PASSED"
+		);
+
+		AssertTextEquals(
+			locator1 = "PGTestlocalization#LOCALIZATION_TEST_7",
+			value1 = "PASSED"
+		);
+
+		AssertTextEquals(
+			locator1 = "PGTestlocalization#LOCALIZATION_TEST_8",
+			value1 = "PASSED"
+		);
+
+		AssertTextEquals(
+			locator1 = "PGTestlocalization#LOCALIZATION_TEST_9",
+			value1 = "PASSED"
+		);
+
+		AssertTextEquals(
+			locator1 = "PGTestlocalization#LOCALIZATION_TEST_10",
+			value1 = "PASSED"
+		);
+
+		AssertTextEquals(
+			locator1 = "PGTestlocalization#LOCALIZATION_TEST_11",
+			value1 = "PASSED"
+		);
+
+		AssertTextEquals(
+			locator1 = "PGTestlocalization#LOCALIZATION_TEST_12",
+			value1 = "PASSED"
+		);
+
+		AssertTextEquals(
+			locator1 = "PGTestlocalization#LOCALIZATION_TEST_13",
+			value1 = "PASSED"
+		);
+
+		AssertTextEquals(
+			locator1 = "PGTestlocalization#LOCALIZATION_TEST_14",
+			value1 = "PASSED"
+		);
+
+		AssertTextNotPresent(value1 = "FAILED");
+	}
+
+	tearDown {
+		Page.tearDownPG();
+	}
+}

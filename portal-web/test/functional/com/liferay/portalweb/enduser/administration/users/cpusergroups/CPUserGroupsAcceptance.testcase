@@ -1,56 +1,46 @@
-<definition component-name="portal-user-management-and-portal-configuration">
-	<property name="portal.release" value="true" />
-	<property name="portal.upstream" value="true" />
-	<property name="testray.main.component.name" value="Administration" />
+@component-name = "portal-user-management-and-portal-configuration"
+definition {
+	property portal.release = "true";
+	property portal.upstream = "true";
+	property testray.main.component.name = "Administration";
 
-	<set-up>
-		<execute macro="User#firstLoginPG" />
-	</set-up>
+	setUp {
+		User.firstLoginPG();
+	}
 
-	<command name="AddUserGroup" priority="5">
-		<var name="userGroupName" value="UG UserGroup Name" />
+	@priority = "5"
+	test AddUserGroup {
+		var userGroupName = "UG UserGroup Name";
 
-		<execute macro="Page#gotoCP">
-			<var name="portletName" value="User Groups" />
-		</execute>
+		Page.gotoCP(portletName = "User Groups");
 
-		<execute macro="UserGroup#addCP">
-			<var name="userGroupName" value="${userGroupName}" />
-		</execute>
-	</command>
+		UserGroup.addCP(userGroupName = "${userGroupName}");
+	}
 
-	<command name="DeleteUserGroup" priority="5">
-		<var name="userGroupName" value="UG UserGroup Name" />
+	@priority = "5"
+	test DeleteUserGroup {
+		var userGroupName = "UG UserGroup Name";
 
-		<execute macro="Page#gotoCP">
-			<var name="portletName" value="User Groups" />
-		</execute>
+		Page.gotoCP(portletName = "User Groups");
 
-		<execute macro="UserGroup#addCP">
-			<var name="userGroupName" value="${userGroupName}" />
-		</execute>
+		UserGroup.addCP(userGroupName = "${userGroupName}");
 
-		<execute macro="UserGroup#deleteCP" />
-	</command>
+		UserGroup.deleteCP();
+	}
 
-	<command name="EditUserGroup" priority="5">
-		<var name="userGroupName" value="UG UserGroup Name" />
-		<var name="userGroupNameEdit" value="UG UserGroup Name Edit" />
+	@priority = "5"
+	test EditUserGroup {
+		var userGroupName = "UG UserGroup Name";
+		var userGroupNameEdit = "UG UserGroup Name Edit";
 
-		<execute macro="Page#gotoCP">
-			<var name="portletName" value="User Groups" />
-		</execute>
+		Page.gotoCP(portletName = "User Groups");
 
-		<execute macro="UserGroup#addCP">
-			<var name="userGroupName" value="${userGroupName}" />
-		</execute>
+		UserGroup.addCP(userGroupName = "${userGroupName}");
 
-		<execute macro="UserGroup#editCP">
-			<var name="userGroupNameEdit" value="${userGroupNameEdit}" />
-		</execute>
-	</command>
+		UserGroup.editCP(userGroupNameEdit = "${userGroupNameEdit}");
+	}
 
-	<tear-down>
-		<execute macro="UserGroup#tearDownCP" />
-	</tear-down>
-</definition>
+	tearDown {
+		UserGroup.tearDownCP();
+	}
+}

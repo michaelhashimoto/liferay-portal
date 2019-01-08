@@ -1,6 +1,8 @@
-<definition component-name="portal-core-infrastructure-portal-services" extends="PortalSmoke">
-	<property name="database.jndi.enabled" value="true" />
-	<property name="portal.release" value="true" />
-	<property name="portal.upstream" value="true" />
-	<property name="testray.main.component.name" value="Databases" />
-</definition>
+@component-name = "portal-core-infrastructure-portal-services"
+@extends = "PortalSmoke"
+definition {
+	property database.jndi.enabled = "true";
+	property portal.release = "true";
+	property portal.upstream = "true";
+	property testray.main.component.name = "Databases";
+}

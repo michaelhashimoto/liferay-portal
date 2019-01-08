@@ -1,169 +1,148 @@
-<definition component-name="portal-document-management">
-	<property name="portal.release" value="true" />
-	<property name="portal.upstream" value="true" />
-	<property name="testray.main.component.name" value="Documents Management" />
+@component-name = "portal-document-management"
+definition {
+	property portal.release = "true";
+	property portal.upstream = "true";
+	property testray.main.component.name = "Documents Management";
+	var pageName = "Media Gallery Page";
+	var portletName = "Media Gallery";
 
-	<var name="pageName" value="Media Gallery Page" />
-	<var name="portletName" value="Media Gallery" />
+	setUp {
+		User.firstLoginPG();
 
-	<set-up>
-		<execute macro="User#firstLoginPG" />
+		Page.addPG(pageName = "${pageName}");
 
-		<execute macro="Page#addPG">
-			<var name="pageName" value="${pageName}" />
-		</execute>
+		Portlet.addPG(pageName = "${pageName}", portletName = "${portletName}");
 
-		<execute macro="Portlet#addPG">
-			<var name="pageName" value="${pageName}" />
-			<var name="portletName" value="${portletName}" />
-		</execute>
+		MGPortlet.configureShowAllPG(pageName = "${pageName}");
+	}
 
-		<execute macro="MGPortlet#configureShowAllPG">
-			<var name="pageName" value="${pageName}" />
-		</execute>
-	</set-up>
+	@priority = "5"
+	test AddFolder {
+		var mgFolderDescription = "DM Folder Description";
+		var mgFolderName = "DM Folder Name";
 
-	<command name="AddFolder" priority="5">
-		<var name="mgFolderDescription" value="DM Folder Description" />
-		<var name="mgFolderName" value="DM Folder Name" />
+		Page.gotoPG(pageName = "${pageName}");
 
-		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${pageName}" />
-		</execute>
+		DMFolder.addPGviaMG(
+			mgFolderDescription = "${mgFolderDescription}",
+			mgFolderName = "${mgFolderName}"
+		);
+	}
 
-		<execute macro="DMFolder#addPGviaMG">
-			<var name="mgFolderDescription" value="${mgFolderDescription}" />
-			<var name="mgFolderName" value="${mgFolderName}" />
-		</execute>
-	</command>
+	@priority = "5"
+	test AddFolderDocument {
+		var mgDocumentDescription = "DM Document Description";
+		var mgDocumentFile = "Document_1.jpg";
+		var mgDocumentTitle = "DM Document Title";
+		var mgFolderDescription = "DM Folder Description";
+		var mgFolderName = "DM Folder Name";
 
-	<command name="AddFolderDocument" priority="5">
-		<var name="mgDocumentDescription" value="DM Document Description" />
-		<var name="mgDocumentFile" value="Document_1.jpg" />
-		<var name="mgDocumentTitle" value="DM Document Title" />
-		<var name="mgFolderDescription" value="DM Folder Description" />
-		<var name="mgFolderName" value="DM Folder Name" />
+		Page.gotoPG(pageName = "${pageName}");
 
-		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${pageName}" />
-		</execute>
+		DMFolder.addPGviaMG(
+			mgFolderDescription = "${mgFolderDescription}",
+			mgFolderName = "${mgFolderName}"
+		);
 
-		<execute macro="DMFolder#addPGviaMG">
-			<var name="mgFolderDescription" value="${mgFolderDescription}" />
-			<var name="mgFolderName" value="${mgFolderName}" />
-		</execute>
+		DMFolderDocument.addPGviaMG(
+			mgDocumentDescription = "${mgDocumentDescription}",
+			mgDocumentFile = "${mgDocumentFile}",
+			mgDocumentTitle = "${mgDocumentTitle}",
+			mgFolderName = "${mgFolderName}"
+		);
+	}
 
-		<execute macro="DMFolderDocument#addPGviaMG">
-			<var name="mgDocumentDescription" value="${mgDocumentDescription}" />
-			<var name="mgDocumentFile" value="${mgDocumentFile}" />
-			<var name="mgDocumentTitle" value="${mgDocumentTitle}" />
-			<var name="mgFolderName" value="${mgFolderName}" />
-		</execute>
-	</command>
+	@priority = "5"
+	test DeleteFolderDocument {
+		var mgDocumentDescription = "DM Document Description";
+		var mgDocumentFile = "Document_1.jpg";
+		var mgDocumentTitle = "DM Document Title";
+		var mgFolderDescription = "DM Folder Description";
+		var mgFolderName = "DM Folder Name";
 
-	<command name="DeleteFolderDocument" priority="5">
-		<var name="mgDocumentDescription" value="DM Document Description" />
-		<var name="mgDocumentFile" value="Document_1.jpg" />
-		<var name="mgDocumentTitle" value="DM Document Title" />
-		<var name="mgFolderDescription" value="DM Folder Description" />
-		<var name="mgFolderName" value="DM Folder Name" />
+		Page.gotoPG(pageName = "${pageName}");
 
-		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${pageName}" />
-		</execute>
+		DMFolder.addPGviaMG(
+			mgFolderDescription = "${mgFolderDescription}",
+			mgFolderName = "${mgFolderName}"
+		);
 
-		<execute macro="DMFolder#addPGviaMG">
-			<var name="mgFolderDescription" value="${mgFolderDescription}" />
-			<var name="mgFolderName" value="${mgFolderName}" />
-		</execute>
+		Page.gotoPG(pageName = "${pageName}");
 
-		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${pageName}" />
-		</execute>
+		DMFolderDocument.addPGviaMG(
+			mgDocumentDescription = "${mgDocumentDescription}",
+			mgDocumentFile = "${mgDocumentFile}",
+			mgDocumentTitle = "${mgDocumentTitle}",
+			mgFolderName = "${mgFolderName}"
+		);
 
-		<execute macro="DMFolderDocument#addPGviaMG">
-			<var name="mgDocumentDescription" value="${mgDocumentDescription}" />
-			<var name="mgDocumentFile" value="${mgDocumentFile}" />
-			<var name="mgDocumentTitle" value="${mgDocumentTitle}" />
-			<var name="mgFolderName" value="${mgFolderName}" />
-		</execute>
+		Page.gotoPG(pageName = "${pageName}");
 
-		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${pageName}" />
-		</execute>
+		DMFolderDocument.deletePGviaMG(
+			mgDocumentTitle = "${mgDocumentTitle}",
+			mgFolderName = "${mgFolderName}"
+		);
+	}
 
-		<execute macro="DMFolderDocument#deletePGviaMG">
-			<var name="mgDocumentTitle" value="${mgDocumentTitle}" />
-			<var name="mgFolderName" value="${mgFolderName}" />
-		</execute>
-	</command>
+	@priority = "5"
+	test EditDMFolder {
+		var mgFolderDescription = "DM Folder Description";
+		var mgFolderName = "DM Folder Name";
 
-	<command name="EditDMFolder" priority="5">
-		<var name="mgFolderDescription" value="DM Folder Description" />
-		<var name="mgFolderName" value="DM Folder Name" />
+		Page.gotoPG(pageName = "${pageName}");
 
-		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${pageName}" />
-		</execute>
+		DMFolder.addPGviaMG(
+			mgFolderDescription = "${mgFolderDescription}",
+			mgFolderName = "${mgFolderName}"
+		);
 
-		<execute macro="DMFolder#addPGviaMG">
-			<var name="mgFolderDescription" value="${mgFolderDescription}" />
-			<var name="mgFolderName" value="${mgFolderName}" />
-		</execute>
+		DMFolder.editPGviaMG(
+			mgFolderDescriptionEdit = "${mgFolderDescription} Edit",
+			mgFolderName = "${mgFolderName}",
+			mgFolderNameEdit = "${mgFolderName} Edit"
+		);
+	}
 
-		<execute macro="DMFolder#editPGviaMG">
-			<var name="mgFolderDescriptionEdit" value="${mgFolderDescription} Edit" />
-			<var name="mgFolderName" value="${mgFolderName}" />
-			<var name="mgFolderNameEdit" value="${mgFolderName} Edit" />
-		</execute>
-	</command>
+	@priority = "5"
+	test EditFolderDocument {
+		var mgDocumentDescription = "DM Document Description";
+		var mgDocumentFile = "Document_1.jpg";
+		var mgDocumentTitle = "DM Document Title";
+		var mgFolderDescription = "DM Folder Description";
+		var mgFolderName = "DM Folder Name";
 
-	<command name="EditFolderDocument" priority="5">
-		<var name="mgDocumentDescription" value="DM Document Description" />
-		<var name="mgDocumentFile" value="Document_1.jpg" />
-		<var name="mgDocumentTitle" value="DM Document Title" />
-		<var name="mgFolderDescription" value="DM Folder Description" />
-		<var name="mgFolderName" value="DM Folder Name" />
+		Page.gotoPG(pageName = "${pageName}");
 
-		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${pageName}" />
-		</execute>
+		DMFolder.addPGviaMG(
+			mgFolderDescription = "${mgFolderDescription}",
+			mgFolderName = "${mgFolderName}"
+		);
 
-		<execute macro="DMFolder#addPGviaMG">
-			<var name="mgFolderDescription" value="${mgFolderDescription}" />
-			<var name="mgFolderName" value="${mgFolderName}" />
-		</execute>
+		DMFolderDocument.addPGviaMG(
+			mgDocumentDescription = "${mgDocumentDescription}",
+			mgDocumentFile = "${mgDocumentFile}",
+			mgDocumentTitle = "${mgDocumentTitle}",
+			mgFolderName = "${mgFolderName}"
+		);
 
-		<execute macro="DMFolderDocument#addPGviaMG">
-			<var name="mgDocumentDescription" value="${mgDocumentDescription}" />
-			<var name="mgDocumentFile" value="${mgDocumentFile}" />
-			<var name="mgDocumentTitle" value="${mgDocumentTitle}" />
-			<var name="mgFolderName" value="${mgFolderName}" />
-		</execute>
+		Page.gotoPG(pageName = "${pageName}");
 
-		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${pageName}" />
-		</execute>
+		DMFolderDocument.editPGviaMG(
+			mgDocumentDescriptionEdit = "${mgDocumentDescription} Edit",
+			mgDocumentTitle = "${mgDocumentTitle}",
+			mgDocumentTitleEdit = "${mgDocumentTitle} Edit",
+			mgFolderName = "${mgFolderName}"
+		);
+	}
 
-		<execute macro="DMFolderDocument#editPGviaMG">
-			<var name="mgDocumentDescriptionEdit" value="${mgDocumentDescription} Edit" />
-			<var name="mgDocumentTitle" value="${mgDocumentTitle}" />
-			<var name="mgDocumentTitleEdit" value="${mgDocumentTitle} Edit" />
-			<var name="mgFolderName" value="${mgFolderName}" />
-		</execute>
-	</command>
+	@priority = "5"
+	test RemovePortlet {
+		Portlet.removePG(pageName = "${pageName}");
+	}
 
-	<command name="RemovePortlet" priority="5">
-		<execute macro="Portlet#removePG">
-			<var name="pageName" value="${pageName}" />
-		</execute>
-	</command>
+	tearDown {
+		DMFolder.tearDownPGviaMG(pageName = "${pageName}");
 
-	<tear-down>
-		<execute macro="DMFolder#tearDownPGviaMG">
-			<var name="pageName" value="${pageName}" />
-		</execute>
-
-		<execute macro="Page#tearDownPG" />
-	</tear-down>
-</definition>
+		Page.tearDownPG();
+	}
+}

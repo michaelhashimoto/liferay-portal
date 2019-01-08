@@ -1,18 +1,20 @@
-<definition component-name="portal-tools">
-	<property name="portal.release" value="true" />
-	<property name="portal.upstream" value="true" />
-	<property name="testcase.url" value="" />
-	<property name="testray.main.component.name" value="Tools" />
+@component-name = "portal-tools"
+definition {
+	property portal.release = "true";
+	property portal.upstream = "true";
+	property testcase.url = "";
+	property testray.main.component.name = "Tools";
 
-	<set-up>
-		<var name="parentSetUpVar" value="parent test case set-up var value" />
-	</set-up>
+	setUp {
+		var parentSetUpVar = "parent test case set-up var value";
+	}
 
-	<tear-down>
-		<var name="parentTearDownVar" value="parent test case tear-down var value" />
-	</tear-down>
+	tearDown {
+		var parentTearDownVar = "parent test case tear-down var value";
+	}
 
-	<command name="ParentTestCaseCommand" priority="5">
-		<execute macro="TestUtils#pass" />
-	</command>
-</definition>
+	@priority = "5"
+	test ParentTestCaseCommand {
+		TestUtils.pass();
+	}
+}

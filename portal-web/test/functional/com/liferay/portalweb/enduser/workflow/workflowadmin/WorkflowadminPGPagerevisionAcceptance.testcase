@@ -1,184 +1,157 @@
-<definition component-name="portal-workflow">
-	<property name="hook.plugins.includes" value="kaleo-upgrade-hook" />
-	<property name="portal.release" value="true" />
-	<property name="portal.upstream" value="true" />
-	<property name="testray.main.component.name" value="Workflow" />
-	<property name="web.plugins.includes" value="kaleo-web" />
+@component-name = "portal-workflow"
+definition {
+	property hook.plugins.includes = "kaleo-upgrade-hook";
+	property portal.release = "true";
+	property portal.upstream = "true";
+	property testray.main.component.name = "Workflow";
+	property web.plugins.includes = "kaleo-web";
+	var siteName = "Site Name";
+	var sitePageName = "Site Page Name";
+	var sitePagePrivacy = "Public";
+	var workflowAssetType = "Page Revision";
 
-	<var name="siteName" value="Site Name" />
-	<var name="sitePageName" value="Site Page Name" />
-	<var name="sitePagePrivacy" value="Public" />
-	<var name="workflowAssetType" value="Page Revision" />
+	setUp {
+		User.firstLoginPG();
 
-	<set-up>
-		<execute macro="User#firstLoginPG" />
+		Page.gotoCP(portletName = "Sites");
 
-		<execute macro="Page#gotoCP">
-			<var name="portletName" value="Sites" />
-		</execute>
+		Site.addCP(siteName = "${siteName}", siteType = "Blank");
 
-		<execute macro="Site#addCP">
-			<var name="siteName" value="${siteName}" />
-			<var name="siteType" value="Blank" />
-		</execute>
+		Page.gotoCP(portletName = "Sites");
 
-		<execute macro="Page#gotoCP">
-			<var name="portletName" value="Sites" />
-		</execute>
+		SitePage.addCP(
+			siteName = "${siteName}",
+			sitePageName = "${sitePageName}",
+			sitePagePrivacy = "${sitePagePrivacy}"
+		);
 
-		<execute macro="SitePage#addCP">
-			<var name="siteName" value="${siteName}" />
-			<var name="sitePageName" value="${sitePageName}" />
-			<var name="sitePagePrivacy" value="${sitePagePrivacy}" />
-		</execute>
+		Page.gotoCP(portletName = "Site Settings", siteScopeName = "${siteName}");
 
-		<execute macro="Page#gotoCP">
-			<var name="portletName" value="Site Settings" />
-			<var name="siteScopeName" value="${siteName}" />
-		</execute>
+		Staging.activateStagingCP(
+			pageVersioningEnabled = "true",
+			siteName = "${siteName}"
+		);
 
-		<execute macro="Staging#activateStagingCP">
-			<var name="pageVersioningEnabled" value="true" />
-			<var name="siteName" value="${siteName}" />
-		</execute>
+		Page.gotoCP(
+			portletName = "Workflow Configuration",
+			siteScopeName = "${siteName}"
+		);
 
-		<execute macro="Page#gotoCP">
-			<var name="portletName" value="Workflow Configuration" />
-			<var name="siteScopeName" value="${siteName}" />
-		</execute>
+		Workflow.configureSiteWorkflow(
+			workflowDefinition = "Single Approver (Version 1)",
+			workflowResourceKey = "RESOURCE_TABLE_PAGE_REVISION_SELECT"
+		);
+	}
 
-		<execute macro="Workflow#configureSiteWorkflow">
-			<var name="workflowDefinition" value="Single Approver (Version 1)" />
-			<var name="workflowResourceKey" value="RESOURCE_TABLE_PAGE_REVISION_SELECT" />
-		</execute>
-	</set-up>
+	@priority = "5"
+	test ApprovePageRevisionPG {
+		var pageName = "Page Revision Page";
 
-	<command name="ApprovePageRevisionPG" priority="5">
-		<var name="pageName" value="Page Revision Page" />
+		Page.addPGWithWorkflow(
+			pageName = "${pageName}",
+			pageStaging = "true",
+			pageType = "Site"
+		);
 
-		<execute macro="Page#addPGWithWorkflow">
-			<var name="pageName" value="${pageName}" />
-			<var name="pageStaging" value="true" />
-			<var name="pageType" value="Site" />
-		</execute>
+		Page.viewPGWithWorkflow(
+			pageName = "${pageName}",
+			pageStaging = "true",
+			pageType = "Site",
+			workflowStatus = "Pending (Review)"
+		);
 
-		<execute macro="Page#viewPGWithWorkflow">
-			<var name="pageName" value="${pageName}" />
-			<var name="pageStaging" value="true" />
-			<var name="pageType" value="Site" />
-			<var name="workflowStatus" value="Pending (Review)" />
-		</execute>
+		Page.gotoCP(portletName = "My Workflow Tasks");
 
-		<execute macro="Page#gotoCP">
-			<var name="portletName" value="My Workflow Tasks" />
-		</execute>
+		Workflow.assignToMeTaskByActions(
+			workflowAssetTitle = "${pageName}",
+			workflowAssetType = "${workflowAssetType}",
+			workflowTask = "Review"
+		);
 
-		<execute macro="Workflow#assignToMeTaskByActions">
-			<var name="workflowAssetTitle" value="${pageName}" />
-			<var name="workflowAssetType" value="${workflowAssetType}" />
-			<var name="workflowTask" value="Review" />
-		</execute>
+		Page.viewPGWithWorkflow(
+			pageName = "${pageName}",
+			pageStaging = "true",
+			pageType = "Site",
+			workflowStatus = "Pending (Review)"
+		);
 
-		<execute macro="Page#viewPGWithWorkflow">
-			<var name="pageName" value="${pageName}" />
-			<var name="pageStaging" value="true" />
-			<var name="pageType" value="Site" />
-			<var name="workflowStatus" value="Pending (Review)" />
-		</execute>
+		Page.gotoCP(portletName = "My Workflow Tasks");
 
-		<execute macro="Page#gotoCP">
-			<var name="portletName" value="My Workflow Tasks" />
-		</execute>
+		Workflow.approveTaskByActions(
+			workflowAssetTitle = "${pageName}",
+			workflowAssetType = "${workflowAssetType}",
+			workflowTask = "Review"
+		);
 
-		<execute macro="Workflow#approveTaskByActions">
-			<var name="workflowAssetTitle" value="${pageName}" />
-			<var name="workflowAssetType" value="${workflowAssetType}" />
-			<var name="workflowTask" value="Review" />
-		</execute>
+		Page.viewPGWithWorkflow(
+			pageName = "${pageName}",
+			pageStaging = "true",
+			pageType = "Site",
+			workflowStatus = "Ready for Publication"
+		);
 
-		<execute macro="Page#viewPGWithWorkflow">
-			<var name="pageName" value="${pageName}" />
-			<var name="pageStaging" value="true" />
-			<var name="pageType" value="Site" />
-			<var name="workflowStatus" value="Ready for Publication" />
-		</execute>
+		Page.gotoPG(pageName = "${pageName}", pageStaging = "true", pageType = "Site");
 
-		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${pageName}" />
-			<var name="pageStaging" value="true" />
-			<var name="pageType" value="Site" />
-		</execute>
+		Staging.publishToLiveNowPG();
 
-		<execute macro="Staging#publishToLiveNowPG" />
+		Page.viewPG(pageName = "${pageName}", pageType = "Site");
+	}
 
-		<execute macro="Page#viewPG">
-			<var name="pageName" value="${pageName}" />
-			<var name="pageType" value="Site" />
-		</execute>
-	</command>
+	@priority = "5"
+	test RejectPageRevisionPG {
+		var pageName = "Page Revision Page";
 
-	<command name="RejectPageRevisionPG" priority="5">
-		<var name="pageName" value="Page Revision Page" />
+		Page.addPGWithWorkflow(
+			pageName = "${pageName}",
+			pageStaging = "true",
+			pageType = "Site"
+		);
 
-		<execute macro="Page#addPGWithWorkflow">
-			<var name="pageName" value="${pageName}" />
-			<var name="pageStaging" value="true" />
-			<var name="pageType" value="Site" />
-		</execute>
+		Page.gotoCP(portletName = "My Workflow Tasks");
 
-		<execute macro="Page#gotoCP">
-			<var name="portletName" value="My Workflow Tasks" />
-		</execute>
+		Workflow.assignToMeTaskByActions(
+			workflowAssetTitle = "${pageName}",
+			workflowAssetType = "${workflowAssetType}",
+			workflowTask = "Review"
+		);
 
-		<execute macro="Workflow#assignToMeTaskByActions">
-			<var name="workflowAssetTitle" value="${pageName}" />
-			<var name="workflowAssetType" value="${workflowAssetType}" />
-			<var name="workflowTask" value="Review" />
-		</execute>
+		Workflow.rejectTaskByActions(
+			workflowAssetTitle = "${pageName}",
+			workflowAssetType = "${workflowAssetType}",
+			workflowTask = "Review"
+		);
 
-		<execute macro="Workflow#rejectTaskByActions">
-			<var name="workflowAssetTitle" value="${pageName}" />
-			<var name="workflowAssetType" value="${workflowAssetType}" />
-			<var name="workflowTask" value="Review" />
-		</execute>
+		Page.gotoCP(portletName = "My Workflow Tasks");
 
-		<execute macro="Page#gotoCP">
-			<var name="portletName" value="My Workflow Tasks" />
-		</execute>
+		Workflow.viewRejectTask(
+			workflowAssetTitle = "${pageName}",
+			workflowAssetType = "${workflowAssetType}"
+		);
 
-		<execute macro="Workflow#viewRejectTask">
-			<var name="workflowAssetTitle" value="${pageName}" />
-			<var name="workflowAssetType" value="${workflowAssetType}" />
-		</execute>
+		Page.viewPGWithWorkflow(
+			pageName = "${pageName}",
+			pageStaging = "true",
+			pageType = "Site",
+			workflowStatus = "Pending (Update)"
+		);
 
-		<execute macro="Page#viewPGWithWorkflow">
-			<var name="pageName" value="${pageName}" />
-			<var name="pageStaging" value="true" />
-			<var name="pageType" value="Site" />
-			<var name="workflowStatus" value="Pending (Update)" />
-		</execute>
+		Page.gotoPG(pageName = "${pageName}", pageStaging = "true", pageType = "Site");
 
-		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${pageName}" />
-			<var name="pageStaging" value="true" />
-			<var name="pageType" value="Site" />
-		</execute>
+		Staging.publishToLiveNowPG();
 
-		<execute macro="Staging#publishToLiveNowPG" />
+		Page.viewPGWithWorkflow(
+			pageName = "${pageName}",
+			pageStaging = "true",
+			pageType = "Site",
+			workflowStatus = "Pending (Update)"
+		);
+	}
 
-		<execute macro="Page#viewPGWithWorkflow">
-			<var name="pageName" value="${pageName}" />
-			<var name="pageStaging" value="true" />
-			<var name="pageType" value="Site" />
-			<var name="workflowStatus" value="Pending (Update)" />
-		</execute>
-	</command>
+	tearDown {
+		Site.tearDownCP();
 
-	<tear-down>
-		<execute macro="Site#tearDownCP" />
+		Workflow.tearDownPortalWorkflow();
 
-		<execute macro="Workflow#tearDownPortalWorkflow" />
-
-		<execute macro="Workflow#tearDownSiteWorkflow" />
-	</tear-down>
-</definition>
+		Workflow.tearDownSiteWorkflow();
+	}
+}

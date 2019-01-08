@@ -1,73 +1,65 @@
-<definition component-name="portal-web-forms-and-data-lists">
-	<property name="portal.release" value="true" />
-	<property name="portal.upstream" value="true" />
-	<property name="portlet.plugins.includes" value="web-form-portlet" />
-	<property name="testray.main.component.name" value="Web Forms and Data Lists" />
+@component-name = "portal-web-forms-and-data-lists"
+definition {
+	property portal.release = "true";
+	property portal.upstream = "true";
+	property portlet.plugins.includes = "web-form-portlet";
+	property testray.main.component.name = "Web Forms and Data Lists";
+	var pageName = "Web Form Test Page";
+	var portletName = "Web Form";
 
-	<var name="pageName" value="Web Form Test Page" />
-	<var name="portletName" value="Web Form" />
+	setUp {
+		User.firstLoginPG();
 
-	<set-up>
-		<execute macro="User#firstLoginPG" />
+		Page.addPG(pageName = "${pageName}");
 
-		<execute macro="Page#addPG">
-			<var name="pageName" value="${pageName}" />
-		</execute>
+		Portlet.addPG(pageName = "${pageName}", portletName = "${portletName}");
+	}
 
-		<execute macro="Portlet#addPG">
-			<var name="pageName" value="${pageName}" />
-			<var name="portletName" value="${portletName}" />
-		</execute>
-	</set-up>
+	@priority = "5"
+	test ConfigureWebform {
+		var webFormFieldsComments = "Comments";
+		var webFormFieldsCommentsEdit = "Additional Comments";
+		var webFormFieldsName = "Name";
+		var webFormFieldsNameEdit = "Your Name";
+		var webFormFieldsRating = "Rating";
+		var webFormFieldsRatingEdit = "Rate Us!";
+		var webFormInformationDescription = "Your input is valuable to us. Please send us your suggestions.";
+		var webFormInformationDescriptionEdit = "Please let us know what you think!";
+		var webFormInformationTitle = "Suggestions";
+		var webFormInformationTitleEdit = "Feed Back";
 
-	<command name="ConfigureWebform" priority="5">
-		<var name="webFormFieldsComments" value="Comments" />
-		<var name="webFormFieldsCommentsEdit" value="Additional Comments" />
-		<var name="webFormFieldsName" value="Name" />
-		<var name="webFormFieldsNameEdit" value="Your Name" />
-		<var name="webFormFieldsRating" value="Rating" />
-		<var name="webFormFieldsRatingEdit" value="Rate Us!" />
-		<var name="webFormInformationDescription" value="Your input is valuable to us. Please send us your suggestions." />
-		<var name="webFormInformationDescriptionEdit" value="Please let us know what you think!" />
-		<var name="webFormInformationTitle" value="Suggestions" />
-		<var name="webFormInformationTitleEdit" value="Feed Back" />
+		Page.gotoPG(pageName = "${pageName}");
 
-		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${pageName}" />
-		</execute>
+		WebformPortlet.configureWebformPG(
+			webFormFieldsComments = "${webFormFieldsComments}",
+			webFormFieldsCommentsEdit = "${webFormFieldsCommentsEdit}",
+			webFormFieldsName = "${webFormFieldsName}",
+			webFormFieldsNameEdit = "${webFormFieldsNameEdit}",
+			webFormFieldsRating = "${webFormFieldsRating}",
+			webFormFieldsRatingEdit = "${webFormFieldsRatingEdit}",
+			webFormInformationDescription = "${webFormInformationDescription}",
+			webFormInformationDescriptionEdit = "${webFormInformationDescriptionEdit}",
+			webFormInformationTitle = "${webFormInformationTitle}",
+			webFormInformationTitleEdit = "${webFormInformationTitleEdit}"
+		);
 
-		<execute macro="WebformPortlet#configureWebformPG">
-			<var name="webFormFieldsComments" value="${webFormFieldsComments}" />
-			<var name="webFormFieldsCommentsEdit" value="${webFormFieldsCommentsEdit}" />
-			<var name="webFormFieldsName" value="${webFormFieldsName}" />
-			<var name="webFormFieldsNameEdit" value="${webFormFieldsNameEdit}" />
-			<var name="webFormFieldsRating" value="${webFormFieldsRating}" />
-			<var name="webFormFieldsRatingEdit" value="${webFormFieldsRatingEdit}" />
-			<var name="webFormInformationDescription" value="${webFormInformationDescription}" />
-			<var name="webFormInformationDescriptionEdit" value="${webFormInformationDescriptionEdit}" />
-			<var name="webFormInformationTitle" value="${webFormInformationTitle}" />
-			<var name="webFormInformationTitleEdit" value="${webFormInformationTitleEdit}" />
-		</execute>
+		Page.gotoPG(pageName = "${pageName}");
 
-		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${pageName}" />
-		</execute>
+		WebformPortlet.viewConfigureWebformPG(
+			webFormFieldsComments = "${webFormFieldsComments}",
+			webFormFieldsCommentsEdit = "${webFormFieldsCommentsEdit}",
+			webFormFieldsName = "${webFormFieldsName}",
+			webFormFieldsNameEdit = "${webFormFieldsNameEdit}",
+			webFormFieldsRating = "${webFormFieldsRating}",
+			webFormFieldsRatingEdit = "${webFormFieldsRatingEdit}",
+			webFormInformationDescription = "${webFormInformationDescription}",
+			webFormInformationDescriptionEdit = "${webFormInformationDescriptionEdit}",
+			webFormInformationTitle = "${webFormInformationTitle}",
+			webFormInformationTitleEdit = "${webFormInformationTitleEdit}"
+		);
+	}
 
-		<execute macro="WebformPortlet#viewConfigureWebformPG">
-			<var name="webFormFieldsComments" value="${webFormFieldsComments}" />
-			<var name="webFormFieldsCommentsEdit" value="${webFormFieldsCommentsEdit}" />
-			<var name="webFormFieldsName" value="${webFormFieldsName}" />
-			<var name="webFormFieldsNameEdit" value="${webFormFieldsNameEdit}" />
-			<var name="webFormFieldsRating" value="${webFormFieldsRating}" />
-			<var name="webFormFieldsRatingEdit" value="${webFormFieldsRatingEdit}" />
-			<var name="webFormInformationDescription" value="${webFormInformationDescription}" />
-			<var name="webFormInformationDescriptionEdit" value="${webFormInformationDescriptionEdit}" />
-			<var name="webFormInformationTitle" value="${webFormInformationTitle}" />
-			<var name="webFormInformationTitleEdit" value="${webFormInformationTitleEdit}" />
-		</execute>
-	</command>
-
-	<tear-down>
-		<execute macro="Page#tearDownPG" />
-	</tear-down>
-</definition>
+	tearDown {
+		Page.tearDownPG();
+	}
+}

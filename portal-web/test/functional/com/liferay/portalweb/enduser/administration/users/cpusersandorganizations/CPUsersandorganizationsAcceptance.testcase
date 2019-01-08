@@ -1,347 +1,272 @@
-<definition component-name="portal-user-management-and-portal-configuration">
-	<property name="portal.release" value="true" />
-	<property name="portal.upstream" value="true" />
-	<property name="testray.main.component.name" value="Administration" />
-
-	<set-up>
-		<execute macro="User#firstLoginPG" />
-	</set-up>
-
-	<tear-down>
-		<execute macro="Suborganization#tearDownCP" />
-
-		<execute macro="Organization#tearDownCP" />
-
-		<execute macro="User#tearDownCP" />
-	</tear-down>
-
-	<command name="AddMember" priority="5">
-		<var name="orgName" value="Organization Name" />
-		<var name="orgType" value="Regular Organization" />
-		<var name="searchToken" value="Organization" />
-		<var name="userEmailAddress" value="userea@liferay.com" />
-		<var name="userFirstName" value="userfn" />
-		<var name="userLastName" value="userln" />
-		<var name="userScreenName" value="usersn" />
-
-		<execute macro="Page#gotoCP">
-			<var name="portletName" value="Users and Organizations" />
-		</execute>
-
-		<execute macro="User#addCP">
-			<var name="userEmailAddress" value="${userEmailAddress}" />
-			<var name="userFirstName" value="${userFirstName}" />
-			<var name="userLastName" value="${userLastName}" />
-			<var name="userScreenName" value="${userScreenName}" />
-		</execute>
-
-		<execute macro="Page#gotoCP">
-			<var name="portletName" value="Users and Organizations" />
-		</execute>
-
-		<execute macro="Organization#addCP">
-			<var name="orgName" value="${orgName}" />
-			<var name="orgType" value="${orgType}" />
-		</execute>
-
-		<execute macro="Page#gotoCP">
-			<var name="portletName" value="Users and Organizations" />
-		</execute>
-
-		<execute macro="Organization#addMemberCP">
-			<var name="orgName" value="${orgName}" />
-			<var name="userFirstName" value="${userFirstName}" />
-			<var name="userLastName" value="${userLastName}" />
-			<var name="userScreenName" value="${userScreenName}" />
-		</execute>
-
-		<execute macro="Page#gotoCP">
-			<var name="portletName" value="Users and Organizations" />
-		</execute>
-
-		<execute macro="Organization#viewAssignMemberCP">
-			<var name="orgName" value="${orgName}" />
-			<var name="searchToken" value="${searchToken}" />
-			<var name="userFirstName" value="${userFirstName}" />
-			<var name="userLastName" value="${userLastName}" />
-			<var name="userScreenName" value="${userScreenName}" />
-		</execute>
-	</command>
-
-	<command name="AddOrganization" priority="5">
-		<var name="orgName" value="Organization Name" />
-		<var name="orgType" value="Regular Organization" />
-		<var name="searchToken" value="Organization" />
-
-		<execute macro="Page#gotoCP">
-			<var name="portletName" value="Users and Organizations" />
-		</execute>
-
-		<execute macro="Organization#addCP">
-			<var name="orgName" value="${orgName}" />
-			<var name="orgType" value="${orgType}" />
-		</execute>
-
-		<execute macro="Page#gotoCP">
-			<var name="portletName" value="Users and Organizations" />
-		</execute>
-
-		<execute macro="Organization#viewCP">
-			<var name="orgName" value="${orgName}" />
-			<var name="orgType" value="${orgType}" />
-			<var name="searchToken" value="${searchToken}" />
-		</execute>
-	</command>
-
-	<command name="AddOrganizationTeam" priority="5">
-		<var name="orgName" value="Organization Name" />
-		<var name="orgType" value="Regular Organization" />
-		<var name="teamDescription" value="Site Team Description" />
-		<var name="teamName" value="Site Team Name" />
-
-		<execute macro="Page#gotoCP">
-			<var name="portletName" value="Users and Organizations" />
-		</execute>
-
-		<execute macro="Organization#addCP">
-			<var name="orgName" value="${orgName}" />
-			<var name="orgType" value="${orgType}" />
-		</execute>
-
-		<execute macro="Page#gotoCP">
-			<var name="portletName" value="Users and Organizations" />
-		</execute>
-
-		<execute macro="Organization#addSiteCP">
-			<var name="orgName" value="${orgName}" />
-		</execute>
-
-		<execute macro="Page#gotoCP">
-			<var name="portletName" value="Sites" />
-		</execute>
-
-		<execute macro="Team#addCP">
-			<var name="siteName" value="Organization Name" />
-			<var name="teamDescription" value="${teamDescription}" />
-			<var name="teamName" value="${teamName}" />
-		</execute>
-	</command>
-
-	<command name="AddSite" priority="5">
-		<var name="orgName" value="Organization Name" />
-		<var name="orgType" value="Regular Organization" />
-		<var name="siteMember" value="Organization" />
-		<var name="siteName" value="Organization Name" />
-		<var name="siteType" value="Private" />
-
-		<execute macro="Page#gotoCP">
-			<var name="portletName" value="Users and Organizations" />
-		</execute>
-
-		<execute macro="Organization#addCP">
-			<var name="orgName" value="${orgName}" />
-			<var name="orgType" value="${orgType}" />
-		</execute>
-
-		<execute macro="Page#gotoCP">
-			<var name="portletName" value="Users and Organizations" />
-		</execute>
-
-		<execute macro="Organization#addSiteCP">
-			<var name="orgName" value="${orgName}" />
-		</execute>
-
-		<execute macro="Page#gotoCP">
-			<var name="portletName" value="Sites" />
-		</execute>
-
-		<execute macro="Site#viewCP">
-			<var name="siteMember" value="${siteMember}" />
-			<var name="siteName" value="${siteName}" />
-			<var name="siteType" value="${siteType}" />
-		</execute>
-	</command>
-
-	<command name="AddSuborganization" priority="5">
-		<var name="orgName" value="Organization Name" />
-		<var name="orgType" value="Regular Organization" />
-		<var name="suborgName" value="Suborganization Name" />
-		<var name="suborgSearchName" value="Suborganization" />
-		<var name="suborgType" value="Regular Organization" />
-
-		<execute macro="Page#gotoCP">
-			<var name="portletName" value="Users and Organizations" />
-		</execute>
-
-		<execute macro="Organization#addCP">
-			<var name="orgName" value="${orgName}" />
-			<var name="orgType" value="${orgType}" />
-		</execute>
-
-		<execute macro="Page#gotoCP">
-			<var name="portletName" value="Users and Organizations" />
-		</execute>
-
-		<execute macro="Suborganization#addCP">
-			<var name="orgName" value="${orgName}" />
-			<var name="suborgName" value="${suborgName}" />
-			<var name="suborgType" value="${suborgType}" />
-		</execute>
-
-		<execute macro="Page#gotoCP">
-			<var name="portletName" value="Users and Organizations" />
-		</execute>
-
-		<execute macro="Suborganization#viewCP">
-			<var name="orgName" value="${orgName}" />
-			<var name="orgType" value="${orgType}" />
-			<var name="suborgName" value="${suborgName}" />
-			<var name="suborgSearchName" value="${suborgSearchName}" />
-			<var name="suborgType" value="${suborgType}" />
-		</execute>
-	</command>
-
-	<command name="AddUser" priority="5">
-		<var name="userEmailAddress" value="userea@liferay.com" />
-		<var name="userFirstName" value="userfn" />
-		<var name="userLastName" value="userln" />
-		<var name="userScreenName" value="usersn" />
-
-		<execute macro="Page#gotoCP">
-			<var name="portletName" value="Users and Organizations" />
-		</execute>
-
-		<execute macro="User#addCP">
-			<var name="userEmailAddress" value="${userEmailAddress}" />
-			<var name="userFirstName" value="${userFirstName}" />
-			<var name="userLastName" value="${userLastName}" />
-			<var name="userScreenName" value="${userScreenName}" />
-		</execute>
-
-		<execute macro="Page#gotoCP">
-			<var name="portletName" value="Users and Organizations" />
-		</execute>
-
-		<execute macro="User#viewCP">
-			<var name="userEmailAddress" value="${userEmailAddress}" />
-			<var name="userFirstName" value="${userFirstName}" />
-			<var name="userLastName" value="${userLastName}" />
-			<var name="userScreenName" value="${userScreenName}" />
-		</execute>
-	</command>
-
-	<command name="DeleteOrganization" priority="5">
-		<var name="orgName" value="Organization Name" />
-		<var name="orgType" value="Regular Organization" />
-
-		<execute macro="Page#gotoCP">
-			<var name="portletName" value="Users and Organizations" />
-		</execute>
-
-		<execute macro="Organization#addCP">
-			<var name="orgName" value="${orgName}" />
-			<var name="orgType" value="${orgType}" />
-		</execute>
-
-		<execute macro="Page#gotoCP">
-			<var name="portletName" value="Users and Organizations" />
-		</execute>
-
-		<execute macro="Organization#deleteCP">
-			<var name="orgName" value="${orgName}" />
-		</execute>
-	</command>
-
-	<command name="DeleteUser" priority="5">
-		<var name="userEmailAddress" value="userea@liferay.com" />
-		<var name="userFirstName" value="userfn" />
-		<var name="userLastName" value="userln" />
-		<var name="userScreenName" value="usersn" />
-
-		<execute macro="Page#gotoCP">
-			<var name="portletName" value="Users and Organizations" />
-		</execute>
-
-		<execute macro="User#addCP">
-			<var name="userEmailAddress" value="${userEmailAddress}" />
-			<var name="userFirstName" value="${userFirstName}" />
-			<var name="userLastName" value="${userLastName}" />
-			<var name="userScreenName" value="${userScreenName}" />
-		</execute>
-
-		<execute macro="Page#gotoCP">
-			<var name="portletName" value="Users and Organizations" />
-		</execute>
-
-		<execute macro="User#deactivateCP">
-			<var name="userFirstName" value="${userFirstName}" />
-		</execute>
-
-		<execute macro="Page#gotoCP">
-			<var name="portletName" value="Users and Organizations" />
-		</execute>
-
-		<execute macro="User#deleteCP">
-			<var name="userFirstName" value="${userFirstName}" />
-		</execute>
-	</command>
-
-	<command name="RemoveMember" priority="5">
-		<var name="orgName" value="Organization Name" />
-		<var name="orgType" value="Regular Organization" />
-		<var name="userEmailAddress" value="userea@liferay.com" />
-		<var name="userFirstName" value="userfn" />
-		<var name="userLastName" value="userln" />
-		<var name="userScreenName" value="usersn" />
-
-		<execute macro="Page#gotoCP">
-			<var name="portletName" value="Users and Organizations" />
-		</execute>
-
-		<execute macro="User#addCP">
-			<var name="userEmailAddress" value="${userEmailAddress}" />
-			<var name="userFirstName" value="${userFirstName}" />
-			<var name="userLastName" value="${userLastName}" />
-			<var name="userScreenName" value="${userScreenName}" />
-		</execute>
-
-		<execute macro="Page#gotoCP">
-			<var name="portletName" value="Users and Organizations" />
-		</execute>
-
-		<execute macro="Organization#addCP">
-			<var name="orgName" value="${orgName}" />
-			<var name="orgType" value="${orgType}" />
-		</execute>
-
-		<execute macro="Page#gotoCP">
-			<var name="portletName" value="Users and Organizations" />
-		</execute>
-
-		<execute macro="Organization#addMemberCP">
-			<var name="orgName" value="${orgName}" />
-			<var name="userFirstName" value="${userFirstName}" />
-			<var name="userLastName" value="${userLastName}" />
-			<var name="userScreenName" value="${userScreenName}" />
-		</execute>
-
-		<execute macro="Page#gotoCP">
-			<var name="portletName" value="Users and Organizations" />
-		</execute>
-
-		<execute macro="Organization#removeMemberCP">
-			<var name="orgName" value="${orgName}" />
-			<var name="userFirstName" value="${userFirstName}" />
-			<var name="userScreenName" value="${userScreenName}" />
-		</execute>
-
-		<execute macro="Page#gotoCP">
-			<var name="portletName" value="Users and Organizations" />
-		</execute>
-
-		<execute macro="Organization#removeMemberCP">
-			<var name="orgName" value="${orgName}" />
-			<var name="userFirstName" value="${userFirstName}" />
-		</execute>
-	</command>
-</definition>
+@component-name = "portal-user-management-and-portal-configuration"
+definition {
+	property portal.release = "true";
+	property portal.upstream = "true";
+	property testray.main.component.name = "Administration";
+
+	setUp {
+		User.firstLoginPG();
+	}
+
+	tearDown {
+		Suborganization.tearDownCP();
+
+		Organization.tearDownCP();
+
+		User.tearDownCP();
+	}
+
+	@priority = "5"
+	test AddMember {
+		var orgName = "Organization Name";
+		var orgType = "Regular Organization";
+		var searchToken = "Organization";
+		var userEmailAddress = "userea@liferay.com";
+		var userFirstName = "userfn";
+		var userLastName = "userln";
+		var userScreenName = "usersn";
+
+		Page.gotoCP(portletName = "Users and Organizations");
+
+		User.addCP(
+			userEmailAddress = "${userEmailAddress}",
+			userFirstName = "${userFirstName}",
+			userLastName = "${userLastName}",
+			userScreenName = "${userScreenName}"
+		);
+
+		Page.gotoCP(portletName = "Users and Organizations");
+
+		Organization.addCP(orgName = "${orgName}", orgType = "${orgType}");
+
+		Page.gotoCP(portletName = "Users and Organizations");
+
+		Organization.addMemberCP(
+			orgName = "${orgName}",
+			userFirstName = "${userFirstName}",
+			userLastName = "${userLastName}",
+			userScreenName = "${userScreenName}"
+		);
+
+		Page.gotoCP(portletName = "Users and Organizations");
+
+		Organization.viewAssignMemberCP(
+			orgName = "${orgName}",
+			searchToken = "${searchToken}",
+			userFirstName = "${userFirstName}",
+			userLastName = "${userLastName}",
+			userScreenName = "${userScreenName}"
+		);
+	}
+
+	@priority = "5"
+	test AddOrganization {
+		var orgName = "Organization Name";
+		var orgType = "Regular Organization";
+		var searchToken = "Organization";
+
+		Page.gotoCP(portletName = "Users and Organizations");
+
+		Organization.addCP(orgName = "${orgName}", orgType = "${orgType}");
+
+		Page.gotoCP(portletName = "Users and Organizations");
+
+		Organization.viewCP(
+			orgName = "${orgName}",
+			orgType = "${orgType}",
+			searchToken = "${searchToken}"
+		);
+	}
+
+	@priority = "5"
+	test AddOrganizationTeam {
+		var orgName = "Organization Name";
+		var orgType = "Regular Organization";
+		var teamDescription = "Site Team Description";
+		var teamName = "Site Team Name";
+
+		Page.gotoCP(portletName = "Users and Organizations");
+
+		Organization.addCP(orgName = "${orgName}", orgType = "${orgType}");
+
+		Page.gotoCP(portletName = "Users and Organizations");
+
+		Organization.addSiteCP(orgName = "${orgName}");
+
+		Page.gotoCP(portletName = "Sites");
+
+		Team.addCP(
+			siteName = "Organization Name",
+			teamDescription = "${teamDescription}",
+			teamName = "${teamName}"
+		);
+	}
+
+	@priority = "5"
+	test AddSite {
+		var orgName = "Organization Name";
+		var orgType = "Regular Organization";
+		var siteMember = "Organization";
+		var siteName = "Organization Name";
+		var siteType = "Private";
+
+		Page.gotoCP(portletName = "Users and Organizations");
+
+		Organization.addCP(orgName = "${orgName}", orgType = "${orgType}");
+
+		Page.gotoCP(portletName = "Users and Organizations");
+
+		Organization.addSiteCP(orgName = "${orgName}");
+
+		Page.gotoCP(portletName = "Sites");
+
+		Site.viewCP(
+			siteMember = "${siteMember}",
+			siteName = "${siteName}",
+			siteType = "${siteType}"
+		);
+	}
+
+	@priority = "5"
+	test AddSuborganization {
+		var orgName = "Organization Name";
+		var orgType = "Regular Organization";
+		var suborgName = "Suborganization Name";
+		var suborgSearchName = "Suborganization";
+		var suborgType = "Regular Organization";
+
+		Page.gotoCP(portletName = "Users and Organizations");
+
+		Organization.addCP(orgName = "${orgName}", orgType = "${orgType}");
+
+		Page.gotoCP(portletName = "Users and Organizations");
+
+		Suborganization.addCP(
+			orgName = "${orgName}",
+			suborgName = "${suborgName}",
+			suborgType = "${suborgType}"
+		);
+
+		Page.gotoCP(portletName = "Users and Organizations");
+
+		Suborganization.viewCP(
+			orgName = "${orgName}",
+			orgType = "${orgType}",
+			suborgName = "${suborgName}",
+			suborgSearchName = "${suborgSearchName}",
+			suborgType = "${suborgType}"
+		);
+	}
+
+	@priority = "5"
+	test AddUser {
+		var userEmailAddress = "userea@liferay.com";
+		var userFirstName = "userfn";
+		var userLastName = "userln";
+		var userScreenName = "usersn";
+
+		Page.gotoCP(portletName = "Users and Organizations");
+
+		User.addCP(
+			userEmailAddress = "${userEmailAddress}",
+			userFirstName = "${userFirstName}",
+			userLastName = "${userLastName}",
+			userScreenName = "${userScreenName}"
+		);
+
+		Page.gotoCP(portletName = "Users and Organizations");
+
+		User.viewCP(
+			userEmailAddress = "${userEmailAddress}",
+			userFirstName = "${userFirstName}",
+			userLastName = "${userLastName}",
+			userScreenName = "${userScreenName}"
+		);
+	}
+
+	@priority = "5"
+	test DeleteOrganization {
+		var orgName = "Organization Name";
+		var orgType = "Regular Organization";
+
+		Page.gotoCP(portletName = "Users and Organizations");
+
+		Organization.addCP(orgName = "${orgName}", orgType = "${orgType}");
+
+		Page.gotoCP(portletName = "Users and Organizations");
+
+		Organization.deleteCP(orgName = "${orgName}");
+	}
+
+	@priority = "5"
+	test DeleteUser {
+		var userEmailAddress = "userea@liferay.com";
+		var userFirstName = "userfn";
+		var userLastName = "userln";
+		var userScreenName = "usersn";
+
+		Page.gotoCP(portletName = "Users and Organizations");
+
+		User.addCP(
+			userEmailAddress = "${userEmailAddress}",
+			userFirstName = "${userFirstName}",
+			userLastName = "${userLastName}",
+			userScreenName = "${userScreenName}"
+		);
+
+		Page.gotoCP(portletName = "Users and Organizations");
+
+		User.deactivateCP(userFirstName = "${userFirstName}");
+
+		Page.gotoCP(portletName = "Users and Organizations");
+
+		User.deleteCP(userFirstName = "${userFirstName}");
+	}
+
+	@priority = "5"
+	test RemoveMember {
+		var orgName = "Organization Name";
+		var orgType = "Regular Organization";
+		var userEmailAddress = "userea@liferay.com";
+		var userFirstName = "userfn";
+		var userLastName = "userln";
+		var userScreenName = "usersn";
+
+		Page.gotoCP(portletName = "Users and Organizations");
+
+		User.addCP(
+			userEmailAddress = "${userEmailAddress}",
+			userFirstName = "${userFirstName}",
+			userLastName = "${userLastName}",
+			userScreenName = "${userScreenName}"
+		);
+
+		Page.gotoCP(portletName = "Users and Organizations");
+
+		Organization.addCP(orgName = "${orgName}", orgType = "${orgType}");
+
+		Page.gotoCP(portletName = "Users and Organizations");
+
+		Organization.addMemberCP(
+			orgName = "${orgName}",
+			userFirstName = "${userFirstName}",
+			userLastName = "${userLastName}",
+			userScreenName = "${userScreenName}"
+		);
+
+		Page.gotoCP(portletName = "Users and Organizations");
+
+		Organization.removeMemberCP(
+			orgName = "${orgName}",
+			userFirstName = "${userFirstName}",
+			userScreenName = "${userScreenName}"
+		);
+
+		Page.gotoCP(portletName = "Users and Organizations");
+
+		Organization.removeMemberCP(
+			orgName = "${orgName}",
+			userFirstName = "${userFirstName}"
+		);
+	}
+}

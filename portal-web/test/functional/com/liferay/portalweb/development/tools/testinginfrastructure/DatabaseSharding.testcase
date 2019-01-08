@@ -1,11 +1,13 @@
-<definition component-name="portal-tools">
-	<property name="database.sharding" value="true" />
-	<property name="databases.size" value="2" />
-	<property name="portal.release" value="true" />
-	<property name="portal.upstream" value="true" />
-	<property name="testray.main.component.name" value="Tools" />
+@component-name = "portal-tools"
+definition {
+	property database.sharding = "true";
+	property databases.size = "2";
+	property portal.release = "true";
+	property portal.upstream = "true";
+	property testray.main.component.name = "Tools";
 
-	<command name="Smoke" priority="5">
-		<execute macro="User#firstLoginPG" />
-	</command>
-</definition>
+	@priority = "5"
+	test Smoke {
+		User.firstLoginPG();
+	}
+}

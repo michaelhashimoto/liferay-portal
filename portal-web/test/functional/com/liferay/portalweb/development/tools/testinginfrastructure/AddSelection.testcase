@@ -1,26 +1,31 @@
-<definition component-name="portal-tools">
-	<property name="portal.release" value="true" />
-	<property name="portal.upstream" value="true" />
-	<property name="testcase.url" value="http://www.w3schools.com/tags/tryit.asp?filename=tryhtml_select_multiple" />
-	<property name="testray.main.component.name" value="Tools" />
+@component-name = "portal-tools"
+definition {
+	property portal.release = "true";
+	property portal.upstream = "true";
+	property testcase.url = "http://www.w3schools.com/tags/tryit.asp?filename=tryhtml_select_multiple";
+	property testray.main.component.name = "Tools";
+	var commitMessage = "LPS-41076";
+	var ticketLocation = "https://issues.liferay.com/browse/LIFERAYQA-5866";
+	var ticketSummary = "LIFERAYQA-5866: Enable selecting multiple choices from a dropdown";
 
-	<var name="commitMessage" value="LPS-41076" />
-	<var name="ticketLocation" value="https://issues.liferay.com/browse/LIFERAYQA-5866" />
-	<var name="ticketSummary" value="LIFERAYQA-5866: Enable selecting multiple choices from a dropdown" />
+	@priority = "5"
+	test AddSelection {
+		echo("Test addSelection: select multiple items");
 
-	<command name="AddSelection" priority="5">
-		<echo message="Test addSelection: select multiple items" />
+		SelectFrame(locator1 = "//iframe[@id='iframeResult']");
 
-		<execute function="SelectFrame" locator1="//iframe[@id='iframeResult']" />
+		AssertElementPresent(locator1 = "//select");
 
-		<execute function="AssertElementPresent" locator1="//select" />
+		AddSelection(locator1 = "//select", value1 = "Volvo");
 
-		<execute function="AddSelection" locator1="//select" value1="Volvo" />
-		<execute function="AddSelection" locator1="//select" value1="Saab" />
-		<execute function="AddSelection" locator1="//select" value1="Audi" />
+		AddSelection(locator1 = "//select", value1 = "Saab");
 
-		<execute function="AssertSelectedLabel" locator1="//select" value1="Volvo" />
-		<execute function="AssertSelectedLabel" locator1="//select" value1="Saab" />
-		<execute function="AssertSelectedLabel" locator1="//select" value1="Audi" />
-	</command>
-</definition>
+		AddSelection(locator1 = "//select", value1 = "Audi");
+
+		AssertSelectedLabel(locator1 = "//select", value1 = "Volvo");
+
+		AssertSelectedLabel(locator1 = "//select", value1 = "Saab");
+
+		AssertSelectedLabel(locator1 = "//select", value1 = "Audi");
+	}
+}

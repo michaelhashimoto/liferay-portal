@@ -1,178 +1,100 @@
-<definition component-name="portal-tools">
-	<property name="portal.release" value="true" />
-	<property name="portal.upstream" value="true" />
-	<property name="testcase.url" value="http://the-internet.herokuapp.com/status_codes" />
-	<property name="testray.main.component.name" value="Tools" />
+@component-name = "portal-tools"
+definition {
+	property portal.release = "true";
+	property portal.upstream = "true";
+	property testcase.url = "http://the-internet.herokuapp.com/status_codes";
+	property testray.main.component.name = "Tools";
 
-	<command name="MacroElseClauseEvaluated" priority="5">
-		<execute macro="ElseIfLogger#switchConditional">
-			<var name="expected" value="Last clause" />
-			<var name="switch" value="5" />
-		</execute>
-	</command>
+	@priority = "5"
+	test MacroElseClauseEvaluated {
+		ElseIfLogger.switchConditional(expected = "Last clause", switch = "5");
+	}
 
-	<command name="MacroElseIfClauseEvaluated" priority="5">
-		<execute macro="ElseIfLogger#switchConditional">
-			<var name="expected" value="3rd clause" />
-			<var name="switch" value="3" />
-		</execute>
-	</command>
+	@priority = "5"
+	test MacroElseIfClauseEvaluated {
+		ElseIfLogger.switchConditional(expected = "3rd clause", switch = "3");
+	}
 
-	<command name="TestCaseElseClauseEvaluated" priority="5">
-		<var name="switch" value="5" />
+	@priority = "5"
+	test TestCaseElseClauseEvaluated {
+		var switch = "5";
 
-		<if>
-			<equals arg1="${switch}" arg2="1" />
-			<then>
-				<execute macro="TestUtils#fail">
-					<var name="message" value="1st clause is not true: FAIL" />
-				</execute>
-			</then>
-			<elseif>
-				<equals arg1="${switch}" arg2="2" />
-				<then>
-					<execute macro="TestUtils#fail">
-						<var name="message" value="2nd clause is not true: FAIL" />
-					</execute>
-				</then>
-			</elseif>
-			<elseif>
-				<equals arg1="${switch}" arg2="3" />
-				<then>
-					<execute macro="TestUtils#fail">
-						<var name="message" value="3rd clause is not true: FAIL" />
-					</execute>
-				</then>
-			</elseif>
-			<elseif>
-				<equals arg1="${switch}" arg2="4" />
-				<then>
-					<execute macro="TestUtils#fail">
-						<var name="message" value="4th clause is not true: FAIL" />
-					</execute>
-				</then>
-			</elseif>
-			<else>
-				<execute macro="TestUtils#pass">
-					<var name="message" value="Last clause is true: PASS" />
-				</execute>
-			</else>
-		</if>
-	</command>
+		if ("${switch}" == "1") {
+			TestUtils.fail(message = "1st clause is not true: FAIL");
+		}
+		else if ("${switch}" == "2") {
+			TestUtils.fail(message = "2nd clause is not true: FAIL");
+		}
+		else if ("${switch}" == "3") {
+			TestUtils.fail(message = "3rd clause is not true: FAIL");
+		}
+		else if ("${switch}" == "4") {
+			TestUtils.fail(message = "4th clause is not true: FAIL");
+		}
+		else {
+			TestUtils.pass(message = "Last clause is true: PASS");
+		}
+	}
 
-	<command name="TestCaseElseIfClauseEvaluated" priority="5">
-		<var name="switch" value="4" />
+	@priority = "5"
+	test TestCaseElseIfClauseEvaluated {
+		var switch = "4";
 
-		<if>
-			<equals arg1="${switch}" arg2="1" />
-			<then>
-				<execute macro="TestUtils#fail">
-					<var name="message" value="1st clause is not true: FAIL" />
-				</execute>
-			</then>
-			<elseif>
-				<equals arg1="${switch}" arg2="2" />
-				<then>
-					<execute macro="TestUtils#fail">
-						<var name="message" value="2nd clause is not true: FAIL" />
-					</execute>
-				</then>
-			</elseif>
-			<elseif>
-				<equals arg1="${switch}" arg2="3" />
-				<then>
-					<execute macro="TestUtils#fail">
-						<var name="message" value="3rd clause is not true: FAIL" />
-					</execute>
-				</then>
-			</elseif>
-			<elseif>
-				<equals arg1="${switch}" arg2="4" />
-				<then>
-					<execute macro="TestUtils#pass">
-						<var name="message" value="4th clause is true: PASS" />
-					</execute>
-				</then>
-			</elseif>
-			<else>
-				<execute macro="TestUtils#fail">
-					<var name="message" value="Last clause is not true: FAIL" />
-				</execute>
-			</else>
-		</if>
-	</command>
+		if ("${switch}" == "1") {
+			TestUtils.fail(message = "1st clause is not true: FAIL");
+		}
+		else if ("${switch}" == "2") {
+			TestUtils.fail(message = "2nd clause is not true: FAIL");
+		}
+		else if ("${switch}" == "3") {
+			TestUtils.fail(message = "3rd clause is not true: FAIL");
+		}
+		else if ("${switch}" == "4") {
+			TestUtils.pass(message = "4th clause is true: PASS");
+		}
+		else {
+			TestUtils.fail(message = "Last clause is not true: FAIL");
+		}
+	}
 
-	<command name="TestCaseElseIfConditions" priority="5">
-		<if>
-			<condition function="IsElementPresent" locator1="ElseIfLogger#FAKE_ELEMENT" />
-			<then>
-				<execute macro="TestUtils#fail">
-					<var name="message" value="1st clause is not true: FAIL" />
-				</execute>
-			</then>
-			<elseif>
-				<condition function="IsElementPresent" locator1="ElseIfLogger#REAL_ELEMENT" />
-				<then>
-					<execute macro="TestUtils#pass">
-						<var name="message" value="2nd clause is true: PASS" />
-					</execute>
-				</then>
-			</elseif>
-			<else>
-				<execute macro="TestUtils#fail">
-					<var name="message" value="Last clause is not true: FAIL" />
-				</execute>
-			</else>
-		</if>
-	</command>
+	@priority = "5"
+	test TestCaseElseIfConditions {
+		if (IsElementPresent(locator1 = "ElseIfLogger#FAKE_ELEMENT")) {
+			TestUtils.fail(message = "1st clause is not true: FAIL");
+		}
+		else if (IsElementPresent(locator1 = "ElseIfLogger#REAL_ELEMENT")) {
+			TestUtils.pass(message = "2nd clause is true: PASS");
+		}
+		else {
+			TestUtils.fail(message = "Last clause is not true: FAIL");
+		}
+	}
 
-	<command name="TestCaseElseIfContains" priority="5">
-		<if>
-			<contains string="abcdefg" substring="abcdefghij" />
-			<then>
-				<execute macro="TestUtils#fail">
-					<var name="message" value="1st clause is not true: FAIL" />
-				</execute>
-			</then>
-			<elseif>
-				<contains string="abcdefg" substring="abc" />
-				<then>
-					<execute macro="TestUtils#pass">
-						<var name="message" value="2nd clause is true: PASS" />
-					</execute>
-				</then>
-			</elseif>
-			<else>
-				<execute macro="TestUtils#fail">
-					<var name="message" value="Last clause is not true: FAIL" />
-				</execute>
-			</else>
-		</if>
-	</command>
+	@priority = "5"
+	test TestCaseElseIfContains {
+		if (contains("abcdefg", "abcdefghij")) {
+			TestUtils.fail(message = "1st clause is not true: FAIL");
+		}
+		else if (contains("abcdefg", "abc")) {
+			TestUtils.pass(message = "2nd clause is true: PASS");
+		}
+		else {
+			TestUtils.fail(message = "Last clause is not true: FAIL");
+		}
+	}
 
-	<command name="TestCaseElseIfIsset" priority="5">
-		<var name="switch" value="4" />
+	@priority = "5"
+	test TestCaseElseIfIsset {
+		var switch = "4";
 
-		<if>
-			<isset var="fake" />
-			<then>
-				<execute macro="TestUtils#fail">
-					<var name="message" value="1st clause is not true: FAIL" />
-				</execute>
-			</then>
-			<elseif>
-				<isset var="switch" />
-				<then>
-					<execute macro="TestUtils#pass">
-						<var name="message" value="2nd clause is true: PASS" />
-					</execute>
-				</then>
-			</elseif>
-			<else>
-				<execute macro="TestUtils#fail">
-					<var name="message" value="Last clause is not true: FAIL" />
-				</execute>
-			</else>
-		</if>
-	</command>
-</definition>
+		if (isSet(fake)) {
+			TestUtils.fail(message = "1st clause is not true: FAIL");
+		}
+		else if (isSet(switch)) {
+			TestUtils.pass(message = "2nd clause is true: PASS");
+		}
+		else {
+			TestUtils.fail(message = "Last clause is not true: FAIL");
+		}
+	}
+}

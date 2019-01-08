@@ -1,20 +1,22 @@
-<definition component-name="portal-smoke">
-	<property name="portal.release" value="true" />
-	<property name="portal.upstream" value="true" />
-	<property name="testray.main.component.name" value="Smoke" />
+@component-name = "portal-smoke"
+definition {
+	property portal.release = "true";
+	property portal.upstream = "true";
+	property testray.main.component.name = "Smoke";
 
-	<set-up>
-		<execute macro="User#firstLoginPG" />
-	</set-up>
+	setUp {
+		User.firstLoginPG();
+	}
 
-	<command name="Smoke" priority="5">
-		<property name="portal.acceptance" value="true" />
-		<property name="portal.smoke" value="true" />
+	@priority = "5"
+	test Smoke {
+		property portal.acceptance = "true";
+		property portal.smoke = "true";
 
-		<execute macro="Smoke#runSmoke" />
-	</command>
+		Smoke.runSmoke();
+	}
 
-	<tear-down>
-		<execute macro="Page#tearDownPG" />
-	</tear-down>
-</definition>
+	tearDown {
+		Page.tearDownPG();
+	}
+}

@@ -1,540 +1,596 @@
-<definition component-name="social-office-profile">
-	<property name="hook.plugins.includes" value="deploy-listener-hook,portal-compat-hook,so-activities-hook,so-hook" />
-	<property name="portlet.plugins.includes" value="chat-portlet,contacts-portlet,events-display-portlet,microblogs-portlet,private-messaging-portlet,so-announcements-portlet,so-configurations-portlet,so-portlet,tasks-portlet,wysiwyg-portlet" />
-	<property name="testray.main.component.name" value="Social Office EE" />
-	<property name="theme.plugins.includes" value="so-theme" />
-
-	<var name="adminEmailAddress" value="test@liferay.com" />
-	<var name="adminListName" value="Bloggs, Joe" />
-	<var name="adminName" value="Joe Bloggs" />
-	<var name="password" value="test" />
-	<var name="userEmailAddress" value="socialoffice01@liferay.com" />
-	<var name="userFirstName" value="Social01" />
-	<var name="userLastName" value="User01" />
-	<var name="userListName" value="User01, Social01" />
-	<var name="userMiddleName" value="Office01" />
-	<var name="userName" value="Social01 Office01 User01" />
-	<var name="userScreenName" value="socialoffice01" />
-
-	<set-up>
-		<execute macro="SOUser#firstLoginPG" />
-
-		<execute macro="SOUser#addUserWithSORole">
-			<var name="adminEmailAddress" value="test@liferay.com" />
-			<var name="password" value="test" />
-			<var name="userEmailAddress" value="${userEmailAddress}" />
-			<var name="userFirstName" value="${userFirstName}" />
-			<var name="userLastName" value="${userLastName}" />
-			<var name="userMiddleName" value="${userMiddleName}" />
-			<var name="userScreenName" value="${userScreenName}" />
-		</execute>
-
-		<execute macro="SOUser#logoutPG" />
-
-		<execute macro="SOUser#loginPG">
-			<var name="password" value="test" />
-			<var name="userEmailAddress" value="${userEmailAddress}" />
-		</execute>
-	</set-up>
-
-	<tear-down>
-		<execute macro="SOUser#tearDownCP" />
-
-		<execute macro="SOUserBar#tearDownNotifications" />
-	</tear-down>
-
-	<command name="AddAdditionalEmailAddress" priority="5">
-		<var name="userAdditionalEmailAddress" value="socialoffice02@liferay.com" />
-
-		<execute macro="SOProfile#addAdditionalEmailAddressProfile">
-			<var name="userAdditionalEmailAddress" value="${userAdditionalEmailAddress}" />
-		</execute>
-
-		<execute macro="SOUserBar#gotoProfile">
-			<var name="userName" value="${userName}" />
-		</execute>
-
-		<execute macro="SOProfile#viewAdditionalEmailAddressProfile">
-			<var name="userAdditionalEmailAddress" value="${userAdditionalEmailAddress}" />
-		</execute>
-	</command>
-
-	<command name="AddAddress" priority="5">
-		<var name="userAddressCity" value="Ray of Light" />
-		<var name="userAddressCountry" value="United States" />
-		<var name="userAddressPostalCode" value="91234" />
-		<var name="userAddressRegion" value="California" />
-		<var name="userAddressStreet1" value="123 Liferay Ln." />
-		<var name="userAddressType" value="Personal" />
-
-		<execute macro="SOProfile#addAddressProfile">
-			<var name="userAddressCity" value="${userAddressCity}" />
-			<var name="userAddressCountry" value="${userAddressCountry}" />
-			<var name="userAddressPostalCode" value="${userAddressPostalCode}" />
-			<var name="userAddressRegion" value="${userAddressRegion}" />
-			<var name="userAddressStreet1" value="${userAddressStreet1}" />
-			<var name="userAddressType" value="${userAddressType}" />
-		</execute>
-
-		<execute macro="SOUserBar#gotoProfile">
-			<var name="userName" value="${userName}" />
-		</execute>
-
-		<execute macro="SOProfile#viewAddressProfile">
-			<var name="userAddressCity" value="${userAddressCity}" />
-			<var name="userAddressCountry" value="${userAddressCountry}" />
-			<var name="userAddressPostalCode" value="${userAddressPostalCode}" />
-			<var name="userAddressRegion" value="${userAddressRegion}" />
-			<var name="userAddressStreet1" value="${userAddressStreet1}" />
-			<var name="userAddressType" value="${userAddressType}" />
-		</execute>
-	</command>
-
-	<command name="AddCCConnectionProfile" priority="5">
-		<var name="filterTypeCount" value="1" />
-		<var name="roleName" value="Social Office" />
-		<var name="userListName" value="${userListName}" />
-		<var name="userScreenName" value="socialoffice01" />
-
-		<execute macro="SOUser#logoutPG" />
-
-		<execute macro="SOUser#loginPG">
-			<var name="password" value="test" />
-			<var name="userEmailAddress" value="${adminEmailAddress}" />
-		</execute>
-
-		<execute macro="SOProfile#addConnection">
-			<var name="senderName" value="${adminName}" />
-		</execute>
-
-		<execute macro="SOUser#logoutPG" />
-
-		<execute macro="SOUser#loginPG">
-			<var name="password" value="test" />
-			<var name="userEmailAddress" value="${userEmailAddress}" />
-		</execute>
-
-		<execute macro="SOUserBar#dashboardPG">
-			<var name="userName" value="${userName}" />
-		</execute>
-
-		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_CONTACTS_CENTER" value1="Contacts Center" />
-
-		<execute macro="SOProfile#viewConnectionProfile">
-			<var name="filterType" value="Connections" />
-			<var name="filterTypeCount" value="${filterTypeCount}" />
-			<var name="userEmailAddress" value="${adminEmailAddress}" />
-			<var name="userListName" value="${adminListName}" />
-			<var name="userName" value="${adminName}" />
-		</execute>
-
-		<execute macro="SOUser#logoutPG" />
-
-		<execute macro="SOUser#loginPG">
-			<var name="password" value="test" />
-			<var name="userEmailAddress" value="${adminEmailAddress}" />
-		</execute>
-
-		<execute macro="SOUserBar#dashboardPG">
-			<var name="userName" value="${adminName}" />
-		</execute>
-
-		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_CONTACTS_CENTER" value1="Contacts Center" />
-
-		<execute macro="SOProfile#viewConnectionProfile">
-			<var name="filterType" value="Connections" />
-			<var name="filterTypeCount" value="${filterTypeCount}" />
-			<var name="userEmailAddress" value="${userEmailAddress}" />
-			<var name="userListName" value="${userListName}" />
-			<var name="userName" value="${userName}" />
-		</execute>
-	</command>
-
-	<command name="AddInstantMessenger" priority="5">
-		<var name="userInstantMessengerAIM" value="socialofficesn" />
-		<var name="userInstantMessengerICQ" value="socialofficesn" />
-		<var name="userInstantMessengerJabber" value="socialofficesn" />
-		<var name="userInstantMessengerSkype" value="socialofficesn" />
-		<var name="userInstantMessengerWindowsLiveMessenger" value="socialofficesn" />
-		<var name="userInstantMessengerYM" value="socialofficesn" />
-
-		<execute macro="SOProfile#addInstantMessengerProfile">
-			<var name="userInstantMessengerAIM" value="${userInstantMessengerAIM}" />
-			<var name="userInstantMessengerICQ" value="${userInstantMessengerICQ}" />
-			<var name="userInstantMessengerJabber" value="${userInstantMessengerJabber}" />
-			<var name="userInstantMessengerSkype" value="${userInstantMessengerSkype}" />
-			<var name="userInstantMessengerWindowsLiveMessenger" value="${userInstantMessengerWindowsLiveMessenger}" />
-			<var name="userInstantMessengerYM" value="${userInstantMessengerYM}" />
-		</execute>
-
-		<execute macro="SOUserBar#gotoProfile">
-			<var name="userName" value="${userName}" />
-		</execute>
-
-		<execute macro="SOProfile#viewInstantMessengerProfile">
-			<var name="userInstantMessengerAIM" value="${userInstantMessengerAIM}" />
-			<var name="userInstantMessengerICQ" value="${userInstantMessengerICQ}" />
-			<var name="userInstantMessengerJabber" value="${userInstantMessengerJabber}" />
-			<var name="userInstantMessengerSkype" value="${userInstantMessengerSkype}" />
-			<var name="userInstantMessengerWindowsLiveMessenger" value="${userInstantMessengerWindowsLiveMessenger}" />
-			<var name="userInstantMessengerYM" value="${userInstantMessengerYM}" />
-		</execute>
-	</command>
-
-	<command name="AddIntroduction" priority="5">
-		<var name="userIntroduction" value="Introduction Content" />
-
-		<execute macro="SOProfile#addIntroductionProfile">
-			<var name="userIntroduction" value="${userIntroduction}" />
-		</execute>
-
-		<execute macro="SOUserBar#gotoProfile">
-			<var name="userName" value="${userName}" />
-		</execute>
-
-		<execute macro="SOProfile#viewIntroductionProfile">
-			<var name="userIntroduction" value="${userIntroduction}" />
-		</execute>
-	</command>
-
-	<command name="AddPhoneNumbers" priority="5">
-		<var name="userPhoneNumberExtension" value="123" />
-		<var name="userPhoneNumberNumber" value="123-123-1234" />
-		<var name="userPhoneNumberType" value="Business" />
-
-		<execute macro="SOProfile#addPhoneNumbersProfile">
-			<var name="userPhoneNumberExtension" value="${userPhoneNumberExtension}" />
-			<var name="userPhoneNumberNumber" value="${userPhoneNumberNumber}" />
-			<var name="userPhoneNumberType" value="${userPhoneNumberType}" />
-		</execute>
-
-		<execute macro="SOUserBar#gotoProfile">
-			<var name="userName" value="${userName}" />
-		</execute>
-
-		<execute macro="SOProfile#viewPhoneNumbersProfile">
-			<var name="userPhoneNumberExtension" value="${userPhoneNumberExtension}" />
-			<var name="userPhoneNumberNumber" value="${userPhoneNumberNumber}" />
-			<var name="userPhoneNumberType" value="${userPhoneNumberType}" />
-		</execute>
-	</command>
-
-	<command name="AddProjects" priority="5">
-		<var name="userProjectDescription" value="Expertise Description" />
-		<var name="userProjectTitle" value="Expertise Title" />
-
-		<execute macro="SOProfile#addProjectsProfile">
-			<var name="userProjectDescription" value="${userProjectDescription}" />
-			<var name="userProjectTitle" value="${userProjectTitle}" />
-		</execute>
-
-		<execute macro="SOUserBar#gotoProfile">
-			<var name="userName" value="${userName}" />
-		</execute>
-
-		<execute macro="SOProfile#viewProjectsProfile">
-			<var name="userProjectDescription" value="${userProjectDescription}" />
-			<var name="userProjectTitle" value="${userProjectTitle}" />
-		</execute>
-	</command>
-
-	<command name="AddSMS" priority="5">
-		<var name="userSMS" value="socialoffice@liferay.com" />
-
-		<execute macro="SOProfile#addSMSProfile">
-			<var name="userSMS" value="${userSMS}" />
-		</execute>
-
-		<execute macro="SOUserBar#gotoProfile">
-			<var name="userName" value="${userName}" />
-		</execute>
-
-		<execute macro="SOProfile#viewSMSProfile">
-			<var name="userSMS" value="${userSMS}" />
-		</execute>
-	</command>
-
-	<command name="AddSocialNetwork" priority="5">
-		<var name="userSocialNetworkFacebook" value="socialoffice01" />
-		<var name="userSocialNetworkMyspace" value="socialoffice01" />
-		<var name="userSocialNetworkTwitter" value="socialoffice01" />
-
-		<execute macro="SOProfile#addSocialNetworkProfile">
-			<var name="userSocialNetworkFacebook" value="${userSocialNetworkFacebook}" />
-			<var name="userSocialNetworkMyspace" value="${userSocialNetworkMyspace}" />
-			<var name="userSocialNetworkTwitter" value="${userSocialNetworkTwitter}" />
-		</execute>
-
-		<execute macro="SOUserBar#gotoProfile">
-			<var name="userName" value="${userName}" />
-		</execute>
-
-		<execute macro="SOProfile#viewSocialNetworkProfile">
-			<var name="userSocialNetworkFacebook" value="${userSocialNetworkFacebook}" />
-			<var name="userSocialNetworkMyspace" value="${userSocialNetworkMyspace}" />
-			<var name="userSocialNetworkTwitter" value="${userSocialNetworkTwitter}" />
-		</execute>
-	</command>
-
-	<command name="AddTag" priority="5">
-		<var name="userTag" value="tag1" />
-
-		<execute macro="SOProfile#addTagProfile">
-			<var name="userTag" value="${userTag}" />
-		</execute>
-
-		<execute macro="SOUserBar#gotoProfile">
-			<var name="userName" value="${userName}" />
-		</execute>
-
-		<execute macro="SOProfile#viewTagProfile">
-			<var name="userTag" value="${userTag}" />
-		</execute>
-	</command>
-
-	<command name="AddWebsite" priority="5">
-		<var name="userWebsiteType" value="Personal" />
-		<var name="userWebsiteURL" value="http://www.socialoffice01.com" />
-
-		<execute macro="SOProfile#addWebsiteProfile">
-			<var name="userWebsiteType" value="${userWebsiteType}" />
-			<var name="userWebsiteURL" value="${userWebsiteURL}" />
-		</execute>
-
-		<execute macro="SOUserBar#gotoProfile">
-			<var name="userName" value="${userName}" />
-		</execute>
-
-		<execute macro="SOProfile#viewWebsiteProfile">
-			<var name="userWebsiteType" value="${userWebsiteType}" />
-			<var name="userWebsiteURL" value="${userWebsiteURL}" />
-		</execute>
-	</command>
-
-	<command name="DisconnectCCConnectionProfile" priority="5">
-		<var name="filterTypeCount" value="1" />
-		<var name="roleName" value="Social Office" />
-		<var name="userListName" value="${userListName}" />
-		<var name="userScreenName" value="socialoffice01" />
-
-		<execute macro="SOUser#logoutPG" />
-
-		<execute macro="SOUser#loginPG">
-			<var name="password" value="test" />
-			<var name="userEmailAddress" value="${adminEmailAddress}" />
-		</execute>
-
-		<execute macro="SOProfile#addConnection">
-			<var name="senderName" value="${adminName}" />
-		</execute>
-
-		<execute macro="SOUser#logoutPG" />
-
-		<execute macro="SOUser#loginPG">
-			<var name="password" value="test" />
-			<var name="userEmailAddress" value="${userEmailAddress}" />
-		</execute>
-
-		<execute macro="SOUserBar#dashboardPG">
-			<var name="userName" value="${userName}" />
-		</execute>
-
-		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_CONTACTS_CENTER" value1="Contacts Center" />
-
-		<execute macro="SOProfile#viewConnectionProfile">
-			<var name="filterType" value="Connections" />
-			<var name="filterTypeCount" value="${filterTypeCount}" />
-			<var name="userEmailAddress" value="${adminEmailAddress}" />
-			<var name="userListName" value="${adminListName}" />
-			<var name="userName" value="${adminName}" />
-		</execute>
-
-		<execute macro="SOUser#logoutPG" />
-
-		<execute macro="SOUser#loginPG">
-			<var name="password" value="test" />
-			<var name="userEmailAddress" value="${adminEmailAddress}" />
-		</execute>
-
-		<execute macro="SOUserBar#dashboardPG">
-			<var name="userName" value="${adminName}" />
-		</execute>
-
-		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_CONTACTS_CENTER" value1="Contacts Center" />
-
-		<execute macro="SOProfile#viewConnectionProfile">
-			<var name="filterType" value="Connections" />
-			<var name="filterTypeCount" value="${filterTypeCount}" />
-			<var name="userEmailAddress" value="${userEmailAddress}" />
-			<var name="userListName" value="${userListName}" />
-			<var name="userName" value="${userName}" />
-		</execute>
-
-		<execute macro="SOUserBar#dashboardPG">
-			<var name="userName" value="${adminName}" />
-		</execute>
-
-		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_CONTACTS_CENTER" value1="Contacts Center" />
-
-		<execute macro="SOProfile#disconnectFromConnection">
-			<var name="filterType" value="Connections" />
-			<var name="filterTypeCount" value="0" />
-			<var name="userEmailAddress" value="${userEmailAddress}" />
-			<var name="userListName" value="${userListName}" />
-			<var name="userName" value="${userName}" />
-		</execute>
-
-		<execute macro="SOUser#logoutPG" />
-
-		<execute macro="SOUser#loginPG">
-			<var name="password" value="test" />
-			<var name="userEmailAddress" value="${userEmailAddress}" />
-		</execute>
-
-		<execute macro="SOUserBar#dashboardPG">
-			<var name="userName" value="${userName}" />
-		</execute>
-
-		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_CONTACTS_CENTER" value1="Contacts Center" />
-
-		<execute macro="SOProfile#viewNoConnection">
-			<var name="adminEmailAddress" value="${adminEmailAddress}" />
-			<var name="adminListName" value="${adminListName}" />
-			<var name="adminName" value="${adminName}" />
-			<var name="filterTypeCount" value="0" />
-			<var name="userEmailAddress" value="${userEmailAddress}" />
-			<var name="userListName" value="${userListName}" />
-			<var name="userName" value="${userName}" />
-		</execute>
-	</command>
-
-	<command name="SearchConnectionProfile" priority="5">
-		<execute macro="SOUser#logoutPG" />
-
-		<execute macro="SOUser#loginPG">
-			<var name="password" value="test" />
-			<var name="userEmailAddress" value="${adminEmailAddress}" />
-		</execute>
-
-		<execute macro="SOUserBar#gotoProfile">
-			<var name="userName" value="${adminName}" />
-		</execute>
-
-		<execute function="AssertTextEquals" locator1="SOProfile#CONTACTS_INFO_MESSAGE" value1="${adminName} has no contacts." />
-		<execute function="AssertTextNotPresent" value1="${userName}" />
-
-		<execute function="Click#textClickAt" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
-
-		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_CONTACTS_CENTER" value1="Contacts Center" />
-
-		<execute function="Type" locator1="SOContactscenter#CONTACTS_LIST_SEARCH" value1="${userFirstName}" />
-		<execute function="Select" locator1="SOContactscenter#CONTACTS_LIST_FILTER" value1="Connections" />
-		<execute function="AssertTextEquals" locator1="SOContactscenter#CONTACTS_LIST_EMPTY" value1="There are no results." />
-
-		<execute macro="SOProfile#requestToConnect">
-			<var name="userEmailAddress" value="${userEmailAddress}" />
-			<var name="userListName" value="${userListName}" />
-			<var name="userName" value="${userName}" />
-			<var name="userScreenName" value="${userScreenName}" />
-		</execute>
-
-		<execute macro="SOUser#logoutPG" />
-
-		<execute macro="SOUser#loginPG">
-			<var name="password" value="test" />
-			<var name="userEmailAddress" value="${userEmailAddress}" />
-		</execute>
-
-		<execute macro="SOContactsCenter#ignoreRequestToConnect">
-			<var name="senderName" value="${adminName}" />
-			<var name="userName" value="${userName}" />
-		</execute>
-
-		<execute macro="SOUser#logoutPG" />
-
-		<execute macro="SOUser#loginPG">
-			<var name="password" value="test" />
-			<var name="userEmailAddress" value="${adminEmailAddress}" />
-		</execute>
-
-		<execute macro="SOUserBar#gotoProfile">
-			<var name="userName" value="${adminName}" />
-		</execute>
-
-		<execute function="AssertTextEquals" locator1="SOProfile#CONTACTS_INFO_MESSAGE" value1="${adminName} has no contacts." />
-		<execute function="AssertTextNotPresent" value1="${userName}" />
-
-		<execute function="Click#textClickAt" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
-
-		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_CONTACTS_CENTER" value1="Contacts Center" />
-
-		<execute function="Type" locator1="SOContactscenter#CONTACTS_LIST_SEARCH" value1="${userFirstName}" />
-		<execute function="Select" locator1="SOContactscenter#CONTACTS_LIST_FILTER" value1="Connections" />
-		<execute function="AssertTextEquals" locator1="SOContactscenter#CONTACTS_LIST_EMPTY" value1="There are no results." />
-
-		<execute function="Click#textClickAt" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
-
-		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_CONTACTS_CENTER" value1="Contacts Center" />
-
-		<execute function="Type" locator1="SOContactscenter#CONTACTS_LIST_SEARCH" value1="${userFirstName}" />
-		<execute function="Select" locator1="SOContactscenter#CONTACTS_LIST_FILTER" value1="All" />
-		<execute function="AssertTextEquals" locator1="SOContactscenter#CONTACTS_LIST_NAME" value1="${userListName}" />
-		<execute function="AssertTextEquals" locator1="SOContactscenter#CONTACTS_LIST_EMAIL" value1="${userEmailAddress}" />
-		<execute function="AssertTextEquals" locator1="SOContactscenter#CONNECTIONS_LINK" value1="You have 0 connections." />
-		<execute function="Pause" value1="1000" />
-		<execute function="Click" locator1="SOContactscenter#CONTACTS_LIST_NAME" value1="${userListName}" />
-		<execute function="AssertTextEquals" locator1="SOContactscenter#USER_DETAILS_NAME" value1="${userName}" />
-		<execute function="AssertTextEquals" locator1="SOContactscenter#USER_DETAILS_EMAIL" value1="${userEmailAddress}" />
-		<execute function="AssertTextEquals" locator1="SOContactscenter#CONNECT_BUTTON" value1="Connect" />
-		<execute function="AssertElementNotPresent#assertNotVisible" locator1="SOContactscenter#DISCONNECT_BUTTON" />
-
-		<execute macro="SOProfile#requestToConnect">
-			<var name="userEmailAddress" value="${userEmailAddress}" />
-			<var name="userListName" value="${userListName}" />
-			<var name="userName" value="${userName}" />
-			<var name="userScreenName" value="${userScreenName}" />
-		</execute>
-
-		<execute macro="SOUser#logoutPG" />
-
-		<execute macro="SOUser#loginPG">
-			<var name="password" value="test" />
-			<var name="userEmailAddress" value="${userEmailAddress}" />
-		</execute>
-
-		<execute macro="SOContactsCenter#confirmRequestToConnect">
-			<var name="senderName" value="${adminName}" />
-			<var name="userName" value="${userName}" />
-		</execute>
-
-		<execute macro="SOUser#logoutPG" />
-
-		<execute macro="SOUser#loginPG">
-			<var name="password" value="test" />
-			<var name="userEmailAddress" value="${adminEmailAddress}" />
-		</execute>
-
-		<execute macro="SOUserBar#gotoProfile">
-			<var name="userName" value="${adminName}" />
-		</execute>
-
-		<execute function="AssertTextEquals" locator1="SOProfile#CONTACTS_NAME" value1="${userName}" />
-		<execute function="AssertTextNotPresent" value1="${adminName} has no contacts." />
-
-		<execute function="Click#textClickAt" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
-
-		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_CONTACTS_CENTER" value1="Contacts Center" />
-
-		<execute function="Type" locator1="SOContactscenter#CONTACTS_LIST_SEARCH" value1="${userFirstName}" />
-		<execute function="Select" locator1="SOContactscenter#CONTACTS_LIST_FILTER" value1="Connections" />
-		<execute function="AssertTextEquals" locator1="SOContactscenter#CONTACTS_LIST_NAME" value1="${userListName}" />
-		<execute function="AssertTextEquals" locator1="SOContactscenter#CONTACTS_LIST_EMAIL" value1="${userEmailAddress}" />
-		<execute function="AssertTextEquals" locator1="SOContactscenter#CONNECTIONS_LINK" value1="You have 1 connections." />
-		<execute function="Pause" value1="1000" />
-		<execute function="Click" locator1="SOContactscenter#CONTACTS_LIST_NAME" value1="${userListName}" />
-		<execute function="AssertTextEquals" locator1="SOContactscenter#USER_DETAILS_NAME" value1="${userName}" />
-		<execute function="AssertTextEquals" locator1="SOContactscenter#USER_DETAILS_EMAIL" value1="${userEmailAddress}" />
-		<execute function="AssertTextEquals" locator1="SOContactscenter#DISCONNECT_BUTTON" value1="Disconnect" />
-		<execute function="AssertElementNotPresent#assertNotVisible" locator1="SOContactscenter#CONNECT_BUTTON" />
-	</command>
-</definition>
+@component-name = "social-office-profile"
+definition {
+	property hook.plugins.includes = "deploy-listener-hook,portal-compat-hook,so-activities-hook,so-hook";
+	property portlet.plugins.includes = "chat-portlet,contacts-portlet,events-display-portlet,microblogs-portlet,private-messaging-portlet,so-announcements-portlet,so-configurations-portlet,so-portlet,tasks-portlet,wysiwyg-portlet";
+	property testray.main.component.name = "Social Office EE";
+	property theme.plugins.includes = "so-theme";
+	var adminEmailAddress = "test@liferay.com";
+	var adminListName = "Bloggs, Joe";
+	var adminName = "Joe Bloggs";
+	var password = "test";
+	var userEmailAddress = "socialoffice01@liferay.com";
+	var userFirstName = "Social01";
+	var userLastName = "User01";
+	var userListName = "User01, Social01";
+	var userMiddleName = "Office01";
+	var userName = "Social01 Office01 User01";
+	var userScreenName = "socialoffice01";
+
+	setUp {
+		SOUser.firstLoginPG();
+
+		SOUser.addUserWithSORole(
+			adminEmailAddress = "test@liferay.com",
+			password = "test",
+			userEmailAddress = "${userEmailAddress}",
+			userFirstName = "${userFirstName}",
+			userLastName = "${userLastName}",
+			userMiddleName = "${userMiddleName}",
+			userScreenName = "${userScreenName}"
+		);
+
+		SOUser.logoutPG();
+
+		SOUser.loginPG(password = "test", userEmailAddress = "${userEmailAddress}");
+	}
+
+	tearDown {
+		SOUser.tearDownCP();
+
+		SOUserBar.tearDownNotifications();
+	}
+
+	@priority = "5"
+	test AddAdditionalEmailAddress {
+		var userAdditionalEmailAddress = "socialoffice02@liferay.com";
+
+		SOProfile.addAdditionalEmailAddressProfile(
+			userAdditionalEmailAddress = "${userAdditionalEmailAddress}"
+		);
+
+		SOUserBar.gotoProfile(userName = "${userName}");
+
+		SOProfile.viewAdditionalEmailAddressProfile(
+			userAdditionalEmailAddress = "${userAdditionalEmailAddress}"
+		);
+	}
+
+	@priority = "5"
+	test AddAddress {
+		var userAddressCity = "Ray of Light";
+		var userAddressCountry = "United States";
+		var userAddressPostalCode = "91234";
+		var userAddressRegion = "California";
+		var userAddressStreet1 = "123 Liferay Ln.";
+		var userAddressType = "Personal";
+
+		SOProfile.addAddressProfile(
+			userAddressCity = "${userAddressCity}",
+			userAddressCountry = "${userAddressCountry}",
+			userAddressPostalCode = "${userAddressPostalCode}",
+			userAddressRegion = "${userAddressRegion}",
+			userAddressStreet1 = "${userAddressStreet1}",
+			userAddressType = "${userAddressType}"
+		);
+
+		SOUserBar.gotoProfile(userName = "${userName}");
+
+		SOProfile.viewAddressProfile(
+			userAddressCity = "${userAddressCity}",
+			userAddressCountry = "${userAddressCountry}",
+			userAddressPostalCode = "${userAddressPostalCode}",
+			userAddressRegion = "${userAddressRegion}",
+			userAddressStreet1 = "${userAddressStreet1}",
+			userAddressType = "${userAddressType}"
+		);
+	}
+
+	@priority = "5"
+	test AddCCConnectionProfile {
+		var filterTypeCount = "1";
+		var roleName = "Social Office";
+		var userListName = "${userListName}";
+		var userScreenName = "socialoffice01";
+
+		SOUser.logoutPG();
+
+		SOUser.loginPG(password = "test", userEmailAddress = "${adminEmailAddress}");
+
+		SOProfile.addConnection(senderName = "${adminName}");
+
+		SOUser.logoutPG();
+
+		SOUser.loginPG(password = "test", userEmailAddress = "${userEmailAddress}");
+
+		SOUserBar.dashboardPG(userName = "${userName}");
+
+		Click.textClickAt(
+			locator1 = "SODashboard#NAVIGATION_CONTACTS_CENTER",
+			value1 = "Contacts Center"
+		);
+
+		SOProfile.viewConnectionProfile(
+			filterType = "Connections",
+			filterTypeCount = "${filterTypeCount}",
+			userEmailAddress = "${adminEmailAddress}",
+			userListName = "${adminListName}",
+			userName = "${adminName}"
+		);
+
+		SOUser.logoutPG();
+
+		SOUser.loginPG(password = "test", userEmailAddress = "${adminEmailAddress}");
+
+		SOUserBar.dashboardPG(userName = "${adminName}");
+
+		Click.textClickAt(
+			locator1 = "SODashboard#NAVIGATION_CONTACTS_CENTER",
+			value1 = "Contacts Center"
+		);
+
+		SOProfile.viewConnectionProfile(
+			filterType = "Connections",
+			filterTypeCount = "${filterTypeCount}",
+			userEmailAddress = "${userEmailAddress}",
+			userListName = "${userListName}",
+			userName = "${userName}"
+		);
+	}
+
+	@priority = "5"
+	test AddInstantMessenger {
+		var userInstantMessengerAIM = "socialofficesn";
+		var userInstantMessengerICQ = "socialofficesn";
+		var userInstantMessengerJabber = "socialofficesn";
+		var userInstantMessengerSkype = "socialofficesn";
+		var userInstantMessengerWindowsLiveMessenger = "socialofficesn";
+		var userInstantMessengerYM = "socialofficesn";
+
+		SOProfile.addInstantMessengerProfile(
+			userInstantMessengerAIM = "${userInstantMessengerAIM}",
+			userInstantMessengerICQ = "${userInstantMessengerICQ}",
+			userInstantMessengerJabber = "${userInstantMessengerJabber}",
+			userInstantMessengerSkype = "${userInstantMessengerSkype}",
+			userInstantMessengerWindowsLiveMessenger = "${userInstantMessengerWindowsLiveMessenger}",
+			userInstantMessengerYM = "${userInstantMessengerYM}"
+		);
+
+		SOUserBar.gotoProfile(userName = "${userName}");
+
+		SOProfile.viewInstantMessengerProfile(
+			userInstantMessengerAIM = "${userInstantMessengerAIM}",
+			userInstantMessengerICQ = "${userInstantMessengerICQ}",
+			userInstantMessengerJabber = "${userInstantMessengerJabber}",
+			userInstantMessengerSkype = "${userInstantMessengerSkype}",
+			userInstantMessengerWindowsLiveMessenger = "${userInstantMessengerWindowsLiveMessenger}",
+			userInstantMessengerYM = "${userInstantMessengerYM}"
+		);
+	}
+
+	@priority = "5"
+	test AddIntroduction {
+		var userIntroduction = "Introduction Content";
+
+		SOProfile.addIntroductionProfile(userIntroduction = "${userIntroduction}");
+
+		SOUserBar.gotoProfile(userName = "${userName}");
+
+		SOProfile.viewIntroductionProfile(userIntroduction = "${userIntroduction}");
+	}
+
+	@priority = "5"
+	test AddPhoneNumbers {
+		var userPhoneNumberExtension = "123";
+		var userPhoneNumberNumber = "123-123-1234";
+		var userPhoneNumberType = "Business";
+
+		SOProfile.addPhoneNumbersProfile(
+			userPhoneNumberExtension = "${userPhoneNumberExtension}",
+			userPhoneNumberNumber = "${userPhoneNumberNumber}",
+			userPhoneNumberType = "${userPhoneNumberType}"
+		);
+
+		SOUserBar.gotoProfile(userName = "${userName}");
+
+		SOProfile.viewPhoneNumbersProfile(
+			userPhoneNumberExtension = "${userPhoneNumberExtension}",
+			userPhoneNumberNumber = "${userPhoneNumberNumber}",
+			userPhoneNumberType = "${userPhoneNumberType}"
+		);
+	}
+
+	@priority = "5"
+	test AddProjects {
+		var userProjectDescription = "Expertise Description";
+		var userProjectTitle = "Expertise Title";
+
+		SOProfile.addProjectsProfile(
+			userProjectDescription = "${userProjectDescription}",
+			userProjectTitle = "${userProjectTitle}"
+		);
+
+		SOUserBar.gotoProfile(userName = "${userName}");
+
+		SOProfile.viewProjectsProfile(
+			userProjectDescription = "${userProjectDescription}",
+			userProjectTitle = "${userProjectTitle}"
+		);
+	}
+
+	@priority = "5"
+	test AddSMS {
+		var userSMS = "socialoffice@liferay.com";
+
+		SOProfile.addSMSProfile(userSMS = "${userSMS}");
+
+		SOUserBar.gotoProfile(userName = "${userName}");
+
+		SOProfile.viewSMSProfile(userSMS = "${userSMS}");
+	}
+
+	@priority = "5"
+	test AddSocialNetwork {
+		var userSocialNetworkFacebook = "socialoffice01";
+		var userSocialNetworkMyspace = "socialoffice01";
+		var userSocialNetworkTwitter = "socialoffice01";
+
+		SOProfile.addSocialNetworkProfile(
+			userSocialNetworkFacebook = "${userSocialNetworkFacebook}",
+			userSocialNetworkMyspace = "${userSocialNetworkMyspace}",
+			userSocialNetworkTwitter = "${userSocialNetworkTwitter}"
+		);
+
+		SOUserBar.gotoProfile(userName = "${userName}");
+
+		SOProfile.viewSocialNetworkProfile(
+			userSocialNetworkFacebook = "${userSocialNetworkFacebook}",
+			userSocialNetworkMyspace = "${userSocialNetworkMyspace}",
+			userSocialNetworkTwitter = "${userSocialNetworkTwitter}"
+		);
+	}
+
+	@priority = "5"
+	test AddTag {
+		var userTag = "tag1";
+
+		SOProfile.addTagProfile(userTag = "${userTag}");
+
+		SOUserBar.gotoProfile(userName = "${userName}");
+
+		SOProfile.viewTagProfile(userTag = "${userTag}");
+	}
+
+	@priority = "5"
+	test AddWebsite {
+		var userWebsiteType = "Personal";
+		var userWebsiteURL = "http://www.socialoffice01.com";
+
+		SOProfile.addWebsiteProfile(
+			userWebsiteType = "${userWebsiteType}",
+			userWebsiteURL = "${userWebsiteURL}"
+		);
+
+		SOUserBar.gotoProfile(userName = "${userName}");
+
+		SOProfile.viewWebsiteProfile(
+			userWebsiteType = "${userWebsiteType}",
+			userWebsiteURL = "${userWebsiteURL}"
+		);
+	}
+
+	@priority = "5"
+	test DisconnectCCConnectionProfile {
+		var filterTypeCount = "1";
+		var roleName = "Social Office";
+		var userListName = "${userListName}";
+		var userScreenName = "socialoffice01";
+
+		SOUser.logoutPG();
+
+		SOUser.loginPG(password = "test", userEmailAddress = "${adminEmailAddress}");
+
+		SOProfile.addConnection(senderName = "${adminName}");
+
+		SOUser.logoutPG();
+
+		SOUser.loginPG(password = "test", userEmailAddress = "${userEmailAddress}");
+
+		SOUserBar.dashboardPG(userName = "${userName}");
+
+		Click.textClickAt(
+			locator1 = "SODashboard#NAVIGATION_CONTACTS_CENTER",
+			value1 = "Contacts Center"
+		);
+
+		SOProfile.viewConnectionProfile(
+			filterType = "Connections",
+			filterTypeCount = "${filterTypeCount}",
+			userEmailAddress = "${adminEmailAddress}",
+			userListName = "${adminListName}",
+			userName = "${adminName}"
+		);
+
+		SOUser.logoutPG();
+
+		SOUser.loginPG(password = "test", userEmailAddress = "${adminEmailAddress}");
+
+		SOUserBar.dashboardPG(userName = "${adminName}");
+
+		Click.textClickAt(
+			locator1 = "SODashboard#NAVIGATION_CONTACTS_CENTER",
+			value1 = "Contacts Center"
+		);
+
+		SOProfile.viewConnectionProfile(
+			filterType = "Connections",
+			filterTypeCount = "${filterTypeCount}",
+			userEmailAddress = "${userEmailAddress}",
+			userListName = "${userListName}",
+			userName = "${userName}"
+		);
+
+		SOUserBar.dashboardPG(userName = "${adminName}");
+
+		Click.textClickAt(
+			locator1 = "SODashboard#NAVIGATION_CONTACTS_CENTER",
+			value1 = "Contacts Center"
+		);
+
+		SOProfile.disconnectFromConnection(
+			filterType = "Connections",
+			filterTypeCount = "0",
+			userEmailAddress = "${userEmailAddress}",
+			userListName = "${userListName}",
+			userName = "${userName}"
+		);
+
+		SOUser.logoutPG();
+
+		SOUser.loginPG(password = "test", userEmailAddress = "${userEmailAddress}");
+
+		SOUserBar.dashboardPG(userName = "${userName}");
+
+		Click.textClickAt(
+			locator1 = "SODashboard#NAVIGATION_CONTACTS_CENTER",
+			value1 = "Contacts Center"
+		);
+
+		SOProfile.viewNoConnection(
+			adminEmailAddress = "${adminEmailAddress}",
+			adminListName = "${adminListName}",
+			adminName = "${adminName}",
+			filterTypeCount = "0",
+			userEmailAddress = "${userEmailAddress}",
+			userListName = "${userListName}",
+			userName = "${userName}"
+		);
+	}
+
+	@priority = "5"
+	test SearchConnectionProfile {
+		SOUser.logoutPG();
+
+		SOUser.loginPG(password = "test", userEmailAddress = "${adminEmailAddress}");
+
+		SOUserBar.gotoProfile(userName = "${adminName}");
+
+		AssertTextEquals(
+			locator1 = "SOProfile#CONTACTS_INFO_MESSAGE",
+			value1 = "${adminName} has no contacts."
+		);
+
+		AssertTextNotPresent(value1 = "${userName}");
+
+		Click.textClickAt(locator1 = "SOUserBar#DASHBOARD", value1 = "Dashboard");
+
+		Click.textClickAt(
+			locator1 = "SODashboard#NAVIGATION_CONTACTS_CENTER",
+			value1 = "Contacts Center"
+		);
+
+		Type(
+			locator1 = "SOContactscenter#CONTACTS_LIST_SEARCH",
+			value1 = "${userFirstName}"
+		);
+
+		Select(
+			locator1 = "SOContactscenter#CONTACTS_LIST_FILTER",
+			value1 = "Connections"
+		);
+
+		AssertTextEquals(
+			locator1 = "SOContactscenter#CONTACTS_LIST_EMPTY",
+			value1 = "There are no results."
+		);
+
+		SOProfile.requestToConnect(
+			userEmailAddress = "${userEmailAddress}",
+			userListName = "${userListName}",
+			userName = "${userName}",
+			userScreenName = "${userScreenName}"
+		);
+
+		SOUser.logoutPG();
+
+		SOUser.loginPG(password = "test", userEmailAddress = "${userEmailAddress}");
+
+		SOContactsCenter.ignoreRequestToConnect(
+			senderName = "${adminName}",
+			userName = "${userName}"
+		);
+
+		SOUser.logoutPG();
+
+		SOUser.loginPG(password = "test", userEmailAddress = "${adminEmailAddress}");
+
+		SOUserBar.gotoProfile(userName = "${adminName}");
+
+		AssertTextEquals(
+			locator1 = "SOProfile#CONTACTS_INFO_MESSAGE",
+			value1 = "${adminName} has no contacts."
+		);
+
+		AssertTextNotPresent(value1 = "${userName}");
+
+		Click.textClickAt(locator1 = "SOUserBar#DASHBOARD", value1 = "Dashboard");
+
+		Click.textClickAt(
+			locator1 = "SODashboard#NAVIGATION_CONTACTS_CENTER",
+			value1 = "Contacts Center"
+		);
+
+		Type(
+			locator1 = "SOContactscenter#CONTACTS_LIST_SEARCH",
+			value1 = "${userFirstName}"
+		);
+
+		Select(
+			locator1 = "SOContactscenter#CONTACTS_LIST_FILTER",
+			value1 = "Connections"
+		);
+
+		AssertTextEquals(
+			locator1 = "SOContactscenter#CONTACTS_LIST_EMPTY",
+			value1 = "There are no results."
+		);
+
+		Click.textClickAt(locator1 = "SOUserBar#DASHBOARD", value1 = "Dashboard");
+
+		Click.textClickAt(
+			locator1 = "SODashboard#NAVIGATION_CONTACTS_CENTER",
+			value1 = "Contacts Center"
+		);
+
+		Type(
+			locator1 = "SOContactscenter#CONTACTS_LIST_SEARCH",
+			value1 = "${userFirstName}"
+		);
+
+		Select(locator1 = "SOContactscenter#CONTACTS_LIST_FILTER", value1 = "All");
+
+		AssertTextEquals(
+			locator1 = "SOContactscenter#CONTACTS_LIST_NAME",
+			value1 = "${userListName}"
+		);
+
+		AssertTextEquals(
+			locator1 = "SOContactscenter#CONTACTS_LIST_EMAIL",
+			value1 = "${userEmailAddress}"
+		);
+
+		AssertTextEquals(
+			locator1 = "SOContactscenter#CONNECTIONS_LINK",
+			value1 = "You have 0 connections."
+		);
+
+		Pause(value1 = "1000");
+
+		Click(
+			locator1 = "SOContactscenter#CONTACTS_LIST_NAME",
+			value1 = "${userListName}"
+		);
+
+		AssertTextEquals(
+			locator1 = "SOContactscenter#USER_DETAILS_NAME",
+			value1 = "${userName}"
+		);
+
+		AssertTextEquals(
+			locator1 = "SOContactscenter#USER_DETAILS_EMAIL",
+			value1 = "${userEmailAddress}"
+		);
+
+		AssertTextEquals(
+			locator1 = "SOContactscenter#CONNECT_BUTTON",
+			value1 = "Connect"
+		);
+
+		AssertElementNotPresent.assertNotVisible(
+			locator1 = "SOContactscenter#DISCONNECT_BUTTON"
+		);
+
+		SOProfile.requestToConnect(
+			userEmailAddress = "${userEmailAddress}",
+			userListName = "${userListName}",
+			userName = "${userName}",
+			userScreenName = "${userScreenName}"
+		);
+
+		SOUser.logoutPG();
+
+		SOUser.loginPG(password = "test", userEmailAddress = "${userEmailAddress}");
+
+		SOContactsCenter.confirmRequestToConnect(
+			senderName = "${adminName}",
+			userName = "${userName}"
+		);
+
+		SOUser.logoutPG();
+
+		SOUser.loginPG(password = "test", userEmailAddress = "${adminEmailAddress}");
+
+		SOUserBar.gotoProfile(userName = "${adminName}");
+
+		AssertTextEquals(locator1 = "SOProfile#CONTACTS_NAME", value1 = "${userName}");
+
+		AssertTextNotPresent(value1 = "${adminName} has no contacts.");
+
+		Click.textClickAt(locator1 = "SOUserBar#DASHBOARD", value1 = "Dashboard");
+
+		Click.textClickAt(
+			locator1 = "SODashboard#NAVIGATION_CONTACTS_CENTER",
+			value1 = "Contacts Center"
+		);
+
+		Type(
+			locator1 = "SOContactscenter#CONTACTS_LIST_SEARCH",
+			value1 = "${userFirstName}"
+		);
+
+		Select(
+			locator1 = "SOContactscenter#CONTACTS_LIST_FILTER",
+			value1 = "Connections"
+		);
+
+		AssertTextEquals(
+			locator1 = "SOContactscenter#CONTACTS_LIST_NAME",
+			value1 = "${userListName}"
+		);
+
+		AssertTextEquals(
+			locator1 = "SOContactscenter#CONTACTS_LIST_EMAIL",
+			value1 = "${userEmailAddress}"
+		);
+
+		AssertTextEquals(
+			locator1 = "SOContactscenter#CONNECTIONS_LINK",
+			value1 = "You have 1 connections."
+		);
+
+		Pause(value1 = "1000");
+
+		Click(
+			locator1 = "SOContactscenter#CONTACTS_LIST_NAME",
+			value1 = "${userListName}"
+		);
+
+		AssertTextEquals(
+			locator1 = "SOContactscenter#USER_DETAILS_NAME",
+			value1 = "${userName}"
+		);
+
+		AssertTextEquals(
+			locator1 = "SOContactscenter#USER_DETAILS_EMAIL",
+			value1 = "${userEmailAddress}"
+		);
+
+		AssertTextEquals(
+			locator1 = "SOContactscenter#DISCONNECT_BUTTON",
+			value1 = "Disconnect"
+		);
+
+		AssertElementNotPresent.assertNotVisible(
+			locator1 = "SOContactscenter#CONNECT_BUTTON"
+		);
+	}
+}

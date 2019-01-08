@@ -1,181 +1,148 @@
-<definition component-name="portal-document-management">
-	<property name="portal.release" value="true" />
-	<property name="portal.upstream" value="true" />
-	<property name="testray.main.component.name" value="Documents Management" />
+@component-name = "portal-document-management"
+definition {
+	property portal.release = "true";
+	property portal.upstream = "true";
+	property testray.main.component.name = "Documents Management";
+	var pageName = "Documents and Media Display Page";
+	var portletName = "Documents and Media Display";
 
-	<var name="pageName" value="Documents and Media Display Page" />
-	<var name="portletName" value="Documents and Media Display" />
+	setUp {
+		User.firstLoginPG();
 
-	<set-up>
-		<execute macro="User#firstLoginPG" />
+		Page.addPG(pageName = "${pageName}");
 
-		<execute macro="Page#addPG">
-			<var name="pageName" value="${pageName}" />
-		</execute>
+		Portlet.addPG(pageName = "${pageName}", portletName = "${portletName}");
 
-		<execute macro="Portlet#addPG">
-			<var name="pageName" value="${pageName}" />
-			<var name="portletName" value="${portletName}" />
-		</execute>
+		DMDPortlet.configureShowAllPG(pageName = "${pageName}");
+	}
 
-		<execute macro="DMDPortlet#configureShowAllPG">
-			<var name="pageName" value="${pageName}" />
-		</execute>
-	</set-up>
+	@priority = "5"
+	test AddDocument {
+		var dmdDocumentFile = "Document_1.txt";
+		var dmdDocumentSize = "0.3k";
+		var dmdDocumentTitle = "DM Document Title";
 
-	<command name="AddDocument" priority="5">
-		<var name="dmdDocumentFile" value="Document_1.txt" />
-		<var name="dmdDocumentSize" value="0.3k" />
-		<var name="dmdDocumentTitle" value="DM Document Title" />
+		Page.gotoPG(pageName = "${pageName}");
 
-		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${pageName}" />
-		</execute>
+		DMDocument.addPGviaDMD(
+			dmdDocumentFile = "${dmdDocumentFile}",
+			dmdDocumentSize = "${dmdDocumentSize}",
+			dmdDocumentTitle = "${dmdDocumentTitle}"
+		);
+	}
 
-		<execute macro="DMDocument#addPGviaDMD">
-			<var name="dmdDocumentFile" value="${dmdDocumentFile}" />
-			<var name="dmdDocumentSize" value="${dmdDocumentSize}" />
-			<var name="dmdDocumentTitle" value="${dmdDocumentTitle}" />
-		</execute>
-	</command>
+	@priority = "5"
+	test AddFolder {
+		var dmdFolderName = "DM Folder Name";
 
-	<command name="AddFolder" priority="5">
-		<var name="dmdFolderName" value="DM Folder Name" />
+		Page.gotoPG(pageName = "${pageName}");
 
-		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${pageName}" />
-		</execute>
+		DMFolder.addPGviaDMD(dmdFolderName = "${dmdFolderName}");
+	}
 
-		<execute macro="DMFolder#addPGviaDMD">
-			<var name="dmdFolderName" value="${dmdFolderName}" />
-		</execute>
-	</command>
+	@priority = "5"
+	test DeleteDocuments {
+		var dmdDocumentFile1 = "Document_1.txt";
+		var dmdDocumentFile2 = "Document_2.txt";
+		var dmdDocumentFile3 = "Document_3.txt";
+		var dmdDocumentSize1 = "0.3k";
+		var dmdDocumentSize2 = "0.5k";
+		var dmdDocumentSize3 = "0.8k";
+		var dmdDocumentTitle1 = "DM Document1 Title";
+		var dmdDocumentTitle2 = "DM Document2 Title";
+		var dmdDocumentTitle3 = "DM Document3 Title";
 
-	<command name="DeleteDocuments" priority="5">
-		<var name="dmdDocumentFile1" value="Document_1.txt" />
-		<var name="dmdDocumentFile2" value="Document_2.txt" />
-		<var name="dmdDocumentFile3" value="Document_3.txt" />
-		<var name="dmdDocumentSize1" value="0.3k" />
-		<var name="dmdDocumentSize2" value="0.5k" />
-		<var name="dmdDocumentSize3" value="0.8k" />
-		<var name="dmdDocumentTitle1" value="DM Document1 Title" />
-		<var name="dmdDocumentTitle2" value="DM Document2 Title" />
-		<var name="dmdDocumentTitle3" value="DM Document3 Title" />
+		Page.gotoPG(pageName = "${pageName}");
 
-		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${pageName}" />
-		</execute>
+		DMDocument.addPGviaDMD(
+			dmdDocumentFile = "${dmdDocumentFile1}",
+			dmdDocumentSize = "${dmdDocumentSize1}",
+			dmdDocumentTitle = "${dmdDocumentTitle1}"
+		);
 
-		<execute macro="DMDocument#addPGviaDMD">
-			<var name="dmdDocumentFile" value="${dmdDocumentFile1}" />
-			<var name="dmdDocumentSize" value="${dmdDocumentSize1}" />
-			<var name="dmdDocumentTitle" value="${dmdDocumentTitle1}" />
-		</execute>
+		Page.gotoPG(pageName = "${pageName}");
 
-		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${pageName}" />
-		</execute>
+		DMDocument.addPGviaDMD(
+			dmdDocumentFile = "${dmdDocumentFile2}",
+			dmdDocumentSize = "${dmdDocumentSize2}",
+			dmdDocumentTitle = "${dmdDocumentTitle2}"
+		);
 
-		<execute macro="DMDocument#addPGviaDMD">
-			<var name="dmdDocumentFile" value="${dmdDocumentFile2}" />
-			<var name="dmdDocumentSize" value="${dmdDocumentSize2}" />
-			<var name="dmdDocumentTitle" value="${dmdDocumentTitle2}" />
-		</execute>
+		Page.gotoPG(pageName = "${pageName}");
 
-		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${pageName}" />
-		</execute>
+		DMDocument.addPGviaDMD(
+			dmdDocumentFile = "${dmdDocumentFile3}",
+			dmdDocumentSize = "${dmdDocumentSize3}",
+			dmdDocumentTitle = "${dmdDocumentTitle3}"
+		);
 
-		<execute macro="DMDocument#addPGviaDMD">
-			<var name="dmdDocumentFile" value="${dmdDocumentFile3}" />
-			<var name="dmdDocumentSize" value="${dmdDocumentSize3}" />
-			<var name="dmdDocumentTitle" value="${dmdDocumentTitle3}" />
-		</execute>
+		Page.gotoPG(pageName = "${pageName}");
 
-		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${pageName}" />
-		</execute>
+		DMDocument.deletePGviaDMD(dmdDocumentTitle = "${dmdDocumentTitle1}");
 
-		<execute macro="DMDocument#deletePGviaDMD">
-			<var name="dmdDocumentTitle" value="${dmdDocumentTitle1}" />
-		</execute>
+		DMDocument.deletePGviaDMD(dmdDocumentTitle = "${dmdDocumentTitle2}");
 
-		<execute macro="DMDocument#deletePGviaDMD">
-			<var name="dmdDocumentTitle" value="${dmdDocumentTitle2}" />
-		</execute>
+		DMDocument.deletePGviaDMD(dmdDocumentTitle = "${dmdDocumentTitle3}");
 
-		<execute macro="DMDocument#deletePGviaDMD">
-			<var name="dmdDocumentTitle" value="${dmdDocumentTitle3}" />
-		</execute>
+		AssertTextEquals(
+			locator1 = "PGDocumentlibrarydisplay#INFO_MESSAGE",
+			value1 = "There are no documents or media files in this folder."
+		);
+	}
 
-		<execute function="AssertTextEquals" locator1="PGDocumentlibrarydisplay#INFO_MESSAGE" value1="There are no documents or media files in this folder." />
-	</command>
+	@priority = "5"
+	test RemovePortlet {
+		Portlet.removePG(pageName = "${pageName}");
+	}
 
-	<command name="RemovePortlet" priority="5">
-		<execute macro="Portlet#removePG">
-			<var name="pageName" value="${pageName}" />
-		</execute>
-	</command>
+	@priority = "5"
+	test SearchFolderDocument {
+		var dmdDocumentFile = "Document_1.txt";
+		var dmdDocumentSize = "0.3k";
+		var dmdDocumentTitle = "DM Document Title";
+		var dmdFolderName = "DM Folder Name";
 
-	<command name="SearchFolderDocument" priority="5">
-		<var name="dmdDocumentFile" value="Document_1.txt" />
-		<var name="dmdDocumentSize" value="0.3k" />
-		<var name="dmdDocumentTitle" value="DM Document Title" />
-		<var name="dmdFolderName" value="DM Folder Name" />
+		Page.gotoPG(pageName = "${pageName}");
 
-		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${pageName}" />
-		</execute>
+		DMFolder.addPGviaDMD(dmdFolderName = "${dmdFolderName}");
 
-		<execute macro="DMFolder#addPGviaDMD">
-			<var name="dmdFolderName" value="${dmdFolderName}" />
-		</execute>
+		Page.gotoPG(pageName = "${pageName}");
 
-		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${pageName}" />
-		</execute>
+		DMFolderDocument.addPGviaDMD(
+			dmdDocumentFile = "${dmdDocumentFile}",
+			dmdDocumentSize = "${dmdDocumentSize}",
+			dmdDocumentTitle = "${dmdDocumentTitle}",
+			dmdFolderName = "${dmdFolderName}"
+		);
 
-		<execute macro="DMFolderDocument#addPGviaDMD">
-			<var name="dmdDocumentFile" value="${dmdDocumentFile}" />
-			<var name="dmdDocumentSize" value="${dmdDocumentSize}" />
-			<var name="dmdDocumentTitle" value="${dmdDocumentTitle}" />
-			<var name="dmdFolderName" value="${dmdFolderName}" />
-		</execute>
+		Page.gotoPG(pageName = "${pageName}");
 
-		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${pageName}" />
-		</execute>
+		DMFolderDocument.searchPGviaDMD(
+			dmdDocumentTitle = "${dmdDocumentTitle}",
+			dmdDocumentTitleSearch = "${dmdDocumentTitle}",
+			dmdFolderName = "${dmdFolderName}"
+		);
 
-		<execute macro="DMFolderDocument#searchPGviaDMD">
-			<var name="dmdDocumentTitle" value="${dmdDocumentTitle}" />
-			<var name="dmdDocumentTitleSearch" value="${dmdDocumentTitle}" />
-			<var name="dmdFolderName" value="${dmdFolderName}" />
-		</execute>
+		DMFolderDocument.searchNoPGviaDMD(
+			dmdDocumentTitleSearch = "DM2 Document2 Title2"
+		);
 
-		<execute macro="DMFolderDocument#searchNoPGviaDMD">
-			<var name="dmdDocumentTitleSearch" value="DM2 Document2 Title2" />
-		</execute>
+		DMFolderDocument.searchPGviaDMD(
+			dmdDocumentTitle = "${dmdDocumentTitle}",
+			dmdDocumentTitleSearch = "\&quot;${dmdDocumentTitle}\&quot;",
+			dmdFolderName = "${dmdFolderName}"
+		);
 
-		<execute macro="DMFolderDocument#searchPGviaDMD">
-			<var name="dmdDocumentTitle" value="${dmdDocumentTitle}" />
-			<var name="dmdDocumentTitleSearch" value="\&quot;${dmdDocumentTitle}\&quot;" />
-			<var name="dmdFolderName" value="${dmdFolderName}" />
-		</execute>
+		DMFolderDocument.searchNoPGviaDMD(
+			dmdDocumentTitleSearch = "\&quot;DM Document Title2\&quot;"
+		);
+	}
 
-		<execute macro="DMFolderDocument#searchNoPGviaDMD">
-			<var name="dmdDocumentTitleSearch" value="\&quot;DM Document Title2\&quot;" />
-		</execute>
-	</command>
+	tearDown {
+		DMDocument.tearDownPGviaDMD(pageName = "${pageName}");
 
-	<tear-down>
-		<execute macro="DMDocument#tearDownPGviaDMD">
-			<var name="pageName" value="${pageName}" />
-		</execute>
+		DMFolder.tearDownPGviaDMD(pageName = "${pageName}");
 
-		<execute macro="DMFolder#tearDownPGviaDMD">
-			<var name="pageName" value="${pageName}" />
-		</execute>
-
-		<execute macro="Page#tearDownPG" />
-	</tear-down>
-</definition>
+		Page.tearDownPG();
+	}
+}

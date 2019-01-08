@@ -1,1519 +1,1562 @@
-<definition component-name="social-office-administration">
-	<property name="hook.plugins.includes" value="deploy-listener-hook,portal-compat-hook,so-activities-hook,so-hook" />
-	<property name="portlet.plugins.includes" value="chat-portlet,contacts-portlet,events-display-portlet,microblogs-portlet,private-messaging-portlet,so-announcements-portlet,so-configurations-portlet,so-portlet,tasks-portlet,wysiwyg-portlet" />
-	<property name="testray.main.component.name" value="Social Office EE" />
-	<property name="theme.plugins.includes" value="so-theme" />
-
-	<var name="adminEmailAddress" value="test@liferay.com" />
-	<var name="adminFirstName" value="Joe" />
-	<var name="adminListName" value="Bloggs, Joe" />
-	<var name="adminName" value="Joe Bloggs" />
-	<var name="password" value="test" />
-	<var name="roleName" value="Social Office" />
-	<var name="userEmailAddress" value="socialoffice01@liferay.com" />
-	<var name="userFirstName" value="Social01" />
-	<var name="userLastName" value="User01" />
-	<var name="userListName" value="User01, Social01" />
-	<var name="userMiddleName" value="Office01" />
-	<var name="userName" value="Social01 Office01 User01" />
-	<var name="userScreenName" value="socialoffice01" />
-
-	<set-up>
-		<execute macro="SOUser#firstLoginPG" />
-	</set-up>
-
-	<tear-down>
-		<execute macro="SOUser#tearDownCP" />
-
-		<execute macro="SOUserBar#tearDownSites" />
-
-		<execute macro="SOUserBar#tearDownNotifications" />
-	</tear-down>
-
-	<command name="AcceptMemberRequestSOSitePrivateRestricted" priority="5">
-		<var name="siteDescription" value="Private Restricted Site Description" />
-		<var name="siteName" value="Private Restricted Site Name" />
-		<var name="siteType" value="Private Restricted" />
-
-		<execute macro="SOUser#addUserWithSORole">
-			<var name="adminEmailAddress" value="test@liferay.com" />
-			<var name="password" value="test" />
-			<var name="userEmailAddress" value="${userEmailAddress}" />
-			<var name="userFirstName" value="${userFirstName}" />
-			<var name="userLastName" value="${userLastName}" />
-			<var name="userMiddleName" value="${userMiddleName}" />
-			<var name="userScreenName" value="${userScreenName}" />
-		</execute>
-
-		<execute macro="SOUserBar#addSOSite">
-			<var name="siteDescription" value="${siteDescription}" />
-			<var name="siteName" value="${siteName}" />
-			<var name="siteType" value="${siteType}" />
-		</execute>
-
-		<execute macro="SOUser#logoutPG" />
-
-		<execute macro="SOUser#loginPG">
-			<var name="password" value="test" />
-			<var name="userEmailAddress" value="${userEmailAddress}" />
-		</execute>
-
-		<execute macro="SOUserBar#requestMembershipSOSite">
-			<var name="siteName" value="${siteName}" />
-			<var name="siteType" value="${siteType}" />
-		</execute>
-
-		<execute macro="SOUser#logoutPG" />
-
-		<execute macro="SOUser#loginPG">
-			<var name="password" value="test" />
-			<var name="userEmailAddress" value="${adminEmailAddress}" />
-		</execute>
-
-		<execute macro="SOSite#acceptMemberRequestSOSite">
-			<var name="siteName" value="${siteName}" />
-			<var name="siteOwner" value="${adminName}" />
-			<var name="userEmailAddress" value="${userEmailAddress}" />
-			<var name="userName" value="${userName}" />
-		</execute>
-
-		<execute macro="SOUser#logoutPG" />
-
-		<execute macro="SOUser#loginPG">
-			<var name="password" value="test" />
-			<var name="userEmailAddress" value="${userEmailAddress}" />
-		</execute>
-
-		<execute macro="SOSite#viewSOSiteMembership">
-			<var name="siteDescription" value="${siteDescription}" />
-			<var name="siteName" value="${siteName}" />
-			<var name="siteType" value="${siteType}" />
-			<var name="userEmailAddress" value="${userEmailAddress}" />
-			<var name="userFirstName" value="${userFirstName}" />
-			<var name="userLastName" value="${userLastName}" />
-			<var name="userListName" value="${userListName}" />
-			<var name="userMiddleName" value="${userMiddleName}" />
-			<var name="userName" value="${userName}" />
-			<var name="userScreenName" value="${userScreenName}" />
-		</execute>
-	</command>
-
-	<command name="AcceptMemberRequestSOSitePublicRestricted" priority="5">
-		<var name="siteDescription" value="Public Restricted Site Description" />
-		<var name="siteName" value="Public Restricted Site Name" />
-		<var name="siteType" value="Public Restricted" />
-
-		<execute macro="SOUser#addUserWithSORole">
-			<var name="adminEmailAddress" value="test@liferay.com" />
-			<var name="password" value="test" />
-			<var name="userEmailAddress" value="${userEmailAddress}" />
-			<var name="userFirstName" value="${userFirstName}" />
-			<var name="userLastName" value="${userLastName}" />
-			<var name="userMiddleName" value="${userMiddleName}" />
-			<var name="userScreenName" value="${userScreenName}" />
-		</execute>
-
-		<execute macro="SOUserBar#addSOSite">
-			<var name="siteDescription" value="${siteDescription}" />
-			<var name="siteName" value="${siteName}" />
-			<var name="siteType" value="${siteType}" />
-		</execute>
-
-		<execute macro="SOUser#logoutPG" />
-
-		<execute macro="SOUser#loginPG">
-			<var name="password" value="test" />
-			<var name="userEmailAddress" value="${userEmailAddress}" />
-		</execute>
-
-		<execute macro="SOUserBar#requestMembershipSOSite">
-			<var name="siteName" value="${siteName}" />
-			<var name="siteType" value="${siteType}" />
-		</execute>
-
-		<execute macro="SOUser#logoutPG" />
-
-		<execute macro="SOUser#loginPG">
-			<var name="password" value="test" />
-			<var name="userEmailAddress" value="${adminEmailAddress}" />
-		</execute>
-
-		<execute macro="SOSite#acceptMemberRequestSOSite">
-			<var name="siteName" value="${siteName}" />
-			<var name="siteOwner" value="${adminName}" />
-			<var name="userEmailAddress" value="${userEmailAddress}" />
-			<var name="userName" value="${userName}" />
-		</execute>
-
-		<execute macro="SOUser#logoutPG" />
-
-		<execute macro="SOUser#loginPG">
-			<var name="password" value="test" />
-			<var name="userEmailAddress" value="${userEmailAddress}" />
-		</execute>
-
-		<execute macro="SOSite#viewSOSiteMembership">
-			<var name="siteDescription" value="${siteDescription}" />
-			<var name="siteName" value="${siteName}" />
-			<var name="siteType" value="${siteType}" />
-			<var name="userEmailAddress" value="${userEmailAddress}" />
-			<var name="userFirstName" value="${userFirstName}" />
-			<var name="userLastName" value="${userLastName}" />
-			<var name="userListName" value="${userListName}" />
-			<var name="userMiddleName" value="${userMiddleName}" />
-			<var name="userName" value="${userName}" />
-			<var name="userScreenName" value="${userScreenName}" />
-		</execute>
-	</command>
-
-	<command name="AddSOSiteOpen" priority="5">
-		<var name="siteDescription" value="Open Site Description" />
-		<var name="siteName" value="Open Site Name" />
-		<var name="siteType" value="Open" />
-
-		<execute macro="SOUserBar#addSOSite">
-			<var name="siteDescription" value="${siteDescription}" />
-			<var name="siteName" value="${siteName}" />
-			<var name="siteType" value="${siteType}" />
-		</execute>
-
-		<execute macro="SOSite#viewSOSite">
-			<var name="siteDescription" value="${siteDescription}" />
-			<var name="siteName" value="${siteName}" />
-			<var name="siteType" value="${siteType}" />
-		</execute>
-	</command>
-
-	<command name="AddSOSitePrivate" priority="5">
-		<var name="siteDescription" value="Private Site Description" />
-		<var name="siteName" value="Private Site Name" />
-		<var name="siteType" value="Private" />
-
-		<execute macro="SOUserBar#addSOSite">
-			<var name="siteDescription" value="${siteDescription}" />
-			<var name="siteName" value="${siteName}" />
-			<var name="siteType" value="${siteType}" />
-		</execute>
-
-		<execute macro="SOSite#viewSOSite">
-			<var name="siteDescription" value="${siteDescription}" />
-			<var name="siteName" value="${siteName}" />
-			<var name="siteType" value="${siteType}" />
-		</execute>
-	</command>
-
-	<command name="AddSOSitePrivateRestricted" priority="5">
-		<var name="siteDescription" value="Private Restricted Site Description" />
-		<var name="siteName" value="Private Restricted Site Name" />
-		<var name="siteType" value="Private Restricted" />
-
-		<execute macro="SOUserBar#addSOSite">
-			<var name="siteDescription" value="${siteDescription}" />
-			<var name="siteName" value="${siteName}" />
-			<var name="siteType" value="${siteType}" />
-		</execute>
-
-		<execute macro="SOSite#viewSOSite">
-			<var name="siteDescription" value="${siteDescription}" />
-			<var name="siteName" value="${siteName}" />
-			<var name="siteType" value="${siteType}" />
-		</execute>
-	</command>
-
-	<command name="AddSOSitePublicRestricted" priority="5">
-		<var name="siteDescription" value="Public Restricted Site Description" />
-		<var name="siteName" value="Public Restricted Site Name" />
-		<var name="siteType" value="Public Restricted" />
-
-		<execute macro="SOUserBar#addSOSite">
-			<var name="siteDescription" value="${siteDescription}" />
-			<var name="siteName" value="${siteName}" />
-			<var name="siteType" value="${siteType}" />
-		</execute>
-
-		<execute macro="SOSite#viewSOSite">
-			<var name="siteDescription" value="${siteDescription}" />
-			<var name="siteName" value="${siteName}" />
-			<var name="siteType" value="${siteType}" />
-		</execute>
-	</command>
-
-	<command name="AddSOSitesOpen" priority="5">
-		<var name="siteDescription1" value="Open Site1 Description" />
-		<var name="siteDescription2" value="Open Site2 Description" />
-		<var name="siteDescription3" value="Open Site3 Description" />
-		<var name="siteName1" value="Open Site1 Name" />
-		<var name="siteName2" value="Open Site2 Name" />
-		<var name="siteName3" value="Open Site3 Name" />
-		<var name="siteType1" value="Open" />
-		<var name="siteType2" value="Open" />
-		<var name="siteType3" value="Open" />
-
-		<execute macro="SOUserBar#addSOSite">
-			<var name="siteDescription" value="${siteDescription1}" />
-			<var name="siteName" value="${siteName1}" />
-			<var name="siteType" value="${siteType1}" />
-		</execute>
-
-		<execute macro="SOUserBar#addSOSite">
-			<var name="siteDescription" value="${siteDescription2}" />
-			<var name="siteName" value="${siteName2}" />
-			<var name="siteType" value="${siteType2}" />
-		</execute>
-
-		<execute macro="SOUserBar#addSOSite">
-			<var name="siteDescription" value="${siteDescription3}" />
-			<var name="siteName" value="${siteName3}" />
-			<var name="siteType" value="${siteType3}" />
-		</execute>
-	</command>
-
-	<command name="ConfirmInviteSOSiteOpen" priority="5">
-		<var name="siteDescription" value="Open Site Description" />
-		<var name="siteName" value="Open Site Name" />
-		<var name="siteType" value="Open" />
-
-		<execute macro="SOUser#addUserWithSORole">
-			<var name="adminEmailAddress" value="test@liferay.com" />
-			<var name="password" value="test" />
-			<var name="userEmailAddress" value="${userEmailAddress}" />
-			<var name="userFirstName" value="${userFirstName}" />
-			<var name="userLastName" value="${userLastName}" />
-			<var name="userMiddleName" value="${userMiddleName}" />
-			<var name="userScreenName" value="${userScreenName}" />
-		</execute>
-
-		<execute macro="SOUserBar#addSOSite">
-			<var name="siteDescription" value="${siteDescription}" />
-			<var name="siteName" value="${siteName}" />
-			<var name="siteType" value="${siteType}" />
-		</execute>
-
-		<execute macro="SOUserBar#searchSOSite">
-			<var name="siteName" value="${siteName}" />
-		</execute>
-
-		<execute function="Click" locator1="SOUserBar#GO_TO_SITE_NAME_LINK" />
-
-		<execute function="Click#textClickAt" locator1="SOSiteHome#NAVIGATION_MEMBERS" value1="Members" />
-
-		<execute macro="SOMembers#inviteMember">
-			<var name="userEmailAddress" value="${userEmailAddress}" />
-			<var name="userFirstName" value="${userFirstName}" />
-			<var name="userLastName" value="${userLastName}" />
-			<var name="userMiddleName" value="${userMiddleName}" />
-		</execute>
-
-		<execute macro="SOUser#logoutPG" />
-
-		<execute macro="SOUser#loginPG">
-			<var name="password" value="test" />
-			<var name="userEmailAddress" value="${userEmailAddress}" />
-		</execute>
-
-		<execute macro="SOMembers#confirmMemberInvite">
-			<var name="senderName" value="${adminName}" />
-		</execute>
-
-		<execute macro="SOSite#viewSOSiteMembership">
-			<var name="siteDescription" value="${siteDescription}" />
-			<var name="siteName" value="${siteName}" />
-			<var name="siteType" value="${siteType}" />
-			<var name="userEmailAddress" value="${userEmailAddress}" />
-			<var name="userFirstName" value="${userFirstName}" />
-			<var name="userLastName" value="${userLastName}" />
-			<var name="userListName" value="${userListName}" />
-			<var name="userMiddleName" value="${userMiddleName}" />
-			<var name="userName" value="${userName}" />
-			<var name="userScreenName" value="${userScreenName}" />
-		</execute>
-	</command>
-
-	<command name="ConfirmInviteSOSitePrivate" priority="5">
-		<var name="siteDescription" value="Private Site Description" />
-		<var name="siteName" value="Private Site Name" />
-		<var name="siteType" value="Private" />
-
-		<execute macro="SOUser#addUserWithSORole">
-			<var name="adminEmailAddress" value="test@liferay.com" />
-			<var name="password" value="test" />
-			<var name="userEmailAddress" value="${userEmailAddress}" />
-			<var name="userFirstName" value="${userFirstName}" />
-			<var name="userLastName" value="${userLastName}" />
-			<var name="userMiddleName" value="${userMiddleName}" />
-			<var name="userScreenName" value="${userScreenName}" />
-		</execute>
-
-		<execute macro="SOUserBar#addSOSite">
-			<var name="siteDescription" value="${siteDescription}" />
-			<var name="siteName" value="${siteName}" />
-			<var name="siteType" value="${siteType}" />
-		</execute>
-
-		<execute macro="SOUserBar#searchSOSite">
-			<var name="siteName" value="${siteName}" />
-		</execute>
-
-		<execute function="Click" locator1="SOUserBar#GO_TO_SITE_NAME_LINK" />
-
-		<execute function="Click#textClickAt" locator1="SOSiteHome#NAVIGATION_MEMBERS" value1="Members" />
-
-		<execute macro="SOMembers#inviteMember">
-			<var name="userEmailAddress" value="${userEmailAddress}" />
-			<var name="userFirstName" value="${userFirstName}" />
-			<var name="userLastName" value="${userLastName}" />
-			<var name="userMiddleName" value="${userMiddleName}" />
-		</execute>
-
-		<execute macro="SOUser#logoutPG" />
-
-		<execute macro="SOUser#loginPG">
-			<var name="password" value="test" />
-			<var name="userEmailAddress" value="${userEmailAddress}" />
-		</execute>
-
-		<execute macro="SOMembers#confirmMemberInvite">
-			<var name="senderName" value="${adminName}" />
-		</execute>
-
-		<execute macro="SOSite#viewSOSiteMembership">
-			<var name="siteDescription" value="${siteDescription}" />
-			<var name="siteName" value="${siteName}" />
-			<var name="siteType" value="${siteType}" />
-			<var name="userEmailAddress" value="${userEmailAddress}" />
-			<var name="userFirstName" value="${userFirstName}" />
-			<var name="userLastName" value="${userLastName}" />
-			<var name="userListName" value="${userListName}" />
-			<var name="userMiddleName" value="${userMiddleName}" />
-			<var name="userName" value="${userName}" />
-			<var name="userScreenName" value="${userScreenName}" />
-		</execute>
-	</command>
-
-	<command name="ConfirmInviteSOSitePrivateRestricted" priority="5">
-		<var name="siteDescription" value="Private Restricted Site Description" />
-		<var name="siteName" value="Private Restricted Site Name" />
-		<var name="siteType" value="Private Restricted" />
-
-		<execute macro="SOUser#addUserWithSORole">
-			<var name="adminEmailAddress" value="test@liferay.com" />
-			<var name="password" value="test" />
-			<var name="userEmailAddress" value="${userEmailAddress}" />
-			<var name="userFirstName" value="${userFirstName}" />
-			<var name="userLastName" value="${userLastName}" />
-			<var name="userMiddleName" value="${userMiddleName}" />
-			<var name="userScreenName" value="${userScreenName}" />
-		</execute>
-
-		<execute macro="SOUserBar#addSOSite">
-			<var name="siteDescription" value="${siteDescription}" />
-			<var name="siteName" value="${siteName}" />
-			<var name="siteType" value="${siteType}" />
-		</execute>
-
-		<execute macro="SOUserBar#searchSOSite">
-			<var name="siteName" value="${siteName}" />
-		</execute>
-
-		<execute function="Click" locator1="SOUserBar#GO_TO_SITE_NAME_LINK" />
-
-		<execute function="Click#textClickAt" locator1="SOSiteHome#NAVIGATION_MEMBERS" value1="Members" />
-
-		<execute macro="SOMembers#inviteMember">
-			<var name="userEmailAddress" value="${userEmailAddress}" />
-			<var name="userFirstName" value="${userFirstName}" />
-			<var name="userLastName" value="${userLastName}" />
-			<var name="userMiddleName" value="${userMiddleName}" />
-		</execute>
-
-		<execute macro="SOUser#logoutPG" />
-
-		<execute macro="SOUser#loginPG">
-			<var name="password" value="test" />
-			<var name="userEmailAddress" value="${userEmailAddress}" />
-		</execute>
-
-		<execute macro="SOMembers#confirmMemberInvite">
-			<var name="senderName" value="${adminName}" />
-		</execute>
-
-		<execute macro="SOSite#viewSOSiteMembership">
-			<var name="siteDescription" value="${siteDescription}" />
-			<var name="siteName" value="${siteName}" />
-			<var name="siteType" value="${siteType}" />
-			<var name="userEmailAddress" value="${userEmailAddress}" />
-			<var name="userFirstName" value="${userFirstName}" />
-			<var name="userLastName" value="${userLastName}" />
-			<var name="userListName" value="${userListName}" />
-			<var name="userMiddleName" value="${userMiddleName}" />
-			<var name="userName" value="${userName}" />
-			<var name="userScreenName" value="${userScreenName}" />
-		</execute>
-	</command>
-
-	<command name="ConfirmInviteSOSitePublicRestricted" priority="5">
-		<var name="siteDescription" value="Public Restricted Site Description" />
-		<var name="siteName" value="Public Restricted Site Name" />
-		<var name="siteType" value="Public Restricted" />
-
-		<execute macro="SOUser#addUserWithSORole">
-			<var name="adminEmailAddress" value="test@liferay.com" />
-			<var name="password" value="test" />
-			<var name="userEmailAddress" value="${userEmailAddress}" />
-			<var name="userFirstName" value="${userFirstName}" />
-			<var name="userLastName" value="${userLastName}" />
-			<var name="userMiddleName" value="${userMiddleName}" />
-			<var name="userScreenName" value="${userScreenName}" />
-		</execute>
-
-		<execute macro="SOUserBar#addSOSite">
-			<var name="siteDescription" value="${siteDescription}" />
-			<var name="siteName" value="${siteName}" />
-			<var name="siteType" value="${siteType}" />
-		</execute>
-
-		<execute macro="SOUserBar#searchSOSite">
-			<var name="siteName" value="${siteName}" />
-		</execute>
-
-		<execute function="Click" locator1="SOUserBar#GO_TO_SITE_NAME_LINK" />
-
-		<execute function="Click#textClickAt" locator1="SOSiteHome#NAVIGATION_MEMBERS" value1="Members" />
-
-		<execute macro="SOMembers#inviteMember">
-			<var name="userEmailAddress" value="${userEmailAddress}" />
-			<var name="userFirstName" value="${userFirstName}" />
-			<var name="userLastName" value="${userLastName}" />
-			<var name="userMiddleName" value="${userMiddleName}" />
-		</execute>
-
-		<execute macro="SOUser#logoutPG" />
-
-		<execute macro="SOUser#loginPG">
-			<var name="password" value="test" />
-			<var name="userEmailAddress" value="${userEmailAddress}" />
-		</execute>
-
-		<execute macro="SOMembers#confirmMemberInvite">
-			<var name="senderName" value="${adminName}" />
-		</execute>
-
-		<execute macro="SOSite#viewSOSiteMembership">
-			<var name="siteDescription" value="${siteDescription}" />
-			<var name="siteName" value="${siteName}" />
-			<var name="siteType" value="${siteType}" />
-			<var name="userEmailAddress" value="${userEmailAddress}" />
-			<var name="userFirstName" value="${userFirstName}" />
-			<var name="userLastName" value="${userLastName}" />
-			<var name="userListName" value="${userListName}" />
-			<var name="userMiddleName" value="${userMiddleName}" />
-			<var name="userName" value="${userName}" />
-			<var name="userScreenName" value="${userScreenName}" />
-		</execute>
-	</command>
-
-	<command name="DeleteSOSiteOpen" priority="5">
-		<var name="siteDescription" value="Open Site Description" />
-		<var name="siteName" value="Open Site Name" />
-		<var name="siteType" value="Open" />
-
-		<execute macro="SOUserBar#addSOSite">
-			<var name="siteDescription" value="${siteDescription}" />
-			<var name="siteName" value="${siteName}" />
-			<var name="siteType" value="${siteType}" />
-		</execute>
-
-		<execute macro="SOUserBar#deleteSOSite">
-			<var name="siteDescription" value="${siteDescription}" />
-			<var name="siteName" value="${siteName}" />
-			<var name="siteType" value="${siteType}" />
-		</execute>
-	</command>
-
-	<command name="DeleteSOSitePrivate" priority="5">
-		<var name="siteDescription" value="Private Site Description" />
-		<var name="siteName" value="Private Site Name" />
-		<var name="siteType" value="Private" />
-
-		<execute macro="SOUserBar#addSOSite">
-			<var name="siteDescription" value="${siteDescription}" />
-			<var name="siteName" value="${siteName}" />
-			<var name="siteType" value="${siteType}" />
-		</execute>
-
-		<execute macro="SOUserBar#deleteSOSite">
-			<var name="siteDescription" value="${siteDescription}" />
-			<var name="siteName" value="${siteName}" />
-			<var name="siteType" value="${siteType}" />
-		</execute>
-	</command>
-
-	<command name="DeleteSOSitePrivateRestricted" priority="5">
-		<var name="siteDescription" value="Private Restricted Site Description" />
-		<var name="siteName" value="Private Restricted Site Name" />
-		<var name="siteType" value="Private Restricted" />
-
-		<execute macro="SOUserBar#addSOSite">
-			<var name="siteDescription" value="${siteDescription}" />
-			<var name="siteName" value="${siteName}" />
-			<var name="siteType" value="${siteType}" />
-		</execute>
-
-		<execute macro="SOUserBar#deleteSOSite">
-			<var name="siteDescription" value="${siteDescription}" />
-			<var name="siteName" value="${siteName}" />
-			<var name="siteType" value="${siteType}" />
-		</execute>
-	</command>
-
-	<command name="DeleteSOSitePublicRestricted" priority="5">
-		<var name="siteDescription" value="Public Restricted Site Description" />
-		<var name="siteName" value="Public Restricted Site Name" />
-		<var name="siteType" value="Public Restricted" />
-
-		<execute macro="SOUserBar#addSOSite">
-			<var name="siteDescription" value="${siteDescription}" />
-			<var name="siteName" value="${siteName}" />
-			<var name="siteType" value="${siteType}" />
-		</execute>
-
-		<execute macro="SOUserBar#deleteSOSite">
-			<var name="siteDescription" value="${siteDescription}" />
-			<var name="siteName" value="${siteName}" />
-			<var name="siteType" value="${siteType}" />
-		</execute>
-	</command>
-
-	<command name="DenyMemberRequestSOSitePrivateRestricted" priority="5">
-		<var name="siteDescription" value="Private Restricted Site Description" />
-		<var name="siteName" value="Private Restricted Site Name" />
-		<var name="siteType" value="Private Restricted" />
-
-		<execute macro="SOUser#addUserWithSORole">
-			<var name="adminEmailAddress" value="test@liferay.com" />
-			<var name="password" value="test" />
-			<var name="userEmailAddress" value="${userEmailAddress}" />
-			<var name="userFirstName" value="${userFirstName}" />
-			<var name="userLastName" value="${userLastName}" />
-			<var name="userMiddleName" value="${userMiddleName}" />
-			<var name="userScreenName" value="${userScreenName}" />
-		</execute>
-
-		<execute macro="SOUserBar#addSOSite">
-			<var name="siteDescription" value="${siteDescription}" />
-			<var name="siteName" value="${siteName}" />
-			<var name="siteType" value="${siteType}" />
-		</execute>
-
-		<execute macro="SOUser#logoutPG" />
-
-		<execute macro="SOUser#loginPG">
-			<var name="password" value="test" />
-			<var name="userEmailAddress" value="${userEmailAddress}" />
-		</execute>
-
-		<execute macro="SOUserBar#requestMembershipSOSite">
-			<var name="siteName" value="${siteName}" />
-			<var name="siteType" value="${siteType}" />
-		</execute>
-
-		<execute macro="SOUser#logoutPG" />
-
-		<execute macro="SOUser#loginPG">
-			<var name="password" value="test" />
-			<var name="userEmailAddress" value="${adminEmailAddress}" />
-		</execute>
-
-		<execute macro="SOSite#denyMemberRequestSOSite">
-			<var name="siteName" value="${siteName}" />
-			<var name="siteOwner" value="${adminName}" />
-			<var name="userEmailAddress" value="${userEmailAddress}" />
-			<var name="userName" value="${userName}" />
-		</execute>
-
-		<execute macro="SOUser#logoutPG" />
-
-		<execute macro="SOUser#loginPG">
-			<var name="password" value="test" />
-			<var name="userEmailAddress" value="${userEmailAddress}" />
-		</execute>
-
-		<execute macro="SOSite#viewSOSiteNonMembership">
-			<var name="siteDescription" value="${siteDescription}" />
-			<var name="siteName" value="${siteName}" />
-			<var name="siteType" value="${siteType}" />
-			<var name="userEmailAddress" value="${userEmailAddress}" />
-			<var name="userFirstName" value="${userFirstName}" />
-			<var name="userLastName" value="${userLastName}" />
-			<var name="userListName" value="${userListName}" />
-			<var name="userMiddleName" value="${userMiddleName}" />
-			<var name="userName" value="${userName}" />
-			<var name="userScreenName" value="${userScreenName}" />
-		</execute>
-	</command>
-
-	<command name="DenyMemberRequestSOSitePublicRestricted" priority="5">
-		<var name="siteDescription" value="Public Restricted Site Description" />
-		<var name="siteName" value="Public Restricted Site Name" />
-		<var name="siteType" value="Public Restricted" />
-
-		<execute macro="SOUser#addUserWithSORole">
-			<var name="adminEmailAddress" value="test@liferay.com" />
-			<var name="password" value="test" />
-			<var name="userEmailAddress" value="${userEmailAddress}" />
-			<var name="userFirstName" value="${userFirstName}" />
-			<var name="userLastName" value="${userLastName}" />
-			<var name="userMiddleName" value="${userMiddleName}" />
-			<var name="userScreenName" value="${userScreenName}" />
-		</execute>
-
-		<execute macro="SOUserBar#addSOSite">
-			<var name="siteDescription" value="${siteDescription}" />
-			<var name="siteName" value="${siteName}" />
-			<var name="siteType" value="${siteType}" />
-		</execute>
-
-		<execute macro="SOUser#logoutPG" />
-
-		<execute macro="SOUser#loginPG">
-			<var name="password" value="test" />
-			<var name="userEmailAddress" value="${userEmailAddress}" />
-		</execute>
-
-		<execute macro="SOUserBar#requestMembershipSOSite">
-			<var name="siteName" value="${siteName}" />
-			<var name="siteType" value="${siteType}" />
-		</execute>
-
-		<execute macro="SOUser#logoutPG" />
-
-		<execute macro="SOUser#loginPG">
-			<var name="password" value="test" />
-			<var name="userEmailAddress" value="${adminEmailAddress}" />
-		</execute>
-
-		<execute macro="SOSite#denyMemberRequestSOSite">
-			<var name="siteName" value="${siteName}" />
-			<var name="siteOwner" value="${adminName}" />
-			<var name="userEmailAddress" value="${userEmailAddress}" />
-			<var name="userName" value="${userName}" />
-		</execute>
-
-		<execute macro="SOUser#logoutPG" />
-
-		<execute macro="SOUser#loginPG">
-			<var name="password" value="test" />
-			<var name="userEmailAddress" value="${userEmailAddress}" />
-		</execute>
-
-		<execute macro="SOSite#viewSOSiteNonMembership">
-			<var name="siteDescription" value="${siteDescription}" />
-			<var name="siteName" value="${siteName}" />
-			<var name="siteType" value="${siteType}" />
-			<var name="userEmailAddress" value="${userEmailAddress}" />
-			<var name="userFirstName" value="${userFirstName}" />
-			<var name="userLastName" value="${userLastName}" />
-			<var name="userListName" value="${userListName}" />
-			<var name="userMiddleName" value="${userMiddleName}" />
-			<var name="userName" value="${userName}" />
-			<var name="userScreenName" value="${userScreenName}" />
-		</execute>
-	</command>
-
-	<command name="FavoriteSOSite" priority="5">
-		<var name="siteDescription" value="Open Site Description" />
-		<var name="siteName" value="Open Site Name" />
-		<var name="siteType" value="Open" />
-
-		<execute macro="SOUser#addUserWithSORole">
-			<var name="adminEmailAddress" value="test@liferay.com" />
-			<var name="password" value="test" />
-			<var name="userEmailAddress" value="${userEmailAddress}" />
-			<var name="userFirstName" value="${userFirstName}" />
-			<var name="userLastName" value="${userLastName}" />
-			<var name="userMiddleName" value="${userMiddleName}" />
-			<var name="userScreenName" value="${userScreenName}" />
-		</execute>
-
-		<execute macro="SOUserBar#addSOSite">
-			<var name="siteDescription" value="${siteDescription}" />
-			<var name="siteName" value="${siteName}" />
-			<var name="siteType" value="${siteType}" />
-		</execute>
-
-		<execute macro="SOUser#logoutPG" />
-
-		<execute macro="SOUser#loginPG">
-			<var name="password" value="test" />
-			<var name="userEmailAddress" value="${userEmailAddress}" />
-		</execute>
-
-		<execute macro="SOUserBar#joinSOSite">
-			<var name="siteName" value="${siteName}" />
-			<var name="siteType" value="${siteType}" />
-		</execute>
-
-		<execute macro="SOUserBar#favoriteSOSite">
-			<var name="siteDescription" value="${siteDescription}" />
-			<var name="siteName" value="${siteName}" />
-			<var name="siteType" value="${siteType}" />
-		</execute>
-
-		<execute macro="SOSite#viewSOSiteFavorite">
-			<var name="siteDescription" value="${siteDescription}" />
-			<var name="siteName" value="${siteName}" />
-			<var name="siteType" value="${siteType}" />
-		</execute>
-	</command>
-
-	<command name="FavoriteSOSitePrivate" priority="5">
-		<var name="siteDescription" value="Private Site Description" />
-		<var name="siteName" value="Private Site Name" />
-		<var name="siteType" value="Private" />
-
-		<execute macro="SOUser#addUserWithSORole">
-			<var name="adminEmailAddress" value="test@liferay.com" />
-			<var name="password" value="test" />
-			<var name="userEmailAddress" value="${userEmailAddress}" />
-			<var name="userFirstName" value="${userFirstName}" />
-			<var name="userLastName" value="${userLastName}" />
-			<var name="userMiddleName" value="${userMiddleName}" />
-			<var name="userScreenName" value="${userScreenName}" />
-		</execute>
-
-		<execute macro="SOUserBar#addSOSite">
-			<var name="siteDescription" value="${siteDescription}" />
-			<var name="siteName" value="${siteName}" />
-			<var name="siteType" value="${siteType}" />
-		</execute>
-
-		<execute macro="SOUserBar#searchSOSite">
-			<var name="siteName" value="${siteName}" />
-		</execute>
-
-		<execute function="Click" locator1="SOUserBar#GO_TO_SITE_NAME_LINK" />
-
-		<execute function="Click#textClickAt" locator1="SOSiteHome#NAVIGATION_MEMBERS" value1="Members" />
-
-		<execute macro="SOMembers#inviteMember">
-			<var name="userEmailAddress" value="${userEmailAddress}" />
-			<var name="userFirstName" value="${userFirstName}" />
-			<var name="userLastName" value="${userLastName}" />
-			<var name="userMiddleName" value="${userMiddleName}" />
-		</execute>
-
-		<execute macro="SOUser#logoutPG" />
-
-		<execute macro="SOUser#loginPG">
-			<var name="password" value="test" />
-			<var name="userEmailAddress" value="${userEmailAddress}" />
-		</execute>
-
-		<execute macro="SOMembers#confirmMemberInvite">
-			<var name="senderName" value="${adminName}" />
-		</execute>
-
-		<execute macro="SOUserBar#favoriteSOSite">
-			<var name="siteDescription" value="${siteDescription}" />
-			<var name="siteName" value="${siteName}" />
-			<var name="siteType" value="${siteType}" />
-		</execute>
-
-		<execute macro="SOSite#viewSOSiteFavorite">
-			<var name="siteDescription" value="${siteDescription}" />
-			<var name="siteName" value="${siteName}" />
-			<var name="siteType" value="${siteType}" />
-		</execute>
-	</command>
-
-	<command name="FavoriteSOSitePrivateRestricted" priority="5">
-		<var name="siteDescription" value="Private Restricted Site Description" />
-		<var name="siteName" value="Private Restricted Site Name" />
-		<var name="siteType" value="Private Restricted" />
-
-		<execute macro="SOUser#addUserWithSORole">
-			<var name="adminEmailAddress" value="test@liferay.com" />
-			<var name="password" value="test" />
-			<var name="userEmailAddress" value="${userEmailAddress}" />
-			<var name="userFirstName" value="${userFirstName}" />
-			<var name="userLastName" value="${userLastName}" />
-			<var name="userMiddleName" value="${userMiddleName}" />
-			<var name="userScreenName" value="${userScreenName}" />
-		</execute>
-
-		<execute macro="SOUserBar#addSOSite">
-			<var name="siteDescription" value="${siteDescription}" />
-			<var name="siteName" value="${siteName}" />
-			<var name="siteType" value="${siteType}" />
-		</execute>
-
-		<execute macro="SOUser#logoutPG" />
-
-		<execute macro="SOUser#loginPG">
-			<var name="password" value="test" />
-			<var name="userEmailAddress" value="${userEmailAddress}" />
-		</execute>
-
-		<execute macro="SOUserBar#requestMembershipSOSite">
-			<var name="siteName" value="${siteName}" />
-			<var name="siteType" value="${siteType}" />
-		</execute>
-
-		<execute macro="SOUser#logoutPG" />
-
-		<execute macro="SOUser#loginPG">
-			<var name="password" value="test" />
-			<var name="userEmailAddress" value="${adminEmailAddress}" />
-		</execute>
-
-		<execute macro="SOSite#acceptMemberRequestSOSite">
-			<var name="siteName" value="${siteName}" />
-			<var name="siteOwner" value="${adminName}" />
-			<var name="userEmailAddress" value="${userEmailAddress}" />
-			<var name="userName" value="${userName}" />
-		</execute>
-
-		<execute macro="SOUser#logoutPG" />
-
-		<execute macro="SOUser#loginPG">
-			<var name="password" value="test" />
-			<var name="userEmailAddress" value="${userEmailAddress}" />
-		</execute>
-
-		<execute macro="SOUserBar#favoriteSOSite">
-			<var name="siteDescription" value="${siteDescription}" />
-			<var name="siteName" value="${siteName}" />
-			<var name="siteType" value="${siteType}" />
-		</execute>
-
-		<execute macro="SOSite#viewSOSiteFavorite">
-			<var name="siteDescription" value="${siteDescription}" />
-			<var name="siteName" value="${siteName}" />
-			<var name="siteType" value="${siteType}" />
-		</execute>
-	</command>
-
-	<command name="FavoriteSOSitePublicRestricted" priority="5">
-		<var name="siteDescription" value="Public Restricted Site Description" />
-		<var name="siteName" value="Public Restricted Site Name" />
-		<var name="siteType" value="Public Restricted" />
-
-		<execute macro="SOUser#addUserWithSORole">
-			<var name="adminEmailAddress" value="test@liferay.com" />
-			<var name="password" value="test" />
-			<var name="userEmailAddress" value="${userEmailAddress}" />
-			<var name="userFirstName" value="${userFirstName}" />
-			<var name="userLastName" value="${userLastName}" />
-			<var name="userMiddleName" value="${userMiddleName}" />
-			<var name="userScreenName" value="${userScreenName}" />
-		</execute>
-
-		<execute macro="SOUserBar#addSOSite">
-			<var name="siteDescription" value="${siteDescription}" />
-			<var name="siteName" value="${siteName}" />
-			<var name="siteType" value="${siteType}" />
-		</execute>
-
-		<execute macro="SOUser#logoutPG" />
-
-		<execute macro="SOUser#loginPG">
-			<var name="password" value="test" />
-			<var name="userEmailAddress" value="${userEmailAddress}" />
-		</execute>
-
-		<execute macro="SOUserBar#requestMembershipSOSite">
-			<var name="siteName" value="${siteName}" />
-			<var name="siteType" value="${siteType}" />
-		</execute>
-
-		<execute macro="SOUser#logoutPG" />
-
-		<execute macro="SOUser#loginPG">
-			<var name="password" value="test" />
-			<var name="userEmailAddress" value="${adminEmailAddress}" />
-		</execute>
-
-		<execute macro="SOSite#acceptMemberRequestSOSite">
-			<var name="siteName" value="${siteName}" />
-			<var name="siteOwner" value="${adminName}" />
-			<var name="userEmailAddress" value="${userEmailAddress}" />
-			<var name="userName" value="${userName}" />
-		</execute>
-
-		<execute macro="SOUser#logoutPG" />
-
-		<execute macro="SOUser#loginPG">
-			<var name="password" value="test" />
-			<var name="userEmailAddress" value="${userEmailAddress}" />
-		</execute>
-
-		<execute macro="SOUserBar#favoriteSOSite">
-			<var name="siteDescription" value="${siteDescription}" />
-			<var name="siteName" value="${siteName}" />
-			<var name="siteType" value="${siteType}" />
-		</execute>
-
-		<execute macro="SOSite#viewSOSiteFavorite">
-			<var name="siteDescription" value="${siteDescription}" />
-			<var name="siteName" value="${siteName}" />
-			<var name="siteType" value="${siteType}" />
-		</execute>
-	</command>
-
-	<command name="JoinSOSite" priority="5">
-		<var name="siteDescription" value="Open Site Description" />
-		<var name="siteName" value="Open Site Name" />
-		<var name="siteType" value="Open" />
-
-		<execute macro="SOUser#addUserWithSORole">
-			<var name="adminEmailAddress" value="test@liferay.com" />
-			<var name="password" value="test" />
-			<var name="userEmailAddress" value="${userEmailAddress}" />
-			<var name="userFirstName" value="${userFirstName}" />
-			<var name="userLastName" value="${userLastName}" />
-			<var name="userMiddleName" value="${userMiddleName}" />
-			<var name="userScreenName" value="${userScreenName}" />
-		</execute>
-
-		<execute macro="SOUserBar#addSOSite">
-			<var name="siteDescription" value="${siteDescription}" />
-			<var name="siteName" value="${siteName}" />
-			<var name="siteType" value="${siteType}" />
-		</execute>
-
-		<execute macro="SOUser#logoutPG" />
-
-		<execute macro="SOUser#loginPG">
-			<var name="password" value="test" />
-			<var name="userEmailAddress" value="${userEmailAddress}" />
-		</execute>
-
-		<execute macro="SOUserBar#joinSOSite">
-			<var name="siteName" value="${siteName}" />
-		</execute>
-
-		<execute macro="SOSite#viewSOSiteMembership">
-			<var name="siteDescription" value="${siteDescription}" />
-			<var name="siteName" value="${siteName}" />
-			<var name="siteType" value="${siteType}" />
-			<var name="userEmailAddress" value="${userEmailAddress}" />
-			<var name="userFirstName" value="${userFirstName}" />
-			<var name="userLastName" value="${userLastName}" />
-			<var name="userListName" value="${userListName}" />
-			<var name="userMiddleName" value="${userMiddleName}" />
-			<var name="userName" value="${userName}" />
-			<var name="userScreenName" value="${userScreenName}" />
-		</execute>
-	</command>
-
-	<command name="LeaveSOSite" priority="5">
-		<var name="siteDescription" value="Open Site Description" />
-		<var name="siteName" value="Open Site Name" />
-		<var name="siteType" value="Open" />
-
-		<execute macro="SOUser#addUserWithSORole">
-			<var name="adminEmailAddress" value="test@liferay.com" />
-			<var name="password" value="test" />
-			<var name="userEmailAddress" value="${userEmailAddress}" />
-			<var name="userFirstName" value="${userFirstName}" />
-			<var name="userLastName" value="${userLastName}" />
-			<var name="userMiddleName" value="${userMiddleName}" />
-			<var name="userScreenName" value="${userScreenName}" />
-		</execute>
-
-		<execute macro="SOUserBar#addSOSite">
-			<var name="siteDescription" value="${siteDescription}" />
-			<var name="siteName" value="${siteName}" />
-			<var name="siteType" value="${siteType}" />
-		</execute>
-
-		<execute macro="SOUser#logoutPG" />
-
-		<execute macro="SOUser#loginPG">
-			<var name="password" value="test" />
-			<var name="userEmailAddress" value="${userEmailAddress}" />
-		</execute>
-
-		<execute macro="SOUserBar#joinSOSite">
-			<var name="siteName" value="${siteName}" />
-		</execute>
-
-		<execute macro="SOUserBar#leaveSOSite">
-			<var name="siteName" value="${siteName}" />
-		</execute>
-
-		<execute macro="SOSite#viewSOSiteNonMembership">
-			<var name="siteDescription" value="${siteDescription}" />
-			<var name="siteName" value="${siteName}" />
-			<var name="siteType" value="${siteType}" />
-			<var name="userEmailAddress" value="${userEmailAddress}" />
-			<var name="userFirstName" value="${userFirstName}" />
-			<var name="userLastName" value="${userLastName}" />
-			<var name="userListName" value="${userListName}" />
-			<var name="userMiddleName" value="${userMiddleName}" />
-			<var name="userName" value="${userName}" />
-			<var name="userScreenName" value="${userScreenName}" />
-		</execute>
-	</command>
-
-	<command name="LeaveSOSitePrivateRestricted" priority="5">
-		<var name="siteDescription" value="Private Restricted Site Description" />
-		<var name="siteName" value="Private Restricted Site Name" />
-		<var name="siteType" value="Private Restricted" />
-
-		<execute macro="SOUser#addUserWithSORole">
-			<var name="adminEmailAddress" value="test@liferay.com" />
-			<var name="password" value="test" />
-			<var name="userEmailAddress" value="${userEmailAddress}" />
-			<var name="userFirstName" value="${userFirstName}" />
-			<var name="userLastName" value="${userLastName}" />
-			<var name="userMiddleName" value="${userMiddleName}" />
-			<var name="userScreenName" value="${userScreenName}" />
-		</execute>
-
-		<execute macro="SOUserBar#addSOSite">
-			<var name="siteDescription" value="${siteDescription}" />
-			<var name="siteName" value="${siteName}" />
-			<var name="siteType" value="${siteType}" />
-		</execute>
-
-		<execute macro="SOUser#logoutPG" />
-
-		<execute macro="SOUser#loginPG">
-			<var name="password" value="test" />
-			<var name="userEmailAddress" value="${userEmailAddress}" />
-		</execute>
-
-		<execute macro="SOUserBar#requestMembershipSOSite">
-			<var name="siteName" value="${siteName}" />
-			<var name="siteType" value="${siteType}" />
-		</execute>
-
-		<execute macro="SOUser#logoutPG" />
-
-		<execute macro="SOUser#loginPG">
-			<var name="password" value="test" />
-			<var name="userEmailAddress" value="${adminEmailAddress}" />
-		</execute>
-
-		<execute macro="SOSite#acceptMemberRequestSOSite">
-			<var name="siteName" value="${siteName}" />
-			<var name="siteOwner" value="${adminName}" />
-			<var name="userEmailAddress" value="${userEmailAddress}" />
-			<var name="userName" value="${userName}" />
-		</execute>
-
-		<execute macro="SOUser#logoutPG" />
-
-		<execute macro="SOUser#loginPG">
-			<var name="password" value="test" />
-			<var name="userEmailAddress" value="${userEmailAddress}" />
-		</execute>
-
-		<execute macro="SOUserBar#leaveSOSite">
-			<var name="siteName" value="${siteName}" />
-		</execute>
-
-		<execute macro="SOSite#viewSOSiteNonMembership">
-			<var name="siteDescription" value="${siteDescription}" />
-			<var name="siteName" value="${siteName}" />
-			<var name="siteType" value="${siteType}" />
-			<var name="userEmailAddress" value="${userEmailAddress}" />
-			<var name="userFirstName" value="${userFirstName}" />
-			<var name="userLastName" value="${userLastName}" />
-			<var name="userListName" value="${userListName}" />
-			<var name="userMiddleName" value="${userMiddleName}" />
-			<var name="userName" value="${userName}" />
-			<var name="userScreenName" value="${userScreenName}" />
-		</execute>
-	</command>
-
-	<command name="LeaveSOSitePublicRestricted" priority="5">
-		<var name="siteDescription" value="Public Restricted Site Description" />
-		<var name="siteName" value="Public Restricted Site Name" />
-		<var name="siteType" value="Public Restricted" />
-
-		<execute macro="SOUser#addUserWithSORole">
-			<var name="adminEmailAddress" value="test@liferay.com" />
-			<var name="password" value="test" />
-			<var name="userEmailAddress" value="${userEmailAddress}" />
-			<var name="userFirstName" value="${userFirstName}" />
-			<var name="userLastName" value="${userLastName}" />
-			<var name="userMiddleName" value="${userMiddleName}" />
-			<var name="userScreenName" value="${userScreenName}" />
-		</execute>
-
-		<execute macro="SOUserBar#addSOSite">
-			<var name="siteDescription" value="${siteDescription}" />
-			<var name="siteName" value="${siteName}" />
-			<var name="siteType" value="${siteType}" />
-		</execute>
-
-		<execute macro="SOUser#logoutPG" />
-
-		<execute macro="SOUser#loginPG">
-			<var name="password" value="test" />
-			<var name="userEmailAddress" value="${userEmailAddress}" />
-		</execute>
-
-		<execute macro="SOUserBar#requestMembershipSOSite">
-			<var name="siteName" value="${siteName}" />
-			<var name="siteType" value="${siteType}" />
-		</execute>
-
-		<execute macro="SOUser#logoutPG" />
-
-		<execute macro="SOUser#loginPG">
-			<var name="password" value="test" />
-			<var name="userEmailAddress" value="${adminEmailAddress}" />
-		</execute>
-
-		<execute macro="SOSite#acceptMemberRequestSOSite">
-			<var name="siteName" value="${siteName}" />
-			<var name="siteOwner" value="${adminName}" />
-			<var name="userEmailAddress" value="${userEmailAddress}" />
-			<var name="userName" value="${userName}" />
-		</execute>
-
-		<execute macro="SOUser#logoutPG" />
-
-		<execute macro="SOUser#loginPG">
-			<var name="password" value="test" />
-			<var name="userEmailAddress" value="${userEmailAddress}" />
-		</execute>
-
-		<execute macro="SOUserBar#leaveSOSite">
-			<var name="siteName" value="${siteName}" />
-		</execute>
-
-		<execute macro="SOSite#viewSOSiteNonMembership">
-			<var name="siteDescription" value="${siteDescription}" />
-			<var name="siteName" value="${siteName}" />
-			<var name="siteType" value="${siteType}" />
-			<var name="userEmailAddress" value="${userEmailAddress}" />
-			<var name="userFirstName" value="${userFirstName}" />
-			<var name="userLastName" value="${userLastName}" />
-			<var name="userListName" value="${userListName}" />
-			<var name="userMiddleName" value="${userMiddleName}" />
-			<var name="userName" value="${userName}" />
-			<var name="userScreenName" value="${userScreenName}" />
-		</execute>
-	</command>
-
-	<command name="SearchSOSite" priority="5">
-		<var name="siteDescription" value="Open Site Description" />
-		<var name="siteName" value="Open Site Name" />
-		<var name="siteType" value="Open" />
-
-		<execute macro="SOContactsCenter#addConnection">
-			<var name="adminEmailAddress" value="${adminEmailAddress}" />
-			<var name="senderName" value="${adminName}" />
-			<var name="userEmailAddress" value="${userEmailAddress}" />
-			<var name="userFirstName" value="${userFirstName}" />
-			<var name="userLastName" value="${userLastName}" />
-			<var name="userListName" value="${userListName}" />
-			<var name="userMiddleName" value="${userMiddleName}" />
-			<var name="userName" value="${userName}" />
-			<var name="userScreenName" value="${userScreenName}" />
-		</execute>
-
-		<execute macro="SOUser#logoutPG" />
-
-		<execute macro="SOUser#loginPG">
-			<var name="password" value="test" />
-			<var name="userEmailAddress" value="${adminEmailAddress}" />
-		</execute>
-
-		<execute macro="SOUserBar#addSOSite">
-			<var name="siteDescription" value="${siteDescription}" />
-			<var name="siteName" value="${siteName}" />
-			<var name="siteType" value="${siteType}" />
-		</execute>
-
-		<execute macro="SOUser#logoutPG" />
-
-		<execute macro="SOUser#loginPG">
-			<var name="password" value="test" />
-			<var name="userEmailAddress" value="${userEmailAddress}" />
-		</execute>
-
-		<execute macro="SOSite#viewSOSiteNonMembership">
-			<var name="siteDescription" value="${siteDescription}" />
-			<var name="siteName" value="${siteName}" />
-			<var name="siteType" value="${siteType}" />
-			<var name="userEmailAddress" value="${userEmailAddress}" />
-			<var name="userFirstName" value="${userFirstName}" />
-			<var name="userLastName" value="${userLastName}" />
-			<var name="userListName" value="${userListName}" />
-			<var name="userMiddleName" value="${userMiddleName}" />
-			<var name="userName" value="${userName}" />
-			<var name="userScreenName" value="${userScreenName}" />
-		</execute>
-	</command>
-
-	<command name="SearchSOSitePrivate" priority="5">
-		<var name="siteDescription" value="Private Site Description" />
-		<var name="siteName" value="Private Site Name" />
-		<var name="siteType" value="Private" />
-
-		<execute macro="SOContactsCenter#addConnection">
-			<var name="adminEmailAddress" value="${adminEmailAddress}" />
-			<var name="senderName" value="${adminName}" />
-			<var name="userEmailAddress" value="${userEmailAddress}" />
-			<var name="userFirstName" value="${userFirstName}" />
-			<var name="userLastName" value="${userLastName}" />
-			<var name="userListName" value="${userListName}" />
-			<var name="userMiddleName" value="${userMiddleName}" />
-			<var name="userName" value="${userName}" />
-			<var name="userScreenName" value="${userScreenName}" />
-		</execute>
-
-		<execute macro="SOUser#logoutPG" />
-
-		<execute macro="SOUser#loginPG">
-			<var name="password" value="test" />
-			<var name="userEmailAddress" value="${adminEmailAddress}" />
-		</execute>
-
-		<execute macro="SOUserBar#addSOSite">
-			<var name="siteDescription" value="${siteDescription}" />
-			<var name="siteName" value="${siteName}" />
-			<var name="siteType" value="${siteType}" />
-		</execute>
-
-		<execute macro="SOUser#logoutPG" />
-
-		<execute macro="SOUser#loginPG">
-			<var name="password" value="test" />
-			<var name="userEmailAddress" value="${userEmailAddress}" />
-		</execute>
-
-		<execute macro="SOSite#viewSOSiteNonMembership">
-			<var name="siteDescription" value="${siteDescription}" />
-			<var name="siteName" value="${siteName}" />
-			<var name="siteType" value="${siteType}" />
-			<var name="userEmailAddress" value="${userEmailAddress}" />
-			<var name="userFirstName" value="${userFirstName}" />
-			<var name="userLastName" value="${userLastName}" />
-			<var name="userListName" value="${userListName}" />
-			<var name="userMiddleName" value="${userMiddleName}" />
-			<var name="userName" value="${userName}" />
-			<var name="userScreenName" value="${userScreenName}" />
-		</execute>
-	</command>
-
-	<command name="SearchSOSitePrivateRestricted" priority="5">
-		<var name="siteDescription" value="Private Restricted Site Description" />
-		<var name="siteName" value="Private Restricted Site Name" />
-		<var name="siteType" value="Private Restricted" />
-
-		<execute macro="SOContactsCenter#addConnection">
-			<var name="adminEmailAddress" value="${adminEmailAddress}" />
-			<var name="senderName" value="${adminName}" />
-			<var name="userEmailAddress" value="${userEmailAddress}" />
-			<var name="userFirstName" value="${userFirstName}" />
-			<var name="userLastName" value="${userLastName}" />
-			<var name="userListName" value="${userListName}" />
-			<var name="userMiddleName" value="${userMiddleName}" />
-			<var name="userName" value="${userName}" />
-			<var name="userScreenName" value="${userScreenName}" />
-		</execute>
-
-		<execute macro="SOUser#logoutPG" />
-
-		<execute macro="SOUser#loginPG">
-			<var name="password" value="test" />
-			<var name="userEmailAddress" value="${adminEmailAddress}" />
-		</execute>
-
-		<execute macro="SOUserBar#addSOSite">
-			<var name="siteDescription" value="${siteDescription}" />
-			<var name="siteName" value="${siteName}" />
-			<var name="siteType" value="${siteType}" />
-		</execute>
-
-		<execute macro="SOUser#logoutPG" />
-
-		<execute macro="SOUser#loginPG">
-			<var name="password" value="test" />
-			<var name="userEmailAddress" value="${userEmailAddress}" />
-		</execute>
-
-		<execute macro="SOSite#viewSOSiteNonMembership">
-			<var name="siteDescription" value="${siteDescription}" />
-			<var name="siteName" value="${siteName}" />
-			<var name="siteType" value="${siteType}" />
-			<var name="userEmailAddress" value="${userEmailAddress}" />
-			<var name="userFirstName" value="${userFirstName}" />
-			<var name="userLastName" value="${userLastName}" />
-			<var name="userListName" value="${userListName}" />
-			<var name="userMiddleName" value="${userMiddleName}" />
-			<var name="userName" value="${userName}" />
-			<var name="userScreenName" value="${userScreenName}" />
-		</execute>
-	</command>
-
-	<command name="SearchSOSitePublicRestricted" priority="5">
-		<var name="siteDescription" value="Public Restricted Site Description" />
-		<var name="siteName" value="Public Restricted Site Name" />
-		<var name="siteType" value="Public Restricted" />
-
-		<execute macro="SOContactsCenter#addConnection">
-			<var name="adminEmailAddress" value="${adminEmailAddress}" />
-			<var name="senderName" value="${adminName}" />
-			<var name="userEmailAddress" value="${userEmailAddress}" />
-			<var name="userFirstName" value="${userFirstName}" />
-			<var name="userLastName" value="${userLastName}" />
-			<var name="userListName" value="${userListName}" />
-			<var name="userMiddleName" value="${userMiddleName}" />
-			<var name="userName" value="${userName}" />
-			<var name="userScreenName" value="${userScreenName}" />
-		</execute>
-
-		<execute macro="SOUser#logoutPG" />
-
-		<execute macro="SOUser#loginPG">
-			<var name="password" value="test" />
-			<var name="userEmailAddress" value="${adminEmailAddress}" />
-		</execute>
-
-		<execute macro="SOUserBar#addSOSite">
-			<var name="siteDescription" value="${siteDescription}" />
-			<var name="siteName" value="${siteName}" />
-			<var name="siteType" value="${siteType}" />
-		</execute>
-
-		<execute macro="SOUser#logoutPG" />
-
-		<execute macro="SOUser#loginPG">
-			<var name="password" value="test" />
-			<var name="userEmailAddress" value="${userEmailAddress}" />
-		</execute>
-
-		<execute macro="SOSite#viewSOSiteNonMembership">
-			<var name="siteDescription" value="${siteDescription}" />
-			<var name="siteName" value="${siteName}" />
-			<var name="siteType" value="${siteType}" />
-			<var name="userEmailAddress" value="${userEmailAddress}" />
-			<var name="userFirstName" value="${userFirstName}" />
-			<var name="userLastName" value="${userLastName}" />
-			<var name="userListName" value="${userListName}" />
-			<var name="userMiddleName" value="${userMiddleName}" />
-			<var name="userName" value="${userName}" />
-			<var name="userScreenName" value="${userScreenName}" />
-		</execute>
-	</command>
-
-	<command name="ViewSOSiteDirectory" priority="5">
-		<var name="siteDescription1" value="Open Site1 Description" />
-		<var name="siteDescription2" value="Public Restricted Site2 Description" />
-		<var name="siteDescription3" value="Private Site3 Description" />
-		<var name="siteDescription4" value="Private Restricted Site4 Description" />
-		<var name="siteName1" value="Open Site1 Name" />
-		<var name="siteName2" value="Public Restricted Site2 Name" />
-		<var name="siteName3" value="Private Site3 Name" />
-		<var name="siteName4" value="Private Restricted Site4 Name" />
-		<var name="siteType1" value="Open" />
-		<var name="siteType2" value="Public Restricted" />
-		<var name="siteType3" value="Private" />
-		<var name="siteType4" value="Private Restricted" />
-
-		<execute macro="SOUserBar#addSOSite">
-			<var name="siteDescription" value="${siteDescription1}" />
-			<var name="siteName" value="${siteName1}" />
-			<var name="siteType" value="${siteType1}" />
-		</execute>
-
-		<execute macro="SOUserBar#addSOSite">
-			<var name="siteDescription" value="${siteDescription2}" />
-			<var name="siteName" value="${siteName2}" />
-			<var name="siteType" value="${siteType2}" />
-		</execute>
-
-		<execute macro="SOUserBar#addSOSite">
-			<var name="siteDescription" value="${siteDescription3}" />
-			<var name="siteName" value="${siteName3}" />
-			<var name="siteType" value="${siteType3}" />
-		</execute>
-
-		<execute macro="SOUserBar#addSOSite">
-			<var name="siteDescription" value="${siteDescription4}" />
-			<var name="siteName" value="${siteName4}" />
-			<var name="siteType" value="${siteType4}" />
-		</execute>
-
-		<execute function="Click#textClickAt" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
-		<execute function="Click#pauseClickAt" locator1="SOUserBar#GO_TO" />
-		<execute function="Click#pauseClickAt" locator1="SOUserBar#GO_TO_SITES_DIRECTORY_BUTTON" />
-
-		<execute function="Select" locator1="SOUserBarSitesDirectory#SITE_CATEGORY_SELECT" value1="All Sites" />
-		<execute function="AssertTextEquals" locator1="SOUserBarSitesDirectory#SITE_NAME_LINK_1" value1="${siteName1}" />
-		<execute function="AssertTextEquals" locator1="SOUserBarSitesDirectory#SITE_DESCRIPTION_1" value1="${siteDescription1}" />
-		<execute function="AssertTextEquals" locator1="SOUserBarSitesDirectory#SITE_NAME_LINK_2" value1="${siteName2}" />
-		<execute function="AssertTextEquals" locator1="SOUserBarSitesDirectory#SITE_DESCRIPTION_2" value1="${siteDescription2}" />
-		<execute function="AssertElementNotPresent" locator1="SOUserBarSitesDirectory#SITE_NAME_LINK_3" value1="${siteName3}" />
-		<execute function="AssertElementNotPresent" locator1="SOUserBarSitesDirectory#SITE_DESCRIPTION_3" value1="${siteDescription3}" />
-		<execute function="AssertTextEquals" locator1="SOUserBarSitesDirectory#SITE_NAME_LINK_4" value1="${siteName4}" />
-		<execute function="AssertTextEquals" locator1="SOUserBarSitesDirectory#SITE_DESCRIPTION_4" value1="${siteDescription4}" />
-		<execute function="Select" locator1="SOUserBarSitesDirectory#SITE_CATEGORY_SELECT" value1="My Sites" />
-		<execute function="AssertTextEquals" locator1="SOUserBarSitesDirectory#SITE_NAME_LINK_1" value1="${siteName1}" />
-		<execute function="AssertTextEquals" locator1="SOUserBarSitesDirectory#SITE_DESCRIPTION_1" value1="${siteDescription1}" />
-		<execute function="AssertTextEquals" locator1="SOUserBarSitesDirectory#SITE_NAME_LINK_2" value1="${siteName2}" />
-		<execute function="AssertTextEquals" locator1="SOUserBarSitesDirectory#SITE_DESCRIPTION_2" value1="${siteDescription2}" />
-		<execute function="AssertTextEquals" locator1="SOUserBarSitesDirectory#SITE_NAME_LINK_3" value1="${siteName3}" />
-		<execute function="AssertTextEquals" locator1="SOUserBarSitesDirectory#SITE_DESCRIPTION_3" value1="${siteDescription3}" />
-		<execute function="AssertTextEquals" locator1="SOUserBarSitesDirectory#SITE_NAME_LINK_4" value1="${siteName4}" />
-		<execute function="AssertTextEquals" locator1="SOUserBarSitesDirectory#SITE_DESCRIPTION_4" value1="${siteDescription4}" />
-
-		<var name="siteName" value="${siteName1}" />
-
-		<execute function="Type" locator1="SOUserBarSitesDirectory#SITE_SEARCH_FIELD" value1="${siteName1}" />
-		<execute function="AssertTextEquals" locator1="SOUserBarSitesDirectory#SITE_NAME_LINK" value1="${siteName1}" />
-		<execute function="AssertTextEquals" locator1="SOUserBarSitesDirectory#SITE_DESCRIPTION" value1="${siteDescription1}" />
-		<execute function="Click" locator1="SOUserBarSitesDirectory#SITE_NAME_LINK" value1="${siteName1}" />
-
-		<execute function="AssertTextEquals" locator1="SOSiteHome#SITE_NAME" value1="${siteName1}" />
-
-		<var name="siteName" value="${siteName2}" />
-
-		<execute function="Click#textClickAt" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
-		<execute function="Click#pauseClickAt" locator1="SOUserBar#GO_TO" />
-		<execute function="Click#pauseClickAt" locator1="SOUserBar#GO_TO_SITES_DIRECTORY_BUTTON" />
-
-		<execute function="Select" locator1="SOUserBarSitesDirectory#SITE_CATEGORY_SELECT" value1="My Sites" />
-		<execute function="Type" locator1="SOUserBarSitesDirectory#SITE_SEARCH_FIELD" value1="${siteName2}" />
-		<execute function="AssertTextEquals" locator1="SOUserBarSitesDirectory#SITE_NAME_LINK" value1="${siteName2}" />
-		<execute function="AssertTextEquals" locator1="SOUserBarSitesDirectory#SITE_DESCRIPTION" value1="${siteDescription2}" />
-		<execute function="Click" locator1="SOUserBarSitesDirectory#SITE_NAME_LINK" value1="${siteName2}" />
-
-		<execute function="AssertTextEquals" locator1="SOSiteHome#SITE_NAME" value1="${siteName2}" />
-
-		<var name="siteName" value="${siteName3}" />
-
-		<execute function="Click#textClickAt" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
-		<execute function="Click#pauseClickAt" locator1="SOUserBar#GO_TO" />
-		<execute function="Click#pauseClickAt" locator1="SOUserBar#GO_TO_SITES_DIRECTORY_BUTTON" />
-
-		<execute function="Select" locator1="SOUserBarSitesDirectory#SITE_CATEGORY_SELECT" value1="My Sites" />
-		<execute function="Type" locator1="SOUserBarSitesDirectory#SITE_SEARCH_FIELD" value1="${siteName3}" />
-		<execute function="AssertTextEquals" locator1="SOUserBarSitesDirectory#SITE_NAME_LINK" value1="${siteName3}" />
-		<execute function="AssertTextEquals" locator1="SOUserBarSitesDirectory#SITE_DESCRIPTION" value1="${siteDescription3}" />
-		<execute function="Click" locator1="SOUserBarSitesDirectory#SITE_NAME_LINK" value1="${siteName3}" />
-
-		<execute function="AssertTextEquals" locator1="SOSiteHome#SITE_NAME" value1="${siteName3}" />
-
-		<var name="siteName" value="${siteName4}" />
-
-		<execute function="Click#textClickAt" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
-		<execute function="Click#pauseClickAt" locator1="SOUserBar#GO_TO" />
-		<execute function="Click#pauseClickAt" locator1="SOUserBar#GO_TO_SITES_DIRECTORY_BUTTON" />
-
-		<execute function="Select" locator1="SOUserBarSitesDirectory#SITE_CATEGORY_SELECT" value1="My Sites" />
-		<execute function="Type" locator1="SOUserBarSitesDirectory#SITE_SEARCH_FIELD" value1="${siteName4}" />
-		<execute function="AssertTextEquals" locator1="SOUserBarSitesDirectory#SITE_NAME_LINK" value1="${siteName4}" />
-		<execute function="AssertTextEquals" locator1="SOUserBarSitesDirectory#SITE_DESCRIPTION" value1="${siteDescription4}" />
-		<execute function="Click" locator1="SOUserBarSitesDirectory#SITE_NAME_LINK" value1="${siteName4}" />
-
-		<execute function="AssertTextEquals" locator1="SOSiteHome#SITE_NAME" value1="${siteName4}" />
-	</command>
-</definition>
+@component-name = "social-office-administration"
+definition {
+	property hook.plugins.includes = "deploy-listener-hook,portal-compat-hook,so-activities-hook,so-hook";
+	property portlet.plugins.includes = "chat-portlet,contacts-portlet,events-display-portlet,microblogs-portlet,private-messaging-portlet,so-announcements-portlet,so-configurations-portlet,so-portlet,tasks-portlet,wysiwyg-portlet";
+	property testray.main.component.name = "Social Office EE";
+	property theme.plugins.includes = "so-theme";
+	var adminEmailAddress = "test@liferay.com";
+	var adminFirstName = "Joe";
+	var adminListName = "Bloggs, Joe";
+	var adminName = "Joe Bloggs";
+	var password = "test";
+	var roleName = "Social Office";
+	var userEmailAddress = "socialoffice01@liferay.com";
+	var userFirstName = "Social01";
+	var userLastName = "User01";
+	var userListName = "User01, Social01";
+	var userMiddleName = "Office01";
+	var userName = "Social01 Office01 User01";
+	var userScreenName = "socialoffice01";
+
+	setUp {
+		SOUser.firstLoginPG();
+	}
+
+	tearDown {
+		SOUser.tearDownCP();
+
+		SOUserBar.tearDownSites();
+
+		SOUserBar.tearDownNotifications();
+	}
+
+	@priority = "5"
+	test AcceptMemberRequestSOSitePrivateRestricted {
+		var siteDescription = "Private Restricted Site Description";
+		var siteName = "Private Restricted Site Name";
+		var siteType = "Private Restricted";
+
+		SOUser.addUserWithSORole(
+			adminEmailAddress = "test@liferay.com",
+			password = "test",
+			userEmailAddress = "${userEmailAddress}",
+			userFirstName = "${userFirstName}",
+			userLastName = "${userLastName}",
+			userMiddleName = "${userMiddleName}",
+			userScreenName = "${userScreenName}"
+		);
+
+		SOUserBar.addSOSite(
+			siteDescription = "${siteDescription}",
+			siteName = "${siteName}",
+			siteType = "${siteType}"
+		);
+
+		SOUser.logoutPG();
+
+		SOUser.loginPG(password = "test", userEmailAddress = "${userEmailAddress}");
+
+		SOUserBar.requestMembershipSOSite(
+			siteName = "${siteName}",
+			siteType = "${siteType}"
+		);
+
+		SOUser.logoutPG();
+
+		SOUser.loginPG(password = "test", userEmailAddress = "${adminEmailAddress}");
+
+		SOSite.acceptMemberRequestSOSite(
+			siteName = "${siteName}",
+			siteOwner = "${adminName}",
+			userEmailAddress = "${userEmailAddress}",
+			userName = "${userName}"
+		);
+
+		SOUser.logoutPG();
+
+		SOUser.loginPG(password = "test", userEmailAddress = "${userEmailAddress}");
+
+		SOSite.viewSOSiteMembership(
+			siteDescription = "${siteDescription}",
+			siteName = "${siteName}",
+			siteType = "${siteType}",
+			userEmailAddress = "${userEmailAddress}",
+			userFirstName = "${userFirstName}",
+			userLastName = "${userLastName}",
+			userListName = "${userListName}",
+			userMiddleName = "${userMiddleName}",
+			userName = "${userName}",
+			userScreenName = "${userScreenName}"
+		);
+	}
+
+	@priority = "5"
+	test AcceptMemberRequestSOSitePublicRestricted {
+		var siteDescription = "Public Restricted Site Description";
+		var siteName = "Public Restricted Site Name";
+		var siteType = "Public Restricted";
+
+		SOUser.addUserWithSORole(
+			adminEmailAddress = "test@liferay.com",
+			password = "test",
+			userEmailAddress = "${userEmailAddress}",
+			userFirstName = "${userFirstName}",
+			userLastName = "${userLastName}",
+			userMiddleName = "${userMiddleName}",
+			userScreenName = "${userScreenName}"
+		);
+
+		SOUserBar.addSOSite(
+			siteDescription = "${siteDescription}",
+			siteName = "${siteName}",
+			siteType = "${siteType}"
+		);
+
+		SOUser.logoutPG();
+
+		SOUser.loginPG(password = "test", userEmailAddress = "${userEmailAddress}");
+
+		SOUserBar.requestMembershipSOSite(
+			siteName = "${siteName}",
+			siteType = "${siteType}"
+		);
+
+		SOUser.logoutPG();
+
+		SOUser.loginPG(password = "test", userEmailAddress = "${adminEmailAddress}");
+
+		SOSite.acceptMemberRequestSOSite(
+			siteName = "${siteName}",
+			siteOwner = "${adminName}",
+			userEmailAddress = "${userEmailAddress}",
+			userName = "${userName}"
+		);
+
+		SOUser.logoutPG();
+
+		SOUser.loginPG(password = "test", userEmailAddress = "${userEmailAddress}");
+
+		SOSite.viewSOSiteMembership(
+			siteDescription = "${siteDescription}",
+			siteName = "${siteName}",
+			siteType = "${siteType}",
+			userEmailAddress = "${userEmailAddress}",
+			userFirstName = "${userFirstName}",
+			userLastName = "${userLastName}",
+			userListName = "${userListName}",
+			userMiddleName = "${userMiddleName}",
+			userName = "${userName}",
+			userScreenName = "${userScreenName}"
+		);
+	}
+
+	@priority = "5"
+	test AddSOSiteOpen {
+		var siteDescription = "Open Site Description";
+		var siteName = "Open Site Name";
+		var siteType = "Open";
+
+		SOUserBar.addSOSite(
+			siteDescription = "${siteDescription}",
+			siteName = "${siteName}",
+			siteType = "${siteType}"
+		);
+
+		SOSite.viewSOSite(
+			siteDescription = "${siteDescription}",
+			siteName = "${siteName}",
+			siteType = "${siteType}"
+		);
+	}
+
+	@priority = "5"
+	test AddSOSitePrivate {
+		var siteDescription = "Private Site Description";
+		var siteName = "Private Site Name";
+		var siteType = "Private";
+
+		SOUserBar.addSOSite(
+			siteDescription = "${siteDescription}",
+			siteName = "${siteName}",
+			siteType = "${siteType}"
+		);
+
+		SOSite.viewSOSite(
+			siteDescription = "${siteDescription}",
+			siteName = "${siteName}",
+			siteType = "${siteType}"
+		);
+	}
+
+	@priority = "5"
+	test AddSOSitePrivateRestricted {
+		var siteDescription = "Private Restricted Site Description";
+		var siteName = "Private Restricted Site Name";
+		var siteType = "Private Restricted";
+
+		SOUserBar.addSOSite(
+			siteDescription = "${siteDescription}",
+			siteName = "${siteName}",
+			siteType = "${siteType}"
+		);
+
+		SOSite.viewSOSite(
+			siteDescription = "${siteDescription}",
+			siteName = "${siteName}",
+			siteType = "${siteType}"
+		);
+	}
+
+	@priority = "5"
+	test AddSOSitePublicRestricted {
+		var siteDescription = "Public Restricted Site Description";
+		var siteName = "Public Restricted Site Name";
+		var siteType = "Public Restricted";
+
+		SOUserBar.addSOSite(
+			siteDescription = "${siteDescription}",
+			siteName = "${siteName}",
+			siteType = "${siteType}"
+		);
+
+		SOSite.viewSOSite(
+			siteDescription = "${siteDescription}",
+			siteName = "${siteName}",
+			siteType = "${siteType}"
+		);
+	}
+
+	@priority = "5"
+	test AddSOSitesOpen {
+		var siteDescription1 = "Open Site1 Description";
+		var siteDescription2 = "Open Site2 Description";
+		var siteDescription3 = "Open Site3 Description";
+		var siteName1 = "Open Site1 Name";
+		var siteName2 = "Open Site2 Name";
+		var siteName3 = "Open Site3 Name";
+		var siteType1 = "Open";
+		var siteType2 = "Open";
+		var siteType3 = "Open";
+
+		SOUserBar.addSOSite(
+			siteDescription = "${siteDescription1}",
+			siteName = "${siteName1}",
+			siteType = "${siteType1}"
+		);
+
+		SOUserBar.addSOSite(
+			siteDescription = "${siteDescription2}",
+			siteName = "${siteName2}",
+			siteType = "${siteType2}"
+		);
+
+		SOUserBar.addSOSite(
+			siteDescription = "${siteDescription3}",
+			siteName = "${siteName3}",
+			siteType = "${siteType3}"
+		);
+	}
+
+	@priority = "5"
+	test ConfirmInviteSOSiteOpen {
+		var siteDescription = "Open Site Description";
+		var siteName = "Open Site Name";
+		var siteType = "Open";
+
+		SOUser.addUserWithSORole(
+			adminEmailAddress = "test@liferay.com",
+			password = "test",
+			userEmailAddress = "${userEmailAddress}",
+			userFirstName = "${userFirstName}",
+			userLastName = "${userLastName}",
+			userMiddleName = "${userMiddleName}",
+			userScreenName = "${userScreenName}"
+		);
+
+		SOUserBar.addSOSite(
+			siteDescription = "${siteDescription}",
+			siteName = "${siteName}",
+			siteType = "${siteType}"
+		);
+
+		SOUserBar.searchSOSite(siteName = "${siteName}");
+
+		Click(locator1 = "SOUserBar#GO_TO_SITE_NAME_LINK");
+
+		Click.textClickAt(
+			locator1 = "SOSiteHome#NAVIGATION_MEMBERS",
+			value1 = "Members"
+		);
+
+		SOMembers.inviteMember(
+			userEmailAddress = "${userEmailAddress}",
+			userFirstName = "${userFirstName}",
+			userLastName = "${userLastName}",
+			userMiddleName = "${userMiddleName}"
+		);
+
+		SOUser.logoutPG();
+
+		SOUser.loginPG(password = "test", userEmailAddress = "${userEmailAddress}");
+
+		SOMembers.confirmMemberInvite(senderName = "${adminName}");
+
+		SOSite.viewSOSiteMembership(
+			siteDescription = "${siteDescription}",
+			siteName = "${siteName}",
+			siteType = "${siteType}",
+			userEmailAddress = "${userEmailAddress}",
+			userFirstName = "${userFirstName}",
+			userLastName = "${userLastName}",
+			userListName = "${userListName}",
+			userMiddleName = "${userMiddleName}",
+			userName = "${userName}",
+			userScreenName = "${userScreenName}"
+		);
+	}
+
+	@priority = "5"
+	test ConfirmInviteSOSitePrivate {
+		var siteDescription = "Private Site Description";
+		var siteName = "Private Site Name";
+		var siteType = "Private";
+
+		SOUser.addUserWithSORole(
+			adminEmailAddress = "test@liferay.com",
+			password = "test",
+			userEmailAddress = "${userEmailAddress}",
+			userFirstName = "${userFirstName}",
+			userLastName = "${userLastName}",
+			userMiddleName = "${userMiddleName}",
+			userScreenName = "${userScreenName}"
+		);
+
+		SOUserBar.addSOSite(
+			siteDescription = "${siteDescription}",
+			siteName = "${siteName}",
+			siteType = "${siteType}"
+		);
+
+		SOUserBar.searchSOSite(siteName = "${siteName}");
+
+		Click(locator1 = "SOUserBar#GO_TO_SITE_NAME_LINK");
+
+		Click.textClickAt(
+			locator1 = "SOSiteHome#NAVIGATION_MEMBERS",
+			value1 = "Members"
+		);
+
+		SOMembers.inviteMember(
+			userEmailAddress = "${userEmailAddress}",
+			userFirstName = "${userFirstName}",
+			userLastName = "${userLastName}",
+			userMiddleName = "${userMiddleName}"
+		);
+
+		SOUser.logoutPG();
+
+		SOUser.loginPG(password = "test", userEmailAddress = "${userEmailAddress}");
+
+		SOMembers.confirmMemberInvite(senderName = "${adminName}");
+
+		SOSite.viewSOSiteMembership(
+			siteDescription = "${siteDescription}",
+			siteName = "${siteName}",
+			siteType = "${siteType}",
+			userEmailAddress = "${userEmailAddress}",
+			userFirstName = "${userFirstName}",
+			userLastName = "${userLastName}",
+			userListName = "${userListName}",
+			userMiddleName = "${userMiddleName}",
+			userName = "${userName}",
+			userScreenName = "${userScreenName}"
+		);
+	}
+
+	@priority = "5"
+	test ConfirmInviteSOSitePrivateRestricted {
+		var siteDescription = "Private Restricted Site Description";
+		var siteName = "Private Restricted Site Name";
+		var siteType = "Private Restricted";
+
+		SOUser.addUserWithSORole(
+			adminEmailAddress = "test@liferay.com",
+			password = "test",
+			userEmailAddress = "${userEmailAddress}",
+			userFirstName = "${userFirstName}",
+			userLastName = "${userLastName}",
+			userMiddleName = "${userMiddleName}",
+			userScreenName = "${userScreenName}"
+		);
+
+		SOUserBar.addSOSite(
+			siteDescription = "${siteDescription}",
+			siteName = "${siteName}",
+			siteType = "${siteType}"
+		);
+
+		SOUserBar.searchSOSite(siteName = "${siteName}");
+
+		Click(locator1 = "SOUserBar#GO_TO_SITE_NAME_LINK");
+
+		Click.textClickAt(
+			locator1 = "SOSiteHome#NAVIGATION_MEMBERS",
+			value1 = "Members"
+		);
+
+		SOMembers.inviteMember(
+			userEmailAddress = "${userEmailAddress}",
+			userFirstName = "${userFirstName}",
+			userLastName = "${userLastName}",
+			userMiddleName = "${userMiddleName}"
+		);
+
+		SOUser.logoutPG();
+
+		SOUser.loginPG(password = "test", userEmailAddress = "${userEmailAddress}");
+
+		SOMembers.confirmMemberInvite(senderName = "${adminName}");
+
+		SOSite.viewSOSiteMembership(
+			siteDescription = "${siteDescription}",
+			siteName = "${siteName}",
+			siteType = "${siteType}",
+			userEmailAddress = "${userEmailAddress}",
+			userFirstName = "${userFirstName}",
+			userLastName = "${userLastName}",
+			userListName = "${userListName}",
+			userMiddleName = "${userMiddleName}",
+			userName = "${userName}",
+			userScreenName = "${userScreenName}"
+		);
+	}
+
+	@priority = "5"
+	test ConfirmInviteSOSitePublicRestricted {
+		var siteDescription = "Public Restricted Site Description";
+		var siteName = "Public Restricted Site Name";
+		var siteType = "Public Restricted";
+
+		SOUser.addUserWithSORole(
+			adminEmailAddress = "test@liferay.com",
+			password = "test",
+			userEmailAddress = "${userEmailAddress}",
+			userFirstName = "${userFirstName}",
+			userLastName = "${userLastName}",
+			userMiddleName = "${userMiddleName}",
+			userScreenName = "${userScreenName}"
+		);
+
+		SOUserBar.addSOSite(
+			siteDescription = "${siteDescription}",
+			siteName = "${siteName}",
+			siteType = "${siteType}"
+		);
+
+		SOUserBar.searchSOSite(siteName = "${siteName}");
+
+		Click(locator1 = "SOUserBar#GO_TO_SITE_NAME_LINK");
+
+		Click.textClickAt(
+			locator1 = "SOSiteHome#NAVIGATION_MEMBERS",
+			value1 = "Members"
+		);
+
+		SOMembers.inviteMember(
+			userEmailAddress = "${userEmailAddress}",
+			userFirstName = "${userFirstName}",
+			userLastName = "${userLastName}",
+			userMiddleName = "${userMiddleName}"
+		);
+
+		SOUser.logoutPG();
+
+		SOUser.loginPG(password = "test", userEmailAddress = "${userEmailAddress}");
+
+		SOMembers.confirmMemberInvite(senderName = "${adminName}");
+
+		SOSite.viewSOSiteMembership(
+			siteDescription = "${siteDescription}",
+			siteName = "${siteName}",
+			siteType = "${siteType}",
+			userEmailAddress = "${userEmailAddress}",
+			userFirstName = "${userFirstName}",
+			userLastName = "${userLastName}",
+			userListName = "${userListName}",
+			userMiddleName = "${userMiddleName}",
+			userName = "${userName}",
+			userScreenName = "${userScreenName}"
+		);
+	}
+
+	@priority = "5"
+	test DeleteSOSiteOpen {
+		var siteDescription = "Open Site Description";
+		var siteName = "Open Site Name";
+		var siteType = "Open";
+
+		SOUserBar.addSOSite(
+			siteDescription = "${siteDescription}",
+			siteName = "${siteName}",
+			siteType = "${siteType}"
+		);
+
+		SOUserBar.deleteSOSite(
+			siteDescription = "${siteDescription}",
+			siteName = "${siteName}",
+			siteType = "${siteType}"
+		);
+	}
+
+	@priority = "5"
+	test DeleteSOSitePrivate {
+		var siteDescription = "Private Site Description";
+		var siteName = "Private Site Name";
+		var siteType = "Private";
+
+		SOUserBar.addSOSite(
+			siteDescription = "${siteDescription}",
+			siteName = "${siteName}",
+			siteType = "${siteType}"
+		);
+
+		SOUserBar.deleteSOSite(
+			siteDescription = "${siteDescription}",
+			siteName = "${siteName}",
+			siteType = "${siteType}"
+		);
+	}
+
+	@priority = "5"
+	test DeleteSOSitePrivateRestricted {
+		var siteDescription = "Private Restricted Site Description";
+		var siteName = "Private Restricted Site Name";
+		var siteType = "Private Restricted";
+
+		SOUserBar.addSOSite(
+			siteDescription = "${siteDescription}",
+			siteName = "${siteName}",
+			siteType = "${siteType}"
+		);
+
+		SOUserBar.deleteSOSite(
+			siteDescription = "${siteDescription}",
+			siteName = "${siteName}",
+			siteType = "${siteType}"
+		);
+	}
+
+	@priority = "5"
+	test DeleteSOSitePublicRestricted {
+		var siteDescription = "Public Restricted Site Description";
+		var siteName = "Public Restricted Site Name";
+		var siteType = "Public Restricted";
+
+		SOUserBar.addSOSite(
+			siteDescription = "${siteDescription}",
+			siteName = "${siteName}",
+			siteType = "${siteType}"
+		);
+
+		SOUserBar.deleteSOSite(
+			siteDescription = "${siteDescription}",
+			siteName = "${siteName}",
+			siteType = "${siteType}"
+		);
+	}
+
+	@priority = "5"
+	test DenyMemberRequestSOSitePrivateRestricted {
+		var siteDescription = "Private Restricted Site Description";
+		var siteName = "Private Restricted Site Name";
+		var siteType = "Private Restricted";
+
+		SOUser.addUserWithSORole(
+			adminEmailAddress = "test@liferay.com",
+			password = "test",
+			userEmailAddress = "${userEmailAddress}",
+			userFirstName = "${userFirstName}",
+			userLastName = "${userLastName}",
+			userMiddleName = "${userMiddleName}",
+			userScreenName = "${userScreenName}"
+		);
+
+		SOUserBar.addSOSite(
+			siteDescription = "${siteDescription}",
+			siteName = "${siteName}",
+			siteType = "${siteType}"
+		);
+
+		SOUser.logoutPG();
+
+		SOUser.loginPG(password = "test", userEmailAddress = "${userEmailAddress}");
+
+		SOUserBar.requestMembershipSOSite(
+			siteName = "${siteName}",
+			siteType = "${siteType}"
+		);
+
+		SOUser.logoutPG();
+
+		SOUser.loginPG(password = "test", userEmailAddress = "${adminEmailAddress}");
+
+		SOSite.denyMemberRequestSOSite(
+			siteName = "${siteName}",
+			siteOwner = "${adminName}",
+			userEmailAddress = "${userEmailAddress}",
+			userName = "${userName}"
+		);
+
+		SOUser.logoutPG();
+
+		SOUser.loginPG(password = "test", userEmailAddress = "${userEmailAddress}");
+
+		SOSite.viewSOSiteNonMembership(
+			siteDescription = "${siteDescription}",
+			siteName = "${siteName}",
+			siteType = "${siteType}",
+			userEmailAddress = "${userEmailAddress}",
+			userFirstName = "${userFirstName}",
+			userLastName = "${userLastName}",
+			userListName = "${userListName}",
+			userMiddleName = "${userMiddleName}",
+			userName = "${userName}",
+			userScreenName = "${userScreenName}"
+		);
+	}
+
+	@priority = "5"
+	test DenyMemberRequestSOSitePublicRestricted {
+		var siteDescription = "Public Restricted Site Description";
+		var siteName = "Public Restricted Site Name";
+		var siteType = "Public Restricted";
+
+		SOUser.addUserWithSORole(
+			adminEmailAddress = "test@liferay.com",
+			password = "test",
+			userEmailAddress = "${userEmailAddress}",
+			userFirstName = "${userFirstName}",
+			userLastName = "${userLastName}",
+			userMiddleName = "${userMiddleName}",
+			userScreenName = "${userScreenName}"
+		);
+
+		SOUserBar.addSOSite(
+			siteDescription = "${siteDescription}",
+			siteName = "${siteName}",
+			siteType = "${siteType}"
+		);
+
+		SOUser.logoutPG();
+
+		SOUser.loginPG(password = "test", userEmailAddress = "${userEmailAddress}");
+
+		SOUserBar.requestMembershipSOSite(
+			siteName = "${siteName}",
+			siteType = "${siteType}"
+		);
+
+		SOUser.logoutPG();
+
+		SOUser.loginPG(password = "test", userEmailAddress = "${adminEmailAddress}");
+
+		SOSite.denyMemberRequestSOSite(
+			siteName = "${siteName}",
+			siteOwner = "${adminName}",
+			userEmailAddress = "${userEmailAddress}",
+			userName = "${userName}"
+		);
+
+		SOUser.logoutPG();
+
+		SOUser.loginPG(password = "test", userEmailAddress = "${userEmailAddress}");
+
+		SOSite.viewSOSiteNonMembership(
+			siteDescription = "${siteDescription}",
+			siteName = "${siteName}",
+			siteType = "${siteType}",
+			userEmailAddress = "${userEmailAddress}",
+			userFirstName = "${userFirstName}",
+			userLastName = "${userLastName}",
+			userListName = "${userListName}",
+			userMiddleName = "${userMiddleName}",
+			userName = "${userName}",
+			userScreenName = "${userScreenName}"
+		);
+	}
+
+	@priority = "5"
+	test FavoriteSOSite {
+		var siteDescription = "Open Site Description";
+		var siteName = "Open Site Name";
+		var siteType = "Open";
+
+		SOUser.addUserWithSORole(
+			adminEmailAddress = "test@liferay.com",
+			password = "test",
+			userEmailAddress = "${userEmailAddress}",
+			userFirstName = "${userFirstName}",
+			userLastName = "${userLastName}",
+			userMiddleName = "${userMiddleName}",
+			userScreenName = "${userScreenName}"
+		);
+
+		SOUserBar.addSOSite(
+			siteDescription = "${siteDescription}",
+			siteName = "${siteName}",
+			siteType = "${siteType}"
+		);
+
+		SOUser.logoutPG();
+
+		SOUser.loginPG(password = "test", userEmailAddress = "${userEmailAddress}");
+
+		SOUserBar.joinSOSite(siteName = "${siteName}", siteType = "${siteType}");
+
+		SOUserBar.favoriteSOSite(
+			siteDescription = "${siteDescription}",
+			siteName = "${siteName}",
+			siteType = "${siteType}"
+		);
+
+		SOSite.viewSOSiteFavorite(
+			siteDescription = "${siteDescription}",
+			siteName = "${siteName}",
+			siteType = "${siteType}"
+		);
+	}
+
+	@priority = "5"
+	test FavoriteSOSitePrivate {
+		var siteDescription = "Private Site Description";
+		var siteName = "Private Site Name";
+		var siteType = "Private";
+
+		SOUser.addUserWithSORole(
+			adminEmailAddress = "test@liferay.com",
+			password = "test",
+			userEmailAddress = "${userEmailAddress}",
+			userFirstName = "${userFirstName}",
+			userLastName = "${userLastName}",
+			userMiddleName = "${userMiddleName}",
+			userScreenName = "${userScreenName}"
+		);
+
+		SOUserBar.addSOSite(
+			siteDescription = "${siteDescription}",
+			siteName = "${siteName}",
+			siteType = "${siteType}"
+		);
+
+		SOUserBar.searchSOSite(siteName = "${siteName}");
+
+		Click(locator1 = "SOUserBar#GO_TO_SITE_NAME_LINK");
+
+		Click.textClickAt(
+			locator1 = "SOSiteHome#NAVIGATION_MEMBERS",
+			value1 = "Members"
+		);
+
+		SOMembers.inviteMember(
+			userEmailAddress = "${userEmailAddress}",
+			userFirstName = "${userFirstName}",
+			userLastName = "${userLastName}",
+			userMiddleName = "${userMiddleName}"
+		);
+
+		SOUser.logoutPG();
+
+		SOUser.loginPG(password = "test", userEmailAddress = "${userEmailAddress}");
+
+		SOMembers.confirmMemberInvite(senderName = "${adminName}");
+
+		SOUserBar.favoriteSOSite(
+			siteDescription = "${siteDescription}",
+			siteName = "${siteName}",
+			siteType = "${siteType}"
+		);
+
+		SOSite.viewSOSiteFavorite(
+			siteDescription = "${siteDescription}",
+			siteName = "${siteName}",
+			siteType = "${siteType}"
+		);
+	}
+
+	@priority = "5"
+	test FavoriteSOSitePrivateRestricted {
+		var siteDescription = "Private Restricted Site Description";
+		var siteName = "Private Restricted Site Name";
+		var siteType = "Private Restricted";
+
+		SOUser.addUserWithSORole(
+			adminEmailAddress = "test@liferay.com",
+			password = "test",
+			userEmailAddress = "${userEmailAddress}",
+			userFirstName = "${userFirstName}",
+			userLastName = "${userLastName}",
+			userMiddleName = "${userMiddleName}",
+			userScreenName = "${userScreenName}"
+		);
+
+		SOUserBar.addSOSite(
+			siteDescription = "${siteDescription}",
+			siteName = "${siteName}",
+			siteType = "${siteType}"
+		);
+
+		SOUser.logoutPG();
+
+		SOUser.loginPG(password = "test", userEmailAddress = "${userEmailAddress}");
+
+		SOUserBar.requestMembershipSOSite(
+			siteName = "${siteName}",
+			siteType = "${siteType}"
+		);
+
+		SOUser.logoutPG();
+
+		SOUser.loginPG(password = "test", userEmailAddress = "${adminEmailAddress}");
+
+		SOSite.acceptMemberRequestSOSite(
+			siteName = "${siteName}",
+			siteOwner = "${adminName}",
+			userEmailAddress = "${userEmailAddress}",
+			userName = "${userName}"
+		);
+
+		SOUser.logoutPG();
+
+		SOUser.loginPG(password = "test", userEmailAddress = "${userEmailAddress}");
+
+		SOUserBar.favoriteSOSite(
+			siteDescription = "${siteDescription}",
+			siteName = "${siteName}",
+			siteType = "${siteType}"
+		);
+
+		SOSite.viewSOSiteFavorite(
+			siteDescription = "${siteDescription}",
+			siteName = "${siteName}",
+			siteType = "${siteType}"
+		);
+	}
+
+	@priority = "5"
+	test FavoriteSOSitePublicRestricted {
+		var siteDescription = "Public Restricted Site Description";
+		var siteName = "Public Restricted Site Name";
+		var siteType = "Public Restricted";
+
+		SOUser.addUserWithSORole(
+			adminEmailAddress = "test@liferay.com",
+			password = "test",
+			userEmailAddress = "${userEmailAddress}",
+			userFirstName = "${userFirstName}",
+			userLastName = "${userLastName}",
+			userMiddleName = "${userMiddleName}",
+			userScreenName = "${userScreenName}"
+		);
+
+		SOUserBar.addSOSite(
+			siteDescription = "${siteDescription}",
+			siteName = "${siteName}",
+			siteType = "${siteType}"
+		);
+
+		SOUser.logoutPG();
+
+		SOUser.loginPG(password = "test", userEmailAddress = "${userEmailAddress}");
+
+		SOUserBar.requestMembershipSOSite(
+			siteName = "${siteName}",
+			siteType = "${siteType}"
+		);
+
+		SOUser.logoutPG();
+
+		SOUser.loginPG(password = "test", userEmailAddress = "${adminEmailAddress}");
+
+		SOSite.acceptMemberRequestSOSite(
+			siteName = "${siteName}",
+			siteOwner = "${adminName}",
+			userEmailAddress = "${userEmailAddress}",
+			userName = "${userName}"
+		);
+
+		SOUser.logoutPG();
+
+		SOUser.loginPG(password = "test", userEmailAddress = "${userEmailAddress}");
+
+		SOUserBar.favoriteSOSite(
+			siteDescription = "${siteDescription}",
+			siteName = "${siteName}",
+			siteType = "${siteType}"
+		);
+
+		SOSite.viewSOSiteFavorite(
+			siteDescription = "${siteDescription}",
+			siteName = "${siteName}",
+			siteType = "${siteType}"
+		);
+	}
+
+	@priority = "5"
+	test JoinSOSite {
+		var siteDescription = "Open Site Description";
+		var siteName = "Open Site Name";
+		var siteType = "Open";
+
+		SOUser.addUserWithSORole(
+			adminEmailAddress = "test@liferay.com",
+			password = "test",
+			userEmailAddress = "${userEmailAddress}",
+			userFirstName = "${userFirstName}",
+			userLastName = "${userLastName}",
+			userMiddleName = "${userMiddleName}",
+			userScreenName = "${userScreenName}"
+		);
+
+		SOUserBar.addSOSite(
+			siteDescription = "${siteDescription}",
+			siteName = "${siteName}",
+			siteType = "${siteType}"
+		);
+
+		SOUser.logoutPG();
+
+		SOUser.loginPG(password = "test", userEmailAddress = "${userEmailAddress}");
+
+		SOUserBar.joinSOSite(siteName = "${siteName}");
+
+		SOSite.viewSOSiteMembership(
+			siteDescription = "${siteDescription}",
+			siteName = "${siteName}",
+			siteType = "${siteType}",
+			userEmailAddress = "${userEmailAddress}",
+			userFirstName = "${userFirstName}",
+			userLastName = "${userLastName}",
+			userListName = "${userListName}",
+			userMiddleName = "${userMiddleName}",
+			userName = "${userName}",
+			userScreenName = "${userScreenName}"
+		);
+	}
+
+	@priority = "5"
+	test LeaveSOSite {
+		var siteDescription = "Open Site Description";
+		var siteName = "Open Site Name";
+		var siteType = "Open";
+
+		SOUser.addUserWithSORole(
+			adminEmailAddress = "test@liferay.com",
+			password = "test",
+			userEmailAddress = "${userEmailAddress}",
+			userFirstName = "${userFirstName}",
+			userLastName = "${userLastName}",
+			userMiddleName = "${userMiddleName}",
+			userScreenName = "${userScreenName}"
+		);
+
+		SOUserBar.addSOSite(
+			siteDescription = "${siteDescription}",
+			siteName = "${siteName}",
+			siteType = "${siteType}"
+		);
+
+		SOUser.logoutPG();
+
+		SOUser.loginPG(password = "test", userEmailAddress = "${userEmailAddress}");
+
+		SOUserBar.joinSOSite(siteName = "${siteName}");
+
+		SOUserBar.leaveSOSite(siteName = "${siteName}");
+
+		SOSite.viewSOSiteNonMembership(
+			siteDescription = "${siteDescription}",
+			siteName = "${siteName}",
+			siteType = "${siteType}",
+			userEmailAddress = "${userEmailAddress}",
+			userFirstName = "${userFirstName}",
+			userLastName = "${userLastName}",
+			userListName = "${userListName}",
+			userMiddleName = "${userMiddleName}",
+			userName = "${userName}",
+			userScreenName = "${userScreenName}"
+		);
+	}
+
+	@priority = "5"
+	test LeaveSOSitePrivateRestricted {
+		var siteDescription = "Private Restricted Site Description";
+		var siteName = "Private Restricted Site Name";
+		var siteType = "Private Restricted";
+
+		SOUser.addUserWithSORole(
+			adminEmailAddress = "test@liferay.com",
+			password = "test",
+			userEmailAddress = "${userEmailAddress}",
+			userFirstName = "${userFirstName}",
+			userLastName = "${userLastName}",
+			userMiddleName = "${userMiddleName}",
+			userScreenName = "${userScreenName}"
+		);
+
+		SOUserBar.addSOSite(
+			siteDescription = "${siteDescription}",
+			siteName = "${siteName}",
+			siteType = "${siteType}"
+		);
+
+		SOUser.logoutPG();
+
+		SOUser.loginPG(password = "test", userEmailAddress = "${userEmailAddress}");
+
+		SOUserBar.requestMembershipSOSite(
+			siteName = "${siteName}",
+			siteType = "${siteType}"
+		);
+
+		SOUser.logoutPG();
+
+		SOUser.loginPG(password = "test", userEmailAddress = "${adminEmailAddress}");
+
+		SOSite.acceptMemberRequestSOSite(
+			siteName = "${siteName}",
+			siteOwner = "${adminName}",
+			userEmailAddress = "${userEmailAddress}",
+			userName = "${userName}"
+		);
+
+		SOUser.logoutPG();
+
+		SOUser.loginPG(password = "test", userEmailAddress = "${userEmailAddress}");
+
+		SOUserBar.leaveSOSite(siteName = "${siteName}");
+
+		SOSite.viewSOSiteNonMembership(
+			siteDescription = "${siteDescription}",
+			siteName = "${siteName}",
+			siteType = "${siteType}",
+			userEmailAddress = "${userEmailAddress}",
+			userFirstName = "${userFirstName}",
+			userLastName = "${userLastName}",
+			userListName = "${userListName}",
+			userMiddleName = "${userMiddleName}",
+			userName = "${userName}",
+			userScreenName = "${userScreenName}"
+		);
+	}
+
+	@priority = "5"
+	test LeaveSOSitePublicRestricted {
+		var siteDescription = "Public Restricted Site Description";
+		var siteName = "Public Restricted Site Name";
+		var siteType = "Public Restricted";
+
+		SOUser.addUserWithSORole(
+			adminEmailAddress = "test@liferay.com",
+			password = "test",
+			userEmailAddress = "${userEmailAddress}",
+			userFirstName = "${userFirstName}",
+			userLastName = "${userLastName}",
+			userMiddleName = "${userMiddleName}",
+			userScreenName = "${userScreenName}"
+		);
+
+		SOUserBar.addSOSite(
+			siteDescription = "${siteDescription}",
+			siteName = "${siteName}",
+			siteType = "${siteType}"
+		);
+
+		SOUser.logoutPG();
+
+		SOUser.loginPG(password = "test", userEmailAddress = "${userEmailAddress}");
+
+		SOUserBar.requestMembershipSOSite(
+			siteName = "${siteName}",
+			siteType = "${siteType}"
+		);
+
+		SOUser.logoutPG();
+
+		SOUser.loginPG(password = "test", userEmailAddress = "${adminEmailAddress}");
+
+		SOSite.acceptMemberRequestSOSite(
+			siteName = "${siteName}",
+			siteOwner = "${adminName}",
+			userEmailAddress = "${userEmailAddress}",
+			userName = "${userName}"
+		);
+
+		SOUser.logoutPG();
+
+		SOUser.loginPG(password = "test", userEmailAddress = "${userEmailAddress}");
+
+		SOUserBar.leaveSOSite(siteName = "${siteName}");
+
+		SOSite.viewSOSiteNonMembership(
+			siteDescription = "${siteDescription}",
+			siteName = "${siteName}",
+			siteType = "${siteType}",
+			userEmailAddress = "${userEmailAddress}",
+			userFirstName = "${userFirstName}",
+			userLastName = "${userLastName}",
+			userListName = "${userListName}",
+			userMiddleName = "${userMiddleName}",
+			userName = "${userName}",
+			userScreenName = "${userScreenName}"
+		);
+	}
+
+	@priority = "5"
+	test SearchSOSite {
+		var siteDescription = "Open Site Description";
+		var siteName = "Open Site Name";
+		var siteType = "Open";
+
+		SOContactsCenter.addConnection(
+			adminEmailAddress = "${adminEmailAddress}",
+			senderName = "${adminName}",
+			userEmailAddress = "${userEmailAddress}",
+			userFirstName = "${userFirstName}",
+			userLastName = "${userLastName}",
+			userListName = "${userListName}",
+			userMiddleName = "${userMiddleName}",
+			userName = "${userName}",
+			userScreenName = "${userScreenName}"
+		);
+
+		SOUser.logoutPG();
+
+		SOUser.loginPG(password = "test", userEmailAddress = "${adminEmailAddress}");
+
+		SOUserBar.addSOSite(
+			siteDescription = "${siteDescription}",
+			siteName = "${siteName}",
+			siteType = "${siteType}"
+		);
+
+		SOUser.logoutPG();
+
+		SOUser.loginPG(password = "test", userEmailAddress = "${userEmailAddress}");
+
+		SOSite.viewSOSiteNonMembership(
+			siteDescription = "${siteDescription}",
+			siteName = "${siteName}",
+			siteType = "${siteType}",
+			userEmailAddress = "${userEmailAddress}",
+			userFirstName = "${userFirstName}",
+			userLastName = "${userLastName}",
+			userListName = "${userListName}",
+			userMiddleName = "${userMiddleName}",
+			userName = "${userName}",
+			userScreenName = "${userScreenName}"
+		);
+	}
+
+	@priority = "5"
+	test SearchSOSitePrivate {
+		var siteDescription = "Private Site Description";
+		var siteName = "Private Site Name";
+		var siteType = "Private";
+
+		SOContactsCenter.addConnection(
+			adminEmailAddress = "${adminEmailAddress}",
+			senderName = "${adminName}",
+			userEmailAddress = "${userEmailAddress}",
+			userFirstName = "${userFirstName}",
+			userLastName = "${userLastName}",
+			userListName = "${userListName}",
+			userMiddleName = "${userMiddleName}",
+			userName = "${userName}",
+			userScreenName = "${userScreenName}"
+		);
+
+		SOUser.logoutPG();
+
+		SOUser.loginPG(password = "test", userEmailAddress = "${adminEmailAddress}");
+
+		SOUserBar.addSOSite(
+			siteDescription = "${siteDescription}",
+			siteName = "${siteName}",
+			siteType = "${siteType}"
+		);
+
+		SOUser.logoutPG();
+
+		SOUser.loginPG(password = "test", userEmailAddress = "${userEmailAddress}");
+
+		SOSite.viewSOSiteNonMembership(
+			siteDescription = "${siteDescription}",
+			siteName = "${siteName}",
+			siteType = "${siteType}",
+			userEmailAddress = "${userEmailAddress}",
+			userFirstName = "${userFirstName}",
+			userLastName = "${userLastName}",
+			userListName = "${userListName}",
+			userMiddleName = "${userMiddleName}",
+			userName = "${userName}",
+			userScreenName = "${userScreenName}"
+		);
+	}
+
+	@priority = "5"
+	test SearchSOSitePrivateRestricted {
+		var siteDescription = "Private Restricted Site Description";
+		var siteName = "Private Restricted Site Name";
+		var siteType = "Private Restricted";
+
+		SOContactsCenter.addConnection(
+			adminEmailAddress = "${adminEmailAddress}",
+			senderName = "${adminName}",
+			userEmailAddress = "${userEmailAddress}",
+			userFirstName = "${userFirstName}",
+			userLastName = "${userLastName}",
+			userListName = "${userListName}",
+			userMiddleName = "${userMiddleName}",
+			userName = "${userName}",
+			userScreenName = "${userScreenName}"
+		);
+
+		SOUser.logoutPG();
+
+		SOUser.loginPG(password = "test", userEmailAddress = "${adminEmailAddress}");
+
+		SOUserBar.addSOSite(
+			siteDescription = "${siteDescription}",
+			siteName = "${siteName}",
+			siteType = "${siteType}"
+		);
+
+		SOUser.logoutPG();
+
+		SOUser.loginPG(password = "test", userEmailAddress = "${userEmailAddress}");
+
+		SOSite.viewSOSiteNonMembership(
+			siteDescription = "${siteDescription}",
+			siteName = "${siteName}",
+			siteType = "${siteType}",
+			userEmailAddress = "${userEmailAddress}",
+			userFirstName = "${userFirstName}",
+			userLastName = "${userLastName}",
+			userListName = "${userListName}",
+			userMiddleName = "${userMiddleName}",
+			userName = "${userName}",
+			userScreenName = "${userScreenName}"
+		);
+	}
+
+	@priority = "5"
+	test SearchSOSitePublicRestricted {
+		var siteDescription = "Public Restricted Site Description";
+		var siteName = "Public Restricted Site Name";
+		var siteType = "Public Restricted";
+
+		SOContactsCenter.addConnection(
+			adminEmailAddress = "${adminEmailAddress}",
+			senderName = "${adminName}",
+			userEmailAddress = "${userEmailAddress}",
+			userFirstName = "${userFirstName}",
+			userLastName = "${userLastName}",
+			userListName = "${userListName}",
+			userMiddleName = "${userMiddleName}",
+			userName = "${userName}",
+			userScreenName = "${userScreenName}"
+		);
+
+		SOUser.logoutPG();
+
+		SOUser.loginPG(password = "test", userEmailAddress = "${adminEmailAddress}");
+
+		SOUserBar.addSOSite(
+			siteDescription = "${siteDescription}",
+			siteName = "${siteName}",
+			siteType = "${siteType}"
+		);
+
+		SOUser.logoutPG();
+
+		SOUser.loginPG(password = "test", userEmailAddress = "${userEmailAddress}");
+
+		SOSite.viewSOSiteNonMembership(
+			siteDescription = "${siteDescription}",
+			siteName = "${siteName}",
+			siteType = "${siteType}",
+			userEmailAddress = "${userEmailAddress}",
+			userFirstName = "${userFirstName}",
+			userLastName = "${userLastName}",
+			userListName = "${userListName}",
+			userMiddleName = "${userMiddleName}",
+			userName = "${userName}",
+			userScreenName = "${userScreenName}"
+		);
+	}
+
+	@priority = "5"
+	test ViewSOSiteDirectory {
+		var siteDescription1 = "Open Site1 Description";
+		var siteDescription2 = "Public Restricted Site2 Description";
+		var siteDescription3 = "Private Site3 Description";
+		var siteDescription4 = "Private Restricted Site4 Description";
+		var siteName1 = "Open Site1 Name";
+		var siteName2 = "Public Restricted Site2 Name";
+		var siteName3 = "Private Site3 Name";
+		var siteName4 = "Private Restricted Site4 Name";
+		var siteType1 = "Open";
+		var siteType2 = "Public Restricted";
+		var siteType3 = "Private";
+		var siteType4 = "Private Restricted";
+
+		SOUserBar.addSOSite(
+			siteDescription = "${siteDescription1}",
+			siteName = "${siteName1}",
+			siteType = "${siteType1}"
+		);
+
+		SOUserBar.addSOSite(
+			siteDescription = "${siteDescription2}",
+			siteName = "${siteName2}",
+			siteType = "${siteType2}"
+		);
+
+		SOUserBar.addSOSite(
+			siteDescription = "${siteDescription3}",
+			siteName = "${siteName3}",
+			siteType = "${siteType3}"
+		);
+
+		SOUserBar.addSOSite(
+			siteDescription = "${siteDescription4}",
+			siteName = "${siteName4}",
+			siteType = "${siteType4}"
+		);
+
+		Click.textClickAt(locator1 = "SOUserBar#DASHBOARD", value1 = "Dashboard");
+
+		Click.pauseClickAt(locator1 = "SOUserBar#GO_TO");
+
+		Click.pauseClickAt(locator1 = "SOUserBar#GO_TO_SITES_DIRECTORY_BUTTON");
+
+		Select(
+			locator1 = "SOUserBarSitesDirectory#SITE_CATEGORY_SELECT",
+			value1 = "All Sites"
+		);
+
+		AssertTextEquals(
+			locator1 = "SOUserBarSitesDirectory#SITE_NAME_LINK_1",
+			value1 = "${siteName1}"
+		);
+
+		AssertTextEquals(
+			locator1 = "SOUserBarSitesDirectory#SITE_DESCRIPTION_1",
+			value1 = "${siteDescription1}"
+		);
+
+		AssertTextEquals(
+			locator1 = "SOUserBarSitesDirectory#SITE_NAME_LINK_2",
+			value1 = "${siteName2}"
+		);
+
+		AssertTextEquals(
+			locator1 = "SOUserBarSitesDirectory#SITE_DESCRIPTION_2",
+			value1 = "${siteDescription2}"
+		);
+
+		AssertElementNotPresent(
+			locator1 = "SOUserBarSitesDirectory#SITE_NAME_LINK_3",
+			value1 = "${siteName3}"
+		);
+
+		AssertElementNotPresent(
+			locator1 = "SOUserBarSitesDirectory#SITE_DESCRIPTION_3",
+			value1 = "${siteDescription3}"
+		);
+
+		AssertTextEquals(
+			locator1 = "SOUserBarSitesDirectory#SITE_NAME_LINK_4",
+			value1 = "${siteName4}"
+		);
+
+		AssertTextEquals(
+			locator1 = "SOUserBarSitesDirectory#SITE_DESCRIPTION_4",
+			value1 = "${siteDescription4}"
+		);
+
+		Select(
+			locator1 = "SOUserBarSitesDirectory#SITE_CATEGORY_SELECT",
+			value1 = "My Sites"
+		);
+
+		AssertTextEquals(
+			locator1 = "SOUserBarSitesDirectory#SITE_NAME_LINK_1",
+			value1 = "${siteName1}"
+		);
+
+		AssertTextEquals(
+			locator1 = "SOUserBarSitesDirectory#SITE_DESCRIPTION_1",
+			value1 = "${siteDescription1}"
+		);
+
+		AssertTextEquals(
+			locator1 = "SOUserBarSitesDirectory#SITE_NAME_LINK_2",
+			value1 = "${siteName2}"
+		);
+
+		AssertTextEquals(
+			locator1 = "SOUserBarSitesDirectory#SITE_DESCRIPTION_2",
+			value1 = "${siteDescription2}"
+		);
+
+		AssertTextEquals(
+			locator1 = "SOUserBarSitesDirectory#SITE_NAME_LINK_3",
+			value1 = "${siteName3}"
+		);
+
+		AssertTextEquals(
+			locator1 = "SOUserBarSitesDirectory#SITE_DESCRIPTION_3",
+			value1 = "${siteDescription3}"
+		);
+
+		AssertTextEquals(
+			locator1 = "SOUserBarSitesDirectory#SITE_NAME_LINK_4",
+			value1 = "${siteName4}"
+		);
+
+		AssertTextEquals(
+			locator1 = "SOUserBarSitesDirectory#SITE_DESCRIPTION_4",
+			value1 = "${siteDescription4}"
+		);
+
+		var siteName = "${siteName1}";
+
+		Type(
+			locator1 = "SOUserBarSitesDirectory#SITE_SEARCH_FIELD",
+			value1 = "${siteName1}"
+		);
+
+		AssertTextEquals(
+			locator1 = "SOUserBarSitesDirectory#SITE_NAME_LINK",
+			value1 = "${siteName1}"
+		);
+
+		AssertTextEquals(
+			locator1 = "SOUserBarSitesDirectory#SITE_DESCRIPTION",
+			value1 = "${siteDescription1}"
+		);
+
+		Click(
+			locator1 = "SOUserBarSitesDirectory#SITE_NAME_LINK",
+			value1 = "${siteName1}"
+		);
+
+		AssertTextEquals(locator1 = "SOSiteHome#SITE_NAME", value1 = "${siteName1}");
+
+		var siteName = "${siteName2}";
+
+		Click.textClickAt(locator1 = "SOUserBar#DASHBOARD", value1 = "Dashboard");
+
+		Click.pauseClickAt(locator1 = "SOUserBar#GO_TO");
+
+		Click.pauseClickAt(locator1 = "SOUserBar#GO_TO_SITES_DIRECTORY_BUTTON");
+
+		Select(
+			locator1 = "SOUserBarSitesDirectory#SITE_CATEGORY_SELECT",
+			value1 = "My Sites"
+		);
+
+		Type(
+			locator1 = "SOUserBarSitesDirectory#SITE_SEARCH_FIELD",
+			value1 = "${siteName2}"
+		);
+
+		AssertTextEquals(
+			locator1 = "SOUserBarSitesDirectory#SITE_NAME_LINK",
+			value1 = "${siteName2}"
+		);
+
+		AssertTextEquals(
+			locator1 = "SOUserBarSitesDirectory#SITE_DESCRIPTION",
+			value1 = "${siteDescription2}"
+		);
+
+		Click(
+			locator1 = "SOUserBarSitesDirectory#SITE_NAME_LINK",
+			value1 = "${siteName2}"
+		);
+
+		AssertTextEquals(locator1 = "SOSiteHome#SITE_NAME", value1 = "${siteName2}");
+
+		var siteName = "${siteName3}";
+
+		Click.textClickAt(locator1 = "SOUserBar#DASHBOARD", value1 = "Dashboard");
+
+		Click.pauseClickAt(locator1 = "SOUserBar#GO_TO");
+
+		Click.pauseClickAt(locator1 = "SOUserBar#GO_TO_SITES_DIRECTORY_BUTTON");
+
+		Select(
+			locator1 = "SOUserBarSitesDirectory#SITE_CATEGORY_SELECT",
+			value1 = "My Sites"
+		);
+
+		Type(
+			locator1 = "SOUserBarSitesDirectory#SITE_SEARCH_FIELD",
+			value1 = "${siteName3}"
+		);
+
+		AssertTextEquals(
+			locator1 = "SOUserBarSitesDirectory#SITE_NAME_LINK",
+			value1 = "${siteName3}"
+		);
+
+		AssertTextEquals(
+			locator1 = "SOUserBarSitesDirectory#SITE_DESCRIPTION",
+			value1 = "${siteDescription3}"
+		);
+
+		Click(
+			locator1 = "SOUserBarSitesDirectory#SITE_NAME_LINK",
+			value1 = "${siteName3}"
+		);
+
+		AssertTextEquals(locator1 = "SOSiteHome#SITE_NAME", value1 = "${siteName3}");
+
+		var siteName = "${siteName4}";
+
+		Click.textClickAt(locator1 = "SOUserBar#DASHBOARD", value1 = "Dashboard");
+
+		Click.pauseClickAt(locator1 = "SOUserBar#GO_TO");
+
+		Click.pauseClickAt(locator1 = "SOUserBar#GO_TO_SITES_DIRECTORY_BUTTON");
+
+		Select(
+			locator1 = "SOUserBarSitesDirectory#SITE_CATEGORY_SELECT",
+			value1 = "My Sites"
+		);
+
+		Type(
+			locator1 = "SOUserBarSitesDirectory#SITE_SEARCH_FIELD",
+			value1 = "${siteName4}"
+		);
+
+		AssertTextEquals(
+			locator1 = "SOUserBarSitesDirectory#SITE_NAME_LINK",
+			value1 = "${siteName4}"
+		);
+
+		AssertTextEquals(
+			locator1 = "SOUserBarSitesDirectory#SITE_DESCRIPTION",
+			value1 = "${siteDescription4}"
+		);
+
+		Click(
+			locator1 = "SOUserBarSitesDirectory#SITE_NAME_LINK",
+			value1 = "${siteName4}"
+		);
+
+		AssertTextEquals(locator1 = "SOSiteHome#SITE_NAME", value1 = "${siteName4}");
+	}
+}

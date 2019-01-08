@@ -1,16 +1,19 @@
-<definition component-name="portal-tools">
-	<property name="browser.type" value="android" />
-	<property name="portal.release" value="true" />
-	<property name="portal.upstream" value="true" />
-	<property name="testray.main.component.name" value="Tools" />
+@component-name = "portal-tools"
+definition {
+	property browser.type = "android";
+	property portal.release = "true";
+	property portal.upstream = "true";
+	property testray.main.component.name = "Tools";
 
-	<command name="BrowseGoogle" priority="5">
-		<execute function="Open" locator1="www.google.com" />
+	@priority = "5"
+	test BrowseGoogle {
+		Open(locator1 = "www.google.com");
 
-		<execute function="Pause" locator1="5000" />
-	</command>
+		Pause(locator1 = "5000");
+	}
 
-	<command name="Smoke" priority="5">
-		<execute macro="User#firstLoginPG" />
-	</command>
-</definition>
+	@priority = "5"
+	test Smoke {
+		User.firstLoginPG();
+	}
+}

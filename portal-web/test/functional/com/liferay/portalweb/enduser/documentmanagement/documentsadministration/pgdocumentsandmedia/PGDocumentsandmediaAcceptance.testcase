@@ -1,254 +1,219 @@
-<definition component-name="portal-document-management">
-	<property name="portal.release" value="true" />
-	<property name="portal.upstream" value="true" />
-	<property name="testray.main.component.name" value="Documents Management" />
+@component-name = "portal-document-management"
+definition {
+	property portal.release = "true";
+	property portal.upstream = "true";
+	property testray.main.component.name = "Documents Management";
+	var pageName = "Documents and Media Page";
+	var portletName = "Documents and Media";
 
-	<var name="pageName" value="Documents and Media Page" />
-	<var name="portletName" value="Documents and Media" />
+	setUp {
+		User.firstLoginPG();
 
-	<set-up>
-		<execute macro="User#firstLoginPG" />
+		Page.addPG(pageName = "${pageName}");
 
-		<execute macro="Page#addPG">
-			<var name="pageName" value="${pageName}" />
-		</execute>
+		Portlet.addPG(pageName = "${pageName}", portletName = "${portletName}");
+	}
 
-		<execute macro="Portlet#addPG">
-			<var name="pageName" value="${pageName}" />
-			<var name="portletName" value="${portletName}" />
-		</execute>
-	</set-up>
+	@priority = "5"
+	test AddDocument {
+		var dmDocumentDescription = "DM Document Description";
+		var dmDocumentFile = "Document_1.txt";
+		var dmDocumentSize = "0.3k";
+		var dmDocumentTitle = "DM Document Title";
 
-	<command name="AddDocument" priority="5">
-		<var name="dmDocumentDescription" value="DM Document Description" />
-		<var name="dmDocumentFile" value="Document_1.txt" />
-		<var name="dmDocumentSize" value="0.3k" />
-		<var name="dmDocumentTitle" value="DM Document Title" />
+		Page.gotoPG(pageName = "${pageName}");
 
-		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${pageName}" />
-		</execute>
+		DMDocument.addPG(
+			dmDocumentDescription = "${dmDocumentDescription}",
+			dmDocumentFile = "${dmDocumentFile}",
+			dmDocumentSize = "${dmDocumentSize}",
+			dmDocumentTitle = "${dmDocumentTitle}"
+		);
 
-		<execute macro="DMDocument#addPG">
-			<var name="dmDocumentDescription" value="${dmDocumentDescription}" />
-			<var name="dmDocumentFile" value="${dmDocumentFile}" />
-			<var name="dmDocumentSize" value="${dmDocumentSize}" />
-			<var name="dmDocumentTitle" value="${dmDocumentTitle}" />
-		</execute>
+		DMDocument.viewPG(dmDocumentTitle = "${dmDocumentTitle}");
+	}
 
-		<execute macro="DMDocument#viewPG">
-			<var name="dmDocumentTitle" value="${dmDocumentTitle}" />
-		</execute>
-	</command>
+	@priority = "5"
+	test AddDocuments {
+		var dmDocumentDescription1 = "DM Document1 Description";
+		var dmDocumentDescription2 = "DM Document2 Description";
+		var dmDocumentDescription3 = "DM Document3 Description";
+		var dmDocumentFile1 = "Document_1.txt";
+		var dmDocumentFile2 = "Document_2.txt";
+		var dmDocumentFile3 = "Document_3.txt";
+		var dmDocumentSize1 = "0.3k";
+		var dmDocumentSize2 = "0.5k";
+		var dmDocumentSize3 = "0.8k";
+		var dmDocumentTitle1 = "DM Document1 Title";
+		var dmDocumentTitle2 = "DM Document2 Title";
+		var dmDocumentTitle3 = "DM Document3 Title";
 
-	<command name="AddDocuments" priority="5">
-		<var name="dmDocumentDescription1" value="DM Document1 Description" />
-		<var name="dmDocumentDescription2" value="DM Document2 Description" />
-		<var name="dmDocumentDescription3" value="DM Document3 Description" />
-		<var name="dmDocumentFile1" value="Document_1.txt" />
-		<var name="dmDocumentFile2" value="Document_2.txt" />
-		<var name="dmDocumentFile3" value="Document_3.txt" />
-		<var name="dmDocumentSize1" value="0.3k" />
-		<var name="dmDocumentSize2" value="0.5k" />
-		<var name="dmDocumentSize3" value="0.8k" />
-		<var name="dmDocumentTitle1" value="DM Document1 Title" />
-		<var name="dmDocumentTitle2" value="DM Document2 Title" />
-		<var name="dmDocumentTitle3" value="DM Document3 Title" />
+		Page.gotoPG(pageName = "${pageName}");
 
-		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${pageName}" />
-		</execute>
+		DMDocument.addPG(
+			dmDocumentDescription = "${dmDocumentDescription1}",
+			dmDocumentFile = "${dmDocumentFile1}",
+			dmDocumentSize = "${dmDocumentSize1}",
+			dmDocumentTitle = "${dmDocumentTitle1}"
+		);
 
-		<execute macro="DMDocument#addPG">
-			<var name="dmDocumentDescription" value="${dmDocumentDescription1}" />
-			<var name="dmDocumentFile" value="${dmDocumentFile1}" />
-			<var name="dmDocumentSize" value="${dmDocumentSize1}" />
-			<var name="dmDocumentTitle" value="${dmDocumentTitle1}" />
-		</execute>
+		DMDocument.viewPG(dmDocumentTitle = "${dmDocumentTitle1}");
 
-		<execute macro="DMDocument#viewPG">
-			<var name="dmDocumentTitle" value="${dmDocumentTitle1}" />
-		</execute>
+		DMDocument.addPG(
+			dmDocumentDescription = "${dmDocumentDescription2}",
+			dmDocumentFile = "${dmDocumentFile2}",
+			dmDocumentSize = "${dmDocumentSize2}",
+			dmDocumentTitle = "${dmDocumentTitle2}"
+		);
 
-		<execute macro="DMDocument#addPG">
-			<var name="dmDocumentDescription" value="${dmDocumentDescription2}" />
-			<var name="dmDocumentFile" value="${dmDocumentFile2}" />
-			<var name="dmDocumentSize" value="${dmDocumentSize2}" />
-			<var name="dmDocumentTitle" value="${dmDocumentTitle2}" />
-		</execute>
+		DMDocument.viewPG(dmDocumentTitle = "${dmDocumentTitle2}");
 
-		<execute macro="DMDocument#viewPG">
-			<var name="dmDocumentTitle" value="${dmDocumentTitle2}" />
-		</execute>
+		DMDocument.addPG(
+			dmDocumentDescription = "${dmDocumentDescription3}",
+			dmDocumentFile = "${dmDocumentFile3}",
+			dmDocumentSize = "${dmDocumentSize3}",
+			dmDocumentTitle = "${dmDocumentTitle3}"
+		);
 
-		<execute macro="DMDocument#addPG">
-			<var name="dmDocumentDescription" value="${dmDocumentDescription3}" />
-			<var name="dmDocumentFile" value="${dmDocumentFile3}" />
-			<var name="dmDocumentSize" value="${dmDocumentSize3}" />
-			<var name="dmDocumentTitle" value="${dmDocumentTitle3}" />
-		</execute>
+		DMDocument.viewPG(dmDocumentTitle = "${dmDocumentTitle3}");
+	}
 
-		<execute macro="DMDocument#viewPG">
-			<var name="dmDocumentTitle" value="${dmDocumentTitle3}" />
-		</execute>
-	</command>
+	@priority = "5"
+	test AddFolder {
+		var dmFolderDescription = "DM Folder Description";
+		var dmFolderName = "DM Folder Name";
 
-	<command name="AddFolder" priority="5">
-		<var name="dmFolderDescription" value="DM Folder Description" />
-		<var name="dmFolderName" value="DM Folder Name" />
+		Page.gotoPG(pageName = "${pageName}");
 
-		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${pageName}" />
-		</execute>
+		DMFolder.addPG(
+			dmFolderDescription = "${dmFolderDescription}",
+			dmFolderName = "${dmFolderName}"
+		);
 
-		<execute macro="DMFolder#addPG">
-			<var name="dmFolderDescription" value="${dmFolderDescription}" />
-			<var name="dmFolderName" value="${dmFolderName}" />
-		</execute>
+		DMFolder.viewPG(dmFolderName = "${dmFolderName}");
+	}
 
-		<execute macro="DMFolder#viewPG">
-			<var name="dmFolderName" value="${dmFolderName}" />
-		</execute>
-	</command>
+	@priority = "5"
+	test DeleteDocument {
+		var dmDocumentDescription = "DM Document Description";
+		var dmDocumentFile = "Document_1.txt";
+		var dmDocumentSize = "0.3k";
+		var dmDocumentTitle = "DM Document Title";
 
-	<command name="DeleteDocument" priority="5">
-		<var name="dmDocumentDescription" value="DM Document Description" />
-		<var name="dmDocumentFile" value="Document_1.txt" />
-		<var name="dmDocumentSize" value="0.3k" />
-		<var name="dmDocumentTitle" value="DM Document Title" />
+		Page.gotoPG(pageName = "${pageName}");
 
-		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${pageName}" />
-		</execute>
+		DMDocument.addPG(
+			dmDocumentDescription = "${dmDocumentDescription}",
+			dmDocumentFile = "${dmDocumentFile}",
+			dmDocumentSize = "${dmDocumentSize}",
+			dmDocumentTitle = "${dmDocumentTitle}"
+		);
 
-		<execute macro="DMDocument#addPG">
-			<var name="dmDocumentDescription" value="${dmDocumentDescription}" />
-			<var name="dmDocumentFile" value="${dmDocumentFile}" />
-			<var name="dmDocumentSize" value="${dmDocumentSize}" />
-			<var name="dmDocumentTitle" value="${dmDocumentTitle}" />
-		</execute>
+		DMDocument.deletePG(
+			dmDocumentDescription = "${dmDocumentDescription}",
+			dmDocumentTitle = "${dmDocumentTitle}"
+		);
+	}
 
-		<execute macro="DMDocument#deletePG">
-			<var name="dmDocumentDescription" value="${dmDocumentDescription}" />
-			<var name="dmDocumentTitle" value="${dmDocumentTitle}" />
-		</execute>
-	</command>
+	@priority = "5"
+	test DeleteFolder {
+		var dmFolderDescription = "DM Folder Description";
+		var dmFolderName = "DM Folder Name";
 
-	<command name="DeleteFolder" priority="5">
-		<var name="dmFolderDescription" value="DM Folder Description" />
-		<var name="dmFolderName" value="DM Folder Name" />
+		Page.gotoPG(pageName = "${pageName}");
 
-		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${pageName}" />
-		</execute>
+		DMFolder.addPG(
+			dmFolderDescription = "${dmFolderDescription}",
+			dmFolderName = "${dmFolderName}"
+		);
 
-		<execute macro="DMFolder#addPG">
-			<var name="dmFolderDescription" value="${dmFolderDescription}" />
-			<var name="dmFolderName" value="${dmFolderName}" />
-		</execute>
+		DMFolder.deletePG(dmFolderName = "${dmFolderName}");
+	}
 
-		<execute macro="DMFolder#deletePG">
-			<var name="dmFolderName" value="${dmFolderName}" />
-		</execute>
-	</command>
+	@priority = "5"
+	test EditDocument {
+		var dmDocumentDescription = "DM Document Description";
+		var dmDocumentFile = "Document_1.txt";
+		var dmDocumentSize = "0.3k";
+		var dmDocumentTitle = "DM Document Title";
 
-	<command name="EditDocument" priority="5">
-		<var name="dmDocumentDescription" value="DM Document Description" />
-		<var name="dmDocumentFile" value="Document_1.txt" />
-		<var name="dmDocumentSize" value="0.3k" />
-		<var name="dmDocumentTitle" value="DM Document Title" />
+		Page.gotoPG(pageName = "${pageName}");
 
-		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${pageName}" />
-		</execute>
+		DMDocument.addPG(
+			dmDocumentDescription = "${dmDocumentDescription}",
+			dmDocumentFile = "${dmDocumentFile}",
+			dmDocumentSize = "${dmDocumentSize}",
+			dmDocumentTitle = "${dmDocumentTitle}"
+		);
 
-		<execute macro="DMDocument#addPG">
-			<var name="dmDocumentDescription" value="${dmDocumentDescription}" />
-			<var name="dmDocumentFile" value="${dmDocumentFile}" />
-			<var name="dmDocumentSize" value="${dmDocumentSize}" />
-			<var name="dmDocumentTitle" value="${dmDocumentTitle}" />
-		</execute>
+		DMDocument.editPG(
+			dmDocumentDescriptionEdit = "${dmDocumentDescription} Edit",
+			dmDocumentTitle = "${dmDocumentTitle}",
+			dmDocumentTitleEdit = "${dmDocumentTitle} Edit"
+		);
+	}
 
-		<execute macro="DMDocument#editPG">
-			<var name="dmDocumentDescriptionEdit" value="${dmDocumentDescription} Edit" />
-			<var name="dmDocumentTitle" value="${dmDocumentTitle}" />
-			<var name="dmDocumentTitleEdit" value="${dmDocumentTitle} Edit" />
-		</execute>
-	</command>
+	@priority = "5"
+	test EditFolder {
+		var dmFolderDescription = "DM Folder Description";
+		var dmFolderName = "DM Folder Name";
 
-	<command name="EditFolder" priority="5">
-		<var name="dmFolderDescription" value="DM Folder Description" />
-		<var name="dmFolderName" value="DM Folder Name" />
+		Page.gotoPG(pageName = "${pageName}");
 
-		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${pageName}" />
-		</execute>
+		DMFolder.addPG(
+			dmFolderDescription = "${dmFolderDescription}",
+			dmFolderName = "${dmFolderName}"
+		);
 
-		<execute macro="DMFolder#addPG">
-			<var name="dmFolderDescription" value="${dmFolderDescription}" />
-			<var name="dmFolderName" value="${dmFolderName}" />
-		</execute>
+		DMFolder.editPG(
+			dmFolderDescriptionEdit = "${dmFolderDescription} Edit",
+			dmFolderName = "${dmFolderName}",
+			dmFolderNameEdit = "${dmFolderName} Edit"
+		);
+	}
 
-		<execute macro="DMFolder#editPG">
-			<var name="dmFolderDescriptionEdit" value="${dmFolderDescription} Edit" />
-			<var name="dmFolderName" value="${dmFolderName}" />
-			<var name="dmFolderNameEdit" value="${dmFolderName} Edit" />
-		</execute>
-	</command>
+	@priority = "5"
+	test MoveFolderDocumentToFolder {
+		var dmDocumentDescription = "DM Document Description";
+		var dmDocumentFile = "Document_1.txt";
+		var dmDocumentSize = "0.3k";
+		var dmDocumentTitle = "DM Document Title";
+		var dmFolderDescription1 = "DM Folder1 Description";
+		var dmFolderDescription2 = "DM Folder2 Description";
+		var dmFolderName1 = "DM Folder1 Name";
+		var dmFolderName2 = "DM Folder2 Name";
 
-	<command name="MoveFolderDocumentToFolder" priority="5">
-		<var name="dmDocumentDescription" value="DM Document Description" />
-		<var name="dmDocumentFile" value="Document_1.txt" />
-		<var name="dmDocumentSize" value="0.3k" />
-		<var name="dmDocumentTitle" value="DM Document Title" />
-		<var name="dmFolderDescription1" value="DM Folder1 Description" />
-		<var name="dmFolderDescription2" value="DM Folder2 Description" />
-		<var name="dmFolderName1" value="DM Folder1 Name" />
-		<var name="dmFolderName2" value="DM Folder2 Name" />
+		Page.gotoPG(pageName = "${pageName}");
 
-		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${pageName}" />
-		</execute>
+		DMFolder.addPG(
+			dmFolderDescription = "${dmFolderDescription1}",
+			dmFolderName = "${dmFolderName1}"
+		);
 
-		<execute macro="DMFolder#addPG">
-			<var name="dmFolderDescription" value="${dmFolderDescription1}" />
-			<var name="dmFolderName" value="${dmFolderName1}" />
-		</execute>
+		DMFolder.addPG(
+			dmFolderDescription = "${dmFolderDescription2}",
+			dmFolderName = "${dmFolderName2}"
+		);
 
-		<execute macro="DMFolder#addPG">
-			<var name="dmFolderDescription" value="${dmFolderDescription2}" />
-			<var name="dmFolderName" value="${dmFolderName2}" />
-		</execute>
+		Page.gotoPG(pageName = "${pageName}");
 
-		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${pageName}" />
-		</execute>
+		DMFolder.gotoPG(dmFolderName = "${dmFolderName1}");
 
-		<execute macro="DMFolder#gotoPG">
-			<var name="dmFolderName" value="${dmFolderName1}" />
-		</execute>
+		DMDocument.addPG(
+			dmDocumentDescription = "${dmDocumentDescription}",
+			dmDocumentFile = "${dmDocumentFile}",
+			dmDocumentSize = "${dmDocumentSize}",
+			dmDocumentTitle = "${dmDocumentTitle}"
+		);
 
-		<execute macro="DMDocument#addPG">
-			<var name="dmDocumentDescription" value="${dmDocumentDescription}" />
-			<var name="dmDocumentFile" value="${dmDocumentFile}" />
-			<var name="dmDocumentSize" value="${dmDocumentSize}" />
-			<var name="dmDocumentTitle" value="${dmDocumentTitle}" />
-		</execute>
+		Page.gotoPG(pageName = "${pageName}");
 
-		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${pageName}" />
-		</execute>
+		DMFolderDocument.moveToFolderPG(dmDocumentTitle = "${dmDocumentTitle}");
+	}
 
-		<execute macro="DMFolderDocument#moveToFolderPG">
-			<var name="dmDocumentTitle" value="${dmDocumentTitle}" />
-		</execute>
-	</command>
+	tearDown {
+		DMDocument.tearDownPG(pageName = "${pageName}");
 
-	<tear-down>
-		<execute macro="DMDocument#tearDownPG">
-			<var name="pageName" value="${pageName}" />
-		</execute>
-
-		<execute macro="Page#tearDownPG" />
-	</tear-down>
-</definition>
+		Page.tearDownPG();
+	}
+}

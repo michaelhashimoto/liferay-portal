@@ -1,53 +1,45 @@
-<definition component-name="portal-security">
-	<property name="hook.plugins.includes" value="antisamy-hook" />
-	<property name="portal.release" value="true" />
-	<property name="portal.upstream" value="true" />
-	<property name="testray.main.component.name" value="Security" />
+@component-name = "portal-security"
+definition {
+	property hook.plugins.includes = "antisamy-hook";
+	property portal.release = "true";
+	property portal.upstream = "true";
+	property testray.main.component.name = "Security";
+	var pageName = "Antisamy Test Page";
+	var portletName = "Wiki";
 
-	<var name="pageName" value="Antisamy Test Page" />
-	<var name="portletName" value="Wiki" />
+	setUp {
+		User.firstLoginPG();
 
-	<set-up>
-		<execute macro="User#firstLoginPG" />
+		Page.addPG(pageName = "${pageName}");
 
-		<execute macro="Page#addPG">
-			<var name="pageName" value="${pageName}" />
-		</execute>
+		Portlet.addPG(pageName = "${pageName}", portletName = "${portletName}");
+	}
 
-		<execute macro="Portlet#addPG">
-			<var name="pageName" value="${pageName}" />
-			<var name="portletName" value="${portletName}" />
-		</execute>
-	</set-up>
+	@priority = "5"
+	test AddWikiFrontPageContentJavascript {
 
-	<command name="AddWikiFrontPageContentJavascript" priority="5">
-		<var name="wikiPageContent">
-			<![CDATA[
+		var wikiPageContent = '''
 				<p id='demo'>PASS</p>
 
 				<script type='text/javascript'>
 					document.getElementById('demo').innerHTML = 'FAIL';
 				</script>
-			]]>
-		</var>
+			''';
+		var wikiPageText = "PASS";
 
-		<var name="wikiPageText" value="PASS" />
+		Page.gotoPG(pageName = "${pageName}");
 
-		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${pageName}" />
-		</execute>
+		WikiPage.addFrontPagePGHTMLSource(
+			wikiPageContent = "${wikiPageContent}",
+			wikiPageText = "${wikiPageText}"
+		);
+	}
 
-		<execute macro="WikiPage#addFrontPagePGHTMLSource">
-			<var name="wikiPageContent" value="${wikiPageContent}" />
-			<var name="wikiPageText" value="${wikiPageText}" />
-		</execute>
-	</command>
+	tearDown {
+		WikiNode.tearDownCP();
 
-	<tear-down>
-		<execute macro="WikiNode#tearDownCP" />
+		WikiPage.tearDownCP();
 
-		<execute macro="WikiPage#tearDownCP" />
-
-		<execute macro="Page#tearDownPG" />
-	</tear-down>
-</definition>
+		Page.tearDownPG();
+	}
+}

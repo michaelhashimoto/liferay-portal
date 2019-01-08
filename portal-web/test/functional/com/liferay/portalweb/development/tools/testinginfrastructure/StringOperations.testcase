@@ -1,130 +1,109 @@
-<definition component-name="portal-tools">
-	<property name="portal.release" value="true" />
-	<property name="portal.upstream" value="true" />
-	<property name="testcase.url" value="" />
-	<property name="testray.main.component.name" value="Tools" />
+@component-name = "portal-tools"
+definition {
+	property portal.release = "true";
+	property portal.upstream = "true";
+	property testcase.url = "";
+	property testray.main.component.name = "Tools";
 
-	<command name="GetIPAddress" priority="5">
-		<echo message="Test getIPAddress()" />
+	@priority = "5"
+	test GetIPAddress {
+		echo("Test getIPAddress()");
 
-		<var name="ipAddress" value="${getIPAddress()}" />
+		var ipAddress = "${getIPAddress()}";
 
-		<echo message="${ipAddress}" />
-	</command>
+		echo("${ipAddress}");
+	}
 
-	<command name="Increment" priority="5">
-		<echo message="Test increment()" />
+	@priority = "5"
+	test Increment {
+		echo("Test increment()");
 
-		<var name="number" value="1" />
+		var number = "1";
+		var numberIncremented = MathUtil.sum("${number}", "1");
 
-		<var method="MathUtil#sum('${number}', '1')" name="numberIncremented" />
+		TestUtils.assertEquals(actual = "${numberIncremented}", expected = "2");
 
-		<execute macro="TestUtils#assertEquals">
-			<var name="actual" value="${numberIncremented}" />
-			<var name="expected" value="2" />
-		</execute>
+		echo("Test increment() used inline");
 
-		<echo message="Test increment() used inline" />
+		TestUtils.assertEquals(actual = MathUtil.sum("${number}", "1"), expected = "2");
+	}
 
-		<execute macro="TestUtils#assertEquals">
-			<var method="MathUtil#sum('${number}', '1')" name="actual" />
-			<var name="expected" value="2" />
-		</execute>
-	</command>
+	@priority = "5"
+	test Length {
+		echo("Test StringUtil#length");
 
-	<command name="Length" priority="5">
-		<echo message="Test StringUtil#length" />
+		var string = "abcde";
+		var stringLength = StringUtil.length("${string}");
 
-		<var name="string" value="abcde" />
+		TestUtils.assertEquals(actual = "${stringLength}", expected = "5");
 
-		<var method="StringUtil#length('${string}')" name="stringLength" />
+		echo("Test StringUtil#length used inline");
 
-		<execute macro="TestUtils#assertEquals">
-			<var name="actual" value="${stringLength}" />
-			<var name="expected" value="5" />
-		</execute>
+		TestUtils.assertEquals(actual = StringUtil.length("${string}"), expected = "5");
+	}
 
-		<echo message="Test StringUtil#length used inline" />
+	@priority = "5"
+	test Lowercase {
+		echo("Test lowercase()");
 
-		<execute macro="TestUtils#assertEquals">
-			<var method="StringUtil#length('${string}')" name="actual" />
-			<var name="expected" value="5" />
-		</execute>
-	</command>
+		var string = "abCDe";
+		var stringLowercased = StringUtil.lowerCase("${string}");
 
-	<command name="Lowercase" priority="5">
-		<echo message="Test lowercase()" />
+		TestUtils.assertEquals(actual = "${stringLowercased}", expected = "abcde");
 
-		<var name="string" value="abCDe" />
+		echo("Test lowercase() used inline");
 
-		<var method="StringUtil#lowerCase('${string}')" name="stringLowercased" />
+		TestUtils.assertEquals(
+			actual = StringUtil.lowerCase("${string}"),
+			expected = "abcde"
+		);
+	}
 
-		<execute macro="TestUtils#assertEquals">
-			<var name="actual" value="${stringLowercased}" />
-			<var name="expected" value="abcde" />
-		</execute>
+	@priority = "5"
+	test Regex {
+		var regex = RegexUtil.replace("regularexpression=32132", "[a-z]*=([0-9]*)", "0");
 
-		<echo message="Test lowercase() used inline" />
+		TestUtils.assertEquals(
+			actual = "${regex}",
+			expected = "regularexpression=32132"
+		);
 
-		<execute macro="TestUtils#assertEquals">
-			<var method="StringUtil#lowerCase('${string}')" name="actual" />
-			<var name="expected" value="abcde" />
-		</execute>
-	</command>
+		var regex = RegexUtil.replace("regularexpression=32132", "[a-z]*=([0-9]*)", "1");
 
-	<command name="Regex" priority="5">
-		<var method="RegexUtil#replace('regularexpression=32132', '[a-z]*=([0-9]*)', '0')" name="regex" />
+		TestUtils.assertEquals(actual = "${regex}", expected = "32132");
+	}
 
-		<execute macro="TestUtils#assertEquals">
-			<var name="actual" value="${regex}" />
-			<var name="expected" value="regularexpression=32132" />
-		</execute>
+	@priority = "5"
+	test Replace {
+		echo("Test replace()");
 
-		<var method="RegexUtil#replace('regularexpression=32132', '[a-z]*=([0-9]*)', '1')" name="regex" />
+		var string = "abcde";
+		var stringReplaced = StringUtil.replace("${string}", "abc", "123");
 
-		<execute macro="TestUtils#assertEquals">
-			<var name="actual" value="${regex}" />
-			<var name="expected" value="32132" />
-		</execute>
-	</command>
+		TestUtils.assertEquals(actual = "${stringReplaced}", expected = "123de");
 
-	<command name="Replace" priority="5">
-		<echo message="Test replace()" />
+		echo("Test replace() used inline");
 
-		<var name="string" value="abcde" />
+		TestUtils.assertEquals(
+			actual = StringUtil.replace("${string}", "abc", "123"),
+			expected = "123de"
+		);
+	}
 
-		<var method="StringUtil#replace('${string}', 'abc', '123')" name="stringReplaced" />
+	@priority = "5"
+	test Uppercase {
+		echo("Test uppercase()");
 
-		<execute macro="TestUtils#assertEquals">
-			<var name="actual" value="${stringReplaced}" />
-			<var name="expected" value="123de" />
-		</execute>
+		var string = "abCDe";
+		var stringUppercased = StringUtil.upperCase("${string}");
 
-		<echo message="Test replace() used inline" />
+		TestUtils.assertEquals(actual = "${stringUppercased}", expected = "ABCDE");
 
-		<execute macro="TestUtils#assertEquals">
-			<var method="StringUtil#replace('${string}', 'abc', '123')" name="actual" />
-			<var name="expected" value="123de" />
-		</execute>
-	</command>
+		echo("Test uppercase() used inline");
 
-	<command name="Uppercase" priority="5">
-		<echo message="Test uppercase()" />
-
-		<var name="string" value="abCDe" />
-
-		<var method="StringUtil#upperCase('${string}')" name="stringUppercased" />
-
-		<execute macro="TestUtils#assertEquals">
-			<var name="actual" value="${stringUppercased}" />
-			<var name="expected" value="ABCDE" />
-		</execute>
-
-		<echo message="Test uppercase() used inline" />
-
-		<execute macro="TestUtils#assertEquals">
-			<var method="StringUtil#upperCase('${string}')" name="actual" />
-			<var name="expected" value="ABCDE" />
-		</execute>
-	</command>
-</definition>
+		TestUtils.assertEquals(
+			actual = StringUtil.upperCase("${string}"),
+			expected = "ABCDE"
+		);
+	}
+}

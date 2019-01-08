@@ -1,23 +1,19 @@
-<definition component-name="portal-wcm">
-	<property name="portal.release" value="true" />
-	<property name="portal.upstream" value="true" />
-	<property name="testray.main.component.name" value="WCM" />
+@component-name = "portal-wcm"
+definition {
+	property portal.release = "true";
+	property portal.upstream = "true";
+	property testray.main.component.name = "WCM";
 
-	<set-up>
-		<execute macro="User#firstLoginPG" />
-	</set-up>
+	setUp {
+		User.firstLoginPG();
+	}
 
-	<command name="GotoControlPanel" priority="5">
-		<execute macro="Page#gotoCP">
-			<var name="portletName" value="Blogs" />
-		</execute>
+	@priority = "5"
+	test GotoControlPanel {
+		Page.gotoCP(portletName = "Blogs");
 
-		<execute macro="Page#gotoCP">
-			<var name="portletName" value="Users and Organizations" />
-		</execute>
+		Page.gotoCP(portletName = "Users and Organizations");
 
-		<execute macro="Page#gotoCP">
-			<var name="portletName" value="Wiki" />
-		</execute>
-	</command>
-</definition>
+		Page.gotoCP(portletName = "Wiki");
+	}
+}

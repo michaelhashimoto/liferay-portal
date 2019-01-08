@@ -1,415 +1,431 @@
-<definition component-name="social-office-site">
-	<property name="hook.plugins.includes" value="deploy-listener-hook,portal-compat-hook,so-activities-hook,so-hook" />
-	<property name="portlet.plugins.includes" value="chat-portlet,contacts-portlet,events-display-portlet,microblogs-portlet,private-messaging-portlet,so-announcements-portlet,so-configurations-portlet,so-portlet,tasks-portlet,wysiwyg-portlet" />
-	<property name="testray.main.component.name" value="Social Office EE" />
-	<property name="theme.plugins.includes" value="so-theme" />
-
-	<var name="key_siteName" value="${siteName}" />
-	<var name="pageName" value="Blogs" />
-	<var name="roleName" value="Site Member" />
-	<var name="siteDescription" value="Open Site Description" />
-	<var name="siteName" value="Open Site Name" />
-	<var name="siteType" value="Open" />
-
-	<var name="entryAuthorFirstName" value="Joe" />
-	<var name="entryAuthorLastName" value="Bloggs" />
-	<var name="entryContent" value="Blogs Entry Content" />
-	<var name="entryContentEdit" value="Blogs Entry Content Edit" />
-	<var name="entryTitle" value="Blogs Entry Title" />
-	<var name="entryTitleEdit" value="Blogs Entry Title Edit" />
-
-	<set-up>
-		<execute macro="SOUser#firstLoginPG" />
-
-		<execute macro="SOUserBar#addSOSite">
-			<var name="siteDescription" value="${siteDescription}" />
-			<var name="siteName" value="${siteName}" />
-			<var name="siteType" value="${siteType}" />
-		</execute>
-	</set-up>
-
-	<tear-down>
-		<execute macro="SOUserBar#tearDownSites" />
-
-		<execute macro="SOUser#tearDownCP" />
-
-		<execute macro="Role#tearDownDefinePermissionCP" />
-	</tear-down>
-
-	<command name="AddSOBlogsEntry" priority="5">
-		<var name="entryContent" value="${entryContent}" />
-		<var name="entryTitle" value="${entryTitle}" />
-		<var name="key_siteName" value="${key_siteName}" />
-		<var name="pageName" value="${pageName}" />
-		<var name="pageType" value="${pageType}" />
-		<var name="siteName" value="${siteName}" />
-
-		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${pageName}" />
-			<var name="pageType" value="Open Site" />
-		</execute>
-
-		<execute macro="BlogsEntry#addPG" />
-
-		<execute macro="BlogsEntry#viewPG" />
-
-		<execute function="AssertTextEquals" locator1="PGBlogs#ENTRY_COMMENTS_1" value1="0 Comments" />
-		<execute function="AssertTextEquals" locator1="PGBlogs#ENTRY_AVERAGE_RATING_1" value1="Average (0 Votes)" />
-		<execute function="AssertTextEquals" locator1="PGBlogs#SEARCH_RESULTS" value1="Showing 1 result." />
-
-		<execute macro="BlogsEntry#viewPGDetails" />
-
-		<execute function="AssertTextEquals" locator1="PGBlogsEntry#ENTRY_COMMENTS" value1="0 Comments" />
-		<execute function="AssertTextEquals" locator1="PGBlogsEntry#ENTRY_AVERAGE_RATING" value1="Average (0 Votes)" />
-
-		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${pageName}" />
-			<var name="pageType" value="Open Site" />
-		</execute>
-
-		<execute macro="BlogsEntry#viewPGDetails" />
-
-		<execute function="AssertTextEquals#assertPartialText" locator1="PGBlogsEntry#ENTRY_VIEW_COUNT" value1="1 View" />
-
-		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${pageName}" />
-			<var name="pageType" value="Open Site" />
-		</execute>
-
-		<execute macro="BlogsEntry#viewPGDetails" />
-
-		<execute function="AssertTextEquals#assertPartialText" locator1="PGBlogsEntry#ENTRY_VIEW_COUNT" value1="2 Views" />
-
-		<execute function="Open" locator1="SOBlogs#OPEN_SITE_NAME_BLOGS_RSS_URL" />
-
-		<execute function="AssertTextPresent" value1="${siteName}" />
-		<execute function="AssertTextPresent" value1="${entryTitle}" />
-		<execute function="AssertTextPresent" value1="${entryContent}" />
-		<execute function="Click" locator1="PGBlogs#RSS_ENTRY_TITLE" value1="${entryTitle}" />
-
-		<execute function="AssertTextEquals" locator1="PGBlogsEntry#ENTRY_TITLE" value1="${entryTitle}" />
-		<execute function="AssertTextEquals" locator1="PGBlogsEntry#ENTRY_CONTENT" value1="${entryContent}" />
-
-		<execute macro="Page#openURL" />
-	</command>
-
-	<command name="AddSOBlogsEntrySOUser" priority="5">
-		<var name="adminEmailAddress" value="test@liferay.com" />
-		<var name="entryContent" value="${entryContent}" />
-		<var name="entryTitle" value="${entryTitle}" />
-		<var name="key_siteName" value="${key_siteName}" />
-		<var name="pageName" value="${pageName}" />
-		<var name="pageType" value="${pageType}" />
-		<var name="password" value="test" />
-		<var name="roleName" value="${roleName}" />
-		<var name="siteName" value="${siteName}" />
-		<var name="userEmailAddress" value="socialoffice01@liferay.com" />
-		<var name="userFirstName" value="Social01" />
-		<var name="userLastName" value="User01" />
-		<var name="userMiddleName" value="Office01" />
-		<var name="userScreenName" value="socialoffice01" />
-
-		<execute macro="SOUser#addUserWithSORole">
-			<var name="adminEmailAddress" value="${adminEmailAddress}" />
-			<var name="password" value="${password}" />
-			<var name="userEmailAddress" value="${userEmailAddress}" />
-			<var name="userFirstName" value="${userFirstName}" />
-			<var name="userLastName" value="${userLastName}" />
-			<var name="userMiddleName" value="${userMiddleName}" />
-			<var name="userScreenName" value="${userScreenName}" />
-		</execute>
-
-		<execute macro="SOUserBar#gotoCP">
-			<var name="portletName" value="Roles" />
-		</execute>
-
-		<execute macro="Role#definePermissionSiteMembersBlogsCP">
-			<var name="permissions" value="Blogs" />
-			<var name="roleName" value="${roleName}" />
-			<var name="siteContentPermissions" value="Blogs" />
-		</execute>
-
-		<execute macro="SOUser#logoutPG" />
-
-		<execute macro="SOUser#loginPG">
-			<var name="password" value="test" />
-			<var name="userEmailAddress" value="${userEmailAddress}" />
-		</execute>
-
-		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${pageName}" />
-			<var name="pageType" value="Open Site" />
-		</execute>
-
-		<execute macro="SOSite#joinSitePG">
-			<var name="siteName" value="${siteName}" />
-		</execute>
-
-		<execute macro="BlogsEntry#addPG" />
-
-		<execute macro="BlogsEntry#viewPG">
-			<var name="entryAuthorFirstName" value="${userFirstName}" />
-			<var name="entryAuthorLastName" value="${userLastName}" />
-			<var name="entryAuthorMiddleName" value="${userMiddleName}" />
-		</execute>
-
-		<execute function="AssertTextEquals" locator1="PGBlogs#ENTRY_COMMENTS_1" value1="0 Comments" />
-		<execute function="AssertTextEquals" locator1="PGBlogs#ENTRY_AVERAGE_RATING_1" value1="Average (0 Votes)" />
-		<execute function="AssertTextEquals" locator1="PGBlogs#SEARCH_RESULTS" value1="Showing 1 result." />
-
-		<execute macro="BlogsEntry#viewPGDetails">
-			<var name="entryAuthorFirstName" value="${userFirstName}" />
-			<var name="entryAuthorLastName" value="${userLastName}" />
-			<var name="entryAuthorMiddleName" value="${userMiddleName}" />
-		</execute>
-
-		<execute function="AssertTextEquals" locator1="PGBlogsEntry#ENTRY_COMMENTS" value1="0 Comments" />
-		<execute function="AssertTextEquals" locator1="PGBlogsEntry#ENTRY_AVERAGE_RATING" value1="Average (0 Votes)" />
-
-		<execute macro="SOUser#logoutPG" />
-
-		<execute macro="SOUser#loginPG">
-			<var name="password" value="test" />
-			<var name="userEmailAddress" value="${adminEmailAddress}" />
-		</execute>
-
-		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${pageName}" />
-			<var name="pageType" value="Open Site" />
-		</execute>
-
-		<execute macro="BlogsEntry#viewPG">
-			<var name="entryAuthorFirstName" value="${userFirstName}" />
-			<var name="entryAuthorLastName" value="${userLastName}" />
-			<var name="entryAuthorMiddleName" value="${userMiddleName}" />
-		</execute>
-
-		<execute function="AssertTextEquals" locator1="PGBlogs#ENTRY_COMMENTS_1" value1="0 Comments" />
-		<execute function="AssertTextEquals" locator1="PGBlogs#ENTRY_AVERAGE_RATING_1" value1="Average (0 Votes)" />
-		<execute function="AssertTextEquals" locator1="PGBlogs#SEARCH_RESULTS" value1="Showing 1 result." />
-
-		<execute macro="BlogsEntry#viewPGDetails">
-			<var name="entryAuthorFirstName" value="${userFirstName}" />
-			<var name="entryAuthorLastName" value="${userLastName}" />
-			<var name="entryAuthorMiddleName" value="${userMiddleName}" />
-		</execute>
-
-		<execute function="AssertTextEquals" locator1="PGBlogsEntry#ENTRY_COMMENTS" value1="0 Comments" />
-		<execute function="AssertTextEquals" locator1="PGBlogsEntry#ENTRY_AVERAGE_RATING" value1="Average (0 Votes)" />
-	</command>
-
-	<command name="DeleteSOBlogsEntry" priority="5">
-		<var name="entryContent" value="${entryContent}" />
-		<var name="entryTitle" value="${entryTitle}" />
-		<var name="key_siteName" value="${key_siteName}" />
-		<var name="siteName" value="${siteName}" />
-
-		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${pageName}" />
-			<var name="pageType" value="Open Site" />
-		</execute>
-
-		<execute macro="BlogsEntry#addPG" />
-
-		<execute macro="BlogsEntry#deletePG" />
-	</command>
-
-	<command name="DeleteSOBlogsEntrySOUser" priority="5">
-		<var name="adminEmailAddress" value="test@liferay.com" />
-		<var name="entryContent" value="${entryContent}" />
-		<var name="entryTitle" value="${entryTitle}" />
-		<var name="key_siteName" value="${key_siteName}" />
-		<var name="pageName" value="${pageName}" />
-		<var name="pageType" value="${pageType}" />
-		<var name="password" value="test" />
-		<var name="roleName" value="${roleName}" />
-		<var name="siteName" value="${siteName}" />
-		<var name="userEmailAddress" value="socialoffice01@liferay.com" />
-		<var name="userFirstName" value="Social01" />
-		<var name="userLastName" value="User01" />
-		<var name="userMiddleName" value="Office01" />
-		<var name="userScreenName" value="socialoffice01" />
-
-		<execute macro="SOUser#addUserWithSORole">
-			<var name="adminEmailAddress" value="${adminEmailAddress}" />
-			<var name="password" value="${password}" />
-			<var name="userEmailAddress" value="${userEmailAddress}" />
-			<var name="userFirstName" value="${userFirstName}" />
-			<var name="userLastName" value="${userLastName}" />
-			<var name="userMiddleName" value="${userMiddleName}" />
-			<var name="userScreenName" value="${userScreenName}" />
-		</execute>
-
-		<execute macro="SOUserBar#gotoCP">
-			<var name="portletName" value="Roles" />
-		</execute>
-
-		<execute macro="Role#definePermissionSiteMembersBlogsCP">
-			<var name="permissions" value="Blogs" />
-			<var name="roleName" value="${roleName}" />
-			<var name="siteContentPermissions" value="Blogs" />
-		</execute>
-
-		<execute macro="SOUser#logoutPG" />
-
-		<execute macro="SOUser#loginPG">
-			<var name="password" value="test" />
-			<var name="userEmailAddress" value="${userEmailAddress}" />
-		</execute>
-
-		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${pageName}" />
-			<var name="pageType" value="Open Site" />
-		</execute>
-
-		<execute macro="SOSite#joinSitePG">
-			<var name="siteName" value="${siteName}" />
-		</execute>
-
-		<execute macro="BlogsEntry#addPG" />
-
-		<execute macro="BlogsEntry#deletePG" />
-
-		<execute macro="SOUser#logoutPG" />
-
-		<execute macro="SOUser#loginPG">
-			<var name="password" value="test" />
-			<var name="userEmailAddress" value="${adminEmailAddress}" />
-		</execute>
-
-		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${pageName}" />
-			<var name="pageType" value="Open Site" />
-		</execute>
-
-		<execute function="AssertElementPresent" locator1="PGBlogs#ADD_ENTRY_BUTTON" value1="Add Blog Entry" />
-		<execute function="AssertElementPresent" locator1="PGBlogs#PERMISSIONS_BUTTON" value1="Permissions" />
-		<execute function="AssertTextEquals" locator1="PGBlogs#RSS_LINK" value1="RSS" />
-		<execute function="AssertTextEquals" locator1="PGBlogs#SUBSCRIBE_LINK" value1="Subscribe" />
-		<execute function="AssertElementNotPresent" locator1="PGBlogs#ENTRY_TITLE_1" />
-		<execute function="AssertElementNotPresent" locator1="PGBlogs#ENTRY_CONTENT_1" />
-	</command>
-
-	<command name="EditSOBlogsEntry" priority="5">
-		<var name="entryContent" value="${entryContent}" />
-		<var name="entryContentEdit" value="${entryContentEdit}" />
-		<var name="entryTitle" value="${entryTitle}" />
-		<var name="entryTitleEdit" value="${entryTitleEdit}" />
-		<var name="key_siteName" value="${key_siteName}" />
-		<var name="siteName" value="${siteName}" />
-
-		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${pageName}" />
-			<var name="pageType" value="Open Site" />
-		</execute>
-
-		<execute macro="BlogsEntry#addPG" />
-
-		<execute macro="BlogsEntry#editPG" />
-	</command>
-
-	<command name="EditSOBlogsEntrySOUser" priority="5">
-		<var name="adminEmailAddress" value="test@liferay.com" />
-		<var name="entryContent" value="${entryContent}" />
-		<var name="entryContentEdit" value="${entryContentEdit}" />
-		<var name="entryTitle" value="${entryTitle}" />
-		<var name="entryTitleEdit" value="${entryTitleEdit}" />
-		<var name="key_siteName" value="${key_siteName}" />
-		<var name="pageName" value="${pageName}" />
-		<var name="pageType" value="${pageType}" />
-		<var name="password" value="test" />
-		<var name="roleName" value="${roleName}" />
-		<var name="siteName" value="${siteName}" />
-		<var name="userEmailAddress" value="socialoffice01@liferay.com" />
-		<var name="userFirstName" value="Social01" />
-		<var name="userLastName" value="User01" />
-		<var name="userMiddleName" value="Office01" />
-		<var name="userScreenName" value="socialoffice01" />
-
-		<execute macro="SOUser#addUserWithSORole">
-			<var name="adminEmailAddress" value="${adminEmailAddress}" />
-			<var name="password" value="${password}" />
-			<var name="userEmailAddress" value="${userEmailAddress}" />
-			<var name="userFirstName" value="${userFirstName}" />
-			<var name="userLastName" value="${userLastName}" />
-			<var name="userMiddleName" value="${userMiddleName}" />
-			<var name="userScreenName" value="${userScreenName}" />
-		</execute>
-
-		<execute macro="SOUserBar#gotoCP">
-			<var name="portletName" value="Roles" />
-		</execute>
-
-		<execute macro="Role#definePermissionSiteMembersBlogsCP">
-			<var name="permissions" value="Blogs" />
-			<var name="roleName" value="${roleName}" />
-			<var name="siteContentPermissions" value="Blogs" />
-		</execute>
-
-		<execute macro="SOUser#logoutPG" />
-
-		<execute macro="SOUser#loginPG">
-			<var name="password" value="test" />
-			<var name="userEmailAddress" value="${userEmailAddress}" />
-		</execute>
-
-		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${pageName}" />
-			<var name="pageType" value="Open Site" />
-		</execute>
-
-		<execute macro="SOSite#joinSitePG">
-			<var name="siteName" value="${siteName}" />
-		</execute>
-
-		<execute macro="BlogsEntry#addPG" />
-
-		<execute macro="BlogsEntry#editPG" />
-
-		<execute macro="SOUser#logoutPG" />
-
-		<execute macro="SOUser#loginPG">
-			<var name="password" value="test" />
-			<var name="userEmailAddress" value="${adminEmailAddress}" />
-		</execute>
-
-		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${pageName}" />
-			<var name="pageType" value="Open Site" />
-		</execute>
-
-		<execute macro="BlogsEntry#viewPG">
-			<var name="entryAuthorFirstName" value="${userFirstName}" />
-			<var name="entryAuthorLastName" value="${userLastName}" />
-			<var name="entryAuthorMiddleName" value="${userMiddleName}" />
-			<var name="entryContent" value="${entryContentEdit}" />
-			<var name="entryTitle" value="${entryTitleEdit}" />
-		</execute>
-
-		<execute function="AssertTextEquals" locator1="PGBlogsEntry#ENTRY_COMMENTS" value1="0 Comments" />
-		<execute function="AssertTextEquals" locator1="PGBlogsEntry#ENTRY_AVERAGE_RATING" value1="Average (0 Votes)" />
-	</command>
-
-	<command name="ViewSOBlogsEntryRecentBlogs" priority="5">
-		<var name="entryContent" value="${entryContent}" />
-		<var name="entryTitle" value="${entryTitle}" />
-		<var name="key_siteName" value="${key_siteName}" />
-		<var name="pageName" value="${pageName}" />
-		<var name="pageType" value="${pageType}" />
-		<var name="siteName" value="${siteName}" />
-
-		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${pageName}" />
-			<var name="pageType" value="Open Site" />
-		</execute>
-
-		<execute macro="BlogsEntry#addPG" />
-
-		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${pageName}" />
-			<var name="pageType" value="Open Site" />
-		</execute>
-
-		<execute macro="SOBlogs#viewBlogsEntryRecentBlogs" />
-	</command>
-</definition>
+@component-name = "social-office-site"
+definition {
+	property hook.plugins.includes = "deploy-listener-hook,portal-compat-hook,so-activities-hook,so-hook";
+	property portlet.plugins.includes = "chat-portlet,contacts-portlet,events-display-portlet,microblogs-portlet,private-messaging-portlet,so-announcements-portlet,so-configurations-portlet,so-portlet,tasks-portlet,wysiwyg-portlet";
+	property testray.main.component.name = "Social Office EE";
+	property theme.plugins.includes = "so-theme";
+	var key_siteName = "${siteName}";
+	var pageName = "Blogs";
+	var roleName = "Site Member";
+	var siteDescription = "Open Site Description";
+	var siteName = "Open Site Name";
+	var siteType = "Open";
+	var entryAuthorFirstName = "Joe";
+	var entryAuthorLastName = "Bloggs";
+	var entryContent = "Blogs Entry Content";
+	var entryContentEdit = "Blogs Entry Content Edit";
+	var entryTitle = "Blogs Entry Title";
+	var entryTitleEdit = "Blogs Entry Title Edit";
+
+	setUp {
+		SOUser.firstLoginPG();
+
+		SOUserBar.addSOSite(
+			siteDescription = "${siteDescription}",
+			siteName = "${siteName}",
+			siteType = "${siteType}"
+		);
+	}
+
+	tearDown {
+		SOUserBar.tearDownSites();
+
+		SOUser.tearDownCP();
+
+		Role.tearDownDefinePermissionCP();
+	}
+
+	@priority = "5"
+	test AddSOBlogsEntry {
+		var entryContent = "${entryContent}";
+		var entryTitle = "${entryTitle}";
+		var key_siteName = "${key_siteName}";
+		var pageName = "${pageName}";
+		var pageType = "${pageType}";
+		var siteName = "${siteName}";
+
+		Page.gotoPG(pageName = "${pageName}", pageType = "Open Site");
+
+		BlogsEntry.addPG();
+
+		BlogsEntry.viewPG();
+
+		AssertTextEquals(locator1 = "PGBlogs#ENTRY_COMMENTS_1", value1 = "0 Comments");
+
+		AssertTextEquals(
+			locator1 = "PGBlogs#ENTRY_AVERAGE_RATING_1",
+			value1 = "Average (0 Votes)"
+		);
+
+		AssertTextEquals(
+			locator1 = "PGBlogs#SEARCH_RESULTS",
+			value1 = "Showing 1 result."
+		);
+
+		BlogsEntry.viewPGDetails();
+
+		AssertTextEquals(
+			locator1 = "PGBlogsEntry#ENTRY_COMMENTS",
+			value1 = "0 Comments"
+		);
+
+		AssertTextEquals(
+			locator1 = "PGBlogsEntry#ENTRY_AVERAGE_RATING",
+			value1 = "Average (0 Votes)"
+		);
+
+		Page.gotoPG(pageName = "${pageName}", pageType = "Open Site");
+
+		BlogsEntry.viewPGDetails();
+
+		AssertTextEquals.assertPartialText(
+			locator1 = "PGBlogsEntry#ENTRY_VIEW_COUNT",
+			value1 = "1 View"
+		);
+
+		Page.gotoPG(pageName = "${pageName}", pageType = "Open Site");
+
+		BlogsEntry.viewPGDetails();
+
+		AssertTextEquals.assertPartialText(
+			locator1 = "PGBlogsEntry#ENTRY_VIEW_COUNT",
+			value1 = "2 Views"
+		);
+
+		Open(locator1 = "SOBlogs#OPEN_SITE_NAME_BLOGS_RSS_URL");
+
+		AssertTextPresent(value1 = "${siteName}");
+
+		AssertTextPresent(value1 = "${entryTitle}");
+
+		AssertTextPresent(value1 = "${entryContent}");
+
+		Click(locator1 = "PGBlogs#RSS_ENTRY_TITLE", value1 = "${entryTitle}");
+
+		AssertTextEquals(
+			locator1 = "PGBlogsEntry#ENTRY_TITLE",
+			value1 = "${entryTitle}"
+		);
+
+		AssertTextEquals(
+			locator1 = "PGBlogsEntry#ENTRY_CONTENT",
+			value1 = "${entryContent}"
+		);
+
+		Page.openURL();
+	}
+
+	@priority = "5"
+	test AddSOBlogsEntrySOUser {
+		var adminEmailAddress = "test@liferay.com";
+		var entryContent = "${entryContent}";
+		var entryTitle = "${entryTitle}";
+		var key_siteName = "${key_siteName}";
+		var pageName = "${pageName}";
+		var pageType = "${pageType}";
+		var password = "test";
+		var roleName = "${roleName}";
+		var siteName = "${siteName}";
+		var userEmailAddress = "socialoffice01@liferay.com";
+		var userFirstName = "Social01";
+		var userLastName = "User01";
+		var userMiddleName = "Office01";
+		var userScreenName = "socialoffice01";
+
+		SOUser.addUserWithSORole(
+			adminEmailAddress = "${adminEmailAddress}",
+			password = "${password}",
+			userEmailAddress = "${userEmailAddress}",
+			userFirstName = "${userFirstName}",
+			userLastName = "${userLastName}",
+			userMiddleName = "${userMiddleName}",
+			userScreenName = "${userScreenName}"
+		);
+
+		SOUserBar.gotoCP(portletName = "Roles");
+
+		Role.definePermissionSiteMembersBlogsCP(
+			permissions = "Blogs",
+			roleName = "${roleName}",
+			siteContentPermissions = "Blogs"
+		);
+
+		SOUser.logoutPG();
+
+		SOUser.loginPG(password = "test", userEmailAddress = "${userEmailAddress}");
+
+		Page.gotoPG(pageName = "${pageName}", pageType = "Open Site");
+
+		SOSite.joinSitePG(siteName = "${siteName}");
+
+		BlogsEntry.addPG();
+
+		BlogsEntry.viewPG(
+			entryAuthorFirstName = "${userFirstName}",
+			entryAuthorLastName = "${userLastName}",
+			entryAuthorMiddleName = "${userMiddleName}"
+		);
+
+		AssertTextEquals(locator1 = "PGBlogs#ENTRY_COMMENTS_1", value1 = "0 Comments");
+
+		AssertTextEquals(
+			locator1 = "PGBlogs#ENTRY_AVERAGE_RATING_1",
+			value1 = "Average (0 Votes)"
+		);
+
+		AssertTextEquals(
+			locator1 = "PGBlogs#SEARCH_RESULTS",
+			value1 = "Showing 1 result."
+		);
+
+		BlogsEntry.viewPGDetails(
+			entryAuthorFirstName = "${userFirstName}",
+			entryAuthorLastName = "${userLastName}",
+			entryAuthorMiddleName = "${userMiddleName}"
+		);
+
+		AssertTextEquals(
+			locator1 = "PGBlogsEntry#ENTRY_COMMENTS",
+			value1 = "0 Comments"
+		);
+
+		AssertTextEquals(
+			locator1 = "PGBlogsEntry#ENTRY_AVERAGE_RATING",
+			value1 = "Average (0 Votes)"
+		);
+
+		SOUser.logoutPG();
+
+		SOUser.loginPG(password = "test", userEmailAddress = "${adminEmailAddress}");
+
+		Page.gotoPG(pageName = "${pageName}", pageType = "Open Site");
+
+		BlogsEntry.viewPG(
+			entryAuthorFirstName = "${userFirstName}",
+			entryAuthorLastName = "${userLastName}",
+			entryAuthorMiddleName = "${userMiddleName}"
+		);
+
+		AssertTextEquals(locator1 = "PGBlogs#ENTRY_COMMENTS_1", value1 = "0 Comments");
+
+		AssertTextEquals(
+			locator1 = "PGBlogs#ENTRY_AVERAGE_RATING_1",
+			value1 = "Average (0 Votes)"
+		);
+
+		AssertTextEquals(
+			locator1 = "PGBlogs#SEARCH_RESULTS",
+			value1 = "Showing 1 result."
+		);
+
+		BlogsEntry.viewPGDetails(
+			entryAuthorFirstName = "${userFirstName}",
+			entryAuthorLastName = "${userLastName}",
+			entryAuthorMiddleName = "${userMiddleName}"
+		);
+
+		AssertTextEquals(
+			locator1 = "PGBlogsEntry#ENTRY_COMMENTS",
+			value1 = "0 Comments"
+		);
+
+		AssertTextEquals(
+			locator1 = "PGBlogsEntry#ENTRY_AVERAGE_RATING",
+			value1 = "Average (0 Votes)"
+		);
+	}
+
+	@priority = "5"
+	test DeleteSOBlogsEntry {
+		var entryContent = "${entryContent}";
+		var entryTitle = "${entryTitle}";
+		var key_siteName = "${key_siteName}";
+		var siteName = "${siteName}";
+
+		Page.gotoPG(pageName = "${pageName}", pageType = "Open Site");
+
+		BlogsEntry.addPG();
+
+		BlogsEntry.deletePG();
+	}
+
+	@priority = "5"
+	test DeleteSOBlogsEntrySOUser {
+		var adminEmailAddress = "test@liferay.com";
+		var entryContent = "${entryContent}";
+		var entryTitle = "${entryTitle}";
+		var key_siteName = "${key_siteName}";
+		var pageName = "${pageName}";
+		var pageType = "${pageType}";
+		var password = "test";
+		var roleName = "${roleName}";
+		var siteName = "${siteName}";
+		var userEmailAddress = "socialoffice01@liferay.com";
+		var userFirstName = "Social01";
+		var userLastName = "User01";
+		var userMiddleName = "Office01";
+		var userScreenName = "socialoffice01";
+
+		SOUser.addUserWithSORole(
+			adminEmailAddress = "${adminEmailAddress}",
+			password = "${password}",
+			userEmailAddress = "${userEmailAddress}",
+			userFirstName = "${userFirstName}",
+			userLastName = "${userLastName}",
+			userMiddleName = "${userMiddleName}",
+			userScreenName = "${userScreenName}"
+		);
+
+		SOUserBar.gotoCP(portletName = "Roles");
+
+		Role.definePermissionSiteMembersBlogsCP(
+			permissions = "Blogs",
+			roleName = "${roleName}",
+			siteContentPermissions = "Blogs"
+		);
+
+		SOUser.logoutPG();
+
+		SOUser.loginPG(password = "test", userEmailAddress = "${userEmailAddress}");
+
+		Page.gotoPG(pageName = "${pageName}", pageType = "Open Site");
+
+		SOSite.joinSitePG(siteName = "${siteName}");
+
+		BlogsEntry.addPG();
+
+		BlogsEntry.deletePG();
+
+		SOUser.logoutPG();
+
+		SOUser.loginPG(password = "test", userEmailAddress = "${adminEmailAddress}");
+
+		Page.gotoPG(pageName = "${pageName}", pageType = "Open Site");
+
+		AssertElementPresent(
+			locator1 = "PGBlogs#ADD_ENTRY_BUTTON",
+			value1 = "Add Blog Entry"
+		);
+
+		AssertElementPresent(
+			locator1 = "PGBlogs#PERMISSIONS_BUTTON",
+			value1 = "Permissions"
+		);
+
+		AssertTextEquals(locator1 = "PGBlogs#RSS_LINK", value1 = "RSS");
+
+		AssertTextEquals(locator1 = "PGBlogs#SUBSCRIBE_LINK", value1 = "Subscribe");
+
+		AssertElementNotPresent(locator1 = "PGBlogs#ENTRY_TITLE_1");
+
+		AssertElementNotPresent(locator1 = "PGBlogs#ENTRY_CONTENT_1");
+	}
+
+	@priority = "5"
+	test EditSOBlogsEntry {
+		var entryContent = "${entryContent}";
+		var entryContentEdit = "${entryContentEdit}";
+		var entryTitle = "${entryTitle}";
+		var entryTitleEdit = "${entryTitleEdit}";
+		var key_siteName = "${key_siteName}";
+		var siteName = "${siteName}";
+
+		Page.gotoPG(pageName = "${pageName}", pageType = "Open Site");
+
+		BlogsEntry.addPG();
+
+		BlogsEntry.editPG();
+	}
+
+	@priority = "5"
+	test EditSOBlogsEntrySOUser {
+		var adminEmailAddress = "test@liferay.com";
+		var entryContent = "${entryContent}";
+		var entryContentEdit = "${entryContentEdit}";
+		var entryTitle = "${entryTitle}";
+		var entryTitleEdit = "${entryTitleEdit}";
+		var key_siteName = "${key_siteName}";
+		var pageName = "${pageName}";
+		var pageType = "${pageType}";
+		var password = "test";
+		var roleName = "${roleName}";
+		var siteName = "${siteName}";
+		var userEmailAddress = "socialoffice01@liferay.com";
+		var userFirstName = "Social01";
+		var userLastName = "User01";
+		var userMiddleName = "Office01";
+		var userScreenName = "socialoffice01";
+
+		SOUser.addUserWithSORole(
+			adminEmailAddress = "${adminEmailAddress}",
+			password = "${password}",
+			userEmailAddress = "${userEmailAddress}",
+			userFirstName = "${userFirstName}",
+			userLastName = "${userLastName}",
+			userMiddleName = "${userMiddleName}",
+			userScreenName = "${userScreenName}"
+		);
+
+		SOUserBar.gotoCP(portletName = "Roles");
+
+		Role.definePermissionSiteMembersBlogsCP(
+			permissions = "Blogs",
+			roleName = "${roleName}",
+			siteContentPermissions = "Blogs"
+		);
+
+		SOUser.logoutPG();
+
+		SOUser.loginPG(password = "test", userEmailAddress = "${userEmailAddress}");
+
+		Page.gotoPG(pageName = "${pageName}", pageType = "Open Site");
+
+		SOSite.joinSitePG(siteName = "${siteName}");
+
+		BlogsEntry.addPG();
+
+		BlogsEntry.editPG();
+
+		SOUser.logoutPG();
+
+		SOUser.loginPG(password = "test", userEmailAddress = "${adminEmailAddress}");
+
+		Page.gotoPG(pageName = "${pageName}", pageType = "Open Site");
+
+		BlogsEntry.viewPG(
+			entryAuthorFirstName = "${userFirstName}",
+			entryAuthorLastName = "${userLastName}",
+			entryAuthorMiddleName = "${userMiddleName}",
+			entryContent = "${entryContentEdit}",
+			entryTitle = "${entryTitleEdit}"
+		);
+
+		AssertTextEquals(
+			locator1 = "PGBlogsEntry#ENTRY_COMMENTS",
+			value1 = "0 Comments"
+		);
+
+		AssertTextEquals(
+			locator1 = "PGBlogsEntry#ENTRY_AVERAGE_RATING",
+			value1 = "Average (0 Votes)"
+		);
+	}
+
+	@priority = "5"
+	test ViewSOBlogsEntryRecentBlogs {
+		var entryContent = "${entryContent}";
+		var entryTitle = "${entryTitle}";
+		var key_siteName = "${key_siteName}";
+		var pageName = "${pageName}";
+		var pageType = "${pageType}";
+		var siteName = "${siteName}";
+
+		Page.gotoPG(pageName = "${pageName}", pageType = "Open Site");
+
+		BlogsEntry.addPG();
+
+		Page.gotoPG(pageName = "${pageName}", pageType = "Open Site");
+
+		SOBlogs.viewBlogsEntryRecentBlogs();
+	}
+}
