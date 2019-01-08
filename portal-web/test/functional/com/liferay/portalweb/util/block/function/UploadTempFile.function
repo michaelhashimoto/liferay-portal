@@ -1,19 +1,20 @@
-<definition default="uploadTempFile">
-	<command name="sikuliUploadTempFile">
-		<execute selenium="sikuliUploadTempFile" />
+@default = "uploadTempFile"
+definition {
+	function sikuliUploadTempFile {
+		selenium.sikuliUploadTempFile();
 
-		<execute selenium="assertJavaScriptErrors" />
+		selenium.assertJavaScriptErrors();
 
-		<execute selenium="assertLiferayErrors" />
-	</command>
+		selenium.assertLiferayErrors();
+	}
 
-	<command name="uploadTempFile">
-		<execute selenium="waitForVisible" />
+	function uploadTempFile {
+		selenium.waitForVisible();
 
-		<execute selenium="uploadTempFile" />
+		selenium.uploadTempFile();
 
-		<execute selenium="assertJavaScriptErrors" />
+		selenium.assertJavaScriptErrors();
 
-		<execute selenium="assertLiferayErrors" />
-	</command>
-</definition>
+		selenium.assertLiferayErrors();
+	}
+}

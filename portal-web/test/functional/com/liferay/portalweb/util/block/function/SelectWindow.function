@@ -1,21 +1,22 @@
-<definition default="selectWindow">
-	<command name="selectWindow">
-		<execute argument1="5000" selenium="pause" />
+@default = "selectWindow"
+definition {
+	function selectWindow {
+		selenium.pause("5000");
 
-		<execute selenium="selectWindow" />
+		selenium.selectWindow();
 
-		<execute selenium="assertJavaScriptErrors" />
+		selenium.assertJavaScriptErrors();
 
-		<execute selenium="assertLiferayErrors" />
-	</command>
+		selenium.assertLiferayErrors();
+	}
 
-	<command name="selectWindowTop">
-		<execute argument1="5000" selenium="pause" />
+	function selectWindowTop {
+		selenium.pause("5000");
 
-		<execute argument1="null" selenium="selectWindow" />
+		selenium.selectWindow("null");
 
-		<execute selenium="assertJavaScriptErrors" />
+		selenium.assertJavaScriptErrors();
 
-		<execute selenium="assertLiferayErrors" />
-	</command>
-</definition>
+		selenium.assertLiferayErrors();
+	}
+}

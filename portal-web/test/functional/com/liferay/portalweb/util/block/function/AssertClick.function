@@ -1,119 +1,121 @@
-<definition default="assertClick" summary="Click on '${locator1}' that should have a value of '${value1}'">
-	<command name="assertClick">
-		<if>
-			<contains string="${locator1}" substring="/input" />
-			<then>
-				<execute function="AssertClick#assertValueClickAt" />
-			</then>
-			<else>
-				<execute function="AssertClick#assertTextClickAt" />
-			</else>
-		</if>
-	</command>
+@default = "assertClick"
+@summary = "Click on '${locator1}' that should have a value of '${value1}'"
+definition {
+	function assertClick {
+		if (contains("${locator1}", "/input")) {
+			AssertClick.assertValueClickAt();
+		}
+		else {
+			AssertClick.assertTextClickAt();
+		}
+	}
 
-	<command name="assertPartialTextClickAt" summary="Click on '${locator1}' that should contain a value of '${value1}'">
-		<execute function="AssertTextEquals#assertPartialText" />
+	@summary = "Click on '${locator1}' that should contain a value of '${value1}'"
+	function assertPartialTextClickAt {
+		AssertTextEquals.assertPartialText();
 
-		<execute selenium="clickAt" />
+		selenium.clickAt();
 
-		<execute selenium="assertJavaScriptErrors" />
+		selenium.assertJavaScriptErrors();
 
-		<execute selenium="assertLiferayErrors" />
-	</command>
+		selenium.assertLiferayErrors();
+	}
 
-	<command name="assertTextClick">
-		<execute function="AssertTextEquals#assertText" />
+	function assertTextClick {
+		AssertTextEquals.assertText();
 
-		<execute selenium="click" />
+		selenium.click();
 
-		<execute selenium="assertJavaScriptErrors" />
+		selenium.assertJavaScriptErrors();
 
-		<execute selenium="assertLiferayErrors" />
-	</command>
+		selenium.assertLiferayErrors();
+	}
 
-	<command name="assertTextClickAt">
-		<execute function="AssertTextEquals#assertText" />
+	function assertTextClickAt {
+		AssertTextEquals.assertText();
 
-		<execute selenium="clickAt" />
+		selenium.clickAt();
 
-		<execute selenium="assertJavaScriptErrors" />
+		selenium.assertJavaScriptErrors();
 
-		<execute selenium="assertLiferayErrors" />
-	</command>
+		selenium.assertLiferayErrors();
+	}
 
-	<command name="assertTextClickAtClickDockbar">
-		<execute argument1="//div[@id='dockbar']" argument2="" selenium="clickAt" />
+	function assertTextClickAtClickDockbar {
+		selenium.clickAt("//div[@id='dockbar']", "");
 
-		<execute argument1="//script[contains(@src,'/aui/aui-button-item/aui-button-item-min.js')]" selenium="waitForElementPresent" />
+		selenium.waitForElementPresent(
+			"//script[contains(@src,'/aui/aui-button-item/aui-button-item-min.js')]"
+		);
 
-		<execute function="AssertClick#assertTextClickAt" />
+		AssertClick.assertTextClickAt();
 
-		<execute selenium="assertJavaScriptErrors" />
+		selenium.assertJavaScriptErrors();
 
-		<execute selenium="assertLiferayErrors" />
-	</command>
+		selenium.assertLiferayErrors();
+	}
 
-	<command name="assertValueClickAt">
-		<execute function="AssertTextEquals#assertValue" />
+	function assertValueClickAt {
+		AssertTextEquals.assertValue();
 
-		<execute selenium="clickAt" />
+		selenium.clickAt();
 
-		<execute selenium="assertJavaScriptErrors" />
+		selenium.assertJavaScriptErrors();
 
-		<execute selenium="assertLiferayErrors" />
-	</command>
+		selenium.assertLiferayErrors();
+	}
 
-	<command name="assertValueClickAtCKEditor">
-		<execute argument1="//a[@class='cke_button_cut cke_disabled']" selenium="waitForVisible" />
+	function assertValueClickAtCKEditor {
+		selenium.waitForVisible("//a[@class='cke_button_cut cke_disabled']");
 
-		<execute function="AssertClick#assertValueClickAt" />
+		AssertClick.assertValueClickAt();
 
-		<execute selenium="assertJavaScriptErrors" />
+		selenium.assertJavaScriptErrors();
 
-		<execute selenium="assertLiferayErrors" />
-	</command>
+		selenium.assertLiferayErrors();
+	}
 
-	<command name="assertValueClickAtClickAt">
-		<execute function="AssertTextEquals#assertValue" />
+	function assertValueClickAtClickAt {
+		AssertTextEquals.assertValue();
 
-		<execute selenium="clickAt" />
+		selenium.clickAt();
 
-		<execute selenium="clickAt" />
+		selenium.clickAt();
 
-		<execute selenium="assertJavaScriptErrors" />
+		selenium.assertJavaScriptErrors();
 
-		<execute selenium="assertLiferayErrors" />
-	</command>
+		selenium.assertLiferayErrors();
+	}
 
-	<command name="assertValueClickAtPause">
-		<execute function="AssertTextEquals#assertValue" />
+	function assertValueClickAtPause {
+		AssertTextEquals.assertValue();
 
-		<execute selenium="clickAt" />
+		selenium.clickAt();
 
-		<execute argument1="1000" selenium="pause" />
+		selenium.pause("1000");
 
-		<execute selenium="assertJavaScriptErrors" />
+		selenium.assertJavaScriptErrors();
 
-		<execute selenium="assertLiferayErrors" />
-	</command>
+		selenium.assertLiferayErrors();
+	}
 
-	<command name="pauseAssertPartialTextClickAt">
-		<execute argument1="1000" selenium="pause" />
+	function pauseAssertPartialTextClickAt {
+		selenium.pause("1000");
 
-		<execute function="AssertClick#assertPartialTextClickAt" />
+		AssertClick.assertPartialTextClickAt();
 
-		<execute selenium="assertJavaScriptErrors" />
+		selenium.assertJavaScriptErrors();
 
-		<execute selenium="assertLiferayErrors" />
-	</command>
+		selenium.assertLiferayErrors();
+	}
 
-	<command name="pauseAssertTextClickAt">
-		<execute argument1="1000" selenium="pause" />
+	function pauseAssertTextClickAt {
+		selenium.pause("1000");
 
-		<execute function="AssertClick#assertTextClickAt" />
+		AssertClick.assertTextClickAt();
 
-		<execute selenium="assertJavaScriptErrors" />
+		selenium.assertJavaScriptErrors();
 
-		<execute selenium="assertLiferayErrors" />
-	</command>
-</definition>
+		selenium.assertLiferayErrors();
+	}
+}

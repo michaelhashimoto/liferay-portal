@@ -1,28 +1,28 @@
-<definition default="clickAt">
-	<command name="clickAt">
-		<execute selenium="waitForVisible" />
+@default = "clickAt"
+definition {
+	function clickAt {
+		selenium.waitForVisible();
 
-		<if>
-			<condition selenium="isNotChecked" />
-			<then>
-				<execute selenium="clickAt" />
-			</then>
-		</if>
+		if (selenium.isNotChecked()) {
+			selenium.clickAt();
+		}
 
-		<execute function="AssertChecked#assertChecked" />
+		AssertChecked.assertChecked();
 
-		<execute selenium="assertJavaScriptErrors" />
+		selenium.assertJavaScriptErrors();
 
-		<execute selenium="assertLiferayErrors" />
-	</command>
+		selenium.assertLiferayErrors();
+	}
 
-	<command name="clickAtConfiguration">
-		<execute argument1="//script[contains(@src,'/liferay/navigation_interaction.js')]" selenium="waitForElementPresent" />
+	function clickAtConfiguration {
+		selenium.waitForElementPresent(
+			"//script[contains(@src,'/liferay/navigation_interaction.js')]"
+		);
 
-		<execute function="Check#clickAt" />
+		Check.clickAt();
 
-		<execute selenium="assertJavaScriptErrors" />
+		selenium.assertJavaScriptErrors();
 
-		<execute selenium="assertLiferayErrors" />
-	</command>
-</definition>
+		selenium.assertLiferayErrors();
+	}
+}

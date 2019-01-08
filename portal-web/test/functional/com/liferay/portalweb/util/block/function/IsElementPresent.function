@@ -1,39 +1,42 @@
-<definition default="isElementPresent">
-	<command name="isElementPresent">
-		<execute selenium="isElementPresent" />
-	</command>
+@default = "isElementPresent"
+definition {
+	function isElementPresent {
+		selenium.isElementPresent();
+	}
 
-	<command name="isElementPresentAfterWait">
-		<execute selenium="isElementPresentAfterWait" />
-	</command>
+	function isElementPresentAfterWait {
+		selenium.isElementPresentAfterWait();
+	}
 
-	<command name="isElementPresentClickNavigation">
-		<execute argument1="//nav[@id='navigation']" selenium="clickAt" />
+	function isElementPresentClickNavigation {
+		selenium.clickAt("//nav[@id='navigation']");
 
-		<execute argument1="//li[contains(@class,'lfr-nav-deletable')][1]/a/span" selenium="waitForVisible" />
+		selenium.waitForVisible("//li[contains(@class,'lfr-nav-deletable')][1]/a/span");
 
-		<execute selenium="isElementPresent" />
-	</command>
+		selenium.isElementPresent();
+	}
 
-	<command name="isElementPresentStaging">
-		<execute argument1="//div[@id='layoutsAdminExportPagesPanelContainer']" selenium="waitForElementPresent" />
+	function isElementPresentStaging {
+		selenium.waitForElementPresent(
+			"//div[@id='layoutsAdminExportPagesPanelContainer']"
+		);
 
-		<execute selenium="isElementPresent" />
-	</command>
+		selenium.isElementPresent();
+	}
 
-	<command name="isVisible">
-		<execute selenium="isVisible" />
-	</command>
+	function isVisible {
+		selenium.isVisible();
+	}
 
-	<command name="pauseIsElementPresent">
-		<execute argument1="1000" selenium="pause" />
+	function pauseIsElementPresent {
+		selenium.pause("1000");
 
-		<execute selenium="isElementPresent" />
-	</command>
+		selenium.isElementPresent();
+	}
 
-	<command name="waitForVisible">
-		<execute selenium="waitForVisible" />
+	function waitForVisible {
+		selenium.waitForVisible();
 
-		<execute function="IsElementPresent#isVisible" />
-	</command>
-</definition>
+		IsElementPresent.isVisible();
+	}
+}

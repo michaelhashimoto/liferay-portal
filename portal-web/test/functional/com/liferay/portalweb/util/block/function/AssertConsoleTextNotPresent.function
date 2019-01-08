@@ -1,9 +1,10 @@
-<definition default="assertConsoleTextNotPresent">
-	<command name="assertConsoleTextNotPresent">
-		<execute selenium="assertConsoleTextNotPresent" />
+@default = "assertConsoleTextNotPresent"
+definition {
+	function assertConsoleTextNotPresent {
+		selenium.assertConsoleTextNotPresent();
 
-		<execute selenium="assertJavaScriptErrors" />
+		selenium.assertJavaScriptErrors();
 
-		<execute selenium="assertLiferayErrors" />
-	</command>
-</definition>
+		selenium.assertLiferayErrors();
+	}
+}

@@ -1,9 +1,10 @@
-<definition default="sikuliAssertElementNotPresent">
-	<command name="sikuliAssertElementNotPresent">
-		<execute selenium="sikuliAssertElementNotPresent" />
+@default = "sikuliAssertElementNotPresent"
+definition {
+	function sikuliAssertElementNotPresent {
+		selenium.sikuliAssertElementNotPresent();
 
-		<execute selenium="assertJavaScriptErrors" />
+		selenium.assertJavaScriptErrors();
 
-		<execute selenium="assertLiferayErrors" />
-	</command>
-</definition>
+		selenium.assertLiferayErrors();
+	}
+}

@@ -1,9 +1,10 @@
-<definition default="sikuliRightMouseDown">
-	<command name="sikuliRightMouseDown">
-		<execute selenium="sikuliRightMouseDown" />
+@default = "sikuliRightMouseDown"
+definition {
+	function sikuliRightMouseDown {
+		selenium.sikuliRightMouseDown();
 
-		<execute selenium="assertJavaScriptErrors" />
+		selenium.assertJavaScriptErrors();
 
-		<execute selenium="assertLiferayErrors" />
-	</command>
-</definition>
+		selenium.assertLiferayErrors();
+	}
+}

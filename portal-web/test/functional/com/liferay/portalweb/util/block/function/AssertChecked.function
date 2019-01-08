@@ -1,11 +1,12 @@
-<definition default="assertChecked">
-	<command name="assertChecked">
-		<execute selenium="waitForVisible" />
+@default = "assertChecked"
+definition {
+	function assertChecked {
+		selenium.waitForVisible();
 
-		<execute selenium="assertChecked" />
+		selenium.assertChecked();
 
-		<execute selenium="assertJavaScriptErrors" />
+		selenium.assertJavaScriptErrors();
 
-		<execute selenium="assertLiferayErrors" />
-	</command>
-</definition>
+		selenium.assertLiferayErrors();
+	}
+}

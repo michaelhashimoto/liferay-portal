@@ -1,31 +1,32 @@
-<definition default="paste">
-	<command name="ckEditorPaste">
-		<execute argument1="//a[@class='cke_button_cut cke_disabled']" selenium="waitForVisible" />
+@default = "paste"
+definition {
+	function ckEditorPaste {
+		selenium.waitForVisible("//a[@class='cke_button_cut cke_disabled']");
 
-		<execute argument1="1000" selenium="pause" />
+		selenium.pause("1000");
 
-		<execute selenium="selectFrame" />
+		selenium.selectFrame();
 
-		<execute argument1="//html/body" selenium="waitForVisible" />
+		selenium.waitForVisible("//html/body");
 
-		<execute argument1="//html/body" selenium="mouseOver" />
+		selenium.mouseOver("//html/body");
 
-		<execute argument1="//html/body" selenium="paste" />
+		selenium.paste("//html/body");
 
-		<execute argument1="relative=parent" selenium="selectFrame" />
+		selenium.selectFrame("relative=parent");
 
-		<execute selenium="assertJavaScriptErrors" />
+		selenium.assertJavaScriptErrors();
 
-		<execute selenium="assertLiferayErrors" />
-	</command>
+		selenium.assertLiferayErrors();
+	}
 
-	<command name="paste">
-		<execute selenium="waitForVisible" />
+	function paste {
+		selenium.waitForVisible();
 
-		<execute selenium="paste" />
+		selenium.paste();
 
-		<execute selenium="assertJavaScriptErrors" />
+		selenium.assertJavaScriptErrors();
 
-		<execute selenium="assertLiferayErrors" />
-	</command>
-</definition>
+		selenium.assertLiferayErrors();
+	}
+}

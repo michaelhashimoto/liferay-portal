@@ -1,9 +1,10 @@
-<definition default="select">
-	<command name="select">
-		<execute selenium="waitForVisible" />
+@default = "select"
+definition {
+	function select {
+		selenium.waitForVisible();
 
-		<execute selenium="mouseOver" />
+		selenium.mouseOver();
 
-		<execute selenium="select" />
-	</command>
-</definition>
+		selenium.select();
+	}
+}

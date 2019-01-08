@@ -1,9 +1,10 @@
-<definition default="sikuliRightMouseUp">
-	<command name="sikuliRightMouseUp">
-		<execute selenium="sikuliRightMouseUp" />
+@default = "sikuliRightMouseUp"
+definition {
+	function sikuliRightMouseUp {
+		selenium.sikuliRightMouseUp();
 
-		<execute selenium="assertJavaScriptErrors" />
+		selenium.assertJavaScriptErrors();
 
-		<execute selenium="assertLiferayErrors" />
-	</command>
-</definition>
+		selenium.assertLiferayErrors();
+	}
+}

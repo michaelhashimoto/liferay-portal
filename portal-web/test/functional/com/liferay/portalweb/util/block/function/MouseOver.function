@@ -1,97 +1,107 @@
-<definition default="mouseOver" summary="Mouse over '${locator1}'">
-	<command name="makeVisible">
-		<execute selenium="makeVisible" />
+@default = "mouseOver"
+@summary = "Mouse over '${locator1}'"
+definition {
+	function makeVisible {
+		selenium.makeVisible();
 
-		<execute selenium="assertJavaScriptErrors" />
+		selenium.assertJavaScriptErrors();
 
-		<execute selenium="assertLiferayErrors" />
-	</command>
+		selenium.assertLiferayErrors();
+	}
 
-	<command name="mouseOver">
-		<execute selenium="waitForVisible" />
+	function mouseOver {
+		selenium.waitForVisible();
 
-		<execute selenium="mouseOver" />
+		selenium.mouseOver();
 
-		<execute selenium="assertJavaScriptErrors" />
+		selenium.assertJavaScriptErrors();
 
-		<execute selenium="assertLiferayErrors" />
-	</command>
+		selenium.assertLiferayErrors();
+	}
 
-	<command name="mouseOverClickDockbar">
-		<execute argument1="//div[@id='dockbar']" argument2="" selenium="clickAt" />
+	function mouseOverClickDockbar {
+		selenium.clickAt("//div[@id='dockbar']", "");
 
-		<execute argument1="//script[contains(@src,'/liferay/dockbar_underlay.js')]" selenium="waitForElementPresent" />
+		selenium.waitForElementPresent(
+			"//script[contains(@src,'/liferay/dockbar_underlay.js')]"
+		);
 
-		<execute function="MouseOver#mouseOver" />
+		MouseOver.mouseOver();
 
-		<execute selenium="assertJavaScriptErrors" />
+		selenium.assertJavaScriptErrors();
 
-		<execute selenium="assertLiferayErrors" />
-	</command>
+		selenium.assertLiferayErrors();
+	}
 
-	<command name="mouseOverClickNavigation">
-		<execute argument1="//nav[@id='navigation']" argument2="" selenium="clickAt" />
+	function mouseOverClickNavigation {
+		selenium.clickAt("//nav[@id='navigation']", "");
 
-		<execute argument1="//script[contains(@src,'/aui/sortable/sortable-min.js')]" selenium="waitForElementPresent" />
+		selenium.waitForElementPresent(
+			"//script[contains(@src,'/aui/sortable/sortable-min.js')]"
+		);
 
-		<execute function="MouseOver#mouseOver" />
+		MouseOver.mouseOver();
 
-		<execute selenium="assertJavaScriptErrors" />
+		selenium.assertJavaScriptErrors();
 
-		<execute selenium="assertLiferayErrors" />
-	</command>
+		selenium.assertLiferayErrors();
+	}
 
-	<command name="partialTextMouseOver">
-		<execute function="AssertTextEquals#assertPartialText" />
+	function partialTextMouseOver {
+		AssertTextEquals.assertPartialText();
 
-		<execute selenium="mouseOver" />
+		selenium.mouseOver();
 
-		<execute selenium="assertJavaScriptErrors" />
+		selenium.assertJavaScriptErrors();
 
-		<execute selenium="assertLiferayErrors" />
-	</command>
+		selenium.assertLiferayErrors();
+	}
 
-	<command name="textMouseOver">
-		<execute function="AssertTextEquals#assertText" />
+	function textMouseOver {
+		AssertTextEquals.assertText();
 
-		<execute selenium="mouseOver" />
+		selenium.mouseOver();
 
-		<execute selenium="assertJavaScriptErrors" />
+		selenium.assertJavaScriptErrors();
 
-		<execute selenium="assertLiferayErrors" />
-	</command>
+		selenium.assertLiferayErrors();
+	}
 
-	<command name="textMouseOverClickDockbar">
-		<execute argument1="//div[@id='dockbar']" argument2="" selenium="clickAt" />
+	function textMouseOverClickDockbar {
+		selenium.clickAt("//div[@id='dockbar']", "");
 
-		<execute argument1="//script[contains(@src,'/liferay/dockbar_underlay.js')]" selenium="waitForElementPresent" />
+		selenium.waitForElementPresent(
+			"//script[contains(@src,'/liferay/dockbar_underlay.js')]"
+		);
 
-		<execute function="MouseOver#textMouseOver" />
+		MouseOver.textMouseOver();
 
-		<execute selenium="assertJavaScriptErrors" />
+		selenium.assertJavaScriptErrors();
 
-		<execute selenium="assertLiferayErrors" />
-	</command>
+		selenium.assertLiferayErrors();
+	}
 
-	<command name="textMouseOverClickNavigation">
-		<execute argument1="//nav[@id='navigation']" argument2="" selenium="clickAt" />
+	function textMouseOverClickNavigation {
+		selenium.clickAt("//nav[@id='navigation']", "");
 
-		<execute argument1="//script[contains(@src,'/aui/sortable/sortable-min.js')]" selenium="waitForElementPresent" />
+		selenium.waitForElementPresent(
+			"//script[contains(@src,'/aui/sortable/sortable-min.js')]"
+		);
 
-		<execute function="MouseOver#textMouseOver" />
+		MouseOver.textMouseOver();
 
-		<execute selenium="assertJavaScriptErrors" />
+		selenium.assertJavaScriptErrors();
 
-		<execute selenium="assertLiferayErrors" />
-	</command>
+		selenium.assertLiferayErrors();
+	}
 
-	<command name="valueMouseOver">
-		<execute function="AssertTextEquals#assertValue" />
+	function valueMouseOver {
+		AssertTextEquals.assertValue();
 
-		<execute selenium="mouseOver" />
+		selenium.mouseOver();
 
-		<execute selenium="assertJavaScriptErrors" />
+		selenium.assertJavaScriptErrors();
 
-		<execute selenium="assertLiferayErrors" />
-	</command>
-</definition>
+		selenium.assertLiferayErrors();
+	}
+}

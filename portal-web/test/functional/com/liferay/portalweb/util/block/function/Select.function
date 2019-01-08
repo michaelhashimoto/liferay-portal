@@ -1,13 +1,14 @@
-<definition default="select">
-	<command name="select">
-		<execute selenium="waitForVisible" />
+@default = "select"
+definition {
+	function select {
+		selenium.waitForVisible();
 
-		<execute selenium="mouseOver" />
+		selenium.mouseOver();
 
-		<execute selenium="select" />
+		selenium.select();
 
-		<execute selenium="assertJavaScriptErrors" />
+		selenium.assertJavaScriptErrors();
 
-		<execute selenium="assertLiferayErrors" />
-	</command>
-</definition>
+		selenium.assertLiferayErrors();
+	}
+}

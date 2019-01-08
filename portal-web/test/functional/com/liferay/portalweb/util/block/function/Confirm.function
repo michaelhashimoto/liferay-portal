@@ -1,33 +1,36 @@
-<definition default="assertConfirmation" summary="Assert that the confirmation window equals the value '${value1}'">
-	<command name="assertConfirmation">
-		<execute selenium="assertConfirmation" />
+@default = "assertConfirmation"
+@summary = "Assert that the confirmation window equals the value '${value1}'"
+definition {
+	function assertConfirmation {
+		selenium.assertConfirmation();
 
-		<execute selenium="assertJavaScriptErrors" />
+		selenium.assertJavaScriptErrors();
 
-		<execute selenium="assertLiferayErrors" />
-	</command>
+		selenium.assertLiferayErrors();
+	}
 
-	<command name="assertPartialConfirmation">
-		<execute selenium="assertPartialConfirmation" />
+	function assertPartialConfirmation {
+		selenium.assertPartialConfirmation();
 
-		<execute selenium="assertJavaScriptErrors" />
+		selenium.assertJavaScriptErrors();
 
-		<execute selenium="assertLiferayErrors" />
-	</command>
+		selenium.assertLiferayErrors();
+	}
 
-	<command name="assertPrompt" summary="Assert that the confirmation window equals the value '${locator1}' and enter '${value1}' for input">
-		<execute selenium="assertPrompt" />
+	@summary = "Assert that the confirmation window equals the value '${locator1}' and enter '${value1}' for input"
+	function assertPrompt {
+		selenium.assertPrompt();
 
-		<execute selenium="assertJavaScriptErrors" />
+		selenium.assertJavaScriptErrors();
 
-		<execute selenium="assertLiferayErrors" />
-	</command>
+		selenium.assertLiferayErrors();
+	}
 
-	<command name="waitForConfirmation">
-		<execute selenium="waitForConfirmation" />
+	function waitForConfirmation {
+		selenium.waitForConfirmation();
 
-		<execute selenium="assertJavaScriptErrors" />
+		selenium.assertJavaScriptErrors();
 
-		<execute selenium="assertLiferayErrors" />
-	</command>
-</definition>
+		selenium.assertLiferayErrors();
+	}
+}

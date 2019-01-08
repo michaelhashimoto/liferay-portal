@@ -1,143 +1,147 @@
-<definition default="type" summary="Type to '${locator1}' the value '${value1}'">
-	<command name="clickAtSendKeys">
-		<execute selenium="waitForVisible" />
+@default = "type"
+@summary = "Type to '${locator1}' the value '${value1}'"
+definition {
+	function clickAtSendKeys {
+		selenium.waitForVisible();
 
-		<execute argument1="${locator1}" argument2="" selenium="type" />
+		selenium.type("${locator1}", "");
 
-		<execute selenium="clickAt" />
+		selenium.clickAt();
 
-		<execute selenium="sendKeys" />
+		selenium.sendKeys();
 
-		<execute selenium="assertJavaScriptErrors" />
+		selenium.assertJavaScriptErrors();
 
-		<execute selenium="assertLiferayErrors" />
-	</command>
+		selenium.assertLiferayErrors();
+	}
 
-	<command name="sendKeys">
-		<execute selenium="waitForVisible" />
+	function sendKeys {
+		selenium.waitForVisible();
 
-		<execute selenium="sendKeys" />
+		selenium.sendKeys();
 
-		<execute selenium="assertJavaScriptErrors" />
+		selenium.assertJavaScriptErrors();
 
-		<execute selenium="assertLiferayErrors" />
-	</command>
+		selenium.assertLiferayErrors();
+	}
 
-	<command name="sendKeysAceEditor">
-		<execute selenium="waitForElementPresent" />
+	function sendKeysAceEditor {
+		selenium.waitForElementPresent();
 
-		<execute selenium="mouseOver" />
+		selenium.mouseOver();
 
-		<execute selenium="sendKeysAceEditor" />
+		selenium.sendKeysAceEditor();
 
-		<execute selenium="assertJavaScriptErrors" />
+		selenium.assertJavaScriptErrors();
 
-		<execute selenium="assertLiferayErrors" />
-	</command>
+		selenium.assertLiferayErrors();
+	}
 
-	<command name="sendKeysAceEditorNoMouseOver">
-		<execute selenium="waitForElementPresent" />
+	function sendKeysAceEditorNoMouseOver {
+		selenium.waitForElementPresent();
 
-		<execute selenium="sendKeysAceEditor" />
+		selenium.sendKeysAceEditor();
 
-		<execute selenium="assertJavaScriptErrors" />
+		selenium.assertJavaScriptErrors();
 
-		<execute selenium="assertLiferayErrors" />
-	</command>
+		selenium.assertLiferayErrors();
+	}
 
-	<command name="sendKeysApplicationSearch">
-		<execute argument1="//script[contains(@src,'/aui/aui-live-search/aui-live-search-min.js')]" selenium="waitForElementPresent" />
+	function sendKeysApplicationSearch {
+		selenium.waitForElementPresent(
+			"//script[contains(@src,'/aui/aui-live-search/aui-live-search-min.js')]"
+		);
 
-		<execute function="Type#sendKeys" />
+		Type.sendKeys();
 
-		<execute selenium="assertJavaScriptErrors" />
+		selenium.assertJavaScriptErrors();
 
-		<execute selenium="assertLiferayErrors" />
-	</command>
+		selenium.assertLiferayErrors();
+	}
 
-	<command name="sikuliType">
-		<execute selenium="sikuliType" />
+	function sikuliType {
+		selenium.sikuliType();
 
-		<execute argument1="2000" selenium="pause" />
+		selenium.pause("2000");
 
-		<execute selenium="assertJavaScriptErrors" />
+		selenium.assertJavaScriptErrors();
 
-		<execute selenium="assertLiferayErrors" />
-	</command>
+		selenium.assertLiferayErrors();
+	}
 
-	<command name="type">
-		<execute selenium="waitForVisible" />
+	function type {
+		selenium.waitForVisible();
 
-		<execute selenium="type" />
+		selenium.type();
 
-		<execute selenium="assertJavaScriptErrors" />
+		selenium.assertJavaScriptErrors();
 
-		<execute selenium="assertLiferayErrors" />
-	</command>
+		selenium.assertLiferayErrors();
+	}
 
-	<command name="typeAceEditor">
-		<execute selenium="waitForElementPresent" />
+	function typeAceEditor {
+		selenium.waitForElementPresent();
 
-		<execute selenium="mouseOver" />
+		selenium.mouseOver();
 
-		<execute selenium="typeAceEditor" />
+		selenium.typeAceEditor();
 
-		<execute selenium="assertJavaScriptErrors" />
+		selenium.assertJavaScriptErrors();
 
-		<execute selenium="assertLiferayErrors" />
-	</command>
+		selenium.assertLiferayErrors();
+	}
 
-	<command name="typeAceEditorNoMouseOver">
-		<execute selenium="waitForElementPresent" />
+	function typeAceEditorNoMouseOver {
+		selenium.waitForElementPresent();
 
-		<execute selenium="typeAceEditor" />
+		selenium.typeAceEditor();
 
-		<execute selenium="assertJavaScriptErrors" />
+		selenium.assertJavaScriptErrors();
 
-		<execute selenium="assertLiferayErrors" />
-	</command>
+		selenium.assertLiferayErrors();
+	}
 
-	<command name="typeAlloyEditor">
-		<execute selenium="waitForElementPresent" />
+	function typeAlloyEditor {
+		selenium.waitForElementPresent();
 
-		<execute selenium="mouseOver" />
+		selenium.mouseOver();
 
-		<execute selenium="typeAlloyEditor" />
+		selenium.typeAlloyEditor();
 
-		<execute selenium="assertJavaScriptErrors" />
+		selenium.assertJavaScriptErrors();
 
-		<execute selenium="assertLiferayErrors" />
-	</command>
+		selenium.assertLiferayErrors();
+	}
 
-	<command name="typeCKEditor">
-		<execute selenium="waitForVisible" />
+	function typeCKEditor {
+		selenium.waitForVisible();
 
-		<execute selenium="typeCKEditor" />
+		selenium.typeCKEditor();
 
-		<execute selenium="assertJavaScriptErrors" />
+		selenium.assertJavaScriptErrors();
 
-		<execute selenium="assertLiferayErrors" />
-	</command>
+		selenium.assertLiferayErrors();
+	}
 
-	<command name="typeCKEditorWaitForCKEditor">
-		<execute selenium="waitForVisible" />
+	function typeCKEditorWaitForCKEditor {
+		selenium.waitForVisible();
 
-		<execute argument1="//a[@class='cke_button_cut cke_disabled']" selenium="waitForVisible" />
+		selenium.waitForVisible("//a[@class='cke_button_cut cke_disabled']");
 
-		<execute selenium="typeCKEditor" />
+		selenium.typeCKEditor();
 
-		<execute selenium="assertJavaScriptErrors" />
+		selenium.assertJavaScriptErrors();
 
-		<execute selenium="assertLiferayErrors" />
-	</command>
+		selenium.assertLiferayErrors();
+	}
 
-	<command name="typeWaitForNotValueNull">
-		<execute selenium="waitForNotValue" />
+	function typeWaitForNotValueNull {
+		selenium.waitForNotValue();
 
-		<execute function="Type#type" />
+		Type.type();
 
-		<execute selenium="assertJavaScriptErrors" />
+		selenium.assertJavaScriptErrors();
 
-		<execute selenium="assertLiferayErrors" />
-	</command>
-</definition>
+		selenium.assertLiferayErrors();
+	}
+}

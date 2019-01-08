@@ -1,9 +1,10 @@
-<definition default="keyPress">
-	<command name="keyPress">
-		<execute selenium="keyPress" />
+@default = "keyPress"
+definition {
+	function keyPress {
+		selenium.keyPress();
 
-		<execute selenium="assertJavaScriptErrors" />
+		selenium.assertJavaScriptErrors();
 
-		<execute selenium="assertLiferayErrors" />
-	</command>
-</definition>
+		selenium.assertLiferayErrors();
+	}
+}

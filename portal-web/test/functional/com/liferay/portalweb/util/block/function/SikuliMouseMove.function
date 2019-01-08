@@ -1,9 +1,10 @@
-<definition default="sikuliMouseMove">
-	<command name="sikuliMouseMove">
-		<execute selenium="sikuliMouseMove" />
+@default = "sikuliMouseMove"
+definition {
+	function sikuliMouseMove {
+		selenium.sikuliMouseMove();
 
-		<execute selenium="assertJavaScriptErrors" />
+		selenium.assertJavaScriptErrors();
 
-		<execute selenium="assertLiferayErrors" />
-	</command>
-</definition>
+		selenium.assertLiferayErrors();
+	}
+}

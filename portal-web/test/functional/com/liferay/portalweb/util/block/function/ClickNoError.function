@@ -1,9 +1,11 @@
-<definition default="click" summary="Click on '${locator1}'">
-	<command name="click">
-		<execute selenium="waitForVisible" />
+@default = "click"
+@summary = "Click on '${locator1}'"
+definition {
+	function click {
+		selenium.waitForVisible();
 
-		<execute selenium="mouseOver" />
+		selenium.mouseOver();
 
-		<execute selenium="click" />
-	</command>
-</definition>
+		selenium.click();
+	}
+}
