@@ -1,228 +1,321 @@
-<definition>
-	<command name="addSOSite">
-		<execute function="Click#textClickAt" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
-		<execute function="Click#pauseClickAt" locator1="SOUserBar#GO_TO" />
-		<execute function="Click" locator1="SOUserBar#GO_TO_ADD_SITE_BUTTON" />
+definition {
+	macro addSOSite {
+		Click.textClickAt(locator1 = "SOUserBar#DASHBOARD", value1 = "Dashboard");
 
-		<execute function="Type" locator1="SOUserBarAddSite#NAME_FIELD" value1="${siteName}" />
-		<execute function="Type" locator1="SOUserBarAddSite#DESCRIPTION_FIELD" value1="${siteDescription}" />
-		<execute function="Click" locator1="SOUserBarAddSite#NEXT_BUTTON" />
-		<execute function="Select" locator1="SOUserBarAddSite#DEFAULT_PAGES_SELECT" value1="Default Social Office Site" />
+		Click.pauseClickAt(locator1 = "SOUserBar#GO_TO");
 
-		<execute function="Check" locator1="SOUserBarAddSite#HOME_CHECKBOX" />
-		<execute function="Check" locator1="SOUserBarAddSite#CALENDAR_CHECKBOX" />
-		<execute function="Check" locator1="SOUserBarAddSite#DOCUMENTS_CHECKBOX" />
-		<execute function="Check" locator1="SOUserBarAddSite#FORUMS_CHECKBOX" />
-		<execute function="Check" locator1="SOUserBarAddSite#BLOGS_CHECKBOX" />
-		<execute function="Check" locator1="SOUserBarAddSite#WIKI_CHECKBOX" />
-		<execute function="Check" locator1="SOUserBarAddSite#MEMBERS_CHECKBOX" />
+		Click(locator1 = "SOUserBar#GO_TO_ADD_SITE_BUTTON");
 
-		<if>
-			<equals arg1="${siteType}" arg2="Private" />
-			<then>
-				<execute function="Select" locator1="SOUserBarAddSite#TYPE_SELECT" value1="value=3" />
-				<execute function="AssertSelectedLabel" locator1="SOUserBarAddSite#TYPE_SELECT" value1="Private" />
-			</then>
-			<else>
-				<execute function="Select" locator1="SOUserBarAddSite#TYPE_SELECT" value1="${siteType}" />
-			</else>
-		</if>
+		Type(locator1 = "SOUserBarAddSite#NAME_FIELD", value1 = "${siteName}");
 
-		<execute function="Click#clickAtPause" locator1="SOUserBarAddSite#SAVE_BUTTON" />
-		<execute function="AssertElementNotPresent#assertNotVisible" locator1="SOUserBarAddSite#SAVE_BUTTON" />
-	</command>
+		Type(
+			locator1 = "SOUserBarAddSite#DESCRIPTION_FIELD",
+			value1 = "${siteDescription}"
+		);
 
-	<command name="dashboardPG">
-		<execute function="Click#textClickAt" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
+		Click(locator1 = "SOUserBarAddSite#NEXT_BUTTON");
 
-		<execute function="AssertTextEquals" locator1="SODashboard#PROFILE_NAME" value1="${userName}" />
-	</command>
+		Select(
+			locator1 = "SOUserBarAddSite#DEFAULT_PAGES_SELECT",
+			value1 = "Default Social Office Site"
+		);
 
-	<command name="deleteSOSite">
-		<execute function="Click#textClickAt" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
-		<execute function="Click#pauseClickAt" locator1="SOUserBar#GO_TO" />
-		<execute function="Click#pauseClickAt" locator1="SOUserBar#GO_TO_SITES_DIRECTORY_BUTTON" />
+		Check(locator1 = "SOUserBarAddSite#HOME_CHECKBOX");
 
-		<if>
-			<equals arg1="${siteType}" arg2="Private" />
-			<then>
-				<execute function="Click#pauseClickAt" locator1="SOUserBar#GO_TO" />
-				<execute function="Select" locator1="SOUserBar#GO_TO_SITE_CATEGORY_SELECT" value1="My Sites" />
-			</then>
-			<else>
-				<execute function="Click#pauseClickAt" locator1="SOUserBar#GO_TO" />
-				<execute function="Select" locator1="SOUserBar#GO_TO_SITE_CATEGORY_SELECT" value1="All Sites" />
-			</else>
-		</if>
+		Check(locator1 = "SOUserBarAddSite#CALENDAR_CHECKBOX");
 
-		<execute function="Type" locator1="SOUserBarSitesDirectory#SITE_SEARCH_FIELD" value1="${siteName}" />
-		<execute function="AssertTextEquals" locator1="SOUserBarSitesDirectory#SITE_NAME_LINK" value1="${siteName}" />
-		<execute function="AssertClickNoError#pauseAssertTextClick" locator1="SOUserBarSitesDirectory#DELETE_SITE_ICON" value1="Delete" />
-		<execute function="Confirm" value1="Are you sure you want to delete ${siteName}?" />
-		<execute function="AssertTextNotPresent" value1="${siteName}" />
-	</command>
+		Check(locator1 = "SOUserBarAddSite#DOCUMENTS_CHECKBOX");
 
-	<command name="favoriteSOSite">
-		<execute function="Click#textClickAt" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
-		<execute function="Click#pauseClickAt" locator1="SOUserBar#GO_TO" />
-		<execute function="Type" locator1="SOUserBar#GO_TO_SEARCH_FIELD" value1="${siteName}" />
-		<execute function="AssertTextEquals" locator1="SOUserBar#GO_TO_SITE_NAME_LINK" value1="${siteName}" />
-		<execute function="Click" locator1="SOUserBar#GO_TO_FAVORITE_SITE_ICON" />
-		<execute function="AssertElementPresent" locator1="SOUserBar#GO_TO_UNFAVORITE_SITE_ICON" />
-	</command>
+		Check(locator1 = "SOUserBarAddSite#FORUMS_CHECKBOX");
 
-	<command name="gotoCP">
-		<execute function="Open" locator1="Home#GUEST_URL" />
+		Check(locator1 = "SOUserBarAddSite#BLOGS_CHECKBOX");
 
-		<execute function="Click" locator1="SOUserBar#USER_NAME" />
-		<execute function="AssertClick#assertTextClickAt" locator1="SOUserBar#USER_MENU_CONTROL_PANEL" value1="Control Panel" />
+		Check(locator1 = "SOUserBarAddSite#WIKI_CHECKBOX");
 
-		<if>
-			<isset var="siteScopeName" />
-			<then>
-				<execute function="Click" locator1="Home#SCOPE_SELECTOR" />
+		Check(locator1 = "SOUserBarAddSite#MEMBERS_CHECKBOX");
 
-				<var name="key_siteScopeName" value="${siteScopeName}" />
+		if ("${siteType}" == "Private") {
+			Select(locator1 = "SOUserBarAddSite#TYPE_SELECT", value1 = "value=3");
 
-				<execute function="Click" locator1="Home#SCOPE_SELECTOR_MENULIST_ITEM" />
-			</then>
-		</if>
+			AssertSelectedLabel(
+				locator1 = "SOUserBarAddSite#TYPE_SELECT",
+				value1 = "Private"
+			);
+		}
+		else {
+			Select(locator1 = "SOUserBarAddSite#TYPE_SELECT", value1 = "${siteType}");
+		}
 
-		<if>
-			<equals arg1="${portletName}" arg2="Workflow" />
-			<then>
-				<execute function="Click" locator1="xPath=(//ul[@class='category-portlets']/li/a[contains(.,'${portletName}')])[3]" />
-			</then>
-			<else>
-				<execute function="Click" locator1="//ul[@class='category-portlets']/li/a[contains(.,'${portletName}')]" />
-			</else>
-		</if>
-	</command>
+		Click.clickAtPause(locator1 = "SOUserBarAddSite#SAVE_BUTTON");
 
-	<command name="gotoProfile">
-		<execute macro="SOUserBar#dashboardPG">
-			<var name="userName" value="${userName}" />
-		</execute>
+		AssertElementNotPresent.assertNotVisible(
+			locator1 = "SOUserBarAddSite#SAVE_BUTTON"
+		);
+	}
 
-		<execute function="Click" locator1="SOUserBar#USER_NAME" />
-		<execute function="AssertClick#assertTextClickAt" locator1="SOUserBar#USER_MENU_MY_PROFILE" value1="My Profile" />
-	</command>
+	macro dashboardPG {
+		Click.textClickAt(locator1 = "SOUserBar#DASHBOARD", value1 = "Dashboard");
 
-	<command name="joinSOSite">
-		<execute function="Click#textClickAt" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
-		<execute function="Click#pauseClickAt" locator1="SOUserBar#GO_TO" />
-		<execute function="Click#pauseClickAt" locator1="SOUserBar#GO_TO_SITES_DIRECTORY_BUTTON" />
+		AssertTextEquals(locator1 = "SODashboard#PROFILE_NAME", value1 = "${userName}");
+	}
 
-		<execute function="Type" locator1="SOUserBarSitesDirectory#SITE_SEARCH_FIELD" value1="${siteName}" />
-		<execute function="AssertTextEquals" locator1="SOUserBarSitesDirectory#SITE_NAME_LINK" value1="${siteName}" />
-		<execute function="ClickNoError" locator1="SOUserBarSitesDirectory#JOIN_SITE_ICON" />
-		<execute function="Confirm" value1="Are you sure you want to join ${siteName}?" />
-		<execute function="AssertElementPresent" locator1="SOUserBarSitesDirectory#LEAVE_SITE_ICON" />
-	</command>
+	macro deleteSOSite {
+		Click.textClickAt(locator1 = "SOUserBar#DASHBOARD", value1 = "Dashboard");
 
-	<command name="leaveSOSite">
-		<execute function="Click#textClickAt" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
-		<execute function="Click#pauseClickAt" locator1="SOUserBar#GO_TO" />
-		<execute function="Click#pauseClickAt" locator1="SOUserBar#GO_TO_SITES_DIRECTORY_BUTTON" />
+		Click.pauseClickAt(locator1 = "SOUserBar#GO_TO");
 
-		<execute function="Type" locator1="SOUserBarSitesDirectory#SITE_SEARCH_FIELD" value1="${siteName}" />
-		<execute function="AssertTextEquals" locator1="SOUserBarSitesDirectory#SITE_NAME_LINK" value1="${siteName}" />
-		<execute function="ClickNoError" locator1="SOUserBarSitesDirectory#LEAVE_SITE_ICON" />
-		<execute function="Confirm" value1="Are you sure you want to leave ${siteName}?" />
+		Click.pauseClickAt(locator1 = "SOUserBar#GO_TO_SITES_DIRECTORY_BUTTON");
 
-		<if>
-			<equals arg1="${siteType}" arg2="Open" />
-			<then>
-				<execute function="AssertElementPresent" locator1="SOUserBarSitesDirectory#JOIN_SITE_ICON" />
-			</then>
-			<else>
-				<execute function="AssertElementPresent" locator1="SOUserBarSitesDirectory#REQUEST_MEMBERSHIP_ICON" />
-			</else>
-		</if>
-	</command>
+		if ("${siteType}" == "Private") {
+			Click.pauseClickAt(locator1 = "SOUserBar#GO_TO");
 
-	<command name="myProfilePG">
-		<execute function="Click" locator1="SOUserBar#USER_NAME" />
-		<execute function="AssertClick#assertTextClickAt" locator1="SOUserBar#USER_MENU_MY_PROFILE" value1="My Profile" />
+			Select(locator1 = "SOUserBar#GO_TO_SITE_CATEGORY_SELECT", value1 = "My Sites");
+		}
+		else {
+			Click.pauseClickAt(locator1 = "SOUserBar#GO_TO");
 
-		<execute function="AssertTextEquals" locator1="SOProfile#USER_NAME" value1="${userName}" />
-	</command>
+			Select(locator1 = "SOUserBar#GO_TO_SITE_CATEGORY_SELECT", value1 = "All Sites");
+		}
 
-	<command name="requestMembershipSOSite">
-		<execute function="Click#textClickAt" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
-		<execute function="Click#pauseClickAt" locator1="SOUserBar#GO_TO" />
-		<execute function="Click#pauseClickAt" locator1="SOUserBar#GO_TO_SITES_DIRECTORY_BUTTON" />
+		Type(
+			locator1 = "SOUserBarSitesDirectory#SITE_SEARCH_FIELD",
+			value1 = "${siteName}"
+		);
 
-		<execute function="Type" locator1="SOUserBarSitesDirectory#SITE_SEARCH_FIELD" value1="${siteName}" />
+		AssertTextEquals(
+			locator1 = "SOUserBarSitesDirectory#SITE_NAME_LINK",
+			value1 = "${siteName}"
+		);
 
-		<if>
-			<equals arg1="${siteType}" arg2="Private Restricted" />
-			<then>
-				<execute function="AssertTextEquals" locator1="SOUserBarSitesDirectory#SITE_NAME" value1="${siteName}" />
-			</then>
-			<else>
-				<execute function="AssertTextEquals" locator1="SOUserBarSitesDirectory#SITE_NAME_LINK" value1="${siteName}" />
-			</else>
-		</if>
+		AssertClickNoError.pauseAssertTextClick(
+			locator1 = "SOUserBarSitesDirectory#DELETE_SITE_ICON",
+			value1 = "Delete"
+		);
 
-		<execute function="ClickNoError" locator1="SOUserBarSitesDirectory#REQUEST_MEMBERSHIP_ICON" />
-		<execute function="Confirm" value1="This is a restricted site. Do you want to send a membership request to ${siteName}?" />
-		<execute function="AssertElementPresent" locator1="SOUserBarSitesDirectory#MEMBERSHIP_REQUESTED_ICON" />
-	</command>
+		Confirm(value1 = "Are you sure you want to delete ${siteName}?");
 
-	<command name="searchSOSite">
-		<execute function="Click#textClickAt" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
-		<execute function="Click#pauseClickAt" locator1="SOUserBar#GO_TO" />
+		AssertTextNotPresent(value1 = "${siteName}");
+	}
 
-		<if>
-			<equals arg1="${siteType}" arg2="Private" />
-			<then>
-				<execute function="Select" locator1="SOUserBar#GO_TO_SITE_CATEGORY_SELECT" value1="My Sites" />
-			</then>
-			<else>
-				<execute function="Select" locator1="SOUserBar#GO_TO_SITE_CATEGORY_SELECT" value1="All Sites" />
-			</else>
-		</if>
+	macro favoriteSOSite {
+		Click.textClickAt(locator1 = "SOUserBar#DASHBOARD", value1 = "Dashboard");
 
-		<execute function="Click#pauseClickAt" locator1="SOUserBar#GO_TO" />
-		<execute function="Type" locator1="SOUserBar#GO_TO_SEARCH_FIELD" value1="${siteName}" />
-		<execute function="AssertTextEquals" locator1="SOUserBar#GO_TO_SITE_NAME_LINK" value1="${siteName}" />
-	</command>
+		Click.pauseClickAt(locator1 = "SOUserBar#GO_TO");
 
-	<command name="tearDownNotifications">
-		<execute macro="SOUser#firstLoginPG" />
+		Type(locator1 = "SOUserBar#GO_TO_SEARCH_FIELD", value1 = "${siteName}");
 
-		<execute function="Click#textClickAt" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
+		AssertTextEquals(
+			locator1 = "SOUserBar#GO_TO_SITE_NAME_LINK",
+			value1 = "${siteName}"
+		);
 
-		<execute function="MouseOver" locator1="SOUserBar#NOTIFICATION" />
-		<execute function="AssertClick#assertPartialTextClickAt" locator1="SOUserBar#NOTIFICATION_MENU_VIEW_ALL" value1="View All" />
+		Click(locator1 = "SOUserBar#GO_TO_FAVORITE_SITE_ICON");
 
-		<while>
-			<condition function="IsElementPresent" locator1="SONotifications#NOTIFICATIONS_CHECKBOX" />
-			<then>
-				<execute function="Check" locator1="SONotifications#NOTIFICATIONS_CHECKBOX" />
-				<execute function="Click#clickAt" locator1="SONotifications#DELETE_BUTTON" />
-			</then>
-		</while>
-	</command>
+		AssertElementPresent(locator1 = "SOUserBar#GO_TO_UNFAVORITE_SITE_ICON");
+	}
 
-	<command name="tearDownSites">
-		<execute macro="SOUser#firstLoginPG" />
+	macro gotoCP {
+		Open(locator1 = "Home#GUEST_URL");
 
-		<execute macro="SOUserBar#gotoCP">
-			<var name="portletName" value="Sites" />
-		</execute>
+		Click(locator1 = "SOUserBar#USER_NAME");
 
-		<execute function="Type" locator1="CPSites#SEARCH_FIELD" value1="Name" />
-		<execute function="AssertClick#assertValueClickAt" locator1="CPSites#SEARCH_BUTTON" value1="Search" />
+		AssertClick.assertTextClickAt(
+			locator1 = "SOUserBar#USER_MENU_CONTROL_PANEL",
+			value1 = "Control Panel"
+		);
 
-		<while>
-			<condition function="IsElementPresent" locator1="CPSites#SITE_TABLE_ACTIONS" />
-			<then>
-				<execute function="AssertClick" locator1="CPSites#SITE_TABLE_ACTIONS" value1="Actions" />
-				<execute function="AssertClickNoError" locator1="CPSites#SITE_MENULIST_DELETE" value1="Delete" />
-				<execute function="Confirm" value1="Are you sure you want to delete this?" />
-			</then>
-		</while>
-	</command>
-</definition>
+		if (isSet(siteScopeName)) {
+			Click(locator1 = "Home#SCOPE_SELECTOR");
+
+			var key_siteScopeName = "${siteScopeName}";
+
+			Click(locator1 = "Home#SCOPE_SELECTOR_MENULIST_ITEM");
+		}
+
+		if ("${portletName}" == "Workflow") {
+			Click(
+				locator1 = "xPath=(//ul[@class='category-portlets']/li/a[contains(.,'${portletName}')])[3]"
+			);
+		}
+		else {
+			Click(
+				locator1 = "//ul[@class='category-portlets']/li/a[contains(.,'${portletName}')]"
+			);
+		}
+	}
+
+	macro gotoProfile {
+		SOUserBar.dashboardPG(userName = "${userName}");
+
+		Click(locator1 = "SOUserBar#USER_NAME");
+
+		AssertClick.assertTextClickAt(
+			locator1 = "SOUserBar#USER_MENU_MY_PROFILE",
+			value1 = "My Profile"
+		);
+	}
+
+	macro joinSOSite {
+		Click.textClickAt(locator1 = "SOUserBar#DASHBOARD", value1 = "Dashboard");
+
+		Click.pauseClickAt(locator1 = "SOUserBar#GO_TO");
+
+		Click.pauseClickAt(locator1 = "SOUserBar#GO_TO_SITES_DIRECTORY_BUTTON");
+
+		Type(
+			locator1 = "SOUserBarSitesDirectory#SITE_SEARCH_FIELD",
+			value1 = "${siteName}"
+		);
+
+		AssertTextEquals(
+			locator1 = "SOUserBarSitesDirectory#SITE_NAME_LINK",
+			value1 = "${siteName}"
+		);
+
+		ClickNoError(locator1 = "SOUserBarSitesDirectory#JOIN_SITE_ICON");
+
+		Confirm(value1 = "Are you sure you want to join ${siteName}?");
+
+		AssertElementPresent(locator1 = "SOUserBarSitesDirectory#LEAVE_SITE_ICON");
+	}
+
+	macro leaveSOSite {
+		Click.textClickAt(locator1 = "SOUserBar#DASHBOARD", value1 = "Dashboard");
+
+		Click.pauseClickAt(locator1 = "SOUserBar#GO_TO");
+
+		Click.pauseClickAt(locator1 = "SOUserBar#GO_TO_SITES_DIRECTORY_BUTTON");
+
+		Type(
+			locator1 = "SOUserBarSitesDirectory#SITE_SEARCH_FIELD",
+			value1 = "${siteName}"
+		);
+
+		AssertTextEquals(
+			locator1 = "SOUserBarSitesDirectory#SITE_NAME_LINK",
+			value1 = "${siteName}"
+		);
+
+		ClickNoError(locator1 = "SOUserBarSitesDirectory#LEAVE_SITE_ICON");
+
+		Confirm(value1 = "Are you sure you want to leave ${siteName}?");
+
+		if ("${siteType}" == "Open") {
+			AssertElementPresent(locator1 = "SOUserBarSitesDirectory#JOIN_SITE_ICON");
+		}
+		else {
+			AssertElementPresent(
+				locator1 = "SOUserBarSitesDirectory#REQUEST_MEMBERSHIP_ICON"
+			);
+		}
+	}
+
+	macro myProfilePG {
+		Click(locator1 = "SOUserBar#USER_NAME");
+
+		AssertClick.assertTextClickAt(
+			locator1 = "SOUserBar#USER_MENU_MY_PROFILE",
+			value1 = "My Profile"
+		);
+
+		AssertTextEquals(locator1 = "SOProfile#USER_NAME", value1 = "${userName}");
+	}
+
+	macro requestMembershipSOSite {
+		Click.textClickAt(locator1 = "SOUserBar#DASHBOARD", value1 = "Dashboard");
+
+		Click.pauseClickAt(locator1 = "SOUserBar#GO_TO");
+
+		Click.pauseClickAt(locator1 = "SOUserBar#GO_TO_SITES_DIRECTORY_BUTTON");
+
+		Type(
+			locator1 = "SOUserBarSitesDirectory#SITE_SEARCH_FIELD",
+			value1 = "${siteName}"
+		);
+
+		if ("${siteType}" == "Private Restricted") {
+			AssertTextEquals(
+				locator1 = "SOUserBarSitesDirectory#SITE_NAME",
+				value1 = "${siteName}"
+			);
+		}
+		else {
+			AssertTextEquals(
+				locator1 = "SOUserBarSitesDirectory#SITE_NAME_LINK",
+				value1 = "${siteName}"
+			);
+		}
+
+		ClickNoError(locator1 = "SOUserBarSitesDirectory#REQUEST_MEMBERSHIP_ICON");
+
+		Confirm(
+			value1 = "This is a restricted site. Do you want to send a membership request to ${siteName}?"
+		);
+
+		AssertElementPresent(
+			locator1 = "SOUserBarSitesDirectory#MEMBERSHIP_REQUESTED_ICON"
+		);
+	}
+
+	macro searchSOSite {
+		Click.textClickAt(locator1 = "SOUserBar#DASHBOARD", value1 = "Dashboard");
+
+		Click.pauseClickAt(locator1 = "SOUserBar#GO_TO");
+
+		if ("${siteType}" == "Private") {
+			Select(locator1 = "SOUserBar#GO_TO_SITE_CATEGORY_SELECT", value1 = "My Sites");
+		}
+		else {
+			Select(locator1 = "SOUserBar#GO_TO_SITE_CATEGORY_SELECT", value1 = "All Sites");
+		}
+
+		Click.pauseClickAt(locator1 = "SOUserBar#GO_TO");
+
+		Type(locator1 = "SOUserBar#GO_TO_SEARCH_FIELD", value1 = "${siteName}");
+
+		AssertTextEquals(
+			locator1 = "SOUserBar#GO_TO_SITE_NAME_LINK",
+			value1 = "${siteName}"
+		);
+	}
+
+	macro tearDownNotifications {
+		SOUser.firstLoginPG();
+
+		Click.textClickAt(locator1 = "SOUserBar#DASHBOARD", value1 = "Dashboard");
+
+		MouseOver(locator1 = "SOUserBar#NOTIFICATION");
+
+		AssertClick.assertPartialTextClickAt(
+			locator1 = "SOUserBar#NOTIFICATION_MENU_VIEW_ALL",
+			value1 = "View All"
+		);
+
+		while (IsElementPresent(locator1 = "SONotifications#NOTIFICATIONS_CHECKBOX")) {
+			Check(locator1 = "SONotifications#NOTIFICATIONS_CHECKBOX");
+
+			Click.clickAt(locator1 = "SONotifications#DELETE_BUTTON");
+		}
+	}
+
+	macro tearDownSites {
+		SOUser.firstLoginPG();
+
+		SOUserBar.gotoCP(portletName = "Sites");
+
+		Type(locator1 = "CPSites#SEARCH_FIELD", value1 = "Name");
+
+		AssertClick.assertValueClickAt(
+			locator1 = "CPSites#SEARCH_BUTTON",
+			value1 = "Search"
+		);
+
+		while (IsElementPresent(locator1 = "CPSites#SITE_TABLE_ACTIONS")) {
+			AssertClick(locator1 = "CPSites#SITE_TABLE_ACTIONS", value1 = "Actions");
+
+			AssertClickNoError(locator1 = "CPSites#SITE_MENULIST_DELETE", value1 = "Delete");
+
+			Confirm(value1 = "Are you sure you want to delete this?");
+		}
+	}
+}

@@ -1,149 +1,284 @@
-<definition>
-	<var name="password" value="test" />
+definition {
+	var password = "test";
 
-	<command name="sendMessage">
-		<execute function="AssertClick#assertValueClickAt" locator1="SOMessages#NEW_MESSAGE_BUTTON" value1="New Message" />
+	macro sendMessage {
+		AssertClick.assertValueClickAt(
+			locator1 = "SOMessages#NEW_MESSAGE_BUTTON",
+			value1 = "New Message"
+		);
 
-		<execute function="Click" locator1="SOMessagesAdd#TO_FIELD_DROPDOWN" />
-		<execute function="Type#sendKeys" locator1="SOMessagesAdd#TO_FIELD" value1="${recipientName}" />
-		<execute function="AssertClick#pauseAssertPartialTextClickAt" locator1="SOMessagesAdd#TO_FIELD_DROPDOWN_LIST" value1="${key_recipientName}" />
-		<execute function="AssertTextEquals" locator1="SOMessagesAdd#TO_FIELD" value1="${recipientName} &lt;${recipientScreenName}&gt;, " />
+		Click(locator1 = "SOMessagesAdd#TO_FIELD_DROPDOWN");
 
-		<if>
-			<isset var="number" />
-			<then>
-				<execute function="Type" locator1="SOMessagesAdd#SUBJECT_FIELD" value1="${messageSubject}${number}" />
-				<execute function="Type" locator1="SOMessagesAdd#BODY_FIELD" value1="${messageBody}${number}" />
-			</then>
-			<else>
-				<execute function="Type" locator1="SOMessagesAdd#SUBJECT_FIELD" value1="${messageSubject}" />
-				<execute function="Type" locator1="SOMessagesAdd#BODY_FIELD" value1="${messageBody}" />
-			</else>
-		</if>
+		Type.sendKeys(locator1 = "SOMessagesAdd#TO_FIELD", value1 = "${recipientName}");
 
-		<if>
-			<isset var="messageAttachmentFile" />
-			<then>
-				<execute function="UploadCommonFile" locator1="SOMessagesAdd#ATTACHMENTS_FIELD" value1="${messageAttachmentFile}" />
-			</then>
-		</if>
+		AssertClick.pauseAssertPartialTextClickAt(
+			locator1 = "SOMessagesAdd#TO_FIELD_DROPDOWN_LIST",
+			value1 = "${key_recipientName}"
+		);
 
-		<execute function="Click" locator1="SOMessagesAdd#SEND_BUTTON" />
+		AssertTextEquals(
+			locator1 = "SOMessagesAdd#TO_FIELD",
+			value1 = "${recipientName} <${recipientScreenName}>, "
+		);
 
-		<execute function="AssertTextEquals" locator1="SOMessagesAdd#SUCCESS_MESSAGE" value1="Your request completed successfully." />
-	</command>
+		if (isSet(number)) {
+			Type(
+				locator1 = "SOMessagesAdd#SUBJECT_FIELD",
+				value1 = "${messageSubject}${number}"
+			);
 
-	<command name="sendReplyMessage">
-		<execute function="Type" locator1="SOMessagesMessage#PRIVATE_MESSAGE_REPLY_BODY_FIELD" value1="${messageReplyBody}" />
+			Type(locator1 = "SOMessagesAdd#BODY_FIELD", value1 = "${messageBody}${number}");
+		}
+		else {
+			Type(locator1 = "SOMessagesAdd#SUBJECT_FIELD", value1 = "${messageSubject}");
 
-		<if>
-			<isset var="messageReplyAttachmentFile" />
-			<then>
-				<execute function="UploadCommonFile" locator1="SOMessagesMessage#PRIVATE_MESSAGE_REPLY_ATTACHMENT_FIELD" value1="${messageReplyAttachmentFile}" />
-			</then>
-		</if>
+			Type(locator1 = "SOMessagesAdd#BODY_FIELD", value1 = "${messageBody}");
+		}
 
-		<execute function="Click" locator1="SOMessagesMessage#PRIVATE_MESSAGE_SEND_BUTTON" />
-		<execute function="AssertTextEquals" locator1="SOMessagesMessage#SUCCESS_MESSAGE" value1="Your request completed successfully." />
-	</command>
+		if (isSet(messageAttachmentFile)) {
+			UploadCommonFile(
+				locator1 = "SOMessagesAdd#ATTACHMENTS_FIELD",
+				value1 = "${messageAttachmentFile}"
+			);
+		}
 
-	<command name="tearDownPG">
-		<execute macro="SOUser#firstLoginPG" />
+		Click(locator1 = "SOMessagesAdd#SEND_BUTTON");
 
-		<execute function="Click#textClickAt" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
+		AssertTextEquals(
+			locator1 = "SOMessagesAdd#SUCCESS_MESSAGE",
+			value1 = "Your request completed successfully."
+		);
+	}
 
-		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_MESSAGES" value1="Messages" />
-		<execute function="Check" locator1="SOMessages#SELECT_ALL_CHECKBOX" />
-		<execute function="Click" locator1="SOMessages#DELETE_BUTTON" />
-		<execute function="AssertTextEquals" locator1="SOMessages#INFO_MESSAGE" value1="No messages found." />
-	</command>
+	macro sendReplyMessage {
+		Type(
+			locator1 = "SOMessagesMessage#PRIVATE_MESSAGE_REPLY_BODY_FIELD",
+			value1 = "${messageReplyBody}"
+		);
 
-	<command name="viewMessage">
-		<execute macro="SOMessages#viewMessageList" />
-		<if>
-			<isset var="number" />
-			<then>
-				<execute function="Click" locator1="SOMessages#MESSAGE_SUBJECT_INCREMENT" />
+		if (isSet(messageReplyAttachmentFile)) {
+			UploadCommonFile(
+				locator1 = "SOMessagesMessage#PRIVATE_MESSAGE_REPLY_ATTACHMENT_FIELD",
+				value1 = "${messageReplyAttachmentFile}"
+			);
+		}
 
-				<execute function="AssertTextEquals" locator1="SOMessagesMessage#PRIVATE_MESSAGE_SUBJECT" value1="${messageSubject}${number}" />
-				<execute function="AssertTextEquals" locator1="SOMessagesMessage#PRIVATE_MESSAGE_USERS" value1="Between ${connectionName} And You" />
-				<execute function="AssertTextEquals" locator1="SOMessagesMessage#PRIVATE_MESSAGE_SENDER" value1="${senderName}" />
-				<execute function="AssertTextEquals#assertPartialText" locator1="SOMessagesMessage#PRIVATE_MESSAGE_BODY" value1="${messageBody}${number}" />
-			</then>
-			<else>
-				<execute function="Click" locator1="SOMessages#MESSAGE_SUBJECT" />
+		Click(locator1 = "SOMessagesMessage#PRIVATE_MESSAGE_SEND_BUTTON");
 
-				<execute function="AssertTextEquals" locator1="SOMessagesMessage#PRIVATE_MESSAGE_SUBJECT" value1="${messageSubject}" />
-				<execute function="AssertTextEquals" locator1="SOMessagesMessage#PRIVATE_MESSAGE_USERS" value1="Between ${connectionName} And You" />
-				<execute function="AssertTextEquals" locator1="SOMessagesMessage#PRIVATE_MESSAGE_SENDER" value1="${senderName}" />
-				<execute function="AssertTextEquals#assertPartialText" locator1="SOMessagesMessage#PRIVATE_MESSAGE_BODY" value1="${messageBody}" />
-			</else>
-		</if>
+		AssertTextEquals(
+			locator1 = "SOMessagesMessage#SUCCESS_MESSAGE",
+			value1 = "Your request completed successfully."
+		);
+	}
 
-		<if>
-			<isset var="messageAttachmentFile" />
-			<then>
-				<execute function="AssertElementPresent" locator1="SOMessagesMessage#PRIVATE_MESSAGE_ATTACHMENT" />
-				<execute function="AssertTextEquals" locator1="SOMessagesMessage#PRIVATE_MESSAGE_ATTACHMENT_LINK" value1="${messageAttachmentFile}" />
-			</then>
-		</if>
-	</command>
+	macro tearDownPG {
+		SOUser.firstLoginPG();
 
-	<command name="viewMessageList">
-		<if>
-			<isset var="number" />
-			<then>
-				<execute function="AssertTextEquals" locator1="SOMessages#MESSAGE_SENDER_INCREMENT" value1="${connectionName}" />
-				<execute function="AssertTextEquals" locator1="SOMessages#MESSAGE_SUBJECT_INCREMENT" value1="${messageSubject}${number}" />
-				<execute function="AssertTextEquals" locator1="SOMessages#MESSAGE_BODY_INCREMENT" value1="${messageBody}${number}" />
-			</then>
-			<else>
-				<execute function="AssertTextEquals" locator1="SOMessages#MESSAGE_SENDER" value1="${connectionName}" />
-				<execute function="AssertTextEquals" locator1="SOMessages#MESSAGE_SUBJECT" value1="${messageSubject}" />
-				<execute function="AssertTextEquals" locator1="SOMessages#MESSAGE_BODY" value1="${messageBody}" />
-			</else>
-		</if>
-	</command>
+		Click.textClickAt(locator1 = "SOUserBar#DASHBOARD", value1 = "Dashboard");
 
-	<command name="viewMessageNotification">
-		<execute function="Click#textClickAt" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
-		<execute function="AssertElementPresent#assertElementPresent" locator1="SOUserBar#NOTIFICATION" />
-		<execute function="AssertTextEquals" locator1="SOUserBar#NOTIFICATION_MENU_COUNT" value1="1" />
-		<execute function="MouseOver" locator1="SOUserBar#NOTIFICATION" />
-		<execute function="AssertTextEquals#assertPartialText" locator1="SOUserBar#NOTIFICATION_MENU_ENTRY_CONTENT" value1="${senderName} sent you a message." />
-		<execute function="AssertTextEquals" locator1="SOUserBar#NOTIFICATION_MENU_ENTRY_SUBCONTENT" value1="${messageBody}" />
-		<execute function="AssertClick" locator1="SOUserBar#NOTIFICATION_MENU_MARK_ALL_AS_READ" value1="Mark All as Read" />
-		<execute function="AssertTextEquals" locator1="SOUserBar#NOTIFICATION_MENU_COUNT" value1="0" />
-	</command>
+		Click.textClickAt(
+			locator1 = "SODashboard#NAVIGATION_MESSAGES",
+			value1 = "Messages"
+		);
 
-	<command name="viewReplyMessage">
-		<execute function="AssertTextEquals" locator1="SOMessages#MESSAGE_SENDER" value1="${connectionName}" />
-		<execute function="AssertTextEquals" locator1="SOMessages#MESSAGE_SUBJECT" value1="${messageSubject}" />
-		<execute function="AssertTextEquals" locator1="SOMessages#MESSAGE_BODY" value1="${messageReplyBody}" />
-		<execute function="Click" locator1="SOMessages#MESSAGE_SUBJECT" />
+		Check(locator1 = "SOMessages#SELECT_ALL_CHECKBOX");
 
-		<execute function="AssertTextEquals" locator1="SOMessagesMessage#PRIVATE_MESSAGE_SUBJECT" value1="${messageSubject}" />
-		<execute function="AssertTextEquals" locator1="SOMessagesMessage#PRIVATE_MESSAGE_USERS" value1="Between ${connectionName} And You" />
-		<execute function="AssertTextEquals" locator1="SOMessagesMessage#PRIVATE_MESSAGE_SENDER" value1="${senderName}" />
-		<execute function="AssertTextEquals#assertPartialText" locator1="SOMessagesMessage#PRIVATE_MESSAGE_BODY" value1="${messageBody}" />
+		Click(locator1 = "SOMessages#DELETE_BUTTON");
 
-		<if>
-			<isset var="messageAttachmentFile" />
-			<then>
-				<execute function="AssertElementPresent" locator1="SOMessagesMessage#PRIVATE_MESSAGE_ATTACHMENT" />
-				<execute function="AssertTextEquals" locator1="SOMessagesMessage#PRIVATE_MESSAGE_ATTACHMENT_LINK" value1="${messageAttachmentFile}" />
-			</then>
-		</if>
+		AssertTextEquals(
+			locator1 = "SOMessages#INFO_MESSAGE",
+			value1 = "No messages found."
+		);
+	}
 
-		<execute function="AssertTextEquals" locator1="SOMessagesMessage#PRIVATE_MESSAGE_REPLY_SENDER" value1="${replySenderName}" />
-		<execute function="AssertTextEquals#assertPartialText" locator1="SOMessagesMessage#PRIVATE_MESSAGE_REPLY_BODY" value1="${messageReplyBody}" />
+	macro viewMessage {
+		SOMessages.viewMessageList();
 
-		<if>
-			<isset var="messageAttachmentFile" />
-			<then>
-				<execute function="AssertElementPresent" locator1="SOMessagesMessage#PRIVATE_MESSAGE_REPLY_ATTACHMENT" />
-				<execute function="AssertTextEquals" locator1="SOMessagesMessage#PRIVATE_MESSAGE_REPLY_ATTACHMENT_LINK" value1="${messageAttachmentFile}" />
-			</then>
-		</if>
-	</command>
-</definition>
+		if (isSet(number)) {
+			Click(locator1 = "SOMessages#MESSAGE_SUBJECT_INCREMENT");
+
+			AssertTextEquals(
+				locator1 = "SOMessagesMessage#PRIVATE_MESSAGE_SUBJECT",
+				value1 = "${messageSubject}${number}"
+			);
+
+			AssertTextEquals(
+				locator1 = "SOMessagesMessage#PRIVATE_MESSAGE_USERS",
+				value1 = "Between ${connectionName} And You"
+			);
+
+			AssertTextEquals(
+				locator1 = "SOMessagesMessage#PRIVATE_MESSAGE_SENDER",
+				value1 = "${senderName}"
+			);
+
+			AssertTextEquals.assertPartialText(
+				locator1 = "SOMessagesMessage#PRIVATE_MESSAGE_BODY",
+				value1 = "${messageBody}${number}"
+			);
+		}
+		else {
+			Click(locator1 = "SOMessages#MESSAGE_SUBJECT");
+
+			AssertTextEquals(
+				locator1 = "SOMessagesMessage#PRIVATE_MESSAGE_SUBJECT",
+				value1 = "${messageSubject}"
+			);
+
+			AssertTextEquals(
+				locator1 = "SOMessagesMessage#PRIVATE_MESSAGE_USERS",
+				value1 = "Between ${connectionName} And You"
+			);
+
+			AssertTextEquals(
+				locator1 = "SOMessagesMessage#PRIVATE_MESSAGE_SENDER",
+				value1 = "${senderName}"
+			);
+
+			AssertTextEquals.assertPartialText(
+				locator1 = "SOMessagesMessage#PRIVATE_MESSAGE_BODY",
+				value1 = "${messageBody}"
+			);
+		}
+
+		if (isSet(messageAttachmentFile)) {
+			AssertElementPresent(locator1 = "SOMessagesMessage#PRIVATE_MESSAGE_ATTACHMENT");
+
+			AssertTextEquals(
+				locator1 = "SOMessagesMessage#PRIVATE_MESSAGE_ATTACHMENT_LINK",
+				value1 = "${messageAttachmentFile}"
+			);
+		}
+	}
+
+	macro viewMessageList {
+		if (isSet(number)) {
+			AssertTextEquals(
+				locator1 = "SOMessages#MESSAGE_SENDER_INCREMENT",
+				value1 = "${connectionName}"
+			);
+
+			AssertTextEquals(
+				locator1 = "SOMessages#MESSAGE_SUBJECT_INCREMENT",
+				value1 = "${messageSubject}${number}"
+			);
+
+			AssertTextEquals(
+				locator1 = "SOMessages#MESSAGE_BODY_INCREMENT",
+				value1 = "${messageBody}${number}"
+			);
+		}
+		else {
+			AssertTextEquals(
+				locator1 = "SOMessages#MESSAGE_SENDER",
+				value1 = "${connectionName}"
+			);
+
+			AssertTextEquals(
+				locator1 = "SOMessages#MESSAGE_SUBJECT",
+				value1 = "${messageSubject}"
+			);
+
+			AssertTextEquals(
+				locator1 = "SOMessages#MESSAGE_BODY",
+				value1 = "${messageBody}"
+			);
+		}
+	}
+
+	macro viewMessageNotification {
+		Click.textClickAt(locator1 = "SOUserBar#DASHBOARD", value1 = "Dashboard");
+
+		AssertElementPresent.assertElementPresent(locator1 = "SOUserBar#NOTIFICATION");
+
+		AssertTextEquals(locator1 = "SOUserBar#NOTIFICATION_MENU_COUNT", value1 = "1");
+
+		MouseOver(locator1 = "SOUserBar#NOTIFICATION");
+
+		AssertTextEquals.assertPartialText(
+			locator1 = "SOUserBar#NOTIFICATION_MENU_ENTRY_CONTENT",
+			value1 = "${senderName} sent you a message."
+		);
+
+		AssertTextEquals(
+			locator1 = "SOUserBar#NOTIFICATION_MENU_ENTRY_SUBCONTENT",
+			value1 = "${messageBody}"
+		);
+
+		AssertClick(
+			locator1 = "SOUserBar#NOTIFICATION_MENU_MARK_ALL_AS_READ",
+			value1 = "Mark All as Read"
+		);
+
+		AssertTextEquals(locator1 = "SOUserBar#NOTIFICATION_MENU_COUNT", value1 = "0");
+	}
+
+	macro viewReplyMessage {
+		AssertTextEquals(
+			locator1 = "SOMessages#MESSAGE_SENDER",
+			value1 = "${connectionName}"
+		);
+
+		AssertTextEquals(
+			locator1 = "SOMessages#MESSAGE_SUBJECT",
+			value1 = "${messageSubject}"
+		);
+
+		AssertTextEquals(
+			locator1 = "SOMessages#MESSAGE_BODY",
+			value1 = "${messageReplyBody}"
+		);
+
+		Click(locator1 = "SOMessages#MESSAGE_SUBJECT");
+
+		AssertTextEquals(
+			locator1 = "SOMessagesMessage#PRIVATE_MESSAGE_SUBJECT",
+			value1 = "${messageSubject}"
+		);
+
+		AssertTextEquals(
+			locator1 = "SOMessagesMessage#PRIVATE_MESSAGE_USERS",
+			value1 = "Between ${connectionName} And You"
+		);
+
+		AssertTextEquals(
+			locator1 = "SOMessagesMessage#PRIVATE_MESSAGE_SENDER",
+			value1 = "${senderName}"
+		);
+
+		AssertTextEquals.assertPartialText(
+			locator1 = "SOMessagesMessage#PRIVATE_MESSAGE_BODY",
+			value1 = "${messageBody}"
+		);
+
+		if (isSet(messageAttachmentFile)) {
+			AssertElementPresent(locator1 = "SOMessagesMessage#PRIVATE_MESSAGE_ATTACHMENT");
+
+			AssertTextEquals(
+				locator1 = "SOMessagesMessage#PRIVATE_MESSAGE_ATTACHMENT_LINK",
+				value1 = "${messageAttachmentFile}"
+			);
+		}
+
+		AssertTextEquals(
+			locator1 = "SOMessagesMessage#PRIVATE_MESSAGE_REPLY_SENDER",
+			value1 = "${replySenderName}"
+		);
+
+		AssertTextEquals.assertPartialText(
+			locator1 = "SOMessagesMessage#PRIVATE_MESSAGE_REPLY_BODY",
+			value1 = "${messageReplyBody}"
+		);
+
+		if (isSet(messageAttachmentFile)) {
+			AssertElementPresent(
+				locator1 = "SOMessagesMessage#PRIVATE_MESSAGE_REPLY_ATTACHMENT"
+			);
+
+			AssertTextEquals(
+				locator1 = "SOMessagesMessage#PRIVATE_MESSAGE_REPLY_ATTACHMENT_LINK",
+				value1 = "${messageAttachmentFile}"
+			);
+		}
+	}
+}

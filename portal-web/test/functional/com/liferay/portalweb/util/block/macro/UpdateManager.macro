@@ -1,15 +1,24 @@
-<definition>
-	<command name="UninstallPlugins">
-		<execute macro="Page#gotoCP">
-			<var name="portletName" value="Update Manager" />
-		</execute>
+definition {
+	macro UninstallPlugins {
+		Page.gotoCP(portletName = "Update Manager");
 
-		<execute function="AssertTextEquals" locator1="CPUpdateManager#PORTLET_TITLE" value1="Update Manager" />
-		<execute function="AssertTextEquals" locator1="CPUpdateManager#PLUGIN_NAME" value1="${pluginName}" />
+		AssertTextEquals(
+			locator1 = "CPUpdateManager#PORTLET_TITLE",
+			value1 = "Update Manager"
+		);
 
-		<execute function="AssertClick" locator1="CPUpdateManager#UNINSTALL" value1="Uninstall" />
+		AssertTextEquals(
+			locator1 = "CPUpdateManager#PLUGIN_NAME",
+			value1 = "${pluginName}"
+		);
 
-		<execute function="AssertTextEquals" locator1="CPUpdateManager#SUCCESS_MESSAGE" value1="Your request completed successfully." />
-		<execute function="AssertTextNotPresent" value1="${pluginName}" />
-	</command>
-</definition>
+		AssertClick(locator1 = "CPUpdateManager#UNINSTALL", value1 = "Uninstall");
+
+		AssertTextEquals(
+			locator1 = "CPUpdateManager#SUCCESS_MESSAGE",
+			value1 = "Your request completed successfully."
+		);
+
+		AssertTextNotPresent(value1 = "${pluginName}");
+	}
+}

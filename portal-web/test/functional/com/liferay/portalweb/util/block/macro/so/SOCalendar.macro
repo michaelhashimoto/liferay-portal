@@ -1,23 +1,45 @@
-<definition>
-	<command name="tearDownCP">
-		<execute function="Click#textClickAt" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
-		<execute function="Click" locator1="SOUserBar#USER_NAME" />
-		<execute function="AssertClick#assertTextClickAt" locator1="SOUserBar#USER_MENU_CONTROL_PANEL" value1="Control Panel" />
+definition {
+	macro tearDownCP {
+		Click.textClickAt(locator1 = "SOUserBar#DASHBOARD", value1 = "Dashboard");
 
-		<execute function="Click" locator1="//ul[@class='category-portlets']/li/a[contains(.,'Calendar')]" />
+		Click(locator1 = "SOUserBar#USER_NAME");
 
-		<execute function="AssertClick#assertTextClickAt" locator1="PGCalendar#VIEW_EVENTS" value1="Events" />
+		AssertClick.assertTextClickAt(
+			locator1 = "SOUserBar#USER_MENU_CONTROL_PANEL",
+			value1 = "Control Panel"
+		);
 
-		<while>
-			<condition function="IsElementPresent" locator1="CPCalendarEvents#EVENT_TABLE_ACTIONS" value1="Actions" />
-			<then>
-				<execute function="AssertClick" locator1="CPCalendarEvents#EVENT_TABLE_ACTIONS"  value1="Actions" />
-				<execute function="AssertClickNoError" locator1="CPCalendarEvents#EVENT_MENULIST_DELETE" value1="Delete" />
-				<execute function="Confirm" value1="Are you sure you want to delete this?" />
-				<execute function="AssertTextEquals" locator1="CPCalendarEvents#SUCCESS_MESSAGE" value1="Your request completed successfully." />
-			</then>
-		</while>
+		Click(
+			locator1 = "//ul[@class='category-portlets']/li/a[contains(.,'Calendar')]"
+		);
 
-		<execute function="AssertElementNotPresent" locator1="CPCalendarEvents#EVENT_TABLE_ACTIONS" value1="Actions" />
-	</command>
-</definition>
+		AssertClick.assertTextClickAt(
+			locator1 = "PGCalendar#VIEW_EVENTS",
+			value1 = "Events"
+		);
+
+		while (IsElementPresent(locator1 = "CPCalendarEvents#EVENT_TABLE_ACTIONS", value1 = "Actions")) {
+			AssertClick(
+				locator1 = "CPCalendarEvents#EVENT_TABLE_ACTIONS",
+				value1 = "Actions"
+			);
+
+			AssertClickNoError(
+				locator1 = "CPCalendarEvents#EVENT_MENULIST_DELETE",
+				value1 = "Delete"
+			);
+
+			Confirm(value1 = "Are you sure you want to delete this?");
+
+			AssertTextEquals(
+				locator1 = "CPCalendarEvents#SUCCESS_MESSAGE",
+				value1 = "Your request completed successfully."
+			);
+		}
+
+		AssertElementNotPresent(
+			locator1 = "CPCalendarEvents#EVENT_TABLE_ACTIONS",
+			value1 = "Actions"
+		);
+	}
+}

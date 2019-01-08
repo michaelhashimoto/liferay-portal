@@ -1,268 +1,498 @@
-<definition>
-	<var name="adminEmailAddress" value="test@liferay.com" />
-	<var name="adminListName" value="Bloggs, Joe" />
-	<var name="adminName" value="Joe Bloggs" />
-	<var name="password" value="test" />
+definition {
+	var adminEmailAddress = "test@liferay.com";
+	var adminListName = "Bloggs, Joe";
+	var adminName = "Joe Bloggs";
+	var password = "test";
 
-	<command name="addConnection">
-		<execute macro="SOUser#addUserWithSORole">
-			<var name="adminEmailAddress" value="test@liferay.com" />
-			<var name="password" value="test" />
-			<var name="userEmailAddress" value="${userEmailAddress}" />
-			<var name="userFirstName" value="${userFirstName}" />
-			<var name="userLastName" value="${userLastName}" />
-			<var name="userMiddleName" value="${userMiddleName}" />
-			<var name="userScreenName" value="${userScreenName}" />
-		</execute>
+	macro addConnection {
+		SOUser.addUserWithSORole(
+			adminEmailAddress = "test@liferay.com",
+			password = "test",
+			userEmailAddress = "${userEmailAddress}",
+			userFirstName = "${userFirstName}",
+			userLastName = "${userLastName}",
+			userMiddleName = "${userMiddleName}",
+			userScreenName = "${userScreenName}"
+		);
 
-		<execute macro="SOContactsCenter#requestToConnect">
-			<var name="userEmailAddress" value="${userEmailAddress}" />
-			<var name="userListName" value="${userListName}" />
-			<var name="userName" value="${userName}" />
-			<var name="userScreenName" value="${userScreenName}" />
-		</execute>
+		SOContactsCenter.requestToConnect(
+			userEmailAddress = "${userEmailAddress}",
+			userListName = "${userListName}",
+			userName = "${userName}",
+			userScreenName = "${userScreenName}"
+		);
 
-		<execute macro="SOUser#logoutPG" />
+		SOUser.logoutPG();
 
-		<execute macro="SOUser#loginPG">
-			<var name="password" value="test" />
-			<var name="userEmailAddress" value="${userEmailAddress}" />
-		</execute>
+		SOUser.loginPG(password = "test", userEmailAddress = "${userEmailAddress}");
 
-		<execute macro="SOContactsCenter#confirmRequestToConnect">
-			<var name="senderName" value="${adminName}" />
-			<var name="userName" value="${userName}" />
-		</execute>
-	</command>
+		SOContactsCenter.confirmRequestToConnect(
+			senderName = "${adminName}",
+			userName = "${userName}"
+		);
+	}
 
-	<command name="addContact">
-		<execute macro="SOUserBar#dashboardPG">
-			<var name="userName" value="Joe Bloggs" />
-		</execute>
+	macro addContact {
+		SOUserBar.dashboardPG(userName = "Joe Bloggs");
 
-		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_CONTACTS_CENTER" value1="Contacts Center" />
+		Click.textClickAt(
+			locator1 = "SODashboard#NAVIGATION_CONTACTS_CENTER",
+			value1 = "Contacts Center"
+		);
 
-		<execute function="AssertClick" locator1="SOContactscenter#ADD_CONTACT_BUTTON" value1="Add Contact" />
+		AssertClick(
+			locator1 = "SOContactscenter#ADD_CONTACT_BUTTON",
+			value1 = "Add Contact"
+		);
 
-		<execute function="Type" locator1="SOContactscenterAddcontact#NAME_FIELD" value1="${contactName}" />
-		<execute function="Type" locator1="SOContactscenterAddcontact#EMAIL_ADDRESS_FIELD" value1="${contactEmailAddress}" />
-		<execute function="Type" locator1="SOContactscenterAddcontact#COMMENTS_FIELD" value1="${contactName} Comments" />
-		<execute function="Click#pauseClickAt" locator1="SOContactscenterAddcontact#SAVE_BUTTON" />
+		Type(
+			locator1 = "SOContactscenterAddcontact#NAME_FIELD",
+			value1 = "${contactName}"
+		);
 
-		<execute function="AssertTextEquals" locator1="SOContactscenter#SUCCESS_MESSAGE" value1="You have successfully added a new contact." />
-	</command>
+		Type(
+			locator1 = "SOContactscenterAddcontact#EMAIL_ADDRESS_FIELD",
+			value1 = "${contactEmailAddress}"
+		);
 
-	<command name="addFollower">
-		<execute macro="SOUser#addUserWithSORole">
-			<var name="adminEmailAddress" value="test@liferay.com" />
-			<var name="password" value="test" />
-			<var name="userEmailAddress" value="${userEmailAddress}" />
-			<var name="userFirstName" value="${userFirstName}" />
-			<var name="userLastName" value="${userLastName}" />
-			<var name="userMiddleName" value="${userMiddleName}" />
-			<var name="userScreenName" value="${userScreenName}" />
-		</execute>
+		Type(
+			locator1 = "SOContactscenterAddcontact#COMMENTS_FIELD",
+			value1 = "${contactName} Comments"
+		);
 
-		<execute macro="SOUser#logoutPG" />
+		Click.pauseClickAt(locator1 = "SOContactscenterAddcontact#SAVE_BUTTON");
 
-		<execute macro="SOUser#loginPG">
-			<var name="password" value="test" />
-			<var name="userEmailAddress" value="${userEmailAddress}" />
-		</execute>
+		AssertTextEquals(
+			locator1 = "SOContactscenter#SUCCESS_MESSAGE",
+			value1 = "You have successfully added a new contact."
+		);
+	}
 
-		<execute macro="SOContactsCenter#followUser">
-			<var name="adminEmailAddress" value="${adminEmailAddress}" />
-			<var name="adminListName" value="${adminListName}" />
-			<var name="adminName" value="${adminName}" />
-		</execute>
-	</command>
+	macro addFollower {
+		SOUser.addUserWithSORole(
+			adminEmailAddress = "test@liferay.com",
+			password = "test",
+			userEmailAddress = "${userEmailAddress}",
+			userFirstName = "${userFirstName}",
+			userLastName = "${userLastName}",
+			userMiddleName = "${userMiddleName}",
+			userScreenName = "${userScreenName}"
+		);
 
-	<command name="confirmRequestToConnect">
-		<execute function="Click#textClickAt" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
-		<execute function="AssertElementPresent#assertElementPresent" locator1="SOUserBar#NOTIFICATION" />
-		<execute function="AssertTextEquals" locator1="SOUserBar#NOTIFICATION_MENU_COUNT" value1="1" />
-		<execute function="MouseOver" locator1="SOUserBar#NOTIFICATION" />
-		<execute function="AssertTextEquals" locator1="SOUserBar#NOTIFICATION_MENU_ENTRY_SENDER" value1="${senderName}" />
-		<execute function="AssertTextEquals#assertPartialText" locator1="SOUserBar#NOTIFICATION_MENU_ENTRY_CONTENT" value1="would like to add you as a connection." />
-		<execute function="AssertTextEquals" locator1="SOUserBar#NOTIFICATION_MENU_CONFIRM" value1="Confirm" />
-		<execute function="Click" locator1="SOUserBar#NOTIFICATION_MENU_CONFIRM" />
-		<execute function="AssertTextEquals" locator1="SOUserBar#NOTIFICATION_MENU_COUNT" value1="0" />
+		SOUser.logoutPG();
 
-		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_CONTACTS_CENTER" value1="Contacts Center" />
+		SOUser.loginPG(password = "test", userEmailAddress = "${userEmailAddress}");
 
-		<execute function="AssertTextEquals" locator1="SOContactscenter#CONTACTS_LINK_CONNECTIONS" value1="You have 1 connections." />
-	</command>
+		SOContactsCenter.followUser(
+			adminEmailAddress = "${adminEmailAddress}",
+			adminListName = "${adminListName}",
+			adminName = "${adminName}"
+		);
+	}
 
-	<command name="disconnectFromConnection">
-		<execute function="Click#textClickAt" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
+	macro confirmRequestToConnect {
+		Click.textClickAt(locator1 = "SOUserBar#DASHBOARD", value1 = "Dashboard");
 
-		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_CONTACTS_CENTER" value1="Contacts Center" />
+		AssertElementPresent.assertElementPresent(locator1 = "SOUserBar#NOTIFICATION");
 
-		<execute function="Type" locator1="SOContactscenter#CONTACTS_LIST_SEARCH" value1="${userScreenName}" />
-		<execute function="AssertClick#pauseAssertTextClickAt" locator1="SOContactscenter#CONTACTS_LIST_NAME" value1="${userListName}" />
+		AssertTextEquals(locator1 = "SOUserBar#NOTIFICATION_MENU_COUNT", value1 = "1");
 
-		<execute function="AssertTextEquals" locator1="SOContactscenter#USER_DETAILS_NAME" value1="${userName}" />
-		<execute function="AssertTextEquals" locator1="SOContactscenter#USER_DETAILS_EMAIL" value1="${userEmailAddress}" />
-		<execute function="Click" locator1="SOContactscenter#DISCONNECT_BUTTON" value1="Disconnect" />
-		<execute function="AssertElementNotPresent#assertNotVisible" locator1="SOContactscenter#DISCONNECT_BUTTON" />
-		<execute function="AssertTextEquals" locator1="SOContactscenter#SUCCESS_MESSAGE" value1="You are not connected to this user anymore." />
-	</command>
+		MouseOver(locator1 = "SOUserBar#NOTIFICATION");
 
-	<command name="followUser">
-		<execute macro="SOUserBar#dashboardPG">
-			<var name="userName" value="${userName}" />
-		</execute>
+		AssertTextEquals(
+			locator1 = "SOUserBar#NOTIFICATION_MENU_ENTRY_SENDER",
+			value1 = "${senderName}"
+		);
 
-		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_CONTACTS_CENTER" value1="Contacts Center" />
+		AssertTextEquals.assertPartialText(
+			locator1 = "SOUserBar#NOTIFICATION_MENU_ENTRY_CONTENT",
+			value1 = "would like to add you as a connection."
+		);
 
-		<execute function="Type" locator1="SOContactscenter#CONTACTS_LIST_SEARCH" value1="${adminName}" />
-		<execute function="AssertClick#pauseAssertTextClickAt" locator1="SOContactscenter#CONTACTS_LIST_NAME" value1="${adminListName}" />
-		<execute function="AssertTextEquals" locator1="SOContactscenter#USER_DETAILS_NAME" value1="${adminName}" />
-		<execute function="AssertTextEquals" locator1="SOContactscenter#USER_DETAILS_EMAIL" value1="${adminEmailAddress}" />
-		<execute function="AssertClick" locator1="SOContactscenter#FOLLOW_BUTTON" value1="Follow" />
-		<execute function="AssertTextEquals" locator1="SOContactscenter#FOLLOWING_MESSAGE" value1="Following" />
-		<execute function="AssertTextEquals" locator1="SOContactscenter#UNFOLLOW_BUTTON" value1="Unfollow" />
-	</command>
+		AssertTextEquals(
+			locator1 = "SOUserBar#NOTIFICATION_MENU_CONFIRM",
+			value1 = "Confirm"
+		);
 
-	<command name="gotoProfile">
-		<execute macro="SOUserBar#dashboardPG">
-			<var name="userName" value="${userName}" />
-		</execute>
+		Click(locator1 = "SOUserBar#NOTIFICATION_MENU_CONFIRM");
 
-		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_CONTACTS_CENTER" value1="Contacts Center" />
+		AssertTextEquals(locator1 = "SOUserBar#NOTIFICATION_MENU_COUNT", value1 = "0");
 
-		<execute function="Type" locator1="SOContactscenter#CONTACTS_LIST_SEARCH" value1="${userScreenName}" />
-		<execute function="AssertClick#pauseAssertTextClickAt" locator1="SOContactscenter#CONTACTS_LIST_NAME" value1="${userListName}" />
-	</command>
+		Click.textClickAt(
+			locator1 = "SODashboard#NAVIGATION_CONTACTS_CENTER",
+			value1 = "Contacts Center"
+		);
 
-	<command name="ignoreRequestToConnect">
-		<execute function="Click#textClickAt" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
-		<execute function="AssertElementPresent#assertElementPresent" locator1="SOUserBar#NOTIFICATION" />
-		<execute function="AssertTextEquals" locator1="SOUserBar#NOTIFICATION_MENU_COUNT" value1="1" />
-		<execute function="MouseOver" locator1="SOUserBar#NOTIFICATION" />
-		<execute function="AssertTextEquals" locator1="SOUserBar#NOTIFICATION_MENU_ENTRY_SENDER" value1="${senderName}" />
-		<execute function="AssertTextEquals#assertPartialText" locator1="SOUserBar#NOTIFICATION_MENU_ENTRY_CONTENT" value1="would like to add you as a connection." />
-		<execute function="AssertTextEquals" locator1="SOUserBar#NOTIFICATION_MENU_IGNORE" value1="Ignore" />
-		<execute function="Click" locator1="SOUserBar#NOTIFICATION_MENU_IGNORE" />
-		<execute function="AssertTextEquals" locator1="SOUserBar#NOTIFICATION_MENU_COUNT" value1="0" />
+		AssertTextEquals(
+			locator1 = "SOContactscenter#CONTACTS_LINK_CONNECTIONS",
+			value1 = "You have 1 connections."
+		);
+	}
 
-		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_CONTACTS_CENTER" value1="Contacts Center" />
+	macro disconnectFromConnection {
+		Click.textClickAt(locator1 = "SOUserBar#DASHBOARD", value1 = "Dashboard");
 
-		<execute function="AssertTextEquals" locator1="SOContactscenter#CONTACTS_LINK_CONNECTIONS" value1="You have 0 connections." />
-	</command>
+		Click.textClickAt(
+			locator1 = "SODashboard#NAVIGATION_CONTACTS_CENTER",
+			value1 = "Contacts Center"
+		);
 
-	<command name="requestToConnect">
-		<execute function="Click#textClickAt" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
+		Type(
+			locator1 = "SOContactscenter#CONTACTS_LIST_SEARCH",
+			value1 = "${userScreenName}"
+		);
 
-		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_CONTACTS_CENTER" value1="Contacts Center" />
+		AssertClick.pauseAssertTextClickAt(
+			locator1 = "SOContactscenter#CONTACTS_LIST_NAME",
+			value1 = "${userListName}"
+		);
 
-		<execute function="Type" locator1="SOContactscenter#CONTACTS_LIST_SEARCH" value1="${userScreenName}" />
-		<execute function="AssertClick#pauseAssertTextClickAt" locator1="SOContactscenter#CONTACTS_LIST_NAME" value1="${userListName}" />
+		AssertTextEquals(
+			locator1 = "SOContactscenter#USER_DETAILS_NAME",
+			value1 = "${userName}"
+		);
 
-		<execute function="AssertTextEquals" locator1="SOContactscenter#USER_DETAILS_NAME" value1="${userName}" />
-		<execute function="AssertTextEquals" locator1="SOContactscenter#USER_DETAILS_EMAIL" value1="${userEmailAddress}" />
-		<execute function="AssertClick" locator1="SOContactscenter#CONNECT_BUTTON" value1="Connect" />
-		<execute function="AssertTextEquals" locator1="SOContactscenter#CONNECTION_REQUESTED_MESSAGE" value1="Connection Requested" />
-		<execute function="AssertElementNotPresent#assertNotVisible" locator1="SOContactscenter#CONNECT_BUTTON" value1="Connect" />
-	</command>
+		AssertTextEquals(
+			locator1 = "SOContactscenter#USER_DETAILS_EMAIL",
+			value1 = "${userEmailAddress}"
+		);
 
-	<command name="sendMessage">
-		<var name="connectionName" value="${userName}" />
-		<var name="key_recipientName" value="${userName}" />
-		<var name="recipientName" value="${userName}" />
-		<var name="recipientScreenName" value="${userScreenName}" />
+		Click(locator1 = "SOContactscenter#DISCONNECT_BUTTON", value1 = "Disconnect");
 
-		<execute function="Click#textClickAt" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
+		AssertElementNotPresent.assertNotVisible(
+			locator1 = "SOContactscenter#DISCONNECT_BUTTON"
+		);
 
-		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_CONTACTS_CENTER" value1="Contacts Center" />
+		AssertTextEquals(
+			locator1 = "SOContactscenter#SUCCESS_MESSAGE",
+			value1 = "You are not connected to this user anymore."
+		);
+	}
 
-		<execute function="Type" locator1="SOContactscenter#CONTACTS_LIST_SEARCH" value1="${userScreenName}" />
-		<execute function="AssertClick#pauseAssertTextClickAt" locator1="SOContactscenter#CONTACTS_LIST_NAME" value1="${userListName}" />
-		<execute function="AssertTextEquals" locator1="SOContactscenter#USER_DETAILS_NAME" value1="${userName}" />
-		<execute function="AssertTextEquals" locator1="SOContactscenter#USER_DETAILS_EMAIL" value1="${userEmailAddress}" />
-		<execute function="AssertClick" locator1="SOContactscenter#MESSAGE_BUTTON" value1="Message" />
+	macro followUser {
+		SOUserBar.dashboardPG(userName = "${userName}");
 
-		<execute function="AssertTextEquals" locator1="SOMessagesAdd#TO_FIELD" value1="${recipientName} &lt;${recipientScreenName}&gt;," />
+		Click.textClickAt(
+			locator1 = "SODashboard#NAVIGATION_CONTACTS_CENTER",
+			value1 = "Contacts Center"
+		);
 
-		<if>
-			<isset var="number" />
-			<then>
-				<execute function="Type" locator1="SOMessagesAdd#SUBJECT_FIELD" value1="${messageSubject}${number}" />
-				<execute function="Type" locator1="SOMessagesAdd#BODY_FIELD" value1="${messageBody}${number}" />
-			</then>
-			<else>
-				<execute function="Type" locator1="SOMessagesAdd#SUBJECT_FIELD" value1="${messageSubject}" />
-				<execute function="Type" locator1="SOMessagesAdd#BODY_FIELD" value1="${messageBody}" />
-			</else>
-		</if>
+		Type(
+			locator1 = "SOContactscenter#CONTACTS_LIST_SEARCH",
+			value1 = "${adminName}"
+		);
 
-		<if>
-			<isset var="messageAttachmentFile" />
-			<then>
-				<execute function="UploadCommonFile" locator1="SOMessagesAdd#ATTACHMENTS_FIELD" value1="${messageAttachmentFile}" />
-			</then>
-		</if>
+		AssertClick.pauseAssertTextClickAt(
+			locator1 = "SOContactscenter#CONTACTS_LIST_NAME",
+			value1 = "${adminListName}"
+		);
 
-		<execute function="Click" locator1="SOMessagesAdd#SEND_BUTTON" />
+		AssertTextEquals(
+			locator1 = "SOContactscenter#USER_DETAILS_NAME",
+			value1 = "${adminName}"
+		);
 
-		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_MESSAGES" value1="Messages" />
+		AssertTextEquals(
+			locator1 = "SOContactscenter#USER_DETAILS_EMAIL",
+			value1 = "${adminEmailAddress}"
+		);
 
-		<execute macro="SOMessages#viewMessageList" />
-	</command>
+		AssertClick(locator1 = "SOContactscenter#FOLLOW_BUTTON", value1 = "Follow");
 
-	<command name="tearDownContacts">
-		<execute macro="SOUser#firstLoginPG" />
+		AssertTextEquals(
+			locator1 = "SOContactscenter#FOLLOWING_MESSAGE",
+			value1 = "Following"
+		);
 
-		<execute function="Click#textClickAt" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
+		AssertTextEquals(
+			locator1 = "SOContactscenter#UNFOLLOW_BUTTON",
+			value1 = "Unfollow"
+		);
+	}
 
-		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_CONTACTS_CENTER" value1="Contacts Center" />
+	macro gotoProfile {
+		SOUserBar.dashboardPG(userName = "${userName}");
 
-		<execute function="Select" locator1="SOContactscenter#CONTACTS_LIST_FILTER" value1="My Contacts" />
-		<execute function="Pause" value1="1000" />
+		Click.textClickAt(
+			locator1 = "SODashboard#NAVIGATION_CONTACTS_CENTER",
+			value1 = "Contacts Center"
+		);
 
-		<while>
-			<condition function="IsElementPresent" locator1="SOContactscenter#CONTACTS_LIST_NAME" />
-			<then>
-				<var method="selenium#getText('SOContactscenter#CONTACTS_LIST_NAME')" name="contactName" />
+		Type(
+			locator1 = "SOContactscenter#CONTACTS_LIST_SEARCH",
+			value1 = "${userScreenName}"
+		);
 
-				<execute function="Click" locator1="SOContactscenter#CONTACTS_LIST_NAME" />
-				<execute function="Click" locator1="SOContactscenter#CONTACTS_LIST_NAME" />
-				<execute function="AssertClickNoError" locator1="SOContactscenter#DELETE_BUTTON" value1="Delete" />
-				<execute function="Confirm" value1="Are you sure you want to delete ${contactName} from your contacts?" />
-				<execute function="Select" locator1="SOContactscenter#CONTACTS_LIST_FILTER" value1="My Contacts" />
-				<execute function="Pause" value1="1000" />
-			</then>
-		</while>
-	</command>
+		AssertClick.pauseAssertTextClickAt(
+			locator1 = "SOContactscenter#CONTACTS_LIST_NAME",
+			value1 = "${userListName}"
+		);
+	}
 
-	<command name="unfollowUser">
-		<execute macro="SOUserBar#dashboardPG">
-			<var name="userName" value="${userName}" />
-		</execute>
+	macro ignoreRequestToConnect {
+		Click.textClickAt(locator1 = "SOUserBar#DASHBOARD", value1 = "Dashboard");
 
-		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_CONTACTS_CENTER" value1="Contacts Center" />
+		AssertElementPresent.assertElementPresent(locator1 = "SOUserBar#NOTIFICATION");
 
-		<execute function="Type" locator1="SOContactscenter#CONTACTS_LIST_SEARCH" value1="${adminName}" />
-		<execute function="AssertClick#pauseAssertTextClickAt" locator1="SOContactscenter#CONTACTS_LIST_NAME" value1="${adminListName}" />
-		<execute function="AssertTextEquals" locator1="SOContactscenter#USER_DETAILS_NAME" value1="${adminName}" />
-		<execute function="AssertTextEquals" locator1="SOContactscenter#USER_DETAILS_EMAIL" value1="${adminEmailAddress}" />
-		<execute function="AssertClick" locator1="SOContactscenter#UNFOLLOW_BUTTON" value1="Unfollow" />
-		<execute function="AssertTextEquals" locator1="SOContactscenter#SUCCESS_MESSAGE" value1="You are not following this user anymore." />
-		<execute function="AssertTextEquals" locator1="SOContactscenter#FOLLOW_BUTTON" value1="Follow" />
-	</command>
+		AssertTextEquals(locator1 = "SOUserBar#NOTIFICATION_MENU_COUNT", value1 = "1");
 
-	<command name="viewContact">
-		<execute macro="SOUserBar#dashboardPG">
-			<var name="userName" value="Joe Bloggs" />
-		</execute>
+		MouseOver(locator1 = "SOUserBar#NOTIFICATION");
 
-		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_CONTACTS_CENTER" value1="Contacts Center" />
+		AssertTextEquals(
+			locator1 = "SOUserBar#NOTIFICATION_MENU_ENTRY_SENDER",
+			value1 = "${senderName}"
+		);
 
-		<execute function="Type" locator1="SOContactscenter#CONTACTS_LIST_SEARCH" value1="${contactName}" />
-		<execute function="Pause" value1="1000" />
-		<execute function="AssertClick#pauseAssertTextClickAt" locator1="SOContactscenter#CONTACTS_LIST_NAME" value1="${contactName}" />
-		<execute function="AssertTextEquals" locator1="SOContactscenter#CONTACT_DETAILS_NAME" value1="${contactName}" />
-		<execute function="AssertTextEquals" locator1="SOContactscenter#CONTACT_DETAILS_EMAIL" value1="${contactEmailAddress}" />
-		<execute function="AssertTextEquals" locator1="SOContactscenter#CONTACT_DETAILS_COMMENTS" value1="${contactName} Comments" />
-	</command>
-</definition>
+		AssertTextEquals.assertPartialText(
+			locator1 = "SOUserBar#NOTIFICATION_MENU_ENTRY_CONTENT",
+			value1 = "would like to add you as a connection."
+		);
+
+		AssertTextEquals(
+			locator1 = "SOUserBar#NOTIFICATION_MENU_IGNORE",
+			value1 = "Ignore"
+		);
+
+		Click(locator1 = "SOUserBar#NOTIFICATION_MENU_IGNORE");
+
+		AssertTextEquals(locator1 = "SOUserBar#NOTIFICATION_MENU_COUNT", value1 = "0");
+
+		Click.textClickAt(
+			locator1 = "SODashboard#NAVIGATION_CONTACTS_CENTER",
+			value1 = "Contacts Center"
+		);
+
+		AssertTextEquals(
+			locator1 = "SOContactscenter#CONTACTS_LINK_CONNECTIONS",
+			value1 = "You have 0 connections."
+		);
+	}
+
+	macro requestToConnect {
+		Click.textClickAt(locator1 = "SOUserBar#DASHBOARD", value1 = "Dashboard");
+
+		Click.textClickAt(
+			locator1 = "SODashboard#NAVIGATION_CONTACTS_CENTER",
+			value1 = "Contacts Center"
+		);
+
+		Type(
+			locator1 = "SOContactscenter#CONTACTS_LIST_SEARCH",
+			value1 = "${userScreenName}"
+		);
+
+		AssertClick.pauseAssertTextClickAt(
+			locator1 = "SOContactscenter#CONTACTS_LIST_NAME",
+			value1 = "${userListName}"
+		);
+
+		AssertTextEquals(
+			locator1 = "SOContactscenter#USER_DETAILS_NAME",
+			value1 = "${userName}"
+		);
+
+		AssertTextEquals(
+			locator1 = "SOContactscenter#USER_DETAILS_EMAIL",
+			value1 = "${userEmailAddress}"
+		);
+
+		AssertClick(locator1 = "SOContactscenter#CONNECT_BUTTON", value1 = "Connect");
+
+		AssertTextEquals(
+			locator1 = "SOContactscenter#CONNECTION_REQUESTED_MESSAGE",
+			value1 = "Connection Requested"
+		);
+
+		AssertElementNotPresent.assertNotVisible(
+			locator1 = "SOContactscenter#CONNECT_BUTTON",
+			value1 = "Connect"
+		);
+	}
+
+	macro sendMessage {
+		var connectionName = "${userName}";
+		var key_recipientName = "${userName}";
+		var recipientName = "${userName}";
+		var recipientScreenName = "${userScreenName}";
+
+		Click.textClickAt(locator1 = "SOUserBar#DASHBOARD", value1 = "Dashboard");
+
+		Click.textClickAt(
+			locator1 = "SODashboard#NAVIGATION_CONTACTS_CENTER",
+			value1 = "Contacts Center"
+		);
+
+		Type(
+			locator1 = "SOContactscenter#CONTACTS_LIST_SEARCH",
+			value1 = "${userScreenName}"
+		);
+
+		AssertClick.pauseAssertTextClickAt(
+			locator1 = "SOContactscenter#CONTACTS_LIST_NAME",
+			value1 = "${userListName}"
+		);
+
+		AssertTextEquals(
+			locator1 = "SOContactscenter#USER_DETAILS_NAME",
+			value1 = "${userName}"
+		);
+
+		AssertTextEquals(
+			locator1 = "SOContactscenter#USER_DETAILS_EMAIL",
+			value1 = "${userEmailAddress}"
+		);
+
+		AssertClick(locator1 = "SOContactscenter#MESSAGE_BUTTON", value1 = "Message");
+
+		AssertTextEquals(
+			locator1 = "SOMessagesAdd#TO_FIELD",
+			value1 = "${recipientName} <${recipientScreenName}>,"
+		);
+
+		if (isSet(number)) {
+			Type(
+				locator1 = "SOMessagesAdd#SUBJECT_FIELD",
+				value1 = "${messageSubject}${number}"
+			);
+
+			Type(locator1 = "SOMessagesAdd#BODY_FIELD", value1 = "${messageBody}${number}");
+		}
+		else {
+			Type(locator1 = "SOMessagesAdd#SUBJECT_FIELD", value1 = "${messageSubject}");
+
+			Type(locator1 = "SOMessagesAdd#BODY_FIELD", value1 = "${messageBody}");
+		}
+
+		if (isSet(messageAttachmentFile)) {
+			UploadCommonFile(
+				locator1 = "SOMessagesAdd#ATTACHMENTS_FIELD",
+				value1 = "${messageAttachmentFile}"
+			);
+		}
+
+		Click(locator1 = "SOMessagesAdd#SEND_BUTTON");
+
+		Click.textClickAt(
+			locator1 = "SODashboard#NAVIGATION_MESSAGES",
+			value1 = "Messages"
+		);
+
+		SOMessages.viewMessageList();
+	}
+
+	macro tearDownContacts {
+		SOUser.firstLoginPG();
+
+		Click.textClickAt(locator1 = "SOUserBar#DASHBOARD", value1 = "Dashboard");
+
+		Click.textClickAt(
+			locator1 = "SODashboard#NAVIGATION_CONTACTS_CENTER",
+			value1 = "Contacts Center"
+		);
+
+		Select(
+			locator1 = "SOContactscenter#CONTACTS_LIST_FILTER",
+			value1 = "My Contacts"
+		);
+
+		Pause(value1 = "1000");
+
+		while (IsElementPresent(locator1 = "SOContactscenter#CONTACTS_LIST_NAME")) {
+			var contactName = selenium.getText("SOContactscenter#CONTACTS_LIST_NAME");
+
+			Click(locator1 = "SOContactscenter#CONTACTS_LIST_NAME");
+
+			Click(locator1 = "SOContactscenter#CONTACTS_LIST_NAME");
+
+			AssertClickNoError(
+				locator1 = "SOContactscenter#DELETE_BUTTON",
+				value1 = "Delete"
+			);
+
+			Confirm(
+				value1 = "Are you sure you want to delete ${contactName} from your contacts?"
+			);
+
+			Select(
+				locator1 = "SOContactscenter#CONTACTS_LIST_FILTER",
+				value1 = "My Contacts"
+			);
+
+			Pause(value1 = "1000");
+		}
+	}
+
+	macro unfollowUser {
+		SOUserBar.dashboardPG(userName = "${userName}");
+
+		Click.textClickAt(
+			locator1 = "SODashboard#NAVIGATION_CONTACTS_CENTER",
+			value1 = "Contacts Center"
+		);
+
+		Type(
+			locator1 = "SOContactscenter#CONTACTS_LIST_SEARCH",
+			value1 = "${adminName}"
+		);
+
+		AssertClick.pauseAssertTextClickAt(
+			locator1 = "SOContactscenter#CONTACTS_LIST_NAME",
+			value1 = "${adminListName}"
+		);
+
+		AssertTextEquals(
+			locator1 = "SOContactscenter#USER_DETAILS_NAME",
+			value1 = "${adminName}"
+		);
+
+		AssertTextEquals(
+			locator1 = "SOContactscenter#USER_DETAILS_EMAIL",
+			value1 = "${adminEmailAddress}"
+		);
+
+		AssertClick(locator1 = "SOContactscenter#UNFOLLOW_BUTTON", value1 = "Unfollow");
+
+		AssertTextEquals(
+			locator1 = "SOContactscenter#SUCCESS_MESSAGE",
+			value1 = "You are not following this user anymore."
+		);
+
+		AssertTextEquals(locator1 = "SOContactscenter#FOLLOW_BUTTON", value1 = "Follow");
+	}
+
+	macro viewContact {
+		SOUserBar.dashboardPG(userName = "Joe Bloggs");
+
+		Click.textClickAt(
+			locator1 = "SODashboard#NAVIGATION_CONTACTS_CENTER",
+			value1 = "Contacts Center"
+		);
+
+		Type(
+			locator1 = "SOContactscenter#CONTACTS_LIST_SEARCH",
+			value1 = "${contactName}"
+		);
+
+		Pause(value1 = "1000");
+
+		AssertClick.pauseAssertTextClickAt(
+			locator1 = "SOContactscenter#CONTACTS_LIST_NAME",
+			value1 = "${contactName}"
+		);
+
+		AssertTextEquals(
+			locator1 = "SOContactscenter#CONTACT_DETAILS_NAME",
+			value1 = "${contactName}"
+		);
+
+		AssertTextEquals(
+			locator1 = "SOContactscenter#CONTACT_DETAILS_EMAIL",
+			value1 = "${contactEmailAddress}"
+		);
+
+		AssertTextEquals(
+			locator1 = "SOContactscenter#CONTACT_DETAILS_COMMENTS",
+			value1 = "${contactName} Comments"
+		);
+	}
+}

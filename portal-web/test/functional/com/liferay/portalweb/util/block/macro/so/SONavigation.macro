@@ -1,13 +1,16 @@
-<definition>
-	<command name="gotoDashboardTasks">
-		<execute function="Click#textClickAt" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
+definition {
+	macro gotoDashboardTasks {
+		Click.textClickAt(locator1 = "SOUserBar#DASHBOARD", value1 = "Dashboard");
 
-		<execute function="AssertClick" locator1="SODashboard#NAVIGATION_TASKS" value1="Tasks" />
-	</command>
+		AssertClick(locator1 = "SODashboard#NAVIGATION_TASKS", value1 = "Tasks");
+	}
 
-	<command name="gotoSiteDocuments">
-		<execute macro="Page#openURL" />
+	macro gotoSiteDocuments {
+		Page.openURL();
 
-		<execute function="Click#textClickAt" locator1="SOSiteHome#NAVIGATION_DOCUMENTS" value1="Documents" />
-	</command>
-</definition>
+		Click.textClickAt(
+			locator1 = "SOSiteHome#NAVIGATION_DOCUMENTS",
+			value1 = "Documents"
+		);
+	}
+}

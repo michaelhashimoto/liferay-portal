@@ -1,39 +1,55 @@
-<definition>
-	<command name="assignUserRoleCP">
-		<execute macro="Page#gotoCP">
-			<var name="portletName" value="Social Office Configurations" />
-		</execute>
+definition {
+	macro assignUserRoleCP {
+		Page.gotoCP(portletName = "Social Office Configurations");
 
-		<execute function="Click#clickAtPause" locator1="SOConfigurations#STATUS_AVAILABLE" />
-		<execute function="Type" locator1="SOConfigurations#SEARCH_FIELD" value1="${userScreenName}" />
-		<execute function="Click" locator1="SOConfigurations#SEARCH_BUTTON" />
+		Click.clickAtPause(locator1 = "SOConfigurations#STATUS_AVAILABLE");
 
-		<execute function="AssertTextEquals" locator1="CPRolesAssignmembersUsers#SEARCH_RESULTS" value1="Showing 1 result." />
+		Type(locator1 = "SOConfigurations#SEARCH_FIELD", value1 = "${userScreenName}");
 
-		<execute function="AssertTextEquals" locator1="SOConfigurations#USER_TABLE_SCREEN_NAME_1" value1="${userScreenName}" />
-		<execute function="Check" locator1="SOConfigurations#USER_TABLE_CHECKBOX_1" />
-		<execute function="Click#valueClickAt" locator1="SOConfigurations#SAVE_BUTTON" value1="Save" />
+		Click(locator1 = "SOConfigurations#SEARCH_BUTTON");
 
-		<execute function="AssertTextEquals" locator1="CPRolesAssignmembersUsers#SUCCESS_MESSAGE" />
+		AssertTextEquals(
+			locator1 = "CPRolesAssignmembersUsers#SEARCH_RESULTS",
+			value1 = "Showing 1 result."
+		);
 
-		<execute function="AssertChecked" locator1="SOConfigurations#USER_TABLE_CHECKBOX_1" />
-	</command>
+		AssertTextEquals(
+			locator1 = "SOConfigurations#USER_TABLE_SCREEN_NAME_1",
+			value1 = "${userScreenName}"
+		);
 
-	<command name="unassignUserRoleCP">
-		<execute macro="Page#gotoCP">
-			<var name="portletName" value="Social Office Configurations" />
-		</execute>
+		Check(locator1 = "SOConfigurations#USER_TABLE_CHECKBOX_1");
 
-		<execute function="Click#clickAtPause" locator1="SOConfigurations#STATUS_CURRENT" />
-		<execute function="Type" locator1="SOConfigurations#SEARCH_FIELD" value1="${userScreenName}" />
-		<execute function="Click" locator1="SOConfigurations#SEARCH_BUTTON" />
+		Click.valueClickAt(locator1 = "SOConfigurations#SAVE_BUTTON", value1 = "Save");
 
-		<execute function="AssertTextEquals" locator1="CPRolesAssignmembersUsers#SEARCH_RESULTS" value1="Showing 1 result." />
+		AssertTextEquals(locator1 = "CPRolesAssignmembersUsers#SUCCESS_MESSAGE");
 
-		<execute function="AssertTextEquals" locator1="SOConfigurations#USER_TABLE_SCREEN_NAME_1" value1="${userScreenName}" />
-		<execute function="Uncheck" locator1="SOConfigurations#USER_TABLE_CHECKBOX_1" />
-		<execute function="Click#valueClickAt" locator1="SOConfigurations#SAVE_BUTTON" value1="Save" />
+		AssertChecked(locator1 = "SOConfigurations#USER_TABLE_CHECKBOX_1");
+	}
 
-		<execute function="AssertTextEquals" locator1="CPRolesAssignmembersUsers#SUCCESS_MESSAGE" />
-	</command>
-</definition>
+	macro unassignUserRoleCP {
+		Page.gotoCP(portletName = "Social Office Configurations");
+
+		Click.clickAtPause(locator1 = "SOConfigurations#STATUS_CURRENT");
+
+		Type(locator1 = "SOConfigurations#SEARCH_FIELD", value1 = "${userScreenName}");
+
+		Click(locator1 = "SOConfigurations#SEARCH_BUTTON");
+
+		AssertTextEquals(
+			locator1 = "CPRolesAssignmembersUsers#SEARCH_RESULTS",
+			value1 = "Showing 1 result."
+		);
+
+		AssertTextEquals(
+			locator1 = "SOConfigurations#USER_TABLE_SCREEN_NAME_1",
+			value1 = "${userScreenName}"
+		);
+
+		Uncheck(locator1 = "SOConfigurations#USER_TABLE_CHECKBOX_1");
+
+		Click.valueClickAt(locator1 = "SOConfigurations#SAVE_BUTTON", value1 = "Save");
+
+		AssertTextEquals(locator1 = "CPRolesAssignmembersUsers#SUCCESS_MESSAGE");
+	}
+}

@@ -1,48 +1,99 @@
-<definition>
-	<command name="addCP">
-		<execute function="AssertClick#assertTextClickAt" locator1="CPUsergroups#ADD" value1="Add" />
+definition {
+	macro addCP {
+		AssertClick.assertTextClickAt(locator1 = "CPUsergroups#ADD", value1 = "Add");
 
-		<execute function="Type" locator1="CPUsergroupsAddusergroup#NAME_FIELD" value1="${userGroupName}" />
-		<execute function="Click" locator1="CPUsergroupsAddusergroup#SAVE_BUTTON" value1="Save" />
+		Type(
+			locator1 = "CPUsergroupsAddusergroup#NAME_FIELD",
+			value1 = "${userGroupName}"
+		);
 
-		<execute function="AssertTextEquals" locator1="CPUsergroups#SUCCESS_MESSAGE" value1="Your request completed successfully." />
-		<execute function="AssertTextEquals" locator1="CPUsergroups#USER_GROUP_TABLE_NAME_1" value1="${userGroupName}" />
-	</command>
+		Click(locator1 = "CPUsergroupsAddusergroup#SAVE_BUTTON", value1 = "Save");
 
-	<command name="deleteCP">
-		<execute function="AssertClick" locator1="CPUsergroups#USER_GROUP_TABLE_ACTIONS_1" value1="Actions" />
-		<execute function="AssertClickNoError" locator1="CPUsergroups#USER_GROUP_MENULIST_DELETE" value1="Delete" />
-		<execute function="Confirm" value1="Are you sure you want to delete this?" />
-		<execute function="AssertTextEquals" locator1="CPUsergroups#SUCCESS_MESSAGE" value1="Your request completed successfully." />
-		<execute function="AssertElementNotPresent" locator1="CPUsergroups#USER_GROUP_TABLE_NAME_1" />
-	</command>
+		AssertTextEquals(
+			locator1 = "CPUsergroups#SUCCESS_MESSAGE",
+			value1 = "Your request completed successfully."
+		);
 
-	<command name="editCP">
-		<execute function="AssertClick" locator1="CPUsergroups#USER_GROUP_TABLE_ACTIONS_1" value1="Actions" />
-		<execute function="AssertClick#assertTextClickAt" locator1="CPUsergroups#USER_GROUP_MENULIST_EDIT" value1="Edit" />
+		AssertTextEquals(
+			locator1 = "CPUsergroups#USER_GROUP_TABLE_NAME_1",
+			value1 = "${userGroupName}"
+		);
+	}
 
-		<execute function="Type" locator1="CPUsergroupsEditusergroup#NAME_FIELD" value1="${userGroupNameEdit}" />
-		<execute function="AssertClick#assertValueClickAt" locator1="CPUsergroupsEditusergroup#SAVE_BUTTON" value1="Save" />
+	macro deleteCP {
+		AssertClick(
+			locator1 = "CPUsergroups#USER_GROUP_TABLE_ACTIONS_1",
+			value1 = "Actions"
+		);
 
-		<execute function="AssertTextEquals" locator1="CPUsergroups#SUCCESS_MESSAGE" value1="Your request completed successfully." />
-		<execute function="AssertTextEquals" locator1="CPUsergroups#USER_GROUP_TABLE_NAME_1" value1="${userGroupNameEdit}" />
-	</command>
+		AssertClickNoError(
+			locator1 = "CPUsergroups#USER_GROUP_MENULIST_DELETE",
+			value1 = "Delete"
+		);
 
-	<command name="tearDownCP">
-		<execute macro="Page#gotoCP">
-			<var name="portletName" value="User Groups" />
-		</execute>
+		Confirm(value1 = "Are you sure you want to delete this?");
 
-		<while>
-			<condition function="IsElementPresent#pauseIsElementPresent" locator1="CPUsergroups#USER_GROUP_TABLE_CHECKBOX_1" />
-			<then>
-				<execute function="Click" locator1="CPUsergroups#USER_GROUP_TABLE_ALL_CHECKBOX" />
-				<execute function="AssertChecked" locator1="CPUsergroups#USER_GROUP_TABLE_ALL_CHECKBOX" />
-				<execute function="AssertClickNoError" locator1="CPUsergroups#DELETE_BUTTON" value1="Delete" />
-				<execute function="Confirm" value1="Are you sure you want to delete this?" />
-				<execute function="AssertTextEquals" locator1="CPUsergroups#SUCCESS_MESSAGE" value1="Your request completed successfully." />
-				<execute function="AssertTextEquals" locator1="CPUsergroups#INFO_MESSAGE" value1="No user groups were found." />
-			</then>
-		</while>
-	</command>
-</definition>
+		AssertTextEquals(
+			locator1 = "CPUsergroups#SUCCESS_MESSAGE",
+			value1 = "Your request completed successfully."
+		);
+
+		AssertElementNotPresent(locator1 = "CPUsergroups#USER_GROUP_TABLE_NAME_1");
+	}
+
+	macro editCP {
+		AssertClick(
+			locator1 = "CPUsergroups#USER_GROUP_TABLE_ACTIONS_1",
+			value1 = "Actions"
+		);
+
+		AssertClick.assertTextClickAt(
+			locator1 = "CPUsergroups#USER_GROUP_MENULIST_EDIT",
+			value1 = "Edit"
+		);
+
+		Type(
+			locator1 = "CPUsergroupsEditusergroup#NAME_FIELD",
+			value1 = "${userGroupNameEdit}"
+		);
+
+		AssertClick.assertValueClickAt(
+			locator1 = "CPUsergroupsEditusergroup#SAVE_BUTTON",
+			value1 = "Save"
+		);
+
+		AssertTextEquals(
+			locator1 = "CPUsergroups#SUCCESS_MESSAGE",
+			value1 = "Your request completed successfully."
+		);
+
+		AssertTextEquals(
+			locator1 = "CPUsergroups#USER_GROUP_TABLE_NAME_1",
+			value1 = "${userGroupNameEdit}"
+		);
+	}
+
+	macro tearDownCP {
+		Page.gotoCP(portletName = "User Groups");
+
+		while (IsElementPresent.pauseIsElementPresent(locator1 = "CPUsergroups#USER_GROUP_TABLE_CHECKBOX_1")) {
+			Click(locator1 = "CPUsergroups#USER_GROUP_TABLE_ALL_CHECKBOX");
+
+			AssertChecked(locator1 = "CPUsergroups#USER_GROUP_TABLE_ALL_CHECKBOX");
+
+			AssertClickNoError(locator1 = "CPUsergroups#DELETE_BUTTON", value1 = "Delete");
+
+			Confirm(value1 = "Are you sure you want to delete this?");
+
+			AssertTextEquals(
+				locator1 = "CPUsergroups#SUCCESS_MESSAGE",
+				value1 = "Your request completed successfully."
+			);
+
+			AssertTextEquals(
+				locator1 = "CPUsergroups#INFO_MESSAGE",
+				value1 = "No user groups were found."
+			);
+		}
+	}
+}

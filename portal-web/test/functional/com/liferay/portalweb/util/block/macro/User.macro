@@ -1,244 +1,403 @@
-<definition>
-	<var name="password" value="test" />
-	<var name="userEmailAddress" value="test@liferay.com" />
+definition {
+	var password = "test";
+	var userEmailAddress = "test@liferay.com";
 
-	<command name="addCP">
-		<execute function="AssertClick" locator1="CPUsersandorganizations#ADD" value1="Add" />
-		<execute function="AssertClick#assertTextClickAt" locator1="CPUsersandorganizations#ADD_USER" value1="User" />
+	macro addCP {
+		AssertClick(locator1 = "CPUsersandorganizations#ADD", value1 = "Add");
 
-		<execute function="Type" locator1="CPUsersandorganizationsAdduser#DETAILS_SCREEN_NAME_FIELD" value1="${userScreenName}" />
-		<execute function="Type" locator1="CPUsersandorganizationsAdduser#DETAILS_EMAIL_ADDRESS_FIELD" value1="${userEmailAddress}" />
-		<execute function="Type" locator1="CPUsersandorganizationsAdduser#DETAILS_FIRST_NAME_FIELD" value1="${userFirstName}" />
+		AssertClick.assertTextClickAt(
+			locator1 = "CPUsersandorganizations#ADD_USER",
+			value1 = "User"
+		);
 
-		<if>
-			<isset var="userMiddleName" />
-			<then>
-				<execute function="Type" locator1="CPUsersandorganizationsAdduser#DETAILS_MIDDLE_NAME_FIELD" value1="${userMiddleName}" />
-			</then>
-		</if>
+		Type(
+			locator1 = "CPUsersandorganizationsAdduser#DETAILS_SCREEN_NAME_FIELD",
+			value1 = "${userScreenName}"
+		);
 
-		<execute function="Type" locator1="CPUsersandorganizationsAdduser#DETAILS_LAST_NAME_FIELD" value1="${userLastName}" />
-		<execute function="AssertClick#assertValueClickAt" locator1="CPUsersandorganizationsAdduser#SAVE" value1="Save" />
+		Type(
+			locator1 = "CPUsersandorganizationsAdduser#DETAILS_EMAIL_ADDRESS_FIELD",
+			value1 = "${userEmailAddress}"
+		);
 
-		<execute function="AssertTextEquals" locator1="CPUsersandorganizationsUser#SUCCESS_MESSAGE" value1="Your request completed successfully." />
-		<execute function="AssertTextEquals" locator1="CPUsersandorganizationsUser#DETAILS_SCREEN_NAME_FIELD" value1="${userScreenName}" />
-		<execute function="AssertTextEquals" locator1="CPUsersandorganizationsUser#DETAILS_EMAIL_ADDRESS_FIELD" value1="${userEmailAddress}" />
-		<execute function="AssertTextEquals" locator1="CPUsersandorganizationsUser#DETAILS_FIRST_NAME_FIELD" value1="${userFirstName}" />
+		Type(
+			locator1 = "CPUsersandorganizationsAdduser#DETAILS_FIRST_NAME_FIELD",
+			value1 = "${userFirstName}"
+		);
 
-		<if>
-			<isset var="userMiddleName" />
-			<then>
-				<execute function="AssertTextEquals" locator1="CPUsersandorganizationsUser#DETAILS_MIDDLE_NAME_FIELD" value1="${userMiddleName}" />
-			</then>
-		</if>
+		if (isSet(userMiddleName)) {
+			Type(
+				locator1 = "CPUsersandorganizationsAdduser#DETAILS_MIDDLE_NAME_FIELD",
+				value1 = "${userMiddleName}"
+			);
+		}
 
-		<execute function="AssertTextEquals" locator1="CPUsersandorganizationsUser#DETAILS_LAST_NAME_FIELD" value1="${userLastName}" />
-	</command>
+		Type(
+			locator1 = "CPUsersandorganizationsAdduser#DETAILS_LAST_NAME_FIELD",
+			value1 = "${userLastName}"
+		);
 
-	<command name="deactivateCP">
-		<execute function="AssertClick#assertTextClickAt" locator1="CPUsersandorganizations#SEARCH_ALL_USERS" value1="Search All Users" />
+		AssertClick.assertValueClickAt(
+			locator1 = "CPUsersandorganizationsAdduser#SAVE",
+			value1 = "Save"
+		);
 
-		<execute macro="CPUsersandorganizationsViewusers#showAdvancedSearch" />
-		<execute function="Type" locator1="CPUsersandorganizationsViewusers#ADVANCED_SEARCH_FIRST_NAME" value1="${userFirstName}" />
-		<execute function="Select" locator1="CPUsersandorganizationsViewusers#ADVANCED_SEARCH_STATUS" value1="Active" />
-		<execute function="AssertClick#assertValueClickAt" locator1="CPUsersandorganizationsViewusers#ADVANCED_SEARCH_BUTTON" value1="Search" />
+		AssertTextEquals(
+			locator1 = "CPUsersandorganizationsUser#SUCCESS_MESSAGE",
+			value1 = "Your request completed successfully."
+		);
 
-		<if>
-			<condition function="IsElementPresent" locator1="CPUsersandorganizationsViewusers#USER_TABLE_ALL_CHECKBOX" />
-			<then>
-				<execute function="Check" locator1="CPUsersandorganizationsViewusers#USER_TABLE_ALL_CHECKBOX" value1="Check All" />
-				<execute function="AssertClickNoError" locator1="CPUsersandorganizationsViewusers#DEACTIVATE" value1="Deactivate" />
-				<execute function="Confirm" value1="Are you sure you want to deactivate the selected users?" />
-				<execute function="AssertTextEquals" locator1="CPUsersandorganizationsViewusers#SUCCESS_MESSAGE" value1="Your request completed successfully." />
-			</then>
-		</if>
+		AssertTextEquals(
+			locator1 = "CPUsersandorganizationsUser#DETAILS_SCREEN_NAME_FIELD",
+			value1 = "${userScreenName}"
+		);
 
-		<execute function="AssertTextEquals" locator1="CPUsersandorganizationsViewusers#INFO_MESSAGE" value1="No users were found." />
-		<execute function="AssertElementNotPresent" locator1="CPUsersandorganizationsViewusers#DEACTIVATE" value1="Deactivate" />
-		<execute macro="CPUsersandorganizationsViewusers#showBasicSearch" />
-	</command>
+		AssertTextEquals(
+			locator1 = "CPUsersandorganizationsUser#DETAILS_EMAIL_ADDRESS_FIELD",
+			value1 = "${userEmailAddress}"
+		);
 
-	<command name="deleteCP">
-		<execute function="AssertClick#assertTextClickAt" locator1="CPUsersandorganizations#SEARCH_ALL_USERS" value1="Search All Users" />
+		AssertTextEquals(
+			locator1 = "CPUsersandorganizationsUser#DETAILS_FIRST_NAME_FIELD",
+			value1 = "${userFirstName}"
+		);
 
-		<execute macro="CPUsersandorganizationsViewusers#showAdvancedSearch" />
-		<execute function="Type" locator1="CPUsersandorganizationsViewusers#ADVANCED_SEARCH_FIRST_NAME" value1="${userFirstName}" />
-		<execute function="Select" locator1="CPUsersandorganizationsViewusers#ADVANCED_SEARCH_STATUS" value1="Inactive" />
-		<execute function="AssertClick#assertValueClickAt" locator1="CPUsersandorganizationsViewusers#ADVANCED_SEARCH_BUTTON" value1="Search" />
+		if (isSet(userMiddleName)) {
+			AssertTextEquals(
+				locator1 = "CPUsersandorganizationsUser#DETAILS_MIDDLE_NAME_FIELD",
+				value1 = "${userMiddleName}"
+			);
+		}
 
-		<if>
-			<condition function="IsElementPresent" locator1="CPUsersandorganizationsViewusers#USER_TABLE_ALL_CHECKBOX" />
-			<then>
-				<execute function="Check" locator1="CPUsersandorganizationsViewusers#USER_TABLE_ALL_CHECKBOX" value1="Check All" />
-				<execute function="AssertClickNoError" locator1="CPUsersandorganizationsViewusers#DELETE" value1="Delete" />
-				<execute function="Confirm" value1="Are you sure you want to permanently delete the selected users?" />
-				<execute function="AssertTextEquals" locator1="CPUsersandorganizationsViewusers#SUCCESS_MESSAGE" value1="Your request completed successfully." />
-			</then>
-		</if>
+		AssertTextEquals(
+			locator1 = "CPUsersandorganizationsUser#DETAILS_LAST_NAME_FIELD",
+			value1 = "${userLastName}"
+		);
+	}
 
-		<execute function="AssertTextEquals" locator1="CPUsersandorganizationsViewusers#INFO_MESSAGE" value1="No users were found." />
-		<execute function="AssertElementNotPresent" locator1="CPUsersandorganizationsViewusers#DELETE" value1="Delete" />
-		<execute macro="CPUsersandorganizationsViewusers#showBasicSearch" />
-	</command>
+	macro deactivateCP {
+		AssertClick.assertTextClickAt(
+			locator1 = "CPUsersandorganizations#SEARCH_ALL_USERS",
+			value1 = "Search All Users"
+		);
 
-	<command name="editPasswordCP">
-		<execute function="AssertClick#assertTextClickAt" locator1="CPUsersandorganizations#SEARCH_ALL_USERS" value1="Search All Users" />
+		CPUsersandorganizationsViewusers.showAdvancedSearch();
 
-		<execute macro="CPUsersandorganizationsViewusers#showBasicSearch" />
-		<execute function="Type" locator1="CPUsersandorganizationsViewusers#BASIC_SEARCH_FIELD" value1="${userScreenName}" />
-		<execute function="AssertClick#assertValueClickAt" locator1="CPUsersandorganizationsViewusers#BASIC_SEARCH_BUTTON" value1="Search" />
-		<execute function="AssertTextEquals" locator1="CPUsersandorganizationsViewusers#USER_TABLE_SCREEN_NAME_1" value1="${userScreenName}" />
-		<execute function="Click" locator1="CPUsersandorganizationsViewusers#USER_TABLE_SCREEN_NAME_1" value1="${userScreenName}" />
+		Type(
+			locator1 = "CPUsersandorganizationsViewusers#ADVANCED_SEARCH_FIRST_NAME",
+			value1 = "${userFirstName}"
+		);
 
-		<execute function="Click" locator1="CPUsersandorganizationsUser#PASSWORD" />
-		<execute function="Type" locator1="CPUsersandorganizationsUser#PASSWORD_NEW_PASSWORD_FIELD" value1="password" />
-		<execute function="Type" locator1="CPUsersandorganizationsUser#PASSWORD_ENTER_AGAIN_FIELD" value1="password" />
-		<execute function="Click" locator1="CPUsersandorganizationsUser#SAVE_BUTTON" />
-		<execute function="AssertTextEquals" locator1="CPUsersandorganizationsUser#SUCCESS_MESSAGE" value1="Your request completed successfully." />
+		Select(
+			locator1 = "CPUsersandorganizationsViewusers#ADVANCED_SEARCH_STATUS",
+			value1 = "Active"
+		);
 
-		<execute macro="User#logoutPG" />
+		AssertClick.assertValueClickAt(
+			locator1 = "CPUsersandorganizationsViewusers#ADVANCED_SEARCH_BUTTON",
+			value1 = "Search"
+		);
 
-		<execute macro="User#loginPG">
-			<var name="password" value="password" />
-			<var name="userEmailAddress" value="${userEmailAddress}" />
-		</execute>
+		if (IsElementPresent(locator1 = "CPUsersandorganizationsViewusers#USER_TABLE_ALL_CHECKBOX")) {
+			Check(
+				locator1 = "CPUsersandorganizationsViewusers#USER_TABLE_ALL_CHECKBOX",
+				value1 = "Check All"
+			);
 
-		<execute macro="User#logoutPG" />
+			AssertClickNoError(
+				locator1 = "CPUsersandorganizationsViewusers#DEACTIVATE",
+				value1 = "Deactivate"
+			);
 
-		<execute macro="User#loginPG">
-			<var name="password" value="test" />
-			<var name="userEmailAddress" value="test@liferay.com" />
-		</execute>
-	</command>
+			Confirm(value1 = "Are you sure you want to deactivate the selected users?");
 
-	<command name="firstLoginPG" summary="Log into Liferay Portal as '${userEmailAddress}' using the password '${password}'; if not logged in as '${userEmailAddress}', then log out first">
-		<echo message="Checking to see if Mobile Device is enabled..." />
+			AssertTextEquals(
+				locator1 = "CPUsersandorganizationsViewusers#SUCCESS_MESSAGE",
+				value1 = "Your request completed successfully."
+			);
+		}
 
-		<var method="PropsUtil#get('MOBILE_BROWSER')" name="mobileBrowser" />
+		AssertTextEquals(
+			locator1 = "CPUsersandorganizationsViewusers#INFO_MESSAGE",
+			value1 = "No users were found."
+		);
 
-		<if>
-			<equals arg1="${mobileBrowser}" arg2="true" />
-			<then>
-				<execute macro="MobileDevice#selectMobileDevice" />
-			</then>
-		</if>
+		AssertElementNotPresent(
+			locator1 = "CPUsersandorganizationsViewusers#DEACTIVATE",
+			value1 = "Deactivate"
+		);
 
-		<echo message="Checking to see if TCat is enabled..." />
+		CPUsersandorganizationsViewusers.showBasicSearch();
+	}
 
-		<var method="selenium#isTCatEnabled()" name="tcatEnabled" />
+	macro deleteCP {
+		AssertClick.assertTextClickAt(
+			locator1 = "CPUsersandorganizations#SEARCH_ALL_USERS",
+			value1 = "Search All Users"
+		);
 
-		<if>
-			<equals arg1="${tcatEnabled}" arg2="true" />
-			<then>
-				<execute macro="TCat#deployLiferayPortalWar" />
-			</then>
-		</if>
+		CPUsersandorganizationsViewusers.showAdvancedSearch();
 
-		<execute macro="Page#openURL" />
+		Type(
+			locator1 = "CPUsersandorganizationsViewusers#ADVANCED_SEARCH_FIRST_NAME",
+			value1 = "${userFirstName}"
+		);
 
-		<if>
-			<condition function="IsElementPresent" locator1="Dockbar#USER_NAME" />
-			<then>
-				<execute macro="User#logoutPG" />
-				<execute macro="User#loginPG" />
-			</then>
-			<else>
-				<execute macro="User#loginPG" />
-			</else>
-		</if>
-	</command>
+		Select(
+			locator1 = "CPUsersandorganizationsViewusers#ADVANCED_SEARCH_STATUS",
+			value1 = "Inactive"
+		);
 
-	<command name="loginPG" summary="Log into Liferay Portal as '${userEmailAddress}' using the password '${password}'">
-		<execute macro="Page#openURL" />
+		AssertClick.assertValueClickAt(
+			locator1 = "CPUsersandorganizationsViewusers#ADVANCED_SEARCH_BUTTON",
+			value1 = "Search"
+		);
 
-		<if>
-			<isset var="welcomeTheme" />
-			<then>
-				<execute function="AssertClick#assertTextClickAt" locator1="PGWelcomePage1#SIGN_IN" value1="Sign In" />
-			</then>
-		</if>
+		if (IsElementPresent(locator1 = "CPUsersandorganizationsViewusers#USER_TABLE_ALL_CHECKBOX")) {
+			Check(
+				locator1 = "CPUsersandorganizationsViewusers#USER_TABLE_ALL_CHECKBOX",
+				value1 = "Check All"
+			);
 
-		<execute function="Type" locator1="PGLogin#EMAIL_ADDRESS_FIELD" value1="${userEmailAddress}" />
-		<execute function="Type" locator1="PGLogin#PASSWORD_FIELD" value1="${password}" />
-		<execute function="Click" locator1="PGLogin#REMEMBER_ME_CHECKBOX" />
+			AssertClickNoError(
+				locator1 = "CPUsersandorganizationsViewusers#DELETE",
+				value1 = "Delete"
+			);
 
-		<take-screenshot />
+			Confirm(
+				value1 = "Are you sure you want to permanently delete the selected users?"
+			);
 
-		<execute function="Click" locator1="PGLogin#SIGN_IN_BUTTON"  value1="Sign In" />
+			AssertTextEquals(
+				locator1 = "CPUsersandorganizationsViewusers#SUCCESS_MESSAGE",
+				value1 = "Your request completed successfully."
+			);
+		}
 
-		<if>
-			<condition function="IsElementPresent" locator1="PGLoginTermsofservice#I_AGREE_BUTTON" />
-			<then>
-				<execute function="Click" locator1="PGLoginTermsofservice#I_AGREE_BUTTON" />
-			</then>
-		</if>
+		AssertTextEquals(
+			locator1 = "CPUsersandorganizationsViewusers#INFO_MESSAGE",
+			value1 = "No users were found."
+		);
 
-		<if>
-			<condition function="IsElementPresent" locator1="PGLoginNewpassword#PASSWORD_FIELD" />
-			<then>
-				<execute function="Type" locator1="PGLoginNewpassword#PASSWORD_FIELD" value1="test" />
-				<execute function="Type" locator1="PGLoginNewpassword#ENTER_AGAIN_FIELD" value1="test" />
-				<execute function="Click" locator1="PGLoginNewpassword#SAVE_BUTTON" />
-			</then>
-		</if>
+		AssertElementNotPresent(
+			locator1 = "CPUsersandorganizationsViewusers#DELETE",
+			value1 = "Delete"
+		);
 
-		<if>
-			<condition function="IsElementPresent" locator1="PGLoginPasswordreminder#ANSWER_FIELD" />
-			<then>
-				<execute function="Type" locator1="PGLoginPasswordreminder#ANSWER_FIELD" value1="test" />
-				<execute function="Click" locator1="PGLoginPasswordreminder#SAVE_BUTTON" />
-			</then>
-		</if>
-	</command>
+		CPUsersandorganizationsViewusers.showBasicSearch();
+	}
 
-	<command name="logoutPG">
-		<description message="Log out of Liferay Portal." />
+	macro editPasswordCP {
+		AssertClick.assertTextClickAt(
+			locator1 = "CPUsersandorganizations#SEARCH_ALL_USERS",
+			value1 = "Search All Users"
+		);
 
-		<execute macro="Page#openURL" />
+		CPUsersandorganizationsViewusers.showBasicSearch();
 
-		<if>
-			<condition function="IsElementPresent" locator1="Dockbar#USER_NAME" />
-			<then>
-				<execute function="AssertClick#assertTextClickAt" locator1="Dockbar#USER_SIGN_OUT" value1="Sign Out" />
-			</then>
-		</if>
-	</command>
+		Type(
+			locator1 = "CPUsersandorganizationsViewusers#BASIC_SEARCH_FIELD",
+			value1 = "${userScreenName}"
+		);
 
-	<command name="tearDownCP">
-		<var name="userFirstName" value="userfn*" />
+		AssertClick.assertValueClickAt(
+			locator1 = "CPUsersandorganizationsViewusers#BASIC_SEARCH_BUTTON",
+			value1 = "Search"
+		);
 
-		<execute macro="Page#gotoCP">
-			<var name="portletName" value="Users and Organizations" />
-		</execute>
+		AssertTextEquals(
+			locator1 = "CPUsersandorganizationsViewusers#USER_TABLE_SCREEN_NAME_1",
+			value1 = "${userScreenName}"
+		);
 
-		<execute macro="User#deactivateCP">
-			<var name="userFirstName" value="${userFirstName}" />
-		</execute>
+		Click(
+			locator1 = "CPUsersandorganizationsViewusers#USER_TABLE_SCREEN_NAME_1",
+			value1 = "${userScreenName}"
+		);
 
-		<execute macro="Page#gotoCP">
-			<var name="portletName" value="Users and Organizations" />
-		</execute>
+		Click(locator1 = "CPUsersandorganizationsUser#PASSWORD");
 
-		<execute macro="User#deleteCP">
-			<var name="userFirstName" value="${userFirstName}" />
-		</execute>
-	</command>
+		Type(
+			locator1 = "CPUsersandorganizationsUser#PASSWORD_NEW_PASSWORD_FIELD",
+			value1 = "password"
+		);
 
-	<command name="viewCP">
-		<execute function="AssertClick#assertTextClickAt" locator1="CPUsersandorganizations#SEARCH_ALL_USERS" value1="Search All Users" />
+		Type(
+			locator1 = "CPUsersandorganizationsUser#PASSWORD_ENTER_AGAIN_FIELD",
+			value1 = "password"
+		);
 
-		<execute macro="CPUsersandorganizationsViewusers#showBasicSearch" />
-		<execute function="Type" locator1="CPUsersandorganizationsViewusers#BASIC_SEARCH_FIELD" value1="${userScreenName}" />
-		<execute function="AssertClick#assertValueClickAt" locator1="CPUsersandorganizationsViewusers#BASIC_SEARCH_BUTTON" value1="Search" />
-		<execute function="AssertTextEquals" locator1="CPUsersandorganizationsViewusers#USER_TABLE_FIRST_NAME_1" value1="${userFirstName}" />
-		<execute function="AssertTextEquals" locator1="CPUsersandorganizationsViewusers#USER_TABLE_LAST_NAME_1" value1="${userLastName}" />
-		<execute function="AssertTextEquals" locator1="CPUsersandorganizationsViewusers#USER_TABLE_SCREEN_NAME_1" value1="${userScreenName}" />
-		<execute function="Click" locator1="CPUsersandorganizationsViewusers#USER_TABLE_FIRST_NAME_1" value1="${userFirstName}" />
+		Click(locator1 = "CPUsersandorganizationsUser#SAVE_BUTTON");
 
-		<execute function="AssertTextEquals" locator1="CPUsersandorganizationsUser#DETAILS_SCREEN_NAME_FIELD" value1="${userScreenName}" />
-		<execute function="AssertTextEquals" locator1="CPUsersandorganizationsUser#DETAILS_EMAIL_ADDRESS_FIELD" value1="${userEmailAddress}" />
-		<execute function="AssertTextEquals" locator1="CPUsersandorganizationsUser#DETAILS_FIRST_NAME_FIELD" value1="${userFirstName}" />
-		<execute function="AssertTextEquals" locator1="CPUsersandorganizationsUser#DETAILS_LAST_NAME_FIELD" value1="${userLastName}" />
-		<execute function="AssertTextEquals" locator1="CPUsersandorganizationsUser#USER_NAME" value1="${userFirstName} ${userLastName}" />
-	</command>
-</definition>
+		AssertTextEquals(
+			locator1 = "CPUsersandorganizationsUser#SUCCESS_MESSAGE",
+			value1 = "Your request completed successfully."
+		);
+
+		User.logoutPG();
+
+		User.loginPG(password = "password", userEmailAddress = "${userEmailAddress}");
+
+		User.logoutPG();
+
+		User.loginPG(password = "test", userEmailAddress = "test@liferay.com");
+	}
+
+	@summary = "Log into Liferay Portal as '${userEmailAddress}' using the password '${password}'; if not logged in as '${userEmailAddress}', then log out first"
+	macro firstLoginPG {
+		echo("Checking to see if Mobile Device is enabled...");
+
+		var mobileBrowser = PropsUtil.get("MOBILE_BROWSER");
+
+		if ("${mobileBrowser}" == "true") {
+			MobileDevice.selectMobileDevice();
+		}
+
+		echo("Checking to see if TCat is enabled...");
+
+		var tcatEnabled = selenium.isTCatEnabled();
+
+		if ("${tcatEnabled}" == "true") {
+			TCat.deployLiferayPortalWar();
+		}
+
+		Page.openURL();
+
+		if (IsElementPresent(locator1 = "Dockbar#USER_NAME")) {
+			User.logoutPG();
+
+			User.loginPG();
+		}
+		else {
+			User.loginPG();
+		}
+	}
+
+	@summary = "Log into Liferay Portal as '${userEmailAddress}' using the password '${password}'"
+	macro loginPG {
+		Page.openURL();
+
+		if (isSet(welcomeTheme)) {
+			AssertClick.assertTextClickAt(
+				locator1 = "PGWelcomePage1#SIGN_IN",
+				value1 = "Sign In"
+			);
+		}
+
+		Type(locator1 = "PGLogin#EMAIL_ADDRESS_FIELD", value1 = "${userEmailAddress}");
+
+		Type(locator1 = "PGLogin#PASSWORD_FIELD", value1 = "${password}");
+
+		Click(locator1 = "PGLogin#REMEMBER_ME_CHECKBOX");
+
+		takeScreenshot();
+
+		Click(locator1 = "PGLogin#SIGN_IN_BUTTON", value1 = "Sign In");
+
+		if (IsElementPresent(locator1 = "PGLoginTermsofservice#I_AGREE_BUTTON")) {
+			Click(locator1 = "PGLoginTermsofservice#I_AGREE_BUTTON");
+		}
+
+		if (IsElementPresent(locator1 = "PGLoginNewpassword#PASSWORD_FIELD")) {
+			Type(locator1 = "PGLoginNewpassword#PASSWORD_FIELD", value1 = "test");
+
+			Type(locator1 = "PGLoginNewpassword#ENTER_AGAIN_FIELD", value1 = "test");
+
+			Click(locator1 = "PGLoginNewpassword#SAVE_BUTTON");
+		}
+
+		if (IsElementPresent(locator1 = "PGLoginPasswordreminder#ANSWER_FIELD")) {
+			Type(locator1 = "PGLoginPasswordreminder#ANSWER_FIELD", value1 = "test");
+
+			Click(locator1 = "PGLoginPasswordreminder#SAVE_BUTTON");
+		}
+	}
+
+	@description = "Log out of Liferay Portal."
+	macro logoutPG {
+		Page.openURL();
+
+		if (IsElementPresent(locator1 = "Dockbar#USER_NAME")) {
+			AssertClick.assertTextClickAt(
+				locator1 = "Dockbar#USER_SIGN_OUT",
+				value1 = "Sign Out"
+			);
+		}
+	}
+
+	macro tearDownCP {
+		var userFirstName = "userfn*";
+
+		Page.gotoCP(portletName = "Users and Organizations");
+
+		User.deactivateCP(userFirstName = "${userFirstName}");
+
+		Page.gotoCP(portletName = "Users and Organizations");
+
+		User.deleteCP(userFirstName = "${userFirstName}");
+	}
+
+	macro viewCP {
+		AssertClick.assertTextClickAt(
+			locator1 = "CPUsersandorganizations#SEARCH_ALL_USERS",
+			value1 = "Search All Users"
+		);
+
+		CPUsersandorganizationsViewusers.showBasicSearch();
+
+		Type(
+			locator1 = "CPUsersandorganizationsViewusers#BASIC_SEARCH_FIELD",
+			value1 = "${userScreenName}"
+		);
+
+		AssertClick.assertValueClickAt(
+			locator1 = "CPUsersandorganizationsViewusers#BASIC_SEARCH_BUTTON",
+			value1 = "Search"
+		);
+
+		AssertTextEquals(
+			locator1 = "CPUsersandorganizationsViewusers#USER_TABLE_FIRST_NAME_1",
+			value1 = "${userFirstName}"
+		);
+
+		AssertTextEquals(
+			locator1 = "CPUsersandorganizationsViewusers#USER_TABLE_LAST_NAME_1",
+			value1 = "${userLastName}"
+		);
+
+		AssertTextEquals(
+			locator1 = "CPUsersandorganizationsViewusers#USER_TABLE_SCREEN_NAME_1",
+			value1 = "${userScreenName}"
+		);
+
+		Click(
+			locator1 = "CPUsersandorganizationsViewusers#USER_TABLE_FIRST_NAME_1",
+			value1 = "${userFirstName}"
+		);
+
+		AssertTextEquals(
+			locator1 = "CPUsersandorganizationsUser#DETAILS_SCREEN_NAME_FIELD",
+			value1 = "${userScreenName}"
+		);
+
+		AssertTextEquals(
+			locator1 = "CPUsersandorganizationsUser#DETAILS_EMAIL_ADDRESS_FIELD",
+			value1 = "${userEmailAddress}"
+		);
+
+		AssertTextEquals(
+			locator1 = "CPUsersandorganizationsUser#DETAILS_FIRST_NAME_FIELD",
+			value1 = "${userFirstName}"
+		);
+
+		AssertTextEquals(
+			locator1 = "CPUsersandorganizationsUser#DETAILS_LAST_NAME_FIELD",
+			value1 = "${userLastName}"
+		);
+
+		AssertTextEquals(
+			locator1 = "CPUsersandorganizationsUser#USER_NAME",
+			value1 = "${userFirstName} ${userLastName}"
+		);
+	}
+}

@@ -1,144 +1,379 @@
-<definition>
-	<command name="addCP">
-		<execute function="AssertClick#assertTextClickAt" locator1="CPDynamicdatalists#TOOLBAR_ADD" value1="Add" />
+definition {
+	macro addCP {
+		AssertClick.assertTextClickAt(
+			locator1 = "CPDynamicdatalists#TOOLBAR_ADD",
+			value1 = "Add"
+		);
 
-		<execute function="Type#clickAtSendKeys" locator1="CPDynamicdatalistsAddlist#NAME_FIELD" value1="${listName}" />
-		<execute function="Type#clickAtSendKeys" locator1="CPDynamicdatalistsAddlist#DESCRIPTION_FIELD" value1="${listDescription}" />
-		<execute function="AssertClick#assertTextClickAt" locator1="CPDynamicdatalistsAddlist#DATA_DEFINITION_SELECT_LINK" value1="Select" />
+		Type.clickAtSendKeys(
+			locator1 = "CPDynamicdatalistsAddlist#NAME_FIELD",
+			value1 = "${listName}"
+		);
 
-		<execute function="SelectFrame" locator1="CPDynamicdatalistsAddlistDatadefinitions#DATA_DEFINITIONS_IFRAME" />
-		<execute function="Type" locator1="CPDynamicdatalistsAddlistDatadefinitions#BASIC_SEARCH_FIELD" value1="${dataDefinitionName}" />
-		<execute function="AssertClick#assertValueClickAt" locator1="CPDynamicdatalistsAddlistDatadefinitions#BASIC_SEARCH_BUTTON" value1="Search" />
-		<execute function="AssertClick" locator1="CPDynamicdatalistsAddlistDatadefinitions#DATA_DEFINITION_TABLE_NAME_1" value1="${dataDefinitionName}" />
+		Type.clickAtSendKeys(
+			locator1 = "CPDynamicdatalistsAddlist#DESCRIPTION_FIELD",
+			value1 = "${listDescription}"
+		);
 
-		<execute function="SelectFrameTop" />
+		AssertClick.assertTextClickAt(
+			locator1 = "CPDynamicdatalistsAddlist#DATA_DEFINITION_SELECT_LINK",
+			value1 = "Select"
+		);
 
-		<execute function="AssertTextEquals" locator1="CPDynamicdatalistsAddlist#DATA_DEFINITION_NAME" value1="${dataDefinitionName}" />
-		<execute function="AssertClick#assertValueClickAt" locator1="CPDynamicdatalistsAddlist#SAVE_BUTTON" value1="Save" />
+		SelectFrame(
+			locator1 = "CPDynamicdatalistsAddlistDatadefinitions#DATA_DEFINITIONS_IFRAME"
+		);
 
-		<execute function="AssertTextEquals" locator1="CPDynamicdatalists#SUCCESS_MESSAGE" value1="Your request completed successfully." />
-	</command>
+		Type(
+			locator1 = "CPDynamicdatalistsAddlistDatadefinitions#BASIC_SEARCH_FIELD",
+			value1 = "${dataDefinitionName}"
+		);
 
-	<command name="addPG">
-		<execute function="Click#clickAt" locator1="PGDDLDisplay#TOOLBAR_ADD_LIST" />
+		AssertClick.assertValueClickAt(
+			locator1 = "CPDynamicdatalistsAddlistDatadefinitions#BASIC_SEARCH_BUTTON",
+			value1 = "Search"
+		);
 
-		<execute function="Type" locator1="PGDDLDisplayAddlist#NAME_FIELD" value1="${listName}" />
-		<execute function="Type" locator1="PGDDLDisplayAddlist#DESCRIPTION_FIELD" value1="${listDescription}" />
-		<execute function="AssertClick" locator1="PGDDLDisplayAddlist#DATA_DEFINITION_SELECT_LINK" value1="Select" />
+		AssertClick(
+			locator1 = "CPDynamicdatalistsAddlistDatadefinitions#DATA_DEFINITION_TABLE_NAME_1",
+			value1 = "${dataDefinitionName}"
+		);
 
-		<execute function="SelectFrame" locator1="PGDDLDisplayAddlistDatadefinitions#DATA_DEFINITIONS_IFRAME" />
-		<execute function="Type" locator1="PGDDLDisplayAddlistDatadefinitions#BASIC_SEARCH_FIELD" value1="${dataDefinitionName}" />
-		<execute function="AssertClick" locator1="PGDDLDisplayAddlistDatadefinitions#BASIC_SEARCH_BUTTON" value1="Search" />
-		<execute function="AssertClick" locator1="PGDDLDisplayAddlistDatadefinitions#DATA_DEFINITION_TABLE_NAME_1" value1="${dataDefinitionName}" />
+		SelectFrameTop();
 
-		<execute function="SelectFrameTop" />
-		<execute function="AssertTextEquals" locator1="PGDDLDisplayAddlist#DATA_DEFINITION_NAME" value1="${dataDefinitionName}" />
-		<execute function="AssertClick#assertValueClickAtClickAt" locator1="PGDDLDisplayAddlist#SAVE_BUTTON" value1="Save" />
-	</command>
+		AssertTextEquals(
+			locator1 = "CPDynamicdatalistsAddlist#DATA_DEFINITION_NAME",
+			value1 = "${dataDefinitionName}"
+		);
 
-	<command name="deleteCP">
-		<execute function="Type" locator1="CPDynamicdatalists#BASIC_SEARCH_FIELD" value1="${listName}" />
-		<execute function="AssertClick#assertValueClickAt" locator1="CPDynamicdatalists#BASIC_SEARCH_BUTTON" value1="Search" />
-		<execute function="AssertTextEquals" locator1="CPDynamicdatalists#LIST_TABLE_NAME_1" value1="${listName}" />
-		<execute function="AssertClick" locator1="CPDynamicdatalists#LIST_TABLE_ACTIONS_1" value1="Actions" />
-		<execute function="AssertClickNoError" locator1="CPDynamicdatalists#LIST_MENULIST_DELETE" value1="Delete" />
-		<execute function="Confirm" value1="Are you sure you want to delete this?" />
-		<execute function="AssertTextEquals" locator1="CPDynamicdatalists#SUCCESS_MESSAGE" value1="Your request completed successfully." />
-		<execute function="AssertTextNotPresent" value1="${listName}" />
-	</command>
+		AssertClick.assertValueClickAt(
+			locator1 = "CPDynamicdatalistsAddlist#SAVE_BUTTON",
+			value1 = "Save"
+		);
 
-	<command name="deletePG">
-		<execute function="Click#clickAt" locator1="PGDDLDisplay#TOOLBAR_SELECT_LIST" />
+		AssertTextEquals(
+			locator1 = "CPDynamicdatalists#SUCCESS_MESSAGE",
+			value1 = "Your request completed successfully."
+		);
+	}
 
-		<execute function="SelectFrame" locator1="PGDDLDisplayConfiguration#CONFIGURATION_IFRAME" />
-		<execute function="Type" locator1="PGDDLDisplayConfiguration#BASIC_SEARCH_FIELD" value1="${listName}" />
-		<execute function="AssertClick#assertValueClickAt" locator1="PGDDLDisplayConfiguration#BASIC_SEARCH_BUTTON" value1="Search" />
-		<execute function="AssertTextEquals" locator1="PGDDLDisplayConfiguration#LIST_TABLE_NAME_1" value1="${listName}" />
-		<execute function="AssertClick" locator1="PGDDLDisplayConfiguration#LIST_TABLE_ACTIONS_1" value1="Actions" />
-		<execute function="AssertClickNoError" locator1="PGDDLDisplayConfiguration#LIST_MENULIST_DELETE" value1="Delete" />
-		<execute function="Confirm" value1="Are you sure you want to delete this?" />
-		<execute function="AssertTextNotPresent" value1="${listNameEdit}" />
+	macro addPG {
+		Click.clickAt(locator1 = "PGDDLDisplay#TOOLBAR_ADD_LIST");
 
-		<execute function="SelectFrameTop" />
-	</command>
+		Type(locator1 = "PGDDLDisplayAddlist#NAME_FIELD", value1 = "${listName}");
 
-	<command name="editCP">
-		<execute function="Type" locator1="CPDynamicdatalists#BASIC_SEARCH_FIELD" value1="${listName}" />
-		<execute function="AssertClick#assertValueClickAt" locator1="CPDynamicdatalists#BASIC_SEARCH_BUTTON" value1="Search" />
-		<execute function="AssertTextEquals" locator1="CPDynamicdatalists#LIST_TABLE_NAME_1" value1="${listName}" />
-		<execute function="AssertClick" locator1="CPDynamicdatalists#LIST_TABLE_ACTIONS_1" value1="Actions" />
-		<execute function="AssertClick#assertTextClickAt" locator1="CPDynamicdatalists#LIST_MENULIST_EDIT" value1="Edit" />
+		Type(
+			locator1 = "PGDDLDisplayAddlist#DESCRIPTION_FIELD",
+			value1 = "${listDescription}"
+		);
 
-		<execute function="Type#clickAtSendKeys" locator1="CPDynamicdatalistsEditlist#NAME_FIELD" value1="${listNameEdit}" />
-		<execute function="Type#clickAtSendKeys" locator1="CPDynamicdatalistsEditlist#DESCRIPTION_FIELD" value1="${listDescriptionEdit}" />
-		<execute function="AssertClick#assertValueClickAt" locator1="CPDynamicdatalistsEditlist#SAVE_BUTTON" value1="Save" />
+		AssertClick(
+			locator1 = "PGDDLDisplayAddlist#DATA_DEFINITION_SELECT_LINK",
+			value1 = "Select"
+		);
 
-		<execute function="AssertTextEquals" locator1="CPDynamicdatalists#SUCCESS_MESSAGE" value1="Your request completed successfully." />
-	</command>
+		SelectFrame(
+			locator1 = "PGDDLDisplayAddlistDatadefinitions#DATA_DEFINITIONS_IFRAME"
+		);
 
-	<command name="editPG">
-		<execute function="Click#clickAt" locator1="PGDDLDisplay#TOOLBAR_SELECT_LIST" />
+		Type(
+			locator1 = "PGDDLDisplayAddlistDatadefinitions#BASIC_SEARCH_FIELD",
+			value1 = "${dataDefinitionName}"
+		);
 
-		<execute function="SelectFrame" locator1="PGDDLDisplayConfiguration#CONFIGURATION_IFRAME" />
-		<execute function="Type" locator1="PGDDLDisplayConfiguration#BASIC_SEARCH_FIELD" value1="${listName}" />
-		<execute function="AssertClick#assertValueClickAt" locator1="PGDDLDisplayConfiguration#BASIC_SEARCH_BUTTON" value1="Search" />
-		<execute function="AssertTextEquals" locator1="PGDDLDisplayConfiguration#LIST_TABLE_NAME_1" value1="${listName}" />
-		<execute function="AssertClick" locator1="PGDDLDisplayConfiguration#LIST_TABLE_ACTIONS_1" value1="Actions" />
-		<execute function="AssertClick#assertTextClickAt" locator1="PGDDLDisplayConfiguration#LIST_MENULIST_EDIT" value1="Edit" />
+		AssertClick(
+			locator1 = "PGDDLDisplayAddlistDatadefinitions#BASIC_SEARCH_BUTTON",
+			value1 = "Search"
+		);
 
-		<execute function="Type" locator1="PGDDLDisplayConfigurationEditlist#NAME_FIELD" value1="${listNameEdit}" />
-		<execute function="Type" locator1="PGDDLDisplayConfigurationEditlist#DESCRIPTION_FIELD" value1="${listDescriptionEdit}" />
-		<execute function="AssertClick#assertValueClickAt" locator1="PGDDLDisplayConfigurationEditlist#SAVE_BUTTON" value1="Save" />
+		AssertClick(
+			locator1 = "PGDDLDisplayAddlistDatadefinitions#DATA_DEFINITION_TABLE_NAME_1",
+			value1 = "${dataDefinitionName}"
+		);
 
-		<execute function="AssertTextEquals" locator1="PGDDLDisplayConfiguration#INFO_MESSAGE" value1="Displaying List: ${listNameEdit}" />
-		<execute function="AssertTextEquals" locator1="PGDDLDisplayConfiguration#LIST_TABLE_NAME_1" value1="${listNameEdit}" />
-		<execute function="AssertTextEquals" locator1="PGDDLDisplayConfiguration#LIST_TABLE_DESCRIPTION_1" value1="${listDescriptionEdit}" />
+		SelectFrameTop();
 
-		<execute function="SelectFrameTop" />
-	</command>
+		AssertTextEquals(
+			locator1 = "PGDDLDisplayAddlist#DATA_DEFINITION_NAME",
+			value1 = "${dataDefinitionName}"
+		);
 
-	<command name="selectPG">
-		<execute function="Click#clickAt" locator1="PGDDLDisplay#TOOLBAR_SELECT_LIST" />
+		AssertClick.assertValueClickAtClickAt(
+			locator1 = "PGDDLDisplayAddlist#SAVE_BUTTON",
+			value1 = "Save"
+		);
+	}
 
-		<execute function="SelectFrame" locator1="PGDDLDisplayConfiguration#CONFIGURATION_IFRAME" />
-		<execute function="Type" locator1="PGDDLDisplayConfiguration#BASIC_SEARCH_FIELD" value1="${listName}" />
-		<execute function="AssertClick#assertValueClickAt" locator1="PGDDLDisplayConfiguration#BASIC_SEARCH_BUTTON" value1="Search" />
-		<execute function="AssertClick" locator1="PGDDLDisplayConfiguration#LIST_TABLE_NAME_1" value1="${listName}" />
-		<execute function="AssertTextEquals" locator1="PGDDLDisplayConfiguration#INFO_MESSAGE" value1="Displaying List: ${listName} (Modified)" />
-		<execute function="AssertClick#assertValueClickAt" locator1="PGDDLDisplayConfiguration#SAVE_BUTTON" value1="Save" />
-		<execute function="AssertTextEquals#assertText" locator1="PGDDLDisplayConfiguration#SUCCESS_MESSAGE" value1="You have successfully updated the setup." />
+	macro deleteCP {
+		Type(locator1 = "CPDynamicdatalists#BASIC_SEARCH_FIELD", value1 = "${listName}");
 
-		<execute function="SelectFrameTop" />
-	</command>
+		AssertClick.assertValueClickAt(
+			locator1 = "CPDynamicdatalists#BASIC_SEARCH_BUTTON",
+			value1 = "Search"
+		);
 
-	<command name="tearDownCP">
-		<execute macro="Page#gotoCP">
-			<var name="portletName" value="Dynamic Data Lists" />
-		</execute>
+		AssertTextEquals(
+			locator1 = "CPDynamicdatalists#LIST_TABLE_NAME_1",
+			value1 = "${listName}"
+		);
 
-		<while>
-			<condition function="IsElementPresent" locator1="CPDynamicdatalists#LIST_TABLE_ACTIONS_1" />
-			<then>
-				<execute function="AssertClick" locator1="CPDynamicdatalists#LIST_TABLE_ACTIONS_1" value1="Actions" />
-				<execute function="AssertClickNoError" locator1="CPDynamicdatalists#LIST_MENULIST_DELETE" value1="Delete" />
-				<execute function="Confirm" value1="Are you sure you want to delete this?" />
-				<execute function="AssertTextEquals" locator1="CPDynamicdatalists#SUCCESS_MESSAGE" value1="Your request completed successfully." />
-			</then>
-		</while>
-	</command>
+		AssertClick(
+			locator1 = "CPDynamicdatalists#LIST_TABLE_ACTIONS_1",
+			value1 = "Actions"
+		);
 
-	<command name="viewCP">
-		<execute function="Type" locator1="CPDynamicdatalists#BASIC_SEARCH_FIELD" value1="${listName}" />
-		<execute function="AssertClick#assertValueClickAt" locator1="CPDynamicdatalists#BASIC_SEARCH_BUTTON" value1="Search" />
-		<execute function="AssertTextEquals" locator1="CPDynamicdatalists#LIST_TABLE_NAME_1" value1="${listName}" />
-		<execute function="AssertTextEquals" locator1="CPDynamicdatalists#LIST_TABLE_DESCRIPTION_1" value1="${listDescription}" />
-		<execute function="AssertClick" locator1="CPDynamicdatalists#LIST_TABLE_NAME_1" value1="${listName}" />
+		AssertClickNoError(
+			locator1 = "CPDynamicdatalists#LIST_MENULIST_DELETE",
+			value1 = "Delete"
+		);
 
-		<execute function="AssertTextEquals" locator1="CPDynamicdatalistsList#HEADER_TITLE" value1="${listName}" />
-		<execute function="AssertElementPresent" locator1="CPDynamicdatalistsList#ADD_RECORD_BUTTON" />
-	</command>
+		Confirm(value1 = "Are you sure you want to delete this?");
 
-	<command name="viewPG">
-		<execute function="AssertTextEquals" locator1="PGDDLDisplay#HEADER_TITLE" value1="${listName}" />
-	</command>
-</definition>
+		AssertTextEquals(
+			locator1 = "CPDynamicdatalists#SUCCESS_MESSAGE",
+			value1 = "Your request completed successfully."
+		);
+
+		AssertTextNotPresent(value1 = "${listName}");
+	}
+
+	macro deletePG {
+		Click.clickAt(locator1 = "PGDDLDisplay#TOOLBAR_SELECT_LIST");
+
+		SelectFrame(locator1 = "PGDDLDisplayConfiguration#CONFIGURATION_IFRAME");
+
+		Type(
+			locator1 = "PGDDLDisplayConfiguration#BASIC_SEARCH_FIELD",
+			value1 = "${listName}"
+		);
+
+		AssertClick.assertValueClickAt(
+			locator1 = "PGDDLDisplayConfiguration#BASIC_SEARCH_BUTTON",
+			value1 = "Search"
+		);
+
+		AssertTextEquals(
+			locator1 = "PGDDLDisplayConfiguration#LIST_TABLE_NAME_1",
+			value1 = "${listName}"
+		);
+
+		AssertClick(
+			locator1 = "PGDDLDisplayConfiguration#LIST_TABLE_ACTIONS_1",
+			value1 = "Actions"
+		);
+
+		AssertClickNoError(
+			locator1 = "PGDDLDisplayConfiguration#LIST_MENULIST_DELETE",
+			value1 = "Delete"
+		);
+
+		Confirm(value1 = "Are you sure you want to delete this?");
+
+		AssertTextNotPresent(value1 = "${listNameEdit}");
+
+		SelectFrameTop();
+	}
+
+	macro editCP {
+		Type(locator1 = "CPDynamicdatalists#BASIC_SEARCH_FIELD", value1 = "${listName}");
+
+		AssertClick.assertValueClickAt(
+			locator1 = "CPDynamicdatalists#BASIC_SEARCH_BUTTON",
+			value1 = "Search"
+		);
+
+		AssertTextEquals(
+			locator1 = "CPDynamicdatalists#LIST_TABLE_NAME_1",
+			value1 = "${listName}"
+		);
+
+		AssertClick(
+			locator1 = "CPDynamicdatalists#LIST_TABLE_ACTIONS_1",
+			value1 = "Actions"
+		);
+
+		AssertClick.assertTextClickAt(
+			locator1 = "CPDynamicdatalists#LIST_MENULIST_EDIT",
+			value1 = "Edit"
+		);
+
+		Type.clickAtSendKeys(
+			locator1 = "CPDynamicdatalistsEditlist#NAME_FIELD",
+			value1 = "${listNameEdit}"
+		);
+
+		Type.clickAtSendKeys(
+			locator1 = "CPDynamicdatalistsEditlist#DESCRIPTION_FIELD",
+			value1 = "${listDescriptionEdit}"
+		);
+
+		AssertClick.assertValueClickAt(
+			locator1 = "CPDynamicdatalistsEditlist#SAVE_BUTTON",
+			value1 = "Save"
+		);
+
+		AssertTextEquals(
+			locator1 = "CPDynamicdatalists#SUCCESS_MESSAGE",
+			value1 = "Your request completed successfully."
+		);
+	}
+
+	macro editPG {
+		Click.clickAt(locator1 = "PGDDLDisplay#TOOLBAR_SELECT_LIST");
+
+		SelectFrame(locator1 = "PGDDLDisplayConfiguration#CONFIGURATION_IFRAME");
+
+		Type(
+			locator1 = "PGDDLDisplayConfiguration#BASIC_SEARCH_FIELD",
+			value1 = "${listName}"
+		);
+
+		AssertClick.assertValueClickAt(
+			locator1 = "PGDDLDisplayConfiguration#BASIC_SEARCH_BUTTON",
+			value1 = "Search"
+		);
+
+		AssertTextEquals(
+			locator1 = "PGDDLDisplayConfiguration#LIST_TABLE_NAME_1",
+			value1 = "${listName}"
+		);
+
+		AssertClick(
+			locator1 = "PGDDLDisplayConfiguration#LIST_TABLE_ACTIONS_1",
+			value1 = "Actions"
+		);
+
+		AssertClick.assertTextClickAt(
+			locator1 = "PGDDLDisplayConfiguration#LIST_MENULIST_EDIT",
+			value1 = "Edit"
+		);
+
+		Type(
+			locator1 = "PGDDLDisplayConfigurationEditlist#NAME_FIELD",
+			value1 = "${listNameEdit}"
+		);
+
+		Type(
+			locator1 = "PGDDLDisplayConfigurationEditlist#DESCRIPTION_FIELD",
+			value1 = "${listDescriptionEdit}"
+		);
+
+		AssertClick.assertValueClickAt(
+			locator1 = "PGDDLDisplayConfigurationEditlist#SAVE_BUTTON",
+			value1 = "Save"
+		);
+
+		AssertTextEquals(
+			locator1 = "PGDDLDisplayConfiguration#INFO_MESSAGE",
+			value1 = "Displaying List: ${listNameEdit}"
+		);
+
+		AssertTextEquals(
+			locator1 = "PGDDLDisplayConfiguration#LIST_TABLE_NAME_1",
+			value1 = "${listNameEdit}"
+		);
+
+		AssertTextEquals(
+			locator1 = "PGDDLDisplayConfiguration#LIST_TABLE_DESCRIPTION_1",
+			value1 = "${listDescriptionEdit}"
+		);
+
+		SelectFrameTop();
+	}
+
+	macro selectPG {
+		Click.clickAt(locator1 = "PGDDLDisplay#TOOLBAR_SELECT_LIST");
+
+		SelectFrame(locator1 = "PGDDLDisplayConfiguration#CONFIGURATION_IFRAME");
+
+		Type(
+			locator1 = "PGDDLDisplayConfiguration#BASIC_SEARCH_FIELD",
+			value1 = "${listName}"
+		);
+
+		AssertClick.assertValueClickAt(
+			locator1 = "PGDDLDisplayConfiguration#BASIC_SEARCH_BUTTON",
+			value1 = "Search"
+		);
+
+		AssertClick(
+			locator1 = "PGDDLDisplayConfiguration#LIST_TABLE_NAME_1",
+			value1 = "${listName}"
+		);
+
+		AssertTextEquals(
+			locator1 = "PGDDLDisplayConfiguration#INFO_MESSAGE",
+			value1 = "Displaying List: ${listName} (Modified)"
+		);
+
+		AssertClick.assertValueClickAt(
+			locator1 = "PGDDLDisplayConfiguration#SAVE_BUTTON",
+			value1 = "Save"
+		);
+
+		AssertTextEquals.assertText(
+			locator1 = "PGDDLDisplayConfiguration#SUCCESS_MESSAGE",
+			value1 = "You have successfully updated the setup."
+		);
+
+		SelectFrameTop();
+	}
+
+	macro tearDownCP {
+		Page.gotoCP(portletName = "Dynamic Data Lists");
+
+		while (IsElementPresent(locator1 = "CPDynamicdatalists#LIST_TABLE_ACTIONS_1")) {
+			AssertClick(
+				locator1 = "CPDynamicdatalists#LIST_TABLE_ACTIONS_1",
+				value1 = "Actions"
+			);
+
+			AssertClickNoError(
+				locator1 = "CPDynamicdatalists#LIST_MENULIST_DELETE",
+				value1 = "Delete"
+			);
+
+			Confirm(value1 = "Are you sure you want to delete this?");
+
+			AssertTextEquals(
+				locator1 = "CPDynamicdatalists#SUCCESS_MESSAGE",
+				value1 = "Your request completed successfully."
+			);
+		}
+	}
+
+	macro viewCP {
+		Type(locator1 = "CPDynamicdatalists#BASIC_SEARCH_FIELD", value1 = "${listName}");
+
+		AssertClick.assertValueClickAt(
+			locator1 = "CPDynamicdatalists#BASIC_SEARCH_BUTTON",
+			value1 = "Search"
+		);
+
+		AssertTextEquals(
+			locator1 = "CPDynamicdatalists#LIST_TABLE_NAME_1",
+			value1 = "${listName}"
+		);
+
+		AssertTextEquals(
+			locator1 = "CPDynamicdatalists#LIST_TABLE_DESCRIPTION_1",
+			value1 = "${listDescription}"
+		);
+
+		AssertClick(
+			locator1 = "CPDynamicdatalists#LIST_TABLE_NAME_1",
+			value1 = "${listName}"
+		);
+
+		AssertTextEquals(
+			locator1 = "CPDynamicdatalistsList#HEADER_TITLE",
+			value1 = "${listName}"
+		);
+
+		AssertElementPresent(locator1 = "CPDynamicdatalistsList#ADD_RECORD_BUTTON");
+	}
+
+	macro viewPG {
+		AssertTextEquals(locator1 = "PGDDLDisplay#HEADER_TITLE", value1 = "${listName}");
+	}
+}

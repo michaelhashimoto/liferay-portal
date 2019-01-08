@@ -1,239 +1,626 @@
-<definition>
-	<command name="deletePG">
-		<var name="key_threadSubject" value="${threadSubject}" />
+definition {
+	macro deletePG {
+		var key_threadSubject = "${threadSubject}";
 
-		<execute function="AssertTextEquals" locator1="PGMessageboards#THREAD_TABLE_THREAD" value1="${threadSubject}" />
-		<execute function="Click#pauseTextClickAt" locator1="PGMessageboards#THREAD_TABLE_ACTIONS" />
-		<execute function="AssertClickNoError" locator1="PGMessageboards#THREAD_MENULIST_DELETE" value1="Delete" />
-		<execute function="Confirm" value1="Are you sure you want to delete this?" />
-		<execute function="AssertTextEquals" locator1="PGMessageboards#SUCCESS_MESSAGE" value1="Your request completed successfully." />
-		<execute function="AssertTextNotPresent" value1="${threadSubject}" />
-	</command>
+		AssertTextEquals(
+			locator1 = "PGMessageboards#THREAD_TABLE_THREAD",
+			value1 = "${threadSubject}"
+		);
 
-	<command name="viewMyPostsPG">
-		<var name="key_threadSubject" value="${threadSubject}" />
+		Click.pauseTextClickAt(locator1 = "PGMessageboards#THREAD_TABLE_ACTIONS");
 
-		<execute function="AssertClick#assertTextClickAt" locator1="PGMessageboards#NAVIGATION_MY_POSTS" value1="My Posts" />
+		AssertClickNoError(
+			locator1 = "PGMessageboards#THREAD_MENULIST_DELETE",
+			value1 = "Delete"
+		);
 
-		<execute function="Click" locator1="SOUserBar#TOGGLE_DOCKBAR" />
+		Confirm(value1 = "Are you sure you want to delete this?");
 
-		<if>
-			<condition function="IsElementNotPresent#pauseIsElementNotPresent" locator1="SOForums#BREADCRUMB_PORTLET_TITLE" />
-			<then>
-				<execute function="MouseOver#mouseOverClickDockbar" locator1="Dockbar#EDIT_CONTROLS" />
-				<execute function="AssertClick" locator1="Dockbar#EDIT_CONTROLS" value1="Edit Controls" />
-			</then>
-		</if>
+		AssertTextEquals(
+			locator1 = "PGMessageboards#SUCCESS_MESSAGE",
+			value1 = "Your request completed successfully."
+		);
 
-		<execute function="AssertTextEquals" locator1="SOForums#BREADCRUMB_PORTLET_TITLE" value1="BREADCRUMB" />
-		<execute function="AssertTextEquals" locator1="SOForums#MESSAGE_BOARDS_PORTLET_TITLE" value1="MESSAGE BOARDS" />
-		<execute function="AssertTextEquals" locator1="SOForums#BREADCRUMB_1" value1="Liferay" />
-		<execute function="AssertTextEquals" locator1="SOForums#BREADCRUMB_2" value1="${siteName}" />
-		<execute function="AssertTextEquals" locator1="SOForums#BREADCRUMB_3" value1="${pageName}" />
-		<execute function="AssertTextEquals" locator1="SOForums#BREADCRUMB_4" value1="My Posts" />
+		AssertTextNotPresent(value1 = "${threadSubject}");
+	}
 
-		<execute function="AssertTextEquals" locator1="PGMessageboardsMyposts#THREAD_TABLE_THREAD" value1="${threadSubject}" />
-		<execute function="AssertTextEquals" locator1="PGMessageboardsMyposts#THREAD_TABLE_STARTED_BY" value1="${userName}" />
-		<execute function="AssertTextEquals" locator1="PGMessageboardsMyposts#THREAD_TABLE_POSTS" value1="1" />
-		<execute function="AssertTextEquals#assertPartialText" locator1="PGMessageboardsMyposts#THREAD_TABLE_LAST_POST" value1="By: ${userName}" />
-		<execute function="AssertElementPresent" locator1="PGMessageboardsMyposts#THREAD_TABLE_ACTIONS" />
-		<execute function="AssertClick#assertTextClickAt" locator1="PGMessageboardsMyposts#THREAD_TABLE_THREAD" value1="${threadSubject}" />
+	macro viewMyPostsPG {
+		var key_threadSubject = "${threadSubject}";
 
-		<execute function="AssertTextEquals" locator1="SOForums#BREADCRUMB_PORTLET_TITLE" value1="BREADCRUMB" />
-		<execute function="AssertTextEquals" locator1="SOForums#MESSAGE_BOARDS_PORTLET_TITLE" value1="MESSAGE BOARDS" />
-		<execute function="AssertTextEquals" locator1="SOForums#BREADCRUMB_1" value1="Liferay" />
-		<execute function="AssertTextEquals" locator1="SOForums#BREADCRUMB_2" value1="${siteName}" />
-		<execute function="AssertTextEquals" locator1="SOForums#BREADCRUMB_3" value1="${pageName}" />
-		<execute function="AssertTextEquals" locator1="SOForums#BREADCRUMB_4" value1="${categoryName}" />
-		<execute function="AssertTextEquals" locator1="SOForums#BREADCRUMB_5" value1="${threadSubject}" />
+		AssertClick.assertTextClickAt(
+			locator1 = "PGMessageboards#NAVIGATION_MY_POSTS",
+			value1 = "My Posts"
+		);
 
-		<execute function="AssertTextEquals" locator1="PGMessageboardsThread#TITLE_HEADER" value1="${threadSubject}" />
-		<execute function="AssertTextEquals#assertPartialText" locator1="PGMessageboardsThread#THREAD_CONTROLS_BACK" value1="Back to ${categoryName}" />
-		<execute function="AssertTextEquals" locator1="PGMessageboardsThread#THREAD_CONTROLS_NAVIGATION" value1="Threads [ Previous | Next ]" />
-		<execute function="AssertTextEquals" locator1="PGMessageboardsThread#MESSAGE_USERNAME_1" value1="${userName}" />
-		<execute function="AssertTextEquals" locator1="PGMessageboardsThread#MESSAGE_SUBJECT_1" value1="${threadSubject}" />
-		<execute function="AssertTextEquals" locator1="PGMessageboardsThread#MESSAGE_BODY_1" value1="${threadBody}" />
-		<execute function="AssertTextEquals" locator1="PGMessageboardsThread#MESSAGE_RATING_1" value1="0 (0 Votes)" />
-		<execute function="AssertElementNotPresent" locator1="PGMessageboardsThread#MESSAGE_WORKFLOW_STATUS_1" />
-	</command>
+		Click(locator1 = "SOUserBar#TOGGLE_DOCKBAR");
 
-	<command name="viewPG">
-		<var name="key_threadSubject" value="${threadSubject}" />
+		if (IsElementNotPresent.pauseIsElementNotPresent(locator1 = "SOForums#BREADCRUMB_PORTLET_TITLE")) {
+			MouseOver.mouseOverClickDockbar(locator1 = "Dockbar#EDIT_CONTROLS");
 
-		<execute function="Click" locator1="SOUserBar#TOGGLE_DOCKBAR" />
+			AssertClick(locator1 = "Dockbar#EDIT_CONTROLS", value1 = "Edit Controls");
+		}
 
-		<if>
-			<condition function="IsElementNotPresent#pauseIsElementNotPresent" locator1="SOForums#BREADCRUMB_PORTLET_TITLE" />
-			<then>
-				<execute function="MouseOver#mouseOverClickDockbar" locator1="Dockbar#EDIT_CONTROLS" />
-				<execute function="AssertClick" locator1="Dockbar#EDIT_CONTROLS" value1="Edit Controls" />
-			</then>
-		</if>
+		AssertTextEquals(
+			locator1 = "SOForums#BREADCRUMB_PORTLET_TITLE",
+			value1 = "BREADCRUMB"
+		);
 
-		<execute function="AssertTextEquals" locator1="SOForums#BREADCRUMB_PORTLET_TITLE" value1="BREADCRUMB" />
-		<execute function="AssertTextEquals" locator1="SOForums#MESSAGE_BOARDS_PORTLET_TITLE" value1="MESSAGE BOARDS" />
-		<execute function="AssertTextEquals" locator1="SOForums#BREADCRUMB_1" value1="Liferay" />
-		<execute function="AssertTextEquals" locator1="SOForums#BREADCRUMB_2" value1="${siteName}" />
-		<execute function="AssertTextEquals" locator1="SOForums#BREADCRUMB_3" value1="${pageName}" />
+		AssertTextEquals(
+			locator1 = "SOForums#MESSAGE_BOARDS_PORTLET_TITLE",
+			value1 = "MESSAGE BOARDS"
+		);
 
-		<var name="key_categoryName" value="${categoryName}" />
+		AssertTextEquals(locator1 = "SOForums#BREADCRUMB_1", value1 = "Liferay");
 
-		<execute function="AssertTextEquals" locator1="PGMessageboards#CATEGORY_TABLE_CATEGORY" value1="${categoryName}" />
-		<execute function="AssertTextEquals" locator1="PGMessageboards#CATEGORY_TABLE_CATEGORIES" value1="0" />
-		<execute function="AssertTextEquals" locator1="PGMessageboards#CATEGORY_TABLE_THREADS" value1="1" />
-		<execute function="AssertTextEquals" locator1="PGMessageboards#CATEGORY_TABLE_POSTS" value1="1" />
-		<execute function="AssertClick" locator1="PGMessageboards#CATEGORY_TABLE_CATEGORY" value1="${categoryName}" />
+		AssertTextEquals(locator1 = "SOForums#BREADCRUMB_2", value1 = "${siteName}");
 
-		<execute function="AssertTextEquals" locator1="SOForums#BREADCRUMB_PORTLET_TITLE" value1="BREADCRUMB" />
-		<execute function="AssertTextEquals" locator1="SOForums#MESSAGE_BOARDS_PORTLET_TITLE" value1="MESSAGE BOARDS" />
-		<execute function="AssertTextEquals" locator1="SOForums#BREADCRUMB_1" value1="Liferay" />
-		<execute function="AssertTextEquals" locator1="SOForums#BREADCRUMB_2" value1="${siteName}" />
-		<execute function="AssertTextEquals" locator1="SOForums#BREADCRUMB_3" value1="${pageName}" />
-		<execute function="AssertTextEquals" locator1="SOForums#BREADCRUMB_4" value1="${categoryName}" />
+		AssertTextEquals(locator1 = "SOForums#BREADCRUMB_3", value1 = "${pageName}");
 
-		<execute function="AssertTextEquals" locator1="PGMessageboards#THREAD_TABLE_THREAD" value1="${threadSubject}" />
-		<execute function="AssertTextEquals" locator1="PGMessageboards#THREAD_TABLE_STARTED_BY" value1="${userName}" />
-		<execute function="AssertTextEquals" locator1="PGMessageboards#THREAD_TABLE_POSTS" value1="1" />
-		<execute function="AssertTextEquals#assertPartialText" locator1="PGMessageboards#THREAD_TABLE_LAST_POST" value1="By: ${userName}" />
-		<execute function="AssertElementPresent" locator1="PGMessageboards#THREAD_TABLE_ACTIONS" />
-		<execute function="AssertClick" locator1="PGMessageboards#THREAD_TABLE_THREAD" value1="${threadSubject}" />
+		AssertTextEquals(locator1 = "SOForums#BREADCRUMB_4", value1 = "My Posts");
 
-		<execute function="AssertTextEquals" locator1="SOForums#BREADCRUMB_PORTLET_TITLE" value1="BREADCRUMB" />
-		<execute function="AssertTextEquals" locator1="SOForums#MESSAGE_BOARDS_PORTLET_TITLE" value1="MESSAGE BOARDS" />
-		<execute function="AssertTextEquals" locator1="SOForums#BREADCRUMB_1" value1="Liferay" />
-		<execute function="AssertTextEquals" locator1="SOForums#BREADCRUMB_2" value1="${siteName}" />
-		<execute function="AssertTextEquals" locator1="SOForums#BREADCRUMB_3" value1="${pageName}" />
-		<execute function="AssertTextEquals" locator1="SOForums#BREADCRUMB_4" value1="${categoryName}" />
-		<execute function="AssertTextEquals" locator1="SOForums#BREADCRUMB_5" value1="${threadSubject}" />
+		AssertTextEquals(
+			locator1 = "PGMessageboardsMyposts#THREAD_TABLE_THREAD",
+			value1 = "${threadSubject}"
+		);
 
-		<execute function="AssertTextEquals" locator1="PGMessageboardsThread#TITLE_HEADER" value1="${threadSubject}" />
-		<execute function="AssertTextEquals#assertPartialText" locator1="PGMessageboardsThread#THREAD_CONTROLS_BACK" value1="Back to ${categoryName}" />
-		<execute function="AssertTextEquals" locator1="PGMessageboardsThread#THREAD_CONTROLS_NAVIGATION" value1="Threads [ Previous | Next ]" />
-		<execute function="AssertTextEquals" locator1="PGMessageboardsThread#MESSAGE_USERNAME_1" value1="${userName}" />
-		<execute function="AssertTextEquals" locator1="PGMessageboardsThread#MESSAGE_SUBJECT_1" value1="${threadSubject}" />
-		<execute function="AssertTextEquals" locator1="PGMessageboardsThread#MESSAGE_BODY_1" value1="${threadBody}" />
-		<execute function="AssertTextEquals" locator1="PGMessageboardsThread#MESSAGE_RATING_1" value1="0 (0 Votes)" />
-		<execute function="AssertElementNotPresent" locator1="PGMessageboardsThread#MESSAGE_WORKFLOW_STATUS_1" />
-	</command>
+		AssertTextEquals(
+			locator1 = "PGMessageboardsMyposts#THREAD_TABLE_STARTED_BY",
+			value1 = "${userName}"
+		);
 
-	<command name="viewRecentPostsPG">
-		<var name="key_threadSubject" value="${threadSubject}" />
+		AssertTextEquals(
+			locator1 = "PGMessageboardsMyposts#THREAD_TABLE_POSTS",
+			value1 = "1"
+		);
 
-		<execute function="AssertClick#assertTextClickAt" locator1="PGMessageboards#NAVIGATION_RECENT_POSTS" value1="Recent Posts" />
+		AssertTextEquals.assertPartialText(
+			locator1 = "PGMessageboardsMyposts#THREAD_TABLE_LAST_POST",
+			value1 = "By: ${userName}"
+		);
 
-		<execute function="Click" locator1="SOUserBar#TOGGLE_DOCKBAR" />
+		AssertElementPresent(locator1 = "PGMessageboardsMyposts#THREAD_TABLE_ACTIONS");
 
-		<if>
-			<condition function="IsElementNotPresent#pauseIsElementNotPresent" locator1="SOForums#BREADCRUMB_PORTLET_TITLE" />
-			<then>
-				<execute function="MouseOver#mouseOverClickDockbar" locator1="Dockbar#EDIT_CONTROLS" />
-				<execute function="AssertClick" locator1="Dockbar#EDIT_CONTROLS" value1="Edit Controls" />
-			</then>
-		</if>
+		AssertClick.assertTextClickAt(
+			locator1 = "PGMessageboardsMyposts#THREAD_TABLE_THREAD",
+			value1 = "${threadSubject}"
+		);
 
-		<execute function="AssertTextEquals" locator1="SOForums#BREADCRUMB_PORTLET_TITLE" value1="BREADCRUMB" />
-		<execute function="AssertTextEquals" locator1="SOForums#MESSAGE_BOARDS_PORTLET_TITLE" value1="MESSAGE BOARDS" />
-		<execute function="AssertTextEquals" locator1="SOForums#BREADCRUMB_1" value1="Liferay" />
-		<execute function="AssertTextEquals" locator1="SOForums#BREADCRUMB_2" value1="${siteName}" />
-		<execute function="AssertTextEquals" locator1="SOForums#BREADCRUMB_3" value1="${pageName}" />
-		<execute function="AssertTextEquals" locator1="SOForums#BREADCRUMB_4" value1="Recent Posts" />
+		AssertTextEquals(
+			locator1 = "SOForums#BREADCRUMB_PORTLET_TITLE",
+			value1 = "BREADCRUMB"
+		);
 
-		<execute function="AssertTextEquals" locator1="PGMessageboardsMyposts#THREAD_TABLE_THREAD" value1="${threadSubject}" />
-		<execute function="AssertTextEquals" locator1="PGMessageboardsMyposts#THREAD_TABLE_STARTED_BY" value1="${userName}" />
-		<execute function="AssertTextEquals" locator1="PGMessageboardsMyposts#THREAD_TABLE_POSTS" value1="1" />
-		<execute function="AssertTextEquals#assertPartialText" locator1="PGMessageboardsMyposts#THREAD_TABLE_LAST_POST" value1="By: ${userName}" />
-		<execute function="AssertElementPresent" locator1="PGMessageboardsMyposts#THREAD_TABLE_ACTIONS" />
-		<execute function="AssertClick#assertTextClickAt" locator1="PGMessageboardsMyposts#THREAD_TABLE_THREAD" value1="${threadSubject}" />
+		AssertTextEquals(
+			locator1 = "SOForums#MESSAGE_BOARDS_PORTLET_TITLE",
+			value1 = "MESSAGE BOARDS"
+		);
 
-		<execute function="Click" locator1="SOUserBar#TOGGLE_DOCKBAR" />
+		AssertTextEquals(locator1 = "SOForums#BREADCRUMB_1", value1 = "Liferay");
 
-		<if>
-			<condition function="IsElementNotPresent#pauseIsElementNotPresent" locator1="SOForums#BREADCRUMB_PORTLET_TITLE" />
-			<then>
-				<execute function="MouseOver#mouseOverClickDockbar" locator1="Dockbar#EDIT_CONTROLS" />
-				<execute function="AssertClick" locator1="Dockbar#EDIT_CONTROLS" value1="Edit Controls" />
-			</then>
-		</if>
+		AssertTextEquals(locator1 = "SOForums#BREADCRUMB_2", value1 = "${siteName}");
 
-		<execute function="AssertTextEquals" locator1="SOForums#BREADCRUMB_PORTLET_TITLE" value1="BREADCRUMB" />
-		<execute function="AssertTextEquals" locator1="SOForums#MESSAGE_BOARDS_PORTLET_TITLE" value1="MESSAGE BOARDS" />
-		<execute function="AssertTextEquals" locator1="SOForums#BREADCRUMB_1" value1="Liferay" />
-		<execute function="AssertTextEquals" locator1="SOForums#BREADCRUMB_2" value1="${siteName}" />
-		<execute function="AssertTextEquals" locator1="SOForums#BREADCRUMB_3" value1="${pageName}" />
-		<execute function="AssertTextEquals" locator1="SOForums#BREADCRUMB_4" value1="${categoryName}" />
-		<execute function="AssertTextEquals" locator1="SOForums#BREADCRUMB_5" value1="${threadSubject}" />
+		AssertTextEquals(locator1 = "SOForums#BREADCRUMB_3", value1 = "${pageName}");
 
-		<execute function="AssertTextEquals" locator1="PGMessageboardsThread#TITLE_HEADER" value1="${threadSubject}" />
-		<execute function="AssertTextEquals#assertPartialText" locator1="PGMessageboardsThread#THREAD_CONTROLS_BACK" value1="Back to ${categoryName}" />
-		<execute function="AssertTextEquals" locator1="PGMessageboardsThread#THREAD_CONTROLS_NAVIGATION" value1="Threads [ Previous | Next ]" />
-		<execute function="AssertTextEquals" locator1="PGMessageboardsThread#MESSAGE_USERNAME_1" value1="${userName}" />
-		<execute function="AssertTextEquals" locator1="PGMessageboardsThread#MESSAGE_SUBJECT_1" value1="${threadSubject}" />
-		<execute function="AssertTextEquals" locator1="PGMessageboardsThread#MESSAGE_BODY_1" value1="${threadBody}" />
-		<execute function="AssertTextEquals" locator1="PGMessageboardsThread#MESSAGE_RATING_1" value1="0 (0 Votes)" />
-		<execute function="AssertElementNotPresent" locator1="PGMessageboardsThread#MESSAGE_WORKFLOW_STATUS_1" />
-	</command>
+		AssertTextEquals(locator1 = "SOForums#BREADCRUMB_4", value1 = "${categoryName}");
 
-	<command name="viewReplyPG">
-		<var name="key_threadSubject" value="${threadSubject}" />
+		AssertTextEquals(
+			locator1 = "SOForums#BREADCRUMB_5",
+			value1 = "${threadSubject}"
+		);
 
-		<execute function="Click" locator1="SOUserBar#TOGGLE_DOCKBAR" />
+		AssertTextEquals(
+			locator1 = "PGMessageboardsThread#TITLE_HEADER",
+			value1 = "${threadSubject}"
+		);
 
-		<if>
-			<condition function="IsElementNotPresent#pauseIsElementNotPresent" locator1="SOForums#BREADCRUMB_PORTLET_TITLE" />
-			<then>
-				<execute function="MouseOver#mouseOverClickDockbar" locator1="Dockbar#EDIT_CONTROLS" />
-				<execute function="AssertClick" locator1="Dockbar#EDIT_CONTROLS" value1="Edit Controls" />
-			</then>
-		</if>
+		AssertTextEquals.assertPartialText(
+			locator1 = "PGMessageboardsThread#THREAD_CONTROLS_BACK",
+			value1 = "Back to ${categoryName}"
+		);
 
-		<execute function="AssertTextEquals" locator1="SOForums#BREADCRUMB_PORTLET_TITLE" value1="BREADCRUMB" />
-		<execute function="AssertTextEquals" locator1="SOForums#MESSAGE_BOARDS_PORTLET_TITLE" value1="MESSAGE BOARDS" />
-		<execute function="AssertTextEquals" locator1="SOForums#BREADCRUMB_1" value1="Liferay" />
-		<execute function="AssertTextEquals" locator1="SOForums#BREADCRUMB_2" value1="${siteName}" />
-		<execute function="AssertTextEquals" locator1="SOForums#BREADCRUMB_3" value1="${pageName}" />
+		AssertTextEquals(
+			locator1 = "PGMessageboardsThread#THREAD_CONTROLS_NAVIGATION",
+			value1 = "Threads [ Previous | Next ]"
+		);
 
-		<var name="key_categoryName" value="${categoryName}" />
+		AssertTextEquals(
+			locator1 = "PGMessageboardsThread#MESSAGE_USERNAME_1",
+			value1 = "${userName}"
+		);
 
-		<execute function="AssertTextEquals" locator1="PGMessageboards#CATEGORY_TABLE_CATEGORY" value1="${categoryName}" />
-		<execute function="AssertTextEquals" locator1="PGMessageboards#CATEGORY_TABLE_CATEGORIES" value1="0" />
-		<execute function="AssertTextEquals" locator1="PGMessageboards#CATEGORY_TABLE_THREADS" value1="1" />
-		<execute function="AssertTextEquals" locator1="PGMessageboards#CATEGORY_TABLE_POSTS" value1="2" />
-		<execute function="AssertClick" locator1="PGMessageboards#CATEGORY_TABLE_CATEGORY" value1="${categoryName}" />
+		AssertTextEquals(
+			locator1 = "PGMessageboardsThread#MESSAGE_SUBJECT_1",
+			value1 = "${threadSubject}"
+		);
 
-		<execute function="AssertTextEquals" locator1="SOForums#BREADCRUMB_PORTLET_TITLE" value1="BREADCRUMB" />
-		<execute function="AssertTextEquals" locator1="SOForums#MESSAGE_BOARDS_PORTLET_TITLE" value1="MESSAGE BOARDS" />
-		<execute function="AssertTextEquals" locator1="SOForums#BREADCRUMB_1" value1="Liferay" />
-		<execute function="AssertTextEquals" locator1="SOForums#BREADCRUMB_2" value1="${siteName}" />
-		<execute function="AssertTextEquals" locator1="SOForums#BREADCRUMB_3" value1="${pageName}" />
-		<execute function="AssertTextEquals" locator1="SOForums#BREADCRUMB_4" value1="${categoryName}" />
+		AssertTextEquals(
+			locator1 = "PGMessageboardsThread#MESSAGE_BODY_1",
+			value1 = "${threadBody}"
+		);
 
-		<execute function="AssertTextEquals" locator1="PGMessageboards#THREAD_TABLE_THREAD" value1="${threadSubject}" />
-		<execute function="AssertTextEquals" locator1="PGMessageboards#THREAD_TABLE_STARTED_BY" value1="${userName}" />
-		<execute function="AssertTextEquals" locator1="PGMessageboards#THREAD_TABLE_POSTS" value1="2" />
-		<execute function="AssertTextEquals#assertPartialText" locator1="PGMessageboards#THREAD_TABLE_LAST_POST" value1="By: ${userName}" />
-		<execute function="AssertElementPresent" locator1="PGMessageboards#THREAD_TABLE_ACTIONS" />
-		<execute function="AssertClick" locator1="PGMessageboards#THREAD_TABLE_THREAD" value1="${threadSubject}" />
+		AssertTextEquals(
+			locator1 = "PGMessageboardsThread#MESSAGE_RATING_1",
+			value1 = "0 (0 Votes)"
+		);
 
-		<execute function="AssertTextEquals" locator1="SOForums#BREADCRUMB_PORTLET_TITLE" value1="BREADCRUMB" />
-		<execute function="AssertTextEquals" locator1="SOForums#MESSAGE_BOARDS_PORTLET_TITLE" value1="MESSAGE BOARDS" />
-		<execute function="AssertTextEquals" locator1="SOForums#BREADCRUMB_1" value1="Liferay" />
-		<execute function="AssertTextEquals" locator1="SOForums#BREADCRUMB_2" value1="${siteName}" />
-		<execute function="AssertTextEquals" locator1="SOForums#BREADCRUMB_3" value1="${pageName}" />
-		<execute function="AssertTextEquals" locator1="SOForums#BREADCRUMB_4" value1="${categoryName}" />
-		<execute function="AssertTextEquals" locator1="SOForums#BREADCRUMB_5" value1="${threadSubject}" />
+		AssertElementNotPresent(
+			locator1 = "PGMessageboardsThread#MESSAGE_WORKFLOW_STATUS_1"
+		);
+	}
 
-		<execute function="AssertTextEquals" locator1="PGMessageboardsThread#TITLE_HEADER" value1="${threadSubject}" />
-		<execute function="AssertTextEquals#assertPartialText" locator1="PGMessageboardsThread#THREAD_CONTROLS_BACK" value1="Back to ${categoryName}" />
-		<execute function="AssertTextEquals" locator1="PGMessageboardsThread#THREAD_CONTROLS_NAVIGATION" value1="Threads [ Previous | Next ]" />
-		<execute function="AssertTextEquals" locator1="PGMessageboardsThread#THREAD_TABLE_SUBJECT_1" value1="${threadSubject}" />
-		<execute function="AssertTextEquals" locator1="PGMessageboardsThread#THREAD_TABLE_SUBJECT_2" value1="RE: ${threadSubject}" />
-		<execute function="AssertTextEquals" locator1="PGMessageboardsThread#MESSAGE_SUBJECT_1" value1="${threadSubject}" />
-		<execute function="AssertTextEquals" locator1="PGMessageboardsThread#MESSAGE_BODY_1" value1="${threadBody}" />
-		<execute function="AssertTextEquals" locator1="PGMessageboardsThread#MESSAGE_USERNAME_1" value1="${userName}" />
-		<execute function="AssertTextEquals" locator1="PGMessageboardsThread#MESSAGE_RATING_1" value1="0 (0 Votes)" />
-		<execute function="AssertTextEquals" locator1="PGMessageboardsThread#MESSAGE_SUBJECT_2" value1="RE: ${threadSubject}" />
-		<execute function="AssertTextEquals" locator1="PGMessageboardsThread#MESSAGE_BODY_2" value1="${threadReplyBody}" />
-		<execute function="AssertTextEquals" locator1="PGMessageboardsThread#MESSAGE_USERNAME_2" value1="${userName}" />
-		<execute function="AssertTextEquals" locator1="PGMessageboardsThread#MESSAGE_RATING_2" value1="0 (0 Votes)" />
-	</command>
-</definition>
+	macro viewPG {
+		var key_threadSubject = "${threadSubject}";
+
+		Click(locator1 = "SOUserBar#TOGGLE_DOCKBAR");
+
+		if (IsElementNotPresent.pauseIsElementNotPresent(locator1 = "SOForums#BREADCRUMB_PORTLET_TITLE")) {
+			MouseOver.mouseOverClickDockbar(locator1 = "Dockbar#EDIT_CONTROLS");
+
+			AssertClick(locator1 = "Dockbar#EDIT_CONTROLS", value1 = "Edit Controls");
+		}
+
+		AssertTextEquals(
+			locator1 = "SOForums#BREADCRUMB_PORTLET_TITLE",
+			value1 = "BREADCRUMB"
+		);
+
+		AssertTextEquals(
+			locator1 = "SOForums#MESSAGE_BOARDS_PORTLET_TITLE",
+			value1 = "MESSAGE BOARDS"
+		);
+
+		AssertTextEquals(locator1 = "SOForums#BREADCRUMB_1", value1 = "Liferay");
+
+		AssertTextEquals(locator1 = "SOForums#BREADCRUMB_2", value1 = "${siteName}");
+
+		AssertTextEquals(locator1 = "SOForums#BREADCRUMB_3", value1 = "${pageName}");
+
+		var key_categoryName = "${categoryName}";
+
+		AssertTextEquals(
+			locator1 = "PGMessageboards#CATEGORY_TABLE_CATEGORY",
+			value1 = "${categoryName}"
+		);
+
+		AssertTextEquals(
+			locator1 = "PGMessageboards#CATEGORY_TABLE_CATEGORIES",
+			value1 = "0"
+		);
+
+		AssertTextEquals(
+			locator1 = "PGMessageboards#CATEGORY_TABLE_THREADS",
+			value1 = "1"
+		);
+
+		AssertTextEquals(
+			locator1 = "PGMessageboards#CATEGORY_TABLE_POSTS",
+			value1 = "1"
+		);
+
+		AssertClick(
+			locator1 = "PGMessageboards#CATEGORY_TABLE_CATEGORY",
+			value1 = "${categoryName}"
+		);
+
+		AssertTextEquals(
+			locator1 = "SOForums#BREADCRUMB_PORTLET_TITLE",
+			value1 = "BREADCRUMB"
+		);
+
+		AssertTextEquals(
+			locator1 = "SOForums#MESSAGE_BOARDS_PORTLET_TITLE",
+			value1 = "MESSAGE BOARDS"
+		);
+
+		AssertTextEquals(locator1 = "SOForums#BREADCRUMB_1", value1 = "Liferay");
+
+		AssertTextEquals(locator1 = "SOForums#BREADCRUMB_2", value1 = "${siteName}");
+
+		AssertTextEquals(locator1 = "SOForums#BREADCRUMB_3", value1 = "${pageName}");
+
+		AssertTextEquals(locator1 = "SOForums#BREADCRUMB_4", value1 = "${categoryName}");
+
+		AssertTextEquals(
+			locator1 = "PGMessageboards#THREAD_TABLE_THREAD",
+			value1 = "${threadSubject}"
+		);
+
+		AssertTextEquals(
+			locator1 = "PGMessageboards#THREAD_TABLE_STARTED_BY",
+			value1 = "${userName}"
+		);
+
+		AssertTextEquals(locator1 = "PGMessageboards#THREAD_TABLE_POSTS", value1 = "1");
+
+		AssertTextEquals.assertPartialText(
+			locator1 = "PGMessageboards#THREAD_TABLE_LAST_POST",
+			value1 = "By: ${userName}"
+		);
+
+		AssertElementPresent(locator1 = "PGMessageboards#THREAD_TABLE_ACTIONS");
+
+		AssertClick(
+			locator1 = "PGMessageboards#THREAD_TABLE_THREAD",
+			value1 = "${threadSubject}"
+		);
+
+		AssertTextEquals(
+			locator1 = "SOForums#BREADCRUMB_PORTLET_TITLE",
+			value1 = "BREADCRUMB"
+		);
+
+		AssertTextEquals(
+			locator1 = "SOForums#MESSAGE_BOARDS_PORTLET_TITLE",
+			value1 = "MESSAGE BOARDS"
+		);
+
+		AssertTextEquals(locator1 = "SOForums#BREADCRUMB_1", value1 = "Liferay");
+
+		AssertTextEquals(locator1 = "SOForums#BREADCRUMB_2", value1 = "${siteName}");
+
+		AssertTextEquals(locator1 = "SOForums#BREADCRUMB_3", value1 = "${pageName}");
+
+		AssertTextEquals(locator1 = "SOForums#BREADCRUMB_4", value1 = "${categoryName}");
+
+		AssertTextEquals(
+			locator1 = "SOForums#BREADCRUMB_5",
+			value1 = "${threadSubject}"
+		);
+
+		AssertTextEquals(
+			locator1 = "PGMessageboardsThread#TITLE_HEADER",
+			value1 = "${threadSubject}"
+		);
+
+		AssertTextEquals.assertPartialText(
+			locator1 = "PGMessageboardsThread#THREAD_CONTROLS_BACK",
+			value1 = "Back to ${categoryName}"
+		);
+
+		AssertTextEquals(
+			locator1 = "PGMessageboardsThread#THREAD_CONTROLS_NAVIGATION",
+			value1 = "Threads [ Previous | Next ]"
+		);
+
+		AssertTextEquals(
+			locator1 = "PGMessageboardsThread#MESSAGE_USERNAME_1",
+			value1 = "${userName}"
+		);
+
+		AssertTextEquals(
+			locator1 = "PGMessageboardsThread#MESSAGE_SUBJECT_1",
+			value1 = "${threadSubject}"
+		);
+
+		AssertTextEquals(
+			locator1 = "PGMessageboardsThread#MESSAGE_BODY_1",
+			value1 = "${threadBody}"
+		);
+
+		AssertTextEquals(
+			locator1 = "PGMessageboardsThread#MESSAGE_RATING_1",
+			value1 = "0 (0 Votes)"
+		);
+
+		AssertElementNotPresent(
+			locator1 = "PGMessageboardsThread#MESSAGE_WORKFLOW_STATUS_1"
+		);
+	}
+
+	macro viewRecentPostsPG {
+		var key_threadSubject = "${threadSubject}";
+
+		AssertClick.assertTextClickAt(
+			locator1 = "PGMessageboards#NAVIGATION_RECENT_POSTS",
+			value1 = "Recent Posts"
+		);
+
+		Click(locator1 = "SOUserBar#TOGGLE_DOCKBAR");
+
+		if (IsElementNotPresent.pauseIsElementNotPresent(locator1 = "SOForums#BREADCRUMB_PORTLET_TITLE")) {
+			MouseOver.mouseOverClickDockbar(locator1 = "Dockbar#EDIT_CONTROLS");
+
+			AssertClick(locator1 = "Dockbar#EDIT_CONTROLS", value1 = "Edit Controls");
+		}
+
+		AssertTextEquals(
+			locator1 = "SOForums#BREADCRUMB_PORTLET_TITLE",
+			value1 = "BREADCRUMB"
+		);
+
+		AssertTextEquals(
+			locator1 = "SOForums#MESSAGE_BOARDS_PORTLET_TITLE",
+			value1 = "MESSAGE BOARDS"
+		);
+
+		AssertTextEquals(locator1 = "SOForums#BREADCRUMB_1", value1 = "Liferay");
+
+		AssertTextEquals(locator1 = "SOForums#BREADCRUMB_2", value1 = "${siteName}");
+
+		AssertTextEquals(locator1 = "SOForums#BREADCRUMB_3", value1 = "${pageName}");
+
+		AssertTextEquals(locator1 = "SOForums#BREADCRUMB_4", value1 = "Recent Posts");
+
+		AssertTextEquals(
+			locator1 = "PGMessageboardsMyposts#THREAD_TABLE_THREAD",
+			value1 = "${threadSubject}"
+		);
+
+		AssertTextEquals(
+			locator1 = "PGMessageboardsMyposts#THREAD_TABLE_STARTED_BY",
+			value1 = "${userName}"
+		);
+
+		AssertTextEquals(
+			locator1 = "PGMessageboardsMyposts#THREAD_TABLE_POSTS",
+			value1 = "1"
+		);
+
+		AssertTextEquals.assertPartialText(
+			locator1 = "PGMessageboardsMyposts#THREAD_TABLE_LAST_POST",
+			value1 = "By: ${userName}"
+		);
+
+		AssertElementPresent(locator1 = "PGMessageboardsMyposts#THREAD_TABLE_ACTIONS");
+
+		AssertClick.assertTextClickAt(
+			locator1 = "PGMessageboardsMyposts#THREAD_TABLE_THREAD",
+			value1 = "${threadSubject}"
+		);
+
+		Click(locator1 = "SOUserBar#TOGGLE_DOCKBAR");
+
+		if (IsElementNotPresent.pauseIsElementNotPresent(locator1 = "SOForums#BREADCRUMB_PORTLET_TITLE")) {
+			MouseOver.mouseOverClickDockbar(locator1 = "Dockbar#EDIT_CONTROLS");
+
+			AssertClick(locator1 = "Dockbar#EDIT_CONTROLS", value1 = "Edit Controls");
+		}
+
+		AssertTextEquals(
+			locator1 = "SOForums#BREADCRUMB_PORTLET_TITLE",
+			value1 = "BREADCRUMB"
+		);
+
+		AssertTextEquals(
+			locator1 = "SOForums#MESSAGE_BOARDS_PORTLET_TITLE",
+			value1 = "MESSAGE BOARDS"
+		);
+
+		AssertTextEquals(locator1 = "SOForums#BREADCRUMB_1", value1 = "Liferay");
+
+		AssertTextEquals(locator1 = "SOForums#BREADCRUMB_2", value1 = "${siteName}");
+
+		AssertTextEquals(locator1 = "SOForums#BREADCRUMB_3", value1 = "${pageName}");
+
+		AssertTextEquals(locator1 = "SOForums#BREADCRUMB_4", value1 = "${categoryName}");
+
+		AssertTextEquals(
+			locator1 = "SOForums#BREADCRUMB_5",
+			value1 = "${threadSubject}"
+		);
+
+		AssertTextEquals(
+			locator1 = "PGMessageboardsThread#TITLE_HEADER",
+			value1 = "${threadSubject}"
+		);
+
+		AssertTextEquals.assertPartialText(
+			locator1 = "PGMessageboardsThread#THREAD_CONTROLS_BACK",
+			value1 = "Back to ${categoryName}"
+		);
+
+		AssertTextEquals(
+			locator1 = "PGMessageboardsThread#THREAD_CONTROLS_NAVIGATION",
+			value1 = "Threads [ Previous | Next ]"
+		);
+
+		AssertTextEquals(
+			locator1 = "PGMessageboardsThread#MESSAGE_USERNAME_1",
+			value1 = "${userName}"
+		);
+
+		AssertTextEquals(
+			locator1 = "PGMessageboardsThread#MESSAGE_SUBJECT_1",
+			value1 = "${threadSubject}"
+		);
+
+		AssertTextEquals(
+			locator1 = "PGMessageboardsThread#MESSAGE_BODY_1",
+			value1 = "${threadBody}"
+		);
+
+		AssertTextEquals(
+			locator1 = "PGMessageboardsThread#MESSAGE_RATING_1",
+			value1 = "0 (0 Votes)"
+		);
+
+		AssertElementNotPresent(
+			locator1 = "PGMessageboardsThread#MESSAGE_WORKFLOW_STATUS_1"
+		);
+	}
+
+	macro viewReplyPG {
+		var key_threadSubject = "${threadSubject}";
+
+		Click(locator1 = "SOUserBar#TOGGLE_DOCKBAR");
+
+		if (IsElementNotPresent.pauseIsElementNotPresent(locator1 = "SOForums#BREADCRUMB_PORTLET_TITLE")) {
+			MouseOver.mouseOverClickDockbar(locator1 = "Dockbar#EDIT_CONTROLS");
+
+			AssertClick(locator1 = "Dockbar#EDIT_CONTROLS", value1 = "Edit Controls");
+		}
+
+		AssertTextEquals(
+			locator1 = "SOForums#BREADCRUMB_PORTLET_TITLE",
+			value1 = "BREADCRUMB"
+		);
+
+		AssertTextEquals(
+			locator1 = "SOForums#MESSAGE_BOARDS_PORTLET_TITLE",
+			value1 = "MESSAGE BOARDS"
+		);
+
+		AssertTextEquals(locator1 = "SOForums#BREADCRUMB_1", value1 = "Liferay");
+
+		AssertTextEquals(locator1 = "SOForums#BREADCRUMB_2", value1 = "${siteName}");
+
+		AssertTextEquals(locator1 = "SOForums#BREADCRUMB_3", value1 = "${pageName}");
+
+		var key_categoryName = "${categoryName}";
+
+		AssertTextEquals(
+			locator1 = "PGMessageboards#CATEGORY_TABLE_CATEGORY",
+			value1 = "${categoryName}"
+		);
+
+		AssertTextEquals(
+			locator1 = "PGMessageboards#CATEGORY_TABLE_CATEGORIES",
+			value1 = "0"
+		);
+
+		AssertTextEquals(
+			locator1 = "PGMessageboards#CATEGORY_TABLE_THREADS",
+			value1 = "1"
+		);
+
+		AssertTextEquals(
+			locator1 = "PGMessageboards#CATEGORY_TABLE_POSTS",
+			value1 = "2"
+		);
+
+		AssertClick(
+			locator1 = "PGMessageboards#CATEGORY_TABLE_CATEGORY",
+			value1 = "${categoryName}"
+		);
+
+		AssertTextEquals(
+			locator1 = "SOForums#BREADCRUMB_PORTLET_TITLE",
+			value1 = "BREADCRUMB"
+		);
+
+		AssertTextEquals(
+			locator1 = "SOForums#MESSAGE_BOARDS_PORTLET_TITLE",
+			value1 = "MESSAGE BOARDS"
+		);
+
+		AssertTextEquals(locator1 = "SOForums#BREADCRUMB_1", value1 = "Liferay");
+
+		AssertTextEquals(locator1 = "SOForums#BREADCRUMB_2", value1 = "${siteName}");
+
+		AssertTextEquals(locator1 = "SOForums#BREADCRUMB_3", value1 = "${pageName}");
+
+		AssertTextEquals(locator1 = "SOForums#BREADCRUMB_4", value1 = "${categoryName}");
+
+		AssertTextEquals(
+			locator1 = "PGMessageboards#THREAD_TABLE_THREAD",
+			value1 = "${threadSubject}"
+		);
+
+		AssertTextEquals(
+			locator1 = "PGMessageboards#THREAD_TABLE_STARTED_BY",
+			value1 = "${userName}"
+		);
+
+		AssertTextEquals(locator1 = "PGMessageboards#THREAD_TABLE_POSTS", value1 = "2");
+
+		AssertTextEquals.assertPartialText(
+			locator1 = "PGMessageboards#THREAD_TABLE_LAST_POST",
+			value1 = "By: ${userName}"
+		);
+
+		AssertElementPresent(locator1 = "PGMessageboards#THREAD_TABLE_ACTIONS");
+
+		AssertClick(
+			locator1 = "PGMessageboards#THREAD_TABLE_THREAD",
+			value1 = "${threadSubject}"
+		);
+
+		AssertTextEquals(
+			locator1 = "SOForums#BREADCRUMB_PORTLET_TITLE",
+			value1 = "BREADCRUMB"
+		);
+
+		AssertTextEquals(
+			locator1 = "SOForums#MESSAGE_BOARDS_PORTLET_TITLE",
+			value1 = "MESSAGE BOARDS"
+		);
+
+		AssertTextEquals(locator1 = "SOForums#BREADCRUMB_1", value1 = "Liferay");
+
+		AssertTextEquals(locator1 = "SOForums#BREADCRUMB_2", value1 = "${siteName}");
+
+		AssertTextEquals(locator1 = "SOForums#BREADCRUMB_3", value1 = "${pageName}");
+
+		AssertTextEquals(locator1 = "SOForums#BREADCRUMB_4", value1 = "${categoryName}");
+
+		AssertTextEquals(
+			locator1 = "SOForums#BREADCRUMB_5",
+			value1 = "${threadSubject}"
+		);
+
+		AssertTextEquals(
+			locator1 = "PGMessageboardsThread#TITLE_HEADER",
+			value1 = "${threadSubject}"
+		);
+
+		AssertTextEquals.assertPartialText(
+			locator1 = "PGMessageboardsThread#THREAD_CONTROLS_BACK",
+			value1 = "Back to ${categoryName}"
+		);
+
+		AssertTextEquals(
+			locator1 = "PGMessageboardsThread#THREAD_CONTROLS_NAVIGATION",
+			value1 = "Threads [ Previous | Next ]"
+		);
+
+		AssertTextEquals(
+			locator1 = "PGMessageboardsThread#THREAD_TABLE_SUBJECT_1",
+			value1 = "${threadSubject}"
+		);
+
+		AssertTextEquals(
+			locator1 = "PGMessageboardsThread#THREAD_TABLE_SUBJECT_2",
+			value1 = "RE: ${threadSubject}"
+		);
+
+		AssertTextEquals(
+			locator1 = "PGMessageboardsThread#MESSAGE_SUBJECT_1",
+			value1 = "${threadSubject}"
+		);
+
+		AssertTextEquals(
+			locator1 = "PGMessageboardsThread#MESSAGE_BODY_1",
+			value1 = "${threadBody}"
+		);
+
+		AssertTextEquals(
+			locator1 = "PGMessageboardsThread#MESSAGE_USERNAME_1",
+			value1 = "${userName}"
+		);
+
+		AssertTextEquals(
+			locator1 = "PGMessageboardsThread#MESSAGE_RATING_1",
+			value1 = "0 (0 Votes)"
+		);
+
+		AssertTextEquals(
+			locator1 = "PGMessageboardsThread#MESSAGE_SUBJECT_2",
+			value1 = "RE: ${threadSubject}"
+		);
+
+		AssertTextEquals(
+			locator1 = "PGMessageboardsThread#MESSAGE_BODY_2",
+			value1 = "${threadReplyBody}"
+		);
+
+		AssertTextEquals(
+			locator1 = "PGMessageboardsThread#MESSAGE_USERNAME_2",
+			value1 = "${userName}"
+		);
+
+		AssertTextEquals(
+			locator1 = "PGMessageboardsThread#MESSAGE_RATING_2",
+			value1 = "0 (0 Votes)"
+		);
+	}
+}

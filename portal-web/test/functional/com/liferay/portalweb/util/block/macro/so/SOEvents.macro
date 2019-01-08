@@ -1,29 +1,38 @@
-<definition>
-	<command name="configureEventsPortletDisplayDays">
-		<if>
-			<condition function="IsElementNotPresent" locator1="SOUserBar#VISIBLE_DOCKBAR" />
-			<then>
-				<execute function="Click" locator1="SOUserBar#TOGGLE_DOCKBAR" />
-			</then>
-		</if>
+definition {
+	macro configureEventsPortletDisplayDays {
+		if (IsElementNotPresent(locator1 = "SOUserBar#VISIBLE_DOCKBAR")) {
+			Click(locator1 = "SOUserBar#TOGGLE_DOCKBAR");
+		}
 
-		<if>
-			<condition function="IsElementPresent" locator1="SOUserBar#EDIT_CONTROLS_NOT_FLAGGED" />
-			<then>
-				<execute function="MouseOver#mouseOverClickDockbar" locator1="Dockbar#EDIT_CONTROLS" />
-				<execute function="AssertClick" locator1="Dockbar#EDIT_CONTROLS" value1="Edit Controls" />
-			</then>
-		</if>
+		if (IsElementPresent(locator1 = "SOUserBar#EDIT_CONTROLS_NOT_FLAGGED")) {
+			MouseOver.mouseOverClickDockbar(locator1 = "Dockbar#EDIT_CONTROLS");
 
-		<execute function="Click" locator1="SOSiteHome#EVENTS_DISPLAY_OPTIONS" />
+			AssertClick(locator1 = "Dockbar#EDIT_CONTROLS", value1 = "Edit Controls");
+		}
 
-		<execute function="Click" locator1="BasePortlet#OPTIONS_MENULIST_CONFIGURATION" />
+		Click(locator1 = "SOSiteHome#EVENTS_DISPLAY_OPTIONS");
 
-		<execute function="SelectFrame" locator1="SOSiteHomeEventsConfiguration#CONFIGURATION_IFRAME" />
-		<execute function="Select" locator1="SOSiteHomeEventsConfiguration#DISPLAY_SETTINGS_MAX_DAYS_DISPLAYED_SELECT" value1="${maxDisplayDays}" />
-		<execute function="AssertClick#assertValueClickAt" locator1="SOSiteHomeEventsConfiguration#SAVE_BUTTON" value1="Save" />
-		<execute function="AssertTextEquals" locator1="SOSiteHomeEventsConfiguration#SUCCESS_MESSAGE" value1="You have successfully updated the setup." />
-		<execute function="SelectFrameTop" />
-		<execute function="Click" locator1="SOSiteHomeEventsConfiguration#CLOSE_BUTTON" />
-	</command>
-</definition>
+		Click(locator1 = "BasePortlet#OPTIONS_MENULIST_CONFIGURATION");
+
+		SelectFrame(locator1 = "SOSiteHomeEventsConfiguration#CONFIGURATION_IFRAME");
+
+		Select(
+			locator1 = "SOSiteHomeEventsConfiguration#DISPLAY_SETTINGS_MAX_DAYS_DISPLAYED_SELECT",
+			value1 = "${maxDisplayDays}"
+		);
+
+		AssertClick.assertValueClickAt(
+			locator1 = "SOSiteHomeEventsConfiguration#SAVE_BUTTON",
+			value1 = "Save"
+		);
+
+		AssertTextEquals(
+			locator1 = "SOSiteHomeEventsConfiguration#SUCCESS_MESSAGE",
+			value1 = "You have successfully updated the setup."
+		);
+
+		SelectFrameTop();
+
+		Click(locator1 = "SOSiteHomeEventsConfiguration#CLOSE_BUTTON");
+	}
+}

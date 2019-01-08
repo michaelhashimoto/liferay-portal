@@ -1,49 +1,55 @@
-<definition>
-	<command name="addPG" summary="Add a '${portletName}' portlet">
-		<execute macro="Page#gotoPG">
-			<var name="pageAccess" value="${pageAccess}" />
-			<var name="pageName" value="${pageName}" />
-			<var name="pageStaging" value="${pageStaging}" />
-			<var name="pageType" value="${pageType}" />
-		</execute>
+definition {
+	@summary = "Add a '${portletName}' portlet"
+	macro addPG {
+		Page.gotoPG(
+			pageAccess = "${pageAccess}",
+			pageName = "${pageName}",
+			pageStaging = "${pageStaging}",
+			pageType = "${pageType}"
+		);
 
-		<if>
-			<condition function="IsElementPresent" locator1="SOUserBar#USER_BAR" />
-			<then>
-				<if>
-					<condition function="IsElementNotPresent" locator1="SOUserBar#VISIBLE_DOCKBAR" />
-					<then>
-						<execute function="Click" locator1="SOUserBar#TOGGLE_DOCKBAR" />
-					</then>
-				</if>
-			</then>
-		</if>
+		if (IsElementPresent(locator1 = "SOUserBar#USER_BAR")) {
+			if (IsElementNotPresent(locator1 = "SOUserBar#VISIBLE_DOCKBAR")) {
+				Click(locator1 = "SOUserBar#TOGGLE_DOCKBAR");
+			}
+		}
 
-		<execute function="MouseOver#textMouseOverClickDockbar" locator1="Dockbar#ADD" value1="Add" />
-		<execute function="Click" locator1="Dockbar#ADD_APPLICATION" />
-		<execute function="Type#sendKeysApplicationSearch" locator1="Dockbar#ADD_APPLICATION_SEARCH_FIELD" value1="${portletName}" />
-		<execute function="Click" locator1="//div[@title='${portletName}']/p/a" value1="Add" />
+		MouseOver.textMouseOverClickDockbar(locator1 = "Dockbar#ADD", value1 = "Add");
 
-		<execute function="AssertElementPresent" locator1="Home#PORTLET_1" />
-	</command>
+		Click(locator1 = "Dockbar#ADD_APPLICATION");
 
-	<command name="removePG">
-		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${pageName}" />
-		</execute>
+		Type.sendKeysApplicationSearch(
+			locator1 = "Dockbar#ADD_APPLICATION_SEARCH_FIELD",
+			value1 = "${portletName}"
+		);
 
-		<execute function="ClickNoError" locator1="Home#PORTLET_REMOVE_1" />
-		<execute function="Confirm" value1="Are you sure you want to remove this component?" />
-		<execute function="AssertElementNotPresent" locator1="Home#PORTLET_1" />
-	</command>
+		Click(locator1 = "//div[@title='${portletName}']/p/a", value1 = "Add");
 
-	<command name="viewBody" summary="Assert that the ${portletName} portlet body has the text '${portletBody}'">
-		<var name="key_portletName" value="${portletName}" />
+		AssertElementPresent(locator1 = "Home#PORTLET_1");
+	}
 
-		<execute function="AssertTextEquals#assertPartialText" locator1="BasePortlet#PORTLET_BODY" value1="${portletBody}" />
-	</command>
+	macro removePG {
+		Page.gotoPG(pageName = "${pageName}");
 
-	<command name="viewTitle" summary="Assert that the ${portletName} portlet title has the text '${portletName}'">
-		<execute function="AssertTextEquals" locator1="BasePortlet#TITLE" value1="${portletName}" />
-	</command>
-</definition>
+		ClickNoError(locator1 = "Home#PORTLET_REMOVE_1");
+
+		Confirm(value1 = "Are you sure you want to remove this component?");
+
+		AssertElementNotPresent(locator1 = "Home#PORTLET_1");
+	}
+
+	@summary = "Assert that the ${portletName} portlet body has the text '${portletBody}'"
+	macro viewBody {
+		var key_portletName = "${portletName}";
+
+		AssertTextEquals.assertPartialText(
+			locator1 = "BasePortlet#PORTLET_BODY",
+			value1 = "${portletBody}"
+		);
+	}
+
+	@summary = "Assert that the ${portletName} portlet title has the text '${portletName}'"
+	macro viewTitle {
+		AssertTextEquals(locator1 = "BasePortlet#TITLE", value1 = "${portletName}");
+	}
+}

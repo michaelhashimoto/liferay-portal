@@ -1,11 +1,21 @@
-<definition>
-	<command name="pgAdd">
-		<execute function="AssertClick" locator1="PGDocumentsandmedia#TOOLBAR_ADD" value1="Add" />
-		<execute function="AssertClick" locator1="PGDocumentsandmedia#ADD_MENULIST_SHORTCUT" value1="Shortcut" />
+definition {
+	macro pgAdd {
+		AssertClick(locator1 = "PGDocumentsandmedia#TOOLBAR_ADD", value1 = "Add");
 
-		<execute function="Click" locator1="PGDocumentsandmediaAddshortcut#SITE_BUTTON" />
-		<!-- <execute function="#selectwindow" locator1="PGDocumentsandmediaAddshortcutsites#DOCUMENTS_AND_MEDIA_POPUP" /> -->
-		<execute function="Click" locator1="PGDocumentsandmediaAddshortcutsites#SITES_GLOBAL_SITE" />
-		<execute function="AssertClick" locator1="PGDocumentsandmediaAddshortcut#SAVE_BUTTON" value1="Save" />
-	</command>
-</definition>
+		AssertClick(
+			locator1 = "PGDocumentsandmedia#ADD_MENULIST_SHORTCUT",
+			value1 = "Shortcut"
+		);
+
+		Click(locator1 = "PGDocumentsandmediaAddshortcut#SITE_BUTTON");
+
+		// <execute function="#selectwindow" locator1="PGDocumentsandmediaAddshortcutsites#DOCUMENTS_AND_MEDIA_POPUP" />
+
+		Click(locator1 = "PGDocumentsandmediaAddshortcutsites#SITES_GLOBAL_SITE");
+
+		AssertClick(
+			locator1 = "PGDocumentsandmediaAddshortcut#SAVE_BUTTON",
+			value1 = "Save"
+		);
+	}
+}

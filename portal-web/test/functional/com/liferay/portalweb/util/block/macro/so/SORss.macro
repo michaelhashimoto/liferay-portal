@@ -1,82 +1,117 @@
-<definition>
-	<command name="addRssFeed">
-		<if>
-			<condition function="IsElementNotPresent" locator1="SOUserBar#VISIBLE_DOCKBAR" />
-			<then>
-				<execute function="Click" locator1="SOUserBar#TOGGLE_DOCKBAR" />
-			</then>
-		</if>
+definition {
+	macro addRssFeed {
+		if (IsElementNotPresent(locator1 = "SOUserBar#VISIBLE_DOCKBAR")) {
+			Click(locator1 = "SOUserBar#TOGGLE_DOCKBAR");
+		}
 
-		<if>
-			<condition function="IsElementPresent" locator1="SOUserBar#EDIT_CONTROLS_NOT_FLAGGED" />
-			<then>
-				<execute function="MouseOver#mouseOverClickDockbar" locator1="Dockbar#EDIT_CONTROLS" />
-				<execute function="AssertClick" locator1="Dockbar#EDIT_CONTROLS" value1="Edit Controls" />
-			</then>
-		</if>
+		if (IsElementPresent(locator1 = "SOUserBar#EDIT_CONTROLS_NOT_FLAGGED")) {
+			MouseOver.mouseOverClickDockbar(locator1 = "Dockbar#EDIT_CONTROLS");
 
-		<execute function="Click" locator1="SOSiteHome#RSS_OPTIONS" />
+			AssertClick(locator1 = "Dockbar#EDIT_CONTROLS", value1 = "Edit Controls");
+		}
 
-		<execute function="Click" locator1="BasePortlet#OPTIONS_MENULIST_CONFIGURATION" />
+		Click(locator1 = "SOSiteHome#RSS_OPTIONS");
 
-		<execute function="SelectFrame" locator1="SOSiteHomeRssConfiguration#CONFIGURATION_IFRAME" />
-		<execute function="Click" locator1="SOSiteHomeRssConfiguration#FEEDS_ADD_ROW_BUTTON" />
-		<execute function="Type" locator1="SOSiteHomeRssConfiguration#FEEDS_TITLE_FIELD" value1="${feedTitle}" />
-		<execute function="Type" locator1="SOSiteHomeRssConfiguration#FEEDS_URL_FIELD" value1="${feedUrl}" />
-		<execute function="Check" locator1="SOSiteHomeRssConfiguration#DISPLAY_SETTINGS_SHOW_FEED_TITLE_CHECKBOX" />
-		<execute function="Check" locator1="SOSiteHomeRssConfiguration#DISPLAY_SETTINGS_SHOW_FEED_PUBLISHED_DATE_CHECKBOX" />
-		<execute function="Check" locator1="SOSiteHomeRssConfiguration#DISPLAY_SETTINGS_SHOW_FEED_DESCRIPTION_CHECKBOX" />
-		<execute function="Check" locator1="SOSiteHomeRssConfiguration#DISPLAY_SETTINGS_SHOW_FEED_IMAGE_CHECKBOX" />
-		<execute function="Check" locator1="SOSiteHomeRssConfiguration#DISPLAY_SETTINGS_SHOW_FEED_ITEM_AUTHOR_CHECKBOX" />
-		<execute function="Select" locator1="SOSiteHomeRssConfiguration#DISPLAY_SETTINGS_ENTRIES_PER_FEED_SELECT" value1="${entriesPerFeed}" />
-		<execute function="Select" locator1="SOSiteHomeRssConfiguration#DISPLAY_SETTINGS_EXPANDED_ENTRIES_PER_FEED_SELECT" value1="${expandedEntriesPerFeed}" />
-		<execute function="AssertClick#assertValueClickAt" locator1="SOSiteHomeRssConfiguration#SAVE_BUTTON" value1="Save" />
-		<execute function="AssertTextEquals" locator1="SOSiteHomeRssConfiguration#SUCCESS_MESSAGE" value1="You have successfully updated the setup." />
-		<execute function="SelectFrameTop" />
-		<execute function="Click" locator1="SOSiteHomeEventsConfiguration#CLOSE_BUTTON" />
-	</command>
+		Click(locator1 = "BasePortlet#OPTIONS_MENULIST_CONFIGURATION");
 
-	<command name="viewRssFeed">
-		<execute function="AssertTextEquals#assertPartialText" locator1="SOSiteHome#RSS_FEED_TITLE" value1="CNET" />
-		<execute function="AssertElementPresent" locator1="SOSiteHome#RSS_FEED_PUBLISHED_DATE" />
-		<execute function="AssertElementPresent" locator1="SOSiteHome#RSS_FEED_DESCRIPTION" />
-		<execute function="AssertElementPresent" locator1="SOSiteHome#RSS_FEED_IMAGE" />
+		SelectFrame(locator1 = "SOSiteHomeRssConfiguration#CONFIGURATION_IFRAME");
 
-		<var name="expandedFeedEntryNumber" value="0" />
-		<var name="feedEntryNumber" value="0" />
+		Click(locator1 = "SOSiteHomeRssConfiguration#FEEDS_ADD_ROW_BUTTON");
 
-		<while>
-			<not>
-				<equals arg1="${feedEntryNumber}" arg2="${entriesPerFeed}" />
-			</not>
-			<then>
-				<var method="MathUtil#sum('${feedEntryNumber}', '1')" name="feedEntryNumber" />
+		Type(
+			locator1 = "SOSiteHomeRssConfiguration#FEEDS_TITLE_FIELD",
+			value1 = "${feedTitle}"
+		);
 
-				<if>
-					<not>
-						<equals arg1="${expandedFeedEntryNumber}" arg2="${expandedEntriesPerFeed}" />
-					</not>
-					<then>
-						<var method="MathUtil#sum('${expandedFeedEntryNumber}', '1')" name="expandedFeedEntryNumber" />
-					</then>
-				</if>
+		Type(
+			locator1 = "SOSiteHomeRssConfiguration#FEEDS_URL_FIELD",
+			value1 = "${feedUrl}"
+		);
 
-				<execute function="AssertElementPresent" locator1="SOSiteHome#RSS_FEED_ENTRY_TITLE_INCREMENT" />
+		Check(
+			locator1 = "SOSiteHomeRssConfiguration#DISPLAY_SETTINGS_SHOW_FEED_TITLE_CHECKBOX"
+		);
 
-				<if>
-					<not>
-						<equals arg1="${expandedFeedEntryNumber}" arg2="${feedEntryNumber}" />
-					</not>
-					<then>
-						<execute function="Click" locator1="SOSiteHome#RSS_FEED_ENTRY_EXPAND_BUTTON_INCREMENT" />
-					</then>
-				</if>
+		Check(
+			locator1 = "SOSiteHomeRssConfiguration#DISPLAY_SETTINGS_SHOW_FEED_PUBLISHED_DATE_CHECKBOX"
+		);
 
-				<execute function="AssertElementPresent" locator1="SOSiteHome#RSS_FEED_ENTRY_DATE_AND_TIME_INCREMENT" />
-				<execute function="AssertElementPresent" locator1="SOSiteHome#RSS_FEED_ENTRY_AUTHOR_INCREMENT" />
-				<execute function="AssertElementPresent" locator1="SOSiteHome#RSS_FEED_ENTRY_CONTENT_INCREMENT" />
-				<execute function="AssertElementPresent" locator1="SOSiteHome#RSS_FEED_ENTRY_CONTENT_READ_MORE_INCREMENT" />
-			</then>
-		</while>
-	</command>
-</definition>
+		Check(
+			locator1 = "SOSiteHomeRssConfiguration#DISPLAY_SETTINGS_SHOW_FEED_DESCRIPTION_CHECKBOX"
+		);
+
+		Check(
+			locator1 = "SOSiteHomeRssConfiguration#DISPLAY_SETTINGS_SHOW_FEED_IMAGE_CHECKBOX"
+		);
+
+		Check(
+			locator1 = "SOSiteHomeRssConfiguration#DISPLAY_SETTINGS_SHOW_FEED_ITEM_AUTHOR_CHECKBOX"
+		);
+
+		Select(
+			locator1 = "SOSiteHomeRssConfiguration#DISPLAY_SETTINGS_ENTRIES_PER_FEED_SELECT",
+			value1 = "${entriesPerFeed}"
+		);
+
+		Select(
+			locator1 = "SOSiteHomeRssConfiguration#DISPLAY_SETTINGS_EXPANDED_ENTRIES_PER_FEED_SELECT",
+			value1 = "${expandedEntriesPerFeed}"
+		);
+
+		AssertClick.assertValueClickAt(
+			locator1 = "SOSiteHomeRssConfiguration#SAVE_BUTTON",
+			value1 = "Save"
+		);
+
+		AssertTextEquals(
+			locator1 = "SOSiteHomeRssConfiguration#SUCCESS_MESSAGE",
+			value1 = "You have successfully updated the setup."
+		);
+
+		SelectFrameTop();
+
+		Click(locator1 = "SOSiteHomeEventsConfiguration#CLOSE_BUTTON");
+	}
+
+	macro viewRssFeed {
+		AssertTextEquals.assertPartialText(
+			locator1 = "SOSiteHome#RSS_FEED_TITLE",
+			value1 = "CNET"
+		);
+
+		AssertElementPresent(locator1 = "SOSiteHome#RSS_FEED_PUBLISHED_DATE");
+
+		AssertElementPresent(locator1 = "SOSiteHome#RSS_FEED_DESCRIPTION");
+
+		AssertElementPresent(locator1 = "SOSiteHome#RSS_FEED_IMAGE");
+
+		var expandedFeedEntryNumber = "0";
+		var feedEntryNumber = "0";
+
+		while (!("${feedEntryNumber}" == "${entriesPerFeed}")) {
+			var feedEntryNumber = MathUtil.sum("${feedEntryNumber}", "1");
+
+			if (!("${expandedFeedEntryNumber}" == "${expandedEntriesPerFeed}")) {
+				var expandedFeedEntryNumber = MathUtil.sum("${expandedFeedEntryNumber}", "1");
+			}
+
+			AssertElementPresent(locator1 = "SOSiteHome#RSS_FEED_ENTRY_TITLE_INCREMENT");
+
+			if (!("${expandedFeedEntryNumber}" == "${feedEntryNumber}")) {
+				Click(locator1 = "SOSiteHome#RSS_FEED_ENTRY_EXPAND_BUTTON_INCREMENT");
+			}
+
+			AssertElementPresent(
+				locator1 = "SOSiteHome#RSS_FEED_ENTRY_DATE_AND_TIME_INCREMENT"
+			);
+
+			AssertElementPresent(locator1 = "SOSiteHome#RSS_FEED_ENTRY_AUTHOR_INCREMENT");
+
+			AssertElementPresent(locator1 = "SOSiteHome#RSS_FEED_ENTRY_CONTENT_INCREMENT");
+
+			AssertElementPresent(
+				locator1 = "SOSiteHome#RSS_FEED_ENTRY_CONTENT_READ_MORE_INCREMENT"
+			);
+		}
+	}
+}

@@ -1,79 +1,120 @@
-<definition>
-	<command name="addPG">
-		<var name="key_bookmarkName" value="${bookmarkName}" />
+definition {
+	macro addPG {
+		var key_bookmarkName = "${bookmarkName}";
 
-		<execute function="AssertClick" locator1="PGBookmarks#HOME_MENU_ADD_BOOKMARK" value1="Add Bookmark" />
+		AssertClick(
+			locator1 = "PGBookmarks#HOME_MENU_ADD_BOOKMARK",
+			value1 = "Add Bookmark"
+		);
 
-		<execute function="Type" locator1="PGBookmarksAddbookmark#NAME_FIELD" value1="${bookmarkName}" />
-		<execute function="Type" locator1="PGBookmarksAddbookmark#URL_FIELD" value1="${bookmarkURL}" />
+		Type(locator1 = "PGBookmarksAddbookmark#NAME_FIELD", value1 = "${bookmarkName}");
 
-		<if>
-			<isset var="bookmarkDescription" />
-			<then>
-				<execute function="Type" locator1="PGBookmarksAddbookmark#DESCRIPTION_FIELD" value1="${bookmarkDescription}" />
-			</then>
-		</if>
+		Type(locator1 = "PGBookmarksAddbookmark#URL_FIELD", value1 = "${bookmarkURL}");
 
-		<execute function="AssertClick" locator1="PGBookmarksAddbookmark#SAVE_BUTTON" value1="Save" />
+		if (isSet(bookmarkDescription)) {
+			Type(
+				locator1 = "PGBookmarksAddbookmark#DESCRIPTION_FIELD",
+				value1 = "${bookmarkDescription}"
+			);
+		}
 
-		<execute function="AssertTextEquals" locator1="PGBookmarks#SUCCESS_MESSAGE" value1="Your request completed successfully." />
-		<execute function="AssertTextEquals" locator1="PGBookmarks#BOOKMARKS_TABLE_NAME" value1="${bookmarkName}" />
-		<execute function="AssertTextEquals" locator1="PGBookmarks#BOOKMARKS_TABLE_URL" value1="${bookmarkURL}" />
-	</command>
+		AssertClick(locator1 = "PGBookmarksAddbookmark#SAVE_BUTTON", value1 = "Save");
 
-	<command name="addToFolderPG">
-		<var name="key_folderName" value="${bookmarkFolderName}" />
+		AssertTextEquals(
+			locator1 = "PGBookmarks#SUCCESS_MESSAGE",
+			value1 = "Your request completed successfully."
+		);
 
-		<execute function="AssertClick" locator1="PGBookmarks#FOLDERS_TABLE_FOLDER_NAME" value1="${bookmarkFolderName}" />
+		AssertTextEquals(
+			locator1 = "PGBookmarks#BOOKMARKS_TABLE_NAME",
+			value1 = "${bookmarkName}"
+		);
 
-		<execute macro="Bookmark#addPG">
-			<var name="bookmarkName" value="${bookmarkName}" />
-			<var name="bookmarkURL" value="${bookmarkURL}" />
-		</execute>
-	</command>
+		AssertTextEquals(
+			locator1 = "PGBookmarks#BOOKMARKS_TABLE_URL",
+			value1 = "${bookmarkURL}"
+		);
+	}
 
-	<command name="tearDownCP">
-		<execute macro="Page#gotoCP">
-			<var name="portletName" value="Bookmarks" />
-		</execute>
+	macro addToFolderPG {
+		var key_folderName = "${bookmarkFolderName}";
 
-		<while>
-			<condition function="IsElementPresent" locator1="CPBookmarks#BOOKMARKS_TABLE_ACTIONS_BUTTON_GENERIC" />
-			<then>
-				<execute function="AssertClick" locator1="CPBookmarks#BOOKMARKS_TABLE_ACTIONS_BUTTON_GENERIC" value1="Actions" />
-				<execute function="AssertClick" locator1="CPBookmarks#BOOKMARK_MENULIST_DELETE" value1="Delete" />
-				<execute function="AssertTextEquals" locator1="CPBookmarks#SUCCESS_MESSAGE" value1="Your request completed successfully." />
-			</then>
-		</while>
-	</command>
+		AssertClick(
+			locator1 = "PGBookmarks#FOLDERS_TABLE_FOLDER_NAME",
+			value1 = "${bookmarkFolderName}"
+		);
 
-	<command name="viewInFolderPG">
-		<var name="key_folderName" value="${bookmarkFolderName}" />
+		Bookmark.addPG(bookmarkName = "${bookmarkName}", bookmarkURL = "${bookmarkURL}");
+	}
 
-		<execute function="AssertClick" locator1="PGBookmarks#FOLDERS_TABLE_FOLDER_NAME" value1="${bookmarkFolderName}" />
+	macro tearDownCP {
+		Page.gotoCP(portletName = "Bookmarks");
 
-		<execute macro="Bookmark#viewPG">
-			<var name="bookmarkName" value="${bookmarkName}" />
-			<var name="bookmarkURL" value="${bookmarkURL}" />
-		</execute>
-	</command>
+		while (IsElementPresent(locator1 = "CPBookmarks#BOOKMARKS_TABLE_ACTIONS_BUTTON_GENERIC")) {
+			AssertClick(
+				locator1 = "CPBookmarks#BOOKMARKS_TABLE_ACTIONS_BUTTON_GENERIC",
+				value1 = "Actions"
+			);
 
-	<command name="viewPG">
-		<var name="key_bookmarkName" value="${bookmarkName}" />
+			AssertClick(
+				locator1 = "CPBookmarks#BOOKMARK_MENULIST_DELETE",
+				value1 = "Delete"
+			);
 
-		<execute function="AssertTextEquals" locator1="PGBookmarks#BOOKMARKS_TABLE_NAME" value1="${bookmarkName}" />
-		<execute function="AssertTextEquals" locator1="PGBookmarks#BOOKMARKS_TABLE_URL" value1="${bookmarkURL}" />
+			AssertTextEquals(
+				locator1 = "CPBookmarks#SUCCESS_MESSAGE",
+				value1 = "Your request completed successfully."
+			);
+		}
+	}
 
-		<execute function="AssertClick" locator1="PGBookmarks#BOOKMARKS_TABLE_NAME" value1="${bookmarkName}" />
+	macro viewInFolderPG {
+		var key_folderName = "${bookmarkFolderName}";
 
-		<execute function="AssertTextEquals" locator1="PGBookmarksBookmark#NAME" value1="${bookmarkName}" />
-		<execute function="AssertTextEquals" locator1="PGBookmarksBookmark#URL" value1="${bookmarkURL}" />
+		AssertClick(
+			locator1 = "PGBookmarks#FOLDERS_TABLE_FOLDER_NAME",
+			value1 = "${bookmarkFolderName}"
+		);
 
-		<if>
-			<isset var="bookmarkDescription" />
-			<then>
-				<execute function="AssertTextEquals" locator1="PGBookmarksBookmark#DESCRIPTION" value1="${bookmarkDescription}" />
-			</then>
-		</if>
-	</command>
-</definition>
+		Bookmark.viewPG(
+			bookmarkName = "${bookmarkName}",
+			bookmarkURL = "${bookmarkURL}"
+		);
+	}
+
+	macro viewPG {
+		var key_bookmarkName = "${bookmarkName}";
+
+		AssertTextEquals(
+			locator1 = "PGBookmarks#BOOKMARKS_TABLE_NAME",
+			value1 = "${bookmarkName}"
+		);
+
+		AssertTextEquals(
+			locator1 = "PGBookmarks#BOOKMARKS_TABLE_URL",
+			value1 = "${bookmarkURL}"
+		);
+
+		AssertClick(
+			locator1 = "PGBookmarks#BOOKMARKS_TABLE_NAME",
+			value1 = "${bookmarkName}"
+		);
+
+		AssertTextEquals(
+			locator1 = "PGBookmarksBookmark#NAME",
+			value1 = "${bookmarkName}"
+		);
+
+		AssertTextEquals(
+			locator1 = "PGBookmarksBookmark#URL",
+			value1 = "${bookmarkURL}"
+		);
+
+		if (isSet(bookmarkDescription)) {
+			AssertTextEquals(
+				locator1 = "PGBookmarksBookmark#DESCRIPTION",
+				value1 = "${bookmarkDescription}"
+			);
+		}
+	}
+}

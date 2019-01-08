@@ -1,291 +1,385 @@
-<definition>
-	<command name="_configurePageType">
-		<var name="sitePageType" value="${sitePageType}" />
+definition {
+	macro _configurePageType {
+		var sitePageType = "${sitePageType}";
 
-		<if>
-			<contains string="${sitePageType}" substring="{sitePageType}" />
-			<then>
-				<var name="sitePageType" value="Portlet" />
-			</then>
-		</if>
+		if (contains("${sitePageType}", "{sitePageType}")) {
+			var sitePageType = "Portlet";
+		}
 
-		<execute function="Select" locator1="CPSitepages#DETAILS_TYPE_SELECT" value1="${sitePageType}" />
+		Select(locator1 = "CPSitepages#DETAILS_TYPE_SELECT", value1 = "${sitePageType}");
 
-		<if>
-			<or>
-				<equals arg1="${sitePageType}" arg2="Embedded" />
-				<equals arg1="${sitePageType}" arg2="URL" />
-			</or>
-			<then>
-				<execute function="Type" locator1="CPSitepages#DETAILS_URL_FIELD" value1="${url}" />
-			</then>
-			<elseif>
-				<equals arg1="${sitePageType}" arg2="Link to Page" />
-				<then>
-					<execute function="Select" locator1="CPSitepages#DETAILS_LINK_TO_PAGE_SELECT_FIELD" value1="regexp:.*${linkToPage}" />
-				</then>
-			</elseif>
-			<elseif>
-				<equals arg1="${sitePageType}" arg2="Panel" />
-				<then>
-					<execute function="Click" locator1="CPSitepages#DETAILS_PANEL_APPLICATION_CHECKBOX">
-						<var name="key_componentName" value="${componentName}" />
-					</execute>
-				</then>
-			</elseif>
-			<elseif>
-				<equals arg1="${isCopy}" arg2="true" />
-				<then>
-					<execute function="Click" locator1="CPSitepages#NAVIGATION_SIDEBAR_NAVIGATION_ENTRY">
-						<var name="key_sidebarNav" value="Advanced" />
-					</execute>
+		if (("${sitePageType}" == "Embedded") || ("${sitePageType}" == "URL")) {
+			Type(locator1 = "CPSitepages#DETAILS_URL_FIELD", value1 = "${url}");
+		}
+		else if ("${sitePageType}" == "Link to Page") {
+			Select(
+				locator1 = "CPSitepages#DETAILS_LINK_TO_PAGE_SELECT_FIELD",
+				value1 = "regexp:.*${linkToPage}"
+			);
+		}
+		else if ("${sitePageType}" == "Panel") {
+			Click(
+				locator1 = "CPSitepages#DETAILS_PANEL_APPLICATION_CHECKBOX",
+				key_componentName = "${componentName}"
+			);
+		}
+		else if ("${isCopy}" == "true") {
+			Click(
+				locator1 = "CPSitepages#NAVIGATION_SIDEBAR_NAVIGATION_ENTRY",
+				key_sidebarNav = "Advanced"
+			);
 
-					<execute function="Click" locator1="CPSitepages#ADVANCED_COPY_PORTLETS_FROM_PAGE_BUTTON" />
+			Click(locator1 = "CPSitepages#ADVANCED_COPY_PORTLETS_FROM_PAGE_BUTTON");
 
-					<execute function="Select" locator1="CPSitepages#ADVANCED_COPY_PORTLETS_FROM_PAGE_SELECT" value1="regexp:.*${copyPageName}" />
+			Select(
+				locator1 = "CPSitepages#ADVANCED_COPY_PORTLETS_FROM_PAGE_SELECT",
+				value1 = "regexp:.*${copyPageName}"
+			);
 
-					<execute function="AssertClick" locator1="CPSitepages#ADVANCED_COPY_SUBMIT_BUTTON" value1="Copy" />
-				</then>
-			</elseif>
-		</if>
+			AssertClick(
+				locator1 = "CPSitepages#ADVANCED_COPY_SUBMIT_BUTTON",
+				value1 = "Copy"
+			);
+		}
 
-		<if>
-			<not>
-				<contains string="${description}" substring="{description}" />
-			</not>
-			<then>
-				<execute function="Type" locator1="CPSitepages#DETAILS_DESCRIPTION_FIELD" value1="${description}" />
-			</then>
-		</if>
-	</command>
+		if (!(contains("${description}", "{description}"))) {
+			Type(
+				locator1 = "CPSitepages#DETAILS_DESCRIPTION_FIELD",
+				value1 = "${description}"
+			);
+		}
+	}
 
-	<command name="addChildCP">
-		<execute function="Type" locator1="CPSites#SEARCH_FIELD" value1="${siteName}" />
-		<execute function="AssertClick#assertValueClickAt" locator1="CPSites#SEARCH_BUTTON" value1="Search" />
-		<execute function="AssertClick" locator1="CPSites#SITE_TABLE_ACTIONS" value1="Actions" />
-		<execute function="AssertClick" locator1="CPSites#SITE_MENULIST_MANAGE_PAGES" value1="Manage Pages" />
+	macro addChildCP {
+		Type(locator1 = "CPSites#SEARCH_FIELD", value1 = "${siteName}");
 
-		<if>
-			<equals arg1="${sitePagePrivacy}" arg2="Private" />
-			<then>
-				<execute function="AssertClick#assertTextClickAt" locator1="CPSitepages#NAVIGATION_PRIVATE_PAGES" value1="Private Pages" />
-			</then>
-			<elseif>
-				<equals arg1="${sitePagePrivacy}" arg2="Public" />
-				<then>
-					<execute function="AssertClick#assertTextClickAt" locator1="CPSitepages#NAVIGATION_PUBLIC_PAGES" value1="Public Pages" />
-				</then>
-			</elseif>
-			<else>
-				<fail message="Invalid var sitePagePrivacy. Must be (Private|Public)." />
-			</else>
-		</if>
+		AssertClick.assertValueClickAt(
+			locator1 = "CPSites#SEARCH_BUTTON",
+			value1 = "Search"
+		);
 
-		<execute macro="SitePage#expandRootCP" />
+		AssertClick(locator1 = "CPSites#SITE_TABLE_ACTIONS", value1 = "Actions");
 
-		<execute function="AssertClick" locator1="CPSitepages#PAGE_TREE_PAGE_LINK_1" value1="${sitePageName}" />
+		AssertClick(
+			locator1 = "CPSites#SITE_MENULIST_MANAGE_PAGES",
+			value1 = "Manage Pages"
+		);
 
-		<execute function="AssertClick" locator1="CPSitepages#TOOLBAR_ADD_CHILD_PAGE" value1="Add Child Page" />
-		<execute function="Type" locator1="CPSitepages#ADD_PAGE_NAME_FIELD" value1="${siteChildPageName}" />
-		<execute function="AssertClick#assertValueClickAt" locator1="CPSitepages#ADD_PAGE_BUTTON" value1="Add Page" />
-		<execute function="AssertTextEquals" locator1="CPSitepages#SUCCESS_MESSAGE" value1="Your request completed successfully." />
+		if ("${sitePagePrivacy}" == "Private") {
+			AssertClick.assertTextClickAt(
+				locator1 = "CPSitepages#NAVIGATION_PRIVATE_PAGES",
+				value1 = "Private Pages"
+			);
+		}
+		else if ("${sitePagePrivacy}" == "Public") {
+			AssertClick.assertTextClickAt(
+				locator1 = "CPSitepages#NAVIGATION_PUBLIC_PAGES",
+				value1 = "Public Pages"
+			);
+		}
+		else {
+			fail("Invalid var sitePagePrivacy. Must be (Private|Public).");
+		}
 
-		<execute macro="SitePage#expandTreeCP" />
+		SitePage.expandRootCP();
 
-		<execute function="AssertTextEquals" locator1="CPSitepages#PAGE_TREE_PAGE_LINK_1" value1="${sitePageName}" />
-		<execute function="AssertTextEquals" locator1="CPSitepages#PAGE_TREE_PAGE_LINK_1_CHILD_PAGE_LINK_1" value1="${siteChildPageName}" />
-	</command>
+		AssertClick(
+			locator1 = "CPSitepages#PAGE_TREE_PAGE_LINK_1",
+			value1 = "${sitePageName}"
+		);
 
-	<command name="addCP">
-		<if>
-			<not>
-				<equals arg1="${siteScopeSelected}" arg2="true" />
-			</not>
-			<then>
-				<execute function="Type" locator1="CPSites#SEARCH_FIELD" value1="${siteName}" />
-				<execute function="AssertClick#assertValueClickAt" locator1="CPSites#SEARCH_BUTTON" value1="Search" />
-				<execute function="AssertClick" locator1="CPSites#SITE_TABLE_ACTIONS" value1="Actions" />
-				<execute function="AssertClick" locator1="CPSites#SITE_MENULIST_MANAGE_PAGES" value1="Manage Pages" />
-			</then>
-		</if>
+		AssertClick(
+			locator1 = "CPSitepages#TOOLBAR_ADD_CHILD_PAGE",
+			value1 = "Add Child Page"
+		);
 
-		<if>
-			<equals arg1="${sitePagePrivacy}" arg2="Private" />
-			<then>
-				<execute function="AssertClick#assertTextClickAt" locator1="CPSitepages#NAVIGATION_PRIVATE_PAGES" value1="Private Pages" />
-			</then>
-			<elseif>
-				<equals arg1="${sitePagePrivacy}" arg2="Public" />
-				<then>
-					<execute function="AssertClick#assertTextClickAt" locator1="CPSitepages#NAVIGATION_PUBLIC_PAGES" value1="Public Pages" />
-				</then>
-			</elseif>
-			<else>
-				<fail message="Invalid var sitePagePrivacy. Must be (Private|Public)." />
-			</else>
-		</if>
+		Type(
+			locator1 = "CPSitepages#ADD_PAGE_NAME_FIELD",
+			value1 = "${siteChildPageName}"
+		);
 
-		<execute function="AssertClick" locator1="CPSitepages#TOOLBAR_ADD_PAGE" value1="Add Page" />
-		<execute function="Type" locator1="CPSitepages#ADD_PAGE_NAME_FIELD" value1="${sitePageName}" />
+		AssertClick.assertValueClickAt(
+			locator1 = "CPSitepages#ADD_PAGE_BUTTON",
+			value1 = "Add Page"
+		);
 
-		<var name="sitePageType" value="${sitePageType}" />
+		AssertTextEquals(
+			locator1 = "CPSitepages#SUCCESS_MESSAGE",
+			value1 = "Your request completed successfully."
+		);
 
-		<if>
-			<contains string="${sitePageType}" substring="{sitePageType}" />
-			<then>
-				<var name="sitePageType" value="Portlet" />
-			</then>
-		</if>
+		SitePage.expandTreeCP();
 
-		<if>
-			<contains string="${sitePageTemplate}" substring="{sitePageTemplate}" />
-			<then>
-				<execute function="Select" locator1="CPSitepages#ADD_PAGE_TYPE_SELECT" value1="${sitePageType}" />
-			</then>
-			<else>
-				<execute function="Select" locator1="CPSitepages#ADD_PAGE_TEMPLATE_SELECT" value1="${sitePageTemplate}" />
-			</else>
-		</if>
+		AssertTextEquals(
+			locator1 = "CPSitepages#PAGE_TREE_PAGE_LINK_1",
+			value1 = "${sitePageName}"
+		);
 
-		<if>
-			<equals arg1="${isHidden}" arg2="true" />
-			<then>
-				<execute function="Check" locator1="CPSitepages#ADD_PAGE_HIDDEN_CHECKBOX" />
-			</then>
-		</if>
+		AssertTextEquals(
+			locator1 = "CPSitepages#PAGE_TREE_PAGE_LINK_1_CHILD_PAGE_LINK_1",
+			value1 = "${siteChildPageName}"
+		);
+	}
 
-		<execute function="AssertClick#assertValueClickAt" locator1="CPSitepages#ADD_PAGE_BUTTON" value1="Add Page" />
-		<execute function="AssertTextEquals" locator1="CPSitepages#SUCCESS_MESSAGE" value1="Your request completed successfully." />
+	macro addCP {
+		if (!("${siteScopeSelected}" == "true")) {
+			Type(locator1 = "CPSites#SEARCH_FIELD", value1 = "${siteName}");
 
-		<execute macro="SitePage#expandRootCP" />
+			AssertClick.assertValueClickAt(
+				locator1 = "CPSites#SEARCH_BUTTON",
+				value1 = "Search"
+			);
 
-		<execute function="AssertTextEquals" locator1="CPSitepages#PAGE_TREE_PAGE_LINK_GENERIC" value1="${sitePageName}">
-			<var name="key_sitePageName" value="${sitePageName}" />
-		</execute>
+			AssertClick(locator1 = "CPSites#SITE_TABLE_ACTIONS", value1 = "Actions");
 
-		<execute function="Click" locator1="CPSitepages#PAGE_TREE_PAGE_LINK_GENERIC">
-			<var name="key_sitePageName" value="${sitePageName}" />
-		</execute>
+			AssertClick(
+				locator1 = "CPSites#SITE_MENULIST_MANAGE_PAGES",
+				value1 = "Manage Pages"
+			);
+		}
 
-		<execute macro="SitePage#_configurePageType">
-			<var name="componentName" value="${componentName}" />
-			<var name="copyPageName" value="${copyPageName}" />
-			<var name="description" value="${description}" />
-			<var name="isCopy" value="${isCopy}" />
-			<var name="linkToPage" value="${linkToPage}" />
-			<var name="sitePageType" value="${sitePageType}" />
-			<var name="url" value="${url}" />
-		</execute>
+		if ("${sitePagePrivacy}" == "Private") {
+			AssertClick.assertTextClickAt(
+				locator1 = "CPSitepages#NAVIGATION_PRIVATE_PAGES",
+				value1 = "Private Pages"
+			);
+		}
+		else if ("${sitePagePrivacy}" == "Public") {
+			AssertClick.assertTextClickAt(
+				locator1 = "CPSitepages#NAVIGATION_PUBLIC_PAGES",
+				value1 = "Public Pages"
+			);
+		}
+		else {
+			fail("Invalid var sitePagePrivacy. Must be (Private|Public).");
+		}
 
-		<execute function="AssertClick" locator1="CPSitepages#SAVE_BUTTON" value1="Save" />
+		AssertClick(locator1 = "CPSitepages#TOOLBAR_ADD_PAGE", value1 = "Add Page");
 
-		<execute function="AssertTextEquals" locator1="CPSitepages#SUCCESS_MESSAGE" value1="Your request completed successfully." />
-	</command>
+		Type(locator1 = "CPSitepages#ADD_PAGE_NAME_FIELD", value1 = "${sitePageName}");
 
-	<command name="expandRootCP">
-		<execute function="Click" locator1="CPSitepages#PAGE_TREE_ROOT_ARROW" />
-		<execute function="AssertElementPresent#assertElementPresent" locator1="CPSitepages#PAGE_TREE_PAGE_LINK_1" />
+		var sitePageType = "${sitePageType}";
 
-		<if>
-			<condition function="IsElementNotPresent#isNotVisible" locator1="CPSitepages#PAGE_TREE_PAGE_LINK_1" />
-			<then>
-				<execute function="Click" locator1="CPSitepages#PAGE_TREE_ROOT_ARROW" />
-			</then>
-		</if>
-	</command>
+		if (contains("${sitePageType}", "{sitePageType}")) {
+			var sitePageType = "Portlet";
+		}
 
-	<command name="expandTreeCP">
-		<execute function="Click" locator1="CPSitepages#PAGE_TREE_PAGE_ARROW_1" />
+		if (contains("${sitePageTemplate}", "{sitePageTemplate}")) {
+			Select(
+				locator1 = "CPSitepages#ADD_PAGE_TYPE_SELECT",
+				value1 = "${sitePageType}"
+			);
+		}
+		else {
+			Select(
+				locator1 = "CPSitepages#ADD_PAGE_TEMPLATE_SELECT",
+				value1 = "${sitePageTemplate}"
+			);
+		}
 
-		<if>
-			<condition function="IsElementNotPresent" locator1="CPSitepages#PAGE_TREE_PAGE_LINK_1_CHILD_PAGE_LINK_1" />
-			<then>
-				<execute function="Click" locator1="CPSitepages#PAGE_TREE_PAGE_ARROW_1" />
-			</then>
-		</if>
+		if ("${isHidden}" == "true") {
+			Check(locator1 = "CPSitepages#ADD_PAGE_HIDDEN_CHECKBOX");
+		}
 
-		<execute function="AssertElementPresent" locator1="CPSitepages#PAGE_TREE_PAGE_LINK_1_CHILD_PAGE_LINK_1" />
-	</command>
+		AssertClick.assertValueClickAt(
+			locator1 = "CPSitepages#ADD_PAGE_BUTTON",
+			value1 = "Add Page"
+		);
 
-	<command name="exportLarCP">
-		<execute function="AssertClick" locator1="CPSitepages#TOOLBAR_EXPORT" value1="Export" />
+		AssertTextEquals(
+			locator1 = "CPSitepages#SUCCESS_MESSAGE",
+			value1 = "Your request completed successfully."
+		);
 
-		<execute function="SelectFrame" locator1="CPSitepagesExport#EXPORT_IFRAME" />
-		<execute function="Type" locator1="CPSitepagesExport#EXPORT_FILE_FIELD" value1="${file}" />
-		<execute function="Check" locator1="CPSitepagesExport#APPLICATIONS_MESSAGE_BOARDS_CHECKBOX" />
-		<execute function="Check" locator1="CPSitepagesExport#OTHER_PERMISSIONS_CHECKBOX" />
-		<execute function="Check" locator1="CPSitepagesExport#OTHER_CATEGORIES_CHECKBOX" />
-		<execute function="AssertClick" locator1="CPSitepagesExport#EXPORT_BUTTON" value1="Export" />
-		<execute function="DownloadTempFile" locator1="${file}" />
-		<execute function="SelectFrame" />
-	</command>
+		SitePage.expandRootCP();
 
-	<command name="importLarCP">
-		<execute function="AssertClick" locator1="CPSitepages#TOOLBAR_IMPORT" value1="Import" />
+		AssertTextEquals(
+			locator1 = "CPSitepages#PAGE_TREE_PAGE_LINK_GENERIC",
+			value1 = "${sitePageName}",
+			key_sitePageName = "${sitePageName}"
+		);
 
-		<execute function="SelectFrame" locator1="CPSitepagesImport#IMPORT_IFRAME" />
-		<execute function="UploadTempFile" locator1="CPSitepagesImport#FILE_UPLOAD_FIELD" value1="${file}" />
-		<execute function="Check" locator1="CPSitepagesImport#PAGES_DELETE_MISSING_PAGES_CHECKBOX" />
-		<execute function="Check" locator1="CPSitepagesImport#APPLICATIONS_DELETE_PORTLET_DATA_CHECKBOX" />
-		<execute function="Check" locator1="CPSitepagesImport#OTHER_PERMISSIONS_CHECKBOX" />
-		<execute function="Check" locator1="CPSitepagesImport#OTHER_CATEGORIES_CHECKBOX" />
-		<execute function="AssertClick#assertValueClickAt" locator1="CPSitepagesImport#IMPORT_BUTTON" value1="Import" />
-		<execute function="SelectFrame" />
+		Click(
+			locator1 = "CPSitepages#PAGE_TREE_PAGE_LINK_GENERIC",
+			key_sitePageName = "${sitePageName}"
+		);
 
-		<execute function="AssertTextEquals" locator1="CPSitepages#SUCCESS_MESSAGE" value1="Your request completed successfully." />
-	</command>
+		SitePage._configurePageType(
+			componentName = "${componentName}",
+			copyPageName = "${copyPageName}",
+			description = "${description}",
+			isCopy = "${isCopy}",
+			linkToPage = "${linkToPage}",
+			sitePageType = "${sitePageType}",
+			url = "${url}"
+		);
 
-	<command name="selectTheme">
-		<execute macro="Page#gotoCP">
-			<var name="portletName" value="Site Pages" />
-		</execute>
+		AssertClick(locator1 = "CPSitepages#SAVE_BUTTON", value1 = "Save");
 
-		<if>
-			<equals arg1="${liferayVersion}" arg2="6101" />
-			<then>
-				<execute function="AssertTextEquals" locator1="CPSitepages#HEADER" value1="liferay.com" />
-			</then>
-			<elseif>
-				<equals arg1="${liferayVersion}" arg2="6102" />
-				<then>
-					<execute function="AssertTextEquals" locator1="CPSitepages#HEADER" value1="Liferay" />
-				</then>
-			</elseif>
-		</if>
+		AssertTextEquals(
+			locator1 = "CPSitepages#SUCCESS_MESSAGE",
+			value1 = "Your request completed successfully."
+		);
+	}
 
-		<execute function="AssertClick" locator1="CPSitepages#NAVIGATION_PUBLIC_PAGES" value1="Public Pages" />
+	macro expandRootCP {
+		Click(locator1 = "CPSitepages#PAGE_TREE_ROOT_ARROW");
 
-		<execute function="AssertClick" locator1="CPSitepages#NAVIGATION_REGULAR_BROWSERS" value1="Regular Browsers" />
+		AssertElementPresent.assertElementPresent(
+			locator1 = "CPSitepages#PAGE_TREE_PAGE_LINK_1"
+		);
 
-		<execute function="AssertTextNotEquals" locator1="CPSitepages#CURRENT_THEME_NAME" value1="${availableThemeName}" />
-		<execute function="AssertTextEquals" locator1="CPSitepages#AVAILABLE_THEME_NAME" value1="${availableThemeName}" />
+		if (IsElementNotPresent.isNotVisible(locator1 = "CPSitepages#PAGE_TREE_PAGE_LINK_1")) {
+			Click(locator1 = "CPSitepages#PAGE_TREE_ROOT_ARROW");
+		}
+	}
 
-		<var name="key_availableThemeName" value="${availableThemeName}" />
+	macro expandTreeCP {
+		Click(locator1 = "CPSitepages#PAGE_TREE_PAGE_ARROW_1");
 
-		<execute function="Check" locator1="CPSitepages#AVAILABLE_THEME_RADIO" />
+		if (IsElementNotPresent(locator1 = "CPSitepages#PAGE_TREE_PAGE_LINK_1_CHILD_PAGE_LINK_1")) {
+			Click(locator1 = "CPSitepages#PAGE_TREE_PAGE_ARROW_1");
+		}
 
-		<execute function="Click#clickAt" locator1="CPSitepages#SAVE_BUTTON" />
+		AssertElementPresent(
+			locator1 = "CPSitepages#PAGE_TREE_PAGE_LINK_1_CHILD_PAGE_LINK_1"
+		);
+	}
 
-		<execute function="AssertTextEquals" locator1="CPSitepages#SUCCESS_MESSAGE" value1="Your request completed successfully." />
-		<execute function="AssertTextEquals" locator1="CPSitepages#CURRENT_THEME_NAME" value1="${availableThemeName}" />
-	</command>
+	macro exportLarCP {
+		AssertClick(locator1 = "CPSitepages#TOOLBAR_EXPORT", value1 = "Export");
 
-	<command name="viewChildPG">
-		<execute function="MouseOver#mouseOverClickNavigation" locator1="Home#PAGE_1" value1="${sitePageName}" />
-		<execute function="AssertClick#assertTextClickAt" locator1="Home#PAGE_1_CHILD_PAGE_1" value1="${siteChildPageName}" />
-		<execute function="AssertTextEquals" locator1="Home#BREADCRUMB_1" value1="${siteGuestName}" />
-		<execute function="AssertTextEquals" locator1="Home#BREADCRUMB_2" value1="${siteName}" />
-		<execute function="AssertTextEquals" locator1="Home#BREADCRUMB_3" value1="${sitePageName}" />
-		<execute function="AssertTextEquals" locator1="Home#BREADCRUMB_4" value1="${siteChildPageName}" />
-		<execute function="AssertTextEquals" locator1="Home#SITE_NAME" value1="${siteName}" />
-		<execute function="AssertLocation" value1="${sitePageURL}" />
-	</command>
+		SelectFrame(locator1 = "CPSitepagesExport#EXPORT_IFRAME");
 
-	<command name="viewPG">
-		<execute function="AssertTextEquals" locator1="Home#BREADCRUMB_1" value1="${siteGuestName}" />
-		<execute function="AssertTextEquals" locator1="Home#BREADCRUMB_2" value1="${siteName}" />
-		<execute function="AssertTextEquals" locator1="Home#BREADCRUMB_3" value1="${sitePageName}" />
-		<execute function="AssertTextEquals" locator1="Home#SITE_NAME" value1="${siteName}" />
-		<execute function="AssertLocation" value1="${sitePageURL}" />
-	</command>
-</definition>
+		Type(locator1 = "CPSitepagesExport#EXPORT_FILE_FIELD", value1 = "${file}");
+
+		Check(locator1 = "CPSitepagesExport#APPLICATIONS_MESSAGE_BOARDS_CHECKBOX");
+
+		Check(locator1 = "CPSitepagesExport#OTHER_PERMISSIONS_CHECKBOX");
+
+		Check(locator1 = "CPSitepagesExport#OTHER_CATEGORIES_CHECKBOX");
+
+		AssertClick(locator1 = "CPSitepagesExport#EXPORT_BUTTON", value1 = "Export");
+
+		DownloadTempFile(locator1 = "${file}");
+
+		SelectFrame();
+	}
+
+	macro importLarCP {
+		AssertClick(locator1 = "CPSitepages#TOOLBAR_IMPORT", value1 = "Import");
+
+		SelectFrame(locator1 = "CPSitepagesImport#IMPORT_IFRAME");
+
+		UploadTempFile(
+			locator1 = "CPSitepagesImport#FILE_UPLOAD_FIELD",
+			value1 = "${file}"
+		);
+
+		Check(locator1 = "CPSitepagesImport#PAGES_DELETE_MISSING_PAGES_CHECKBOX");
+
+		Check(locator1 = "CPSitepagesImport#APPLICATIONS_DELETE_PORTLET_DATA_CHECKBOX");
+
+		Check(locator1 = "CPSitepagesImport#OTHER_PERMISSIONS_CHECKBOX");
+
+		Check(locator1 = "CPSitepagesImport#OTHER_CATEGORIES_CHECKBOX");
+
+		AssertClick.assertValueClickAt(
+			locator1 = "CPSitepagesImport#IMPORT_BUTTON",
+			value1 = "Import"
+		);
+
+		SelectFrame();
+
+		AssertTextEquals(
+			locator1 = "CPSitepages#SUCCESS_MESSAGE",
+			value1 = "Your request completed successfully."
+		);
+	}
+
+	macro selectTheme {
+		Page.gotoCP(portletName = "Site Pages");
+
+		if ("${liferayVersion}" == "6101") {
+			AssertTextEquals(locator1 = "CPSitepages#HEADER", value1 = "liferay.com");
+		}
+		else if ("${liferayVersion}" == "6102") {
+			AssertTextEquals(locator1 = "CPSitepages#HEADER", value1 = "Liferay");
+		}
+
+		AssertClick(
+			locator1 = "CPSitepages#NAVIGATION_PUBLIC_PAGES",
+			value1 = "Public Pages"
+		);
+
+		AssertClick(
+			locator1 = "CPSitepages#NAVIGATION_REGULAR_BROWSERS",
+			value1 = "Regular Browsers"
+		);
+
+		AssertTextNotEquals(
+			locator1 = "CPSitepages#CURRENT_THEME_NAME",
+			value1 = "${availableThemeName}"
+		);
+
+		AssertTextEquals(
+			locator1 = "CPSitepages#AVAILABLE_THEME_NAME",
+			value1 = "${availableThemeName}"
+		);
+
+		var key_availableThemeName = "${availableThemeName}";
+
+		Check(locator1 = "CPSitepages#AVAILABLE_THEME_RADIO");
+
+		Click.clickAt(locator1 = "CPSitepages#SAVE_BUTTON");
+
+		AssertTextEquals(
+			locator1 = "CPSitepages#SUCCESS_MESSAGE",
+			value1 = "Your request completed successfully."
+		);
+
+		AssertTextEquals(
+			locator1 = "CPSitepages#CURRENT_THEME_NAME",
+			value1 = "${availableThemeName}"
+		);
+	}
+
+	macro viewChildPG {
+		MouseOver.mouseOverClickNavigation(
+			locator1 = "Home#PAGE_1",
+			value1 = "${sitePageName}"
+		);
+
+		AssertClick.assertTextClickAt(
+			locator1 = "Home#PAGE_1_CHILD_PAGE_1",
+			value1 = "${siteChildPageName}"
+		);
+
+		AssertTextEquals(locator1 = "Home#BREADCRUMB_1", value1 = "${siteGuestName}");
+
+		AssertTextEquals(locator1 = "Home#BREADCRUMB_2", value1 = "${siteName}");
+
+		AssertTextEquals(locator1 = "Home#BREADCRUMB_3", value1 = "${sitePageName}");
+
+		AssertTextEquals(
+			locator1 = "Home#BREADCRUMB_4",
+			value1 = "${siteChildPageName}"
+		);
+
+		AssertTextEquals(locator1 = "Home#SITE_NAME", value1 = "${siteName}");
+
+		AssertLocation(value1 = "${sitePageURL}");
+	}
+
+	macro viewPG {
+		AssertTextEquals(locator1 = "Home#BREADCRUMB_1", value1 = "${siteGuestName}");
+
+		AssertTextEquals(locator1 = "Home#BREADCRUMB_2", value1 = "${siteName}");
+
+		AssertTextEquals(locator1 = "Home#BREADCRUMB_3", value1 = "${sitePageName}");
+
+		AssertTextEquals(locator1 = "Home#SITE_NAME", value1 = "${siteName}");
+
+		AssertLocation(value1 = "${sitePageURL}");
+	}
+}

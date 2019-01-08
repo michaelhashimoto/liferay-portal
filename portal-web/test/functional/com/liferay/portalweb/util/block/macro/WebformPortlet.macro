@@ -1,53 +1,143 @@
-<definition>
-	<command name="configureWebformPG">
-		<execute function="AssertTextEquals" locator1="PGWebform#PORTLET_TITLE" value1="Web Form" />
+definition {
+	macro configureWebformPG {
+		AssertTextEquals(locator1 = "PGWebform#PORTLET_TITLE", value1 = "Web Form");
 
-		<execute function="AssertTextEquals" locator1="PGWebform#DEFAULT_FORM_INFORMATION_TITLE" value1="${webFormInformationTitle}" />
+		AssertTextEquals(
+			locator1 = "PGWebform#DEFAULT_FORM_INFORMATION_TITLE",
+			value1 = "${webFormInformationTitle}"
+		);
 
-		<execute function="AssertTextEquals" locator1="PGWebform#DEFAULT_FORM_INFORMATION_DESCRIPTION" value1="${webFormInformationDescription}" />
+		AssertTextEquals(
+			locator1 = "PGWebform#DEFAULT_FORM_INFORMATION_DESCRIPTION",
+			value1 = "${webFormInformationDescription}"
+		);
 
-		<execute function="AssertTextEquals" locator1="PGWebform#DEFAULT_FORM_FIELDS_NAME_HEADER" value1="${webFormFieldsName}" />
-		<execute function="AssertElementPresent" locator1="PGWebform#DEFAULT_FORM_FIELDS_NAME" />
+		AssertTextEquals(
+			locator1 = "PGWebform#DEFAULT_FORM_FIELDS_NAME_HEADER",
+			value1 = "${webFormFieldsName}"
+		);
 
-		<execute function="AssertTextEquals" locator1="PGWebform#DEFAULT_FORM_FIELDS_RATING_HEADER" value1="${webFormFieldsRating}" />
-		<execute function="AssertElementPresent" locator1="PGWebform#DEFAULT_FORM_FIELDS_RATING" />
+		AssertElementPresent(locator1 = "PGWebform#DEFAULT_FORM_FIELDS_NAME");
 
-		<execute function="AssertTextEquals" locator1="PGWebform#DEFAULT_FORM_FIELDS_COMMENTS_HEADER" value1="${webFormFieldsComments}" />
-		<execute function="AssertElementPresent" locator1="PGWebform#DEFAULT_FORM_FIELDS_COMMENTS" />
+		AssertTextEquals(
+			locator1 = "PGWebform#DEFAULT_FORM_FIELDS_RATING_HEADER",
+			value1 = "${webFormFieldsRating}"
+		);
 
-		<execute function="AssertClick#pauseAssertTextClickAt" locator1="PGWebform#PORTLET_OPTIONS" value1="Options" />
-		<execute function="AssertClick#assertTextClickAt" locator1="PGWebform#WEBFORM_OPTIONS_MENULIST_CONFIGURATION" value1="Configuration" />
+		AssertElementPresent(locator1 = "PGWebform#DEFAULT_FORM_FIELDS_RATING");
 
-		<execute function="SelectFrame" locator1="PGWebformConfiguration#CONFIGURATION_IFRAME" />
-		<execute function="Type#clickAtSendKeys" locator1="PGWebformConfiguration#SETUP_FORM_INFORMATION_TITLE" value1="${webFormInformationTitleEdit}" />
-		<execute function="Type#clickAtSendKeys" locator1="PGWebformConfiguration#SETUP_FORM_INFORMATION_DESCRIPTION" value1="${webFormInformationDescriptionEdit}" />
-		<execute function="Type#clickAtSendKeys" locator1="PGWebformConfiguration#SETUP_FORM_FIELDS_NAME" value1="${webFormFieldsNameEdit}" />
-		<execute function="Type#clickAtSendKeys" locator1="PGWebformConfiguration#SETUP_FORM_FIELDS_RATING" value1="${webFormFieldsRatingEdit}" />
-		<execute function="Type#clickAtSendKeys" locator1="PGWebformConfiguration#SETUP_FORM_FIELDS_COMMENTS" value1="${webFormFieldsCommentsEdit}" />
+		AssertTextEquals(
+			locator1 = "PGWebform#DEFAULT_FORM_FIELDS_COMMENTS_HEADER",
+			value1 = "${webFormFieldsComments}"
+		);
 
-		<execute function="AssertClick#assertValueClickAt" locator1="PGWebformConfiguration#SAVE_BUTTON" value1="Save" />
-		<execute function="AssertTextEquals" locator1="PGWebformConfiguration#SUCCESS_MESSAGE" value1="You have successfully updated the setup." />
-	</command>
+		AssertElementPresent(locator1 = "PGWebform#DEFAULT_FORM_FIELDS_COMMENTS");
 
-	<command name="viewConfigureWebformPG">
-		<execute function="AssertTextEquals" locator1="PGWebform#PORTLET_TITLE" value1="Web Form" />
+		AssertClick.pauseAssertTextClickAt(
+			locator1 = "PGWebform#PORTLET_OPTIONS",
+			value1 = "Options"
+		);
 
-		<execute function="AssertTextNotEquals" locator1="PGWebform#DEFAULT_FORM_INFORMATION_TITLE" value1="${webFormInformationTitle}" />
-		<execute function="AssertTextEquals" locator1="PGWebform#DEFAULT_FORM_INFORMATION_TITLE" value1="${webFormInformationTitleEdit}" />
+		AssertClick.assertTextClickAt(
+			locator1 = "PGWebform#WEBFORM_OPTIONS_MENULIST_CONFIGURATION",
+			value1 = "Configuration"
+		);
 
-		<execute function="AssertTextNotEquals" locator1="PGWebform#DEFAULT_FORM_INFORMATION_DESCRIPTION" value1="${webFormInformationDescription}" />
-		<execute function="AssertTextEquals" locator1="PGWebform#DEFAULT_FORM_INFORMATION_DESCRIPTION" value1="${webFormInformationDescriptionEdit}" />
+		SelectFrame(locator1 = "PGWebformConfiguration#CONFIGURATION_IFRAME");
 
-		<execute function="AssertTextNotEquals" locator1="PGWebform#DEFAULT_FORM_FIELDS_NAME_HEADER" value1="${webFormFieldsName}" />
-		<execute function="AssertTextEquals" locator1="PGWebform#DEFAULT_FORM_FIELDS_NAME_HEADER" value1="${webFormFieldsNameEdit}" />
-		<execute function="AssertElementPresent" locator1="PGWebform#DEFAULT_FORM_FIELDS_NAME" />
+		Type.clickAtSendKeys(
+			locator1 = "PGWebformConfiguration#SETUP_FORM_INFORMATION_TITLE",
+			value1 = "${webFormInformationTitleEdit}"
+		);
 
-		<execute function="AssertTextNotEquals" locator1="PGWebform#DEFAULT_FORM_FIELDS_RATING_HEADER" value1="${webFormFieldsRating}" />
-		<execute function="AssertTextEquals" locator1="PGWebform#DEFAULT_FORM_FIELDS_RATING_HEADER" value1="${webFormFieldsRatingEdit}" />
-		<execute function="AssertElementPresent" locator1="PGWebform#DEFAULT_FORM_FIELDS_RATING" />
+		Type.clickAtSendKeys(
+			locator1 = "PGWebformConfiguration#SETUP_FORM_INFORMATION_DESCRIPTION",
+			value1 = "${webFormInformationDescriptionEdit}"
+		);
 
-		<execute function="AssertTextNotEquals" locator1="PGWebform#DEFAULT_FORM_FIELDS_COMMENTS_HEADER" value1="${webFormFieldsComments}" />
-		<execute function="AssertTextEquals" locator1="PGWebform#DEFAULT_FORM_FIELDS_COMMENTS_HEADER" value1="${webFormFieldsCommentsEdit}" />
-		<execute function="AssertElementPresent" locator1="PGWebform#DEFAULT_FORM_FIELDS_COMMENTS" />
-	</command>
-</definition>
+		Type.clickAtSendKeys(
+			locator1 = "PGWebformConfiguration#SETUP_FORM_FIELDS_NAME",
+			value1 = "${webFormFieldsNameEdit}"
+		);
+
+		Type.clickAtSendKeys(
+			locator1 = "PGWebformConfiguration#SETUP_FORM_FIELDS_RATING",
+			value1 = "${webFormFieldsRatingEdit}"
+		);
+
+		Type.clickAtSendKeys(
+			locator1 = "PGWebformConfiguration#SETUP_FORM_FIELDS_COMMENTS",
+			value1 = "${webFormFieldsCommentsEdit}"
+		);
+
+		AssertClick.assertValueClickAt(
+			locator1 = "PGWebformConfiguration#SAVE_BUTTON",
+			value1 = "Save"
+		);
+
+		AssertTextEquals(
+			locator1 = "PGWebformConfiguration#SUCCESS_MESSAGE",
+			value1 = "You have successfully updated the setup."
+		);
+	}
+
+	macro viewConfigureWebformPG {
+		AssertTextEquals(locator1 = "PGWebform#PORTLET_TITLE", value1 = "Web Form");
+
+		AssertTextNotEquals(
+			locator1 = "PGWebform#DEFAULT_FORM_INFORMATION_TITLE",
+			value1 = "${webFormInformationTitle}"
+		);
+
+		AssertTextEquals(
+			locator1 = "PGWebform#DEFAULT_FORM_INFORMATION_TITLE",
+			value1 = "${webFormInformationTitleEdit}"
+		);
+
+		AssertTextNotEquals(
+			locator1 = "PGWebform#DEFAULT_FORM_INFORMATION_DESCRIPTION",
+			value1 = "${webFormInformationDescription}"
+		);
+
+		AssertTextEquals(
+			locator1 = "PGWebform#DEFAULT_FORM_INFORMATION_DESCRIPTION",
+			value1 = "${webFormInformationDescriptionEdit}"
+		);
+
+		AssertTextNotEquals(
+			locator1 = "PGWebform#DEFAULT_FORM_FIELDS_NAME_HEADER",
+			value1 = "${webFormFieldsName}"
+		);
+
+		AssertTextEquals(
+			locator1 = "PGWebform#DEFAULT_FORM_FIELDS_NAME_HEADER",
+			value1 = "${webFormFieldsNameEdit}"
+		);
+
+		AssertElementPresent(locator1 = "PGWebform#DEFAULT_FORM_FIELDS_NAME");
+
+		AssertTextNotEquals(
+			locator1 = "PGWebform#DEFAULT_FORM_FIELDS_RATING_HEADER",
+			value1 = "${webFormFieldsRating}"
+		);
+
+		AssertTextEquals(
+			locator1 = "PGWebform#DEFAULT_FORM_FIELDS_RATING_HEADER",
+			value1 = "${webFormFieldsRatingEdit}"
+		);
+
+		AssertElementPresent(locator1 = "PGWebform#DEFAULT_FORM_FIELDS_RATING");
+
+		AssertTextNotEquals(
+			locator1 = "PGWebform#DEFAULT_FORM_FIELDS_COMMENTS_HEADER",
+			value1 = "${webFormFieldsComments}"
+		);
+
+		AssertTextEquals(
+			locator1 = "PGWebform#DEFAULT_FORM_FIELDS_COMMENTS_HEADER",
+			value1 = "${webFormFieldsCommentsEdit}"
+		);
+
+		AssertElementPresent(locator1 = "PGWebform#DEFAULT_FORM_FIELDS_COMMENTS");
+	}
+}

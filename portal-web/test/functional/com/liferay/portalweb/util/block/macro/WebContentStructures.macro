@@ -1,39 +1,90 @@
-<definition>
-	<command name="addCP">
-		<execute function="AssertClick#assertTextClickAt" locator1="CPWebcontent#NAVIGATION_STRUCTURES" value1="Structures" />
+definition {
+	macro addCP {
+		AssertClick.assertTextClickAt(
+			locator1 = "CPWebcontent#NAVIGATION_STRUCTURES",
+			value1 = "Structures"
+		);
 
-		<execute function="AssertClick#assertValueClickAt" locator1="CPWebcontentStructures#ADD_STRUCTURE_BUTTON" value1="Add Structure" />
+		AssertClick.assertValueClickAt(
+			locator1 = "CPWebcontentStructures#ADD_STRUCTURE_BUTTON",
+			value1 = "Add Structure"
+		);
 
-		<execute function="Type" locator1="CPWebcontentStructuresAddstructure#NAME_FIELD" value1="${structureName}" />
-		<execute function="Type" locator1="CPWebcontentStructuresAddstructure#DESCRIPTION_FIELD" value1="${structureDescription}" />
-		<execute function="AssertClick#assertValueClickAt" locator1="CPWebcontentStructuresAddstructure#ADD_ROW_BUTTON" value1="Add Row" />
-		<execute function="Type" locator1="CPWebcontentStructuresAddstructure#ROW_NAME_1" value1="text" />
-		<execute function="Select" locator1="CPWebcontentStructuresAddstructure#ROW_TYPE_SELECT_1" value1="Text" />
-		<execute function="AssertClick#assertValueClickAt" locator1="CPWebcontentStructuresAddstructure#SAVE_BUTTON" value1="Save" />
+		Type(
+			locator1 = "CPWebcontentStructuresAddstructure#NAME_FIELD",
+			value1 = "${structureName}"
+		);
 
-		<execute function="AssertTextEquals" locator1="CPWebcontentStructures#SUCCESS_MESSAGE" value1="Your request completed successfully." />
-		<execute function="AssertElementPresent" locator1="CPWebcontentStructures#STRUCTURE_TABLE_ID_1" />
-		<execute function="AssertTextEquals" locator1="CPWebcontentStructures#STRUCTURE_TABLE_NAME_1" value1="${structureName}" />
-		<execute function="AssertTextEquals" locator1="CPWebcontentStructures#STRUCTURE_TABLE_DESCRIPTION_1" value1="${structureDescription}" />
-	</command>
+		Type(
+			locator1 = "CPWebcontentStructuresAddstructure#DESCRIPTION_FIELD",
+			value1 = "${structureDescription}"
+		);
 
-	<command name="tearDownCP">
-		<execute macro="Page#gotoCP">
-			<var name="portletName" value="Web Content" />
-		</execute>
+		AssertClick.assertValueClickAt(
+			locator1 = "CPWebcontentStructuresAddstructure#ADD_ROW_BUTTON",
+			value1 = "Add Row"
+		);
 
-		<execute function="AssertClick#assertTextClickAt" locator1="CPWebcontent#NAVIGATION_STRUCTURES" value1="Structures" />
+		Type(
+			locator1 = "CPWebcontentStructuresAddstructure#ROW_NAME_1",
+			value1 = "text"
+		);
 
-		<if>
-			<condition function="IsElementPresent#isVisible" locator1="CPWebcontentStructures#STRUCTURE_TABLE_ALL_CHECKBOX" />
-			<then>
-				<execute function="Check" locator1="CPWebcontentStructures#STRUCTURE_TABLE_ALL_CHECKBOX" />
-				<execute function="AssertClickNoError" locator1="CPWebcontentStructures#DELETE_BUTTON" value1="Delete" />
-				<execute function="Confirm" value1="Are you sure you want to delete the selected structures?" />
-				<execute function="AssertTextEquals" locator1="CPWebcontentStructures#SUCCESS_MESSAGE" value1="Your request completed successfully." />
-			</then>
-		</if>
+		Select(
+			locator1 = "CPWebcontentStructuresAddstructure#ROW_TYPE_SELECT_1",
+			value1 = "Text"
+		);
 
-		<execute function="AssertTextEquals" locator1="CPWebcontentStructures#INFO_MESSAGE" value1="No structures were found." />
-	</command>
-</definition>
+		AssertClick.assertValueClickAt(
+			locator1 = "CPWebcontentStructuresAddstructure#SAVE_BUTTON",
+			value1 = "Save"
+		);
+
+		AssertTextEquals(
+			locator1 = "CPWebcontentStructures#SUCCESS_MESSAGE",
+			value1 = "Your request completed successfully."
+		);
+
+		AssertElementPresent(locator1 = "CPWebcontentStructures#STRUCTURE_TABLE_ID_1");
+
+		AssertTextEquals(
+			locator1 = "CPWebcontentStructures#STRUCTURE_TABLE_NAME_1",
+			value1 = "${structureName}"
+		);
+
+		AssertTextEquals(
+			locator1 = "CPWebcontentStructures#STRUCTURE_TABLE_DESCRIPTION_1",
+			value1 = "${structureDescription}"
+		);
+	}
+
+	macro tearDownCP {
+		Page.gotoCP(portletName = "Web Content");
+
+		AssertClick.assertTextClickAt(
+			locator1 = "CPWebcontent#NAVIGATION_STRUCTURES",
+			value1 = "Structures"
+		);
+
+		if (IsElementPresent.isVisible(locator1 = "CPWebcontentStructures#STRUCTURE_TABLE_ALL_CHECKBOX")) {
+			Check(locator1 = "CPWebcontentStructures#STRUCTURE_TABLE_ALL_CHECKBOX");
+
+			AssertClickNoError(
+				locator1 = "CPWebcontentStructures#DELETE_BUTTON",
+				value1 = "Delete"
+			);
+
+			Confirm(value1 = "Are you sure you want to delete the selected structures?");
+
+			AssertTextEquals(
+				locator1 = "CPWebcontentStructures#SUCCESS_MESSAGE",
+				value1 = "Your request completed successfully."
+			);
+		}
+
+		AssertTextEquals(
+			locator1 = "CPWebcontentStructures#INFO_MESSAGE",
+			value1 = "No structures were found."
+		);
+	}
+}

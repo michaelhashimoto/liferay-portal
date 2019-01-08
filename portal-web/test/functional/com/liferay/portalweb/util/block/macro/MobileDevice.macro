@@ -1,5 +1,5 @@
-<definition>
-	<command name="selectMobileDevice">
-		<execute function="SikuliClick" locator1="MobileDevice#MOBILE_DEVICE_SCREENSHOT" />
-	</command>
-</definition>
+definition {
+	macro selectMobileDevice {
+		SikuliClick(locator1 = "MobileDevice#MOBILE_DEVICE_SCREENSHOT");
+	}
+}

@@ -1,57 +1,151 @@
-<definition>
-	<command name="addAssetTypeWikiPageCP">
-		<execute function="AssertClick" locator1="CPCategories#ADD_VOCABULARY_BUTTON" value1="Add Vocabulary" />
-		<execute function="Type" locator1="CPCategories#ADD_VOCABULARY_NAME_FIELD" value1="${vocabularyName}" />
-		<execute function="AssertClick" locator1="CPCategories#ADD_VOCABULARY_ASSOCIATED_ASSET_TYPES" value1="Associated Asset Types" />
-		<execute function="Select" locator1="CPCategories#ADD_VOCABULARY_CHOOSE_ASSET_TYPE_SELECT" value1="Wiki Page" />
-		<execute function="AssertClick" locator1="CPCategories#ADD_VOCABULARY_SAVE_BUTTON" value1="Save" />
-		<execute function="AssertTextEquals#assertTextNoWaitForText" locator1="CPCategories#SUCCESS_MESSAGE" value1="Your request processed successfully." />
-		<execute function="AssertTextEquals" locator1="CPCategories#VOCABULARY_ENTRY_2" value1="${vocabularyName}" />
-	</command>
+definition {
+	macro addAssetTypeWikiPageCP {
+		AssertClick(
+			locator1 = "CPCategories#ADD_VOCABULARY_BUTTON",
+			value1 = "Add Vocabulary"
+		);
 
-	<command name="addCP">
-		<execute function="AssertClick" locator1="CPCategories#ADD_VOCABULARY_BUTTON" value1="Add Vocabulary" />
-		<execute function="Type" locator1="CPCategories#ADD_VOCABULARY_NAME_FIELD" value1="${vocabularyName}" />
-		<execute function="AssertClick" locator1="CPCategories#ADD_VOCABULARY_SAVE_BUTTON" value1="Save" />
-		<execute function="AssertTextEquals#assertTextNoWaitForText" locator1="CPCategories#SUCCESS_MESSAGE" value1="Your request processed successfully." />
-		<execute function="AssertTextEquals" locator1="CPCategories#VOCABULARY_ENTRY_2" value1="${vocabularyName}" />
-	</command>
+		Type(
+			locator1 = "CPCategories#ADD_VOCABULARY_NAME_FIELD",
+			value1 = "${vocabularyName}"
+		);
 
-	<command name="deleteCPByActions">
-		<execute function="AssertTextEquals" locator1="CPCategories#VOCABULARY_ENTRY_2" value1="${vocabularyName}" />
-		<execute function="Click" locator1="CPCategories#ALL_VOCABULARIES_CHECKBOX" />
-		<execute function="AssertClick" locator1="CPCategories#ACTIONS_BUTTON" value1="Actions" />
-		<execute function="AssertClickNoError" locator1="CPCategories#ACTIONS_MENULIST_DELETE" value1="Delete" />
-		<execute function="Confirm" value1="Are you sure you want to delete the selected vocabularies?" />
-		<execute function="AssertTextEquals#assertTextNoWaitForText" locator1="CPCategories#SUCCESS_MESSAGE" value1="Your request processed successfully." />
-		<execute function="AssertTextEquals" locator1="CPCategories#INFO_MESSAGE" value1="There are no categories." />
-		<execute function="AssertTextNotPresent" value1="${vocabularyName}" />
-	</command>
+		AssertClick(
+			locator1 = "CPCategories#ADD_VOCABULARY_ASSOCIATED_ASSET_TYPES",
+			value1 = "Associated Asset Types"
+		);
 
-	<command name="editCP">
-		<execute function="AssertTextEquals" locator1="CPCategories#VOCABULARY_ENTRY_2" value1="${vocabularyName}" />
-		<execute function="Click" locator1="CPCategories#EDIT_VOCABULARY_ICON" />
-		<execute function="Type" locator1="CPCategories#EDIT_VOCABULARY_NAME_FIELD" value1="${vocabularyNameEdit}" />
-		<execute function="AssertClick" locator1="CPCategories#EDIT_VOCABULARY_SAVE_BUTTON" value1="Save" />
-		<execute function="AssertTextEquals#assertTextNoWaitForText" locator1="CPCategories#SUCCESS_MESSAGE" value1="Your request processed successfully." />
-		<execute function="AssertTextEquals" locator1="CPCategories#VOCABULARY_ENTRY_2" value1="${vocabularyNameEdit}" />
-	</command>
+		Select(
+			locator1 = "CPCategories#ADD_VOCABULARY_CHOOSE_ASSET_TYPE_SELECT",
+			value1 = "Wiki Page"
+		);
 
-	<command name="tearDownCP">
-		<execute macro="Page#gotoCP">
-			<var name="portletName" value="Categories" />
-		</execute>
+		AssertClick(
+			locator1 = "CPCategories#ADD_VOCABULARY_SAVE_BUTTON",
+			value1 = "Save"
+		);
 
-		<if>
-			<condition function="IsElementPresent" locator1="CPCategories#VOCABULARY_ENTRY_1" />
-			<then>
-				<execute function="Click" locator1="CPCategories#ALL_VOCABULARIES_CHECKBOX" />
-				<execute function="AssertClick" locator1="CPCategories#ACTIONS_BUTTON" value1="Actions" />
-				<execute function="AssertClickNoError" locator1="CPCategories#ACTIONS_MENULIST_DELETE" value1="Delete" />
-				<execute function="Confirm" value1="Are you sure you want to delete the selected vocabularies?" />
-				<execute function="AssertTextEquals#assertTextNoWaitForText" locator1="CPCategories#SUCCESS_MESSAGE" value1="Your request processed successfully." />
-				<execute function="AssertTextEquals" locator1="CPCategories#INFO_MESSAGE" value1="There are no categories." />
-			</then>
-		</if>
-	</command>
-</definition>
+		AssertTextEquals.assertTextNoWaitForText(
+			locator1 = "CPCategories#SUCCESS_MESSAGE",
+			value1 = "Your request processed successfully."
+		);
+
+		AssertTextEquals(
+			locator1 = "CPCategories#VOCABULARY_ENTRY_2",
+			value1 = "${vocabularyName}"
+		);
+	}
+
+	macro addCP {
+		AssertClick(
+			locator1 = "CPCategories#ADD_VOCABULARY_BUTTON",
+			value1 = "Add Vocabulary"
+		);
+
+		Type(
+			locator1 = "CPCategories#ADD_VOCABULARY_NAME_FIELD",
+			value1 = "${vocabularyName}"
+		);
+
+		AssertClick(
+			locator1 = "CPCategories#ADD_VOCABULARY_SAVE_BUTTON",
+			value1 = "Save"
+		);
+
+		AssertTextEquals.assertTextNoWaitForText(
+			locator1 = "CPCategories#SUCCESS_MESSAGE",
+			value1 = "Your request processed successfully."
+		);
+
+		AssertTextEquals(
+			locator1 = "CPCategories#VOCABULARY_ENTRY_2",
+			value1 = "${vocabularyName}"
+		);
+	}
+
+	macro deleteCPByActions {
+		AssertTextEquals(
+			locator1 = "CPCategories#VOCABULARY_ENTRY_2",
+			value1 = "${vocabularyName}"
+		);
+
+		Click(locator1 = "CPCategories#ALL_VOCABULARIES_CHECKBOX");
+
+		AssertClick(locator1 = "CPCategories#ACTIONS_BUTTON", value1 = "Actions");
+
+		AssertClickNoError(
+			locator1 = "CPCategories#ACTIONS_MENULIST_DELETE",
+			value1 = "Delete"
+		);
+
+		Confirm(value1 = "Are you sure you want to delete the selected vocabularies?");
+
+		AssertTextEquals.assertTextNoWaitForText(
+			locator1 = "CPCategories#SUCCESS_MESSAGE",
+			value1 = "Your request processed successfully."
+		);
+
+		AssertTextEquals(
+			locator1 = "CPCategories#INFO_MESSAGE",
+			value1 = "There are no categories."
+		);
+
+		AssertTextNotPresent(value1 = "${vocabularyName}");
+	}
+
+	macro editCP {
+		AssertTextEquals(
+			locator1 = "CPCategories#VOCABULARY_ENTRY_2",
+			value1 = "${vocabularyName}"
+		);
+
+		Click(locator1 = "CPCategories#EDIT_VOCABULARY_ICON");
+
+		Type(
+			locator1 = "CPCategories#EDIT_VOCABULARY_NAME_FIELD",
+			value1 = "${vocabularyNameEdit}"
+		);
+
+		AssertClick(
+			locator1 = "CPCategories#EDIT_VOCABULARY_SAVE_BUTTON",
+			value1 = "Save"
+		);
+
+		AssertTextEquals.assertTextNoWaitForText(
+			locator1 = "CPCategories#SUCCESS_MESSAGE",
+			value1 = "Your request processed successfully."
+		);
+
+		AssertTextEquals(
+			locator1 = "CPCategories#VOCABULARY_ENTRY_2",
+			value1 = "${vocabularyNameEdit}"
+		);
+	}
+
+	macro tearDownCP {
+		Page.gotoCP(portletName = "Categories");
+
+		if (IsElementPresent(locator1 = "CPCategories#VOCABULARY_ENTRY_1")) {
+			Click(locator1 = "CPCategories#ALL_VOCABULARIES_CHECKBOX");
+
+			AssertClick(locator1 = "CPCategories#ACTIONS_BUTTON", value1 = "Actions");
+
+			AssertClickNoError(
+				locator1 = "CPCategories#ACTIONS_MENULIST_DELETE",
+				value1 = "Delete"
+			);
+
+			Confirm(value1 = "Are you sure you want to delete the selected vocabularies?");
+
+			AssertTextEquals.assertTextNoWaitForText(
+				locator1 = "CPCategories#SUCCESS_MESSAGE",
+				value1 = "Your request processed successfully."
+			);
+
+			AssertTextEquals(
+				locator1 = "CPCategories#INFO_MESSAGE",
+				value1 = "There are no categories."
+			);
+		}
+	}
+}

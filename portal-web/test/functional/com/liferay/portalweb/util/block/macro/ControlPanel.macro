@@ -1,5 +1,9 @@
-<definition>
-	<command name="viewPortletTitle" summary="Assert that the Control Panel portlet title displays the text '${portletTitle}'">
-		<execute function="AssertTextEquals" locator1="Home#CONTROL_PANEL_PORTLET_TITLE" value1="${portletTitle}" />
-	</command>
-</definition>
+definition {
+	@summary = "Assert that the Control Panel portlet title displays the text '${portletTitle}'"
+	macro viewPortletTitle {
+		AssertTextEquals(
+			locator1 = "Home#CONTROL_PANEL_PORTLET_TITLE",
+			value1 = "${portletTitle}"
+		);
+	}
+}

@@ -1,294 +1,866 @@
-<definition>
-	<command name="approveTaskByActions">
-		<var name="key_workflowAssetTitle" value="${workflowAssetTitle}" />
+definition {
+	macro approveTaskByActions {
+		var key_workflowAssetTitle = "${workflowAssetTitle}";
 
-		<execute function="AssertTextEquals" locator1="CPMyworkflowtasks#ASSIGNED_TO_ME_TABLE_TASK" value1="${workflowTask}" />
-		<execute function="AssertTextEquals#assertPartialText" locator1="CPMyworkflowtasks#ASSIGNED_TO_ME_TABLE_ASSET_TITLE" value1="${workflowAssetTitle}" />
-		<execute function="AssertTextEquals" locator1="CPMyworkflowtasks#ASSIGNED_TO_ME_TABLE_ASSET_TYPE" value1="${workflowAssetType}" />
-		<execute function="AssertElementPresent" locator1="CPMyworkflowtasks#ASSIGNED_TO_ME_TABLE_LAST_ACTIVITY_DATE" />
-		<execute function="AssertElementPresent" locator1="CPMyworkflowtasks#ASSIGNED_TO_ME_TABLE_DUE_DATE" />
+		AssertTextEquals(
+			locator1 = "CPMyworkflowtasks#ASSIGNED_TO_ME_TABLE_TASK",
+			value1 = "${workflowTask}"
+		);
 
-		<execute function="AssertClick" locator1="CPMyworkflowtasks#ASSIGNED_TO_ME_TABLE_ACTIONS" value1="Actions" />
-		<execute function="AssertClick" locator1="CPMyworkflowtasks#ASSIGNED_TO_ME_MENULIST_APPROVE" value1="Approve" />
-		<execute function="AssertClick#assertTextClickAt" locator1="CPMyworkflowtasks#PANEL_OK_BUTTON" value1="OK" />
-		<execute function="AssertTextEquals" locator1="CPMyworkflowtasks#SUCCESS_MESSAGE" value1="Your request completed successfully." />
+		AssertTextEquals.assertPartialText(
+			locator1 = "CPMyworkflowtasks#ASSIGNED_TO_ME_TABLE_ASSET_TITLE",
+			value1 = "${workflowAssetTitle}"
+		);
 
-		<execute function="Click" locator1="CPMyworkflowtasks#NAVIGATION_COMPLETED" value1="Completed" />
+		AssertTextEquals(
+			locator1 = "CPMyworkflowtasks#ASSIGNED_TO_ME_TABLE_ASSET_TYPE",
+			value1 = "${workflowAssetType}"
+		);
 
-		<execute function="AssertTextEquals" locator1="CPMyworkflowtasksCompleted#COMPLETED_TABLE_TASK" value1="${workflowTask}" />
-		<execute function="AssertTextEquals#assertPartialText" locator1="CPMyworkflowtasksCompleted#COMPLETED_TABLE_ASSET_TITLE" value1="${workflowAssetTitle}" />
-		<execute function="AssertTextEquals" locator1="CPMyworkflowtasksCompleted#COMPLETED_TABLE_ASSET_TYPE" value1="${workflowAssetType}" />
-		<execute function="AssertElementPresent" locator1="CPMyworkflowtasksCompleted#COMPLETED_TABLE_LAST_ACTIVITY_DATE" />
-		<execute function="AssertElementPresent" locator1="CPMyworkflowtasksCompleted#COMPLETED_TABLE_DUE_DATE" />
-	</command>
+		AssertElementPresent(
+			locator1 = "CPMyworkflowtasks#ASSIGNED_TO_ME_TABLE_LAST_ACTIVITY_DATE"
+		);
 
-	<command name="approveTaskByDetails">
-		<var name="key_workflowAssetTitle" value="${workflowAssetTitle}" />
+		AssertElementPresent(
+			locator1 = "CPMyworkflowtasks#ASSIGNED_TO_ME_TABLE_DUE_DATE"
+		);
 
-		<execute function="AssertTextEquals" locator1="CPMyworkflowtasks#ASSIGNED_TO_ME_TABLE_TASK" value1="${workflowTask}" />
-		<execute function="AssertTextEquals#assertPartialText" locator1="CPMyworkflowtasks#ASSIGNED_TO_ME_TABLE_ASSET_TITLE" value1="${workflowAssetTitle}" />
-		<execute function="AssertTextEquals" locator1="CPMyworkflowtasks#ASSIGNED_TO_ME_TABLE_ASSET_TYPE" value1="${workflowAssetType}" />
-		<execute function="AssertElementPresent" locator1="CPMyworkflowtasks#ASSIGNED_TO_ME_TABLE_LAST_ACTIVITY_DATE" />
-		<execute function="AssertElementPresent" locator1="CPMyworkflowtasks#ASSIGNED_TO_ME_TABLE_DUE_DATE" />
+		AssertClick(
+			locator1 = "CPMyworkflowtasks#ASSIGNED_TO_ME_TABLE_ACTIONS",
+			value1 = "Actions"
+		);
 
-		<execute function="AssertClick#assertPartialTextClickAt" locator1="CPMyworkflowtasks#ASSIGNED_TO_ME_TABLE_ASSET_TITLE" value1="${workflowAssetTitle}" />
+		AssertClick(
+			locator1 = "CPMyworkflowtasks#ASSIGNED_TO_ME_MENULIST_APPROVE",
+			value1 = "Approve"
+		);
 
-		<execute function="AssertTextEquals" locator1="CPMyworkflowtasksTask#PREVIEW" value1="Preview of ${workflowAssetType}" />
-		<execute function="AssertTextEquals" locator1="CPMyworkflowtasksTask#PREVIEW_TITLE" value1="${workflowAssetTitle}" />
-		<execute function="AssertTextEquals#assertPartialText" locator1="CPMyworkflowtasksTask#PREVIEW_CONTENT" value1="${workflowAssetContent}" />
+		AssertClick.assertTextClickAt(
+			locator1 = "CPMyworkflowtasks#PANEL_OK_BUTTON",
+			value1 = "OK"
+		);
 
-		<execute function="AssertClick" locator1="CPMyworkflowtasksTask#MENU_APPROVE" value1="Approve" />
-		<execute function="AssertClick#assertTextClickAt" locator1="CPMyworkflowtasksTask#PANEL_OK_BUTTON" value1="OK" />
-		<execute function="AssertTextEquals" locator1="CPMyworkflowtasksTask#SUCCESS_MESSAGE" value1="Your request completed successfully." />
+		AssertTextEquals(
+			locator1 = "CPMyworkflowtasks#SUCCESS_MESSAGE",
+			value1 = "Your request completed successfully."
+		);
 
-		<execute function="AssertClick#assertPartialTextClickAt" locator1="CPMyworkflowtasksTask#BACK" value1="Back" />
+		Click(locator1 = "CPMyworkflowtasks#NAVIGATION_COMPLETED", value1 = "Completed");
 
-		<execute function="Click" locator1="CPMyworkflowtasks#NAVIGATION_COMPLETED" value1="Completed" />
+		AssertTextEquals(
+			locator1 = "CPMyworkflowtasksCompleted#COMPLETED_TABLE_TASK",
+			value1 = "${workflowTask}"
+		);
 
-		<execute function="AssertTextEquals" locator1="CPMyworkflowtasksCompleted#COMPLETED_TABLE_TASK" value1="${workflowTask}" />
-		<execute function="AssertTextEquals#assertPartialText" locator1="CPMyworkflowtasksCompleted#COMPLETED_TABLE_ASSET_TITLE" value1="${workflowAssetTitle}" />
-		<execute function="AssertTextEquals" locator1="CPMyworkflowtasksCompleted#COMPLETED_TABLE_ASSET_TYPE" value1="${workflowAssetType}" />
-		<execute function="AssertElementPresent" locator1="CPMyworkflowtasksCompleted#COMPLETED_TABLE_LAST_ACTIVITY_DATE" />
-		<execute function="AssertElementPresent" locator1="CPMyworkflowtasksCompleted#COMPLETED_TABLE_DUE_DATE" />
-	</command>
+		AssertTextEquals.assertPartialText(
+			locator1 = "CPMyworkflowtasksCompleted#COMPLETED_TABLE_ASSET_TITLE",
+			value1 = "${workflowAssetTitle}"
+		);
 
-	<command name="assignToMeTaskByActions">
-		<var name="key_workflowAssetTitle" value="${workflowAssetTitle}" />
+		AssertTextEquals(
+			locator1 = "CPMyworkflowtasksCompleted#COMPLETED_TABLE_ASSET_TYPE",
+			value1 = "${workflowAssetType}"
+		);
 
-		<execute function="AssertTextEquals" locator1="CPMyworkflowtasks#ASSIGNED_TO_MY_ROLES_TABLE_TASK" value1="${workflowTask}" />
-		<execute function="AssertTextEquals#assertPartialText" locator1="CPMyworkflowtasks#ASSIGNED_TO_MY_ROLES_TABLE_ASSET_TITLE" value1="${workflowAssetTitle}" />
-		<execute function="AssertTextEquals" locator1="CPMyworkflowtasks#ASSIGNED_TO_MY_ROLES_TABLE_ASSET_TYPE" value1="${workflowAssetType}" />
-		<execute function="AssertElementPresent" locator1="CPMyworkflowtasks#ASSIGNED_TO_MY_ROLES_TABLE_LAST_ACTIVITY_DATE" />
-		<execute function="AssertElementPresent" locator1="CPMyworkflowtasks#ASSIGNED_TO_MY_ROLES_TABLE_DUE_DATE" />
+		AssertElementPresent(
+			locator1 = "CPMyworkflowtasksCompleted#COMPLETED_TABLE_LAST_ACTIVITY_DATE"
+		);
 
-		<execute function="AssertClick" locator1="CPMyworkflowtasks#ASSIGNED_TO_MY_ROLES_TABLE_ACTIONS" value1="Actions" />
-		<execute function="AssertClick" locator1="CPMyworkflowtasks#ASSIGNED_TO_MY_ROLES_MENULIST_ASSIGN_TO_ME" value1="Assign to Me" />
-		<execute function="AssertClick#assertTextClickAt" locator1="CPMyworkflowtasks#PANEL_OK_BUTTON" value1="OK" />
-		<execute function="AssertTextEquals" locator1="CPMyworkflowtasks#SUCCESS_MESSAGE" value1="Your request completed successfully." />
+		AssertElementPresent(
+			locator1 = "CPMyworkflowtasksCompleted#COMPLETED_TABLE_DUE_DATE"
+		);
+	}
 
-		<execute function="AssertTextEquals" locator1="CPMyworkflowtasks#ASSIGNED_TO_ME_TABLE_TASK" value1="${workflowTask}" />
-		<execute function="AssertTextEquals#assertPartialText" locator1="CPMyworkflowtasks#ASSIGNED_TO_ME_TABLE_ASSET_TITLE" value1="${workflowAssetTitle}" />
-		<execute function="AssertTextEquals" locator1="CPMyworkflowtasks#ASSIGNED_TO_ME_TABLE_ASSET_TYPE" value1="${workflowAssetType}" />
-		<execute function="AssertElementPresent" locator1="CPMyworkflowtasks#ASSIGNED_TO_ME_TABLE_LAST_ACTIVITY_DATE" />
-		<execute function="AssertElementPresent" locator1="CPMyworkflowtasks#ASSIGNED_TO_ME_TABLE_DUE_DATE" />
-	</command>
+	macro approveTaskByDetails {
+		var key_workflowAssetTitle = "${workflowAssetTitle}";
 
-	<command name="assignToMeTaskByDetails">
-		<var name="key_workflowAssetTitle" value="${workflowAssetTitle}" />
+		AssertTextEquals(
+			locator1 = "CPMyworkflowtasks#ASSIGNED_TO_ME_TABLE_TASK",
+			value1 = "${workflowTask}"
+		);
 
-		<execute function="AssertTextEquals" locator1="CPMyworkflowtasks#ASSIGNED_TO_MY_ROLES_TABLE_TASK" value1="${workflowTask}" />
-		<execute function="AssertTextEquals#assertPartialText" locator1="CPMyworkflowtasks#ASSIGNED_TO_MY_ROLES_TABLE_ASSET_TITLE" value1="${workflowAssetTitle}" />
-		<execute function="AssertTextEquals" locator1="CPMyworkflowtasks#ASSIGNED_TO_MY_ROLES_TABLE_ASSET_TYPE" value1="${workflowAssetType}" />
-		<execute function="AssertElementPresent" locator1="CPMyworkflowtasks#ASSIGNED_TO_MY_ROLES_TABLE_LAST_ACTIVITY_DATE" />
-		<execute function="AssertElementPresent" locator1="CPMyworkflowtasks#ASSIGNED_TO_MY_ROLES_TABLE_DUE_DATE" />
+		AssertTextEquals.assertPartialText(
+			locator1 = "CPMyworkflowtasks#ASSIGNED_TO_ME_TABLE_ASSET_TITLE",
+			value1 = "${workflowAssetTitle}"
+		);
 
-		<execute function="AssertClick#assertPartialTextClickAt" locator1="CPMyworkflowtasks#ASSIGNED_TO_MY_ROLES_TABLE_ASSET_TITLE" value1="${workflowAssetTitle}" />
+		AssertTextEquals(
+			locator1 = "CPMyworkflowtasks#ASSIGNED_TO_ME_TABLE_ASSET_TYPE",
+			value1 = "${workflowAssetType}"
+		);
 
-		<execute function="AssertTextEquals" locator1="CPMyworkflowtasksTask#PREVIEW" value1="Preview of ${workflowAssetType}" />
-		<execute function="AssertTextEquals" locator1="CPMyworkflowtasksTask#PREVIEW_TITLE" value1="${workflowAssetTitle}" />
-		<execute function="AssertTextEquals#assertPartialText" locator1="CPMyworkflowtasksTask#PREVIEW_CONTENT" value1="${workflowAssetContent}" />
+		AssertElementPresent(
+			locator1 = "CPMyworkflowtasks#ASSIGNED_TO_ME_TABLE_LAST_ACTIVITY_DATE"
+		);
 
-		<if>
-			<equals arg1="${assignToMeKey}" arg2="ASSIGN_TO_ME" />
-			<then>
-				<execute function="AssertClick" locator1="CPMyworkflowtasksTask#ASSIGN_TO_ME" value1="Assign to Me" />
-			</then>
-			<else>
-				<execute function="AssertClick" locator1="CPMyworkflowtasksTask#MENU_ASSIGN_TO_ME" value1="Assign to Me" />
-			</else>
-		</if>
+		AssertElementPresent(
+			locator1 = "CPMyworkflowtasks#ASSIGNED_TO_ME_TABLE_DUE_DATE"
+		);
 
-		<execute function="AssertClick" locator1="CPMyworkflowtasksTask#MENU_ASSIGN_TO_ME" value1="Assign to Me" />
-		<execute function="AssertClick#assertTextClickAt" locator1="CPMyworkflowtasksTask#PANEL_OK_BUTTON" value1="OK" />
-		<execute function="AssertTextEquals" locator1="CPMyworkflowtasksTask#SUCCESS_MESSAGE" value1="Your request completed successfully." />
+		AssertClick.assertPartialTextClickAt(
+			locator1 = "CPMyworkflowtasks#ASSIGNED_TO_ME_TABLE_ASSET_TITLE",
+			value1 = "${workflowAssetTitle}"
+		);
 
-		<execute function="AssertClick#assertPartialTextClickAt" locator1="CPMyworkflowtasksTask#BACK" value1="Back" />
+		AssertTextEquals(
+			locator1 = "CPMyworkflowtasksTask#PREVIEW",
+			value1 = "Preview of ${workflowAssetType}"
+		);
 
-		<execute function="AssertTextEquals" locator1="CPMyworkflowtasks#ASSIGNED_TO_ME_TABLE_TASK" value1="${workflowTask}" />
-		<execute function="AssertTextEquals#assertPartialText" locator1="CPMyworkflowtasks#ASSIGNED_TO_ME_TABLE_ASSET_TITLE" value1="${workflowAssetTitle}" />
-		<execute function="AssertTextEquals" locator1="CPMyworkflowtasks#ASSIGNED_TO_ME_TABLE_ASSET_TYPE" value1="${workflowAssetType}" />
-		<execute function="AssertElementPresent" locator1="CPMyworkflowtasks#ASSIGNED_TO_ME_TABLE_LAST_ACTIVITY_DATE" />
-		<execute function="AssertElementPresent" locator1="CPMyworkflowtasks#ASSIGNED_TO_ME_TABLE_DUE_DATE" />
-	</command>
+		AssertTextEquals(
+			locator1 = "CPMyworkflowtasksTask#PREVIEW_TITLE",
+			value1 = "${workflowAssetTitle}"
+		);
 
-	<command name="configurePortalWorkflow">
-		<execute function="Click" locator1="CPPortalWorkflowconfiguration#NAVIGATION_DEFAULT_CONFIGURATION" />
+		AssertTextEquals.assertPartialText(
+			locator1 = "CPMyworkflowtasksTask#PREVIEW_CONTENT",
+			value1 = "${workflowAssetContent}"
+		);
 
-		<execute function="Select" locator1="CPPortalWorkflowconfigurationDefaultconfiguration#${workflowResourceKey}" value1="${workflowDefinition}" />
-		<execute function="Click" locator1="CPPortalWorkflowconfigurationDefaultconfiguration#SAVE_BUTTON" value1="Save" />
-		<execute function="AssertTextEquals" locator1="CPPortalWorkflowconfigurationDefaultconfiguration#SUCCESS_MESSAGE" value1="Your request completed successfully." />
-	</command>
+		AssertClick(locator1 = "CPMyworkflowtasksTask#MENU_APPROVE", value1 = "Approve");
 
-	<command name="configureSiteWorkflow">
-		<execute function="Select" locator1="CPSiteWorkflowconfiguration#${workflowResourceKey}" value1="${workflowDefinition}" />
-		<execute function="AssertClick#assertValueClickAt" locator1="CPSiteWorkflowconfiguration#SAVE_BUTTON" value1="Save" />
-		<execute function="AssertTextEquals" locator1="CPSiteWorkflowconfiguration#SUCCESS_MESSAGE" value1="Your request completed successfully." />
-	</command>
+		AssertClick.assertTextClickAt(
+			locator1 = "CPMyworkflowtasksTask#PANEL_OK_BUTTON",
+			value1 = "OK"
+		);
 
-	<command name="rejectTaskByActions">
-		<var name="key_workflowAssetTitle" value="${workflowAssetTitle}" />
+		AssertTextEquals(
+			locator1 = "CPMyworkflowtasksTask#SUCCESS_MESSAGE",
+			value1 = "Your request completed successfully."
+		);
 
-		<execute function="AssertTextEquals" locator1="CPMyworkflowtasks#ASSIGNED_TO_ME_TABLE_TASK" value1="${workflowTask}" />
-		<execute function="AssertTextEquals#assertPartialText" locator1="CPMyworkflowtasks#ASSIGNED_TO_ME_TABLE_ASSET_TITLE" value1="${workflowAssetTitle}" />
-		<execute function="AssertTextEquals" locator1="CPMyworkflowtasks#ASSIGNED_TO_ME_TABLE_ASSET_TYPE" value1="${workflowAssetType}" />
-		<execute function="AssertElementPresent" locator1="CPMyworkflowtasks#ASSIGNED_TO_ME_TABLE_LAST_ACTIVITY_DATE" />
-		<execute function="AssertElementPresent" locator1="CPMyworkflowtasks#ASSIGNED_TO_ME_TABLE_DUE_DATE" />
+		AssertClick.assertPartialTextClickAt(
+			locator1 = "CPMyworkflowtasksTask#BACK",
+			value1 = "Back"
+		);
 
-		<execute function="AssertClick" locator1="CPMyworkflowtasks#ASSIGNED_TO_ME_TABLE_ACTIONS" value1="Actions" />
-		<execute function="AssertClick" locator1="CPMyworkflowtasks#ASSIGNED_TO_ME_MENULIST_REJECT" value1="Reject" />
-		<execute function="AssertClick#assertTextClickAt" locator1="CPMyworkflowtasks#PANEL_OK_BUTTON" value1="OK" />
-		<execute function="AssertTextEquals" locator1="CPMyworkflowtasks#SUCCESS_MESSAGE" value1="Your request completed successfully." />
+		Click(locator1 = "CPMyworkflowtasks#NAVIGATION_COMPLETED", value1 = "Completed");
 
-		<execute function="Click" locator1="CPMyworkflowtasks#NAVIGATION_COMPLETED" value1="Completed" />
+		AssertTextEquals(
+			locator1 = "CPMyworkflowtasksCompleted#COMPLETED_TABLE_TASK",
+			value1 = "${workflowTask}"
+		);
 
-		<execute function="AssertTextEquals" locator1="CPMyworkflowtasksCompleted#COMPLETED_TABLE_TASK" value1="${workflowTask}" />
-		<execute function="AssertTextEquals#assertPartialText" locator1="CPMyworkflowtasksCompleted#COMPLETED_TABLE_ASSET_TITLE" value1="${workflowAssetTitle}" />
-		<execute function="AssertTextEquals" locator1="CPMyworkflowtasksCompleted#COMPLETED_TABLE_ASSET_TYPE" value1="${workflowAssetType}" />
-		<execute function="AssertElementPresent" locator1="CPMyworkflowtasksCompleted#COMPLETED_TABLE_LAST_ACTIVITY_DATE" />
-		<execute function="AssertElementPresent" locator1="CPMyworkflowtasksCompleted#COMPLETED_TABLE_DUE_DATE" />
-	</command>
+		AssertTextEquals.assertPartialText(
+			locator1 = "CPMyworkflowtasksCompleted#COMPLETED_TABLE_ASSET_TITLE",
+			value1 = "${workflowAssetTitle}"
+		);
 
-	<command name="rejectTaskByDetails">
-		<var name="key_workflowAssetTitle" value="${workflowAssetTitle}" />
+		AssertTextEquals(
+			locator1 = "CPMyworkflowtasksCompleted#COMPLETED_TABLE_ASSET_TYPE",
+			value1 = "${workflowAssetType}"
+		);
 
-		<execute function="AssertTextEquals" locator1="CPMyworkflowtasks#ASSIGNED_TO_ME_TABLE_TASK" value1="${workflowTask}" />
-		<execute function="AssertTextEquals#assertPartialText" locator1="CPMyworkflowtasks#ASSIGNED_TO_ME_TABLE_ASSET_TITLE" value1="${workflowAssetTitle}" />
-		<execute function="AssertTextEquals" locator1="CPMyworkflowtasks#ASSIGNED_TO_ME_TABLE_ASSET_TYPE" value1="${workflowAssetType}" />
-		<execute function="AssertElementPresent" locator1="CPMyworkflowtasks#ASSIGNED_TO_ME_TABLE_LAST_ACTIVITY_DATE" />
-		<execute function="AssertElementPresent" locator1="CPMyworkflowtasks#ASSIGNED_TO_ME_TABLE_DUE_DATE" />
+		AssertElementPresent(
+			locator1 = "CPMyworkflowtasksCompleted#COMPLETED_TABLE_LAST_ACTIVITY_DATE"
+		);
 
-		<execute function="AssertClick#assertPartialTextClickAt" locator1="CPMyworkflowtasks#ASSIGNED_TO_ME_TABLE_ASSET_TITLE" value1="${workflowAssetTitle}" />
+		AssertElementPresent(
+			locator1 = "CPMyworkflowtasksCompleted#COMPLETED_TABLE_DUE_DATE"
+		);
+	}
 
-		<execute function="AssertTextEquals" locator1="CPMyworkflowtasksTask#PREVIEW" value1="Preview of ${workflowAssetType}" />
-		<execute function="AssertTextEquals" locator1="CPMyworkflowtasksTask#PREVIEW_TITLE" value1="${workflowAssetTitle}" />
-		<execute function="AssertTextEquals#assertPartialText" locator1="CPMyworkflowtasksTask#PREVIEW_CONTENT" value1="${workflowAssetContent}" />
+	macro assignToMeTaskByActions {
+		var key_workflowAssetTitle = "${workflowAssetTitle}";
 
-		<execute function="AssertClick" locator1="CPMyworkflowtasksTask#MENU_REJECT" value1="Reject" />
-		<execute function="AssertClick#assertTextClickAt" locator1="CPMyworkflowtasksTask#PANEL_OK_BUTTON" value1="OK" />
-		<execute function="AssertTextEquals" locator1="CPMyworkflowtasksTask#SUCCESS_MESSAGE" value1="Your request completed successfully." />
+		AssertTextEquals(
+			locator1 = "CPMyworkflowtasks#ASSIGNED_TO_MY_ROLES_TABLE_TASK",
+			value1 = "${workflowTask}"
+		);
 
-		<execute function="AssertClick#assertPartialTextClickAt" locator1="CPMyworkflowtasksTask#BACK" value1="Back" />
+		AssertTextEquals.assertPartialText(
+			locator1 = "CPMyworkflowtasks#ASSIGNED_TO_MY_ROLES_TABLE_ASSET_TITLE",
+			value1 = "${workflowAssetTitle}"
+		);
 
-		<execute function="Click" locator1="CPMyworkflowtasks#NAVIGATION_COMPLETED" value1="Completed" />
+		AssertTextEquals(
+			locator1 = "CPMyworkflowtasks#ASSIGNED_TO_MY_ROLES_TABLE_ASSET_TYPE",
+			value1 = "${workflowAssetType}"
+		);
 
-		<execute function="AssertTextEquals" locator1="CPMyworkflowtasksCompleted#COMPLETED_TABLE_TASK" value1="${workflowTask}" />
-		<execute function="AssertTextEquals#assertPartialText" locator1="CPMyworkflowtasksCompleted#COMPLETED_TABLE_ASSET_TITLE" value1="${workflowAssetTitle}" />
-		<execute function="AssertTextEquals" locator1="CPMyworkflowtasksCompleted#COMPLETED_TABLE_ASSET_TYPE" value1="${workflowAssetType}" />
-		<execute function="AssertElementPresent" locator1="CPMyworkflowtasksCompleted#COMPLETED_TABLE_LAST_ACTIVITY_DATE" />
-		<execute function="AssertElementPresent" locator1="CPMyworkflowtasksCompleted#COMPLETED_TABLE_DUE_DATE" />
-	</command>
+		AssertElementPresent(
+			locator1 = "CPMyworkflowtasks#ASSIGNED_TO_MY_ROLES_TABLE_LAST_ACTIVITY_DATE"
+		);
 
-	<command name="tearDownPortalWorkflow">
-		<execute macro="Page#gotoCP">
-			<var name="portletName" value="Workflow" />
-		</execute>
+		AssertElementPresent(
+			locator1 = "CPMyworkflowtasks#ASSIGNED_TO_MY_ROLES_TABLE_DUE_DATE"
+		);
 
-		<execute function="Click" locator1="CPPortalWorkflowconfiguration#NAVIGATION_DEFAULT_CONFIGURATION" />
+		AssertClick(
+			locator1 = "CPMyworkflowtasks#ASSIGNED_TO_MY_ROLES_TABLE_ACTIONS",
+			value1 = "Actions"
+		);
 
-		<execute function="Select" locator1="CPPortalWorkflowconfigurationDefaultconfiguration#RESOURCE_TABLE_PAGE_REVISION_SELECT" value1="No Workflow" />
-		<execute function="Select" locator1="CPPortalWorkflowconfigurationDefaultconfiguration#RESOURCE_TABLE_USER_SELECT" value1="No Workflow" />
-		<execute function="Select" locator1="CPPortalWorkflowconfigurationDefaultconfiguration#RESOURCE_TABLE_BLOGS_ENTRY_SELECT" value1="No Workflow" />
-		<execute function="Select" locator1="CPPortalWorkflowconfigurationDefaultconfiguration#RESOURCE_TABLE_WEB_CONTENT_SELECT" value1="No Workflow" />
-		<execute function="Select" locator1="CPPortalWorkflowconfigurationDefaultconfiguration#RESOURCE_TABLE_COMMENTS_SELECT" value1="No Workflow" />
-		<execute function="Select" locator1="CPPortalWorkflowconfigurationDefaultconfiguration#RESOURCE_TABLE_MESSAGE_BOARDS_MESSAGE_SELECT" value1="No Workflow" />
-		<execute function="Select" locator1="CPPortalWorkflowconfigurationDefaultconfiguration#RESOURCE_TABLE_WIKI_PAGE_SELECT" value1="No Workflow" />
-		<execute function="AssertClick#assertValueClickAt" locator1="CPPortalWorkflowconfigurationDefaultconfiguration#SAVE_BUTTON" value1="Save" />
-	</command>
+		AssertClick(
+			locator1 = "CPMyworkflowtasks#ASSIGNED_TO_MY_ROLES_MENULIST_ASSIGN_TO_ME",
+			value1 = "Assign to Me"
+		);
 
-	<command name="tearDownSiteWorkflow">
-		<execute macro="Page#gotoCP">
-			<var name="portletName" value="Workflow Configuration" />
-		</execute>
+		AssertClick.assertTextClickAt(
+			locator1 = "CPMyworkflowtasks#PANEL_OK_BUTTON",
+			value1 = "OK"
+		);
 
-		<execute function="Select" locator1="CPSiteWorkflowconfiguration#RESOURCE_TABLE_PAGE_REVISION_SELECT" value1="Default: No Workflow" />
-		<execute function="Select" locator1="CPSiteWorkflowconfiguration#RESOURCE_TABLE_BLOGS_ENTRY_SELECT" value1="Default: No Workflow" />
-		<execute function="Select" locator1="CPSiteWorkflowconfiguration#RESOURCE_TABLE_WEB_CONTENT_SELECT" value1="Default: No Workflow" />
-		<execute function="Select" locator1="CPSiteWorkflowconfiguration#RESOURCE_TABLE_COMMENTS_SELECT" value1="Default: No Workflow" />
-		<execute function="Select" locator1="CPSiteWorkflowconfiguration#RESOURCE_TABLE_MESSAGE_BOARDS_MESSAGE_SELECT" value1="Default: No Workflow" />
-		<execute function="Select" locator1="CPSiteWorkflowconfiguration#RESOURCE_TABLE_WIKI_PAGE_SELECT" value1="Default: No Workflow" />
-		<execute function="AssertClick#assertValueClickAt" locator1="CPSiteWorkflowconfiguration#SAVE_BUTTON" value1="Save" />
-	</command>
+		AssertTextEquals(
+			locator1 = "CPMyworkflowtasks#SUCCESS_MESSAGE",
+			value1 = "Your request completed successfully."
+		);
 
-	<command name="viewRejectTask">
-		<var name="key_workflowAssetTitle" value="${workflowAssetTitle}" />
+		AssertTextEquals(
+			locator1 = "CPMyworkflowtasks#ASSIGNED_TO_ME_TABLE_TASK",
+			value1 = "${workflowTask}"
+		);
 
-		<execute function="AssertTextEquals" locator1="CPMyworkflowtasks#ASSIGNED_TO_ME_TABLE_TASK" value1="Update" />
-		<execute function="AssertTextEquals#assertPartialText" locator1="CPMyworkflowtasks#ASSIGNED_TO_ME_TABLE_ASSET_TITLE" value1="${workflowAssetTitle}" />
-		<execute function="AssertTextEquals" locator1="CPMyworkflowtasks#ASSIGNED_TO_ME_TABLE_ASSET_TYPE" value1="${workflowAssetType}" />
-		<execute function="AssertElementPresent" locator1="CPMyworkflowtasks#ASSIGNED_TO_ME_TABLE_LAST_ACTIVITY_DATE" />
-		<execute function="AssertElementPresent" locator1="CPMyworkflowtasks#ASSIGNED_TO_ME_TABLE_DUE_DATE" />
-	</command>
+		AssertTextEquals.assertPartialText(
+			locator1 = "CPMyworkflowtasks#ASSIGNED_TO_ME_TABLE_ASSET_TITLE",
+			value1 = "${workflowAssetTitle}"
+		);
 
-	<command name="withdrawTaskByActions">
-		<var name="key_workflowAssetTitle" value="${workflowAssetTitle}" />
+		AssertTextEquals(
+			locator1 = "CPMyworkflowtasks#ASSIGNED_TO_ME_TABLE_ASSET_TYPE",
+			value1 = "${workflowAssetType}"
+		);
 
-		<execute function="AssertTextEquals" locator1="CPMysubmissions#PENDING_TABLE_DEFINITION" value1="${workflowDefinition}" />
-		<execute function="AssertTextEquals" locator1="CPMysubmissions#PENDING_TABLE_ASSET_TITLE" value1="${workflowAssetTitle}" />
-		<execute function="AssertTextEquals" locator1="CPMysubmissions#PENDING_TABLE_ASSET_TYPE" value1="${workflowAssetType}" />
-		<execute function="AssertTextEquals" locator1="CPMysubmissions#PENDING_TABLE_STATUS" value1="${workflowTask}" />
-		<execute function="AssertElementPresent" locator1="CPMysubmissions#PENDING_TABLE_LAST_ACTIVITY_DATE" />
-		<execute function="AssertElementPresent" locator1="CPMysubmissions#PENDING_TABLE_END_DATE" />
-		<execute function="AssertClick#assertTextClickAt" locator1="CPMysubmissions#PENDING_TABLE_WITHDRAW_SUBMISSION" value1="Withdraw Submission" />
+		AssertElementPresent(
+			locator1 = "CPMyworkflowtasks#ASSIGNED_TO_ME_TABLE_LAST_ACTIVITY_DATE"
+		);
 
-		<execute function="AssertTextEquals" locator1="CPMysubmissions#SUCCESS_MESSAGE" value1="Your request completed successfully." />
-	</command>
+		AssertElementPresent(
+			locator1 = "CPMyworkflowtasks#ASSIGNED_TO_ME_TABLE_DUE_DATE"
+		);
+	}
 
-	<command name="withdrawTaskByDetails">
-		<var name="key_workflowAssetContent" value="${workflowAssetContent}" />
-		<var name="key_workflowAssetTitle" value="${workflowAssetTitle}" />
+	macro assignToMeTaskByDetails {
+		var key_workflowAssetTitle = "${workflowAssetTitle}";
 
-		<execute function="AssertTextEquals" locator1="CPMysubmissions#PENDING_TABLE_DEFINITION" value1="${workflowDefinition}" />
-		<execute function="AssertTextEquals" locator1="CPMysubmissions#PENDING_TABLE_ASSET_TITLE" value1="${workflowAssetTitle}" />
-		<execute function="AssertTextEquals" locator1="CPMysubmissions#PENDING_TABLE_ASSET_TYPE" value1="${workflowAssetType}" />
-		<execute function="AssertTextEquals" locator1="CPMysubmissions#PENDING_TABLE_STATUS" value1="${workflowTask}" />
-		<execute function="AssertElementPresent" locator1="CPMysubmissions#PENDING_TABLE_LAST_ACTIVITY_DATE" />
-		<execute function="AssertElementPresent" locator1="CPMysubmissions#PENDING_TABLE_END_DATE" />
-		<execute function="AssertTextEquals" locator1="CPMysubmissions#PENDING_TABLE_WITHDRAW_SUBMISSION" value1="Withdraw Submission" />
-		<execute function="AssertClick" locator1="CPMysubmissions#PENDING_TABLE_ASSET_TITLE" value1="${workflowAssetTitle}" />
+		AssertTextEquals(
+			locator1 = "CPMyworkflowtasks#ASSIGNED_TO_MY_ROLES_TABLE_TASK",
+			value1 = "${workflowTask}"
+		);
 
-		<execute function="AssertTextEquals" locator1="CPMysubmissionsTask#PREVIEW" value1="Preview of ${workflowAssetType}" />
-		<execute function="AssertTextEquals" locator1="CPMysubmissionsTask#PREVIEW_TITLE" value1="${workflowAssetTitle}" />
-		<execute function="AssertTextEquals#assertPartialText" locator1="CPMysubmissionsTask#PREVIEW_CONTENT" value1="${workflowAssetContent}" />
-		<execute function="AssertTextEquals" locator1="CPMysubmissionsTask#MENU_WORKFLOW_NAME" value1="${workflowDefinition}" />
-		<execute function="AssertClick#assertTextClickAt" locator1="CPMysubmissionsTask#MENU_WITHDRAW_SUBMISSION" value1="Withdraw Submission" />
+		AssertTextEquals.assertPartialText(
+			locator1 = "CPMyworkflowtasks#ASSIGNED_TO_MY_ROLES_TABLE_ASSET_TITLE",
+			value1 = "${workflowAssetTitle}"
+		);
 
-		<execute function="AssertTextEquals" locator1="CPMysubmissions#SUCCESS_MESSAGE" value1="Your request completed successfully." />
-	</command>
+		AssertTextEquals(
+			locator1 = "CPMyworkflowtasks#ASSIGNED_TO_MY_ROLES_TABLE_ASSET_TYPE",
+			value1 = "${workflowAssetType}"
+		);
 
-	<command name="withdrawTaskCompletedNoByActions">
-		<var name="key_workflowAssetTitle" value="${workflowAssetTitle}" />
+		AssertElementPresent(
+			locator1 = "CPMyworkflowtasks#ASSIGNED_TO_MY_ROLES_TABLE_LAST_ACTIVITY_DATE"
+		);
 
-		<execute function="AssertClick"  locator1="NAVIGATION_COMPLETED" value1="Completed" />
+		AssertElementPresent(
+			locator1 = "CPMyworkflowtasks#ASSIGNED_TO_MY_ROLES_TABLE_DUE_DATE"
+		);
 
-		<execute function="AssertTextEquals" locator1="CPMysubmissionsCompleted#COMPLETED_TABLE_DEFINITION" value1="${workflowDefinition}" />
-		<execute function="AssertTextEquals" locator1="CPMysubmissionsCompleted#COMPLETED_TABLE_ASSET_TITLE" value1="${workflowAssetTitle}" />
-		<execute function="AssertTextEquals" locator1="CPMysubmissionsCompleted#COMPLETED_TABLE_ASSET_TYPE" value1="${workflowAssetType}" />
-		<execute function="AssertTextEquals" locator1="CPMysubmissionsCompleted#COMPLETED_TABLE_STATUS" value1="${workflowTask}" />
-		<execute function="AssertElementPresent" locator1="CPMysubmissionsCompleted#COMPLETED_TABLE_LAST_ACTIVITY_DATE" />
-		<execute function="AssertElementPresent" locator1="CPMysubmissionsCompleted#COMPLETED_TABLE_END_DATE" />
-		<execute function="AssertElementNotPresent" locator1="//div[@id='_158_workflowInstancesSearchContainer']//tr[contains(.,'${key_workflowAssetTitle}')]/td[7]/span/a[contains(@id,'menu_withdraw-submission')]/span" />
-		<execute function="AssertTextNotPresent" value1="Withdraw Submission" />
-	</command>
+		AssertClick.assertPartialTextClickAt(
+			locator1 = "CPMyworkflowtasks#ASSIGNED_TO_MY_ROLES_TABLE_ASSET_TITLE",
+			value1 = "${workflowAssetTitle}"
+		);
 
-	<command name="withdrawTaskCompletedNoByDetails">
-		<var name="key_workflowAssetContent" value="${workflowAssetContent}" />
-		<var name="key_workflowAssetTitle" value="${workflowAssetTitle}" />
+		AssertTextEquals(
+			locator1 = "CPMyworkflowtasksTask#PREVIEW",
+			value1 = "Preview of ${workflowAssetType}"
+		);
 
-		<execute function="AssertClick"  locator1="NAVIGATION_COMPLETED" value1="Completed" />
+		AssertTextEquals(
+			locator1 = "CPMyworkflowtasksTask#PREVIEW_TITLE",
+			value1 = "${workflowAssetTitle}"
+		);
 
-		<execute function="AssertTextEquals" locator1="CPMysubmissionsCompleted#COMPLETED_TABLE_DEFINITION" value1="${workflowDefinition}" />
-		<execute function="AssertTextEquals" locator1="CPMysubmissionsCompleted#COMPLETED_TABLE_ASSET_TITLE" value1="${workflowAssetTitle}" />
-		<execute function="AssertTextEquals" locator1="CPMysubmissionsCompleted#COMPLETED_TABLE_ASSET_TYPE" value1="${workflowAssetType}" />
-		<execute function="AssertTextEquals" locator1="CPMysubmissionsCompleted#COMPLETED_TABLE_STATUS" value1="${workflowTask}" />
-		<execute function="AssertElementPresent" locator1="CPMysubmissionsCompleted#COMPLETED_TABLE_LAST_ACTIVITY_DATE" />
-		<execute function="AssertElementPresent" locator1="CPMysubmissionsCompleted#COMPLETED_TABLE_END_DATE" />
-		<execute function="AssertClick#assertTextClickAt" locator1="CPMysubmissionsCompleted#COMPLETED_TABLE_ASSET_TITLE" value1="${workflowAssetTitle}" />
+		AssertTextEquals.assertPartialText(
+			locator1 = "CPMyworkflowtasksTask#PREVIEW_CONTENT",
+			value1 = "${workflowAssetContent}"
+		);
 
-		<execute function="AssertTextEquals" locator1="CPMysubmissionsTask#PREVIEW" value1="Preview of ${workflowAssetType}" />
-		<execute function="AssertTextEquals" locator1="CPMysubmissionsTask#PREVIEW_TITLE" value1="${workflowAssetTitle}" />
-		<execute function="AssertTextEquals#assertPartialText" locator1="CPMysubmissionsTask#PREVIEW_CONTENT" value1="${workflowAssetContent}" />
-		<execute function="AssertTextEquals" locator1="CPMysubmissionsTask#MENU_WORKFLOW_NAME" value1="${workflowDefinition}" />
-		<execute function="AssertElementNotPresent" locator1="CPMysubmissionsTask#MENU_WITHDRAW_SUBMISSION" value1="Withdraw Submission" />
-		<execute function="AssertTextNotPresent" value1="Withdraw Submission" />
-	</command>
-</definition>
+		if ("${assignToMeKey}" == "ASSIGN_TO_ME") {
+			AssertClick(
+				locator1 = "CPMyworkflowtasksTask#ASSIGN_TO_ME",
+				value1 = "Assign to Me"
+			);
+		}
+		else {
+			AssertClick(
+				locator1 = "CPMyworkflowtasksTask#MENU_ASSIGN_TO_ME",
+				value1 = "Assign to Me"
+			);
+		}
+
+		AssertClick(
+			locator1 = "CPMyworkflowtasksTask#MENU_ASSIGN_TO_ME",
+			value1 = "Assign to Me"
+		);
+
+		AssertClick.assertTextClickAt(
+			locator1 = "CPMyworkflowtasksTask#PANEL_OK_BUTTON",
+			value1 = "OK"
+		);
+
+		AssertTextEquals(
+			locator1 = "CPMyworkflowtasksTask#SUCCESS_MESSAGE",
+			value1 = "Your request completed successfully."
+		);
+
+		AssertClick.assertPartialTextClickAt(
+			locator1 = "CPMyworkflowtasksTask#BACK",
+			value1 = "Back"
+		);
+
+		AssertTextEquals(
+			locator1 = "CPMyworkflowtasks#ASSIGNED_TO_ME_TABLE_TASK",
+			value1 = "${workflowTask}"
+		);
+
+		AssertTextEquals.assertPartialText(
+			locator1 = "CPMyworkflowtasks#ASSIGNED_TO_ME_TABLE_ASSET_TITLE",
+			value1 = "${workflowAssetTitle}"
+		);
+
+		AssertTextEquals(
+			locator1 = "CPMyworkflowtasks#ASSIGNED_TO_ME_TABLE_ASSET_TYPE",
+			value1 = "${workflowAssetType}"
+		);
+
+		AssertElementPresent(
+			locator1 = "CPMyworkflowtasks#ASSIGNED_TO_ME_TABLE_LAST_ACTIVITY_DATE"
+		);
+
+		AssertElementPresent(
+			locator1 = "CPMyworkflowtasks#ASSIGNED_TO_ME_TABLE_DUE_DATE"
+		);
+	}
+
+	macro configurePortalWorkflow {
+		Click(
+			locator1 = "CPPortalWorkflowconfiguration#NAVIGATION_DEFAULT_CONFIGURATION"
+		);
+
+		Select(
+			locator1 = "CPPortalWorkflowconfigurationDefaultconfiguration#${workflowResourceKey}",
+			value1 = "${workflowDefinition}"
+		);
+
+		Click(
+			locator1 = "CPPortalWorkflowconfigurationDefaultconfiguration#SAVE_BUTTON",
+			value1 = "Save"
+		);
+
+		AssertTextEquals(
+			locator1 = "CPPortalWorkflowconfigurationDefaultconfiguration#SUCCESS_MESSAGE",
+			value1 = "Your request completed successfully."
+		);
+	}
+
+	macro configureSiteWorkflow {
+		Select(
+			locator1 = "CPSiteWorkflowconfiguration#${workflowResourceKey}",
+			value1 = "${workflowDefinition}"
+		);
+
+		AssertClick.assertValueClickAt(
+			locator1 = "CPSiteWorkflowconfiguration#SAVE_BUTTON",
+			value1 = "Save"
+		);
+
+		AssertTextEquals(
+			locator1 = "CPSiteWorkflowconfiguration#SUCCESS_MESSAGE",
+			value1 = "Your request completed successfully."
+		);
+	}
+
+	macro rejectTaskByActions {
+		var key_workflowAssetTitle = "${workflowAssetTitle}";
+
+		AssertTextEquals(
+			locator1 = "CPMyworkflowtasks#ASSIGNED_TO_ME_TABLE_TASK",
+			value1 = "${workflowTask}"
+		);
+
+		AssertTextEquals.assertPartialText(
+			locator1 = "CPMyworkflowtasks#ASSIGNED_TO_ME_TABLE_ASSET_TITLE",
+			value1 = "${workflowAssetTitle}"
+		);
+
+		AssertTextEquals(
+			locator1 = "CPMyworkflowtasks#ASSIGNED_TO_ME_TABLE_ASSET_TYPE",
+			value1 = "${workflowAssetType}"
+		);
+
+		AssertElementPresent(
+			locator1 = "CPMyworkflowtasks#ASSIGNED_TO_ME_TABLE_LAST_ACTIVITY_DATE"
+		);
+
+		AssertElementPresent(
+			locator1 = "CPMyworkflowtasks#ASSIGNED_TO_ME_TABLE_DUE_DATE"
+		);
+
+		AssertClick(
+			locator1 = "CPMyworkflowtasks#ASSIGNED_TO_ME_TABLE_ACTIONS",
+			value1 = "Actions"
+		);
+
+		AssertClick(
+			locator1 = "CPMyworkflowtasks#ASSIGNED_TO_ME_MENULIST_REJECT",
+			value1 = "Reject"
+		);
+
+		AssertClick.assertTextClickAt(
+			locator1 = "CPMyworkflowtasks#PANEL_OK_BUTTON",
+			value1 = "OK"
+		);
+
+		AssertTextEquals(
+			locator1 = "CPMyworkflowtasks#SUCCESS_MESSAGE",
+			value1 = "Your request completed successfully."
+		);
+
+		Click(locator1 = "CPMyworkflowtasks#NAVIGATION_COMPLETED", value1 = "Completed");
+
+		AssertTextEquals(
+			locator1 = "CPMyworkflowtasksCompleted#COMPLETED_TABLE_TASK",
+			value1 = "${workflowTask}"
+		);
+
+		AssertTextEquals.assertPartialText(
+			locator1 = "CPMyworkflowtasksCompleted#COMPLETED_TABLE_ASSET_TITLE",
+			value1 = "${workflowAssetTitle}"
+		);
+
+		AssertTextEquals(
+			locator1 = "CPMyworkflowtasksCompleted#COMPLETED_TABLE_ASSET_TYPE",
+			value1 = "${workflowAssetType}"
+		);
+
+		AssertElementPresent(
+			locator1 = "CPMyworkflowtasksCompleted#COMPLETED_TABLE_LAST_ACTIVITY_DATE"
+		);
+
+		AssertElementPresent(
+			locator1 = "CPMyworkflowtasksCompleted#COMPLETED_TABLE_DUE_DATE"
+		);
+	}
+
+	macro rejectTaskByDetails {
+		var key_workflowAssetTitle = "${workflowAssetTitle}";
+
+		AssertTextEquals(
+			locator1 = "CPMyworkflowtasks#ASSIGNED_TO_ME_TABLE_TASK",
+			value1 = "${workflowTask}"
+		);
+
+		AssertTextEquals.assertPartialText(
+			locator1 = "CPMyworkflowtasks#ASSIGNED_TO_ME_TABLE_ASSET_TITLE",
+			value1 = "${workflowAssetTitle}"
+		);
+
+		AssertTextEquals(
+			locator1 = "CPMyworkflowtasks#ASSIGNED_TO_ME_TABLE_ASSET_TYPE",
+			value1 = "${workflowAssetType}"
+		);
+
+		AssertElementPresent(
+			locator1 = "CPMyworkflowtasks#ASSIGNED_TO_ME_TABLE_LAST_ACTIVITY_DATE"
+		);
+
+		AssertElementPresent(
+			locator1 = "CPMyworkflowtasks#ASSIGNED_TO_ME_TABLE_DUE_DATE"
+		);
+
+		AssertClick.assertPartialTextClickAt(
+			locator1 = "CPMyworkflowtasks#ASSIGNED_TO_ME_TABLE_ASSET_TITLE",
+			value1 = "${workflowAssetTitle}"
+		);
+
+		AssertTextEquals(
+			locator1 = "CPMyworkflowtasksTask#PREVIEW",
+			value1 = "Preview of ${workflowAssetType}"
+		);
+
+		AssertTextEquals(
+			locator1 = "CPMyworkflowtasksTask#PREVIEW_TITLE",
+			value1 = "${workflowAssetTitle}"
+		);
+
+		AssertTextEquals.assertPartialText(
+			locator1 = "CPMyworkflowtasksTask#PREVIEW_CONTENT",
+			value1 = "${workflowAssetContent}"
+		);
+
+		AssertClick(locator1 = "CPMyworkflowtasksTask#MENU_REJECT", value1 = "Reject");
+
+		AssertClick.assertTextClickAt(
+			locator1 = "CPMyworkflowtasksTask#PANEL_OK_BUTTON",
+			value1 = "OK"
+		);
+
+		AssertTextEquals(
+			locator1 = "CPMyworkflowtasksTask#SUCCESS_MESSAGE",
+			value1 = "Your request completed successfully."
+		);
+
+		AssertClick.assertPartialTextClickAt(
+			locator1 = "CPMyworkflowtasksTask#BACK",
+			value1 = "Back"
+		);
+
+		Click(locator1 = "CPMyworkflowtasks#NAVIGATION_COMPLETED", value1 = "Completed");
+
+		AssertTextEquals(
+			locator1 = "CPMyworkflowtasksCompleted#COMPLETED_TABLE_TASK",
+			value1 = "${workflowTask}"
+		);
+
+		AssertTextEquals.assertPartialText(
+			locator1 = "CPMyworkflowtasksCompleted#COMPLETED_TABLE_ASSET_TITLE",
+			value1 = "${workflowAssetTitle}"
+		);
+
+		AssertTextEquals(
+			locator1 = "CPMyworkflowtasksCompleted#COMPLETED_TABLE_ASSET_TYPE",
+			value1 = "${workflowAssetType}"
+		);
+
+		AssertElementPresent(
+			locator1 = "CPMyworkflowtasksCompleted#COMPLETED_TABLE_LAST_ACTIVITY_DATE"
+		);
+
+		AssertElementPresent(
+			locator1 = "CPMyworkflowtasksCompleted#COMPLETED_TABLE_DUE_DATE"
+		);
+	}
+
+	macro tearDownPortalWorkflow {
+		Page.gotoCP(portletName = "Workflow");
+
+		Click(
+			locator1 = "CPPortalWorkflowconfiguration#NAVIGATION_DEFAULT_CONFIGURATION"
+		);
+
+		Select(
+			locator1 = "CPPortalWorkflowconfigurationDefaultconfiguration#RESOURCE_TABLE_PAGE_REVISION_SELECT",
+			value1 = "No Workflow"
+		);
+
+		Select(
+			locator1 = "CPPortalWorkflowconfigurationDefaultconfiguration#RESOURCE_TABLE_USER_SELECT",
+			value1 = "No Workflow"
+		);
+
+		Select(
+			locator1 = "CPPortalWorkflowconfigurationDefaultconfiguration#RESOURCE_TABLE_BLOGS_ENTRY_SELECT",
+			value1 = "No Workflow"
+		);
+
+		Select(
+			locator1 = "CPPortalWorkflowconfigurationDefaultconfiguration#RESOURCE_TABLE_WEB_CONTENT_SELECT",
+			value1 = "No Workflow"
+		);
+
+		Select(
+			locator1 = "CPPortalWorkflowconfigurationDefaultconfiguration#RESOURCE_TABLE_COMMENTS_SELECT",
+			value1 = "No Workflow"
+		);
+
+		Select(
+			locator1 = "CPPortalWorkflowconfigurationDefaultconfiguration#RESOURCE_TABLE_MESSAGE_BOARDS_MESSAGE_SELECT",
+			value1 = "No Workflow"
+		);
+
+		Select(
+			locator1 = "CPPortalWorkflowconfigurationDefaultconfiguration#RESOURCE_TABLE_WIKI_PAGE_SELECT",
+			value1 = "No Workflow"
+		);
+
+		AssertClick.assertValueClickAt(
+			locator1 = "CPPortalWorkflowconfigurationDefaultconfiguration#SAVE_BUTTON",
+			value1 = "Save"
+		);
+	}
+
+	macro tearDownSiteWorkflow {
+		Page.gotoCP(portletName = "Workflow Configuration");
+
+		Select(
+			locator1 = "CPSiteWorkflowconfiguration#RESOURCE_TABLE_PAGE_REVISION_SELECT",
+			value1 = "Default: No Workflow"
+		);
+
+		Select(
+			locator1 = "CPSiteWorkflowconfiguration#RESOURCE_TABLE_BLOGS_ENTRY_SELECT",
+			value1 = "Default: No Workflow"
+		);
+
+		Select(
+			locator1 = "CPSiteWorkflowconfiguration#RESOURCE_TABLE_WEB_CONTENT_SELECT",
+			value1 = "Default: No Workflow"
+		);
+
+		Select(
+			locator1 = "CPSiteWorkflowconfiguration#RESOURCE_TABLE_COMMENTS_SELECT",
+			value1 = "Default: No Workflow"
+		);
+
+		Select(
+			locator1 = "CPSiteWorkflowconfiguration#RESOURCE_TABLE_MESSAGE_BOARDS_MESSAGE_SELECT",
+			value1 = "Default: No Workflow"
+		);
+
+		Select(
+			locator1 = "CPSiteWorkflowconfiguration#RESOURCE_TABLE_WIKI_PAGE_SELECT",
+			value1 = "Default: No Workflow"
+		);
+
+		AssertClick.assertValueClickAt(
+			locator1 = "CPSiteWorkflowconfiguration#SAVE_BUTTON",
+			value1 = "Save"
+		);
+	}
+
+	macro viewRejectTask {
+		var key_workflowAssetTitle = "${workflowAssetTitle}";
+
+		AssertTextEquals(
+			locator1 = "CPMyworkflowtasks#ASSIGNED_TO_ME_TABLE_TASK",
+			value1 = "Update"
+		);
+
+		AssertTextEquals.assertPartialText(
+			locator1 = "CPMyworkflowtasks#ASSIGNED_TO_ME_TABLE_ASSET_TITLE",
+			value1 = "${workflowAssetTitle}"
+		);
+
+		AssertTextEquals(
+			locator1 = "CPMyworkflowtasks#ASSIGNED_TO_ME_TABLE_ASSET_TYPE",
+			value1 = "${workflowAssetType}"
+		);
+
+		AssertElementPresent(
+			locator1 = "CPMyworkflowtasks#ASSIGNED_TO_ME_TABLE_LAST_ACTIVITY_DATE"
+		);
+
+		AssertElementPresent(
+			locator1 = "CPMyworkflowtasks#ASSIGNED_TO_ME_TABLE_DUE_DATE"
+		);
+	}
+
+	macro withdrawTaskByActions {
+		var key_workflowAssetTitle = "${workflowAssetTitle}";
+
+		AssertTextEquals(
+			locator1 = "CPMysubmissions#PENDING_TABLE_DEFINITION",
+			value1 = "${workflowDefinition}"
+		);
+
+		AssertTextEquals(
+			locator1 = "CPMysubmissions#PENDING_TABLE_ASSET_TITLE",
+			value1 = "${workflowAssetTitle}"
+		);
+
+		AssertTextEquals(
+			locator1 = "CPMysubmissions#PENDING_TABLE_ASSET_TYPE",
+			value1 = "${workflowAssetType}"
+		);
+
+		AssertTextEquals(
+			locator1 = "CPMysubmissions#PENDING_TABLE_STATUS",
+			value1 = "${workflowTask}"
+		);
+
+		AssertElementPresent(
+			locator1 = "CPMysubmissions#PENDING_TABLE_LAST_ACTIVITY_DATE"
+		);
+
+		AssertElementPresent(locator1 = "CPMysubmissions#PENDING_TABLE_END_DATE");
+
+		AssertClick.assertTextClickAt(
+			locator1 = "CPMysubmissions#PENDING_TABLE_WITHDRAW_SUBMISSION",
+			value1 = "Withdraw Submission"
+		);
+
+		AssertTextEquals(
+			locator1 = "CPMysubmissions#SUCCESS_MESSAGE",
+			value1 = "Your request completed successfully."
+		);
+	}
+
+	macro withdrawTaskByDetails {
+		var key_workflowAssetContent = "${workflowAssetContent}";
+		var key_workflowAssetTitle = "${workflowAssetTitle}";
+
+		AssertTextEquals(
+			locator1 = "CPMysubmissions#PENDING_TABLE_DEFINITION",
+			value1 = "${workflowDefinition}"
+		);
+
+		AssertTextEquals(
+			locator1 = "CPMysubmissions#PENDING_TABLE_ASSET_TITLE",
+			value1 = "${workflowAssetTitle}"
+		);
+
+		AssertTextEquals(
+			locator1 = "CPMysubmissions#PENDING_TABLE_ASSET_TYPE",
+			value1 = "${workflowAssetType}"
+		);
+
+		AssertTextEquals(
+			locator1 = "CPMysubmissions#PENDING_TABLE_STATUS",
+			value1 = "${workflowTask}"
+		);
+
+		AssertElementPresent(
+			locator1 = "CPMysubmissions#PENDING_TABLE_LAST_ACTIVITY_DATE"
+		);
+
+		AssertElementPresent(locator1 = "CPMysubmissions#PENDING_TABLE_END_DATE");
+
+		AssertTextEquals(
+			locator1 = "CPMysubmissions#PENDING_TABLE_WITHDRAW_SUBMISSION",
+			value1 = "Withdraw Submission"
+		);
+
+		AssertClick(
+			locator1 = "CPMysubmissions#PENDING_TABLE_ASSET_TITLE",
+			value1 = "${workflowAssetTitle}"
+		);
+
+		AssertTextEquals(
+			locator1 = "CPMysubmissionsTask#PREVIEW",
+			value1 = "Preview of ${workflowAssetType}"
+		);
+
+		AssertTextEquals(
+			locator1 = "CPMysubmissionsTask#PREVIEW_TITLE",
+			value1 = "${workflowAssetTitle}"
+		);
+
+		AssertTextEquals.assertPartialText(
+			locator1 = "CPMysubmissionsTask#PREVIEW_CONTENT",
+			value1 = "${workflowAssetContent}"
+		);
+
+		AssertTextEquals(
+			locator1 = "CPMysubmissionsTask#MENU_WORKFLOW_NAME",
+			value1 = "${workflowDefinition}"
+		);
+
+		AssertClick.assertTextClickAt(
+			locator1 = "CPMysubmissionsTask#MENU_WITHDRAW_SUBMISSION",
+			value1 = "Withdraw Submission"
+		);
+
+		AssertTextEquals(
+			locator1 = "CPMysubmissions#SUCCESS_MESSAGE",
+			value1 = "Your request completed successfully."
+		);
+	}
+
+	macro withdrawTaskCompletedNoByActions {
+		var key_workflowAssetTitle = "${workflowAssetTitle}";
+
+		AssertClick(locator1 = "NAVIGATION_COMPLETED", value1 = "Completed");
+
+		AssertTextEquals(
+			locator1 = "CPMysubmissionsCompleted#COMPLETED_TABLE_DEFINITION",
+			value1 = "${workflowDefinition}"
+		);
+
+		AssertTextEquals(
+			locator1 = "CPMysubmissionsCompleted#COMPLETED_TABLE_ASSET_TITLE",
+			value1 = "${workflowAssetTitle}"
+		);
+
+		AssertTextEquals(
+			locator1 = "CPMysubmissionsCompleted#COMPLETED_TABLE_ASSET_TYPE",
+			value1 = "${workflowAssetType}"
+		);
+
+		AssertTextEquals(
+			locator1 = "CPMysubmissionsCompleted#COMPLETED_TABLE_STATUS",
+			value1 = "${workflowTask}"
+		);
+
+		AssertElementPresent(
+			locator1 = "CPMysubmissionsCompleted#COMPLETED_TABLE_LAST_ACTIVITY_DATE"
+		);
+
+		AssertElementPresent(
+			locator1 = "CPMysubmissionsCompleted#COMPLETED_TABLE_END_DATE"
+		);
+
+		AssertElementNotPresent(
+			locator1 = "//div[@id='_158_workflowInstancesSearchContainer']//tr[contains(.,'${key_workflowAssetTitle}')]/td[7]/span/a[contains(@id,'menu_withdraw-submission')]/span"
+		);
+
+		AssertTextNotPresent(value1 = "Withdraw Submission");
+	}
+
+	macro withdrawTaskCompletedNoByDetails {
+		var key_workflowAssetContent = "${workflowAssetContent}";
+		var key_workflowAssetTitle = "${workflowAssetTitle}";
+
+		AssertClick(locator1 = "NAVIGATION_COMPLETED", value1 = "Completed");
+
+		AssertTextEquals(
+			locator1 = "CPMysubmissionsCompleted#COMPLETED_TABLE_DEFINITION",
+			value1 = "${workflowDefinition}"
+		);
+
+		AssertTextEquals(
+			locator1 = "CPMysubmissionsCompleted#COMPLETED_TABLE_ASSET_TITLE",
+			value1 = "${workflowAssetTitle}"
+		);
+
+		AssertTextEquals(
+			locator1 = "CPMysubmissionsCompleted#COMPLETED_TABLE_ASSET_TYPE",
+			value1 = "${workflowAssetType}"
+		);
+
+		AssertTextEquals(
+			locator1 = "CPMysubmissionsCompleted#COMPLETED_TABLE_STATUS",
+			value1 = "${workflowTask}"
+		);
+
+		AssertElementPresent(
+			locator1 = "CPMysubmissionsCompleted#COMPLETED_TABLE_LAST_ACTIVITY_DATE"
+		);
+
+		AssertElementPresent(
+			locator1 = "CPMysubmissionsCompleted#COMPLETED_TABLE_END_DATE"
+		);
+
+		AssertClick.assertTextClickAt(
+			locator1 = "CPMysubmissionsCompleted#COMPLETED_TABLE_ASSET_TITLE",
+			value1 = "${workflowAssetTitle}"
+		);
+
+		AssertTextEquals(
+			locator1 = "CPMysubmissionsTask#PREVIEW",
+			value1 = "Preview of ${workflowAssetType}"
+		);
+
+		AssertTextEquals(
+			locator1 = "CPMysubmissionsTask#PREVIEW_TITLE",
+			value1 = "${workflowAssetTitle}"
+		);
+
+		AssertTextEquals.assertPartialText(
+			locator1 = "CPMysubmissionsTask#PREVIEW_CONTENT",
+			value1 = "${workflowAssetContent}"
+		);
+
+		AssertTextEquals(
+			locator1 = "CPMysubmissionsTask#MENU_WORKFLOW_NAME",
+			value1 = "${workflowDefinition}"
+		);
+
+		AssertElementNotPresent(
+			locator1 = "CPMysubmissionsTask#MENU_WITHDRAW_SUBMISSION",
+			value1 = "Withdraw Submission"
+		);
+
+		AssertTextNotPresent(value1 = "Withdraw Submission");
+	}
+}

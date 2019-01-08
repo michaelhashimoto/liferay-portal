@@ -1,188 +1,199 @@
-<definition>
-	<var name="password" value="test" />
-	<var name="userEmailAddress" value="test@liferay.com" />
+definition {
+	var password = "test";
+	var userEmailAddress = "test@liferay.com";
 
-	<command name="addUserWithSORole">
-		<execute macro="SOUserBar#gotoCP">
-			<var name="portletName" value="Users and Organizations" />
-		</execute>
+	macro addUserWithSORole {
+		SOUserBar.gotoCP(portletName = "Users and Organizations");
 
-		<execute macro="User#addCP">
-			<var name="userEmailAddress" value="${userEmailAddress}" />
-			<var name="userFirstName" value="${userFirstName}" />
-			<var name="userLastName" value="${userLastName}" />
-			<var name="userMiddleName" value="${userMiddleName}" />
-			<var name="userScreenName" value="${userScreenName}" />
-		</execute>
+		User.addCP(
+			userEmailAddress = "${userEmailAddress}",
+			userFirstName = "${userFirstName}",
+			userLastName = "${userLastName}",
+			userMiddleName = "${userMiddleName}",
+			userScreenName = "${userScreenName}"
+		);
 
-		<execute macro="SOUserBar#gotoCP">
-			<var name="portletName" value="Roles" />
-		</execute>
+		SOUserBar.gotoCP(portletName = "Roles");
 
-		<execute macro="Role#assignRegRoleCP">
-			<var name="roleName" value="Social Office" />
-			<var name="userScreenName" value="${userScreenName}" />
-		</execute>
+		Role.assignRegRoleCP(
+			roleName = "Social Office",
+			userScreenName = "${userScreenName}"
+		);
 
-		<execute macro="SOUser#editPasswordCP">
-			<var name="userEmailAddress" value="${userEmailAddress}" />
-			<var name="userScreenName" value="${userScreenName}" />
-		</execute>
-	</command>
+		SOUser.editPasswordCP(
+			userEmailAddress = "${userEmailAddress}",
+			userScreenName = "${userScreenName}"
+		);
+	}
 
-	<command name="editPasswordCP">
-		<execute macro="SOUserBar#gotoCP">
-			<var name="portletName" value="Users and Organizations" />
-		</execute>
+	macro editPasswordCP {
+		SOUserBar.gotoCP(portletName = "Users and Organizations");
 
-		<execute function="AssertClick#assertTextClickAt" locator1="CPUsersandorganizations#SEARCH_ALL_USERS" value1="Search All Users" />
+		AssertClick.assertTextClickAt(
+			locator1 = "CPUsersandorganizations#SEARCH_ALL_USERS",
+			value1 = "Search All Users"
+		);
 
-		<execute macro="CPUsersandorganizationsViewusers#showBasicSearch" />
-		<execute function="Type" locator1="CPUsersandorganizationsViewusers#BASIC_SEARCH_FIELD" value1="${userScreenName}" />
-		<execute function="AssertClick#assertValueClickAt" locator1="CPUsersandorganizationsViewusers#BASIC_SEARCH_BUTTON" value1="Search" />
-		<execute function="AssertTextEquals" locator1="CPUsersandorganizationsViewusers#USER_TABLE_SCREEN_NAME_1" value1="${userScreenName}" />
-		<execute function="Click" locator1="CPUsersandorganizationsViewusers#USER_TABLE_SCREEN_NAME_1" value1="${userScreenName}" />
+		CPUsersandorganizationsViewusers.showBasicSearch();
 
-		<execute function="Click" locator1="CPUsersandorganizationsUser#PASSWORD" />
-		<execute function="Type" locator1="CPUsersandorganizationsUser#PASSWORD_NEW_PASSWORD_FIELD" value1="password" />
-		<execute function="Type" locator1="CPUsersandorganizationsUser#PASSWORD_ENTER_AGAIN_FIELD" value1="password" />
-		<execute function="Click" locator1="CPUsersandorganizationsUser#SAVE_BUTTON" />
-		<execute function="AssertTextEquals" locator1="CPUsersandorganizationsUser#SUCCESS_MESSAGE" value1="Your request completed successfully." />
+		Type(
+			locator1 = "CPUsersandorganizationsViewusers#BASIC_SEARCH_FIELD",
+			value1 = "${userScreenName}"
+		);
 
-		<execute macro="SOUser#logoutPG" />
+		AssertClick.assertValueClickAt(
+			locator1 = "CPUsersandorganizationsViewusers#BASIC_SEARCH_BUTTON",
+			value1 = "Search"
+		);
 
-		<execute macro="SOUser#loginPG">
-			<var name="password" value="password" />
-			<var name="userEmailAddress" value="${userEmailAddress}" />
-		</execute>
+		AssertTextEquals(
+			locator1 = "CPUsersandorganizationsViewusers#USER_TABLE_SCREEN_NAME_1",
+			value1 = "${userScreenName}"
+		);
 
-		<execute macro="SOUser#logoutPG" />
+		Click(
+			locator1 = "CPUsersandorganizationsViewusers#USER_TABLE_SCREEN_NAME_1",
+			value1 = "${userScreenName}"
+		);
 
-		<execute macro="SOUser#loginPG">
-			<var name="password" value="test" />
-			<var name="userEmailAddress" value="test@liferay.com" />
-		</execute>
-	</command>
+		Click(locator1 = "CPUsersandorganizationsUser#PASSWORD");
 
-	<command name="firstLoginPG">
-		<if>
-			<condition function="IsElementPresent" locator1="SOUserBar#USER_NAME" />
-			<then>
-				<if>
-					<condition function="IsTextNotEqual" locator1="SOUserBar#USER_NAME" value1="Joe Bloggs" />
-					<then>
-						<execute macro="SOUser#logoutPG" />
+		Type(
+			locator1 = "CPUsersandorganizationsUser#PASSWORD_NEW_PASSWORD_FIELD",
+			value1 = "password"
+		);
 
-						<execute macro="SOUser#loginPG">
-							<var name="password" value="test" />
-							<var name="userEmailAddress" value="test@liferay.com" />
-						</execute>
-					</then>
-				</if>
-			</then>
-			<elseif>
-				<condition function="IsElementPresent" locator1="Dockbar#USER_NAME" />
-				<then>
-					<if>
-						<condition function="IsTextNotEqual" locator1="Dockbar#USER_NAME" value1="Joe Bloggs" />
-						<then>
-							<execute macro="User#logoutPG" />
+		Type(
+			locator1 = "CPUsersandorganizationsUser#PASSWORD_ENTER_AGAIN_FIELD",
+			value1 = "password"
+		);
 
-							<execute macro="SOUser#loginPG">
-								<var name="password" value="test" />
-								<var name="userEmailAddress" value="test@liferay.com" />
-							</execute>
-						</then>
-					</if>
-				</then>
-			</elseif>
-			<else>
-				<execute macro="SOUser#loginPG">
-					<var name="password" value="test" />
-					<var name="userEmailAddress" value="test@liferay.com" />
-				</execute>
-			</else>
-		</if>
+		Click(locator1 = "CPUsersandorganizationsUser#SAVE_BUTTON");
 
-		<if>
-			<condition function="IsElementNotPresent" locator1="SOUserBar#USER_NAME" />
-			<then>
-				<execute macro="Page#gotoCP">
-					<var name="portletName" value="Roles" />
-				</execute>
+		AssertTextEquals(
+			locator1 = "CPUsersandorganizationsUser#SUCCESS_MESSAGE",
+			value1 = "Your request completed successfully."
+		);
 
-				<execute macro="Role#assignRegRoleCP">
-					<var name="roleName" value="Social Office" />
-					<var name="userScreenName" value="joebloggs" />
-				</execute>
+		SOUser.logoutPG();
 
-				<execute macro="SOUserBar#dashboardPG">
-					<var name="userName" value="Joe Bloggs" />
-				</execute>
+		SOUser.loginPG(password = "password", userEmailAddress = "${userEmailAddress}");
 
-				<execute function="AssertTextEquals" locator1="SODashboard#NAVIGATION_DASHBOARD" value1="Dashboard" />
-				<execute function="AssertTextEquals" locator1="SODashboard#NAVIGATION_CONTACTS_CENTER" value1="Contacts Center" />
-				<execute function="AssertTextEquals" locator1="SODashboard#NAVIGATION_MY_DOCUMENTS" value1="My Documents" />
-				<execute function="AssertTextEquals" locator1="SODashboard#NAVIGATION_MICROBLOGS" value1="Microblogs" />
-				<execute function="AssertTextEquals" locator1="SODashboard#NAVIGATION_MESSAGES" value1="Messages" />
-				<execute function="AssertTextEquals" locator1="SODashboard#NAVIGATION_TASKS" value1="Tasks" />
-			</then>
-		</if>
-	</command>
+		SOUser.logoutPG();
 
-	<command name="loginPG">
-		<execute function="Type" locator1="PGLogin#EMAIL_ADDRESS_FIELD" value1="${userEmailAddress}" />
-		<execute function="Type" locator1="PGLogin#PASSWORD_FIELD" value1="${password}" />
-		<execute function="Click" locator1="PGLogin#REMEMBER_ME_CHECKBOX" />
-		<execute function="AssertClick#assertValueClickAt" locator1="PGLogin#SIGN_IN_BUTTON" value1="Sign In" />
+		SOUser.loginPG(password = "test", userEmailAddress = "test@liferay.com");
+	}
 
-		<if>
-			<condition function="IsElementPresent" locator1="PGLoginNewpassword#PASSWORD_FIELD" />
-			<then>
-				<execute function="Type" locator1="PGLoginNewpassword#PASSWORD_FIELD" value1="test" />
-				<execute function="Type" locator1="PGLoginNewpassword#ENTER_AGAIN_FIELD" value1="test" />
-				<execute function="AssertClick#assertValueClickAt" locator1="PGLoginNewpassword#SAVE_BUTTON" value1="Save" />
-			</then>
-		</if>
+	macro firstLoginPG {
+		if (IsElementPresent(locator1 = "SOUserBar#USER_NAME")) {
+			if (IsTextNotEqual(locator1 = "SOUserBar#USER_NAME", value1 = "Joe Bloggs")) {
+				SOUser.logoutPG();
 
-		<if>
-			<condition function="IsElementPresent" locator1="PGLoginPasswordreminder#ANSWER_FIELD" />
-			<then>
-				<execute function="Type" locator1="PGLoginPasswordreminder#ANSWER_FIELD" value1="test" />
-				<execute function="AssertClick#assertValueClickAt" locator1="PGLoginPasswordreminder#SAVE_BUTTON" value1="Save" />
-			</then>
-		</if>
-	</command>
+				SOUser.loginPG(password = "test", userEmailAddress = "test@liferay.com");
+			}
+		}
+		else if (IsElementPresent(locator1 = "Dockbar#USER_NAME")) {
+			if (IsTextNotEqual(locator1 = "Dockbar#USER_NAME", value1 = "Joe Bloggs")) {
+				User.logoutPG();
 
-	<command name="logoutPG">
-		<if>
-			<condition function="IsElementPresent" locator1="SOUserBar#USER_NAME" />
-			<then>
-				<execute function="Click" locator1="SOUserBar#USER_NAME" />
-				<execute function="AssertClick#assertTextClickAt" locator1="SOUserBar#USER_MENU_SIGN_OUT" value1="Sign Out" />
-			</then>
-		</if>
-	</command>
+				SOUser.loginPG(password = "test", userEmailAddress = "test@liferay.com");
+			}
+		}
+		else {
+			SOUser.loginPG(password = "test", userEmailAddress = "test@liferay.com");
+		}
 
-	<command name="tearDownCP">
-		<var name="userFirstName" value="social*" />
+		if (IsElementNotPresent(locator1 = "SOUserBar#USER_NAME")) {
+			Page.gotoCP(portletName = "Roles");
 
-		<execute macro="SOUser#firstLoginPG" />
+			Role.assignRegRoleCP(roleName = "Social Office", userScreenName = "joebloggs");
 
-		<execute macro="SOUserBar#gotoCP">
-			<var name="portletName" value="Users and Organizations" />
-		</execute>
+			SOUserBar.dashboardPG(userName = "Joe Bloggs");
 
-		<execute macro="User#deactivateCP">
-			<var name="userFirstName" value="${userFirstName}" />
-		</execute>
+			AssertTextEquals(
+				locator1 = "SODashboard#NAVIGATION_DASHBOARD",
+				value1 = "Dashboard"
+			);
 
-		<execute macro="SOUserBar#gotoCP">
-			<var name="portletName" value="Users and Organizations" />
-		</execute>
+			AssertTextEquals(
+				locator1 = "SODashboard#NAVIGATION_CONTACTS_CENTER",
+				value1 = "Contacts Center"
+			);
 
-		<execute macro="User#deleteCP">
-			<var name="userFirstName" value="${userFirstName}" />
-		</execute>
-	</command>
-</definition>
+			AssertTextEquals(
+				locator1 = "SODashboard#NAVIGATION_MY_DOCUMENTS",
+				value1 = "My Documents"
+			);
+
+			AssertTextEquals(
+				locator1 = "SODashboard#NAVIGATION_MICROBLOGS",
+				value1 = "Microblogs"
+			);
+
+			AssertTextEquals(
+				locator1 = "SODashboard#NAVIGATION_MESSAGES",
+				value1 = "Messages"
+			);
+
+			AssertTextEquals(locator1 = "SODashboard#NAVIGATION_TASKS", value1 = "Tasks");
+		}
+	}
+
+	macro loginPG {
+		Type(locator1 = "PGLogin#EMAIL_ADDRESS_FIELD", value1 = "${userEmailAddress}");
+
+		Type(locator1 = "PGLogin#PASSWORD_FIELD", value1 = "${password}");
+
+		Click(locator1 = "PGLogin#REMEMBER_ME_CHECKBOX");
+
+		AssertClick.assertValueClickAt(
+			locator1 = "PGLogin#SIGN_IN_BUTTON",
+			value1 = "Sign In"
+		);
+
+		if (IsElementPresent(locator1 = "PGLoginNewpassword#PASSWORD_FIELD")) {
+			Type(locator1 = "PGLoginNewpassword#PASSWORD_FIELD", value1 = "test");
+
+			Type(locator1 = "PGLoginNewpassword#ENTER_AGAIN_FIELD", value1 = "test");
+
+			AssertClick.assertValueClickAt(
+				locator1 = "PGLoginNewpassword#SAVE_BUTTON",
+				value1 = "Save"
+			);
+		}
+
+		if (IsElementPresent(locator1 = "PGLoginPasswordreminder#ANSWER_FIELD")) {
+			Type(locator1 = "PGLoginPasswordreminder#ANSWER_FIELD", value1 = "test");
+
+			AssertClick.assertValueClickAt(
+				locator1 = "PGLoginPasswordreminder#SAVE_BUTTON",
+				value1 = "Save"
+			);
+		}
+	}
+
+	macro logoutPG {
+		if (IsElementPresent(locator1 = "SOUserBar#USER_NAME")) {
+			Click(locator1 = "SOUserBar#USER_NAME");
+
+			AssertClick.assertTextClickAt(
+				locator1 = "SOUserBar#USER_MENU_SIGN_OUT",
+				value1 = "Sign Out"
+			);
+		}
+	}
+
+	macro tearDownCP {
+		var userFirstName = "social*";
+
+		SOUser.firstLoginPG();
+
+		SOUserBar.gotoCP(portletName = "Users and Organizations");
+
+		User.deactivateCP(userFirstName = "${userFirstName}");
+
+		SOUserBar.gotoCP(portletName = "Users and Organizations");
+
+		User.deleteCP(userFirstName = "${userFirstName}");
+	}
+}

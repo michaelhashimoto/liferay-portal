@@ -1,23 +1,49 @@
-<definition>
-	<command name="addCP">
-		<var name="key_entryTitle" value="${entryTitle}" />
+definition {
+	macro addCP {
+		var key_entryTitle = "${entryTitle}";
 
-		<execute function="AssertClick" locator1="CPBlogs#ENTRY_TABLE_TITLE" value1="${entryTitle}" />
+		AssertClick(locator1 = "CPBlogs#ENTRY_TABLE_TITLE", value1 = "${entryTitle}");
 
-		<execute function="AssertClick" locator1="CPBlogsEntry#COMMENTS_ADD" value1="Be the first." />
-		<execute function="Type" locator1="CPBlogsEntry#COMMENTS_BODY_FIELD" value1="${entryComment}" />
-		<execute function="AssertClick" locator1="CPBlogsEntry#COMMENTS_REPLY_BUTTON" value1="Reply" />
-		<execute function="AssertTextEquals" locator1="CPBlogsEntry#COMMENTS_SUCCESS" value1="Your request processed successfully." />
-		<execute function="AssertTextEquals" locator1="CPBlogsEntry#COMMENT_1" value1="${entryComment}" />
-	</command>
+		AssertClick(locator1 = "CPBlogsEntry#COMMENTS_ADD", value1 = "Be the first.");
 
-	<command name="addPG">
-		<execute function="AssertClick" locator1="PGBlogs#ENTRY_TITLE_1" value1="${entryTitle}" />
+		Type(locator1 = "CPBlogsEntry#COMMENTS_BODY_FIELD", value1 = "${entryComment}");
 
-		<execute function="AssertClick#assertTextClickAt" locator1="PGBlogsEntry#COMMENTS_ADD" value1="Be the first." />
-		<execute function="Type" locator1="PGBlogsEntry#COMMENTS_BODY_FIELD" value1="${entryComment}" />
-		<execute function="AssertClick#assertValueClickAt" locator1="PGBlogsEntry#COMMENTS_REPLY_BUTTON" value1="Reply" />
-		<execute function="AssertTextEquals" locator1="PGBlogsEntry#COMMENTS_SUCCESS" value1="Your request processed successfully." />
-		<execute function="AssertTextEquals" locator1="PGBlogsEntry#COMMENT_1" value1="${entryComment}" />
-	</command>
-</definition>
+		AssertClick(locator1 = "CPBlogsEntry#COMMENTS_REPLY_BUTTON", value1 = "Reply");
+
+		AssertTextEquals(
+			locator1 = "CPBlogsEntry#COMMENTS_SUCCESS",
+			value1 = "Your request processed successfully."
+		);
+
+		AssertTextEquals(
+			locator1 = "CPBlogsEntry#COMMENT_1",
+			value1 = "${entryComment}"
+		);
+	}
+
+	macro addPG {
+		AssertClick(locator1 = "PGBlogs#ENTRY_TITLE_1", value1 = "${entryTitle}");
+
+		AssertClick.assertTextClickAt(
+			locator1 = "PGBlogsEntry#COMMENTS_ADD",
+			value1 = "Be the first."
+		);
+
+		Type(locator1 = "PGBlogsEntry#COMMENTS_BODY_FIELD", value1 = "${entryComment}");
+
+		AssertClick.assertValueClickAt(
+			locator1 = "PGBlogsEntry#COMMENTS_REPLY_BUTTON",
+			value1 = "Reply"
+		);
+
+		AssertTextEquals(
+			locator1 = "PGBlogsEntry#COMMENTS_SUCCESS",
+			value1 = "Your request processed successfully."
+		);
+
+		AssertTextEquals(
+			locator1 = "PGBlogsEntry#COMMENT_1",
+			value1 = "${entryComment}"
+		);
+	}
+}

@@ -1,16 +1,41 @@
-<definition>
-	<command name="configureSetupPG">
-		<execute function="AssertClick" locator1="PGWebcontentlist#OPTIONS_ICON" value1="Options" />
-		<execute function="AssertClick#assertTextClickAt" locator1="PGWebcontentlist#OPTIONS_MENULIST_CONFIGURATION" value1="Configuration" />
+definition {
+	macro configureSetupPG {
+		AssertClick(locator1 = "PGWebcontentlist#OPTIONS_ICON", value1 = "Options");
 
-		<execute function="SelectFrame#selectFrameWaitForScript" locator1="PGWebcontentlistConfiguration#CONFIGURATION_IFRAME" />
-		<execute function="Select" locator1="PGWebcontentlistConfiguration#DISPLAY_SETTINGS_DISPLAY_URL_SELECT" value1="Normal" />
-		<execute function="Select" locator1="PGWebcontentlistConfiguration#DISPLAY_SETTINGS_DISPLAY_PER_PAGE_SELECT" value1="10" />
-		<execute function="AssertClick#assertValueClickAt" locator1="PGWebcontentlistConfiguration#SAVE_BUTTON" value1="Save" />
-		<execute function="AssertTextEquals" locator1="PGWebcontentlistConfiguration#SUCCESS_MESSAGE" value1="You have successfully updated the setup." />
+		AssertClick.assertTextClickAt(
+			locator1 = "PGWebcontentlist#OPTIONS_MENULIST_CONFIGURATION",
+			value1 = "Configuration"
+		);
 
-		<execute function="SelectFrame" />
+		SelectFrame.selectFrameWaitForScript(
+			locator1 = "PGWebcontentlistConfiguration#CONFIGURATION_IFRAME"
+		);
 
-		<execute function="AssertTextEquals" locator1="PGWebcontentlist#WEB_CONTENT_TABLE_TITLE_1" value1="${webContentTitle}" />
-	</command>
-</definition>
+		Select(
+			locator1 = "PGWebcontentlistConfiguration#DISPLAY_SETTINGS_DISPLAY_URL_SELECT",
+			value1 = "Normal"
+		);
+
+		Select(
+			locator1 = "PGWebcontentlistConfiguration#DISPLAY_SETTINGS_DISPLAY_PER_PAGE_SELECT",
+			value1 = "10"
+		);
+
+		AssertClick.assertValueClickAt(
+			locator1 = "PGWebcontentlistConfiguration#SAVE_BUTTON",
+			value1 = "Save"
+		);
+
+		AssertTextEquals(
+			locator1 = "PGWebcontentlistConfiguration#SUCCESS_MESSAGE",
+			value1 = "You have successfully updated the setup."
+		);
+
+		SelectFrame();
+
+		AssertTextEquals(
+			locator1 = "PGWebcontentlist#WEB_CONTENT_TABLE_TITLE_1",
+			value1 = "${webContentTitle}"
+		);
+	}
+}

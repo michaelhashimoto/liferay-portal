@@ -1,67 +1,111 @@
-<definition>
-	<command name="activateStagingCP">
-		<execute function="AssertClick" locator1="CPSitesEdit#MENU_STAGING" value1="Staging" />
-		<execute function="Check" locator1="CPSitesEdit#STAGING_LOCAL_LIVE" />
+definition {
+	macro activateStagingCP {
+		AssertClick(locator1 = "CPSitesEdit#MENU_STAGING", value1 = "Staging");
 
-		<if>
-			<equals arg1="${pageVersioningEnabled}" arg2="true" />
-			<then>
-				<execute function="Check" locator1="CPSitesEdit#STAGING_ENABLED_ON_PUBLIC_PAGES_CHECKBOX" />
-				<execute function="Check" locator1="CPSitesEdit#STAGING_ENABLED_ON_PRIVATE_PAGES_CHECKBOX" />
-			</then>
-		</if>
+		Check(locator1 = "CPSitesEdit#STAGING_LOCAL_LIVE");
 
-		<execute function="Check" locator1="CPSitesEdit#STAGING_BLOGS_CHECKBOX" />
-		<execute function="Check" locator1="CPSitesEdit#STAGING_BOOKMARKS_CHECKBOX" />
-		<execute function="Check" locator1="CPSitesEdit#STAGING_DOCUMENTS_AND_MEDIA_CHECKBOX" />
-		<execute function="Check" locator1="CPSitesEdit#STAGING_DOCUMENTS_AND_MEDIA_DISPLAY_CHECKBOX" />
-		<execute function="Check" locator1="CPSitesEdit#STAGING_DYNAMIC_DATA_LIST_DISPLAY_CHECKBOX" />
-		<execute function="Check" locator1="CPSitesEdit#STAGING_DYNAMIC_DATA_LISTS_CHECKBOX" />
-		<execute function="Check" locator1="CPSitesEdit#STAGING_DYNAMIC_DATA_MAPPING_CHECKBOX" />
-		<execute function="Check" locator1="CPSitesEdit#STAGING_MESSAGE_BOARDS_CHECKBOX" />
-		<execute function="Check" locator1="CPSitesEdit#STAGING_PAGE_COMMENTS_CHECKBOX" />
-		<execute function="Check" locator1="CPSitesEdit#STAGING_PAGE_RATINGS_CHECKBOX" />
-		<execute function="Check" locator1="CPSitesEdit#STAGING_POLLS_CHECKBOX" />
-		<execute function="Check" locator1="CPSitesEdit#STAGING_POLLS_DISPLAY_CHECKBOX" />
-		<execute function="Check" locator1="CPSitesEdit#STAGING_RSS_CHECKBOX" />
-		<execute function="Check" locator1="CPSitesEdit#STAGING_WEB_CONTENT_CHECKBOX" />
-		<execute function="Check" locator1="CPSitesEdit#STAGING_WEB_CONTENT_DISPLAY_CHECKBOX" />
-		<execute function="Check" locator1="CPSitesEdit#STAGING_WIKI_CHECKBOX" />
-		<execute function="Check" locator1="CPSitesEdit#STAGING_WIKI_DISPLAY_CHECKBOX" />
-		<execute function="AssertClick#assertValueClickAt" locator1="CPSitesEdit#MENU_SAVE" value1="Save" />
-		<execute function="AssertTextEquals" locator1="CPSitesEdit#SUCCESS_MESSAGE" value1="Your request completed successfully." />
-		<execute function="AssertTextEquals" locator1="CPSitesEdit#HEADER" value1="${siteName} (Staging)" />
-	</command>
+		if ("${pageVersioningEnabled}" == "true") {
+			Check(locator1 = "CPSitesEdit#STAGING_ENABLED_ON_PUBLIC_PAGES_CHECKBOX");
 
-	<command name="deactivateStagingCP">
-		<if>
-			<condition function="IsTextEqual" locator1="CPSitesEdit#HEADER" value1="${siteName} (Staging)" />
-			<then>
-				<execute function="AssertClick" locator1="CPSitesEdit#MENU_STAGING" value1="Staging" />
-				<execute function="Check" locator1="CPSitesEdit#STAGING_NONE" />
-				<execute function="AssertClick#assertValueClickAt" locator1="CPSitesEdit#MENU_SAVE" value1="Save" />
-				<execute function="AssertTextEquals" locator1="CPSitesEdit#SUCCESS_MESSAGE" value1="Your request completed successfully." />
-			</then>
-		</if>
+			Check(locator1 = "CPSitesEdit#STAGING_ENABLED_ON_PRIVATE_PAGES_CHECKBOX");
+		}
 
-		<execute function="AssertTextEquals" locator1="CPSitesEdit#HEADER" value1="${siteName}" />
-	</command>
+		Check(locator1 = "CPSitesEdit#STAGING_BLOGS_CHECKBOX");
 
-	<command name="publishToLiveNowPG">
-		<execute function="Click" locator1="Staging#STAGING_DROP_DOWN_BUTTON" />
-		<execute function="AssertClick" locator1="Staging#STAGING_MENULIST_PUBLISH_TO_LIVE_NOW" value1="Publish to Live Now" />
+		Check(locator1 = "CPSitesEdit#STAGING_BOOKMARKS_CHECKBOX");
 
-		<if>
-			<condition function="IsElementPresent" locator1="PGStagingPublishToLiveNow#APPLICATIONS_EXPAND" value1="+" />
-			<then>
-				<execute function="Click" locator1="PGStagingPublishToLiveNow#APPLICATIONS_EXPAND" value1="+" />
-			</then>
-		</if>
+		Check(locator1 = "CPSitesEdit#STAGING_DOCUMENTS_AND_MEDIA_CHECKBOX");
 
-		<execute function="Check" locator1="PGStagingPublishToLiveNow#PUBLISH_RANGE_ALL" />
-		<execute function="AssertClickNoError" locator1="PGStagingPublishToLiveNow#PUBLISH_BUTTON" value1="Publish" />
-		<execute function="Confirm" value1="Are you sure you want to publish these pages?" />
-		<execute function="AssertTextEquals" locator1="PGStagingPublishToLiveNow#SUCCESS_MESSAGE" value1="Your request completed successfully." />
-		<execute function="Click" locator1="PGStagingPublishToLiveNow#CLOSE_BUTTON" value1="X" />
-	</command>
-</definition>
+		Check(locator1 = "CPSitesEdit#STAGING_DOCUMENTS_AND_MEDIA_DISPLAY_CHECKBOX");
+
+		Check(locator1 = "CPSitesEdit#STAGING_DYNAMIC_DATA_LIST_DISPLAY_CHECKBOX");
+
+		Check(locator1 = "CPSitesEdit#STAGING_DYNAMIC_DATA_LISTS_CHECKBOX");
+
+		Check(locator1 = "CPSitesEdit#STAGING_DYNAMIC_DATA_MAPPING_CHECKBOX");
+
+		Check(locator1 = "CPSitesEdit#STAGING_MESSAGE_BOARDS_CHECKBOX");
+
+		Check(locator1 = "CPSitesEdit#STAGING_PAGE_COMMENTS_CHECKBOX");
+
+		Check(locator1 = "CPSitesEdit#STAGING_PAGE_RATINGS_CHECKBOX");
+
+		Check(locator1 = "CPSitesEdit#STAGING_POLLS_CHECKBOX");
+
+		Check(locator1 = "CPSitesEdit#STAGING_POLLS_DISPLAY_CHECKBOX");
+
+		Check(locator1 = "CPSitesEdit#STAGING_RSS_CHECKBOX");
+
+		Check(locator1 = "CPSitesEdit#STAGING_WEB_CONTENT_CHECKBOX");
+
+		Check(locator1 = "CPSitesEdit#STAGING_WEB_CONTENT_DISPLAY_CHECKBOX");
+
+		Check(locator1 = "CPSitesEdit#STAGING_WIKI_CHECKBOX");
+
+		Check(locator1 = "CPSitesEdit#STAGING_WIKI_DISPLAY_CHECKBOX");
+
+		AssertClick.assertValueClickAt(
+			locator1 = "CPSitesEdit#MENU_SAVE",
+			value1 = "Save"
+		);
+
+		AssertTextEquals(
+			locator1 = "CPSitesEdit#SUCCESS_MESSAGE",
+			value1 = "Your request completed successfully."
+		);
+
+		AssertTextEquals(
+			locator1 = "CPSitesEdit#HEADER",
+			value1 = "${siteName} (Staging)"
+		);
+	}
+
+	macro deactivateStagingCP {
+		if (IsTextEqual(locator1 = "CPSitesEdit#HEADER", value1 = "${siteName} (Staging)")) {
+			AssertClick(locator1 = "CPSitesEdit#MENU_STAGING", value1 = "Staging");
+
+			Check(locator1 = "CPSitesEdit#STAGING_NONE");
+
+			AssertClick.assertValueClickAt(
+				locator1 = "CPSitesEdit#MENU_SAVE",
+				value1 = "Save"
+			);
+
+			AssertTextEquals(
+				locator1 = "CPSitesEdit#SUCCESS_MESSAGE",
+				value1 = "Your request completed successfully."
+			);
+		}
+
+		AssertTextEquals(locator1 = "CPSitesEdit#HEADER", value1 = "${siteName}");
+	}
+
+	macro publishToLiveNowPG {
+		Click(locator1 = "Staging#STAGING_DROP_DOWN_BUTTON");
+
+		AssertClick(
+			locator1 = "Staging#STAGING_MENULIST_PUBLISH_TO_LIVE_NOW",
+			value1 = "Publish to Live Now"
+		);
+
+		if (IsElementPresent(locator1 = "PGStagingPublishToLiveNow#APPLICATIONS_EXPAND", value1 = "+")) {
+			Click(locator1 = "PGStagingPublishToLiveNow#APPLICATIONS_EXPAND", value1 = "+");
+		}
+
+		Check(locator1 = "PGStagingPublishToLiveNow#PUBLISH_RANGE_ALL");
+
+		AssertClickNoError(
+			locator1 = "PGStagingPublishToLiveNow#PUBLISH_BUTTON",
+			value1 = "Publish"
+		);
+
+		Confirm(value1 = "Are you sure you want to publish these pages?");
+
+		AssertTextEquals(
+			locator1 = "PGStagingPublishToLiveNow#SUCCESS_MESSAGE",
+			value1 = "Your request completed successfully."
+		);
+
+		Click(locator1 = "PGStagingPublishToLiveNow#CLOSE_BUTTON", value1 = "X");
+	}
+}

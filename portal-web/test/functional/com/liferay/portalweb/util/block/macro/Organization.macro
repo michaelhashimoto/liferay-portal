@@ -1,179 +1,513 @@
-<definition>
-	<var name="orgName" value="Organization*" />
+definition {
+	var orgName = "Organization*";
 
-	<command name="addCP">
-		<execute function="AssertClick" locator1="CPUsersandorganizations#ADD" value1="Add" />
-		<execute function="AssertClick#assertTextClickAt" locator1="CPUsersandorganizations#ADD_REGULAR_ORGANIZATION" value1="Regular Organization" />
+	macro addCP {
+		AssertClick(locator1 = "CPUsersandorganizations#ADD", value1 = "Add");
 
-		<execute function="Type" locator1="CPUsersandorganizationsAddorganization#DETAILS_NAME_FIELD" value1="${orgName}" />
-		<execute function="Select" locator1="CPUsersandorganizationsAddorganization#DETAILS_TYPE_SELECT" value1="${orgType}" />
-		<execute function="AssertClick#assertValueClickAt" locator1="CPUsersandorganizationsAddorganization#SAVE_BUTTON" value1="Save" />
+		AssertClick.assertTextClickAt(
+			locator1 = "CPUsersandorganizations#ADD_REGULAR_ORGANIZATION",
+			value1 = "Regular Organization"
+		);
 
-		<execute function="AssertTextEquals" locator1="CPUsersandorganizationsOrganizationEdit#SUCCESS_MESSAGE" value1="Your request completed successfully." />
-		<execute function="AssertTextEquals" locator1="CPUsersandorganizationsOrganizationEdit#DETAILS_NAME_FIELD" value1="${orgName}" />
-		<execute function="AssertTextEquals" locator1="CPUsersandorganizationsOrganizationEdit#DETAILS_TYPE" value1="Type ${orgType}" />
-	</command>
+		Type(
+			locator1 = "CPUsersandorganizationsAddorganization#DETAILS_NAME_FIELD",
+			value1 = "${orgName}"
+		);
 
-	<command name="addMemberCP">
-		<execute function="Type" locator1="CPUsersandorganizations#SEARCH_FIELD" value1="${orgName}" />
-		<execute function="AssertClick#assertValueClickAt" locator1="CPUsersandorganizations#SEARCH_BUTTON" value1="Search" />
-		<execute function="AssertTextEquals" locator1="CPUsersandorganizations#ORGANIZATION_TABLE_NAME_1" value1="${orgName}" />
-		<execute function="AssertClick#pauseAssertTextClickAt" locator1="CPUsersandorganizations#ORGANIZATION_TABLE_ACTIONS_1" value1="Actions" />
-		<execute function="AssertClick" locator1="CPUsersandorganizations#ORGANIZATION_MENULIST_ASSIGN_USERS" value1="Assign Users" />
+		Select(
+			locator1 = "CPUsersandorganizationsAddorganization#DETAILS_TYPE_SELECT",
+			value1 = "${orgType}"
+		);
 
-		<execute function="AssertClick#assertTextClickAt" locator1="CPUsersandorganizationsAssignmembers#AVAILABLE" value1="Available" />
-		<execute macro="CPUsersandorganizationsAssignmembers#showBasicSearch" />
-		<execute function="Type" locator1="CPUsersandorganizationsAssignmembers#BASIC_SEARCH_FIELD" value1="${userScreenName}" />
-		<execute function="AssertClick#assertValueClickAt" locator1="CPUsersandorganizationsAssignmembers#BASIC_SEARCH_BUTTON" value1="Search" />
-		<execute function="AssertTextEquals" locator1="CPUsersandorganizationsAssignmembers#USER_TABLE_SCREEN_NAME_1" value1="${userScreenName}" />
-		<execute function="Check" locator1="CPUsersandorganizationsAssignmembers#USER_TABLE_CHECKBOX_1" />
-		<execute function="AssertClick#assertValueClickAt" locator1="CPUsersandorganizationsAssignmembers#UPDATE_ASSOCIATIONS_BUTTON" value1="Update Associations" />
-		<execute function="AssertTextEquals" locator1="CPUsersandorganizationsAssignmembers#SUCCESS_MESSAGE" value1="Your request completed successfully." />
+		AssertClick.assertValueClickAt(
+			locator1 = "CPUsersandorganizationsAddorganization#SAVE_BUTTON",
+			value1 = "Save"
+		);
 
-		<execute function="AssertClick#assertTextClickAt" locator1="CPUsersandorganizationsAssignmembers#CURRENT" value1="Current" />
-		<execute function="AssertChecked" locator1="CPUsersandorganizationsAssignmembers#USER_TABLE_CHECKBOX_1" />
-		<execute function="AssertTextEquals" locator1="CPUsersandorganizationsAssignmembers#USER_TABLE_USER_NAME_1" value1="${userFirstName} ${userLastName}" />
-		<execute function="AssertTextEquals" locator1="CPUsersandorganizationsAssignmembers#USER_TABLE_SCREEN_NAME_1" value1="${userScreenName}" />
-	</command>
+		AssertTextEquals(
+			locator1 = "CPUsersandorganizationsOrganizationEdit#SUCCESS_MESSAGE",
+			value1 = "Your request completed successfully."
+		);
 
-	<command name="addSiteCP">
-		<execute function="Type" locator1="CPUsersandorganizations#SEARCH_FIELD" value1="${orgName}" />
-		<execute function="AssertClick#assertValueClickAt" locator1="CPUsersandorganizations#SEARCH_BUTTON" value1="Search" />
-		<execute function="AssertTextEquals" locator1="CPUsersandorganizations#ORGANIZATION_TABLE_NAME_1" value1="${orgName}" />
-		<execute function="AssertClick#pauseAssertTextClickAt" locator1="CPUsersandorganizations#ORGANIZATION_TABLE_ACTIONS_1" value1="Actions" />
-		<execute function="AssertClick" locator1="CPUsersandorganizations#ORGANIZATION_MENULIST_EDIT" value1="Edit" />
+		AssertTextEquals(
+			locator1 = "CPUsersandorganizationsOrganizationEdit#DETAILS_NAME_FIELD",
+			value1 = "${orgName}"
+		);
 
-		<execute function="AssertClick#assertPartialTextClickAt" locator1="CPUsersandorganizationsOrganizationEdit#ORGANIZATION_INFORMATION_ORGANIZATION_SITE" value1="Organization Site" />
-		<execute function="Check" locator1="CPUsersandorganizationsOrganizationEdit#ORGANIZATION_SITE_CREATE_SITE_CHECKBOX" />
-		<execute function="AssertClick#assertValueClickAt" locator1="CPUsersandorganizationsOrganizationEdit#SAVE_BUTTON" value1="Save" />
-		<execute function="AssertTextEquals" locator1="CPUsersandorganizationsOrganizationEdit#SUCCESS_MESSAGE" value1="Your request completed successfully." />
-		<execute function="AssertChecked" locator1="CPUsersandorganizationsOrganizationEdit#ORGANIZATION_SITE_CREATE_SITE_CHECKBOX" />
-	</command>
+		AssertTextEquals(
+			locator1 = "CPUsersandorganizationsOrganizationEdit#DETAILS_TYPE",
+			value1 = "Type ${orgType}"
+		);
+	}
 
-	<command name="assignOrgRoleCP">
-		<execute function="Type" locator1="CPUsersandorganizations#SEARCH_FIELD" value1="${orgName}" />
-		<execute function="AssertClick#assertValueClickAt" locator1="CPUsersandorganizations#SEARCH_BUTTON" value1="Search" />
-		<execute function="AssertTextEquals" locator1="CPUsersandorganizations#ORGANIZATION_TABLE_NAME_1" value1="${orgName}" />
-		<execute function="AssertClick#pauseAssertTextClickAt" locator1="CPUsersandorganizations#ORGANIZATION_TABLE_ACTIONS_1" value1="Actions" />
-		<execute function="AssertClick" locator1="CPUsersandorganizations#ORGANIZATION_MENULIST_ASSIGN_ORGANIZATION_ROLES" value1="Assign Organization Roles" />
+	macro addMemberCP {
+		Type(locator1 = "CPUsersandorganizations#SEARCH_FIELD", value1 = "${orgName}");
 
-		<execute function="AssertTextEquals" locator1="//tr[contains(.,'${roleName}')]/td[1]/a" value1="${roleName}" />
-		<execute function="Click" locator1="//tr[contains(.,'${roleName}')]/td[1]/a" value1="${roleName}" />
+		AssertClick.assertValueClickAt(
+			locator1 = "CPUsersandorganizations#SEARCH_BUTTON",
+			value1 = "Search"
+		);
 
-		<execute function="AssertClick#assertTextClickAt" locator1="CPUsersandorganizationsAssignuserrolesUser#AVAILABLE" value1="Available" />
-		<execute function="Type" locator1="CPUsersandorganizationsAssignuserrolesUser#BASIC_SEARCH_FIELD" value1="${userScreenName}" />
-		<execute function="AssertClick#assertValueClickAt" locator1="CPUsersandorganizationsAssignuserrolesUser#BASIC_SEARCH_BUTTON" value1="Search" />
-		<execute function="AssertTextEquals" locator1="CPUsersandorganizationsAssignuserrolesUser#USER_TABLE_SCREEN_NAME_1" value1="${userScreenName}" />
-		<execute function="Check" locator1="CPUsersandorganizationsAssignuserrolesUser#USER_TABLE_CHECKBOX_1" />
-		<execute function="AssertClick#assertValueClickAt" locator1="CPUsersandorganizationsAssignuserrolesUser#UPDATE_ASSOCIATIONS_BUTTON" value1="Update Associations" />
-		<execute function="AssertTextEquals" locator1="CPUsersandorganizationsAssignuserrolesUser#SUCCESS_MESSAGE" value1="Your request completed successfully." />
+		AssertTextEquals(
+			locator1 = "CPUsersandorganizations#ORGANIZATION_TABLE_NAME_1",
+			value1 = "${orgName}"
+		);
 
-		<execute function="AssertClick#assertTextClickAt" locator1="CPUsersandorganizationsAssignuserrolesUser#CURRENT" value1="Current" />
-		<execute function="AssertChecked" locator1="CPUsersandorganizationsAssignuserrolesUser#USER_TABLE_CHECKBOX_1" />
-		<execute function="AssertTextEquals" locator1="CPUsersandorganizationsAssignuserrolesUser#USER_TABLE_USER_NAME_1" value1="${userFirstName} ${userLastName}" />
-		<execute function="AssertTextEquals" locator1="CPUsersandorganizationsAssignuserrolesUser#USER_TABLE_SCREEN_NAME_1" value1="${userScreenName}" />
-	</command>
+		AssertClick.pauseAssertTextClickAt(
+			locator1 = "CPUsersandorganizations#ORGANIZATION_TABLE_ACTIONS_1",
+			value1 = "Actions"
+		);
 
-	<command name="deleteCP">
-		<execute function="Type" locator1="CPUsersandorganizations#SEARCH_FIELD" value1="${orgName}" />
-		<execute function="AssertClick#assertValueClickAt" locator1="CPUsersandorganizations#SEARCH_BUTTON" value1="Search" />
-		<execute function="AssertClick#pauseAssertTextClickAt" locator1="CPUsersandorganizations#ORGANIZATION_TABLE_ACTIONS_1" value1="Actions" />
+		AssertClick(
+			locator1 = "CPUsersandorganizations#ORGANIZATION_MENULIST_ASSIGN_USERS",
+			value1 = "Assign Users"
+		);
 
-		<execute function="AssertClickNoError" locator1="CPUsersandorganizations#ORGANIZATION_MENULIST_DELETE" value1="Delete" />
-		<execute function="Confirm#waitForConfirmation" value1="Are you sure you want to delete this?" />
-		<execute function="AssertTextEquals" locator1="CPUsersandorganizations#SUCCESS_MESSAGE" value1="Your request completed successfully." />
-		<execute function="AssertTextNotPresent" value1="${orgName}" />
-	</command>
+		AssertClick.assertTextClickAt(
+			locator1 = "CPUsersandorganizationsAssignmembers#AVAILABLE",
+			value1 = "Available"
+		);
 
-	<command name="removeMemberCP">
-		<execute function="Type" locator1="CPUsersandorganizations#SEARCH_FIELD" value1="${orgName}" />
-		<execute function="AssertClick#assertValueClickAt" locator1="CPUsersandorganizations#SEARCH_BUTTON" value1="Search" />
-		<execute function="AssertTextEquals" locator1="CPUsersandorganizations#ORGANIZATION_TABLE_NAME_1" value1="${orgName}" />
-		<execute function="AssertClick#pauseAssertTextClickAt" locator1="CPUsersandorganizations#ORGANIZATION_TABLE_ACTIONS_1" value1="Actions" />
-		<execute function="AssertClick" locator1="CPUsersandorganizations#ORGANIZATION_MENULIST_ASSIGN_USERS" value1="Assign Users" />
+		CPUsersandorganizationsAssignmembers.showBasicSearch();
 
-		<execute function="AssertClick#assertTextClickAt" locator1="CPUsersandorganizationsAssignmembers#AVAILABLE" value1="Available" />
-		<execute macro="CPUsersandorganizationsAssignmembers#showBasicSearch" />
-		<execute function="Type" locator1="CPUsersandorganizationsAssignmembers#BASIC_SEARCH_FIELD" value1="${userScreenName}" />
-		<execute function="AssertClick#assertValueClickAt" locator1="CPUsersandorganizationsAssignmembers#BASIC_SEARCH_BUTTON" value1="Search" />
-		<execute function="AssertTextEquals" locator1="CPUsersandorganizationsAssignmembers#USER_TABLE_SCREEN_NAME_1" value1="${userScreenName}" />
-		<execute function="Uncheck" locator1="CPUsersandorganizationsAssignmembers#USER_TABLE_CHECKBOX_1" />
-		<execute function="AssertClick#assertValueClickAt" locator1="CPUsersandorganizationsAssignmembers#UPDATE_ASSOCIATIONS_BUTTON" value1="Update Associations" />
-		<execute function="AssertTextEquals" locator1="CPUsersandorganizationsAssignmembers#SUCCESS_MESSAGE" value1="Your request completed successfully." />
-		<execute function="AssertNotChecked" locator1="CPUsersandorganizationsAssignmembers#USER_TABLE_CHECKBOX_1" />
-	</command>
+		Type(
+			locator1 = "CPUsersandorganizationsAssignmembers#BASIC_SEARCH_FIELD",
+			value1 = "${userScreenName}"
+		);
 
-	<command name="tearDownCP">
-		<execute macro="Page#gotoCP">
-			<var name="portletName" value="Users and Organizations" />
-		</execute>
+		AssertClick.assertValueClickAt(
+			locator1 = "CPUsersandorganizationsAssignmembers#BASIC_SEARCH_BUTTON",
+			value1 = "Search"
+		);
 
-		<execute function="Type" locator1="CPUsersandorganizations#SEARCH_FIELD" value1="${orgName}" />
-		<execute function="AssertClick#assertValueClickAt" locator1="CPUsersandorganizations#SEARCH_BUTTON" value1="Search" />
+		AssertTextEquals(
+			locator1 = "CPUsersandorganizationsAssignmembers#USER_TABLE_SCREEN_NAME_1",
+			value1 = "${userScreenName}"
+		);
 
-		<while>
-			<condition function="IsElementPresent" locator1="CPUsersandorganizations#ORGANIZATION_TABLE_NAME_1" />
-			<then>
-				<execute function="Click" locator1="CPUsersandorganizations#ORGANIZATION_TABLE_NAME_1" />
+		Check(locator1 = "CPUsersandorganizationsAssignmembers#USER_TABLE_CHECKBOX_1");
 
-				<execute function="AssertClick#assertTextClickAt" locator1="CPUsersandorganizationsOrganization#MENU_ASSIGN_USERS" value1="Assign Users" />
+		AssertClick.assertValueClickAt(
+			locator1 = "CPUsersandorganizationsAssignmembers#UPDATE_ASSOCIATIONS_BUTTON",
+			value1 = "Update Associations"
+		);
 
-				<execute function="AssertClick#assertTextClickAt" locator1="CPUsersandorganizationsAssignmembers#CURRENT" value1="Current" />
+		AssertTextEquals(
+			locator1 = "CPUsersandorganizationsAssignmembers#SUCCESS_MESSAGE",
+			value1 = "Your request completed successfully."
+		);
 
-				<if>
-					<condition function="IsElementPresent#isVisible" locator1="CPUsersandorganizationsAssignmembers#USER_TABLE_ALL_CHECKBOX" />
-					<then>
-						<execute function="Click" locator1="CPUsersandorganizationsAssignmembers#USER_TABLE_ALL_CHECKBOX" />
-						<execute function="AssertClick#assertValueClickAt" locator1="CPUsersandorganizationsAssignmembers#UPDATE_ASSOCIATIONS_BUTTON" value1="Update Associations" />
-						<execute function="AssertTextEquals" locator1="CPUsersandorganizationsAssignmembers#INFO_MESSAGE" value1="No users were found." />
-					</then>
-				</if>
+		AssertClick.assertTextClickAt(
+			locator1 = "CPUsersandorganizationsAssignmembers#CURRENT",
+			value1 = "Current"
+		);
 
-				<execute function="AssertClick#assertPartialTextClickAt" locator1="CPUsersandorganizationsAssignmembers#BACK" value1="Back" />
+		AssertChecked(
+			locator1 = "CPUsersandorganizationsAssignmembers#USER_TABLE_CHECKBOX_1"
+		);
 
-				<execute function="AssertClickNoError" locator1="CPUsersandorganizationsOrganization#MENU_DELETE" value1="Delete" />
-				<execute function="Confirm" value1="Are you sure you want to delete this?" />
+		AssertTextEquals(
+			locator1 = "CPUsersandorganizationsAssignmembers#USER_TABLE_USER_NAME_1",
+			value1 = "${userFirstName} ${userLastName}"
+		);
 
-				<execute macro="Page#gotoCP">
-					<var name="portletName" value="Users and Organizations" />
-				</execute>
+		AssertTextEquals(
+			locator1 = "CPUsersandorganizationsAssignmembers#USER_TABLE_SCREEN_NAME_1",
+			value1 = "${userScreenName}"
+		);
+	}
 
-				<execute function="Type" locator1="CPUsersandorganizations#SEARCH_FIELD" value1="${orgName}" />
-				<execute function="AssertClick#assertValueClickAt" locator1="CPUsersandorganizations#SEARCH_BUTTON" value1="Search" />
-			</then>
-		</while>
-	</command>
+	macro addSiteCP {
+		Type(locator1 = "CPUsersandorganizations#SEARCH_FIELD", value1 = "${orgName}");
 
-	<command name="viewAssignMemberCP">
-		<execute function="Type" locator1="CPUsersandorganizations#SEARCH_FIELD" value1="${searchToken}" />
-		<execute function="AssertClick#assertValueClickAt" locator1="CPUsersandorganizations#SEARCH_BUTTON" value1="Search" />
-		<execute function="AssertTextEquals" locator1="CPUsersandorganizations#ORGANIZATION_TABLE_NAME_1" value1="${orgName}" />
-		<execute function="AssertClick" locator1="CPUsersandorganizations#ORGANIZATION_TABLE_NAME_1" value1="${orgName}" />
+		AssertClick.assertValueClickAt(
+			locator1 = "CPUsersandorganizations#SEARCH_BUTTON",
+			value1 = "Search"
+		);
 
-		<execute function="AssertTextEquals" locator1="CPUsersandorganizationsOrganization#USER_TABLE_FIRST_NAME_1" value1="${userFirstName}" />
-		<execute function="AssertTextEquals" locator1="CPUsersandorganizationsOrganization#USER_TABLE_LAST_NAME_1" value1="${userLastName}" />
-		<execute function="AssertTextEquals" locator1="CPUsersandorganizationsOrganization#USER_TABLE_SCREEN_NAME_1" value1="${userScreenName}" />
-	</command>
+		AssertTextEquals(
+			locator1 = "CPUsersandorganizations#ORGANIZATION_TABLE_NAME_1",
+			value1 = "${orgName}"
+		);
 
-	<command name="viewCP">
-		<execute function="Type" locator1="CPUsersandorganizations#SEARCH_FIELD" value1="${searchToken}" />
-		<execute function="AssertClick#assertValueClickAt" locator1="CPUsersandorganizations#SEARCH_BUTTON" value1="Search" />
-		<execute function="AssertTextEquals" locator1="CPUsersandorganizations#ORGANIZATION_TABLE_NAME_1" value1="${orgName}" />
-		<execute function="AssertTextEquals" locator1="CPUsersandorganizations#ORGANIZATION_TABLE_TYPE_1" value1="${orgType}" />
-		<execute function="AssertClick#pauseAssertTextClickAt" locator1="CPUsersandorganizations#ORGANIZATION_TABLE_ACTIONS_1" value1="Actions" />
-		<execute function="AssertClick" locator1="CPUsersandorganizations#ORGANIZATION_MENULIST_EDIT" value1="Edit" />
+		AssertClick.pauseAssertTextClickAt(
+			locator1 = "CPUsersandorganizations#ORGANIZATION_TABLE_ACTIONS_1",
+			value1 = "Actions"
+		);
 
-		<execute function="AssertTextEquals" locator1="CPUsersandorganizationsOrganizationEdit#TITLE" value1="${orgName}" />
-		<execute function="AssertTextEquals" locator1="CPUsersandorganizationsOrganizationEdit#DETAILS_NAME_FIELD" value1="${orgName}" />
-		<execute function="AssertTextEquals" locator1="CPUsersandorganizationsOrganizationEdit#DETAILS_TYPE" value1="Type ${orgType}" />
-		<execute function="AssertTextEquals" locator1="CPUsersandorganizationsOrganizationEdit#ORGANIZATION_NAME" value1="${orgName}" />
-	</command>
+		AssertClick(
+			locator1 = "CPUsersandorganizations#ORGANIZATION_MENULIST_EDIT",
+			value1 = "Edit"
+		);
 
-	<command name="viewRemoveMemberCP">
-		<execute function="Type" locator1="CPUsersandorganizations#SEARCH_FIELD" value1="${orgName}" />
-		<execute function="AssertClick#assertValueClickAt" locator1="CPUsersandorganizations#SEARCH_BUTTON" value1="Search" />
-		<execute function="AssertTextEquals" locator1="CPUsersandorganizations#ORGANIZATION_TABLE_NAME_1" value1="${orgName}" />
-		<execute function="AssertClick" locator1="CPUsersandorganizations#ORGANIZATION_TABLE_NAME_1" value1="${orgName}" />
-		<execute function="AssertTextNotPresent" value1="${userFirstName}" />
-	</command>
-</definition>
+		AssertClick.assertPartialTextClickAt(
+			locator1 = "CPUsersandorganizationsOrganizationEdit#ORGANIZATION_INFORMATION_ORGANIZATION_SITE",
+			value1 = "Organization Site"
+		);
+
+		Check(
+			locator1 = "CPUsersandorganizationsOrganizationEdit#ORGANIZATION_SITE_CREATE_SITE_CHECKBOX"
+		);
+
+		AssertClick.assertValueClickAt(
+			locator1 = "CPUsersandorganizationsOrganizationEdit#SAVE_BUTTON",
+			value1 = "Save"
+		);
+
+		AssertTextEquals(
+			locator1 = "CPUsersandorganizationsOrganizationEdit#SUCCESS_MESSAGE",
+			value1 = "Your request completed successfully."
+		);
+
+		AssertChecked(
+			locator1 = "CPUsersandorganizationsOrganizationEdit#ORGANIZATION_SITE_CREATE_SITE_CHECKBOX"
+		);
+	}
+
+	macro assignOrgRoleCP {
+		Type(locator1 = "CPUsersandorganizations#SEARCH_FIELD", value1 = "${orgName}");
+
+		AssertClick.assertValueClickAt(
+			locator1 = "CPUsersandorganizations#SEARCH_BUTTON",
+			value1 = "Search"
+		);
+
+		AssertTextEquals(
+			locator1 = "CPUsersandorganizations#ORGANIZATION_TABLE_NAME_1",
+			value1 = "${orgName}"
+		);
+
+		AssertClick.pauseAssertTextClickAt(
+			locator1 = "CPUsersandorganizations#ORGANIZATION_TABLE_ACTIONS_1",
+			value1 = "Actions"
+		);
+
+		AssertClick(
+			locator1 = "CPUsersandorganizations#ORGANIZATION_MENULIST_ASSIGN_ORGANIZATION_ROLES",
+			value1 = "Assign Organization Roles"
+		);
+
+		AssertTextEquals(
+			locator1 = "//tr[contains(.,'${roleName}')]/td[1]/a",
+			value1 = "${roleName}"
+		);
+
+		Click(
+			locator1 = "//tr[contains(.,'${roleName}')]/td[1]/a",
+			value1 = "${roleName}"
+		);
+
+		AssertClick.assertTextClickAt(
+			locator1 = "CPUsersandorganizationsAssignuserrolesUser#AVAILABLE",
+			value1 = "Available"
+		);
+
+		Type(
+			locator1 = "CPUsersandorganizationsAssignuserrolesUser#BASIC_SEARCH_FIELD",
+			value1 = "${userScreenName}"
+		);
+
+		AssertClick.assertValueClickAt(
+			locator1 = "CPUsersandorganizationsAssignuserrolesUser#BASIC_SEARCH_BUTTON",
+			value1 = "Search"
+		);
+
+		AssertTextEquals(
+			locator1 = "CPUsersandorganizationsAssignuserrolesUser#USER_TABLE_SCREEN_NAME_1",
+			value1 = "${userScreenName}"
+		);
+
+		Check(
+			locator1 = "CPUsersandorganizationsAssignuserrolesUser#USER_TABLE_CHECKBOX_1"
+		);
+
+		AssertClick.assertValueClickAt(
+			locator1 = "CPUsersandorganizationsAssignuserrolesUser#UPDATE_ASSOCIATIONS_BUTTON",
+			value1 = "Update Associations"
+		);
+
+		AssertTextEquals(
+			locator1 = "CPUsersandorganizationsAssignuserrolesUser#SUCCESS_MESSAGE",
+			value1 = "Your request completed successfully."
+		);
+
+		AssertClick.assertTextClickAt(
+			locator1 = "CPUsersandorganizationsAssignuserrolesUser#CURRENT",
+			value1 = "Current"
+		);
+
+		AssertChecked(
+			locator1 = "CPUsersandorganizationsAssignuserrolesUser#USER_TABLE_CHECKBOX_1"
+		);
+
+		AssertTextEquals(
+			locator1 = "CPUsersandorganizationsAssignuserrolesUser#USER_TABLE_USER_NAME_1",
+			value1 = "${userFirstName} ${userLastName}"
+		);
+
+		AssertTextEquals(
+			locator1 = "CPUsersandorganizationsAssignuserrolesUser#USER_TABLE_SCREEN_NAME_1",
+			value1 = "${userScreenName}"
+		);
+	}
+
+	macro deleteCP {
+		Type(locator1 = "CPUsersandorganizations#SEARCH_FIELD", value1 = "${orgName}");
+
+		AssertClick.assertValueClickAt(
+			locator1 = "CPUsersandorganizations#SEARCH_BUTTON",
+			value1 = "Search"
+		);
+
+		AssertClick.pauseAssertTextClickAt(
+			locator1 = "CPUsersandorganizations#ORGANIZATION_TABLE_ACTIONS_1",
+			value1 = "Actions"
+		);
+
+		AssertClickNoError(
+			locator1 = "CPUsersandorganizations#ORGANIZATION_MENULIST_DELETE",
+			value1 = "Delete"
+		);
+
+		Confirm.waitForConfirmation(value1 = "Are you sure you want to delete this?");
+
+		AssertTextEquals(
+			locator1 = "CPUsersandorganizations#SUCCESS_MESSAGE",
+			value1 = "Your request completed successfully."
+		);
+
+		AssertTextNotPresent(value1 = "${orgName}");
+	}
+
+	macro removeMemberCP {
+		Type(locator1 = "CPUsersandorganizations#SEARCH_FIELD", value1 = "${orgName}");
+
+		AssertClick.assertValueClickAt(
+			locator1 = "CPUsersandorganizations#SEARCH_BUTTON",
+			value1 = "Search"
+		);
+
+		AssertTextEquals(
+			locator1 = "CPUsersandorganizations#ORGANIZATION_TABLE_NAME_1",
+			value1 = "${orgName}"
+		);
+
+		AssertClick.pauseAssertTextClickAt(
+			locator1 = "CPUsersandorganizations#ORGANIZATION_TABLE_ACTIONS_1",
+			value1 = "Actions"
+		);
+
+		AssertClick(
+			locator1 = "CPUsersandorganizations#ORGANIZATION_MENULIST_ASSIGN_USERS",
+			value1 = "Assign Users"
+		);
+
+		AssertClick.assertTextClickAt(
+			locator1 = "CPUsersandorganizationsAssignmembers#AVAILABLE",
+			value1 = "Available"
+		);
+
+		CPUsersandorganizationsAssignmembers.showBasicSearch();
+
+		Type(
+			locator1 = "CPUsersandorganizationsAssignmembers#BASIC_SEARCH_FIELD",
+			value1 = "${userScreenName}"
+		);
+
+		AssertClick.assertValueClickAt(
+			locator1 = "CPUsersandorganizationsAssignmembers#BASIC_SEARCH_BUTTON",
+			value1 = "Search"
+		);
+
+		AssertTextEquals(
+			locator1 = "CPUsersandorganizationsAssignmembers#USER_TABLE_SCREEN_NAME_1",
+			value1 = "${userScreenName}"
+		);
+
+		Uncheck(locator1 = "CPUsersandorganizationsAssignmembers#USER_TABLE_CHECKBOX_1");
+
+		AssertClick.assertValueClickAt(
+			locator1 = "CPUsersandorganizationsAssignmembers#UPDATE_ASSOCIATIONS_BUTTON",
+			value1 = "Update Associations"
+		);
+
+		AssertTextEquals(
+			locator1 = "CPUsersandorganizationsAssignmembers#SUCCESS_MESSAGE",
+			value1 = "Your request completed successfully."
+		);
+
+		AssertNotChecked(
+			locator1 = "CPUsersandorganizationsAssignmembers#USER_TABLE_CHECKBOX_1"
+		);
+	}
+
+	macro tearDownCP {
+		Page.gotoCP(portletName = "Users and Organizations");
+
+		Type(locator1 = "CPUsersandorganizations#SEARCH_FIELD", value1 = "${orgName}");
+
+		AssertClick.assertValueClickAt(
+			locator1 = "CPUsersandorganizations#SEARCH_BUTTON",
+			value1 = "Search"
+		);
+
+		while (IsElementPresent(locator1 = "CPUsersandorganizations#ORGANIZATION_TABLE_NAME_1")) {
+			Click(locator1 = "CPUsersandorganizations#ORGANIZATION_TABLE_NAME_1");
+
+			AssertClick.assertTextClickAt(
+				locator1 = "CPUsersandorganizationsOrganization#MENU_ASSIGN_USERS",
+				value1 = "Assign Users"
+			);
+
+			AssertClick.assertTextClickAt(
+				locator1 = "CPUsersandorganizationsAssignmembers#CURRENT",
+				value1 = "Current"
+			);
+
+			if (IsElementPresent.isVisible(locator1 = "CPUsersandorganizationsAssignmembers#USER_TABLE_ALL_CHECKBOX")) {
+				Click(locator1 = "CPUsersandorganizationsAssignmembers#USER_TABLE_ALL_CHECKBOX");
+
+				AssertClick.assertValueClickAt(
+					locator1 = "CPUsersandorganizationsAssignmembers#UPDATE_ASSOCIATIONS_BUTTON",
+					value1 = "Update Associations"
+				);
+
+				AssertTextEquals(
+					locator1 = "CPUsersandorganizationsAssignmembers#INFO_MESSAGE",
+					value1 = "No users were found."
+				);
+			}
+
+			AssertClick.assertPartialTextClickAt(
+				locator1 = "CPUsersandorganizationsAssignmembers#BACK",
+				value1 = "Back"
+			);
+
+			AssertClickNoError(
+				locator1 = "CPUsersandorganizationsOrganization#MENU_DELETE",
+				value1 = "Delete"
+			);
+
+			Confirm(value1 = "Are you sure you want to delete this?");
+
+			Page.gotoCP(portletName = "Users and Organizations");
+
+			Type(locator1 = "CPUsersandorganizations#SEARCH_FIELD", value1 = "${orgName}");
+
+			AssertClick.assertValueClickAt(
+				locator1 = "CPUsersandorganizations#SEARCH_BUTTON",
+				value1 = "Search"
+			);
+		}
+	}
+
+	macro viewAssignMemberCP {
+		Type(
+			locator1 = "CPUsersandorganizations#SEARCH_FIELD",
+			value1 = "${searchToken}"
+		);
+
+		AssertClick.assertValueClickAt(
+			locator1 = "CPUsersandorganizations#SEARCH_BUTTON",
+			value1 = "Search"
+		);
+
+		AssertTextEquals(
+			locator1 = "CPUsersandorganizations#ORGANIZATION_TABLE_NAME_1",
+			value1 = "${orgName}"
+		);
+
+		AssertClick(
+			locator1 = "CPUsersandorganizations#ORGANIZATION_TABLE_NAME_1",
+			value1 = "${orgName}"
+		);
+
+		AssertTextEquals(
+			locator1 = "CPUsersandorganizationsOrganization#USER_TABLE_FIRST_NAME_1",
+			value1 = "${userFirstName}"
+		);
+
+		AssertTextEquals(
+			locator1 = "CPUsersandorganizationsOrganization#USER_TABLE_LAST_NAME_1",
+			value1 = "${userLastName}"
+		);
+
+		AssertTextEquals(
+			locator1 = "CPUsersandorganizationsOrganization#USER_TABLE_SCREEN_NAME_1",
+			value1 = "${userScreenName}"
+		);
+	}
+
+	macro viewCP {
+		Type(
+			locator1 = "CPUsersandorganizations#SEARCH_FIELD",
+			value1 = "${searchToken}"
+		);
+
+		AssertClick.assertValueClickAt(
+			locator1 = "CPUsersandorganizations#SEARCH_BUTTON",
+			value1 = "Search"
+		);
+
+		AssertTextEquals(
+			locator1 = "CPUsersandorganizations#ORGANIZATION_TABLE_NAME_1",
+			value1 = "${orgName}"
+		);
+
+		AssertTextEquals(
+			locator1 = "CPUsersandorganizations#ORGANIZATION_TABLE_TYPE_1",
+			value1 = "${orgType}"
+		);
+
+		AssertClick.pauseAssertTextClickAt(
+			locator1 = "CPUsersandorganizations#ORGANIZATION_TABLE_ACTIONS_1",
+			value1 = "Actions"
+		);
+
+		AssertClick(
+			locator1 = "CPUsersandorganizations#ORGANIZATION_MENULIST_EDIT",
+			value1 = "Edit"
+		);
+
+		AssertTextEquals(
+			locator1 = "CPUsersandorganizationsOrganizationEdit#TITLE",
+			value1 = "${orgName}"
+		);
+
+		AssertTextEquals(
+			locator1 = "CPUsersandorganizationsOrganizationEdit#DETAILS_NAME_FIELD",
+			value1 = "${orgName}"
+		);
+
+		AssertTextEquals(
+			locator1 = "CPUsersandorganizationsOrganizationEdit#DETAILS_TYPE",
+			value1 = "Type ${orgType}"
+		);
+
+		AssertTextEquals(
+			locator1 = "CPUsersandorganizationsOrganizationEdit#ORGANIZATION_NAME",
+			value1 = "${orgName}"
+		);
+	}
+
+	macro viewRemoveMemberCP {
+		Type(locator1 = "CPUsersandorganizations#SEARCH_FIELD", value1 = "${orgName}");
+
+		AssertClick.assertValueClickAt(
+			locator1 = "CPUsersandorganizations#SEARCH_BUTTON",
+			value1 = "Search"
+		);
+
+		AssertTextEquals(
+			locator1 = "CPUsersandorganizations#ORGANIZATION_TABLE_NAME_1",
+			value1 = "${orgName}"
+		);
+
+		AssertClick(
+			locator1 = "CPUsersandorganizations#ORGANIZATION_TABLE_NAME_1",
+			value1 = "${orgName}"
+		);
+
+		AssertTextNotPresent(value1 = "${userFirstName}");
+	}
+}

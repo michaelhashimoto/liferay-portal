@@ -1,447 +1,363 @@
-<definition>
-	<command name="smoke">
-		<var name="bookmarkDescription1" value="Test Folder Entry 1 Description" />
-		<var name="bookmarkDescription2" value="Test Folder Entry 2 Description" />
-		<var name="bookmarkDescription3" value="Test Folder Entry 3 Description" />
-		<var name="bookmarkFolderDescription" value="Test Folder Description" />
-		<var name="bookmarkFolderName" value="Test Folder" />
-		<var name="bookmarkName1" value="Test Folder Entry 1" />
-		<var name="bookmarkName2" value="Test Folder Entry 2" />
-		<var name="bookmarkName3" value="Test Folder Entry 3" />
-		<var name="bookmarkURL1" value="http://www.liferay.com" />
-		<var name="bookmarkURL2" value="http://www.openqa.org" />
-		<var name="bookmarkURL3" value="http://www.google.com" />
-		<var name="dmDocumentDescription1" value="DM Document Description" />
-		<var name="dmDocumentDescription2" value="DM Folder Image 1 Description" />
-		<var name="dmDocumentDescription3" value="DM Folder Image 2 Description" />
-		<var name="dmDocumentDescription4" value="DM Folder Image 3 Description" />
-		<var name="dmDocumentFile1" value="Document_1.txt" />
-		<var name="dmDocumentFile2" value="Document_1.jpg" />
-		<var name="dmDocumentFile3" value="Document_2.jpg" />
-		<var name="dmDocumentFile4" value="Document_3.jpg" />
-		<var name="dmDocumentSize1" value="0.3k" />
-		<var name="dmDocumentSize2" value="12.9k" />
-		<var name="dmDocumentSize3" value="29.9k" />
-		<var name="dmDocumentSize4" value="16.1k" />
-		<var name="dmDocumentTitle1" value="DM Document Title" />
-		<var name="dmDocumentTitle2" value="DM Folder Image 1 Title" />
-		<var name="dmDocumentTitle3" value="DM Folder Image 2 Title" />
-		<var name="dmDocumentTitle4" value="DM Folder Image 3 Title" />
-		<var name="dmDocumentUploader" value="Test Test" />
-		<var name="dmDocumentVersionNumber" value="1.0" />
-		<var name="dmFolderDescription" value="DM Folder 1 Description" />
-		<var name="dmFolderName" value="DM Folder 1 Name" />
-		<var name="entryAuthorFirstName" value="Test" />
-		<var name="entryAuthorLastName" value="Test" />
-		<var name="entryComment1" value="Blogs Entry 1 Comment" />
-		<var name="entryComment2" value="Blogs Entry 2 Comment" />
-		<var name="entryComment3" value="Blogs Entry 3 Comment" />
-		<var name="entryContent1" value="Blogs Entry 1 Content" />
-		<var name="entryContent2" value="Blogs Entry 2 Content" />
-		<var name="entryContent3" value="Blogs Entry 3 Content" />
-		<var name="entryTitle1" value="Blogs Entry 1 Title" />
-		<var name="entryTitle2" value="Blogs Entry 2 Title" />
-		<var name="entryTitle3" value="Blogs Entry 3 Title" />
-		<var name="eventDescription1" value="Calendar Event Description" />
-		<var name="eventDescription2" value="Weekly Repeating Event Description" />
-		<var name="eventDescription3" value="Monthly Repeating Event Description" />
-		<var name="eventTitle1" value="Calendar Event Title" />
-		<var name="eventTitle2" value="Weekly Repeating Event" />
-		<var name="eventTitle3" value="Monthly Repeating Event" />
-		<var name="eventType" value="Anniversary" />
-		<var name="mbCategoryName" value="MB Category Name" />
-		<var name="mbThreadBody" value="MB Category Thread Message Body" />
-		<var name="mbThreadSubject" value="MB Category Thread Message Subject" />
-		<var name="pageName1" value="Blogs Test Page" />
-		<var name="pageName2" value="Bookmarks Test Page" />
-		<var name="pageName3" value="Calendar Test Page" />
-		<var name="pageName4" value="Documents and Media Test Page" />
-		<var name="pageName5" value="Message Boards Test Page" />
-		<var name="pageName6" value="Wiki Test Page" />
-		<var name="wikiChildPageContent1" value="Wiki Front Page Child Page Content 1" />
-		<var name="wikiChildPageContent2" value="Wiki Front Page Child Page Content 2" />
-		<var name="wikiChildPageContent3" value="Wiki Front Page Child Page Content 3" />
-		<var name="wikiChildPageTitle1" value="Wiki Front Page Child Page Title 1" />
-		<var name="wikiChildPageTitle2" value="Wiki Front Page Child Page Title 2" />
-		<var name="wikiChildPageTitle3" value="Wiki Front Page Child Page Title 3" />
-		<var name="wikiPageContent" value="Wiki FrontPage Content" />
-		<var name="wikiPageTitle" value="FrontPage" />
-
-		<execute macro="Page#addPG">
-			<var name="pageName" value="${pageName1}" />
-		</execute>
-
-		<execute macro="Portlet#addPG">
-			<var name="pageName" value="${pageName1}" />
-			<var name="portletName" value="Blogs" />
-		</execute>
-
-		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${pageName1}" />
-		</execute>
-
-		<execute macro="BlogsEntry#addPG">
-			<var name="entryContent" value="${entryContent1}" />
-			<var name="entryTitle" value="${entryTitle1}" />
-		</execute>
-
-		<execute macro="BlogsEntry#viewPG" >
-			<var name="entryAuthorFirstName" value="${entryAuthorFirstName}" />
-			<var name="entryAuthorLastName" value="${entryAuthorLastName}" />
-			<var name="entryContent" value="${entryContent1}" />
-			<var name="entryTitle" value="${entryTitle1}" />
-		</execute>
-
-		<execute macro="BlogsEntryComment#addPG">
-			<var name="entryComment" value="${entryComment1}" />
-			<var name="entryTitle" value="${entryTitle1}" />
-		</execute>
-
-		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${pageName1}" />
-		</execute>
-
-		<execute macro="BlogsEntry#addPG">
-			<var name="entryContent" value="${entryContent2}" />
-			<var name="entryTitle" value="${entryTitle2}" />
-		</execute>
-
-		<execute macro="BlogsEntry#viewPG" >
-			<var name="entryAuthorFirstName" value="${entryAuthorFirstName}" />
-			<var name="entryAuthorLastName" value="${entryAuthorLastName}" />
-			<var name="entryContent" value="${entryContent2}" />
-			<var name="entryTitle" value="${entryTitle2}" />
-		</execute>
-
-		<execute macro="BlogsEntryComment#addPG">
-			<var name="entryComment" value="${entryComment2}" />
-			<var name="entryTitle" value="${entryTitle2}" />
-		</execute>
-
-		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${pageName1}" />
-		</execute>
-
-		<execute macro="BlogsEntry#addPG">
-			<var name="entryContent" value="${entryContent3}" />
-			<var name="entryTitle" value="${entryTitle3}" />
-		</execute>
-
-		<execute macro="BlogsEntry#viewPG" >
-			<var name="entryAuthorFirstName" value="${entryAuthorFirstName}" />
-			<var name="entryAuthorLastName" value="${entryAuthorLastName}" />
-			<var name="entryContent" value="${entryContent3}" />
-			<var name="entryTitle" value="${entryTitle3}" />
-		</execute>
-
-		<execute macro="BlogsEntryComment#addPG">
-			<var name="entryComment" value="${entryComment3}" />
-			<var name="entryTitle" value="${entryTitle3}" />
-		</execute>
-
-		<execute macro="Page#addPG">
-			<var name="pageName" value="${pageName2}" />
-		</execute>
-
-		<execute macro="Portlet#addPG">
-			<var name="pageName" value="${pageName2}" />
-			<var name="portletName" value="Bookmarks" />
-		</execute>
-
-		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${pageName2}" />
-		</execute>
-
-		<execute macro="BookmarksFolder#addPG">
-			<var name="bookmarkFolderDescription" value="${bookmarkFolderDescription}" />
-			<var name="bookmarkFolderName" value="${bookmarkFolderName}" />
-		</execute>
-
-		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${pageName2}" />
-		</execute>
-
-		<execute macro="Bookmark#addToFolderPG">
-			<var name="bookmarkDescription" value="${bookmarkDescription1}" />
-			<var name="bookmarkFolderName" value="${bookmarkFolderName}" />
-			<var name="bookmarkName" value="${bookmarkName1}" />
-			<var name="bookmarkURL" value="${bookmarkURL1}" />
-		</execute>
-
-		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${pageName2}" />
-		</execute>
-
-		<execute macro="Bookmark#viewInFolderPG">
-			<var name="bookmarkDescription" value="${bookmarkDescription1}" />
-			<var name="bookmarkFolderName" value="${bookmarkFolderName}" />
-			<var name="bookmarkName" value="${bookmarkName1}" />
-			<var name="bookmarkURL" value="${bookmarkURL1}" />
-		</execute>
-
-		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${pageName2}" />
-		</execute>
-
-		<execute macro="Bookmark#addToFolderPG">
-			<var name="bookmarkDescription" value="${bookmarkDescription2}" />
-			<var name="bookmarkFolderName" value="${bookmarkFolderName}" />
-			<var name="bookmarkName" value="${bookmarkName2}" />
-			<var name="bookmarkURL" value="${bookmarkURL2}" />
-		</execute>
-
-		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${pageName2}" />
-		</execute>
-
-		<execute macro="Bookmark#viewInFolderPG">
-			<var name="bookmarkDescription" value="${bookmarkDescription2}" />
-			<var name="bookmarkFolderName" value="${bookmarkFolderName}" />
-			<var name="bookmarkName" value="${bookmarkName2}" />
-			<var name="bookmarkURL" value="${bookmarkURL2}" />
-		</execute>
-
-		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${pageName2}" />
-		</execute>
-
-		<execute macro="Bookmark#addToFolderPG">
-			<var name="bookmarkDescription" value="${bookmarkDescription3}" />
-			<var name="bookmarkFolderName" value="${bookmarkFolderName}" />
-			<var name="bookmarkName" value="${bookmarkName3}" />
-			<var name="bookmarkURL" value="${bookmarkURL3}" />
-		</execute>
-
-		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${pageName2}" />
-		</execute>
-
-		<execute macro="Bookmark#viewInFolderPG">
-			<var name="bookmarkDescription" value="${bookmarkDescription3}" />
-			<var name="bookmarkFolderName" value="${bookmarkFolderName}" />
-			<var name="bookmarkName" value="${bookmarkName3}" />
-			<var name="bookmarkURL" value="${bookmarkURL3}" />
-		</execute>
-
-		<execute macro="Page#addPG">
-			<var name="pageName" value="${pageName3}" />
-		</execute>
-
-		<execute macro="Portlet#addPG">
-			<var name="pageName" value="${pageName3}" />
-			<var name="portletName" value="Calendar" />
-		</execute>
-
-		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${pageName3}" />
-		</execute>
-
-		<execute macro="Event#addPG">
-			<var name="eventDescription" value="${eventDescription1}" />
-			<var name="eventTitle" value="${eventTitle1}" />
-			<var name="eventType" value="${eventType}" />
-		</execute>
-
-		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${pageName3}" />
-		</execute>
-
-		<execute macro="Event#addRepeatWeeklyPG">
-			<var name="eventDescription" value="${eventDescription2}" />
-			<var name="eventEndDay" value="1" />
-			<var name="eventEndMonth" value="January" />
-			<var name="eventEndYear" value="2016" />
-			<var name="eventStartDay" value="1" />
-			<var name="eventStartMonth" value="January" />
-			<var name="eventStartYear" value="2015" />
-			<var name="eventTitle" value="${eventTitle2}" />
-			<var name="eventType" value="${eventType}" />
-		</execute>
-
-		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${pageName3}" />
-		</execute>
-
-		<execute macro="Event#addRepeatMonthlyPG">
-			<var name="eventDescription" value="${eventDescription3}" />
-			<var name="eventEndDay" value="1" />
-			<var name="eventEndMonth" value="January" />
-			<var name="eventEndYear" value="2016" />
-			<var name="eventStartDay" value="1" />
-			<var name="eventStartMonth" value="January" />
-			<var name="eventStartYear" value="2015" />
-			<var name="eventTitle" value="${eventTitle3}" />
-			<var name="eventType" value="${eventType}" />
-		</execute>
-
-		<execute macro="Page#addPG">
-			<var name="pageName" value="${pageName4}" />
-		</execute>
-
-		<execute macro="Portlet#addPG">
-			<var name="pageName" value="${pageName4}" />
-			<var name="portletName" value="Documents and Media" />
-		</execute>
-
-		<execute macro="DMDocument#addPG">
-			<var name="dmDocumentDescription" value="${dmDocumentDescription1}" />
-			<var name="dmDocumentFile" value="${dmDocumentFile1}" />
-			<var name="dmDocumentSize" value="${dmDocumentSize1}" />
-			<var name="dmDocumentTitle" value="${dmDocumentTitle1}" />
-		</execute>
-
-		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${pageName4}" />
-		</execute>
-
-		<execute macro="DMFolder#addPG">
-			<var name="dmFolderDescription" value="${dmFolderDescription}" />
-			<var name="dmFolderName" value="${dmFolderName}" />
-		</execute>
-
-		<execute macro="DMFolderDocument#addPG">
-			<var name="dmDocumentDescription" value="${dmDocumentDescription2}" />
-			<var name="dmDocumentFile" value="${dmDocumentFile2}" />
-			<var name="dmDocumentTitle" value="${dmDocumentTitle2}" />
-			<var name="dmFolderName" value="${dmFolderName}" />
-		</execute>
-
-		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${pageName4}" />
-		</execute>
-
-		<execute macro="DMFolderDocument#addPG">
-			<var name="dmDocumentDescription" value="${dmDocumentDescription3}" />
-			<var name="dmDocumentFile" value="${dmDocumentFile3}" />
-			<var name="dmDocumentTitle" value="${dmDocumentTitle3}" />
-			<var name="dmFolderName" value="${dmFolderName}" />
-		</execute>
-
-		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${pageName4}" />
-		</execute>
-
-		<execute macro="DMFolderDocument#addPG">
-			<var name="dmDocumentDescription" value="${dmDocumentDescription4}" />
-			<var name="dmDocumentFile" value="${dmDocumentFile4}" />
-			<var name="dmDocumentTitle" value="${dmDocumentTitle4}" />
-			<var name="dmFolderName" value="${dmFolderName}" />
-		</execute>
-
-		<execute macro="DMFolderDocument#viewPG">
-			<var name="dmDocumentSize" value="${dmDocumentSize2}" />
-			<var name="dmDocumentTitle" value="${dmDocumentTitle2}" />
-			<var name="dmDocumentUploader" value="${dmDocumentUploader}" />
-			<var name="dmDocumentVersionNumber" value="${dmDocumentVersionNumber}" />
-		</execute>
-
-		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${pageName4}" />
-		</execute>
-
-		<execute macro="DMFolderDocument#viewPG">
-			<var name="dmDocumentSize" value="${dmDocumentSize3}" />
-			<var name="dmDocumentTitle" value="${dmDocumentTitle3}" />
-			<var name="dmDocumentUploader" value="${dmDocumentUploader}" />
-			<var name="dmDocumentVersionNumber" value="${dmDocumentVersionNumber}" />
-		</execute>
-
-		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${pageName4}" />
-		</execute>
-
-		<execute macro="DMFolderDocument#viewPG">
-			<var name="dmDocumentSize" value="${dmDocumentSize4}" />
-			<var name="dmDocumentTitle" value="${dmDocumentTitle4}" />
-			<var name="dmDocumentUploader" value="${dmDocumentUploader}" />
-			<var name="dmDocumentVersionNumber" value="${dmDocumentVersionNumber}" />
-		</execute>
-
-		<execute macro="Page#addPG">
-			<var name="pageName" value="${pageName5}" />
-		</execute>
-
-		<execute macro="Portlet#addPG">
-			<var name="pageName" value="${pageName5}" />
-			<var name="portletName" value="Message Boards" />
-		</execute>
-
-		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${pageName5}" />
-		</execute>
-
-		<execute macro="MessageboardsCategory#addPG">
-			<var name="categoryName" value="${mbCategoryName}" />
-		</execute>
-
-		<execute macro="MessageboardsCategory#viewPG">
-			<var name="categoryName" value="${mbCategoryName}" />
-		</execute>
-
-		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${pageName5}" />
-		</execute>
-
-		<execute macro="MessageboardsThread#addInCategoryPG">
-			<var name="categoryName" value="${mbCategoryName}" />
-			<var name="threadBody" value="${mbThreadBody}" />
-			<var name="threadSubject" value="${mbThreadSubject}" />
-		</execute>
-
-		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${pageName5}" />
-		</execute>
-
-		<execute macro="MessageboardsThread#viewInCategoryPG">
-			<var name="categoryName" value="${mbCategoryName}" />
-			<var name="threadBody" value="${mbThreadBody}" />
-			<var name="threadSubject" value="${mbThreadSubject}" />
-		</execute>
-
-		<execute macro="Page#addPG">
-			<var name="pageName" value="${pageName6}" />
-		</execute>
-
-		<execute macro="Portlet#addPG">
-			<var name="pageName" value="${pageName6}" />
-			<var name="portletName" value="Wiki" />
-		</execute>
-
-		<execute macro="WikiPage#addFrontPagePG">
-			<var name="wikiPageContent" value="${wikiPageContent}" />
-		</execute>
-
-		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${pageName6}" />
-		</execute>
-
-		<execute macro="WikiPage#addChildPagePG">
-			<var name="wikiChildPageContent" value="${wikiChildPageContent1}" />
-			<var name="wikiChildPageTitle" value="${wikiChildPageTitle1}" />
-			<var name="wikiPageContent" value="${wikiPageContent}" />
-			<var name="wikiPageTitle" value="${wikiPageTitle}" />
-		</execute>
-
-		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${pageName6}" />
-		</execute>
-
-		<execute macro="WikiPage#addChildPagePG">
-			<var name="wikiChildPageContent" value="${wikiChildPageContent2}" />
-			<var name="wikiChildPageTitle" value="${wikiChildPageTitle2}" />
-			<var name="wikiPageContent" value="${wikiPageContent}" />
-			<var name="wikiPageTitle" value="${wikiPageTitle}" />
-		</execute>
-
-		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${pageName6}" />
-		</execute>
-
-		<execute macro="WikiPage#addChildPagePG">
-			<var name="wikiChildPageContent" value="${wikiChildPageContent3}" />
-			<var name="wikiChildPageTitle" value="${wikiChildPageTitle3}" />
-			<var name="wikiPageContent" value="${wikiPageContent}" />
-			<var name="wikiPageTitle" value="${wikiPageTitle}" />
-		</execute>
-	</command>
-</definition>
+definition {
+	macro smoke {
+		var bookmarkDescription1 = "Test Folder Entry 1 Description";
+		var bookmarkDescription2 = "Test Folder Entry 2 Description";
+		var bookmarkDescription3 = "Test Folder Entry 3 Description";
+		var bookmarkFolderDescription = "Test Folder Description";
+		var bookmarkFolderName = "Test Folder";
+		var bookmarkName1 = "Test Folder Entry 1";
+		var bookmarkName2 = "Test Folder Entry 2";
+		var bookmarkName3 = "Test Folder Entry 3";
+		var bookmarkURL1 = "http://www.liferay.com";
+		var bookmarkURL2 = "http://www.openqa.org";
+		var bookmarkURL3 = "http://www.google.com";
+		var dmDocumentDescription1 = "DM Document Description";
+		var dmDocumentDescription2 = "DM Folder Image 1 Description";
+		var dmDocumentDescription3 = "DM Folder Image 2 Description";
+		var dmDocumentDescription4 = "DM Folder Image 3 Description";
+		var dmDocumentFile1 = "Document_1.txt";
+		var dmDocumentFile2 = "Document_1.jpg";
+		var dmDocumentFile3 = "Document_2.jpg";
+		var dmDocumentFile4 = "Document_3.jpg";
+		var dmDocumentSize1 = "0.3k";
+		var dmDocumentSize2 = "12.9k";
+		var dmDocumentSize3 = "29.9k";
+		var dmDocumentSize4 = "16.1k";
+		var dmDocumentTitle1 = "DM Document Title";
+		var dmDocumentTitle2 = "DM Folder Image 1 Title";
+		var dmDocumentTitle3 = "DM Folder Image 2 Title";
+		var dmDocumentTitle4 = "DM Folder Image 3 Title";
+		var dmDocumentUploader = "Test Test";
+		var dmDocumentVersionNumber = "1.0";
+		var dmFolderDescription = "DM Folder 1 Description";
+		var dmFolderName = "DM Folder 1 Name";
+		var entryAuthorFirstName = "Test";
+		var entryAuthorLastName = "Test";
+		var entryComment1 = "Blogs Entry 1 Comment";
+		var entryComment2 = "Blogs Entry 2 Comment";
+		var entryComment3 = "Blogs Entry 3 Comment";
+		var entryContent1 = "Blogs Entry 1 Content";
+		var entryContent2 = "Blogs Entry 2 Content";
+		var entryContent3 = "Blogs Entry 3 Content";
+		var entryTitle1 = "Blogs Entry 1 Title";
+		var entryTitle2 = "Blogs Entry 2 Title";
+		var entryTitle3 = "Blogs Entry 3 Title";
+		var eventDescription1 = "Calendar Event Description";
+		var eventDescription2 = "Weekly Repeating Event Description";
+		var eventDescription3 = "Monthly Repeating Event Description";
+		var eventTitle1 = "Calendar Event Title";
+		var eventTitle2 = "Weekly Repeating Event";
+		var eventTitle3 = "Monthly Repeating Event";
+		var eventType = "Anniversary";
+		var mbCategoryName = "MB Category Name";
+		var mbThreadBody = "MB Category Thread Message Body";
+		var mbThreadSubject = "MB Category Thread Message Subject";
+		var pageName1 = "Blogs Test Page";
+		var pageName2 = "Bookmarks Test Page";
+		var pageName3 = "Calendar Test Page";
+		var pageName4 = "Documents and Media Test Page";
+		var pageName5 = "Message Boards Test Page";
+		var pageName6 = "Wiki Test Page";
+		var wikiChildPageContent1 = "Wiki Front Page Child Page Content 1";
+		var wikiChildPageContent2 = "Wiki Front Page Child Page Content 2";
+		var wikiChildPageContent3 = "Wiki Front Page Child Page Content 3";
+		var wikiChildPageTitle1 = "Wiki Front Page Child Page Title 1";
+		var wikiChildPageTitle2 = "Wiki Front Page Child Page Title 2";
+		var wikiChildPageTitle3 = "Wiki Front Page Child Page Title 3";
+		var wikiPageContent = "Wiki FrontPage Content";
+		var wikiPageTitle = "FrontPage";
+
+		Page.addPG(pageName = "${pageName1}");
+
+		Portlet.addPG(pageName = "${pageName1}", portletName = "Blogs");
+
+		Page.gotoPG(pageName = "${pageName1}");
+
+		BlogsEntry.addPG(
+			entryContent = "${entryContent1}",
+			entryTitle = "${entryTitle1}"
+		);
+
+		BlogsEntry.viewPG(
+			entryAuthorFirstName = "${entryAuthorFirstName}",
+			entryAuthorLastName = "${entryAuthorLastName}",
+			entryContent = "${entryContent1}",
+			entryTitle = "${entryTitle1}"
+		);
+
+		BlogsEntryComment.addPG(
+			entryComment = "${entryComment1}",
+			entryTitle = "${entryTitle1}"
+		);
+
+		Page.gotoPG(pageName = "${pageName1}");
+
+		BlogsEntry.addPG(
+			entryContent = "${entryContent2}",
+			entryTitle = "${entryTitle2}"
+		);
+
+		BlogsEntry.viewPG(
+			entryAuthorFirstName = "${entryAuthorFirstName}",
+			entryAuthorLastName = "${entryAuthorLastName}",
+			entryContent = "${entryContent2}",
+			entryTitle = "${entryTitle2}"
+		);
+
+		BlogsEntryComment.addPG(
+			entryComment = "${entryComment2}",
+			entryTitle = "${entryTitle2}"
+		);
+
+		Page.gotoPG(pageName = "${pageName1}");
+
+		BlogsEntry.addPG(
+			entryContent = "${entryContent3}",
+			entryTitle = "${entryTitle3}"
+		);
+
+		BlogsEntry.viewPG(
+			entryAuthorFirstName = "${entryAuthorFirstName}",
+			entryAuthorLastName = "${entryAuthorLastName}",
+			entryContent = "${entryContent3}",
+			entryTitle = "${entryTitle3}"
+		);
+
+		BlogsEntryComment.addPG(
+			entryComment = "${entryComment3}",
+			entryTitle = "${entryTitle3}"
+		);
+
+		Page.addPG(pageName = "${pageName2}");
+
+		Portlet.addPG(pageName = "${pageName2}", portletName = "Bookmarks");
+
+		Page.gotoPG(pageName = "${pageName2}");
+
+		BookmarksFolder.addPG(
+			bookmarkFolderDescription = "${bookmarkFolderDescription}",
+			bookmarkFolderName = "${bookmarkFolderName}"
+		);
+
+		Page.gotoPG(pageName = "${pageName2}");
+
+		Bookmark.addToFolderPG(
+			bookmarkDescription = "${bookmarkDescription1}",
+			bookmarkFolderName = "${bookmarkFolderName}",
+			bookmarkName = "${bookmarkName1}",
+			bookmarkURL = "${bookmarkURL1}"
+		);
+
+		Page.gotoPG(pageName = "${pageName2}");
+
+		Bookmark.viewInFolderPG(
+			bookmarkDescription = "${bookmarkDescription1}",
+			bookmarkFolderName = "${bookmarkFolderName}",
+			bookmarkName = "${bookmarkName1}",
+			bookmarkURL = "${bookmarkURL1}"
+		);
+
+		Page.gotoPG(pageName = "${pageName2}");
+
+		Bookmark.addToFolderPG(
+			bookmarkDescription = "${bookmarkDescription2}",
+			bookmarkFolderName = "${bookmarkFolderName}",
+			bookmarkName = "${bookmarkName2}",
+			bookmarkURL = "${bookmarkURL2}"
+		);
+
+		Page.gotoPG(pageName = "${pageName2}");
+
+		Bookmark.viewInFolderPG(
+			bookmarkDescription = "${bookmarkDescription2}",
+			bookmarkFolderName = "${bookmarkFolderName}",
+			bookmarkName = "${bookmarkName2}",
+			bookmarkURL = "${bookmarkURL2}"
+		);
+
+		Page.gotoPG(pageName = "${pageName2}");
+
+		Bookmark.addToFolderPG(
+			bookmarkDescription = "${bookmarkDescription3}",
+			bookmarkFolderName = "${bookmarkFolderName}",
+			bookmarkName = "${bookmarkName3}",
+			bookmarkURL = "${bookmarkURL3}"
+		);
+
+		Page.gotoPG(pageName = "${pageName2}");
+
+		Bookmark.viewInFolderPG(
+			bookmarkDescription = "${bookmarkDescription3}",
+			bookmarkFolderName = "${bookmarkFolderName}",
+			bookmarkName = "${bookmarkName3}",
+			bookmarkURL = "${bookmarkURL3}"
+		);
+
+		Page.addPG(pageName = "${pageName3}");
+
+		Portlet.addPG(pageName = "${pageName3}", portletName = "Calendar");
+
+		Page.gotoPG(pageName = "${pageName3}");
+
+		Event.addPG(
+			eventDescription = "${eventDescription1}",
+			eventTitle = "${eventTitle1}",
+			eventType = "${eventType}"
+		);
+
+		Page.gotoPG(pageName = "${pageName3}");
+
+		Event.addRepeatWeeklyPG(
+			eventDescription = "${eventDescription2}",
+			eventEndDay = "1",
+			eventEndMonth = "January",
+			eventEndYear = "2016",
+			eventStartDay = "1",
+			eventStartMonth = "January",
+			eventStartYear = "2015",
+			eventTitle = "${eventTitle2}",
+			eventType = "${eventType}"
+		);
+
+		Page.gotoPG(pageName = "${pageName3}");
+
+		Event.addRepeatMonthlyPG(
+			eventDescription = "${eventDescription3}",
+			eventEndDay = "1",
+			eventEndMonth = "January",
+			eventEndYear = "2016",
+			eventStartDay = "1",
+			eventStartMonth = "January",
+			eventStartYear = "2015",
+			eventTitle = "${eventTitle3}",
+			eventType = "${eventType}"
+		);
+
+		Page.addPG(pageName = "${pageName4}");
+
+		Portlet.addPG(pageName = "${pageName4}", portletName = "Documents and Media");
+
+		DMDocument.addPG(
+			dmDocumentDescription = "${dmDocumentDescription1}",
+			dmDocumentFile = "${dmDocumentFile1}",
+			dmDocumentSize = "${dmDocumentSize1}",
+			dmDocumentTitle = "${dmDocumentTitle1}"
+		);
+
+		Page.gotoPG(pageName = "${pageName4}");
+
+		DMFolder.addPG(
+			dmFolderDescription = "${dmFolderDescription}",
+			dmFolderName = "${dmFolderName}"
+		);
+
+		DMFolderDocument.addPG(
+			dmDocumentDescription = "${dmDocumentDescription2}",
+			dmDocumentFile = "${dmDocumentFile2}",
+			dmDocumentTitle = "${dmDocumentTitle2}",
+			dmFolderName = "${dmFolderName}"
+		);
+
+		Page.gotoPG(pageName = "${pageName4}");
+
+		DMFolderDocument.addPG(
+			dmDocumentDescription = "${dmDocumentDescription3}",
+			dmDocumentFile = "${dmDocumentFile3}",
+			dmDocumentTitle = "${dmDocumentTitle3}",
+			dmFolderName = "${dmFolderName}"
+		);
+
+		Page.gotoPG(pageName = "${pageName4}");
+
+		DMFolderDocument.addPG(
+			dmDocumentDescription = "${dmDocumentDescription4}",
+			dmDocumentFile = "${dmDocumentFile4}",
+			dmDocumentTitle = "${dmDocumentTitle4}",
+			dmFolderName = "${dmFolderName}"
+		);
+
+		DMFolderDocument.viewPG(
+			dmDocumentSize = "${dmDocumentSize2}",
+			dmDocumentTitle = "${dmDocumentTitle2}",
+			dmDocumentUploader = "${dmDocumentUploader}",
+			dmDocumentVersionNumber = "${dmDocumentVersionNumber}"
+		);
+
+		Page.gotoPG(pageName = "${pageName4}");
+
+		DMFolderDocument.viewPG(
+			dmDocumentSize = "${dmDocumentSize3}",
+			dmDocumentTitle = "${dmDocumentTitle3}",
+			dmDocumentUploader = "${dmDocumentUploader}",
+			dmDocumentVersionNumber = "${dmDocumentVersionNumber}"
+		);
+
+		Page.gotoPG(pageName = "${pageName4}");
+
+		DMFolderDocument.viewPG(
+			dmDocumentSize = "${dmDocumentSize4}",
+			dmDocumentTitle = "${dmDocumentTitle4}",
+			dmDocumentUploader = "${dmDocumentUploader}",
+			dmDocumentVersionNumber = "${dmDocumentVersionNumber}"
+		);
+
+		Page.addPG(pageName = "${pageName5}");
+
+		Portlet.addPG(pageName = "${pageName5}", portletName = "Message Boards");
+
+		Page.gotoPG(pageName = "${pageName5}");
+
+		MessageboardsCategory.addPG(categoryName = "${mbCategoryName}");
+
+		MessageboardsCategory.viewPG(categoryName = "${mbCategoryName}");
+
+		Page.gotoPG(pageName = "${pageName5}");
+
+		MessageboardsThread.addInCategoryPG(
+			categoryName = "${mbCategoryName}",
+			threadBody = "${mbThreadBody}",
+			threadSubject = "${mbThreadSubject}"
+		);
+
+		Page.gotoPG(pageName = "${pageName5}");
+
+		MessageboardsThread.viewInCategoryPG(
+			categoryName = "${mbCategoryName}",
+			threadBody = "${mbThreadBody}",
+			threadSubject = "${mbThreadSubject}"
+		);
+
+		Page.addPG(pageName = "${pageName6}");
+
+		Portlet.addPG(pageName = "${pageName6}", portletName = "Wiki");
+
+		WikiPage.addFrontPagePG(wikiPageContent = "${wikiPageContent}");
+
+		Page.gotoPG(pageName = "${pageName6}");
+
+		WikiPage.addChildPagePG(
+			wikiChildPageContent = "${wikiChildPageContent1}",
+			wikiChildPageTitle = "${wikiChildPageTitle1}",
+			wikiPageContent = "${wikiPageContent}",
+			wikiPageTitle = "${wikiPageTitle}"
+		);
+
+		Page.gotoPG(pageName = "${pageName6}");
+
+		WikiPage.addChildPagePG(
+			wikiChildPageContent = "${wikiChildPageContent2}",
+			wikiChildPageTitle = "${wikiChildPageTitle2}",
+			wikiPageContent = "${wikiPageContent}",
+			wikiPageTitle = "${wikiPageTitle}"
+		);
+
+		Page.gotoPG(pageName = "${pageName6}");
+
+		WikiPage.addChildPagePG(
+			wikiChildPageContent = "${wikiChildPageContent3}",
+			wikiChildPageTitle = "${wikiChildPageTitle3}",
+			wikiPageContent = "${wikiPageContent}",
+			wikiPageTitle = "${wikiPageTitle}"
+		);
+	}
+}

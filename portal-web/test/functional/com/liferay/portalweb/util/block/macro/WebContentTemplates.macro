@@ -1,59 +1,126 @@
-<definition>
-	<command name="addCP">
-		<execute function="AssertClick#assertTextClickAt" locator1="CPWebcontent#NAVIGATION_TEMPLATES" value1="Templates" />
+definition {
+	macro addCP {
+		AssertClick.assertTextClickAt(
+			locator1 = "CPWebcontent#NAVIGATION_TEMPLATES",
+			value1 = "Templates"
+		);
 
-		<execute function="AssertClick#assertValueClickAt" locator1="CPWebcontentTemplates#ADD_TEMPLATE" value1="Add Template" />
+		AssertClick.assertValueClickAt(
+			locator1 = "CPWebcontentTemplates#ADD_TEMPLATE",
+			value1 = "Add Template"
+		);
 
-		<execute function="Type" locator1="CPWebcontentTemplatesAddtemplate#NAME_FIELD" value1="${templateName}" />
-		<execute function="Type" locator1="CPWebcontentTemplatesAddtemplate#DESCRIPTION_FIELD" value1="${templateDescription}" />
+		Type(
+			locator1 = "CPWebcontentTemplatesAddtemplate#NAME_FIELD",
+			value1 = "${templateName}"
+		);
 
-		<if>
-			<isset var="structureName" />
-			<then>
-				<execute function="AssertClick#assertValueClickAt" locator1="CPWebcontentTemplatesAddtemplate#SELECT_STRUCTURE_BUTTON" value1="Select" />
+		Type(
+			locator1 = "CPWebcontentTemplatesAddtemplate#DESCRIPTION_FIELD",
+			value1 = "${templateDescription}"
+		);
 
-				<execute function="SelectFrame" locator1="CPWebcontentTemplatesAddtemplateStructure#STRUCTURE_IFRAME" />
-				<execute function="AssertElementPresent" locator1="CPWebcontentTemplatesAddtemplateStructure#STRUCTURE_TABLE_ID_1" />
-				<execute function="AssertTextPresent" locator1="CPWebcontentTemplatesAddtemplateStructure#STRUCTURE_TABLE_NAME_1" value1="${structureName}" />
-				<execute function="AssertTextPresent" locator1="CPWebcontentTemplatesAddtemplateStructure#STRUCTURE_TABLE_DESCRIPTION_1" value1="${structureDescription}" />
-				<execute function="AssertClick" locator1="CPWebcontentTemplatesAddtemplateStructure#STRUCTURE_TABLE_NAME_1" value1="${structureName}" />
+		if (isSet(structureName)) {
+			AssertClick.assertValueClickAt(
+				locator1 = "CPWebcontentTemplatesAddtemplate#SELECT_STRUCTURE_BUTTON",
+				value1 = "Select"
+			);
 
-				<execute function="SelectFrame" />
-				<execute function="AssertTextEquals" locator1="CPWebcontentTemplatesAddtemplate#STRUCTURE_NAME" value1="${structureName}" />
-			</then>
-		</if>
+			SelectFrame(
+				locator1 = "CPWebcontentTemplatesAddtemplateStructure#STRUCTURE_IFRAME"
+			);
 
-		<execute function="AssertClick#assertValueClickAt" locator1="CPWebcontentTemplatesAddtemplate#LAUNCH_EDITOR_BUTTON" value1="Launch Editor" />
+			AssertElementPresent(
+				locator1 = "CPWebcontentTemplatesAddtemplateStructure#STRUCTURE_TABLE_ID_1"
+			);
 
-		<execute function="SelectFrame" locator1="CPWebcontentTemplatesAddtemplateEditor#EDITOR_IFRAME" />
-		<execute function="Type#typeWaitForNotValueNull" locator1="CPWebcontentTemplatesAddtemplateEditor#EDITOR_FIELD" value1="$text.getData()" />
-		<execute function="AssertClick#assertValueClickAt" locator1="CPWebcontentTemplatesAddtemplateEditor#UPDATE_BUTTON" value1="Update" />
+			AssertTextPresent(
+				locator1 = "CPWebcontentTemplatesAddtemplateStructure#STRUCTURE_TABLE_NAME_1",
+				value1 = "${structureName}"
+			);
 
-		<execute function="SelectFrame" />
+			AssertTextPresent(
+				locator1 = "CPWebcontentTemplatesAddtemplateStructure#STRUCTURE_TABLE_DESCRIPTION_1",
+				value1 = "${structureDescription}"
+			);
 
-		<execute function="AssertClick#assertValueClickAt" locator1="CPWebcontentTemplatesAddtemplate#SAVE_BUTTON" value1="Save" />
+			AssertClick(
+				locator1 = "CPWebcontentTemplatesAddtemplateStructure#STRUCTURE_TABLE_NAME_1",
+				value1 = "${structureName}"
+			);
 
-		<execute function="AssertTextEquals" locator1="CPWebcontentTemplates#SUCCESS_MESSAGE" value1="Your request completed successfully." />
-		<execute function="AssertElementPresent" locator1="CPWebcontentTemplates#TEMPLATE_TABLE_ID_1" />
-		<execute function="AssertTextEquals" locator1="CPWebcontentTemplates#TEMPLATE_TABLE_NAME_1" value1="${templateName}" />
-		<execute function="AssertTextEquals" locator1="CPWebcontentTemplates#TEMPLATE_TABLE_DESCRIPTION_1" value1="${templateDescription}" />
-	</command>
+			SelectFrame();
 
-	<command name="tearDownCP">
-		<execute macro="Page#gotoCP">
-			<var name="portletName" value="Web Content" />
-		</execute>
+			AssertTextEquals(
+				locator1 = "CPWebcontentTemplatesAddtemplate#STRUCTURE_NAME",
+				value1 = "${structureName}"
+			);
+		}
 
-		<execute function="AssertClick#assertTextClickAt" locator1="CPWebcontent#NAVIGATION_TEMPLATES" value1="Templates" />
+		AssertClick.assertValueClickAt(
+			locator1 = "CPWebcontentTemplatesAddtemplate#LAUNCH_EDITOR_BUTTON",
+			value1 = "Launch Editor"
+		);
 
-		<if>
-			<condition function="IsElementPresent#isVisible" locator1="CPWebcontentTemplates#TEMPLATE_TABLE_ALL_CHECKBOX" />
-			<then>
-				<execute function="Check" locator1="CPWebcontentTemplates#TEMPLATE_TABLE_ALL_CHECKBOX" />
-				<execute function="AssertClickNoError" locator1="CPWebcontentTemplates#DELETE_BUTTON" value1="Delete" />
-				<execute function="Confirm" value1="Are you sure you want to delete the selected templates?" />
-				<execute function="AssertTextEquals" locator1="CPWebcontentTemplates#SUCCESS_MESSAGE" value1="Your request completed successfully." />
-			</then>
-		</if>
-	</command>
-</definition>
+		SelectFrame(locator1 = "CPWebcontentTemplatesAddtemplateEditor#EDITOR_IFRAME");
+
+		Type.typeWaitForNotValueNull(
+			locator1 = "CPWebcontentTemplatesAddtemplateEditor#EDITOR_FIELD",
+			value1 = "$text.getData()"
+		);
+
+		AssertClick.assertValueClickAt(
+			locator1 = "CPWebcontentTemplatesAddtemplateEditor#UPDATE_BUTTON",
+			value1 = "Update"
+		);
+
+		SelectFrame();
+
+		AssertClick.assertValueClickAt(
+			locator1 = "CPWebcontentTemplatesAddtemplate#SAVE_BUTTON",
+			value1 = "Save"
+		);
+
+		AssertTextEquals(
+			locator1 = "CPWebcontentTemplates#SUCCESS_MESSAGE",
+			value1 = "Your request completed successfully."
+		);
+
+		AssertElementPresent(locator1 = "CPWebcontentTemplates#TEMPLATE_TABLE_ID_1");
+
+		AssertTextEquals(
+			locator1 = "CPWebcontentTemplates#TEMPLATE_TABLE_NAME_1",
+			value1 = "${templateName}"
+		);
+
+		AssertTextEquals(
+			locator1 = "CPWebcontentTemplates#TEMPLATE_TABLE_DESCRIPTION_1",
+			value1 = "${templateDescription}"
+		);
+	}
+
+	macro tearDownCP {
+		Page.gotoCP(portletName = "Web Content");
+
+		AssertClick.assertTextClickAt(
+			locator1 = "CPWebcontent#NAVIGATION_TEMPLATES",
+			value1 = "Templates"
+		);
+
+		if (IsElementPresent.isVisible(locator1 = "CPWebcontentTemplates#TEMPLATE_TABLE_ALL_CHECKBOX")) {
+			Check(locator1 = "CPWebcontentTemplates#TEMPLATE_TABLE_ALL_CHECKBOX");
+
+			AssertClickNoError(
+				locator1 = "CPWebcontentTemplates#DELETE_BUTTON",
+				value1 = "Delete"
+			);
+
+			Confirm(value1 = "Are you sure you want to delete the selected templates?");
+
+			AssertTextEquals(
+				locator1 = "CPWebcontentTemplates#SUCCESS_MESSAGE",
+				value1 = "Your request completed successfully."
+			);
+		}
+	}
+}

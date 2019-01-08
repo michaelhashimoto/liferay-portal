@@ -1,50 +1,118 @@
-<definition>
-	<command name="addCP">
-		<execute function="AssertClick#assertValueClickAt" locator1="CPWiki#ADD_WIKI_BUTTON" value1="Add Wiki" />
+definition {
+	macro addCP {
+		AssertClick.assertValueClickAt(
+			locator1 = "CPWiki#ADD_WIKI_BUTTON",
+			value1 = "Add Wiki"
+		);
 
-		<execute function="Type" locator1="CPWikiAddwiki#NAME_FIELD" value1="${wikiNodeName}" />
-		<execute function="Type" locator1="CPWikiAddwiki#DESCRIPTION_FIELD" value1="${wikiNodeDescription}" />
-		<execute function="AssertClick#assertValueClickAt" locator1="CPWikiAddwiki#SAVE_BUTTON" value1="Save" />
+		Type(locator1 = "CPWikiAddwiki#NAME_FIELD", value1 = "${wikiNodeName}");
 
-		<execute function="AssertTextEquals" locator1="CPWiki#SUCCESS_MESSAGE"  value1="Your request completed successfully." />
-		<execute function="AssertTextEquals" locator1="CPWiki#WIKI_NODE_TABLE_WIKI_2" value1="${wikiNodeName}" />
-		<execute function="AssertTextEquals" locator1="CPWiki#WIKI_NODE_TABLE_NUMBER_OF_PAGES_2" value1="0" />
-	</command>
+		Type(
+			locator1 = "CPWikiAddwiki#DESCRIPTION_FIELD",
+			value1 = "${wikiNodeDescription}"
+		);
 
-	<command name="deleteCP">
-		<execute function="AssertTextEquals" locator1="CPWiki#WIKI_NODE_TABLE_WIKI_2" value1="${wikiNodeName}" />
-		<execute function="AssertClick#pauseAssertTextClickAt" locator1="CPWiki#WIKI_NODE_TABLE_ACTIONS_2" value1="Actions" />
-		<execute function="AssertClickNoError" locator1="CPWiki#WIKI_NODE_MENULIST_DELETE" value1="Delete" />
-		<execute function="Confirm" value1="Are you sure you want to delete this?" />
-		<execute function="AssertTextNotPresent" value1="${wikiNodeName}" />
-	</command>
+		AssertClick.assertValueClickAt(
+			locator1 = "CPWikiAddwiki#SAVE_BUTTON",
+			value1 = "Save"
+		);
 
-	<command name="editCP">
-		<execute function="AssertTextEquals" locator1="CPWiki#WIKI_NODE_TABLE_WIKI_2" value1="${wikiNodeName}" />
-		<execute function="AssertClick#pauseAssertTextClickAt" locator1="CPWiki#WIKI_NODE_TABLE_ACTIONS_2" value1="Actions" />
-		<execute function="AssertClick#assertTextClickAt" locator1="CPWiki#WIKI_NODE_MENULIST_EDIT" value1="Edit" />
+		AssertTextEquals(
+			locator1 = "CPWiki#SUCCESS_MESSAGE",
+			value1 = "Your request completed successfully."
+		);
 
-		<execute function="Type" locator1="CPWikiAddwiki#NAME_FIELD" value1="${wikiNodeNameEdit}" />
-		<execute function="Type" locator1="CPWikiAddwiki#DESCRIPTION_FIELD" value1="${wikiNodeDescriptionEdit}" />
-		<execute function="AssertClick#assertValueClickAt" locator1="CPWikiAddwiki#SAVE_BUTTON" value1="Save" />
+		AssertTextEquals(
+			locator1 = "CPWiki#WIKI_NODE_TABLE_WIKI_2",
+			value1 = "${wikiNodeName}"
+		);
 
-		<execute function="AssertTextEquals" locator1="CPWiki#SUCCESS_MESSAGE"  value1="Your request completed successfully." />
-		<execute function="AssertTextEquals" locator1="CPWiki#WIKI_NODE_TABLE_WIKI_2" value1="${wikiNodeNameEdit}" />
-		<execute function="AssertTextNotEquals" locator1="CPWiki#WIKI_NODE_TABLE_WIKI_2" value1="${wikiNodeName}" />
-	</command>
+		AssertTextEquals(
+			locator1 = "CPWiki#WIKI_NODE_TABLE_NUMBER_OF_PAGES_2",
+			value1 = "0"
+		);
+	}
 
-	<command name="tearDownCP">
-		<execute macro="Page#gotoCP">
-			<var name="portletName" value="Wiki" />
-		</execute>
+	macro deleteCP {
+		AssertTextEquals(
+			locator1 = "CPWiki#WIKI_NODE_TABLE_WIKI_2",
+			value1 = "${wikiNodeName}"
+		);
 
-		<while>
-			<condition function="IsElementPresent#pauseIsElementPresent" locator1="CPWiki#WIKI_NODE_TABLE_ACTIONS_2" value1="Actions" />
-			<then>
-				<execute function="AssertClick#pauseAssertTextClickAt" locator1="CPWiki#WIKI_NODE_TABLE_ACTIONS_2" value1="Actions" />
-				<execute function="AssertClickNoError" locator1="CPWiki#WIKI_NODE_MENULIST_DELETE" value1="Delete" />
-				<execute function="Confirm" value1="Are you sure you want to delete this?" />
-			</then>
-		</while>
-	</command>
-</definition>
+		AssertClick.pauseAssertTextClickAt(
+			locator1 = "CPWiki#WIKI_NODE_TABLE_ACTIONS_2",
+			value1 = "Actions"
+		);
+
+		AssertClickNoError(
+			locator1 = "CPWiki#WIKI_NODE_MENULIST_DELETE",
+			value1 = "Delete"
+		);
+
+		Confirm(value1 = "Are you sure you want to delete this?");
+
+		AssertTextNotPresent(value1 = "${wikiNodeName}");
+	}
+
+	macro editCP {
+		AssertTextEquals(
+			locator1 = "CPWiki#WIKI_NODE_TABLE_WIKI_2",
+			value1 = "${wikiNodeName}"
+		);
+
+		AssertClick.pauseAssertTextClickAt(
+			locator1 = "CPWiki#WIKI_NODE_TABLE_ACTIONS_2",
+			value1 = "Actions"
+		);
+
+		AssertClick.assertTextClickAt(
+			locator1 = "CPWiki#WIKI_NODE_MENULIST_EDIT",
+			value1 = "Edit"
+		);
+
+		Type(locator1 = "CPWikiAddwiki#NAME_FIELD", value1 = "${wikiNodeNameEdit}");
+
+		Type(
+			locator1 = "CPWikiAddwiki#DESCRIPTION_FIELD",
+			value1 = "${wikiNodeDescriptionEdit}"
+		);
+
+		AssertClick.assertValueClickAt(
+			locator1 = "CPWikiAddwiki#SAVE_BUTTON",
+			value1 = "Save"
+		);
+
+		AssertTextEquals(
+			locator1 = "CPWiki#SUCCESS_MESSAGE",
+			value1 = "Your request completed successfully."
+		);
+
+		AssertTextEquals(
+			locator1 = "CPWiki#WIKI_NODE_TABLE_WIKI_2",
+			value1 = "${wikiNodeNameEdit}"
+		);
+
+		AssertTextNotEquals(
+			locator1 = "CPWiki#WIKI_NODE_TABLE_WIKI_2",
+			value1 = "${wikiNodeName}"
+		);
+	}
+
+	macro tearDownCP {
+		Page.gotoCP(portletName = "Wiki");
+
+		while (IsElementPresent.pauseIsElementPresent(locator1 = "CPWiki#WIKI_NODE_TABLE_ACTIONS_2", value1 = "Actions")) {
+			AssertClick.pauseAssertTextClickAt(
+				locator1 = "CPWiki#WIKI_NODE_TABLE_ACTIONS_2",
+				value1 = "Actions"
+			);
+
+			AssertClickNoError(
+				locator1 = "CPWiki#WIKI_NODE_MENULIST_DELETE",
+				value1 = "Delete"
+			);
+
+			Confirm(value1 = "Are you sure you want to delete this?");
+		}
+	}
+}

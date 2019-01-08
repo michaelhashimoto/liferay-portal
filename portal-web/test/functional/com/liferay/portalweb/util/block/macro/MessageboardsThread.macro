@@ -1,206 +1,473 @@
-<definition>
-	<var name="userName" value="Test Test" />
+definition {
+	var userName = "Test Test";
 
-	<command name="addInCategoryPG">
-		<var name="key_categoryName" value="${categoryName}" />
+	macro addInCategoryPG {
+		var key_categoryName = "${categoryName}";
 
-		<execute function="AssertClick" locator1="PGMessageboards#CATEGORY_TABLE_CATEGORY" value1="${categoryName}" />
+		AssertClick(
+			locator1 = "PGMessageboards#CATEGORY_TABLE_CATEGORY",
+			value1 = "${categoryName}"
+		);
 
-		<execute macro="MessageboardsThread#addPG">
-			<var name="threadBody" value="${threadBody}" />
-			<var name="threadSubject" value="${threadSubject}" />
-		</execute>
-	</command>
+		MessageboardsThread.addPG(
+			threadBody = "${threadBody}",
+			threadSubject = "${threadSubject}"
+		);
+	}
 
-	<command name="addPG">
-		<execute function="AssertClick#assertValueClickAt" locator1="PGMessageboards#POST_NEW_THREAD_BUTTON" value1="Post New Thread" />
+	macro addPG {
+		AssertClick.assertValueClickAt(
+			locator1 = "PGMessageboards#POST_NEW_THREAD_BUTTON",
+			value1 = "Post New Thread"
+		);
 
-		<if>
-			<isset var="number" />
-			<then>
-				<var name="number" value="${number}" />
+		if (isSet(number)) {
+			var number = "${number}";
 
-				<execute function="Type" locator1="PGMessageboardsPostthread#SUBJECT_FIELD" value1="${threadSubject}${number}" />
-				<execute function="Type#typeCKEditor" locator1="PGMessageboardsPostthread#BODY_FIELD" value1="${threadBody}${number}" />
-			</then>
-			<else>
-				<execute function="Type" locator1="PGMessageboardsPostthread#SUBJECT_FIELD" value1="${threadSubject}" />
-				<execute function="Type#typeCKEditor" locator1="PGMessageboardsPostthread#BODY_FIELD" value1="${threadBody}" />
-			</else>
-		</if>
+			Type(
+				locator1 = "PGMessageboardsPostthread#SUBJECT_FIELD",
+				value1 = "${threadSubject}${number}"
+			);
 
-		<execute function="AssertClick#assertValueClickAt" locator1="PGMessageboardsPostthread#PUBLISH_BUTTON" value1="Publish" />
+			Type.typeCKEditor(
+				locator1 = "PGMessageboardsPostthread#BODY_FIELD",
+				value1 = "${threadBody}${number}"
+			);
+		}
+		else {
+			Type(
+				locator1 = "PGMessageboardsPostthread#SUBJECT_FIELD",
+				value1 = "${threadSubject}"
+			);
 
-		<execute function="AssertTextEquals" locator1="PGMessageboards#SUCCESS_MESSAGE" value1="Your request completed successfully." />
-	</command>
+			Type.typeCKEditor(
+				locator1 = "PGMessageboardsPostthread#BODY_FIELD",
+				value1 = "${threadBody}"
+			);
+		}
 
-	<command name="addPGWithWorkflow">
-		<execute function="AssertClick#assertValueClickAt" locator1="PGMessageboards#POST_NEW_THREAD_BUTTON" value1="Post New Thread" />
+		AssertClick.assertValueClickAt(
+			locator1 = "PGMessageboardsPostthread#PUBLISH_BUTTON",
+			value1 = "Publish"
+		);
 
-		<execute function="Type" locator1="PGMessageboardsPostthread#SUBJECT_FIELD" value1="${threadSubject}" />
-		<execute function="Type#typeCKEditor" locator1="PGMessageboardsPostthread#BODY_FIELD" value1="${threadBody}" />
-		<execute function="AssertClick#assertValueClickAt" locator1="PGMessageboardsPostthread#SUBMIT_FOR_PUBLICATION_BUTTON" value1="Submit for Publication" />
+		AssertTextEquals(
+			locator1 = "PGMessageboards#SUCCESS_MESSAGE",
+			value1 = "Your request completed successfully."
+		);
+	}
 
-		<execute function="AssertTextEquals" locator1="PGMessageboards#SUCCESS_MESSAGE" value1="Your request completed successfully." />
+	macro addPGWithWorkflow {
+		AssertClick.assertValueClickAt(
+			locator1 = "PGMessageboards#POST_NEW_THREAD_BUTTON",
+			value1 = "Post New Thread"
+		);
 
-		<execute function="AssertTextEquals" locator1="PGMessageboardsThread#TITLE_HEADER" value1="${threadSubject}" />
-		<execute function="AssertTextEquals" locator1="PGMessageboardsThread#MESSAGE_USERNAME_1" value1="${userName}" />
-		<execute function="AssertTextEquals" locator1="PGMessageboardsThread#MESSAGE_SUBJECT_1" value1="${threadSubject}" />
-		<execute function="AssertTextEquals" locator1="PGMessageboardsThread#MESSAGE_WORKFLOW_STATUS_1" value1="Pending (Review)" />
-		<execute function="AssertTextEquals" locator1="PGMessageboardsThread#MESSAGE_BODY_1" value1="${threadBody}" />
-	</command>
+		Type(
+			locator1 = "PGMessageboardsPostthread#SUBJECT_FIELD",
+			value1 = "${threadSubject}"
+		);
 
-	<command name="deletePG">
-		<var name="key_threadSubject" value="${threadSubject}" />
+		Type.typeCKEditor(
+			locator1 = "PGMessageboardsPostthread#BODY_FIELD",
+			value1 = "${threadBody}"
+		);
 
-		<execute function="AssertTextEquals" locator1="PGMessageboards#THREAD_TABLE_THREAD" value1="${threadSubject}" />
-		<execute function="AssertClick#pauseAssertTextClickAt" locator1="PGMessageboards#THREAD_TABLE_ACTIONS" value1="Actions" />
-		<execute function="AssertClickNoError" locator1="PGMessageboards#THREAD_MENULIST_DELETE" value1="Delete" />
-		<execute function="Confirm" value1="Are you sure you want to delete this?" />
-		<execute function="AssertTextEquals" locator1="PGMessageboards#SUCCESS_MESSAGE" value1="Your request completed successfully." />
-		<execute function="AssertTextNotPresent" value1="${threadSubject}" />
-	</command>
+		AssertClick.assertValueClickAt(
+			locator1 = "PGMessageboardsPostthread#SUBMIT_FOR_PUBLICATION_BUTTON",
+			value1 = "Submit for Publication"
+		);
 
-	<command name="editPG">
-		<var name="key_threadSubject" value="${threadSubject}" />
+		AssertTextEquals(
+			locator1 = "PGMessageboards#SUCCESS_MESSAGE",
+			value1 = "Your request completed successfully."
+		);
 
-		<execute function="AssertTextEquals" locator1="PGMessageboards#THREAD_TABLE_THREAD" value1="${threadSubject}" />
-		<execute function="AssertClick" locator1="PGMessageboards#THREAD_TABLE_THREAD" value1="${threadSubject}" />
+		AssertTextEquals(
+			locator1 = "PGMessageboardsThread#TITLE_HEADER",
+			value1 = "${threadSubject}"
+		);
 
-		<execute function="AssertClick" locator1="PGMessageboardsThread#MESSAGE_EDIT_1" value1="Edit" />
+		AssertTextEquals(
+			locator1 = "PGMessageboardsThread#MESSAGE_USERNAME_1",
+			value1 = "${userName}"
+		);
 
-		<execute function="Type" locator1="PGMessageboardsPostthread#SUBJECT_FIELD" value1="${threadSubjectEdit}" />
-		<execute function="Type#typeCKEditor" locator1="PGMessageboardsPostthread#BODY_FIELD" value1="${threadBodyEdit}" />
-		<execute function="AssertClick#assertValueClickAt" locator1="PGMessageboardsPostthread#PUBLISH_BUTTON" value1="Publish" />
+		AssertTextEquals(
+			locator1 = "PGMessageboardsThread#MESSAGE_SUBJECT_1",
+			value1 = "${threadSubject}"
+		);
 
-		<execute function="AssertTextEquals" locator1="PGMessageboardsThread#SUCCESS_MESSAGE" value1="Your request completed successfully." />
-		<execute function="AssertTextEquals" locator1="PGMessageboardsThread#TITLE_HEADER" value1="${threadSubjectEdit}" />
-		<execute function="AssertTextEquals" locator1="PGMessageboardsThread#MESSAGE_SUBJECT_1" value1="${threadSubjectEdit}" />
-		<execute function="AssertTextEquals" locator1="PGMessageboardsThread#MESSAGE_BODY_1" value1="${threadBodyEdit}" />
-	</command>
+		AssertTextEquals(
+			locator1 = "PGMessageboardsThread#MESSAGE_WORKFLOW_STATUS_1",
+			value1 = "Pending (Review)"
+		);
 
-	<command name="replyPG">
-		<var name="key_threadSubject" value="${threadSubject}" />
+		AssertTextEquals(
+			locator1 = "PGMessageboardsThread#MESSAGE_BODY_1",
+			value1 = "${threadBody}"
+		);
+	}
 
-		<execute function="AssertTextEquals" locator1="PGMessageboards#THREAD_TABLE_THREAD" value1="${threadSubject}" />
-		<execute function="AssertClick" locator1="PGMessageboards#THREAD_TABLE_THREAD" value1="${threadSubject}" />
+	macro deletePG {
+		var key_threadSubject = "${threadSubject}";
 
-		<execute function="AssertClick" locator1="PGMessageboardsThread#MESSAGE_REPLY_1" value1="Reply" />
+		AssertTextEquals(
+			locator1 = "PGMessageboards#THREAD_TABLE_THREAD",
+			value1 = "${threadSubject}"
+		);
 
-		<execute function="Type#typeCKEditor" locator1="PGMessageboardsPostthread#BODY_FIELD" value1="${threadReplyBody}" />
-		<execute function="AssertClick#assertValueClickAt" locator1="PGMessageboardsPostthread#PUBLISH_BUTTON" value1="Publish" />
+		AssertClick.pauseAssertTextClickAt(
+			locator1 = "PGMessageboards#THREAD_TABLE_ACTIONS",
+			value1 = "Actions"
+		);
 
-		<execute function="AssertTextEquals" locator1="PGMessageboards#SUCCESS_MESSAGE" value1="Your request completed successfully." />
-	</command>
+		AssertClickNoError(
+			locator1 = "PGMessageboards#THREAD_MENULIST_DELETE",
+			value1 = "Delete"
+		);
 
-	<command name="tearDownCP">
-		<execute macro="Page#gotoCP">
-			<var name="portletName" value="Message Boards" />
-		</execute>
+		Confirm(value1 = "Are you sure you want to delete this?");
 
-		<if>
-			<condition function="IsElementPresent#isVisible" locator1="CPMessageboards#THREAD_TABLE_ALL_CHECKBOX" />
-			<then>
-				<execute function="Click" locator1="CPMessageboards#THREAD_TABLE_ALL_CHECKBOX" />
-				<execute function="AssertClickNoError" locator1="CPMessageboards#THREADS_DELETE_BUTTON" value1="Delete" />
-				<execute function="Confirm" value1="Are you sure you want to delete this?" />
-			</then>
-		</if>
-	</command>
+		AssertTextEquals(
+			locator1 = "PGMessageboards#SUCCESS_MESSAGE",
+			value1 = "Your request completed successfully."
+		);
 
-	<command name="tearDownPG">
-		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${pageName}" />
-		</execute>
+		AssertTextNotPresent(value1 = "${threadSubject}");
+	}
 
-		<while>
-			<condition function="IsElementPresent" locator1="PGMessageboards#THREAD_TABLE_ACTIONS_GENERIC" />
-			<then>
-				<execute function="AssertClick#pauseAssertTextClickAt" locator1="PGMessageboards#THREAD_TABLE_ACTIONS_GENERIC" value1="Actions" />
-				<execute function="AssertClickNoError" locator1="PGMessageboards#THREAD_MENULIST_DELETE" value1="Delete" />
-				<execute function="Confirm" value1="Are you sure you want to delete this?" />
-			</then>
-		</while>
+	macro editPG {
+		var key_threadSubject = "${threadSubject}";
 
-		<execute function="AssertClick#assertTextClickAt" locator1="PGMessageboards#NAVIGATION_MY_POSTS" value1="My Posts" />
+		AssertTextEquals(
+			locator1 = "PGMessageboards#THREAD_TABLE_THREAD",
+			value1 = "${threadSubject}"
+		);
 
-		<while>
-			<condition function="IsElementPresent" locator1="PGMessageboardsMyposts#THREAD_TABLE_ACTIONS_GENERIC" />
-			<then>
-				<execute function="AssertClick" locator1="PGMessageboardsMyposts#THREAD_TABLE_ACTIONS_GENERIC" value1="Actions" />
-				<execute function="AssertClickNoError" locator1="PGMessageboardsMyposts#THREAD_MENULIST_DELETE" value1="Delete" />
-				<execute function="Confirm" value1="Are you sure you want to delete this?" />
-			</then>
-		</while>
-	</command>
+		AssertClick(
+			locator1 = "PGMessageboards#THREAD_TABLE_THREAD",
+			value1 = "${threadSubject}"
+		);
 
-	<command name="viewInCategoryPG">
-		<var name="key_categoryName" value="${categoryName}" />
+		AssertClick(locator1 = "PGMessageboardsThread#MESSAGE_EDIT_1", value1 = "Edit");
 
-		<execute function="AssertClick" locator1="PGMessageboards#CATEGORY_TABLE_CATEGORY" value1="${categoryName}" />
+		Type(
+			locator1 = "PGMessageboardsPostthread#SUBJECT_FIELD",
+			value1 = "${threadSubjectEdit}"
+		);
 
-		<execute macro="MessageboardsThread#viewPG">
-			<var name="threadBody" value="${threadBody}" />
-			<var name="threadSubject" value="${threadSubject}" />
-		</execute>
-	</command>
+		Type.typeCKEditor(
+			locator1 = "PGMessageboardsPostthread#BODY_FIELD",
+			value1 = "${threadBodyEdit}"
+		);
 
-	<command name="viewPG">
-		<var name="key_threadSubject" value="${threadSubject}" />
+		AssertClick.assertValueClickAt(
+			locator1 = "PGMessageboardsPostthread#PUBLISH_BUTTON",
+			value1 = "Publish"
+		);
 
-		<execute function="AssertTextEquals" locator1="PGMessageboards#THREAD_TABLE_THREAD" value1="${threadSubject}" />
-		<execute function="AssertTextEquals" locator1="PGMessageboards#THREAD_TABLE_STARTED_BY" value1="${userName}" />
-		<execute function="AssertTextEquals" locator1="PGMessageboards#THREAD_TABLE_POSTS" value1="1" />
-		<execute function="AssertTextEquals#assertPartialText" locator1="PGMessageboards#THREAD_TABLE_LAST_POST" value1="By: ${userName}" />
-		<execute function="AssertClick" locator1="PGMessageboards#THREAD_TABLE_THREAD" value1="${threadSubject}" />
+		AssertTextEquals(
+			locator1 = "PGMessageboardsThread#SUCCESS_MESSAGE",
+			value1 = "Your request completed successfully."
+		);
 
-		<execute function="AssertTextEquals" locator1="PGMessageboardsThread#TITLE_HEADER" value1="${threadSubject}" />
-		<execute function="AssertTextEquals" locator1="PGMessageboardsThread#MESSAGE_USERNAME_1" value1="${userName}" />
-		<execute function="AssertTextEquals" locator1="PGMessageboardsThread#MESSAGE_SUBJECT_1" value1="${threadSubject}" />
-		<execute function="AssertTextEquals" locator1="PGMessageboardsThread#MESSAGE_BODY_1" value1="${threadBody}" />
-		<execute function="AssertElementNotPresent" locator1="PGMessageboardsThread#MESSAGE_WORKFLOW_STATUS_1" />
-	</command>
+		AssertTextEquals(
+			locator1 = "PGMessageboardsThread#TITLE_HEADER",
+			value1 = "${threadSubjectEdit}"
+		);
 
-	<command name="viewPGWithWorkflow">
-		<var name="key_threadSubject" value="${threadSubject}" />
+		AssertTextEquals(
+			locator1 = "PGMessageboardsThread#MESSAGE_SUBJECT_1",
+			value1 = "${threadSubjectEdit}"
+		);
 
-		<execute function="AssertElementNotPresent" locator1="PGMessageboards#THREAD_TABLE_THREAD" />
-		<execute function="AssertElementNotPresent" locator1="PGMessageboards#THREAD_TABLE_STARTED_BY" />
-		<execute function="AssertElementNotPresent" locator1="PGMessageboards#THREAD_TABLE_POSTS" />
-		<execute function="AssertElementNotPresent" locator1="PGMessageboards#THREAD_TABLE_LAST_POST" />
+		AssertTextEquals(
+			locator1 = "PGMessageboardsThread#MESSAGE_BODY_1",
+			value1 = "${threadBodyEdit}"
+		);
+	}
 
-		<execute function="AssertClick#assertTextClickAt" locator1="PGMessageboards#NAVIGATION_MY_POSTS" value1="My Posts" />
+	macro replyPG {
+		var key_threadSubject = "${threadSubject}";
 
-		<execute function="AssertTextEquals" locator1="PGMessageboardsMyposts#THREAD_TABLE_THREAD" value1="${threadSubject}" />
-		<execute function="AssertTextEquals" locator1="PGMessageboardsMyposts#THREAD_TABLE_STATUS" value1="Pending" />
+		AssertTextEquals(
+			locator1 = "PGMessageboards#THREAD_TABLE_THREAD",
+			value1 = "${threadSubject}"
+		);
 
-		<execute function="AssertClick#assertTextClickAt" locator1="PGMessageboardsMyposts#THREAD_TABLE_THREAD" value1="${threadSubject}" />
+		AssertClick(
+			locator1 = "PGMessageboards#THREAD_TABLE_THREAD",
+			value1 = "${threadSubject}"
+		);
 
-		<execute function="AssertTextEquals" locator1="PGMessageboardsThread#TITLE_HEADER" value1="${threadSubject}" />
-		<execute function="AssertTextEquals" locator1="PGMessageboardsThread#MESSAGE_USERNAME_1" value1="${userName}" />
-		<execute function="AssertTextEquals" locator1="PGMessageboardsThread#MESSAGE_SUBJECT_1" value1="${threadSubject}" />
-		<execute function="AssertTextEquals" locator1="PGMessageboardsThread#MESSAGE_WORKFLOW_STATUS_1" value1="Pending (${workflowTask})" />
-		<execute function="AssertTextEquals" locator1="PGMessageboardsThread#MESSAGE_BODY_1" value1="${threadBody}" />
-	</command>
+		AssertClick(
+			locator1 = "PGMessageboardsThread#MESSAGE_REPLY_1",
+			value1 = "Reply"
+		);
 
-	<command name="viewReplyPG">
-		<var name="key_threadSubject" value="${threadSubject}" />
+		Type.typeCKEditor(
+			locator1 = "PGMessageboardsPostthread#BODY_FIELD",
+			value1 = "${threadReplyBody}"
+		);
 
-		<execute function="AssertTextEquals" locator1="PGMessageboards#THREAD_TABLE_THREAD" value1="${threadSubject}" />
-		<execute function="AssertTextEquals" locator1="PGMessageboards#THREAD_TABLE_STARTED_BY" value1="${userName}" />
-		<execute function="AssertTextEquals" locator1="PGMessageboards#THREAD_TABLE_POSTS" value1="2" />
-		<execute function="AssertTextEquals#assertPartialText" locator1="PGMessageboards#THREAD_TABLE_LAST_POST" value1="By: ${userName}" />
-		<execute function="AssertClick" locator1="PGMessageboards#THREAD_TABLE_THREAD" value1="${threadSubject}" />
+		AssertClick.assertValueClickAt(
+			locator1 = "PGMessageboardsPostthread#PUBLISH_BUTTON",
+			value1 = "Publish"
+		);
 
-		<execute function="AssertTextEquals" locator1="PGMessageboardsThread#THREAD_TABLE_SUBJECT_1" value1="${threadSubject}" />
-		<execute function="AssertTextEquals" locator1="PGMessageboardsThread#THREAD_TABLE_SUBJECT_2" value1="RE: ${threadSubject}" />
-		<execute function="AssertTextEquals" locator1="PGMessageboardsThread#MESSAGE_SUBJECT_1" value1="${threadSubject}" />
-		<execute function="AssertTextEquals" locator1="PGMessageboardsThread#MESSAGE_BODY_1" value1="${threadBody}" />
-		<execute function="AssertTextEquals" locator1="PGMessageboardsThread#MESSAGE_USERNAME_1" value1="${userName}" />
-		<execute function="AssertTextEquals" locator1="PGMessageboardsThread#MESSAGE_RATING_1" value1="0 (0 Votes)" />
-		<execute function="AssertTextEquals" locator1="PGMessageboardsThread#MESSAGE_SUBJECT_2" value1="RE: ${threadSubject}" />
-		<execute function="AssertTextEquals" locator1="PGMessageboardsThread#MESSAGE_BODY_2" value1="${threadReplyBody}" />
-		<execute function="AssertTextEquals" locator1="PGMessageboardsThread#MESSAGE_USERNAME_2" value1="${userName}" />
-		<execute function="AssertTextEquals" locator1="PGMessageboardsThread#MESSAGE_RATING_2" value1="0 (0 Votes)" />
-	</command>
-</definition>
+		AssertTextEquals(
+			locator1 = "PGMessageboards#SUCCESS_MESSAGE",
+			value1 = "Your request completed successfully."
+		);
+	}
+
+	macro tearDownCP {
+		Page.gotoCP(portletName = "Message Boards");
+
+		if (IsElementPresent.isVisible(locator1 = "CPMessageboards#THREAD_TABLE_ALL_CHECKBOX")) {
+			Click(locator1 = "CPMessageboards#THREAD_TABLE_ALL_CHECKBOX");
+
+			AssertClickNoError(
+				locator1 = "CPMessageboards#THREADS_DELETE_BUTTON",
+				value1 = "Delete"
+			);
+
+			Confirm(value1 = "Are you sure you want to delete this?");
+		}
+	}
+
+	macro tearDownPG {
+		Page.gotoPG(pageName = "${pageName}");
+
+		while (IsElementPresent(locator1 = "PGMessageboards#THREAD_TABLE_ACTIONS_GENERIC")) {
+			AssertClick.pauseAssertTextClickAt(
+				locator1 = "PGMessageboards#THREAD_TABLE_ACTIONS_GENERIC",
+				value1 = "Actions"
+			);
+
+			AssertClickNoError(
+				locator1 = "PGMessageboards#THREAD_MENULIST_DELETE",
+				value1 = "Delete"
+			);
+
+			Confirm(value1 = "Are you sure you want to delete this?");
+		}
+
+		AssertClick.assertTextClickAt(
+			locator1 = "PGMessageboards#NAVIGATION_MY_POSTS",
+			value1 = "My Posts"
+		);
+
+		while (IsElementPresent(locator1 = "PGMessageboardsMyposts#THREAD_TABLE_ACTIONS_GENERIC")) {
+			AssertClick(
+				locator1 = "PGMessageboardsMyposts#THREAD_TABLE_ACTIONS_GENERIC",
+				value1 = "Actions"
+			);
+
+			AssertClickNoError(
+				locator1 = "PGMessageboardsMyposts#THREAD_MENULIST_DELETE",
+				value1 = "Delete"
+			);
+
+			Confirm(value1 = "Are you sure you want to delete this?");
+		}
+	}
+
+	macro viewInCategoryPG {
+		var key_categoryName = "${categoryName}";
+
+		AssertClick(
+			locator1 = "PGMessageboards#CATEGORY_TABLE_CATEGORY",
+			value1 = "${categoryName}"
+		);
+
+		MessageboardsThread.viewPG(
+			threadBody = "${threadBody}",
+			threadSubject = "${threadSubject}"
+		);
+	}
+
+	macro viewPG {
+		var key_threadSubject = "${threadSubject}";
+
+		AssertTextEquals(
+			locator1 = "PGMessageboards#THREAD_TABLE_THREAD",
+			value1 = "${threadSubject}"
+		);
+
+		AssertTextEquals(
+			locator1 = "PGMessageboards#THREAD_TABLE_STARTED_BY",
+			value1 = "${userName}"
+		);
+
+		AssertTextEquals(locator1 = "PGMessageboards#THREAD_TABLE_POSTS", value1 = "1");
+
+		AssertTextEquals.assertPartialText(
+			locator1 = "PGMessageboards#THREAD_TABLE_LAST_POST",
+			value1 = "By: ${userName}"
+		);
+
+		AssertClick(
+			locator1 = "PGMessageboards#THREAD_TABLE_THREAD",
+			value1 = "${threadSubject}"
+		);
+
+		AssertTextEquals(
+			locator1 = "PGMessageboardsThread#TITLE_HEADER",
+			value1 = "${threadSubject}"
+		);
+
+		AssertTextEquals(
+			locator1 = "PGMessageboardsThread#MESSAGE_USERNAME_1",
+			value1 = "${userName}"
+		);
+
+		AssertTextEquals(
+			locator1 = "PGMessageboardsThread#MESSAGE_SUBJECT_1",
+			value1 = "${threadSubject}"
+		);
+
+		AssertTextEquals(
+			locator1 = "PGMessageboardsThread#MESSAGE_BODY_1",
+			value1 = "${threadBody}"
+		);
+
+		AssertElementNotPresent(
+			locator1 = "PGMessageboardsThread#MESSAGE_WORKFLOW_STATUS_1"
+		);
+	}
+
+	macro viewPGWithWorkflow {
+		var key_threadSubject = "${threadSubject}";
+
+		AssertElementNotPresent(locator1 = "PGMessageboards#THREAD_TABLE_THREAD");
+
+		AssertElementNotPresent(locator1 = "PGMessageboards#THREAD_TABLE_STARTED_BY");
+
+		AssertElementNotPresent(locator1 = "PGMessageboards#THREAD_TABLE_POSTS");
+
+		AssertElementNotPresent(locator1 = "PGMessageboards#THREAD_TABLE_LAST_POST");
+
+		AssertClick.assertTextClickAt(
+			locator1 = "PGMessageboards#NAVIGATION_MY_POSTS",
+			value1 = "My Posts"
+		);
+
+		AssertTextEquals(
+			locator1 = "PGMessageboardsMyposts#THREAD_TABLE_THREAD",
+			value1 = "${threadSubject}"
+		);
+
+		AssertTextEquals(
+			locator1 = "PGMessageboardsMyposts#THREAD_TABLE_STATUS",
+			value1 = "Pending"
+		);
+
+		AssertClick.assertTextClickAt(
+			locator1 = "PGMessageboardsMyposts#THREAD_TABLE_THREAD",
+			value1 = "${threadSubject}"
+		);
+
+		AssertTextEquals(
+			locator1 = "PGMessageboardsThread#TITLE_HEADER",
+			value1 = "${threadSubject}"
+		);
+
+		AssertTextEquals(
+			locator1 = "PGMessageboardsThread#MESSAGE_USERNAME_1",
+			value1 = "${userName}"
+		);
+
+		AssertTextEquals(
+			locator1 = "PGMessageboardsThread#MESSAGE_SUBJECT_1",
+			value1 = "${threadSubject}"
+		);
+
+		AssertTextEquals(
+			locator1 = "PGMessageboardsThread#MESSAGE_WORKFLOW_STATUS_1",
+			value1 = "Pending (${workflowTask})"
+		);
+
+		AssertTextEquals(
+			locator1 = "PGMessageboardsThread#MESSAGE_BODY_1",
+			value1 = "${threadBody}"
+		);
+	}
+
+	macro viewReplyPG {
+		var key_threadSubject = "${threadSubject}";
+
+		AssertTextEquals(
+			locator1 = "PGMessageboards#THREAD_TABLE_THREAD",
+			value1 = "${threadSubject}"
+		);
+
+		AssertTextEquals(
+			locator1 = "PGMessageboards#THREAD_TABLE_STARTED_BY",
+			value1 = "${userName}"
+		);
+
+		AssertTextEquals(locator1 = "PGMessageboards#THREAD_TABLE_POSTS", value1 = "2");
+
+		AssertTextEquals.assertPartialText(
+			locator1 = "PGMessageboards#THREAD_TABLE_LAST_POST",
+			value1 = "By: ${userName}"
+		);
+
+		AssertClick(
+			locator1 = "PGMessageboards#THREAD_TABLE_THREAD",
+			value1 = "${threadSubject}"
+		);
+
+		AssertTextEquals(
+			locator1 = "PGMessageboardsThread#THREAD_TABLE_SUBJECT_1",
+			value1 = "${threadSubject}"
+		);
+
+		AssertTextEquals(
+			locator1 = "PGMessageboardsThread#THREAD_TABLE_SUBJECT_2",
+			value1 = "RE: ${threadSubject}"
+		);
+
+		AssertTextEquals(
+			locator1 = "PGMessageboardsThread#MESSAGE_SUBJECT_1",
+			value1 = "${threadSubject}"
+		);
+
+		AssertTextEquals(
+			locator1 = "PGMessageboardsThread#MESSAGE_BODY_1",
+			value1 = "${threadBody}"
+		);
+
+		AssertTextEquals(
+			locator1 = "PGMessageboardsThread#MESSAGE_USERNAME_1",
+			value1 = "${userName}"
+		);
+
+		AssertTextEquals(
+			locator1 = "PGMessageboardsThread#MESSAGE_RATING_1",
+			value1 = "0 (0 Votes)"
+		);
+
+		AssertTextEquals(
+			locator1 = "PGMessageboardsThread#MESSAGE_SUBJECT_2",
+			value1 = "RE: ${threadSubject}"
+		);
+
+		AssertTextEquals(
+			locator1 = "PGMessageboardsThread#MESSAGE_BODY_2",
+			value1 = "${threadReplyBody}"
+		);
+
+		AssertTextEquals(
+			locator1 = "PGMessageboardsThread#MESSAGE_USERNAME_2",
+			value1 = "${userName}"
+		);
+
+		AssertTextEquals(
+			locator1 = "PGMessageboardsThread#MESSAGE_RATING_2",
+			value1 = "0 (0 Votes)"
+		);
+	}
+}

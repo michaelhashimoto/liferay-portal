@@ -1,23 +1,27 @@
-<definition>
-	<command name="showAdvancedSearch">
-		<if>
-			<condition function="IsElementPresent" locator1="CPUsersandorganizationsAssignmembers#BASIC_SEARCH_ADVANCED" value1="Advanced" />
-			<then>
-				<execute function="AssertClick" locator1="CPUsersandorganizationsAssignmembers#BASIC_SEARCH_ADVANCED" value1="Advanced" />
-			</then>
-		</if>
+definition {
+	macro showAdvancedSearch {
+		if (IsElementPresent(locator1 = "CPUsersandorganizationsAssignmembers#BASIC_SEARCH_ADVANCED", value1 = "Advanced")) {
+			AssertClick(
+				locator1 = "CPUsersandorganizationsAssignmembers#BASIC_SEARCH_ADVANCED",
+				value1 = "Advanced"
+			);
+		}
 
-		<execute function="AssertElementPresent" locator1="CPUsersandorganizationsAssignmembers#ADVANCED_SEARCH_MATCH_SELECT" />
-	</command>
+		AssertElementPresent(
+			locator1 = "CPUsersandorganizationsAssignmembers#ADVANCED_SEARCH_MATCH_SELECT"
+		);
+	}
 
-	<command name="showBasicSearch">
-		<if>
-			<condition function="IsElementPresent" locator1="CPUsersandorganizationsAssignmembers#ADVANCED_SEARCH_BASIC" value1="Basic" />
-			<then>
-				<execute function="AssertClick" locator1="CPUsersandorganizationsAssignmembers#ADVANCED_SEARCH_BASIC" value1="Basic" />
-			</then>
-		</if>
+	macro showBasicSearch {
+		if (IsElementPresent(locator1 = "CPUsersandorganizationsAssignmembers#ADVANCED_SEARCH_BASIC", value1 = "Basic")) {
+			AssertClick(
+				locator1 = "CPUsersandorganizationsAssignmembers#ADVANCED_SEARCH_BASIC",
+				value1 = "Basic"
+			);
+		}
 
-		<execute function="AssertElementPresent" locator1="CPUsersandorganizationsAssignmembers#BASIC_SEARCH_FIELD" />
-	</command>
-</definition>
+		AssertElementPresent(
+			locator1 = "CPUsersandorganizationsAssignmembers#BASIC_SEARCH_FIELD"
+		);
+	}
+}

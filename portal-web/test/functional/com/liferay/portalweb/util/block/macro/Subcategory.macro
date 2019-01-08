@@ -1,54 +1,140 @@
-<definition>
-	<command name="addCP">
-		<execute macro="Page#gotoCP">
-			<var name="portletName" value="Categories" />
-		</execute>
+definition {
+	macro addCP {
+		Page.gotoCP(portletName = "Categories");
 
-		<execute function="AssertClick" locator1="CPCategories#VOCABULARY_ENTRY_2" value1="${vocabularyName}" />
-		<execute function="AssertClick" locator1="CPCategories#VOCABULARY_CATEGORY_1" value1="${categoryName}" />
-		<execute function="AssertClick" locator1="CPCategories#CATEGORY_DETAILS_ADD_SUBCATEGORY_BUTTON" value1="Add Subcategory" />
-		<execute function="Type" locator1="CPCategories#ADD_SUBCATEGORY_NAME_FIELD" value1="${subcategoryName}" />
-		<execute function="AssertClick" locator1="CPCategories#ADD_SUBCATEGORY_SAVE_BUTTON" value1="Save" />
-		<execute function="AssertTextEquals#assertTextNoWaitForText" locator1="CPCategories#SUCCESS_MESSAGE" value1="Your request processed successfully." />
-		<execute function="Click" locator1="CPCategories#CATEGORY_DETAILS_DROPDOWN_TREE" />
-		<execute function="Click" locator1="CPCategories#SUBCATEGORY_CHECKBOX" />
-		<execute function="AssertTextEquals" locator1="CPCategories#SUBCATEGORY_DETAILS_HEADER" value1="${subcategoryName}" />
-		<execute function="AssertElementPresent" locator1="CPCategories#SUBCATEGORY_DETAILS_EDIT_BUTTON" value1="Edit" />
-		<execute function="AssertElementPresent" locator1="CPCategories#SUBCATEGORY_DETAILS_DELETE_BUTTON" value1="Delete" />
-		<execute function="AssertElementPresent" locator1="CPCategories#SUBCATEGORY_DETAILS_ADD_SUBCATEGORY_BUTTON" value1="Add Subcategory" />
-	</command>
+		AssertClick(
+			locator1 = "CPCategories#VOCABULARY_ENTRY_2",
+			value1 = "${vocabularyName}"
+		);
 
-	<command name="deleteCPByActions">
-		<execute macro="Page#gotoCP">
-			<var name="portletName" value="Categories" />
-		</execute>
+		AssertClick(
+			locator1 = "CPCategories#VOCABULARY_CATEGORY_1",
+			value1 = "${categoryName}"
+		);
 
-		<execute function="AssertClick" locator1="CPCategories#VOCABULARY_ENTRY_2" value1="${vocabularyName}" />
-		<execute function="AssertClick" locator1="CPCategories#VOCABULARY_CATEGORY_1" value1="${categoryName}" />
-		<execute function="Click" locator1="CPCategories#CATEGORY_DETAILS_DROPDOWN_TREE" />
-		<execute function="Click" locator1="CPCategories#SUBCATEGORY_CHECKBOX" />
-		<execute function="AssertClick" locator1="CPCategories#ACTIONS_BUTTON" value1="Actions" />
-		<execute function="AssertClickNoError" locator1="CPCategories#ACTIONS_MENULIST_DELETE" value1="Delete" />
-		<execute function="Confirm" value1="Are you sure you want to delete the selected categories?" />
-		<execute function="AssertTextEquals#assertTextNoWaitForText" locator1="CPCategories#SUCCESS_MESSAGE" value1="Your request processed successfully." />
-		<execute function="AssertTextNotPresent" value1="${subcategoryName}" />
-	</command>
+		AssertClick(
+			locator1 = "CPCategories#CATEGORY_DETAILS_ADD_SUBCATEGORY_BUTTON",
+			value1 = "Add Subcategory"
+		);
 
-	<command name="editCP">
-		<execute macro="Page#gotoCP">
-			<var name="portletName" value="Categories" />
-		</execute>
+		Type(
+			locator1 = "CPCategories#ADD_SUBCATEGORY_NAME_FIELD",
+			value1 = "${subcategoryName}"
+		);
 
-		<execute function="AssertClick" locator1="CPCategories#VOCABULARY_ENTRY_2" value1="${vocabularyName}" />
-		<execute function="AssertClick" locator1="CPCategories#VOCABULARY_CATEGORY_1" value1="${categoryName}" />
-		<execute function="Click" locator1="CPCategories#CATEGORY_DETAILS_DROPDOWN_TREE" />
-		<execute function="Click" locator1="CPCategories#SUBCATEGORY_CHECKBOX" />
-		<execute function="AssertClick" locator1="CPCategories#SUBCATEGORY_DETAILS_EDIT_BUTTON" value1="Edit" />
-		<execute function="Type" locator1="CPCategories#EDIT_SUBCATEGORY_NAME_FIELD" value1="${subcategoryNameEdit}" />
-		<execute function="AssertClick" locator1="CPCategories#EDIT_SUBCATEGORY_SAVE_BUTTON" value1="Save" />
-		<execute function="AssertTextEquals#assertTextNoWaitForText" locator1="CPCategories#SUCCESS_MESSAGE" value1="Your request processed successfully." />
-		<execute function="Click" locator1="CPCategories#CATEGORY_DETAILS_DROPDOWN_TREE" />
-		<execute function="Click" locator1="CPCategories#SUBCATEGORY_CHECKBOX" />
-		<execute function="AssertTextEquals" locator1="CPCategories#SUBCATEGORY_DETAILS_HEADER" value1="${subcategoryNameEdit}" />
-	</command>
-</definition>
+		AssertClick(
+			locator1 = "CPCategories#ADD_SUBCATEGORY_SAVE_BUTTON",
+			value1 = "Save"
+		);
+
+		AssertTextEquals.assertTextNoWaitForText(
+			locator1 = "CPCategories#SUCCESS_MESSAGE",
+			value1 = "Your request processed successfully."
+		);
+
+		Click(locator1 = "CPCategories#CATEGORY_DETAILS_DROPDOWN_TREE");
+
+		Click(locator1 = "CPCategories#SUBCATEGORY_CHECKBOX");
+
+		AssertTextEquals(
+			locator1 = "CPCategories#SUBCATEGORY_DETAILS_HEADER",
+			value1 = "${subcategoryName}"
+		);
+
+		AssertElementPresent(
+			locator1 = "CPCategories#SUBCATEGORY_DETAILS_EDIT_BUTTON",
+			value1 = "Edit"
+		);
+
+		AssertElementPresent(
+			locator1 = "CPCategories#SUBCATEGORY_DETAILS_DELETE_BUTTON",
+			value1 = "Delete"
+		);
+
+		AssertElementPresent(
+			locator1 = "CPCategories#SUBCATEGORY_DETAILS_ADD_SUBCATEGORY_BUTTON",
+			value1 = "Add Subcategory"
+		);
+	}
+
+	macro deleteCPByActions {
+		Page.gotoCP(portletName = "Categories");
+
+		AssertClick(
+			locator1 = "CPCategories#VOCABULARY_ENTRY_2",
+			value1 = "${vocabularyName}"
+		);
+
+		AssertClick(
+			locator1 = "CPCategories#VOCABULARY_CATEGORY_1",
+			value1 = "${categoryName}"
+		);
+
+		Click(locator1 = "CPCategories#CATEGORY_DETAILS_DROPDOWN_TREE");
+
+		Click(locator1 = "CPCategories#SUBCATEGORY_CHECKBOX");
+
+		AssertClick(locator1 = "CPCategories#ACTIONS_BUTTON", value1 = "Actions");
+
+		AssertClickNoError(
+			locator1 = "CPCategories#ACTIONS_MENULIST_DELETE",
+			value1 = "Delete"
+		);
+
+		Confirm(value1 = "Are you sure you want to delete the selected categories?");
+
+		AssertTextEquals.assertTextNoWaitForText(
+			locator1 = "CPCategories#SUCCESS_MESSAGE",
+			value1 = "Your request processed successfully."
+		);
+
+		AssertTextNotPresent(value1 = "${subcategoryName}");
+	}
+
+	macro editCP {
+		Page.gotoCP(portletName = "Categories");
+
+		AssertClick(
+			locator1 = "CPCategories#VOCABULARY_ENTRY_2",
+			value1 = "${vocabularyName}"
+		);
+
+		AssertClick(
+			locator1 = "CPCategories#VOCABULARY_CATEGORY_1",
+			value1 = "${categoryName}"
+		);
+
+		Click(locator1 = "CPCategories#CATEGORY_DETAILS_DROPDOWN_TREE");
+
+		Click(locator1 = "CPCategories#SUBCATEGORY_CHECKBOX");
+
+		AssertClick(
+			locator1 = "CPCategories#SUBCATEGORY_DETAILS_EDIT_BUTTON",
+			value1 = "Edit"
+		);
+
+		Type(
+			locator1 = "CPCategories#EDIT_SUBCATEGORY_NAME_FIELD",
+			value1 = "${subcategoryNameEdit}"
+		);
+
+		AssertClick(
+			locator1 = "CPCategories#EDIT_SUBCATEGORY_SAVE_BUTTON",
+			value1 = "Save"
+		);
+
+		AssertTextEquals.assertTextNoWaitForText(
+			locator1 = "CPCategories#SUCCESS_MESSAGE",
+			value1 = "Your request processed successfully."
+		);
+
+		Click(locator1 = "CPCategories#CATEGORY_DETAILS_DROPDOWN_TREE");
+
+		Click(locator1 = "CPCategories#SUBCATEGORY_CHECKBOX");
+
+		AssertTextEquals(
+			locator1 = "CPCategories#SUBCATEGORY_DETAILS_HEADER",
+			value1 = "${subcategoryNameEdit}"
+		);
+	}
+}

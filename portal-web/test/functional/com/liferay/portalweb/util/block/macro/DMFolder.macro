@@ -1,257 +1,548 @@
-<definition>
-	<command name="addCP">
-		<execute function="AssertClick" locator1="CPDocumentsandmedia#ADD" value1="Add" />
-		<execute function="AssertClick" locator1="CPDocumentsandmedia#ADD_MENULIST_FOLDER" value1="Folder" />
+definition {
+	macro addCP {
+		AssertClick(locator1 = "CPDocumentsandmedia#ADD", value1 = "Add");
 
-		<execute function="Type" locator1="CPDocumentsandmediaAddfolder#NAME_FIELD" value1="${dmFolderName}" />
-		<execute function="Type" locator1="CPDocumentsandmediaAddfolder#DESCRIPTION_FIELD" value1="${dmFolderDescription}" />
-		<execute function="AssertClick" locator1="CPDocumentsandmediaAddfolder#SAVE_BUTTON" value1="Save" />
+		AssertClick(
+			locator1 = "CPDocumentsandmedia#ADD_MENULIST_FOLDER",
+			value1 = "Folder"
+		);
 
-		<execute function="AssertTextEquals" locator1="CPDocumentsandmedia#REQUEST" value1="Your request completed successfully." />
+		Type(
+			locator1 = "CPDocumentsandmediaAddfolder#NAME_FIELD",
+			value1 = "${dmFolderName}"
+		);
 
-		<if>
-			<condition function="IsElementNotPresent" locator1="CPDocumentsandmedia#DOCUMENT_CONTAINER_FOLDER2" />
-			<then>
-				<execute function="AssertElementPresent" locator1="CPDocumentsandmedia#DOCUMENT_CONTAINER_FOLDER1" />
-				<execute function="AssertTextEquals" locator1="CPDocumentsandmedia#DOCUMENT_CONTAINER_FOLDER1_TITLE" value1="${dmFolderName}" />
-			</then>
-			<else>
-				<execute function="AssertElementPresent" locator1="CPDocumentsandmedia#DOCUMENT_CONTAINER_FOLDER2" />
-				<execute function="AssertTextEquals" locator1="CPDocumentsandmedia#DOCUMENT_CONTAINER_FOLDER2_TITLE" value1="${dmFolderName}" />
-			</else>
-		</if>
-	</command>
+		Type(
+			locator1 = "CPDocumentsandmediaAddfolder#DESCRIPTION_FIELD",
+			value1 = "${dmFolderDescription}"
+		);
 
-	<command name="addPG">
-		<execute function="AssertClick" locator1="PGDocumentsandmedia#TOOLBAR_ADD" value1="Add" />
-		<execute function="AssertClick" locator1="PGDocumentsandmedia#ADD_MENULIST_FOLDER" value1="Folder" />
+		AssertClick(
+			locator1 = "CPDocumentsandmediaAddfolder#SAVE_BUTTON",
+			value1 = "Save"
+		);
 
-		<if>
-			<isset var="number" />
-			<then>
-				<var name="number" value="${number}" />
+		AssertTextEquals(
+			locator1 = "CPDocumentsandmedia#REQUEST",
+			value1 = "Your request completed successfully."
+		);
 
-				<execute function="Type" locator1="PGDocumentsandmediaAddfolder#NAME_FIELD" value1="${dmFolderName}${number}" />
-				<execute function="Type" locator1="PGDocumentsandmediaAddfolder#DESCRIPTION_FIELD" value1="${dmFolderDescription}${number}" />
-				<execute function="AssertClick" locator1="PGDocumentsandmediaAddfolder#SAVE_BUTTON" value1="Save" />
-			</then>
-			<else>
-				<execute function="Type" locator1="PGDocumentsandmediaAddfolder#NAME_FIELD" value1="${dmFolderName}" />
-				<execute function="Type" locator1="PGDocumentsandmediaAddfolder#DESCRIPTION_FIELD" value1="${dmFolderDescription}" />
-				<execute function="AssertClick" locator1="PGDocumentsandmediaAddfolder#SAVE_BUTTON" value1="Save" />
-			</else>
-		</if>
+		if (IsElementNotPresent(locator1 = "CPDocumentsandmedia#DOCUMENT_CONTAINER_FOLDER2")) {
+			AssertElementPresent(
+				locator1 = "CPDocumentsandmedia#DOCUMENT_CONTAINER_FOLDER1"
+			);
 
-		<execute function="AssertTextEquals" locator1="PGDocumentsandmedia#SUCCESS_MESSAGE" value1="Your request completed successfully." />
-	</command>
+			AssertTextEquals(
+				locator1 = "CPDocumentsandmedia#DOCUMENT_CONTAINER_FOLDER1_TITLE",
+				value1 = "${dmFolderName}"
+			);
+		}
+		else {
+			AssertElementPresent(
+				locator1 = "CPDocumentsandmedia#DOCUMENT_CONTAINER_FOLDER2"
+			);
 
-	<command name="addPGviaDMD">
-		<execute function="AssertClick#assertTextClickAt" locator1="PGDocumentlibrarydisplay#FOLDER_MENU_ADD_FOLDER" value1="Add Folder" />
+			AssertTextEquals(
+				locator1 = "CPDocumentsandmedia#DOCUMENT_CONTAINER_FOLDER2_TITLE",
+				value1 = "${dmFolderName}"
+			);
+		}
+	}
 
-		<execute function="Type" locator1="PGDocumentlibrarydisplayAddfolder#FOLDER_NAME" value1="${dmdFolderName}" />
-		<execute function="AssertClick#assertValueClickAt" locator1="PGDocumentlibrarydisplayAddfolder#SAVE_BUTTON" value1="Save" />
+	macro addPG {
+		AssertClick(locator1 = "PGDocumentsandmedia#TOOLBAR_ADD", value1 = "Add");
 
-		<execute function="AssertTextEquals" locator1="PGDocumentlibrarydisplay#SUCCESS_MESSAGE" value1="Your request completed successfully." />
-		<execute function="AssertTextEquals" locator1="PGDocumentlibrarydisplay#FOLDERS_TABLE_NAME_1" value1="${dmdFolderName}" />
-		<execute function="Click" locator1="PGDocumentlibrarydisplay#FOLDERS_TABLE_NAME_1" value1="${dmdFolderName}" />
+		AssertClick(
+			locator1 = "PGDocumentsandmedia#ADD_MENULIST_FOLDER",
+			value1 = "Folder"
+		);
 
-		<execute function="AssertTextEquals" locator1="PGDocumentlibrarydisplayFolder#FOLDER_NAME" value1="${dmdFolderName}" />
-		<execute function="AssertElementPresent" locator1="PGDocumentlibrarydisplayFolder#ASSET_THUMBNAIL" />
-		<execute function="AssertTextEquals" locator1="PGDocumentlibrarydisplayFolder#ASSET_NAME" value1="${dmdFolderName}" />
-		<execute function="AssertTextEquals" locator1="PGDocumentlibrarydisplayFolder#INFO_MESSAGE" value1="There are no documents or media files in this folder." />
-	</command>
+		if (isSet(number)) {
+			var number = "${number}";
 
-	<command name="addPGviaMG">
-		<execute function="AssertClick" locator1="PGMediagallery#FOLDER_MENU_ADD_FOLDER" value1="Add Folder" />
+			Type(
+				locator1 = "PGDocumentsandmediaAddfolder#NAME_FIELD",
+				value1 = "${dmFolderName}${number}"
+			);
 
-		<execute function="Type" locator1="PGMediagalleryAddfolder#NAME_FIELD" value1="${mgFolderName}" />
-		<execute function="Type" locator1="PGMediagalleryAddfolder#DESCRIPTION_FIELD" value1="${mgFolderDescription}" />
-		<execute function="AssertClick" locator1="PGMediagalleryAddfolder#SAVE_BUTTON" value1="Save" />
-		<execute function="AssertTextEquals" locator1="PGMediagalleryAddfolder#SUCCESS_MESSAGE" value1="Your request completed successfully." />
+			Type(
+				locator1 = "PGDocumentsandmediaAddfolder#DESCRIPTION_FIELD",
+				value1 = "${dmFolderDescription}${number}"
+			);
 
-		<execute function="AssertElementPresent" locator1="PGMediagallery#ENTRY_THUMBNAIL" />
-		<execute function="AssertTextEquals" locator1="PGMediagallery#ENTRY_TITLE" value1="${mgFolderName}" />
-	</command>
+			AssertClick(
+				locator1 = "PGDocumentsandmediaAddfolder#SAVE_BUTTON",
+				value1 = "Save"
+			);
+		}
+		else {
+			Type(
+				locator1 = "PGDocumentsandmediaAddfolder#NAME_FIELD",
+				value1 = "${dmFolderName}"
+			);
 
-	<command name="deleteCP">
-		<execute function="AssertElementPresent" locator1="CPDocumentsandmedia#DOCUMENT_CONTAINER_FOLDER1" />
-		<execute function="AssertTextEquals" locator1="CPDocumentsandmedia#DOCUMENT_CONTAINER_FOLDER1_TITLE" value1="${dmFolderName}" />
-		<execute function="MouseOver" locator1="CPDocumentsandmedia#DOCUMENT_CONTAINER_FOLDER1" />
-		<execute function="Click" locator1="CPDocumentsandmedia#DOCUMENT_CONTAINER_FOLDER1_CHECKBOX" />
-		<execute function="AssertElementPresent" locator1="CPDocumentsandmedia#ACTIONS" />
-		<execute function="AssertClick" locator1="CPDocumentsandmedia#ACTIONS" value1="Actions" />
-		<execute function="AssertClickNoError" locator1="CPDocumentsandmedia#ACTIONS_MENULIST_DELETE" value1="Delete" />
-		<execute function="Confirm" value1="Are you sure you want to delete the selected entries?" />
-		<execute function="AssertTextEquals" locator1="CPDocumentsandmedia#REQUEST" value1="Your request completed successfully." />
+			Type(
+				locator1 = "PGDocumentsandmediaAddfolder#DESCRIPTION_FIELD",
+				value1 = "${dmFolderDescription}"
+			);
 
-		<if>
-			<condition function="IsElementPresent" locator1="CPDocumentsandmedia#DOCUMENT_CONTAINER_FOLDER1" />
-			<then>
-				<execute function="AssertTextNotEquals" locator1="CPDocumentsandmedia#DOCUMENT_CONTAINER_FOLDER1_TITLE" value1="${dmFolderName}" />
-			</then>
-			<else>
-				<execute function="AssertElementNotPresent" locator1="CPDocumentsandmedia#DOCUMENT_CONTAINER_FOLDER1" />
-			</else>
-		</if>
-	</command>
+			AssertClick(
+				locator1 = "PGDocumentsandmediaAddfolder#SAVE_BUTTON",
+				value1 = "Save"
+			);
+		}
 
-	<command name="deletePG">
-		<var name="key_dmFolderName" value="${dmFolderName}" />
+		AssertTextEquals(
+			locator1 = "PGDocumentsandmedia#SUCCESS_MESSAGE",
+			value1 = "Your request completed successfully."
+		);
+	}
 
-		<execute function="AssertElementPresent" locator1="PGDocumentsandmedia#ENTRIES_FOLDER" />
-		<execute function="AssertTextEquals" locator1="PGDocumentsandmedia#ENTRIES_FOLDER_TITLE" value1="${dmFolderName}" />
-		<execute function="Click" locator1="PGDocumentsandmedia#ENTRIES_FOLDER_SELECT" />
-		<execute function="AssertClick" locator1="PGDocumentsandmedia#TOOLBAR_ACTIONS" value1="Actions" />
-		<execute function="AssertClickNoError" locator1="PGDocumentsandmedia#ACTIONS_MENULIST_DELETE" value1="Delete" />
-		<execute function="Confirm" value1="Are you sure you want to delete the selected entries?" />
-		<execute function="AssertTextEquals" locator1="PGDocumentsandmedia#SUCCESS_MESSAGE" value1="Your request completed successfully." />
-		<execute function="AssertElementNotPresent" locator1="PGDocumentsandmedia#ENTRIES_FOLDER" />
-	</command>
+	macro addPGviaDMD {
+		AssertClick.assertTextClickAt(
+			locator1 = "PGDocumentlibrarydisplay#FOLDER_MENU_ADD_FOLDER",
+			value1 = "Add Folder"
+		);
 
-	<command name="editCP">
-		<execute function="AssertElementPresent" locator1="CPDocumentsandmedia#DOCUMENT_CONTAINER_FOLDER1" />
-		<execute function="AssertTextEquals" locator1="CPDocumentsandmedia#DOCUMENT_CONTAINER_FOLDER1_TITLE" value1="${dmFolderName}" />
-		<execute function="MouseOver" locator1="CPDocumentsandmedia#DOCUMENT_CONTAINER_FOLDER1" />
-		<execute function="AssertElementPresent" locator1="CPDocumentsandmedia#DOCUMENT_CONTAINER_FOLDER1_DROPDOWN" />
-		<execute function="Click" locator1="CPDocumentsandmedia#DOCUMENT_CONTAINER_FOLDER1_DROPDOWN" />
-		<execute function="AssertElementPresent" locator1="CPDocumentsandmedia#FOLDER_MENULIST_EDIT" />
-		<execute function="AssertClick" locator1="CPDocumentsandmedia#FOLDER_MENULIST_EDIT" value1="Edit" />
+		Type(
+			locator1 = "PGDocumentlibrarydisplayAddfolder#FOLDER_NAME",
+			value1 = "${dmdFolderName}"
+		);
 
-		<execute function="Type" locator1="CPDocumentsandmediaEditfolder#NAME_FIELD" value1="${dmFolderNameEdit}" />
-		<execute function="Type" locator1="CPDocumentsandmediaEditfolder#DESCRIPTION_FIELD" value1="${dmFolderDescriptionEdit}" />
-		<execute function="AssertClick" locator1="CPDocumentsandmediaEditfolder#SAVE_BUTTON" value1="Save" />
+		AssertClick.assertValueClickAt(
+			locator1 = "PGDocumentlibrarydisplayAddfolder#SAVE_BUTTON",
+			value1 = "Save"
+		);
 
-		<execute function="AssertTextEquals" locator1="CPDocumentsandmedia#REQUEST" value1="Your request completed successfully." />
-		<execute function="AssertElementPresent" locator1="CPDocumentsandmedia#DOCUMENT_CONTAINER_FOLDER1" />
-		<execute function="AssertTextEquals" locator1="CPDocumentsandmedia#DOCUMENT_CONTAINER_FOLDER1_TITLE" value1="${dmFolderNameEdit}" />
-	</command>
+		AssertTextEquals(
+			locator1 = "PGDocumentlibrarydisplay#SUCCESS_MESSAGE",
+			value1 = "Your request completed successfully."
+		);
 
-	<command name="editPG">
-		<execute function="AssertTextEquals" locator1="PGDocumentsandmedia#ENTRIES_FOLDER_TITLE" value1="${dmFolderName}" />
-		<execute function="Click" locator1="PGDocumentsandmedia#ENTRIES_FOLDER_ACTIONS" />
-		<execute function="AssertClick" locator1="PGDocumentsandmedia#FOLDER_MENULIST_EDIT" value1="Edit" />
+		AssertTextEquals(
+			locator1 = "PGDocumentlibrarydisplay#FOLDERS_TABLE_NAME_1",
+			value1 = "${dmdFolderName}"
+		);
 
-		<execute function="Type" locator1="PGDocumentsandmediaEditfolder#NAME_FIELD" value1="${dmFolderNameEdit}" />
-		<execute function="Type" locator1="PGDocumentsandmediaEditfolder#DESCRIPTION_FIELD" value1="${dmFolderDescriptionEdit}" />
-		<execute function="AssertClick" locator1="PGDocumentsandmediaEditfolder#SAVE_BUTTON" value1="Save" />
+		Click(
+			locator1 = "PGDocumentlibrarydisplay#FOLDERS_TABLE_NAME_1",
+			value1 = "${dmdFolderName}"
+		);
 
-		<execute function="AssertTextEquals" locator1="PGDocumentsandmedia#SUCCESS_MESSAGE" value1="Your request completed successfully." />
-		<execute function="AssertTextEquals" locator1="PGDocumentsandmedia#ENTRIES_FOLDER_TITLE" value1="${dmFolderNameEdit}" />
-	</command>
+		AssertTextEquals(
+			locator1 = "PGDocumentlibrarydisplayFolder#FOLDER_NAME",
+			value1 = "${dmdFolderName}"
+		);
 
-	<command name="editPGviaMG">
-		<execute function="AssertTextEquals" locator1="PGMediagallery#ENTRY_TITLE" value1="${mgFolderName}" />
-		<execute function="AssertClick" locator1="PGMediagallery#ENTRY_TITLE" value1="${mgFolderName}" />
+		AssertElementPresent(
+			locator1 = "PGDocumentlibrarydisplayFolder#ASSET_THUMBNAIL"
+		);
 
-		<execute function="AssertClick" locator1="PGMediagalleryFolder#FOLDER_MENU_EDIT" value1="Edit" />
+		AssertTextEquals(
+			locator1 = "PGDocumentlibrarydisplayFolder#ASSET_NAME",
+			value1 = "${dmdFolderName}"
+		);
 
-		<execute function="Type" locator1="PGMediagalleryEditfolder#NAME_FIELD" value1="${mgFolderNameEdit}" />
-		<execute function="Type" locator1="PGMediagalleryEditfolder#DESCRIPTION_FIELD" value1="${mgFolderDescriptionEdit}" />
-		<execute function="AssertClick" locator1="PGMediagalleryEditfolder#SAVE_BUTTON" value1="Save" />
-		<execute function="AssertTextEquals" locator1="PGMediagalleryEditfolder#SUCCESS_MESSAGE" value1="Your request completed successfully." />
-	</command>
+		AssertTextEquals(
+			locator1 = "PGDocumentlibrarydisplayFolder#INFO_MESSAGE",
+			value1 = "There are no documents or media files in this folder."
+		);
+	}
 
-	<command name="gotoPG">
-		<var name="key_dmFolderName" value="${dmFolderName}" />
+	macro addPGviaMG {
+		AssertClick(
+			locator1 = "PGMediagallery#FOLDER_MENU_ADD_FOLDER",
+			value1 = "Add Folder"
+		);
 
-		<execute function="Click" locator1="PGDocumentsandmedia#ENTRIES_FOLDER" />
-	</command>
+		Type(
+			locator1 = "PGMediagalleryAddfolder#NAME_FIELD",
+			value1 = "${mgFolderName}"
+		);
 
-	<command name="moveToFolderCP">
-		<execute function="AssertElementPresent" locator1="CPDocumentsandmedia#DOCUMENT_CONTAINER_FOLDER1" />
-		<execute function="AssertElementPresent" locator1="CPDocumentsandmedia#DOCUMENT_CONTAINER_FOLDER2" />
-		<execute function="Click" locator1="CPDocumentsandmedia#DOCUMENT_CONTAINER_FOLDER1_DROPDOWN" />
-		<execute function="AssertElementPresent" locator1="CPDocumentsandmedia#FOLDER_MENULIST_MOVE" />
-		<execute function="AssertClick" locator1="CPDocumentsandmedia#FOLDER_MENULIST_MOVE" value1="Move" />
+		Type(
+			locator1 = "PGMediagalleryAddfolder#DESCRIPTION_FIELD",
+			value1 = "${mgFolderDescription}"
+		);
 
-		<execute function="AssertClick" locator1="CPDocumentsandmediaMovefolder#SELECT_PARENT_FOLDER_BUTTON" value1="Select" />
-		<execute function="SelectWindow" locator1="CPDocumentsandmediaMovefolder#FOLDER_WINDOW_ID" />
-		<execute function="AssertClick" locator1="CPDocumentsandmediaMovefolder#FOLDER_WINDOW_FOLDER2_CHOOSE_BUTTON" value1="Choose" />
-		<execute function="SelectWindow" locator1="null" />
-		<execute function="AssertTextEquals" locator1="CPDocumentsandmediaMovefolder#PARENT_FOLDER" value1="${dmFolderName2}" />
-		<execute function="AssertClick" locator1="CPDocumentsandmediaMovefolder#MOVE_BUTTON" value1="Move" />
+		AssertClick(locator1 = "PGMediagalleryAddfolder#SAVE_BUTTON", value1 = "Save");
 
-		<execute function="AssertTextEquals" locator1="CPDocumentsandmedia#REQUEST" value1="Your request completed successfully." />
-		<execute function="AssertElementNotPresent" locator1="CPDocumentsandmedia#DOCUMENT_CONTAINER_FOLDER2" />
-		<execute function="Click" locator1="CPDocumentsandmedia#DOCUMENT_CONTAINER_FOLDER1" />
-		<!-- <execute function="AssertElementPresent" locator1="CPDocumentsandmedia#FOLDER_VIEW_FOLDER1" /> -->
-	</command>
+		AssertTextEquals(
+			locator1 = "PGMediagalleryAddfolder#SUCCESS_MESSAGE",
+			value1 = "Your request completed successfully."
+		);
 
-	<command name="tearDownCP">
-		<execute macro="Page#gotoCP">
-			<var name="portletName" value="Documents and Media" />
-		</execute>
+		AssertElementPresent(locator1 = "PGMediagallery#ENTRY_THUMBNAIL");
 
-		<while>
-			<condition function="IsElementPresent" locator1="CPDocumentsandmedia#DOCUMENT_CONTAINER_FOLDER1" />
-			<then>
-				<execute function="Select" locator1="CPDocumentsandmedia#PAGINATION_ROWS_PER_PAGE_SELECT" value1="75" />
-				<execute function="Check" locator1="CPDocumentsandmedia#SELECT_ALL_ROWS_CHECKBOX" />
-				<execute function="AssertClick" locator1="CPDocumentsandmedia#ACTIONS" value1="Actions" />
-				<execute function="AssertElementPresent" locator1="CPDocumentsandmedia#ACTIONS_MENULIST_DELETE" />
-				<execute function="AssertClickNoError" locator1="CPDocumentsandmedia#ACTIONS_MENULIST_DELETE" value1="Delete" />
-				<execute function="Confirm" value1="Are you sure you want to delete the selected entries?" />
-				<execute function="AssertTextEquals" locator1="CPDocumentsandmedia#REQUEST" value1="Your request completed successfully." />
-			</then>
-		</while>
-	</command>
+		AssertTextEquals(
+			locator1 = "PGMediagallery#ENTRY_TITLE",
+			value1 = "${mgFolderName}"
+		);
+	}
 
-	<command name="tearDownPG">
-		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${pageName}" />
-		</execute>
+	macro deleteCP {
+		AssertElementPresent(
+			locator1 = "CPDocumentsandmedia#DOCUMENT_CONTAINER_FOLDER1"
+		);
 
-		<if>
-			<condition function="IsElementPresent" locator1="PGDocumentsandmedia#TOOLBAR_SELECT_ALL_CHECKBOX" />
-			<then>
-				<execute function="Check" locator1="PGDocumentsandmedia#TOOLBAR_SELECT_ALL_CHECKBOX" />
-				<execute function="AssertClick" locator1="PGDocumentsandmedia#TOOLBAR_ACTIONS" value1="Actions" />
-				<execute function="AssertElementPresent" locator1="PGDocumentsandmedia#ACTIONS_MENULIST_DELETE" />
-				<execute function="AssertClickNoError" locator1="PGDocumentsandmedia#ACTIONS_MENULIST_DELETE" value1="Delete" />
-				<execute function="Confirm" value1="Are you sure you want to delete the selected entries?" />
-				<execute function="AssertTextEquals" locator1="PGDocumentsandmedia#SUCCESS_MESSAGE" value1="Your request completed successfully." />
-			</then>
-		</if>
-	</command>
+		AssertTextEquals(
+			locator1 = "CPDocumentsandmedia#DOCUMENT_CONTAINER_FOLDER1_TITLE",
+			value1 = "${dmFolderName}"
+		);
 
-	<command name="tearDownPGviaDMD">
-		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${pageName}" />
-		</execute>
+		MouseOver(locator1 = "CPDocumentsandmedia#DOCUMENT_CONTAINER_FOLDER1");
 
-		<while>
-			<condition function="IsElementPresent" locator1="PGDocumentlibrarydisplay#FOLDERS_TABLE_ACTIONS_BUTTON_1" />
-			<then>
-				<execute function="Click" locator1="PGDocumentlibrarydisplay#FOLDERS_TABLE_ACTIONS_BUTTON_1" />
-				<execute function="AssertClickNoError" locator1="PGDocumentlibrarydisplay#FOLDER_MENULIST_DELETE" value1="Delete" />
-				<execute function="Confirm" value1="Are you sure you want to delete this?" />
-				<execute function="AssertTextEquals" locator1="PGDocumentlibrarydisplay#SUCCESS_MESSAGE" value1="Your request completed successfully." />
-			</then>
-		</while>
-	</command>
+		Click(locator1 = "CPDocumentsandmedia#DOCUMENT_CONTAINER_FOLDER1_CHECKBOX");
 
-	<command name="tearDownPGviaMG" >
-		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${pageName}" />
-		</execute>
+		AssertElementPresent(locator1 = "CPDocumentsandmedia#ACTIONS");
 
-		<while>
-			<condition function="IsElementPresent" locator1="PGMediagallery#ENTRY_THUMBNAIL" />
-			<then>
-				<execute function="Click" locator1="PGMediagallery#ENTRY_TITLE" />
+		AssertClick(locator1 = "CPDocumentsandmedia#ACTIONS", value1 = "Actions");
 
-				<execute function="AssertClickNoError" locator1="PGMediagalleryFolder#FOLDER_MENU_DELETE" value1="Delete" />
-				<execute function="Confirm" value1="Are you sure you want to delete this?" />
-				<execute function="AssertTextEquals" locator1="PGMediagalleryFolder#SUCCESS_MESSAGE" value1="Your request completed successfully." />
-			</then>
-		</while>
-	</command>
+		AssertClickNoError(
+			locator1 = "CPDocumentsandmedia#ACTIONS_MENULIST_DELETE",
+			value1 = "Delete"
+		);
 
-	<command name="viewPG">
-		<var name="key_dmFolderName" value="${dmFolderName}" />
+		Confirm(value1 = "Are you sure you want to delete the selected entries?");
 
-		<execute function="Click" locator1="PGDocumentsandmedia#ENTRIES_FOLDER" />
+		AssertTextEquals(
+			locator1 = "CPDocumentsandmedia#REQUEST",
+			value1 = "Your request completed successfully."
+		);
 
-		<execute function="AssertTextEquals" locator1="PGDocumentsandmediaFolder#BREADCRUMB_FOLDER" value1="${dmFolderName}" />
-	</command>
-</definition>
+		if (IsElementPresent(locator1 = "CPDocumentsandmedia#DOCUMENT_CONTAINER_FOLDER1")) {
+			AssertTextNotEquals(
+				locator1 = "CPDocumentsandmedia#DOCUMENT_CONTAINER_FOLDER1_TITLE",
+				value1 = "${dmFolderName}"
+			);
+		}
+		else {
+			AssertElementNotPresent(
+				locator1 = "CPDocumentsandmedia#DOCUMENT_CONTAINER_FOLDER1"
+			);
+		}
+	}
+
+	macro deletePG {
+		var key_dmFolderName = "${dmFolderName}";
+
+		AssertElementPresent(locator1 = "PGDocumentsandmedia#ENTRIES_FOLDER");
+
+		AssertTextEquals(
+			locator1 = "PGDocumentsandmedia#ENTRIES_FOLDER_TITLE",
+			value1 = "${dmFolderName}"
+		);
+
+		Click(locator1 = "PGDocumentsandmedia#ENTRIES_FOLDER_SELECT");
+
+		AssertClick(
+			locator1 = "PGDocumentsandmedia#TOOLBAR_ACTIONS",
+			value1 = "Actions"
+		);
+
+		AssertClickNoError(
+			locator1 = "PGDocumentsandmedia#ACTIONS_MENULIST_DELETE",
+			value1 = "Delete"
+		);
+
+		Confirm(value1 = "Are you sure you want to delete the selected entries?");
+
+		AssertTextEquals(
+			locator1 = "PGDocumentsandmedia#SUCCESS_MESSAGE",
+			value1 = "Your request completed successfully."
+		);
+
+		AssertElementNotPresent(locator1 = "PGDocumentsandmedia#ENTRIES_FOLDER");
+	}
+
+	macro editCP {
+		AssertElementPresent(
+			locator1 = "CPDocumentsandmedia#DOCUMENT_CONTAINER_FOLDER1"
+		);
+
+		AssertTextEquals(
+			locator1 = "CPDocumentsandmedia#DOCUMENT_CONTAINER_FOLDER1_TITLE",
+			value1 = "${dmFolderName}"
+		);
+
+		MouseOver(locator1 = "CPDocumentsandmedia#DOCUMENT_CONTAINER_FOLDER1");
+
+		AssertElementPresent(
+			locator1 = "CPDocumentsandmedia#DOCUMENT_CONTAINER_FOLDER1_DROPDOWN"
+		);
+
+		Click(locator1 = "CPDocumentsandmedia#DOCUMENT_CONTAINER_FOLDER1_DROPDOWN");
+
+		AssertElementPresent(locator1 = "CPDocumentsandmedia#FOLDER_MENULIST_EDIT");
+
+		AssertClick(
+			locator1 = "CPDocumentsandmedia#FOLDER_MENULIST_EDIT",
+			value1 = "Edit"
+		);
+
+		Type(
+			locator1 = "CPDocumentsandmediaEditfolder#NAME_FIELD",
+			value1 = "${dmFolderNameEdit}"
+		);
+
+		Type(
+			locator1 = "CPDocumentsandmediaEditfolder#DESCRIPTION_FIELD",
+			value1 = "${dmFolderDescriptionEdit}"
+		);
+
+		AssertClick(
+			locator1 = "CPDocumentsandmediaEditfolder#SAVE_BUTTON",
+			value1 = "Save"
+		);
+
+		AssertTextEquals(
+			locator1 = "CPDocumentsandmedia#REQUEST",
+			value1 = "Your request completed successfully."
+		);
+
+		AssertElementPresent(
+			locator1 = "CPDocumentsandmedia#DOCUMENT_CONTAINER_FOLDER1"
+		);
+
+		AssertTextEquals(
+			locator1 = "CPDocumentsandmedia#DOCUMENT_CONTAINER_FOLDER1_TITLE",
+			value1 = "${dmFolderNameEdit}"
+		);
+	}
+
+	macro editPG {
+		AssertTextEquals(
+			locator1 = "PGDocumentsandmedia#ENTRIES_FOLDER_TITLE",
+			value1 = "${dmFolderName}"
+		);
+
+		Click(locator1 = "PGDocumentsandmedia#ENTRIES_FOLDER_ACTIONS");
+
+		AssertClick(
+			locator1 = "PGDocumentsandmedia#FOLDER_MENULIST_EDIT",
+			value1 = "Edit"
+		);
+
+		Type(
+			locator1 = "PGDocumentsandmediaEditfolder#NAME_FIELD",
+			value1 = "${dmFolderNameEdit}"
+		);
+
+		Type(
+			locator1 = "PGDocumentsandmediaEditfolder#DESCRIPTION_FIELD",
+			value1 = "${dmFolderDescriptionEdit}"
+		);
+
+		AssertClick(
+			locator1 = "PGDocumentsandmediaEditfolder#SAVE_BUTTON",
+			value1 = "Save"
+		);
+
+		AssertTextEquals(
+			locator1 = "PGDocumentsandmedia#SUCCESS_MESSAGE",
+			value1 = "Your request completed successfully."
+		);
+
+		AssertTextEquals(
+			locator1 = "PGDocumentsandmedia#ENTRIES_FOLDER_TITLE",
+			value1 = "${dmFolderNameEdit}"
+		);
+	}
+
+	macro editPGviaMG {
+		AssertTextEquals(
+			locator1 = "PGMediagallery#ENTRY_TITLE",
+			value1 = "${mgFolderName}"
+		);
+
+		AssertClick(locator1 = "PGMediagallery#ENTRY_TITLE", value1 = "${mgFolderName}");
+
+		AssertClick(locator1 = "PGMediagalleryFolder#FOLDER_MENU_EDIT", value1 = "Edit");
+
+		Type(
+			locator1 = "PGMediagalleryEditfolder#NAME_FIELD",
+			value1 = "${mgFolderNameEdit}"
+		);
+
+		Type(
+			locator1 = "PGMediagalleryEditfolder#DESCRIPTION_FIELD",
+			value1 = "${mgFolderDescriptionEdit}"
+		);
+
+		AssertClick(locator1 = "PGMediagalleryEditfolder#SAVE_BUTTON", value1 = "Save");
+
+		AssertTextEquals(
+			locator1 = "PGMediagalleryEditfolder#SUCCESS_MESSAGE",
+			value1 = "Your request completed successfully."
+		);
+	}
+
+	macro gotoPG {
+		var key_dmFolderName = "${dmFolderName}";
+
+		Click(locator1 = "PGDocumentsandmedia#ENTRIES_FOLDER");
+	}
+
+	macro moveToFolderCP {
+		AssertElementPresent(
+			locator1 = "CPDocumentsandmedia#DOCUMENT_CONTAINER_FOLDER1"
+		);
+
+		AssertElementPresent(
+			locator1 = "CPDocumentsandmedia#DOCUMENT_CONTAINER_FOLDER2"
+		);
+
+		Click(locator1 = "CPDocumentsandmedia#DOCUMENT_CONTAINER_FOLDER1_DROPDOWN");
+
+		AssertElementPresent(locator1 = "CPDocumentsandmedia#FOLDER_MENULIST_MOVE");
+
+		AssertClick(
+			locator1 = "CPDocumentsandmedia#FOLDER_MENULIST_MOVE",
+			value1 = "Move"
+		);
+
+		AssertClick(
+			locator1 = "CPDocumentsandmediaMovefolder#SELECT_PARENT_FOLDER_BUTTON",
+			value1 = "Select"
+		);
+
+		SelectWindow(locator1 = "CPDocumentsandmediaMovefolder#FOLDER_WINDOW_ID");
+
+		AssertClick(
+			locator1 = "CPDocumentsandmediaMovefolder#FOLDER_WINDOW_FOLDER2_CHOOSE_BUTTON",
+			value1 = "Choose"
+		);
+
+		SelectWindow(locator1 = "null");
+
+		AssertTextEquals(
+			locator1 = "CPDocumentsandmediaMovefolder#PARENT_FOLDER",
+			value1 = "${dmFolderName2}"
+		);
+
+		AssertClick(
+			locator1 = "CPDocumentsandmediaMovefolder#MOVE_BUTTON",
+			value1 = "Move"
+		);
+
+		AssertTextEquals(
+			locator1 = "CPDocumentsandmedia#REQUEST",
+			value1 = "Your request completed successfully."
+		);
+
+		AssertElementNotPresent(
+			locator1 = "CPDocumentsandmedia#DOCUMENT_CONTAINER_FOLDER2"
+		);
+
+		Click(locator1 = "CPDocumentsandmedia#DOCUMENT_CONTAINER_FOLDER1");
+
+		// <execute function="AssertElementPresent" locator1="CPDocumentsandmedia#FOLDER_VIEW_FOLDER1" />
+	}
+
+	macro tearDownCP {
+		Page.gotoCP(portletName = "Documents and Media");
+
+		while (IsElementPresent(locator1 = "CPDocumentsandmedia#DOCUMENT_CONTAINER_FOLDER1")) {
+			Select(
+				locator1 = "CPDocumentsandmedia#PAGINATION_ROWS_PER_PAGE_SELECT",
+				value1 = "75"
+			);
+
+			Check(locator1 = "CPDocumentsandmedia#SELECT_ALL_ROWS_CHECKBOX");
+
+			AssertClick(locator1 = "CPDocumentsandmedia#ACTIONS", value1 = "Actions");
+
+			AssertElementPresent(locator1 = "CPDocumentsandmedia#ACTIONS_MENULIST_DELETE");
+
+			AssertClickNoError(
+				locator1 = "CPDocumentsandmedia#ACTIONS_MENULIST_DELETE",
+				value1 = "Delete"
+			);
+
+			Confirm(value1 = "Are you sure you want to delete the selected entries?");
+
+			AssertTextEquals(
+				locator1 = "CPDocumentsandmedia#REQUEST",
+				value1 = "Your request completed successfully."
+			);
+		}
+	}
+
+	macro tearDownPG {
+		Page.gotoPG(pageName = "${pageName}");
+
+		if (IsElementPresent(locator1 = "PGDocumentsandmedia#TOOLBAR_SELECT_ALL_CHECKBOX")) {
+			Check(locator1 = "PGDocumentsandmedia#TOOLBAR_SELECT_ALL_CHECKBOX");
+
+			AssertClick(
+				locator1 = "PGDocumentsandmedia#TOOLBAR_ACTIONS",
+				value1 = "Actions"
+			);
+
+			AssertElementPresent(locator1 = "PGDocumentsandmedia#ACTIONS_MENULIST_DELETE");
+
+			AssertClickNoError(
+				locator1 = "PGDocumentsandmedia#ACTIONS_MENULIST_DELETE",
+				value1 = "Delete"
+			);
+
+			Confirm(value1 = "Are you sure you want to delete the selected entries?");
+
+			AssertTextEquals(
+				locator1 = "PGDocumentsandmedia#SUCCESS_MESSAGE",
+				value1 = "Your request completed successfully."
+			);
+		}
+	}
+
+	macro tearDownPGviaDMD {
+		Page.gotoPG(pageName = "${pageName}");
+
+		while (IsElementPresent(locator1 = "PGDocumentlibrarydisplay#FOLDERS_TABLE_ACTIONS_BUTTON_1")) {
+			Click(locator1 = "PGDocumentlibrarydisplay#FOLDERS_TABLE_ACTIONS_BUTTON_1");
+
+			AssertClickNoError(
+				locator1 = "PGDocumentlibrarydisplay#FOLDER_MENULIST_DELETE",
+				value1 = "Delete"
+			);
+
+			Confirm(value1 = "Are you sure you want to delete this?");
+
+			AssertTextEquals(
+				locator1 = "PGDocumentlibrarydisplay#SUCCESS_MESSAGE",
+				value1 = "Your request completed successfully."
+			);
+		}
+	}
+
+	macro tearDownPGviaMG {
+		Page.gotoPG(pageName = "${pageName}");
+
+		while (IsElementPresent(locator1 = "PGMediagallery#ENTRY_THUMBNAIL")) {
+			Click(locator1 = "PGMediagallery#ENTRY_TITLE");
+
+			AssertClickNoError(
+				locator1 = "PGMediagalleryFolder#FOLDER_MENU_DELETE",
+				value1 = "Delete"
+			);
+
+			Confirm(value1 = "Are you sure you want to delete this?");
+
+			AssertTextEquals(
+				locator1 = "PGMediagalleryFolder#SUCCESS_MESSAGE",
+				value1 = "Your request completed successfully."
+			);
+		}
+	}
+
+	macro viewPG {
+		var key_dmFolderName = "${dmFolderName}";
+
+		Click(locator1 = "PGDocumentsandmedia#ENTRIES_FOLDER");
+
+		AssertTextEquals(
+			locator1 = "PGDocumentsandmediaFolder#BREADCRUMB_FOLDER",
+			value1 = "${dmFolderName}"
+		);
+	}
+}

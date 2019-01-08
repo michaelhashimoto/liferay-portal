@@ -1,47 +1,156 @@
-<definition>
-	<command name="addCP">
-		<execute function="Type" locator1="CPSites#SEARCH_FIELD" value1="${siteName}" />
-		<execute function="AssertClick#assertValueClickAt" locator1="CPSites#SEARCH_BUTTON" value1="Search" />
-		<execute function="AssertTextEquals#assertPartialText" locator1="CPSites#SITE_TABLE_NAME" value1="${siteName}" />
-		<execute function="AssertClick" locator1="CPSites#SITE_TABLE_ACTIONS" value1="Actions" />
-		<execute function="AssertClick" locator1="CPSites#SITE_MENULIST_MANAGE_MEMBERSHIPS" value1="Manage Memberships" />
+definition {
+	macro addCP {
+		Type(locator1 = "CPSites#SEARCH_FIELD", value1 = "${siteName}");
 
-		<execute function="AssertClick#assertTextClickAt" locator1="CPSitememberships#TOOLBAR_VIEW_TEAMS" value1="View Teams" />
+		AssertClick.assertValueClickAt(
+			locator1 = "CPSites#SEARCH_BUTTON",
+			value1 = "Search"
+		);
 
-		<execute function="AssertClick#assertValueClickAt" locator1="CPSitemembershipsViewteams#ADD_TEAM_BUTTON" value1="Add Team" />
+		AssertTextEquals.assertPartialText(
+			locator1 = "CPSites#SITE_TABLE_NAME",
+			value1 = "${siteName}"
+		);
 
-		<execute function="Type" locator1="CPSitemembershipsViewteamsAddteam#NAME_FIELD" value1="${teamName}" />
-		<execute function="Type" locator1="CPSitemembershipsViewteamsAddteam#DESCRIPTION_FIELD" value1="${teamDescription}" />
-		<execute function="AssertClick#assertValueClickAt" locator1="CPSitemembershipsViewteamsAddteam#SAVE_BUTTON" value1="Save" />
+		AssertClick(locator1 = "CPSites#SITE_TABLE_ACTIONS", value1 = "Actions");
 
-		<execute function="AssertTextEquals" locator1="CPSitemembershipsViewteams#SUCCESS_MESSAGE" value1="Your request completed successfully." />
-		<execute function="AssertTextEquals" locator1="CPSitemembershipsViewteams#TEAM_TABLE_NAME_1" value1="${teamName}" />
-		<execute function="AssertTextEquals" locator1="CPSitemembershipsViewteams#TEAM_TABLE_DESCRIPTION_1" value1="${teamDescription}" />
-	</command>
+		AssertClick(
+			locator1 = "CPSites#SITE_MENULIST_MANAGE_MEMBERSHIPS",
+			value1 = "Manage Memberships"
+		);
 
-	<command name="assignMembersCP">
-		<execute function="Type" locator1="CPSites#SEARCH_FIELD" value1="${siteName}" />
-		<execute function="AssertClick#assertValueClickAt" locator1="CPSites#SEARCH_BUTTON" value1="Search" />
-		<execute function="AssertTextEquals#assertPartialText" locator1="CPSites#SITE_TABLE_NAME" value1="${siteName}" />
-		<execute function="AssertClick" locator1="CPSites#SITE_TABLE_ACTIONS" value1="Actions" />
-		<execute function="AssertClick" locator1="CPSites#SITE_MENULIST_MANAGE_MEMBERSHIPS" value1="Manage Memberships" />
+		AssertClick.assertTextClickAt(
+			locator1 = "CPSitememberships#TOOLBAR_VIEW_TEAMS",
+			value1 = "View Teams"
+		);
 
-		<execute function="AssertClick#assertTextClickAt" locator1="CPSitememberships#TOOLBAR_VIEW_TEAMS" value1="View Teams" />
+		AssertClick.assertValueClickAt(
+			locator1 = "CPSitemembershipsViewteams#ADD_TEAM_BUTTON",
+			value1 = "Add Team"
+		);
 
-		<execute function="Type" locator1="CPSitemembershipsViewteams#SEARCH_FIELD" value1="${teamName}" />
-		<execute function="AssertClick#assertValueClickAt" locator1="CPSitemembershipsViewteams#SEARCH_BUTTON" value1="Search" />
-		<execute function="AssertTextEquals" locator1="CPSitemembershipsViewteams#TEAM_TABLE_NAME_1" value1="${teamName}" />
-		<execute function="AssertClick" locator1="CPSitemembershipsViewteams#TEAM_TABLE_ACTIONS_1" value1="Actions" />
-		<execute function="AssertClick#assertTextClickAt" locator1="CPSitemembershipsViewteams#TEAM_MENULIST_ASSIGN_MEMBERS" value1="Assign Members" />
+		Type(
+			locator1 = "CPSitemembershipsViewteamsAddteam#NAME_FIELD",
+			value1 = "${teamName}"
+		);
 
-		<execute function="AssertClick#assertTextClickAt" locator1="CPSitemembershipsViewteamsAssignMembers#AVAILABLE" value1="Available" />
-		<execute function="Type" locator1="CPSitemembershipsViewteamsAssignMembers#BASIC_SEARCH_FIELD" value1="${userScreenName}" />
-		<execute function="AssertClick#assertValueClickAt" locator1="CPSitemembershipsViewteamsAssignMembers#BASIC_SEARCH_BUTTON" value1="Search" />
-		<execute function="AssertTextEquals" locator1="CPSitemembershipsViewteamsAssignMembers#SEARCH_RESULTS" value1="Showing 1 result." />
-		<execute function="AssertTextEquals" locator1="CPSitemembershipsViewteamsAssignMembers#USER_TABLE_SCREEN_NAME_1" value1="${userScreenName}" />
-		<execute function="Check" locator1="CPSitemembershipsViewteamsAssignMembers#USER_TABLE_CHECKBOX_1" />
-		<execute function="AssertClick#assertValueClickAt" locator1="CPSitemembershipsViewteamsAssignMembers#UPDATE_ASSOCIATIONS_BUTTON" value1="Update Associations" />
-		<execute function="AssertTextEquals" locator1="CPSitemembershipsViewteamsAssignMembers#SUCCESS_MESSAGE" value1="Your request completed successfully." />
-		<execute function="AssertChecked" locator1="CPSitemembershipsViewteamsAssignMembers#USER_TABLE_CHECKBOX_1" />
-	</command>
-</definition>
+		Type(
+			locator1 = "CPSitemembershipsViewteamsAddteam#DESCRIPTION_FIELD",
+			value1 = "${teamDescription}"
+		);
+
+		AssertClick.assertValueClickAt(
+			locator1 = "CPSitemembershipsViewteamsAddteam#SAVE_BUTTON",
+			value1 = "Save"
+		);
+
+		AssertTextEquals(
+			locator1 = "CPSitemembershipsViewteams#SUCCESS_MESSAGE",
+			value1 = "Your request completed successfully."
+		);
+
+		AssertTextEquals(
+			locator1 = "CPSitemembershipsViewteams#TEAM_TABLE_NAME_1",
+			value1 = "${teamName}"
+		);
+
+		AssertTextEquals(
+			locator1 = "CPSitemembershipsViewteams#TEAM_TABLE_DESCRIPTION_1",
+			value1 = "${teamDescription}"
+		);
+	}
+
+	macro assignMembersCP {
+		Type(locator1 = "CPSites#SEARCH_FIELD", value1 = "${siteName}");
+
+		AssertClick.assertValueClickAt(
+			locator1 = "CPSites#SEARCH_BUTTON",
+			value1 = "Search"
+		);
+
+		AssertTextEquals.assertPartialText(
+			locator1 = "CPSites#SITE_TABLE_NAME",
+			value1 = "${siteName}"
+		);
+
+		AssertClick(locator1 = "CPSites#SITE_TABLE_ACTIONS", value1 = "Actions");
+
+		AssertClick(
+			locator1 = "CPSites#SITE_MENULIST_MANAGE_MEMBERSHIPS",
+			value1 = "Manage Memberships"
+		);
+
+		AssertClick.assertTextClickAt(
+			locator1 = "CPSitememberships#TOOLBAR_VIEW_TEAMS",
+			value1 = "View Teams"
+		);
+
+		Type(
+			locator1 = "CPSitemembershipsViewteams#SEARCH_FIELD",
+			value1 = "${teamName}"
+		);
+
+		AssertClick.assertValueClickAt(
+			locator1 = "CPSitemembershipsViewteams#SEARCH_BUTTON",
+			value1 = "Search"
+		);
+
+		AssertTextEquals(
+			locator1 = "CPSitemembershipsViewteams#TEAM_TABLE_NAME_1",
+			value1 = "${teamName}"
+		);
+
+		AssertClick(
+			locator1 = "CPSitemembershipsViewteams#TEAM_TABLE_ACTIONS_1",
+			value1 = "Actions"
+		);
+
+		AssertClick.assertTextClickAt(
+			locator1 = "CPSitemembershipsViewteams#TEAM_MENULIST_ASSIGN_MEMBERS",
+			value1 = "Assign Members"
+		);
+
+		AssertClick.assertTextClickAt(
+			locator1 = "CPSitemembershipsViewteamsAssignMembers#AVAILABLE",
+			value1 = "Available"
+		);
+
+		Type(
+			locator1 = "CPSitemembershipsViewteamsAssignMembers#BASIC_SEARCH_FIELD",
+			value1 = "${userScreenName}"
+		);
+
+		AssertClick.assertValueClickAt(
+			locator1 = "CPSitemembershipsViewteamsAssignMembers#BASIC_SEARCH_BUTTON",
+			value1 = "Search"
+		);
+
+		AssertTextEquals(
+			locator1 = "CPSitemembershipsViewteamsAssignMembers#SEARCH_RESULTS",
+			value1 = "Showing 1 result."
+		);
+
+		AssertTextEquals(
+			locator1 = "CPSitemembershipsViewteamsAssignMembers#USER_TABLE_SCREEN_NAME_1",
+			value1 = "${userScreenName}"
+		);
+
+		Check(
+			locator1 = "CPSitemembershipsViewteamsAssignMembers#USER_TABLE_CHECKBOX_1"
+		);
+
+		AssertClick.assertValueClickAt(
+			locator1 = "CPSitemembershipsViewteamsAssignMembers#UPDATE_ASSOCIATIONS_BUTTON",
+			value1 = "Update Associations"
+		);
+
+		AssertTextEquals(
+			locator1 = "CPSitemembershipsViewteamsAssignMembers#SUCCESS_MESSAGE",
+			value1 = "Your request completed successfully."
+		);
+
+		AssertChecked(
+			locator1 = "CPSitemembershipsViewteamsAssignMembers#USER_TABLE_CHECKBOX_1"
+		);
+	}
+}

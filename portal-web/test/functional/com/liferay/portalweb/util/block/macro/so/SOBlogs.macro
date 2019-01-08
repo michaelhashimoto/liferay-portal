@@ -1,35 +1,62 @@
-<definition>
-	<command name="viewBlogsEntryRecentBlogs">
-		<execute function="AssertTextEquals" locator1="SOBlogs#RECENT_BLOGS_ENTRY_TITLE" value1="${entryTitle}" />
-		<if>
-			<isset var="entryAuthorMiddleName" />
-			<then>
-				<execute function="AssertTextEquals#assertPartialText" locator1="SOBlogs#RECENT_BLOGS_ENTRY_AUTHOR" value1="By ${entryAuthorFirstName} ${entryAuthorMiddleName} ${entryAuthorLastName}" />
-			</then>
-			<else>
-				<execute function="AssertTextEquals#assertPartialText" locator1="SOBlogs#RECENT_BLOGS_ENTRY_AUTHOR" value1="By ${entryAuthorFirstName} ${entryAuthorLastName}" />
-			</else>
-		</if>
+definition {
+	macro viewBlogsEntryRecentBlogs {
+		AssertTextEquals(
+			locator1 = "SOBlogs#RECENT_BLOGS_ENTRY_TITLE",
+			value1 = "${entryTitle}"
+		);
 
-		<execute function="AssertElementPresent" locator1="SOBlogs#RECENT_BLOGS_ENTRY_DATE" />
-		<execute function="AssertClick#assertPartialTextClickAt" locator1="SOBlogs#RECENT_BLOGS_ENTRY_READ_MORE_LINK" value1="Read More" />
+		if (isSet(entryAuthorMiddleName)) {
+			AssertTextEquals.assertPartialText(
+				locator1 = "SOBlogs#RECENT_BLOGS_ENTRY_AUTHOR",
+				value1 = "By ${entryAuthorFirstName} ${entryAuthorMiddleName} ${entryAuthorLastName}"
+			);
+		}
+		else {
+			AssertTextEquals.assertPartialText(
+				locator1 = "SOBlogs#RECENT_BLOGS_ENTRY_AUTHOR",
+				value1 = "By ${entryAuthorFirstName} ${entryAuthorLastName}"
+			);
+		}
 
-		<execute function="AssertTextEquals" locator1="PGBlogsEntry#ENTRY_TITLE" value1="${entryTitle}" />
-		<execute function="AssertTextEquals" locator1="PGBlogsEntry#ENTRY_CONTENT" value1="${entryContent}" />
+		AssertElementPresent(locator1 = "SOBlogs#RECENT_BLOGS_ENTRY_DATE");
 
-		<if>
-			<isset var="entryAuthorMiddleName" />
-			<then>
-				<execute function="AssertTextEquals" locator1="PGBlogsEntry#ENTRY_AUTHOR" value1="By ${entryAuthorFirstName} ${entryAuthorMiddleName} ${entryAuthorLastName}" />
-			</then>
-			<else>
-				<execute function="AssertTextEquals" locator1="PGBlogsEntry#ENTRY_AUTHOR" value1="By ${entryAuthorFirstName} ${entryAuthorLastName}" />
-			</else>
-		</if>
+		AssertClick.assertPartialTextClickAt(
+			locator1 = "SOBlogs#RECENT_BLOGS_ENTRY_READ_MORE_LINK",
+			value1 = "Read More"
+		);
 
-		<execute function="AssertTextEquals#assertPartialText" locator1="PGBlogsEntry#ENTRY_YOUR_RATING" value1="Your Rating" />
-		<execute function="AssertTextEquals" locator1="PGBlogsEntry#PREVIOUS" value1="Previous" />
-		<execute function="AssertTextEquals" locator1="PGBlogsEntry#NEXT" value1="Next" />
-		<execute function="AssertTextEquals" locator1="PGBlogsEntry#COMMENTS" value1="Comments" />
-	</command>
-</definition>
+		AssertTextEquals(
+			locator1 = "PGBlogsEntry#ENTRY_TITLE",
+			value1 = "${entryTitle}"
+		);
+
+		AssertTextEquals(
+			locator1 = "PGBlogsEntry#ENTRY_CONTENT",
+			value1 = "${entryContent}"
+		);
+
+		if (isSet(entryAuthorMiddleName)) {
+			AssertTextEquals(
+				locator1 = "PGBlogsEntry#ENTRY_AUTHOR",
+				value1 = "By ${entryAuthorFirstName} ${entryAuthorMiddleName} ${entryAuthorLastName}"
+			);
+		}
+		else {
+			AssertTextEquals(
+				locator1 = "PGBlogsEntry#ENTRY_AUTHOR",
+				value1 = "By ${entryAuthorFirstName} ${entryAuthorLastName}"
+			);
+		}
+
+		AssertTextEquals.assertPartialText(
+			locator1 = "PGBlogsEntry#ENTRY_YOUR_RATING",
+			value1 = "Your Rating"
+		);
+
+		AssertTextEquals(locator1 = "PGBlogsEntry#PREVIOUS", value1 = "Previous");
+
+		AssertTextEquals(locator1 = "PGBlogsEntry#NEXT", value1 = "Next");
+
+		AssertTextEquals(locator1 = "PGBlogsEntry#COMMENTS", value1 = "Comments");
+	}
+}

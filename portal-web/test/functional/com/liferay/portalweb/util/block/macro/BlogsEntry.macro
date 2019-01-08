@@ -1,204 +1,434 @@
-<definition>
-	<command name="addCP">
-		<execute function="AssertClick" locator1="CPBlogs#ADD_ENTRY" value1="Add" />
+definition {
+	macro addCP {
+		AssertClick(locator1 = "CPBlogs#ADD_ENTRY", value1 = "Add");
 
-		<execute function="Type" locator1="CPBlogsAdd#TITLE_FIELD" value1="${entryTitle}" />
-		<execute function="Type#typeCKEditorWaitForCKEditor" locator1="CPBlogsAdd#CONTENT_FIELD" value1="${entryContent}" />
-		<execute function="AssertClick#assertValueClickAtCKEditor" locator1="CPBlogsAdd#PUBLISH_BUTTON" value1="Publish" />
+		Type(locator1 = "CPBlogsAdd#TITLE_FIELD", value1 = "${entryTitle}");
 
-		<var name="key_entryTitle" value="${entryTitle}" />
+		Type.typeCKEditorWaitForCKEditor(
+			locator1 = "CPBlogsAdd#CONTENT_FIELD",
+			value1 = "${entryContent}"
+		);
 
-		<execute function="AssertTextEquals" locator1="CPBlogs#SUCCESS_MESSAGE" value1="Your request completed successfully." />
-		<execute function="AssertTextEquals" locator1="CPBlogs#ENTRY_TABLE_TITLE" value1="${entryTitle}" />
-		<execute function="AssertClick" locator1="CPBlogs#ENTRY_TABLE_TITLE" value1="${entryTitle}" />
+		AssertClick.assertValueClickAtCKEditor(
+			locator1 = "CPBlogsAdd#PUBLISH_BUTTON",
+			value1 = "Publish"
+		);
 
-		<execute function="AssertTextEquals" locator1="CPBlogsEntry#ENTRY_TITLE_HEADER" value1="${entryTitle}" />
-		<execute function="AssertTextEquals" locator1="CPBlogsEntry#ENTRY_CONTENT" value1="${entryContent}" />
-	</command>
+		var key_entryTitle = "${entryTitle}";
 
-	<command name="addCPWithWorkflow">
-		<execute function="AssertClick" locator1="CPBlogs#ADD_ENTRY" value1="Add" />
+		AssertTextEquals(
+			locator1 = "CPBlogs#SUCCESS_MESSAGE",
+			value1 = "Your request completed successfully."
+		);
 
-		<execute function="Type" locator1="CPBlogsAdd#TITLE_FIELD" value1="${entryTitle}" />
-		<execute function="Type#typeCKEditorWaitForCKEditor" locator1="CPBlogsAdd#CONTENT_FIELD" value1="${entryContent}" />
-		<execute function="AssertClick#assertValueClickAtCKEditor" locator1="CPBlogsAdd#SUBMIT_FOR_PUBLICATION_BUTTON" value1="Submit for Publication" />
+		AssertTextEquals(
+			locator1 = "CPBlogs#ENTRY_TABLE_TITLE",
+			value1 = "${entryTitle}"
+		);
 
-		<var name="key_entryTitle" value="${entryTitle}" />
+		AssertClick(locator1 = "CPBlogs#ENTRY_TABLE_TITLE", value1 = "${entryTitle}");
 
-		<execute function="AssertTextEquals" locator1="CPBlogs#SUCCESS_MESSAGE" value1="Your request completed successfully." />
-		<execute function="AssertTextEquals" locator1="CPBlogs#ENTRY_TABLE_TITLE" value1="${entryTitle}" />
-		<execute function="AssertClick" locator1="CPBlogs#ENTRY_TABLE_TITLE" value1="${entryTitle}" />
+		AssertTextEquals(
+			locator1 = "CPBlogsEntry#ENTRY_TITLE_HEADER",
+			value1 = "${entryTitle}"
+		);
 
-		<execute function="AssertTextEquals" locator1="CPBlogsEntry#ENTRY_TITLE_HEADER" value1="${entryTitle}" />
-		<execute function="AssertTextEquals" locator1="CPBlogsEntry#ENTRY_WORKFLOW_STATUS" value1="Pending Approval" />
-		<execute function="AssertTextEquals" locator1="CPBlogsEntry#ENTRY_TITLE_LINK" value1="${entryTitle}" />
-		<execute function="AssertTextEquals" locator1="CPBlogsEntry#ENTRY_CONTENT" value1="${entryContent}" />
-	</command>
+		AssertTextEquals(
+			locator1 = "CPBlogsEntry#ENTRY_CONTENT",
+			value1 = "${entryContent}"
+		);
+	}
 
-	<command name="addNoPermissionPG">
-		<execute function="AssertElementNotPresent" locator1="PGBlogs#ADD_ENTRY_BUTTON" value1="Add Blogs Entry" />
-	</command>
+	macro addCPWithWorkflow {
+		AssertClick(locator1 = "CPBlogs#ADD_ENTRY", value1 = "Add");
 
-	<command name="addPG">
-		<execute function="AssertClick#assertValueClickAt" locator1="PGBlogs#ADD_ENTRY_BUTTON" value1="Add Blog Entry" />
+		Type(locator1 = "CPBlogsAdd#TITLE_FIELD", value1 = "${entryTitle}");
 
-		<if>
-			<isset var="number" />
-			<then>
-				<var name="number" value="${number}" />
+		Type.typeCKEditorWaitForCKEditor(
+			locator1 = "CPBlogsAdd#CONTENT_FIELD",
+			value1 = "${entryContent}"
+		);
 
-				<execute function="Type" locator1="PGBlogsAdd#TITLE_FIELD" value1="${entryTitle}${number}" />
-				<execute function="Type#typeCKEditorWaitForCKEditor" locator1="PGBlogsAdd#CONTENT_FIELD" value1="${entryContent}${number}" />
-				<execute function="AssertClick#assertValueClickAtCKEditor" locator1="PGBlogsAdd#PUBLISH_BUTTON" value1="Publish" />
+		AssertClick.assertValueClickAtCKEditor(
+			locator1 = "CPBlogsAdd#SUBMIT_FOR_PUBLICATION_BUTTON",
+			value1 = "Submit for Publication"
+		);
 
-				<execute function="AssertTextEquals#assertText" locator1="PGBlogs#SUCCESS_MESSAGE" value1="Your request completed successfully." />
-				<execute function="AssertTextEquals" locator1="PGBlogs#ENTRY_TITLE_INCREMENT" value1="${entryTitle}${number}" />
-				<execute function="AssertTextEquals" locator1="PGBlogs#ENTRY_CONTENT_INCREMENT" value1="${entryContent}${number}" />
-			</then>
-			<else>
-				<execute function="Type" locator1="PGBlogsAdd#TITLE_FIELD" value1="${entryTitle}" />
-				<execute function="Type#typeCKEditorWaitForCKEditor" locator1="PGBlogsAdd#CONTENT_FIELD" value1="${entryContent}" />
-				<execute function="AssertClick#assertValueClickAtCKEditor" locator1="PGBlogsAdd#PUBLISH_BUTTON" value1="Publish" />
+		var key_entryTitle = "${entryTitle}";
 
-				<execute function="AssertTextEquals#assertText" locator1="PGBlogs#SUCCESS_MESSAGE" value1="Your request completed successfully." />
-				<execute function="AssertTextEquals" locator1="PGBlogs#ENTRY_TITLE_1" value1="${entryTitle}" />
-				<execute function="AssertTextEquals" locator1="PGBlogs#ENTRY_CONTENT_1" value1="${entryContent}" />
-			</else>
-		</if>
-	</command>
+		AssertTextEquals(
+			locator1 = "CPBlogs#SUCCESS_MESSAGE",
+			value1 = "Your request completed successfully."
+		);
 
-	<command name="deleteNoPermissionPG">
-		<execute function="AssertElementNotPresent" locator1="PGBlogs#ENTRY_DELETE_1" />
-	</command>
+		AssertTextEquals(
+			locator1 = "CPBlogs#ENTRY_TABLE_TITLE",
+			value1 = "${entryTitle}"
+		);
 
-	<command name="deletePG">
-		<execute function="AssertTextEquals" locator1="PGBlogs#ENTRY_TITLE_1" value1="${entryTitle}" />
-		<execute function="AssertTextEquals" locator1="PGBlogs#ENTRY_CONTENT_1" value1="${entryContent}" />
-		<execute function="AssertClickNoError" locator1="PGBlogs#ENTRY_DELETE_1" value1="Delete" />
-		<execute function="Confirm" value1="Are you sure you want to delete this?" />
-		<execute function="AssertTextEquals#assertText" locator1="PGBlogs#SUCCESS_MESSAGE" value1="Your request completed successfully." />
-		<execute function="AssertTextNotPresent" value1="${entryTitle}" />
-		<execute function="AssertTextNotPresent" value1="${entryContent}" />
-	</command>
+		AssertClick(locator1 = "CPBlogs#ENTRY_TABLE_TITLE", value1 = "${entryTitle}");
 
-	<command name="editPG">
-		<execute function="AssertTextEquals" locator1="PGBlogs#ENTRY_TITLE_1" value1="${entryTitle}" />
-		<execute function="AssertTextEquals" locator1="PGBlogs#ENTRY_CONTENT_1" value1="${entryContent}" />
-		<execute function="AssertClick" locator1="PGBlogs#ENTRY_EDIT_1" value1="Edit" />
-		<execute function="Type" locator1="PGBlogsEdit#TITLE_FIELD" value1="${entryTitleEdit}" />
-		<execute function="Type#typeCKEditorWaitForCKEditor" locator1="PGBlogsEdit#CONTENT_FIELD" value1="${entryContentEdit}" />
-		<execute function="AssertClick#assertValueClickAtCKEditor" locator1="PGBlogsEdit#PUBLISH_BUTTON" value1="Publish" />
+		AssertTextEquals(
+			locator1 = "CPBlogsEntry#ENTRY_TITLE_HEADER",
+			value1 = "${entryTitle}"
+		);
 
-		<execute function="AssertTextEquals#assertText" locator1="PGBlogs#SUCCESS_MESSAGE" value1="Your request completed successfully." />
-		<execute function="AssertTextEquals" locator1="PGBlogs#ENTRY_TITLE_1" value1="${entryTitleEdit}" />
-		<execute function="AssertTextEquals" locator1="PGBlogs#ENTRY_CONTENT_1" value1="${entryContentEdit}" />
-	</command>
+		AssertTextEquals(
+			locator1 = "CPBlogsEntry#ENTRY_WORKFLOW_STATUS",
+			value1 = "Pending Approval"
+		);
 
-	<command name="tearDownCP">
-		<execute macro="Page#gotoCP">
-			<var name="portletName" value="Blogs" />
-		</execute>
+		AssertTextEquals(
+			locator1 = "CPBlogsEntry#ENTRY_TITLE_LINK",
+			value1 = "${entryTitle}"
+		);
 
-		<if>
-			<condition function="IsElementPresent#isVisible" locator1="CPBlogs#ENTRY_TABLE_ALL_CHECKBOX" />
-			<then>
-				<execute function="Click" locator1="CPBlogs#ENTRY_TABLE_ALL_CHECKBOX" />
-				<execute function="AssertClickNoError" locator1="CPBlogs#DELETE_BUTTON" value1="Delete" />
-				<execute function="Confirm" value1="Are you sure you want to delete the selected entries?" />
-			</then>
-		</if>
-	</command>
+		AssertTextEquals(
+			locator1 = "CPBlogsEntry#ENTRY_CONTENT",
+			value1 = "${entryContent}"
+		);
+	}
 
-	<command name="viewCP">
-		<var name="key_entryTitle" value="${entryTitle}" />
+	macro addNoPermissionPG {
+		AssertElementNotPresent(
+			locator1 = "PGBlogs#ADD_ENTRY_BUTTON",
+			value1 = "Add Blogs Entry"
+		);
+	}
 
-		<execute function="AssertTextEquals" locator1="CPBlogs#ENTRY_TABLE_TITLE" value1="${entryTitle}" />
-		<execute function="AssertClick" locator1="CPBlogs#ENTRY_TABLE_TITLE" value1="${entryTitle}" />
+	macro addPG {
+		AssertClick.assertValueClickAt(
+			locator1 = "PGBlogs#ADD_ENTRY_BUTTON",
+			value1 = "Add Blog Entry"
+		);
 
-		<execute function="AssertTextEquals" locator1="CPBlogsEntry#ENTRY_TITLE_HEADER" value1="${entryTitle}" />
-		<execute function="AssertTextEquals" locator1="CPBlogsEntry#ENTRY_TITLE_LINK" value1="${entryTitle}" />
-		<execute function="AssertTextEquals" locator1="CPBlogsEntry#ENTRY_CONTENT" value1="${entryContent}" />
-		<execute function="AssertElementNotPresent" locator1="CPBlogsEntry#ENTRY_WORKFLOW_STATUS" />
-	</command>
+		if (isSet(number)) {
+			var number = "${number}";
 
-	<command name="viewCPWithWorkflow">
-		<var name="key_entryTitle" value="${entryTitle}" />
+			Type(locator1 = "PGBlogsAdd#TITLE_FIELD", value1 = "${entryTitle}${number}");
 
-		<execute function="AssertTextEquals" locator1="CPBlogs#ENTRY_TABLE_TITLE" value1="${entryTitle}" />
-		<execute function="AssertClick" locator1="CPBlogs#ENTRY_TABLE_TITLE" value1="${entryTitle}" />
+			Type.typeCKEditorWaitForCKEditor(
+				locator1 = "PGBlogsAdd#CONTENT_FIELD",
+				value1 = "${entryContent}${number}"
+			);
 
-		<execute function="AssertTextEquals" locator1="CPBlogsEntry#ENTRY_TITLE_HEADER" value1="${entryTitle}" />
-		<execute function="AssertTextEquals" locator1="CPBlogsEntry#ENTRY_WORKFLOW_STATUS" value1="Pending Approval" />
-		<execute function="AssertTextEquals" locator1="CPBlogsEntry#ENTRY_TITLE_LINK" value1="${entryTitle}" />
-		<execute function="AssertTextEquals" locator1="CPBlogsEntry#ENTRY_CONTENT" value1="${entryContent}" />
-	</command>
+			AssertClick.assertValueClickAtCKEditor(
+				locator1 = "PGBlogsAdd#PUBLISH_BUTTON",
+				value1 = "Publish"
+			);
 
-	<command name="viewPG">
-		<execute function="AssertElementPresent" locator1="PGBlogs#SEARCH_FIELD" />
-		<execute function="AssertElementPresent" locator1="PGBlogs#SEARCH_BUTTON" />
-		<execute function="AssertElementPresent" locator1="PGBlogs#ADD_ENTRY_BUTTON" />
-		<execute function="AssertElementPresent" locator1="PGBlogs#PERMISSIONS_BUTTON" />
-		<execute function="AssertTextEquals" locator1="PGBlogs#ENTRY_TITLE_1" value1="${entryTitle}" />
-		<execute function="AssertElementPresent" locator1="PGBlogs#ENTRY_DATE_1" />
-		<execute function="AssertTextEquals" locator1="PGBlogs#ENTRY_EDIT_1" value1="Edit" />
-		<execute function="AssertTextEquals" locator1="PGBlogs#ENTRY_PERMISSIONS_1" value1="Permissions" />
-		<execute function="AssertTextEquals" locator1="PGBlogs#ENTRY_DELETE_1" value1="Delete" />
-		<execute function="AssertTextEquals" locator1="PGBlogs#ENTRY_CONTENT_1" value1="${entryContent}" />
+			AssertTextEquals.assertText(
+				locator1 = "PGBlogs#SUCCESS_MESSAGE",
+				value1 = "Your request completed successfully."
+			);
 
-		<if>
-			<isset var="entryAuthorMiddleName" />
-			<then>
-				<execute function="AssertTextEquals" locator1="PGBlogs#ENTRY_AUTHOR_1" value1="By ${entryAuthorFirstName} ${entryAuthorMiddleName} ${entryAuthorLastName}" />
-			</then>
-			<else>
-				<execute function="AssertTextEquals" locator1="PGBlogs#ENTRY_AUTHOR_1" value1="By ${entryAuthorFirstName} ${entryAuthorLastName}" />
-			</else>
-		</if>
+			AssertTextEquals(
+				locator1 = "PGBlogs#ENTRY_TITLE_INCREMENT",
+				value1 = "${entryTitle}${number}"
+			);
 
-		<execute function="AssertTextEquals" locator1="PGBlogs#ENTRY_FLAG_1" value1="Flag" />
-		<execute function="AssertElementPresent" locator1="PGBlogs#ENTRY_TWITTER_1" />
-		<execute function="AssertElementPresent" locator1="PGBlogs#ENTRY_FACEBOOK_1" />
-		<execute function="AssertElementPresent" locator1="PGBlogs#ENTRY_GOOGLE_1" />
-		<execute function="AssertTextEquals#assertPartialText" locator1="PGBlogs#ENTRY_YOUR_RATING_1" value1="Your Rating"  />
-		<execute function="AssertTextEquals" locator1="PGBlogs#RSS_LINK" value1="RSS" />
-		<execute function="AssertTextEquals" locator1="PGBlogs#SUBSCRIBE_LINK" value1="Subscribe" />
-	</command>
+			AssertTextEquals(
+				locator1 = "PGBlogs#ENTRY_CONTENT_INCREMENT",
+				value1 = "${entryContent}${number}"
+			);
+		}
+		else {
+			Type(locator1 = "PGBlogsAdd#TITLE_FIELD", value1 = "${entryTitle}");
 
-	<command name="viewPGDetails">
-		<execute function="Click" locator1="PGBlogs#ENTRY_TITLE_1" value1="${entryTitle}" />
+			Type.typeCKEditorWaitForCKEditor(
+				locator1 = "PGBlogsAdd#CONTENT_FIELD",
+				value1 = "${entryContent}"
+			);
 
-		<execute function="AssertTextEquals" locator1="PGBlogsEntry#ENTRY_TITLE" value1="${entryTitle}" />
-		<execute function="AssertTextEquals" locator1="PGBlogsEntry#ENTRY_CONTENT" value1="${entryContent}" />
+			AssertClick.assertValueClickAtCKEditor(
+				locator1 = "PGBlogsAdd#PUBLISH_BUTTON",
+				value1 = "Publish"
+			);
 
-		<if>
-			<isset var="entryAuthorMiddleName" />
-			<then>
-				<execute function="AssertTextEquals" locator1="PGBlogsEntry#ENTRY_AUTHOR" value1="By ${entryAuthorFirstName} ${entryAuthorMiddleName} ${entryAuthorLastName}" />
-			</then>
-			<else>
-				<execute function="AssertTextEquals" locator1="PGBlogsEntry#ENTRY_AUTHOR" value1="By ${entryAuthorFirstName} ${entryAuthorLastName}" />
-			</else>
-		</if>
+			AssertTextEquals.assertText(
+				locator1 = "PGBlogs#SUCCESS_MESSAGE",
+				value1 = "Your request completed successfully."
+			);
 
-		<execute function="AssertTextEquals#assertPartialText" locator1="PGBlogsEntry#ENTRY_YOUR_RATING" value1="Your Rating" />
-		<execute function="AssertTextEquals" locator1="PGBlogsEntry#PREVIOUS" value1="Previous" />
-		<execute function="AssertTextEquals" locator1="PGBlogsEntry#NEXT" value1="Next" />
-		<execute function="AssertTextEquals" locator1="PGBlogsEntry#COMMENTS" value1="Comments" />
-	</command>
+			AssertTextEquals(locator1 = "PGBlogs#ENTRY_TITLE_1", value1 = "${entryTitle}");
 
-	<command name="viewPortletPG">
-		<execute function="AssertElementPresent" locator1="PGBlogs#ADD_ENTRY_BUTTON" value1="Add Blog Entry" />
-		<execute function="AssertElementPresent" locator1="PGBlogs#PERMISSIONS_BUTTON" value1="Permissions" />
-		<execute function="AssertTextEquals#assertText" locator1="PGBlogs#PORTLET_TITLE" value1="Blogs" />
-		<execute function="AssertTextEquals" locator1="PGBlogs#RSS_LINK" value1="RSS" />
-		<execute function="AssertTextEquals" locator1="PGBlogs#SUBSCRIBE_LINK" value1="Subscribe" />
-	</command>
+			AssertTextEquals(
+				locator1 = "PGBlogs#ENTRY_CONTENT_1",
+				value1 = "${entryContent}"
+			);
+		}
+	}
 
-	<command name="viewPortletPGasGuest">
-		<execute function="AssertElementNotPresent" locator1="PGBlogs#ADD_ENTRY_BUTTON" value1="Add Blog Entry" />
-		<execute function="AssertElementNotPresent" locator1="PGBlogs#PERMISSIONS_BUTTON" value1="Permissions" />
-		<execute function="AssertTextEquals#assertText" locator1="PGBlogs#PORTLET_TITLE" value1="Blogs" />
-		<execute function="AssertTextEquals" locator1="PGBlogs#RSS_LINK" value1="RSS" />
-		<execute function="AssertTextNotPresent" locator1="PGBlogs#SUBSCRIBE_LINK" value1="Subscribe" />
-	</command>
-</definition>
+	macro deleteNoPermissionPG {
+		AssertElementNotPresent(locator1 = "PGBlogs#ENTRY_DELETE_1");
+	}
+
+	macro deletePG {
+		AssertTextEquals(locator1 = "PGBlogs#ENTRY_TITLE_1", value1 = "${entryTitle}");
+
+		AssertTextEquals(
+			locator1 = "PGBlogs#ENTRY_CONTENT_1",
+			value1 = "${entryContent}"
+		);
+
+		AssertClickNoError(locator1 = "PGBlogs#ENTRY_DELETE_1", value1 = "Delete");
+
+		Confirm(value1 = "Are you sure you want to delete this?");
+
+		AssertTextEquals.assertText(
+			locator1 = "PGBlogs#SUCCESS_MESSAGE",
+			value1 = "Your request completed successfully."
+		);
+
+		AssertTextNotPresent(value1 = "${entryTitle}");
+
+		AssertTextNotPresent(value1 = "${entryContent}");
+	}
+
+	macro editPG {
+		AssertTextEquals(locator1 = "PGBlogs#ENTRY_TITLE_1", value1 = "${entryTitle}");
+
+		AssertTextEquals(
+			locator1 = "PGBlogs#ENTRY_CONTENT_1",
+			value1 = "${entryContent}"
+		);
+
+		AssertClick(locator1 = "PGBlogs#ENTRY_EDIT_1", value1 = "Edit");
+
+		Type(locator1 = "PGBlogsEdit#TITLE_FIELD", value1 = "${entryTitleEdit}");
+
+		Type.typeCKEditorWaitForCKEditor(
+			locator1 = "PGBlogsEdit#CONTENT_FIELD",
+			value1 = "${entryContentEdit}"
+		);
+
+		AssertClick.assertValueClickAtCKEditor(
+			locator1 = "PGBlogsEdit#PUBLISH_BUTTON",
+			value1 = "Publish"
+		);
+
+		AssertTextEquals.assertText(
+			locator1 = "PGBlogs#SUCCESS_MESSAGE",
+			value1 = "Your request completed successfully."
+		);
+
+		AssertTextEquals(
+			locator1 = "PGBlogs#ENTRY_TITLE_1",
+			value1 = "${entryTitleEdit}"
+		);
+
+		AssertTextEquals(
+			locator1 = "PGBlogs#ENTRY_CONTENT_1",
+			value1 = "${entryContentEdit}"
+		);
+	}
+
+	macro tearDownCP {
+		Page.gotoCP(portletName = "Blogs");
+
+		if (IsElementPresent.isVisible(locator1 = "CPBlogs#ENTRY_TABLE_ALL_CHECKBOX")) {
+			Click(locator1 = "CPBlogs#ENTRY_TABLE_ALL_CHECKBOX");
+
+			AssertClickNoError(locator1 = "CPBlogs#DELETE_BUTTON", value1 = "Delete");
+
+			Confirm(value1 = "Are you sure you want to delete the selected entries?");
+		}
+	}
+
+	macro viewCP {
+		var key_entryTitle = "${entryTitle}";
+
+		AssertTextEquals(
+			locator1 = "CPBlogs#ENTRY_TABLE_TITLE",
+			value1 = "${entryTitle}"
+		);
+
+		AssertClick(locator1 = "CPBlogs#ENTRY_TABLE_TITLE", value1 = "${entryTitle}");
+
+		AssertTextEquals(
+			locator1 = "CPBlogsEntry#ENTRY_TITLE_HEADER",
+			value1 = "${entryTitle}"
+		);
+
+		AssertTextEquals(
+			locator1 = "CPBlogsEntry#ENTRY_TITLE_LINK",
+			value1 = "${entryTitle}"
+		);
+
+		AssertTextEquals(
+			locator1 = "CPBlogsEntry#ENTRY_CONTENT",
+			value1 = "${entryContent}"
+		);
+
+		AssertElementNotPresent(locator1 = "CPBlogsEntry#ENTRY_WORKFLOW_STATUS");
+	}
+
+	macro viewCPWithWorkflow {
+		var key_entryTitle = "${entryTitle}";
+
+		AssertTextEquals(
+			locator1 = "CPBlogs#ENTRY_TABLE_TITLE",
+			value1 = "${entryTitle}"
+		);
+
+		AssertClick(locator1 = "CPBlogs#ENTRY_TABLE_TITLE", value1 = "${entryTitle}");
+
+		AssertTextEquals(
+			locator1 = "CPBlogsEntry#ENTRY_TITLE_HEADER",
+			value1 = "${entryTitle}"
+		);
+
+		AssertTextEquals(
+			locator1 = "CPBlogsEntry#ENTRY_WORKFLOW_STATUS",
+			value1 = "Pending Approval"
+		);
+
+		AssertTextEquals(
+			locator1 = "CPBlogsEntry#ENTRY_TITLE_LINK",
+			value1 = "${entryTitle}"
+		);
+
+		AssertTextEquals(
+			locator1 = "CPBlogsEntry#ENTRY_CONTENT",
+			value1 = "${entryContent}"
+		);
+	}
+
+	macro viewPG {
+		AssertElementPresent(locator1 = "PGBlogs#SEARCH_FIELD");
+
+		AssertElementPresent(locator1 = "PGBlogs#SEARCH_BUTTON");
+
+		AssertElementPresent(locator1 = "PGBlogs#ADD_ENTRY_BUTTON");
+
+		AssertElementPresent(locator1 = "PGBlogs#PERMISSIONS_BUTTON");
+
+		AssertTextEquals(locator1 = "PGBlogs#ENTRY_TITLE_1", value1 = "${entryTitle}");
+
+		AssertElementPresent(locator1 = "PGBlogs#ENTRY_DATE_1");
+
+		AssertTextEquals(locator1 = "PGBlogs#ENTRY_EDIT_1", value1 = "Edit");
+
+		AssertTextEquals(
+			locator1 = "PGBlogs#ENTRY_PERMISSIONS_1",
+			value1 = "Permissions"
+		);
+
+		AssertTextEquals(locator1 = "PGBlogs#ENTRY_DELETE_1", value1 = "Delete");
+
+		AssertTextEquals(
+			locator1 = "PGBlogs#ENTRY_CONTENT_1",
+			value1 = "${entryContent}"
+		);
+
+		if (isSet(entryAuthorMiddleName)) {
+			AssertTextEquals(
+				locator1 = "PGBlogs#ENTRY_AUTHOR_1",
+				value1 = "By ${entryAuthorFirstName} ${entryAuthorMiddleName} ${entryAuthorLastName}"
+			);
+		}
+		else {
+			AssertTextEquals(
+				locator1 = "PGBlogs#ENTRY_AUTHOR_1",
+				value1 = "By ${entryAuthorFirstName} ${entryAuthorLastName}"
+			);
+		}
+
+		AssertTextEquals(locator1 = "PGBlogs#ENTRY_FLAG_1", value1 = "Flag");
+
+		AssertElementPresent(locator1 = "PGBlogs#ENTRY_TWITTER_1");
+
+		AssertElementPresent(locator1 = "PGBlogs#ENTRY_FACEBOOK_1");
+
+		AssertElementPresent(locator1 = "PGBlogs#ENTRY_GOOGLE_1");
+
+		AssertTextEquals.assertPartialText(
+			locator1 = "PGBlogs#ENTRY_YOUR_RATING_1",
+			value1 = "Your Rating"
+		);
+
+		AssertTextEquals(locator1 = "PGBlogs#RSS_LINK", value1 = "RSS");
+
+		AssertTextEquals(locator1 = "PGBlogs#SUBSCRIBE_LINK", value1 = "Subscribe");
+	}
+
+	macro viewPGDetails {
+		Click(locator1 = "PGBlogs#ENTRY_TITLE_1", value1 = "${entryTitle}");
+
+		AssertTextEquals(
+			locator1 = "PGBlogsEntry#ENTRY_TITLE",
+			value1 = "${entryTitle}"
+		);
+
+		AssertTextEquals(
+			locator1 = "PGBlogsEntry#ENTRY_CONTENT",
+			value1 = "${entryContent}"
+		);
+
+		if (isSet(entryAuthorMiddleName)) {
+			AssertTextEquals(
+				locator1 = "PGBlogsEntry#ENTRY_AUTHOR",
+				value1 = "By ${entryAuthorFirstName} ${entryAuthorMiddleName} ${entryAuthorLastName}"
+			);
+		}
+		else {
+			AssertTextEquals(
+				locator1 = "PGBlogsEntry#ENTRY_AUTHOR",
+				value1 = "By ${entryAuthorFirstName} ${entryAuthorLastName}"
+			);
+		}
+
+		AssertTextEquals.assertPartialText(
+			locator1 = "PGBlogsEntry#ENTRY_YOUR_RATING",
+			value1 = "Your Rating"
+		);
+
+		AssertTextEquals(locator1 = "PGBlogsEntry#PREVIOUS", value1 = "Previous");
+
+		AssertTextEquals(locator1 = "PGBlogsEntry#NEXT", value1 = "Next");
+
+		AssertTextEquals(locator1 = "PGBlogsEntry#COMMENTS", value1 = "Comments");
+	}
+
+	macro viewPortletPG {
+		AssertElementPresent(
+			locator1 = "PGBlogs#ADD_ENTRY_BUTTON",
+			value1 = "Add Blog Entry"
+		);
+
+		AssertElementPresent(
+			locator1 = "PGBlogs#PERMISSIONS_BUTTON",
+			value1 = "Permissions"
+		);
+
+		AssertTextEquals.assertText(
+			locator1 = "PGBlogs#PORTLET_TITLE",
+			value1 = "Blogs"
+		);
+
+		AssertTextEquals(locator1 = "PGBlogs#RSS_LINK", value1 = "RSS");
+
+		AssertTextEquals(locator1 = "PGBlogs#SUBSCRIBE_LINK", value1 = "Subscribe");
+	}
+
+	macro viewPortletPGasGuest {
+		AssertElementNotPresent(
+			locator1 = "PGBlogs#ADD_ENTRY_BUTTON",
+			value1 = "Add Blog Entry"
+		);
+
+		AssertElementNotPresent(
+			locator1 = "PGBlogs#PERMISSIONS_BUTTON",
+			value1 = "Permissions"
+		);
+
+		AssertTextEquals.assertText(
+			locator1 = "PGBlogs#PORTLET_TITLE",
+			value1 = "Blogs"
+		);
+
+		AssertTextEquals(locator1 = "PGBlogs#RSS_LINK", value1 = "RSS");
+
+		AssertTextNotPresent(locator1 = "PGBlogs#SUBSCRIBE_LINK", value1 = "Subscribe");
+	}
+}

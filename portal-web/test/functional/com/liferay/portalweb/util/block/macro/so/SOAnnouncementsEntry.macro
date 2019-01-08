@@ -1,145 +1,389 @@
-<definition>
-	<command name="addPG">
-		<execute function="AssertClick" locator1="SODashboard#ANNOUNCEMENTS_ADD_ENTRY_BUTTON" value1="Add Entry" />
+definition {
+	macro addPG {
+		AssertClick(
+			locator1 = "SODashboard#ANNOUNCEMENTS_ADD_ENTRY_BUTTON",
+			value1 = "Add Entry"
+		);
 
-		<execute function="SelectFrame" locator1="SODashboardAddAnnouncementsEntry#ADD_ENTRY_IFRAME" />
-		<execute function="Select" locator1="SODashboardAddAnnouncementsEntry#DISTRIBUTION_SCOPE_SELECT" value1="${distributionScope}" />
-		<execute function="Type" locator1="SODashboardAddAnnouncementsEntry#TITLE_FIELD" value1="${entryTitle}" />
-		<execute function="Type#typeCKEditor" locator1="SODashboardAddAnnouncementsEntry#CONTENT_FIELD" value1="${entryContent}" />
-		<execute function="SelectFrameTop" />
-		<execute function="SelectFrame" locator1="SODashboardAddAnnouncementsEntry#ADD_ENTRY_IFRAME" />
-		<execute function="Type" locator1="SODashboardAddAnnouncementsEntry#URL_FIELD" value1="${entryURL}" />
-		<execute function="AssertClick#assertValueClickAt" locator1="SODashboardAddAnnouncementsEntry#SAVE_BUTTON" value1="Save" />
-		<execute function="SelectFrameTop" />
+		SelectFrame(locator1 = "SODashboardAddAnnouncementsEntry#ADD_ENTRY_IFRAME");
 
-		<execute function="AssertElementPresent" locator1="SODashboard#ANNOUNCEMENTS_ENTRY_TITLE" />
-	</command>
+		Select(
+			locator1 = "SODashboardAddAnnouncementsEntry#DISTRIBUTION_SCOPE_SELECT",
+			value1 = "${distributionScope}"
+		);
 
-	<command name="deletePG">
-		<execute function="AssertTextEquals" locator1="SODashboard#ANNOUNCEMENTS_ENTRY_TITLE" value1="${entryTitle}" />
-		<execute function="AssertTextEquals#assertPartialText" locator1="SODashboard#ANNOUNCEMENTS_ENTRY_CONTENT" value1="${entryContent}" />
-		<execute function="ClickNoError" locator1="SODashboard#ANNOUNCEMENTS_ENTRY_DELETE_LINK" />
-		<execute function="Confirm#waitForConfirmation" value1="Are you sure you want to delete the selected entry?" />
-		<execute function="AssertTextNotPresent" value1="{entryTitle}" />
-		<execute function="AssertTextNotPresent" value1="{entryContent}" />
-	</command>
+		Type(
+			locator1 = "SODashboardAddAnnouncementsEntry#TITLE_FIELD",
+			value1 = "${entryTitle}"
+		);
 
-	<command name="editPG">
-		<execute function="AssertTextEquals" locator1="SODashboard#ANNOUNCEMENTS_ENTRY_TITLE" value1="${entryTitle}" />
-		<execute function="AssertTextEquals#assertPartialText" locator1="SODashboard#ANNOUNCEMENTS_ENTRY_CONTENT" value1="${entryContent}" />
-		<execute function="Click" locator1="SODashboard#ANNOUNCEMENTS_ENTRY_EDIT_LINK" />
+		Type.typeCKEditor(
+			locator1 = "SODashboardAddAnnouncementsEntry#CONTENT_FIELD",
+			value1 = "${entryContent}"
+		);
 
-		<execute function="SelectFrame" locator1="SODashboardAddAnnouncementsEntry#ADD_ENTRY_IFRAME" />
-		<execute function="Type" locator1="SODashboardAddAnnouncementsEntry#TITLE_FIELD" value1="${entryTitleEdit}" />
-		<execute function="Type#typeCKEditor" locator1="SODashboardAddAnnouncementsEntry#CONTENT_FIELD" value1="${entryContentEdit}" />
-		<execute function="SelectFrameTop" />
-		<execute function="SelectFrame" locator1="SODashboardAddAnnouncementsEntry#ADD_ENTRY_IFRAME" />
-		<execute function="Type" locator1="SODashboardAddAnnouncementsEntry#URL_FIELD" value1="${entryURL}" />
-		<execute function="AssertClick#assertValueClickAt" locator1="SODashboardAddAnnouncementsEntry#SAVE_BUTTON" value1="Save" />
-		<execute function="SelectFrameTop" />
+		SelectFrameTop();
 
-		<execute function="AssertElementPresent" locator1="SODashboard#ANNOUNCEMENTS_ENTRY_TITLE" />
-	</command>
+		SelectFrame(locator1 = "SODashboardAddAnnouncementsEntry#ADD_ENTRY_IFRAME");
 
-	<command name="markAsReadPG">
-		<execute function="AssertTextEquals" locator1="SODashboard#ANNOUNCEMENTS_ENTRY_TITLE" value1="${entryTitle}" />
-		<execute function="AssertTextEquals#assertPartialText" locator1="SODashboard#ANNOUNCEMENTS_ENTRY_CONTENT" value1="${entryContent}" />
-		<execute function="AssertClick" locator1="SODashboard#ANNOUNCEMENTS_ENTRY_MARK_LINK" value1="Mark as Read" />
-		<execute function="AssertElementPresent" locator1="SODashboard#ANNOUNCEMENTS_ENTRY_COLLAPSED" />
-		<execute function="AssertElementNotPresent" locator1="SODashboard#ANNOUNCEMENTS_ENTRY_EXPANDED" />
-		<execute function="AssertClick" locator1="SODashboard#ANNOUNCEMENTS_ENTRY_READ_ENTRIES_DROPDOWN" value1="Read Entries" />
-		<execute function="AssertElementPresent" locator1="SODashboard#ANNOUNCEMENTS_ENTRY_EXPANDED" />
-		<execute function="AssertElementNotPresent" locator1="SODashboard#ANNOUNCEMENTS_ENTRY_COLLAPSED" />
-		<execute function="AssertTextEquals#assertPartialText" locator1="SODashboard#ANNOUNCEMENTS_ENTRY_ACTION" value1="${entryAuthor} to ${distributionScope}" />
-		<execute function="AssertTextEquals" locator1="SODashboard#ANNOUNCEMENTS_ENTRY_TITLE" value1="${entryTitle}" />
-		<execute function="AssertTextEquals#assertPartialText" locator1="SODashboard#ANNOUNCEMENTS_ENTRY_CONTENT" value1="${entryContent}" />
-		<execute function="AssertTextEquals" locator1="SODashboard#ANNOUNCEMENTS_ENTRY_EDIT_LINK" value1="Edit" />
-		<execute function="AssertTextEquals" locator1="SODashboard#ANNOUNCEMENTS_ENTRY_DELETE_LINK" value1="Delete" />
-		<execute function="AssertTextEquals" locator1="SODashboard#ANNOUNCEMENTS_ENTRY_MARK_LINK" value1="Mark as Unread" />
-		<execute function="AssertClick" locator1="SODashboard#ANNOUNCEMENTS_ENTRY_READ_ENTRIES_DROPDOWN" value1="Read Entries" />
-		<execute function="AssertElementPresent" locator1="SODashboard#ANNOUNCEMENTS_ENTRY_COLLAPSED" />
-		<execute function="AssertElementNotPresent" locator1="SODashboard#ANNOUNCEMENTS_ENTRY_EXPANDED" />
-	</command>
+		Type(
+			locator1 = "SODashboardAddAnnouncementsEntry#URL_FIELD",
+			value1 = "${entryURL}"
+		);
 
-	<command name="markAsUnreadPG">
-		<execute function="AssertTextEquals" locator1="SODashboard#ANNOUNCEMENTS_ENTRY_TITLE" value1="${entryTitle}" />
-		<execute function="AssertTextEquals#assertPartialText" locator1="SODashboard#ANNOUNCEMENTS_ENTRY_CONTENT" value1="${entryContent}" />
-		<execute function="AssertClick" locator1="SODashboard#ANNOUNCEMENTS_ENTRY_READ_ENTRIES_DROPDOWN" value1="Read Entries" />
-		<execute function="AssertElementPresent" locator1="SODashboard#ANNOUNCEMENTS_ENTRY_EXPANDED" />
-		<execute function="AssertElementNotPresent" locator1="SODashboard#ANNOUNCEMENTS_ENTRY_COLLAPSED" />
-		<execute function="AssertTextEquals#assertPartialText" locator1="SODashboard#ANNOUNCEMENTS_ENTRY_ACTION" value1="${entryAuthor} to ${distributionScope}" />
-		<execute function="AssertTextEquals" locator1="SODashboard#ANNOUNCEMENTS_ENTRY_TITLE" value1="${entryTitle}" />
-		<execute function="AssertTextEquals#assertPartialText" locator1="SODashboard#ANNOUNCEMENTS_ENTRY_CONTENT" value1="${entryContent}" />
-		<execute function="AssertClick" locator1="SODashboard#ANNOUNCEMENTS_ENTRY_MARK_LINK" value1="Mark as Unread" />
-		<execute function="AssertElementNotPresent" locator1="SODashboard#ANNOUNCEMENTS_ENTRY_READ_ENTRIES_DROPDOWN" value1="Read Entries" />
-		<execute function="AssertElementNotPresent" locator1="SODashboard#ANNOUNCEMENTS_ENTRY_EXPANDED" />
-		<execute function="AssertElementNotPresent" locator1="SODashboard#ANNOUNCEMENTS_ENTRY_COLLAPSED" />
-		<execute function="AssertTextEquals#assertPartialText" locator1="SODashboard#ANNOUNCEMENTS_ENTRY_ACTION" value1="${entryAuthor} to ${distributionScope}" />
-		<execute function="AssertTextEquals" locator1="SODashboard#ANNOUNCEMENTS_ENTRY_TITLE" value1="${entryTitle}" />
-		<execute function="AssertTextEquals#assertPartialText" locator1="SODashboard#ANNOUNCEMENTS_ENTRY_CONTENT" value1="${entryContent}" />
-		<execute function="AssertTextEquals" locator1="SODashboard#ANNOUNCEMENTS_ENTRY_EDIT_LINK" value1="Edit" />
-		<execute function="AssertTextEquals" locator1="SODashboard#ANNOUNCEMENTS_ENTRY_DELETE_LINK" value1="Delete" />
-		<execute function="AssertTextEquals" locator1="SODashboard#ANNOUNCEMENTS_ENTRY_MARK_LINK" value1="Mark as Read" />
-	</command>
+		AssertClick.assertValueClickAt(
+			locator1 = "SODashboardAddAnnouncementsEntry#SAVE_BUTTON",
+			value1 = "Save"
+		);
 
-	<command name="tearDownPG">
-		<execute macro="SOUser#firstLoginPG" />
+		SelectFrameTop();
 
-		<execute function="Click#textClickAt" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
+		AssertElementPresent(locator1 = "SODashboard#ANNOUNCEMENTS_ENTRY_TITLE");
+	}
 
-		<while>
-			<condition function="IsElementPresent#pauseIsElementPresent" locator1="SODashboard#ANNOUNCEMENTS_ENTRY_DELETE_LINK" />
-			<then>
-				<execute function="AssertClickNoError" locator1="SODashboard#ANNOUNCEMENTS_ENTRY_DELETE_LINK" value1="Delete" />
-				<execute function="Confirm#waitForConfirmation" value1="Are you sure you want to delete the selected entry?" />
-			</then>
-		</while>
-	</command>
+	macro deletePG {
+		AssertTextEquals(
+			locator1 = "SODashboard#ANNOUNCEMENTS_ENTRY_TITLE",
+			value1 = "${entryTitle}"
+		);
 
-	<command name="tearDownSitePG">
-		<execute macro="SOUser#firstLoginPG" />
+		AssertTextEquals.assertPartialText(
+			locator1 = "SODashboard#ANNOUNCEMENTS_ENTRY_CONTENT",
+			value1 = "${entryContent}"
+		);
 
-		<execute macro="Page#openURL">
-			<var name="pageType" value="Open Site" />
-		</execute>
+		ClickNoError(locator1 = "SODashboard#ANNOUNCEMENTS_ENTRY_DELETE_LINK");
 
-		<while>
-			<condition function="IsElementPresent#pauseIsElementPresent" locator1="SODashboard#ANNOUNCEMENTS_ENTRY_DELETE_LINK" />
-			<then>
-				<execute function="AssertClickNoError" locator1="SODashboard#ANNOUNCEMENTS_ENTRY_DELETE_LINK" value1="Delete" />
-				<execute function="Confirm#waitForConfirmation" value1="Are you sure you want to delete the selected entry?" />
-			</then>
-		</while>
-	</command>
+		Confirm.waitForConfirmation(
+			value1 = "Are you sure you want to delete the selected entry?"
+		);
 
-	<command name="viewNotificationPG">
-		<execute function="Click#textClickAt" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
-		<execute function="AssertElementPresent#assertElementPresent" locator1="SOUserBar#NOTIFICATION" />
-		<execute function="AssertTextEquals" locator1="SOUserBar#NOTIFICATION_MENU_COUNT" value1="1" />
-		<execute function="MouseOver" locator1="SOUserBar#NOTIFICATION" />
-		<execute function="AssertTextEquals#assertPartialText" locator1="SOUserBar#NOTIFICATION_MENU_ENTRY_CONTENT" value1="${entryAuthor} sent a new announcement." />
-		<execute function="AssertTextEquals" locator1="SOUserBar#NOTIFICATION_MENU_ENTRY_SUBCONTENT" value1="${entryTitle}" />
-		<execute function="AssertClick" locator1="SOUserBar#NOTIFICATION_MENU_MARK_ALL_AS_READ" value1="Mark All as Read" />
-		<execute function="AssertTextEquals" locator1="SOUserBar#NOTIFICATION_MENU_COUNT" value1="0" />
-	</command>
+		AssertTextNotPresent(value1 = "{entryTitle}");
 
-	<command name="viewPG">
-		<execute function="AssertTextEquals#assertPartialText" locator1="SODashboard#ANNOUNCEMENTS_ENTRY_ACTION" value1="${entryAuthor} to ${distributionScope}" />
-		<execute function="AssertTextEquals" locator1="SODashboard#ANNOUNCEMENTS_ENTRY_TITLE" value1="${entryTitle}" />
-		<execute function="AssertTextEquals#assertPartialText" locator1="SODashboard#ANNOUNCEMENTS_ENTRY_CONTENT" value1="${entryContent}" />
-		<execute function="AssertClick" locator1="SODashboard#ANNOUNCEMENTS_MANAGE_ENTRIES_BUTTON" value1="Manage Entries" />
+		AssertTextNotPresent(value1 = "{entryContent}");
+	}
 
-		<execute function="SelectFrame" locator1="SODashboardManageAnnouncementsEntry#MANAGE_ENTRY_IFRAME" />
+	macro editPG {
+		AssertTextEquals(
+			locator1 = "SODashboard#ANNOUNCEMENTS_ENTRY_TITLE",
+			value1 = "${entryTitle}"
+		);
 
-		<execute function="Select" locator1="SODashboardManageAnnouncementsEntry#DISTRIBUTION_SCOPE_SELECT" value1="${distributionScope}" />
-		<execute function="AssertTextEquals" locator1="SODashboardManageAnnouncementsEntry#ANNOUNCEMENTS_ENTRY_TITLE" value1="${entryTitle}" />
-		<execute function="AssertTextEquals" locator1="SODashboardManageAnnouncementsEntry#ANNOUNCEMENTS_ENTRY_AUTHOR" value1="${entryAuthor}" />
-		<execute function="AssertTextEquals" locator1="SODashboardManageAnnouncementsEntry#ANNOUNCEMENTS_ENTRY_TYPE" value1="General" />
-		<execute function="AssertElementPresent" locator1="SODashboardManageAnnouncementsEntry#ANNOUNCEMENTS_ENTRY_MODIFIED_DATE" />
-		<execute function="AssertElementPresent" locator1="SODashboardManageAnnouncementsEntry#ANNOUNCEMENTS_ENTRY_DISPLAY_DATE" />
-		<execute function="AssertElementPresent" locator1="SODashboardManageAnnouncementsEntry#ANNOUNCEMENTS_ENTRY_EXPIRATION_DATE" />
-		<execute function="AssertTextEquals" locator1="SODashboardManageAnnouncementsEntry#ANNOUNCEMENTS_ENTRY_EDIT_LINK" value1="Edit"  />
-		<execute function="AssertTextEquals" locator1="SODashboardManageAnnouncementsEntry#ANNOUNCEMENTS_ENTRY_DELETE_LINK" value1="Delete"  />
-		<execute function="SelectFrameTop" />
-	</command>
-</definition>
+		AssertTextEquals.assertPartialText(
+			locator1 = "SODashboard#ANNOUNCEMENTS_ENTRY_CONTENT",
+			value1 = "${entryContent}"
+		);
+
+		Click(locator1 = "SODashboard#ANNOUNCEMENTS_ENTRY_EDIT_LINK");
+
+		SelectFrame(locator1 = "SODashboardAddAnnouncementsEntry#ADD_ENTRY_IFRAME");
+
+		Type(
+			locator1 = "SODashboardAddAnnouncementsEntry#TITLE_FIELD",
+			value1 = "${entryTitleEdit}"
+		);
+
+		Type.typeCKEditor(
+			locator1 = "SODashboardAddAnnouncementsEntry#CONTENT_FIELD",
+			value1 = "${entryContentEdit}"
+		);
+
+		SelectFrameTop();
+
+		SelectFrame(locator1 = "SODashboardAddAnnouncementsEntry#ADD_ENTRY_IFRAME");
+
+		Type(
+			locator1 = "SODashboardAddAnnouncementsEntry#URL_FIELD",
+			value1 = "${entryURL}"
+		);
+
+		AssertClick.assertValueClickAt(
+			locator1 = "SODashboardAddAnnouncementsEntry#SAVE_BUTTON",
+			value1 = "Save"
+		);
+
+		SelectFrameTop();
+
+		AssertElementPresent(locator1 = "SODashboard#ANNOUNCEMENTS_ENTRY_TITLE");
+	}
+
+	macro markAsReadPG {
+		AssertTextEquals(
+			locator1 = "SODashboard#ANNOUNCEMENTS_ENTRY_TITLE",
+			value1 = "${entryTitle}"
+		);
+
+		AssertTextEquals.assertPartialText(
+			locator1 = "SODashboard#ANNOUNCEMENTS_ENTRY_CONTENT",
+			value1 = "${entryContent}"
+		);
+
+		AssertClick(
+			locator1 = "SODashboard#ANNOUNCEMENTS_ENTRY_MARK_LINK",
+			value1 = "Mark as Read"
+		);
+
+		AssertElementPresent(locator1 = "SODashboard#ANNOUNCEMENTS_ENTRY_COLLAPSED");
+
+		AssertElementNotPresent(locator1 = "SODashboard#ANNOUNCEMENTS_ENTRY_EXPANDED");
+
+		AssertClick(
+			locator1 = "SODashboard#ANNOUNCEMENTS_ENTRY_READ_ENTRIES_DROPDOWN",
+			value1 = "Read Entries"
+		);
+
+		AssertElementPresent(locator1 = "SODashboard#ANNOUNCEMENTS_ENTRY_EXPANDED");
+
+		AssertElementNotPresent(locator1 = "SODashboard#ANNOUNCEMENTS_ENTRY_COLLAPSED");
+
+		AssertTextEquals.assertPartialText(
+			locator1 = "SODashboard#ANNOUNCEMENTS_ENTRY_ACTION",
+			value1 = "${entryAuthor} to ${distributionScope}"
+		);
+
+		AssertTextEquals(
+			locator1 = "SODashboard#ANNOUNCEMENTS_ENTRY_TITLE",
+			value1 = "${entryTitle}"
+		);
+
+		AssertTextEquals.assertPartialText(
+			locator1 = "SODashboard#ANNOUNCEMENTS_ENTRY_CONTENT",
+			value1 = "${entryContent}"
+		);
+
+		AssertTextEquals(
+			locator1 = "SODashboard#ANNOUNCEMENTS_ENTRY_EDIT_LINK",
+			value1 = "Edit"
+		);
+
+		AssertTextEquals(
+			locator1 = "SODashboard#ANNOUNCEMENTS_ENTRY_DELETE_LINK",
+			value1 = "Delete"
+		);
+
+		AssertTextEquals(
+			locator1 = "SODashboard#ANNOUNCEMENTS_ENTRY_MARK_LINK",
+			value1 = "Mark as Unread"
+		);
+
+		AssertClick(
+			locator1 = "SODashboard#ANNOUNCEMENTS_ENTRY_READ_ENTRIES_DROPDOWN",
+			value1 = "Read Entries"
+		);
+
+		AssertElementPresent(locator1 = "SODashboard#ANNOUNCEMENTS_ENTRY_COLLAPSED");
+
+		AssertElementNotPresent(locator1 = "SODashboard#ANNOUNCEMENTS_ENTRY_EXPANDED");
+	}
+
+	macro markAsUnreadPG {
+		AssertTextEquals(
+			locator1 = "SODashboard#ANNOUNCEMENTS_ENTRY_TITLE",
+			value1 = "${entryTitle}"
+		);
+
+		AssertTextEquals.assertPartialText(
+			locator1 = "SODashboard#ANNOUNCEMENTS_ENTRY_CONTENT",
+			value1 = "${entryContent}"
+		);
+
+		AssertClick(
+			locator1 = "SODashboard#ANNOUNCEMENTS_ENTRY_READ_ENTRIES_DROPDOWN",
+			value1 = "Read Entries"
+		);
+
+		AssertElementPresent(locator1 = "SODashboard#ANNOUNCEMENTS_ENTRY_EXPANDED");
+
+		AssertElementNotPresent(locator1 = "SODashboard#ANNOUNCEMENTS_ENTRY_COLLAPSED");
+
+		AssertTextEquals.assertPartialText(
+			locator1 = "SODashboard#ANNOUNCEMENTS_ENTRY_ACTION",
+			value1 = "${entryAuthor} to ${distributionScope}"
+		);
+
+		AssertTextEquals(
+			locator1 = "SODashboard#ANNOUNCEMENTS_ENTRY_TITLE",
+			value1 = "${entryTitle}"
+		);
+
+		AssertTextEquals.assertPartialText(
+			locator1 = "SODashboard#ANNOUNCEMENTS_ENTRY_CONTENT",
+			value1 = "${entryContent}"
+		);
+
+		AssertClick(
+			locator1 = "SODashboard#ANNOUNCEMENTS_ENTRY_MARK_LINK",
+			value1 = "Mark as Unread"
+		);
+
+		AssertElementNotPresent(
+			locator1 = "SODashboard#ANNOUNCEMENTS_ENTRY_READ_ENTRIES_DROPDOWN",
+			value1 = "Read Entries"
+		);
+
+		AssertElementNotPresent(locator1 = "SODashboard#ANNOUNCEMENTS_ENTRY_EXPANDED");
+
+		AssertElementNotPresent(locator1 = "SODashboard#ANNOUNCEMENTS_ENTRY_COLLAPSED");
+
+		AssertTextEquals.assertPartialText(
+			locator1 = "SODashboard#ANNOUNCEMENTS_ENTRY_ACTION",
+			value1 = "${entryAuthor} to ${distributionScope}"
+		);
+
+		AssertTextEquals(
+			locator1 = "SODashboard#ANNOUNCEMENTS_ENTRY_TITLE",
+			value1 = "${entryTitle}"
+		);
+
+		AssertTextEquals.assertPartialText(
+			locator1 = "SODashboard#ANNOUNCEMENTS_ENTRY_CONTENT",
+			value1 = "${entryContent}"
+		);
+
+		AssertTextEquals(
+			locator1 = "SODashboard#ANNOUNCEMENTS_ENTRY_EDIT_LINK",
+			value1 = "Edit"
+		);
+
+		AssertTextEquals(
+			locator1 = "SODashboard#ANNOUNCEMENTS_ENTRY_DELETE_LINK",
+			value1 = "Delete"
+		);
+
+		AssertTextEquals(
+			locator1 = "SODashboard#ANNOUNCEMENTS_ENTRY_MARK_LINK",
+			value1 = "Mark as Read"
+		);
+	}
+
+	macro tearDownPG {
+		SOUser.firstLoginPG();
+
+		Click.textClickAt(locator1 = "SOUserBar#DASHBOARD", value1 = "Dashboard");
+
+		while (IsElementPresent.pauseIsElementPresent(locator1 = "SODashboard#ANNOUNCEMENTS_ENTRY_DELETE_LINK")) {
+			AssertClickNoError(
+				locator1 = "SODashboard#ANNOUNCEMENTS_ENTRY_DELETE_LINK",
+				value1 = "Delete"
+			);
+
+			Confirm.waitForConfirmation(
+				value1 = "Are you sure you want to delete the selected entry?"
+			);
+		}
+	}
+
+	macro tearDownSitePG {
+		SOUser.firstLoginPG();
+
+		Page.openURL(pageType = "Open Site");
+
+		while (IsElementPresent.pauseIsElementPresent(locator1 = "SODashboard#ANNOUNCEMENTS_ENTRY_DELETE_LINK")) {
+			AssertClickNoError(
+				locator1 = "SODashboard#ANNOUNCEMENTS_ENTRY_DELETE_LINK",
+				value1 = "Delete"
+			);
+
+			Confirm.waitForConfirmation(
+				value1 = "Are you sure you want to delete the selected entry?"
+			);
+		}
+	}
+
+	macro viewNotificationPG {
+		Click.textClickAt(locator1 = "SOUserBar#DASHBOARD", value1 = "Dashboard");
+
+		AssertElementPresent.assertElementPresent(locator1 = "SOUserBar#NOTIFICATION");
+
+		AssertTextEquals(locator1 = "SOUserBar#NOTIFICATION_MENU_COUNT", value1 = "1");
+
+		MouseOver(locator1 = "SOUserBar#NOTIFICATION");
+
+		AssertTextEquals.assertPartialText(
+			locator1 = "SOUserBar#NOTIFICATION_MENU_ENTRY_CONTENT",
+			value1 = "${entryAuthor} sent a new announcement."
+		);
+
+		AssertTextEquals(
+			locator1 = "SOUserBar#NOTIFICATION_MENU_ENTRY_SUBCONTENT",
+			value1 = "${entryTitle}"
+		);
+
+		AssertClick(
+			locator1 = "SOUserBar#NOTIFICATION_MENU_MARK_ALL_AS_READ",
+			value1 = "Mark All as Read"
+		);
+
+		AssertTextEquals(locator1 = "SOUserBar#NOTIFICATION_MENU_COUNT", value1 = "0");
+	}
+
+	macro viewPG {
+		AssertTextEquals.assertPartialText(
+			locator1 = "SODashboard#ANNOUNCEMENTS_ENTRY_ACTION",
+			value1 = "${entryAuthor} to ${distributionScope}"
+		);
+
+		AssertTextEquals(
+			locator1 = "SODashboard#ANNOUNCEMENTS_ENTRY_TITLE",
+			value1 = "${entryTitle}"
+		);
+
+		AssertTextEquals.assertPartialText(
+			locator1 = "SODashboard#ANNOUNCEMENTS_ENTRY_CONTENT",
+			value1 = "${entryContent}"
+		);
+
+		AssertClick(
+			locator1 = "SODashboard#ANNOUNCEMENTS_MANAGE_ENTRIES_BUTTON",
+			value1 = "Manage Entries"
+		);
+
+		SelectFrame(
+			locator1 = "SODashboardManageAnnouncementsEntry#MANAGE_ENTRY_IFRAME"
+		);
+
+		Select(
+			locator1 = "SODashboardManageAnnouncementsEntry#DISTRIBUTION_SCOPE_SELECT",
+			value1 = "${distributionScope}"
+		);
+
+		AssertTextEquals(
+			locator1 = "SODashboardManageAnnouncementsEntry#ANNOUNCEMENTS_ENTRY_TITLE",
+			value1 = "${entryTitle}"
+		);
+
+		AssertTextEquals(
+			locator1 = "SODashboardManageAnnouncementsEntry#ANNOUNCEMENTS_ENTRY_AUTHOR",
+			value1 = "${entryAuthor}"
+		);
+
+		AssertTextEquals(
+			locator1 = "SODashboardManageAnnouncementsEntry#ANNOUNCEMENTS_ENTRY_TYPE",
+			value1 = "General"
+		);
+
+		AssertElementPresent(
+			locator1 = "SODashboardManageAnnouncementsEntry#ANNOUNCEMENTS_ENTRY_MODIFIED_DATE"
+		);
+
+		AssertElementPresent(
+			locator1 = "SODashboardManageAnnouncementsEntry#ANNOUNCEMENTS_ENTRY_DISPLAY_DATE"
+		);
+
+		AssertElementPresent(
+			locator1 = "SODashboardManageAnnouncementsEntry#ANNOUNCEMENTS_ENTRY_EXPIRATION_DATE"
+		);
+
+		AssertTextEquals(
+			locator1 = "SODashboardManageAnnouncementsEntry#ANNOUNCEMENTS_ENTRY_EDIT_LINK",
+			value1 = "Edit"
+		);
+
+		AssertTextEquals(
+			locator1 = "SODashboardManageAnnouncementsEntry#ANNOUNCEMENTS_ENTRY_DELETE_LINK",
+			value1 = "Delete"
+		);
+
+		SelectFrameTop();
+	}
+}

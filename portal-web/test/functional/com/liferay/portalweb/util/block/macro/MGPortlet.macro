@@ -1,19 +1,45 @@
-<definition>
-	<command name="configureShowAllPG">
-		<execute macro="Page#gotoPG">
-			<var name="pageName" value="${pageName}" />
-		</execute>
+definition {
+	macro configureShowAllPG {
+		Page.gotoPG(pageName = "${pageName}");
 
-		<execute function="AssertElementPresent" locator1="PGMediagallery#OPTIONS" />
-		<execute function="AssertClick#pauseAssertTextClickAt" locator1="PGMediagallery#OPTIONS" value1="Options" />
-		<execute function="AssertClick" locator1="PGMediagallery#OPTIONS_MENULIST_CONFIGURATION" value1="Configuration" />
+		AssertElementPresent(locator1 = "PGMediagallery#OPTIONS");
 
-		<execute function="SelectFrame" locator1="PGMediagalleryConfiguration#MG_CONFIGURATION_IFRAME" />
-		<execute function="Check#clickAtConfiguration" locator1="PGMediagalleryConfiguration#MG_DISPLAY_SETTINGS_SHOW_ACTIONS_CHECKBOX" />
-		<execute function="Check#clickAtConfiguration" locator1="PGMediagalleryConfiguration#MG_DISPLAY_SETTINGS_SHOW_FOLDER_MENU_CHECKBOX" />
-		<execute function="Check#clickAtConfiguration" locator1="PGMediagalleryConfiguration#MG_DISPLAY_SETTINGS_SHOW_NAVIGATION_LINKS_CHECKBOX" />
-		<execute function="Check#clickAtConfiguration" locator1="PGMediagalleryConfiguration#MG_DISPLAY_SETTINGS_SHOW_SEARCH_CHECKBOX" />
-		<execute function="AssertClick" locator1="PGMediagalleryConfiguration#SAVE_BUTTON" value1="Save" />
-		<execute function="AssertTextEquals" locator1="PGMediagalleryConfiguration#SUCCESS_MESSAGE" value1="You have successfully updated the setup." />
-	</command>
-</definition>
+		AssertClick.pauseAssertTextClickAt(
+			locator1 = "PGMediagallery#OPTIONS",
+			value1 = "Options"
+		);
+
+		AssertClick(
+			locator1 = "PGMediagallery#OPTIONS_MENULIST_CONFIGURATION",
+			value1 = "Configuration"
+		);
+
+		SelectFrame(locator1 = "PGMediagalleryConfiguration#MG_CONFIGURATION_IFRAME");
+
+		Check.clickAtConfiguration(
+			locator1 = "PGMediagalleryConfiguration#MG_DISPLAY_SETTINGS_SHOW_ACTIONS_CHECKBOX"
+		);
+
+		Check.clickAtConfiguration(
+			locator1 = "PGMediagalleryConfiguration#MG_DISPLAY_SETTINGS_SHOW_FOLDER_MENU_CHECKBOX"
+		);
+
+		Check.clickAtConfiguration(
+			locator1 = "PGMediagalleryConfiguration#MG_DISPLAY_SETTINGS_SHOW_NAVIGATION_LINKS_CHECKBOX"
+		);
+
+		Check.clickAtConfiguration(
+			locator1 = "PGMediagalleryConfiguration#MG_DISPLAY_SETTINGS_SHOW_SEARCH_CHECKBOX"
+		);
+
+		AssertClick(
+			locator1 = "PGMediagalleryConfiguration#SAVE_BUTTON",
+			value1 = "Save"
+		);
+
+		AssertTextEquals(
+			locator1 = "PGMediagalleryConfiguration#SUCCESS_MESSAGE",
+			value1 = "You have successfully updated the setup."
+		);
+	}
+}

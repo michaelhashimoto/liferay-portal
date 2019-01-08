@@ -1,46 +1,119 @@
-<definition>
-	<command name="blogsEntryPG">
-		<execute function="Type" locator1="PGSearch#SEARCH_FIELD" value1="${entryTitle}" />
-		<execute function="Click#clickAt" locator1="PGSearch#SEARCH_ICON" />
+definition {
+	macro blogsEntryPG {
+		Type(locator1 = "PGSearch#SEARCH_FIELD", value1 = "${entryTitle}");
 
-		<execute function="AssertTextEquals" locator1="PGSearchResults#ASSET_ENTRY_TABLE_TITLE_1" value1="${entryTitle}" />
-		<execute function="AssertTextEquals" locator1="PGSearchResults#ASSET_ENTRY_TABLE_TYPE_1" value1="Blogs Entry" />
-		<execute function="AssertTextEquals" locator1="PGSearchResults#ASSET_ENTRY_TABLE_SUMMARY_1" value1="${entryContent}" />
-		<execute function="AssertTextEquals" locator1="PGSearchResults#SEARCH_RESULTS" value1="Showing 1 - 1." />
-	</command>
+		Click.clickAt(locator1 = "PGSearch#SEARCH_ICON");
 
-	<command name="messageboardsThreadPG">
-		<execute function="Type" locator1="PGSearch#SEARCH_FIELD" value1="${threadSubject}" />
-		<execute function="Click#clickAt" locator1="PGSearch#SEARCH_ICON" />
+		AssertTextEquals(
+			locator1 = "PGSearchResults#ASSET_ENTRY_TABLE_TITLE_1",
+			value1 = "${entryTitle}"
+		);
 
-		<execute function="AssertTextEquals" locator1="PGSearchResults#ASSET_ENTRY_TABLE_TITLE_1" value1="${threadSubject}" />
-		<execute function="AssertTextEquals" locator1="PGSearchResults#ASSET_ENTRY_TABLE_TYPE_1" value1="Message Boards Message" />
-		<execute function="AssertTextEquals" locator1="PGSearchResults#ASSET_ENTRY_TABLE_SUMMARY_1" value1="${threadBody}" />
-		<execute function="AssertTextEquals" locator1="PGSearchResults#SEARCH_RESULTS" value1="Showing 1 - 1." />
-	</command>
+		AssertTextEquals(
+			locator1 = "PGSearchResults#ASSET_ENTRY_TABLE_TYPE_1",
+			value1 = "Blogs Entry"
+		);
 
-	<command name="userPG">
-		<execute function="Type" locator1="PGSearch#SEARCH_FIELD" value1="users*" />
-		<execute function="Click#clickAt" locator1="PGSearch#SEARCH_ICON" />
+		AssertTextEquals(
+			locator1 = "PGSearchResults#ASSET_ENTRY_TABLE_SUMMARY_1",
+			value1 = "${entryContent}"
+		);
 
-		<execute function="AssertTextEquals" locator1="PGSearchResults#ASSET_ENTRY_TABLE_TITLE_1" value1="${userFirstName} ${userLastName}" />
-		<execute function="AssertTextEquals" locator1="PGSearchResults#ASSET_ENTRY_TABLE_TYPE_1" value1="User" />
-		<execute function="AssertTextEquals" locator1="PGSearchResults#SEARCH_RESULTS" value1="Showing 1 - 1." />
+		AssertTextEquals(
+			locator1 = "PGSearchResults#SEARCH_RESULTS",
+			value1 = "Showing 1 - 1."
+		);
+	}
 
-		<execute function="Type" locator1="PGSearchResults#SEARCH_FIELD" value1="userf*" />
-		<execute function="Click#clickAt" locator1="PGSearchResults#SEARCH_ICON" />
-		<execute function="AssertTextEquals" locator1="PGSearchResults#ASSET_ENTRY_TABLE_TITLE_1" value1="${userFirstName} ${userLastName}" />
-		<execute function="AssertTextEquals" locator1="PGSearchResults#ASSET_ENTRY_TABLE_TYPE_1" value1="User" />
-		<execute function="AssertTextEquals" locator1="PGSearchResults#SEARCH_RESULTS" value1="Showing 1 - 1." />
-	</command>
+	macro messageboardsThreadPG {
+		Type(locator1 = "PGSearch#SEARCH_FIELD", value1 = "${threadSubject}");
 
-	<command name="wikiPagePG">
-		<execute function="Type" locator1="PGSearch#SEARCH_FIELD" value1="${wikiPageTitle}" />
-		<execute function="Click#clickAt" locator1="PGSearch#SEARCH_ICON" />
+		Click.clickAt(locator1 = "PGSearch#SEARCH_ICON");
 
-		<execute function="AssertTextEquals" locator1="PGSearchResults#ASSET_ENTRY_TABLE_TITLE_1" value1="${wikiPageTitle}" />
-		<execute function="AssertTextEquals" locator1="PGSearchResults#ASSET_ENTRY_TABLE_TYPE_1" value1="Wiki Page" />
-		<execute function="AssertTextEquals" locator1="PGSearchResults#ASSET_ENTRY_TABLE_SUMMARY_1" value1="${wikiPageContent}" />
-		<execute function="AssertTextEquals" locator1="PGSearchResults#SEARCH_RESULTS" value1="Showing 1 - 1." />
-	</command>
-</definition>
+		AssertTextEquals(
+			locator1 = "PGSearchResults#ASSET_ENTRY_TABLE_TITLE_1",
+			value1 = "${threadSubject}"
+		);
+
+		AssertTextEquals(
+			locator1 = "PGSearchResults#ASSET_ENTRY_TABLE_TYPE_1",
+			value1 = "Message Boards Message"
+		);
+
+		AssertTextEquals(
+			locator1 = "PGSearchResults#ASSET_ENTRY_TABLE_SUMMARY_1",
+			value1 = "${threadBody}"
+		);
+
+		AssertTextEquals(
+			locator1 = "PGSearchResults#SEARCH_RESULTS",
+			value1 = "Showing 1 - 1."
+		);
+	}
+
+	macro userPG {
+		Type(locator1 = "PGSearch#SEARCH_FIELD", value1 = "users*");
+
+		Click.clickAt(locator1 = "PGSearch#SEARCH_ICON");
+
+		AssertTextEquals(
+			locator1 = "PGSearchResults#ASSET_ENTRY_TABLE_TITLE_1",
+			value1 = "${userFirstName} ${userLastName}"
+		);
+
+		AssertTextEquals(
+			locator1 = "PGSearchResults#ASSET_ENTRY_TABLE_TYPE_1",
+			value1 = "User"
+		);
+
+		AssertTextEquals(
+			locator1 = "PGSearchResults#SEARCH_RESULTS",
+			value1 = "Showing 1 - 1."
+		);
+
+		Type(locator1 = "PGSearchResults#SEARCH_FIELD", value1 = "userf*");
+
+		Click.clickAt(locator1 = "PGSearchResults#SEARCH_ICON");
+
+		AssertTextEquals(
+			locator1 = "PGSearchResults#ASSET_ENTRY_TABLE_TITLE_1",
+			value1 = "${userFirstName} ${userLastName}"
+		);
+
+		AssertTextEquals(
+			locator1 = "PGSearchResults#ASSET_ENTRY_TABLE_TYPE_1",
+			value1 = "User"
+		);
+
+		AssertTextEquals(
+			locator1 = "PGSearchResults#SEARCH_RESULTS",
+			value1 = "Showing 1 - 1."
+		);
+	}
+
+	macro wikiPagePG {
+		Type(locator1 = "PGSearch#SEARCH_FIELD", value1 = "${wikiPageTitle}");
+
+		Click.clickAt(locator1 = "PGSearch#SEARCH_ICON");
+
+		AssertTextEquals(
+			locator1 = "PGSearchResults#ASSET_ENTRY_TABLE_TITLE_1",
+			value1 = "${wikiPageTitle}"
+		);
+
+		AssertTextEquals(
+			locator1 = "PGSearchResults#ASSET_ENTRY_TABLE_TYPE_1",
+			value1 = "Wiki Page"
+		);
+
+		AssertTextEquals(
+			locator1 = "PGSearchResults#ASSET_ENTRY_TABLE_SUMMARY_1",
+			value1 = "${wikiPageContent}"
+		);
+
+		AssertTextEquals(
+			locator1 = "PGSearchResults#SEARCH_RESULTS",
+			value1 = "Showing 1 - 1."
+		);
+	}
+}

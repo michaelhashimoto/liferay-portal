@@ -1,41 +1,83 @@
-<definition>
-	<command name="addPG">
-		<execute function="AssertClick" locator1="PGBookmarks#HOME_MENU_ADD_FOLDER" value1="Add Folder" />
+definition {
+	macro addPG {
+		AssertClick(
+			locator1 = "PGBookmarks#HOME_MENU_ADD_FOLDER",
+			value1 = "Add Folder"
+		);
 
-		<execute function="Type" locator1="PGBookmarksAddfolder#NAME_FIELD" value1="${bookmarkFolderName}" />
-		<execute function="Type" locator1="PGBookmarksAddfolder#DESCRIPTION_FIELD" value1="${bookmarkFolderDescription}" />
-		<execute function="AssertClick" locator1="PGBookmarksAddfolder#SAVE_BUTTON" value1="Save" />
+		Type(
+			locator1 = "PGBookmarksAddfolder#NAME_FIELD",
+			value1 = "${bookmarkFolderName}"
+		);
 
-		<var name="key_folderName" value="${bookmarkFolderName}" />
+		Type(
+			locator1 = "PGBookmarksAddfolder#DESCRIPTION_FIELD",
+			value1 = "${bookmarkFolderDescription}"
+		);
 
-		<execute function="AssertTextEquals" locator1="PGBookmarks#SUCCESS_MESSAGE" value1="Your request completed successfully." />
-		<execute function="AssertTextEquals" locator1="PGBookmarks#FOLDERS_TABLE_FOLDER_NAME" value1="${bookmarkFolderName}" />
-		<execute function="AssertTextEquals#assertPartialText" locator1="PGBookmarks#FOLDERS_TABLE_FOLDER_DESCRIPTION" value1="${bookmarkFolderDescription}" />
-	</command>
+		AssertClick(locator1 = "PGBookmarksAddfolder#SAVE_BUTTON", value1 = "Save");
 
-	<command name="deletePG" >
-		<var name="key_folderName" value="${bookmarkFolderName}" />
+		var key_folderName = "${bookmarkFolderName}";
 
-		<execute function="AssertClick" locator1="PGBookmarks#FOLDERS_TABLE_FOLDER_ACTIONS_BUTTON" value1="Actions" />
-		<execute function="AssertClickNoError" locator1="PGBookmarks#FOLDER_MENULIST_DELETE" value1="Delete" />
-		<execute function="Confirm" value1="Are you sure you want to delete this?" />
-		<execute function="AssertTextEquals" locator1="PGBookmarks#SUCCESS_MESSAGE" value1="Your request completed successfully." />
-		<execute function="AssertTextNotPresent" value1="${bookmarkFolderName}" />
-	</command>
+		AssertTextEquals(
+			locator1 = "PGBookmarks#SUCCESS_MESSAGE",
+			value1 = "Your request completed successfully."
+		);
 
-	<command name="tearDownCP">
-		<execute macro="Page#gotoCP">
-			<var name="portletName" value="Bookmarks" />
-		</execute>
+		AssertTextEquals(
+			locator1 = "PGBookmarks#FOLDERS_TABLE_FOLDER_NAME",
+			value1 = "${bookmarkFolderName}"
+		);
 
-		<while>
-			<condition function="IsElementPresent" locator1="CPBookmarks#FOLDERS_TABLE_FOLDER_ACTIONS_BUTTON_GENERIC" />
-			<then>
-				<execute function="AssertClick" locator1="CPBookmarks#FOLDERS_TABLE_FOLDER_ACTIONS_BUTTON_GENERIC" value1="Actions" />
-				<execute function="AssertClickNoError" locator1="CPBookmarks#FOLDER_MENULIST_DELETE" value1="Delete" />
-				<execute function="Confirm" value1="Are you sure you want to delete this?" />
-				<execute function="AssertTextEquals" locator1="CPBookmarks#SUCCESS_MESSAGE" value1="Your request completed successfully." />
-			</then>
-		</while>
-	</command>
-</definition>
+		AssertTextEquals.assertPartialText(
+			locator1 = "PGBookmarks#FOLDERS_TABLE_FOLDER_DESCRIPTION",
+			value1 = "${bookmarkFolderDescription}"
+		);
+	}
+
+	macro deletePG {
+		var key_folderName = "${bookmarkFolderName}";
+
+		AssertClick(
+			locator1 = "PGBookmarks#FOLDERS_TABLE_FOLDER_ACTIONS_BUTTON",
+			value1 = "Actions"
+		);
+
+		AssertClickNoError(
+			locator1 = "PGBookmarks#FOLDER_MENULIST_DELETE",
+			value1 = "Delete"
+		);
+
+		Confirm(value1 = "Are you sure you want to delete this?");
+
+		AssertTextEquals(
+			locator1 = "PGBookmarks#SUCCESS_MESSAGE",
+			value1 = "Your request completed successfully."
+		);
+
+		AssertTextNotPresent(value1 = "${bookmarkFolderName}");
+	}
+
+	macro tearDownCP {
+		Page.gotoCP(portletName = "Bookmarks");
+
+		while (IsElementPresent(locator1 = "CPBookmarks#FOLDERS_TABLE_FOLDER_ACTIONS_BUTTON_GENERIC")) {
+			AssertClick(
+				locator1 = "CPBookmarks#FOLDERS_TABLE_FOLDER_ACTIONS_BUTTON_GENERIC",
+				value1 = "Actions"
+			);
+
+			AssertClickNoError(
+				locator1 = "CPBookmarks#FOLDER_MENULIST_DELETE",
+				value1 = "Delete"
+			);
+
+			Confirm(value1 = "Are you sure you want to delete this?");
+
+			AssertTextEquals(
+				locator1 = "CPBookmarks#SUCCESS_MESSAGE",
+				value1 = "Your request completed successfully."
+			);
+		}
+	}
+}

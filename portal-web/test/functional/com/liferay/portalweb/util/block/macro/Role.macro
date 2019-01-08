@@ -1,342 +1,691 @@
-<definition>
-	<command name="addCP">
-		<execute macro="Page#gotoCP">
-			<var name="portletName" value="Roles" />
-		</execute>
-
-		<execute function="AssertClick#pauseAssertTextClickAt" locator1="CPRoles#ADD" value1="Add" />
-
-		<if>
-			<equals arg1="${roleType}" arg2="Organization" />
-			<then>
-				<execute function="AssertClick#assertTextClickAt" locator1="CPRoles#ADD_MENULIST_ORGANIZATION_ROLE" value1="Organization Role" />
-			</then>
-			<elseif>
-				<equals arg1="${roleType}" arg2="Site" />
-				<then>
-					<execute function="AssertClick#assertTextClickAt" locator1="CPRoles#ADD_MENULIST_SITE_ROLE" value1="Site Role" />
-				</then>
-			</elseif>
-			<else>
-				<execute function="AssertClick#assertTextClickAt" locator1="CPRoles#ADD_MENULIST_REGULAR_ROLE" value1="Regular Role" />
-			</else>
-		</if>
-
-		<execute function="Type" locator1="CPRolesAddrole#NAME_FIELD" value1="${roleName}" />
-		<execute function="AssertClick#assertValueClickAt" locator1="CPRolesAddrole#SAVE_BUTTON" value1="Save" />
-
-		<execute function="AssertTextEquals" locator1="CPRoles#SUCCESS_MESSAGE" value1="Your request completed successfully." />
-	</command>
-
-	<command name="assignRegRoleCP">
-		<execute function="Type" locator1="CPRoles#SEARCH_FIELD" value1="${roleName}" />
-		<execute function="AssertClick#assertValueClickAt" locator1="CPRoles#SEARCH_BUTTON" value1="Search" />
-		<execute function="AssertClick" locator1="CPRoles#ROLE_TABLE_ACTIONS" value1="Actions" />
-		<execute function="AssertClick" locator1="CPRoles#ROLE_MENULIST_ASSIGN_MEMBERS" value1="Assign Members" />
-
-		<execute function="AssertClick#assertTextClickAt" locator1="CPRolesAssignmembersUsers#STATUS_AVAILABLE" value1="Available" />
-		<execute function="Type" locator1="CPRolesAssignmembersUsers#BASIC_SEARCH_FIELD" value1="${userScreenName}" />
-		<execute function="AssertClick#assertValueClickAtPause" locator1="CPRolesAssignmembersUsers#BASIC_SEARCH_BUTTON" value1="Search" />
-		<execute function="AssertTextEquals" locator1="CPRolesAssignmembersUsers#SEARCH_RESULTS" value1="Showing 1 result." />
-		<execute function="AssertTextEquals" locator1="CPRolesAssignmembersUsers#USER_TABLE_SCREEN_NAME_1" value1="${userScreenName}" />
-		<execute function="Check" locator1="CPRolesAssignmembersUsers#USER_TABLE_CHECKBOX_1" />
-		<execute function="AssertClick#assertValueClickAt" locator1="CPRolesAssignmembersUsers#UPDATE_ASSOCIATIONS_BUTTON" value1="Update Associations" />
-		<execute function="AssertTextEquals" locator1="CPRolesAssignmembersUsers#SUCCESS_MESSAGE" value1="Your request completed successfully." />
-		<execute function="AssertChecked" locator1="CPRolesAssignmembersUsers#USER_TABLE_CHECKBOX_1" />
-	</command>
-
-	<command name="definePermissionBlogsEntryCP">
-		<if>
-			<equals arg1="${roleType}" arg2="Organization" />
-			<then>
-				<execute function="Type" locator1="CPRoles#SEARCH_FIELD" value1="Orgrole" />
-
-				<var name="roleTypeKey" value="ORG" />
-			</then>
-			<elseif>
-				<equals arg1="${roleType}" arg2="Site" />
-				<then>
-					<execute function="Type" locator1="CPRoles#SEARCH_FIELD" value1="Siterole" />
-
-					<var name="roleTypeKey" value="SITE" />
-				</then>
-			</elseif>
-			<else>
-				<execute function="Type" locator1="CPRoles#SEARCH_FIELD" value1="Regrole" />
-
-				<var name="roleTypeKey" value="REG" />
-			</else>
-		</if>
-
-		<execute function="AssertClick#assertValueClickAt" locator1="CPRoles#SEARCH_BUTTON" value1="Search" />
-		<execute function="AssertTextEquals" locator1="CPRoles#ROLE_TABLE_TITLE_1" value1="${roleName}" />
-		<execute function="AssertClick#pauseAssertTextClickAt" locator1="CPRoles#ROLE_TABLE_ACTIONS_1" value1="Actions" />
-		<execute function="AssertClick" locator1="CPRoles#ROLE_MENULIST_DEFINE_PERMISSIONS" value1="Define Permissions" />
-
-		<execute function="Select" locator1="CPRolesDefinepermissions#ADD_PERMISSIONS_SELECT" value1="Blogs" />
-
-		<if>
-			<equals arg1="${rolePermission}" arg2="Add Entry" />
-			<then>
-				<var name="permissionResource" value="Blogs" />
-
-				<execute function="Check" locator1="CPRolesPermissionsSitecontentBlogs#BLOGS_TABLE_ADD_ENTRY_CHECKBOX" />
-				<execute function="AssertClick#assertValueClickAt" locator1="CPRolesPermissionsSitecontentBlogs#SAVE_BUTTON" value1="Save" />
-			</then>
-			<elseif>
-				<equals arg1="${rolePermission}" arg2="Delete" />
-				<then>
-					<var name="permissionResource" value="Blogs Entry" />
-
-					<execute function="Check" locator1="CPRolesPermissionsSitecontentBlogs#BLOGS_ENTRY_TABLE_DELETE_CHECKBOX" />
-					<execute function="AssertClick#assertValueClickAt" locator1="CPRolesPermissionsSitecontentBlogs#SAVE_BUTTON" value1="Save" />
-				</then>
-			</elseif>
-			<else>
-				<fail message="Invalid var rolePermission." />
-			</else>
-		</if>
-
-		<execute function="AssertTextEquals" locator1="CPRolesDefinepermissions#SUCCESS_MESSAGE" value1="The role permissions were updated." />
-		<execute function="AssertTextEquals" locator1="CPRolesDefinepermissions#${roleTypeKey}_PERMISSION_TABLE_RESOURCE_SET_1" value1="Blogs" />
-		<execute function="AssertTextEquals" locator1="CPRolesDefinepermissions#${roleTypeKey}_PERMISSION_TABLE_RESOURCE_1" value1="${permissionResource}" />
-		<execute function="AssertTextEquals" locator1="CPRolesDefinepermissions#${roleTypeKey}_PERMISSION_TABLE_ACTION_1" value1="${rolePermission}" />
-		<execute function="AssertTextEquals" locator1="CPRolesDefinepermissions#${roleTypeKey}_PERMISSION_TABLE_DELETE_1" value1="Delete" />
-	</command>
-
-	<command name="definePermissionSiteMembersBlogsCP">
-		<execute function="Type" locator1="CPRoles#SEARCH_FIELD" value1="${roleName}" />
-		<execute function="AssertClick#assertValueClickAt" locator1="CPRoles#SEARCH_BUTTON" value1="Search" />
-		<execute function="AssertTextEquals" locator1="CPRoles#ROLE_TABLE_TITLE" value1="${roleName}" />
-		<execute function="AssertClick" locator1="CPRoles#ROLE_TABLE_ACTIONS" value1="Actions" />
-		<execute function="AssertClick" locator1="CPRoles#ROLE_MENULIST_DEFINE_PERMISSIONS" value1="Define Permissions" />
-
-		<execute function="Select" locator1="CPRolesDefinepermissions#ADD_PERMISSIONS_SELECT" value1="${permissions}" />
-
-		<execute function="Check" locator1="CPRolesPermissionsSitecontentBlogs#BLOGS_TABLE_ALL_CHECKBOX" />
-		<execute function="Check" locator1="CPRolesPermissionsSitecontentBlogs#BLOGS_ENTRY_TABLE_ALL_CHECKBOX" />
-		<execute function="AssertClick#assertValueClickAt" locator1="CPRolesPermissionsSitecontentBlogs#SAVE_BUTTON" value1="Save" />
-
-		<execute function="AssertTextEquals" locator1="CPRolesDefinepermissions#SUCCESS_MESSAGE" value1="The role permissions were updated." />
-
-		<var name="key_row" value="1" />
-
-		<execute function="AssertTextEquals" locator1="CPRolesDefinepermissions#PERMISSION_TABLE_RESOURCE_SET_INCREMENT" value1="Blogs" />
-		<execute function="AssertTextEquals" locator1="CPRolesDefinepermissions#PERMISSION_TABLE_RESOURCE_INCREMENT" value1="Blogs" />
-		<execute function="AssertTextEquals" locator1="CPRolesDefinepermissions#PERMISSION_TABLE_ACTION_INCREMENT" value1="Add Entry" />
-		<execute function="AssertTextEquals" locator1="CPRolesDefinepermissions#PERMISSION_TABLE_DELETE_INCREMENT" value1="Delete" />
-
-		<var name="key_row" value="2" />
-
-		<execute function="AssertTextEquals" locator1="CPRolesDefinepermissions#PERMISSION_TABLE_RESOURCE_SET_INCREMENT" value1="Blogs" />
-		<execute function="AssertTextEquals" locator1="CPRolesDefinepermissions#PERMISSION_TABLE_RESOURCE_INCREMENT" value1="Blogs" />
-		<execute function="AssertTextEquals" locator1="CPRolesDefinepermissions#PERMISSION_TABLE_ACTION_INCREMENT" value1="Permissions" />
-		<execute function="AssertTextEquals" locator1="CPRolesDefinepermissions#PERMISSION_TABLE_DELETE_INCREMENT" value1="Delete" />
-
-		<var name="key_row" value="3" />
-
-		<execute function="AssertTextEquals" locator1="CPRolesDefinepermissions#PERMISSION_TABLE_RESOURCE_SET_INCREMENT" value1="Blogs" />
-		<execute function="AssertTextEquals" locator1="CPRolesDefinepermissions#PERMISSION_TABLE_RESOURCE_INCREMENT" value1="Blogs" />
-		<execute function="AssertTextEquals" locator1="CPRolesDefinepermissions#PERMISSION_TABLE_ACTION_INCREMENT" value1="Subscribe" />
-		<execute function="AssertTextEquals" locator1="CPRolesDefinepermissions#PERMISSION_TABLE_DELETE_INCREMENT" value1="Delete" />
-
-		<var name="key_row" value="4" />
-
-		<execute function="AssertTextEquals" locator1="CPRolesDefinepermissions#PERMISSION_TABLE_RESOURCE_SET_INCREMENT" value1="Blogs" />
-		<execute function="AssertTextEquals" locator1="CPRolesDefinepermissions#PERMISSION_TABLE_RESOURCE_INCREMENT" value1="Blogs Entry" />
-		<execute function="AssertTextEquals" locator1="CPRolesDefinepermissions#PERMISSION_TABLE_ACTION_INCREMENT" value1="Add Discussion" />
-		<execute function="AssertTextEquals" locator1="CPRolesDefinepermissions#PERMISSION_TABLE_DELETE_INCREMENT" value1="Delete" />
-
-		<var name="key_row" value="5" />
-
-		<execute function="AssertTextEquals" locator1="CPRolesDefinepermissions#PERMISSION_TABLE_RESOURCE_SET_INCREMENT" value1="Blogs" />
-		<execute function="AssertTextEquals" locator1="CPRolesDefinepermissions#PERMISSION_TABLE_RESOURCE_INCREMENT" value1="Blogs Entry" />
-		<execute function="AssertTextEquals" locator1="CPRolesDefinepermissions#PERMISSION_TABLE_ACTION_INCREMENT" value1="Delete" />
-		<execute function="AssertTextEquals" locator1="CPRolesDefinepermissions#PERMISSION_TABLE_DELETE_INCREMENT" value1="Delete" />
-
-		<var name="key_row" value="6" />
-
-		<execute function="AssertTextEquals" locator1="CPRolesDefinepermissions#PERMISSION_TABLE_RESOURCE_SET_INCREMENT" value1="Blogs" />
-		<execute function="AssertTextEquals" locator1="CPRolesDefinepermissions#PERMISSION_TABLE_RESOURCE_INCREMENT" value1="Blogs Entry" />
-		<execute function="AssertTextEquals" locator1="CPRolesDefinepermissions#PERMISSION_TABLE_ACTION_INCREMENT" value1="Delete Discussion" />
-		<execute function="AssertTextEquals" locator1="CPRolesDefinepermissions#PERMISSION_TABLE_DELETE_INCREMENT" value1="Delete" />
-
-		<var name="key_row" value="7" />
-
-		<execute function="AssertTextEquals" locator1="CPRolesDefinepermissions#PERMISSION_TABLE_RESOURCE_SET_INCREMENT" value1="Blogs" />
-		<execute function="AssertTextEquals" locator1="CPRolesDefinepermissions#PERMISSION_TABLE_RESOURCE_INCREMENT" value1="Blogs Entry" />
-		<execute function="AssertTextEquals" locator1="CPRolesDefinepermissions#PERMISSION_TABLE_ACTION_INCREMENT" value1="Permissions" />
-		<execute function="AssertTextEquals" locator1="CPRolesDefinepermissions#PERMISSION_TABLE_DELETE_INCREMENT" value1="Delete" />
-
-		<var name="key_row" value="8" />
-
-		<execute function="AssertTextEquals" locator1="CPRolesDefinepermissions#PERMISSION_TABLE_RESOURCE_SET_INCREMENT" value1="Blogs" />
-		<execute function="AssertTextEquals" locator1="CPRolesDefinepermissions#PERMISSION_TABLE_RESOURCE_INCREMENT" value1="Blogs Entry" />
-		<execute function="AssertTextEquals" locator1="CPRolesDefinepermissions#PERMISSION_TABLE_ACTION_INCREMENT" value1="Update" />
-		<execute function="AssertTextEquals" locator1="CPRolesDefinepermissions#PERMISSION_TABLE_DELETE_INCREMENT" value1="Delete" />
-
-		<var name="key_row" value="9" />
-
-		<execute function="AssertTextEquals" locator1="CPRolesDefinepermissions#PERMISSION_TABLE_RESOURCE_SET_INCREMENT" value1="Blogs" />
-		<execute function="AssertTextEquals" locator1="CPRolesDefinepermissions#PERMISSION_TABLE_RESOURCE_INCREMENT" value1="Blogs Entry" />
-		<execute function="AssertTextEquals" locator1="CPRolesDefinepermissions#PERMISSION_TABLE_ACTION_INCREMENT" value1="Update Discussion" />
-		<execute function="AssertTextEquals" locator1="CPRolesDefinepermissions#PERMISSION_TABLE_DELETE_INCREMENT" value1="Delete" />
-
-		<var name="key_row" value="10" />
-
-		<execute function="AssertTextEquals" locator1="CPRolesDefinepermissions#PERMISSION_TABLE_RESOURCE_SET_INCREMENT" value1="Blogs" />
-		<execute function="AssertTextEquals" locator1="CPRolesDefinepermissions#PERMISSION_TABLE_RESOURCE_INCREMENT" value1="Blogs Entry" />
-		<execute function="AssertTextEquals" locator1="CPRolesDefinepermissions#PERMISSION_TABLE_ACTION_INCREMENT" value1="View" />
-		<execute function="AssertTextEquals" locator1="CPRolesDefinepermissions#PERMISSION_TABLE_DELETE_INCREMENT" value1="Delete" />
-	</command>
-
-	<command name="removePermissionBlogsEntryCP">
-		<execute macro="Page#gotoCP">
-			<var name="portletName" value="Roles" />
-		</execute>
-
-		<if>
-			<equals arg1="${rolePermission}" arg2="Add Entry" />
-			<then>
-				<var name="permissionResource" value="Blogs" />
-			</then>
-			<elseif>
-				<equals arg1="${rolePermission}" arg2="Delete" />
-				<then>
-					<var name="permissionResource" value="Blogs Entry" />
-				</then>
-			</elseif>
-			<else>
-				<fail message="Invalid var rolePermission." />
-			</else>
-		</if>
-
-		<if>
-			<equals arg1="${roleType}" arg2="Organization" />
-			<then>
-				<execute function="Type" locator1="CPRoles#SEARCH_FIELD" value1="Orgrole" />
-
-				<var name="roleTypeKey" value="ORG" />
-			</then>
-			<elseif>
-				<equals arg1="${roleType}" arg2="Site" />
-				<then>
-					<execute function="Type" locator1="CPRoles#SEARCH_FIELD" value1="Siterole" />
-
-					<var name="roleTypeKey" value="SITE" />
-				</then>
-			</elseif>
-			<else>
-				<execute function="Type" locator1="CPRoles#SEARCH_FIELD" value1="Regrole" />
-
-				<var name="roleTypeKey" value="REG" />
-			</else>
-		</if>
-
-		<execute function="AssertClick#assertValueClickAt" locator1="CPRoles#SEARCH_BUTTON" value1="Search" />
-		<execute function="AssertTextEquals" locator1="CPRoles#ROLE_TABLE_TITLE_1" value1="${roleName}" />
-		<execute function="AssertClick#pauseAssertTextClickAt" locator1="CPRoles#ROLE_TABLE_ACTIONS_1" value1="Actions" />
-		<execute function="AssertClick" locator1="CPRoles#ROLE_MENULIST_DEFINE_PERMISSIONS" value1="Define Permissions" />
-
-		<execute function="AssertTextEquals" locator1="CPRolesDefinepermissions#${roleTypeKey}_PERMISSION_TABLE_RESOURCE_SET_1" value1="Blogs" />
-		<execute function="AssertTextEquals" locator1="CPRolesDefinepermissions#${roleTypeKey}_PERMISSION_TABLE_RESOURCE_1" value1="${permissionResource}" />
-		<execute function="AssertTextEquals" locator1="CPRolesDefinepermissions#${roleTypeKey}_PERMISSION_TABLE_ACTION_1" value1="${rolePermission}" />
-		<execute function="AssertTextEquals" locator1="CPRolesDefinepermissions#${roleTypeKey}_PERMISSION_TABLE_DELETE_1" value1="Delete" />
-		<execute function="AssertClick" locator1="CPRolesDefinepermissions#${roleTypeKey}_PERMISSION_TABLE_DELETE_1" value1="Delete" />
-		<execute function="AssertTextEquals" locator1="CPRolesDefinepermissions#SUCCESS_MESSAGE" value1="The permission was deleted." />
-		<execute function="AssertTextEquals" locator1="CPRolesDefinepermissions#INFO_MESSAGE" value1="This role does not have any permissions." />
-	</command>
-
-	<command name="tearDownCP">
-		<execute macro="Page#gotoCP">
-			<var name="portletName" value="Roles" />
-		</execute>
-
-		<execute function="Type" locator1="CPRoles#SEARCH_FIELD" value1="Name" />
-		<execute function="AssertClick#assertValueClickAt" locator1="CPRoles#SEARCH_BUTTON" value1="Search" />
-
-		<while>
-			<condition function="IsElementPresent#pauseIsElementPresent" locator1="CPRoles#ROLE_TABLE_ACTIONS_1" />
-			<then>
-				<execute function="AssertClick#pauseAssertTextClickAt" locator1="CPRoles#ROLE_TABLE_ACTIONS_1" value1="Actions" />
-				<execute function="AssertClickNoError" locator1="CPRoles#ROLE_MENULIST_DELETE" value1="Delete" />
-				<execute function="Confirm" value1="Are you sure you want to delete this?" />
-			</then>
-		</while>
-	</command>
-
-	<command name="tearDownDefinePermissionCP">
-		<execute macro="SOUser#firstLoginPG" />
-
-		<execute macro="SOUserBar#gotoCP">
-			<var name="portletName" value="Roles" />
-		</execute>
-
-		<execute function="Type" locator1="CPRoles#SEARCH_FIELD" value1="${roleName}" />
-		<execute function="AssertClick#assertValueClickAt" locator1="CPRoles#SEARCH_BUTTON" value1="Search" />
-		<execute function="AssertTextEquals" locator1="CPRoles#ROLE_TABLE_TITLE" value1="${roleName}" />
-		<execute function="AssertClick" locator1="CPRoles#ROLE_TABLE_ACTIONS" value1="Actions" />
-		<execute function="AssertClick" locator1="CPRoles#ROLE_MENULIST_DEFINE_PERMISSIONS" value1="Define Permissions" />
-
-		<var name="key_row" value="1" />
-
-		<while>
-			<condition function="IsElementPresent" locator1="CPRolesDefinepermissions#PERMISSION_TABLE_DELETE_INCREMENT" />
-			<then>
-				<execute function="AssertClick" locator1="CPRolesDefinepermissions#PERMISSION_TABLE_DELETE_INCREMENT" value1="Delete" />
-				<execute function="AssertTextEquals" locator1="CPRolesDefinepermissions#SUCCESS_MESSAGE" value1="The permission was deleted." />
-			</then>
-		</while>
-
-		<execute function="AssertTextEquals" locator1="CPRolesDefinepermissions#INFO_MESSAGE" value1="This role does not have any permissions." />
-	</command>
-
-	<command name="unassignRegRoleCP">
-		<execute macro="Page#gotoCP">
-			<var name="portletName" value="Roles" />
-		</execute>
-
-		<execute function="Type" locator1="CPRoles#SEARCH_FIELD" value1="${roleName}" />
-		<execute function="AssertClick#assertValueClickAt" locator1="CPRoles#SEARCH_BUTTON" value1="Search" />
-		<execute function="AssertClick#pauseAssertTextClickAt" locator1="CPRoles#ROLE_TABLE_ACTIONS_1" value1="Actions" />
-		<execute function="AssertClick" locator1="CPRoles#ROLE_MENULIST_ASSIGN_MEMBERS" value1="Assign Members" />
-
-		<execute function="AssertClick#assertTextClickAt" locator1="CPRolesAssignmembersUsers#STATUS_CURRENT" value1="Current" />
-		<execute function="Type" locator1="CPRolesAssignmembersUsers#BASIC_SEARCH_FIELD" value1="${userScreenName}" />
-		<execute function="AssertClick#assertValueClickAtPause" locator1="CPRolesAssignmembersUsers#BASIC_SEARCH_BUTTON" value1="Search" />
-		<execute function="AssertTextEquals" locator1="CPRolesAssignmembersUsers#SEARCH_RESULTS" value1="Showing 1 result." />
-		<execute function="AssertTextEquals" locator1="CPRolesAssignmembersUsers#USER_TABLE_SCREEN_NAME_1" value1="${userScreenName}" />
-		<execute function="Uncheck" locator1="CPRolesAssignmembersUsers#USER_TABLE_CHECKBOX_1" />
-		<execute function="AssertClick#assertValueClickAt" locator1="CPRolesAssignmembersUsers#UPDATE_ASSOCIATIONS_BUTTON" value1="Update Associations" />
-		<execute function="AssertTextEquals" locator1="CPRolesAssignmembersUsers#SUCCESS_MESSAGE" value1="Your request completed successfully." />
-	</command>
-
-	<command name="viewCP">
-		<if>
-			<equals arg1="${roleType}" arg2="Organization" />
-			<then>
-				<execute function="Type" locator1="CPRoles#SEARCH_FIELD" value1="Orgrole" />
-			</then>
-			<elseif>
-				<equals arg1="${roleType}" arg2="Site" />
-				<then>
-					<execute function="Type" locator1="CPRoles#SEARCH_FIELD" value1="Siterole" />
-				</then>
-			</elseif>
-			<else>
-				<execute function="Type" locator1="CPRoles#SEARCH_FIELD" value1="Regrole" />
-
-				<var name="roleType" value="Regular" />
-			</else>
-		</if>
-
-		<execute function="AssertClick#assertValueClickAt" locator1="CPRoles#SEARCH_BUTTON" value1="Search" />
-		<execute function="AssertTextEquals" locator1="CPRoles#ROLE_TABLE_TITLE_1" value1="${roleName}" />
-		<execute function="AssertTextEquals" locator1="CPRoles#ROLE_TABLE_TYPE_1" value1="${roleType}" />
-		<execute function="AssertClick#pauseAssertTextClickAt" locator1="CPRoles#ROLE_TABLE_ACTIONS_1" value1="Actions" />
-		<execute function="AssertClick" locator1="CPRoles#ROLE_MENULIST_EDIT" value1="Edit" />
-
-		<execute function="AssertTextEquals" locator1="CPRolesEdit#HEADER" value1="${roleName}" />
-		<execute function="AssertTextEquals" locator1="CPRolesEdit#NAME_FIELD" value1="${roleName}" />
-	</command>
-</definition>
+definition {
+	macro addCP {
+		Page.gotoCP(portletName = "Roles");
+
+		AssertClick.pauseAssertTextClickAt(locator1 = "CPRoles#ADD", value1 = "Add");
+
+		if ("${roleType}" == "Organization") {
+			AssertClick.assertTextClickAt(
+				locator1 = "CPRoles#ADD_MENULIST_ORGANIZATION_ROLE",
+				value1 = "Organization Role"
+			);
+		}
+		else if ("${roleType}" == "Site") {
+			AssertClick.assertTextClickAt(
+				locator1 = "CPRoles#ADD_MENULIST_SITE_ROLE",
+				value1 = "Site Role"
+			);
+		}
+		else {
+			AssertClick.assertTextClickAt(
+				locator1 = "CPRoles#ADD_MENULIST_REGULAR_ROLE",
+				value1 = "Regular Role"
+			);
+		}
+
+		Type(locator1 = "CPRolesAddrole#NAME_FIELD", value1 = "${roleName}");
+
+		AssertClick.assertValueClickAt(
+			locator1 = "CPRolesAddrole#SAVE_BUTTON",
+			value1 = "Save"
+		);
+
+		AssertTextEquals(
+			locator1 = "CPRoles#SUCCESS_MESSAGE",
+			value1 = "Your request completed successfully."
+		);
+	}
+
+	macro assignRegRoleCP {
+		Type(locator1 = "CPRoles#SEARCH_FIELD", value1 = "${roleName}");
+
+		AssertClick.assertValueClickAt(
+			locator1 = "CPRoles#SEARCH_BUTTON",
+			value1 = "Search"
+		);
+
+		AssertClick(locator1 = "CPRoles#ROLE_TABLE_ACTIONS", value1 = "Actions");
+
+		AssertClick(
+			locator1 = "CPRoles#ROLE_MENULIST_ASSIGN_MEMBERS",
+			value1 = "Assign Members"
+		);
+
+		AssertClick.assertTextClickAt(
+			locator1 = "CPRolesAssignmembersUsers#STATUS_AVAILABLE",
+			value1 = "Available"
+		);
+
+		Type(
+			locator1 = "CPRolesAssignmembersUsers#BASIC_SEARCH_FIELD",
+			value1 = "${userScreenName}"
+		);
+
+		AssertClick.assertValueClickAtPause(
+			locator1 = "CPRolesAssignmembersUsers#BASIC_SEARCH_BUTTON",
+			value1 = "Search"
+		);
+
+		AssertTextEquals(
+			locator1 = "CPRolesAssignmembersUsers#SEARCH_RESULTS",
+			value1 = "Showing 1 result."
+		);
+
+		AssertTextEquals(
+			locator1 = "CPRolesAssignmembersUsers#USER_TABLE_SCREEN_NAME_1",
+			value1 = "${userScreenName}"
+		);
+
+		Check(locator1 = "CPRolesAssignmembersUsers#USER_TABLE_CHECKBOX_1");
+
+		AssertClick.assertValueClickAt(
+			locator1 = "CPRolesAssignmembersUsers#UPDATE_ASSOCIATIONS_BUTTON",
+			value1 = "Update Associations"
+		);
+
+		AssertTextEquals(
+			locator1 = "CPRolesAssignmembersUsers#SUCCESS_MESSAGE",
+			value1 = "Your request completed successfully."
+		);
+
+		AssertChecked(locator1 = "CPRolesAssignmembersUsers#USER_TABLE_CHECKBOX_1");
+	}
+
+	macro definePermissionBlogsEntryCP {
+		if ("${roleType}" == "Organization") {
+			Type(locator1 = "CPRoles#SEARCH_FIELD", value1 = "Orgrole");
+
+			var roleTypeKey = "ORG";
+		}
+		else if ("${roleType}" == "Site") {
+			Type(locator1 = "CPRoles#SEARCH_FIELD", value1 = "Siterole");
+
+			var roleTypeKey = "SITE";
+		}
+		else {
+			Type(locator1 = "CPRoles#SEARCH_FIELD", value1 = "Regrole");
+
+			var roleTypeKey = "REG";
+		}
+
+		AssertClick.assertValueClickAt(
+			locator1 = "CPRoles#SEARCH_BUTTON",
+			value1 = "Search"
+		);
+
+		AssertTextEquals(
+			locator1 = "CPRoles#ROLE_TABLE_TITLE_1",
+			value1 = "${roleName}"
+		);
+
+		AssertClick.pauseAssertTextClickAt(
+			locator1 = "CPRoles#ROLE_TABLE_ACTIONS_1",
+			value1 = "Actions"
+		);
+
+		AssertClick(
+			locator1 = "CPRoles#ROLE_MENULIST_DEFINE_PERMISSIONS",
+			value1 = "Define Permissions"
+		);
+
+		Select(
+			locator1 = "CPRolesDefinepermissions#ADD_PERMISSIONS_SELECT",
+			value1 = "Blogs"
+		);
+
+		if ("${rolePermission}" == "Add Entry") {
+			var permissionResource = "Blogs";
+
+			Check(
+				locator1 = "CPRolesPermissionsSitecontentBlogs#BLOGS_TABLE_ADD_ENTRY_CHECKBOX"
+			);
+
+			AssertClick.assertValueClickAt(
+				locator1 = "CPRolesPermissionsSitecontentBlogs#SAVE_BUTTON",
+				value1 = "Save"
+			);
+		}
+		else if ("${rolePermission}" == "Delete") {
+			var permissionResource = "Blogs Entry";
+
+			Check(
+				locator1 = "CPRolesPermissionsSitecontentBlogs#BLOGS_ENTRY_TABLE_DELETE_CHECKBOX"
+			);
+
+			AssertClick.assertValueClickAt(
+				locator1 = "CPRolesPermissionsSitecontentBlogs#SAVE_BUTTON",
+				value1 = "Save"
+			);
+		}
+		else {
+			fail("Invalid var rolePermission.");
+		}
+
+		AssertTextEquals(
+			locator1 = "CPRolesDefinepermissions#SUCCESS_MESSAGE",
+			value1 = "The role permissions were updated."
+		);
+
+		AssertTextEquals(
+			locator1 = "CPRolesDefinepermissions#${roleTypeKey}_PERMISSION_TABLE_RESOURCE_SET_1",
+			value1 = "Blogs"
+		);
+
+		AssertTextEquals(
+			locator1 = "CPRolesDefinepermissions#${roleTypeKey}_PERMISSION_TABLE_RESOURCE_1",
+			value1 = "${permissionResource}"
+		);
+
+		AssertTextEquals(
+			locator1 = "CPRolesDefinepermissions#${roleTypeKey}_PERMISSION_TABLE_ACTION_1",
+			value1 = "${rolePermission}"
+		);
+
+		AssertTextEquals(
+			locator1 = "CPRolesDefinepermissions#${roleTypeKey}_PERMISSION_TABLE_DELETE_1",
+			value1 = "Delete"
+		);
+	}
+
+	macro definePermissionSiteMembersBlogsCP {
+		Type(locator1 = "CPRoles#SEARCH_FIELD", value1 = "${roleName}");
+
+		AssertClick.assertValueClickAt(
+			locator1 = "CPRoles#SEARCH_BUTTON",
+			value1 = "Search"
+		);
+
+		AssertTextEquals(locator1 = "CPRoles#ROLE_TABLE_TITLE", value1 = "${roleName}");
+
+		AssertClick(locator1 = "CPRoles#ROLE_TABLE_ACTIONS", value1 = "Actions");
+
+		AssertClick(
+			locator1 = "CPRoles#ROLE_MENULIST_DEFINE_PERMISSIONS",
+			value1 = "Define Permissions"
+		);
+
+		Select(
+			locator1 = "CPRolesDefinepermissions#ADD_PERMISSIONS_SELECT",
+			value1 = "${permissions}"
+		);
+
+		Check(locator1 = "CPRolesPermissionsSitecontentBlogs#BLOGS_TABLE_ALL_CHECKBOX");
+
+		Check(
+			locator1 = "CPRolesPermissionsSitecontentBlogs#BLOGS_ENTRY_TABLE_ALL_CHECKBOX"
+		);
+
+		AssertClick.assertValueClickAt(
+			locator1 = "CPRolesPermissionsSitecontentBlogs#SAVE_BUTTON",
+			value1 = "Save"
+		);
+
+		AssertTextEquals(
+			locator1 = "CPRolesDefinepermissions#SUCCESS_MESSAGE",
+			value1 = "The role permissions were updated."
+		);
+
+		var key_row = "1";
+
+		AssertTextEquals(
+			locator1 = "CPRolesDefinepermissions#PERMISSION_TABLE_RESOURCE_SET_INCREMENT",
+			value1 = "Blogs"
+		);
+
+		AssertTextEquals(
+			locator1 = "CPRolesDefinepermissions#PERMISSION_TABLE_RESOURCE_INCREMENT",
+			value1 = "Blogs"
+		);
+
+		AssertTextEquals(
+			locator1 = "CPRolesDefinepermissions#PERMISSION_TABLE_ACTION_INCREMENT",
+			value1 = "Add Entry"
+		);
+
+		AssertTextEquals(
+			locator1 = "CPRolesDefinepermissions#PERMISSION_TABLE_DELETE_INCREMENT",
+			value1 = "Delete"
+		);
+
+		var key_row = "2";
+
+		AssertTextEquals(
+			locator1 = "CPRolesDefinepermissions#PERMISSION_TABLE_RESOURCE_SET_INCREMENT",
+			value1 = "Blogs"
+		);
+
+		AssertTextEquals(
+			locator1 = "CPRolesDefinepermissions#PERMISSION_TABLE_RESOURCE_INCREMENT",
+			value1 = "Blogs"
+		);
+
+		AssertTextEquals(
+			locator1 = "CPRolesDefinepermissions#PERMISSION_TABLE_ACTION_INCREMENT",
+			value1 = "Permissions"
+		);
+
+		AssertTextEquals(
+			locator1 = "CPRolesDefinepermissions#PERMISSION_TABLE_DELETE_INCREMENT",
+			value1 = "Delete"
+		);
+
+		var key_row = "3";
+
+		AssertTextEquals(
+			locator1 = "CPRolesDefinepermissions#PERMISSION_TABLE_RESOURCE_SET_INCREMENT",
+			value1 = "Blogs"
+		);
+
+		AssertTextEquals(
+			locator1 = "CPRolesDefinepermissions#PERMISSION_TABLE_RESOURCE_INCREMENT",
+			value1 = "Blogs"
+		);
+
+		AssertTextEquals(
+			locator1 = "CPRolesDefinepermissions#PERMISSION_TABLE_ACTION_INCREMENT",
+			value1 = "Subscribe"
+		);
+
+		AssertTextEquals(
+			locator1 = "CPRolesDefinepermissions#PERMISSION_TABLE_DELETE_INCREMENT",
+			value1 = "Delete"
+		);
+
+		var key_row = "4";
+
+		AssertTextEquals(
+			locator1 = "CPRolesDefinepermissions#PERMISSION_TABLE_RESOURCE_SET_INCREMENT",
+			value1 = "Blogs"
+		);
+
+		AssertTextEquals(
+			locator1 = "CPRolesDefinepermissions#PERMISSION_TABLE_RESOURCE_INCREMENT",
+			value1 = "Blogs Entry"
+		);
+
+		AssertTextEquals(
+			locator1 = "CPRolesDefinepermissions#PERMISSION_TABLE_ACTION_INCREMENT",
+			value1 = "Add Discussion"
+		);
+
+		AssertTextEquals(
+			locator1 = "CPRolesDefinepermissions#PERMISSION_TABLE_DELETE_INCREMENT",
+			value1 = "Delete"
+		);
+
+		var key_row = "5";
+
+		AssertTextEquals(
+			locator1 = "CPRolesDefinepermissions#PERMISSION_TABLE_RESOURCE_SET_INCREMENT",
+			value1 = "Blogs"
+		);
+
+		AssertTextEquals(
+			locator1 = "CPRolesDefinepermissions#PERMISSION_TABLE_RESOURCE_INCREMENT",
+			value1 = "Blogs Entry"
+		);
+
+		AssertTextEquals(
+			locator1 = "CPRolesDefinepermissions#PERMISSION_TABLE_ACTION_INCREMENT",
+			value1 = "Delete"
+		);
+
+		AssertTextEquals(
+			locator1 = "CPRolesDefinepermissions#PERMISSION_TABLE_DELETE_INCREMENT",
+			value1 = "Delete"
+		);
+
+		var key_row = "6";
+
+		AssertTextEquals(
+			locator1 = "CPRolesDefinepermissions#PERMISSION_TABLE_RESOURCE_SET_INCREMENT",
+			value1 = "Blogs"
+		);
+
+		AssertTextEquals(
+			locator1 = "CPRolesDefinepermissions#PERMISSION_TABLE_RESOURCE_INCREMENT",
+			value1 = "Blogs Entry"
+		);
+
+		AssertTextEquals(
+			locator1 = "CPRolesDefinepermissions#PERMISSION_TABLE_ACTION_INCREMENT",
+			value1 = "Delete Discussion"
+		);
+
+		AssertTextEquals(
+			locator1 = "CPRolesDefinepermissions#PERMISSION_TABLE_DELETE_INCREMENT",
+			value1 = "Delete"
+		);
+
+		var key_row = "7";
+
+		AssertTextEquals(
+			locator1 = "CPRolesDefinepermissions#PERMISSION_TABLE_RESOURCE_SET_INCREMENT",
+			value1 = "Blogs"
+		);
+
+		AssertTextEquals(
+			locator1 = "CPRolesDefinepermissions#PERMISSION_TABLE_RESOURCE_INCREMENT",
+			value1 = "Blogs Entry"
+		);
+
+		AssertTextEquals(
+			locator1 = "CPRolesDefinepermissions#PERMISSION_TABLE_ACTION_INCREMENT",
+			value1 = "Permissions"
+		);
+
+		AssertTextEquals(
+			locator1 = "CPRolesDefinepermissions#PERMISSION_TABLE_DELETE_INCREMENT",
+			value1 = "Delete"
+		);
+
+		var key_row = "8";
+
+		AssertTextEquals(
+			locator1 = "CPRolesDefinepermissions#PERMISSION_TABLE_RESOURCE_SET_INCREMENT",
+			value1 = "Blogs"
+		);
+
+		AssertTextEquals(
+			locator1 = "CPRolesDefinepermissions#PERMISSION_TABLE_RESOURCE_INCREMENT",
+			value1 = "Blogs Entry"
+		);
+
+		AssertTextEquals(
+			locator1 = "CPRolesDefinepermissions#PERMISSION_TABLE_ACTION_INCREMENT",
+			value1 = "Update"
+		);
+
+		AssertTextEquals(
+			locator1 = "CPRolesDefinepermissions#PERMISSION_TABLE_DELETE_INCREMENT",
+			value1 = "Delete"
+		);
+
+		var key_row = "9";
+
+		AssertTextEquals(
+			locator1 = "CPRolesDefinepermissions#PERMISSION_TABLE_RESOURCE_SET_INCREMENT",
+			value1 = "Blogs"
+		);
+
+		AssertTextEquals(
+			locator1 = "CPRolesDefinepermissions#PERMISSION_TABLE_RESOURCE_INCREMENT",
+			value1 = "Blogs Entry"
+		);
+
+		AssertTextEquals(
+			locator1 = "CPRolesDefinepermissions#PERMISSION_TABLE_ACTION_INCREMENT",
+			value1 = "Update Discussion"
+		);
+
+		AssertTextEquals(
+			locator1 = "CPRolesDefinepermissions#PERMISSION_TABLE_DELETE_INCREMENT",
+			value1 = "Delete"
+		);
+
+		var key_row = "10";
+
+		AssertTextEquals(
+			locator1 = "CPRolesDefinepermissions#PERMISSION_TABLE_RESOURCE_SET_INCREMENT",
+			value1 = "Blogs"
+		);
+
+		AssertTextEquals(
+			locator1 = "CPRolesDefinepermissions#PERMISSION_TABLE_RESOURCE_INCREMENT",
+			value1 = "Blogs Entry"
+		);
+
+		AssertTextEquals(
+			locator1 = "CPRolesDefinepermissions#PERMISSION_TABLE_ACTION_INCREMENT",
+			value1 = "View"
+		);
+
+		AssertTextEquals(
+			locator1 = "CPRolesDefinepermissions#PERMISSION_TABLE_DELETE_INCREMENT",
+			value1 = "Delete"
+		);
+	}
+
+	macro removePermissionBlogsEntryCP {
+		Page.gotoCP(portletName = "Roles");
+
+		if ("${rolePermission}" == "Add Entry") {
+			var permissionResource = "Blogs";
+		}
+		else if ("${rolePermission}" == "Delete") {
+			var permissionResource = "Blogs Entry";
+		}
+		else {
+			fail("Invalid var rolePermission.");
+		}
+
+		if ("${roleType}" == "Organization") {
+			Type(locator1 = "CPRoles#SEARCH_FIELD", value1 = "Orgrole");
+
+			var roleTypeKey = "ORG";
+		}
+		else if ("${roleType}" == "Site") {
+			Type(locator1 = "CPRoles#SEARCH_FIELD", value1 = "Siterole");
+
+			var roleTypeKey = "SITE";
+		}
+		else {
+			Type(locator1 = "CPRoles#SEARCH_FIELD", value1 = "Regrole");
+
+			var roleTypeKey = "REG";
+		}
+
+		AssertClick.assertValueClickAt(
+			locator1 = "CPRoles#SEARCH_BUTTON",
+			value1 = "Search"
+		);
+
+		AssertTextEquals(
+			locator1 = "CPRoles#ROLE_TABLE_TITLE_1",
+			value1 = "${roleName}"
+		);
+
+		AssertClick.pauseAssertTextClickAt(
+			locator1 = "CPRoles#ROLE_TABLE_ACTIONS_1",
+			value1 = "Actions"
+		);
+
+		AssertClick(
+			locator1 = "CPRoles#ROLE_MENULIST_DEFINE_PERMISSIONS",
+			value1 = "Define Permissions"
+		);
+
+		AssertTextEquals(
+			locator1 = "CPRolesDefinepermissions#${roleTypeKey}_PERMISSION_TABLE_RESOURCE_SET_1",
+			value1 = "Blogs"
+		);
+
+		AssertTextEquals(
+			locator1 = "CPRolesDefinepermissions#${roleTypeKey}_PERMISSION_TABLE_RESOURCE_1",
+			value1 = "${permissionResource}"
+		);
+
+		AssertTextEquals(
+			locator1 = "CPRolesDefinepermissions#${roleTypeKey}_PERMISSION_TABLE_ACTION_1",
+			value1 = "${rolePermission}"
+		);
+
+		AssertTextEquals(
+			locator1 = "CPRolesDefinepermissions#${roleTypeKey}_PERMISSION_TABLE_DELETE_1",
+			value1 = "Delete"
+		);
+
+		AssertClick(
+			locator1 = "CPRolesDefinepermissions#${roleTypeKey}_PERMISSION_TABLE_DELETE_1",
+			value1 = "Delete"
+		);
+
+		AssertTextEquals(
+			locator1 = "CPRolesDefinepermissions#SUCCESS_MESSAGE",
+			value1 = "The permission was deleted."
+		);
+
+		AssertTextEquals(
+			locator1 = "CPRolesDefinepermissions#INFO_MESSAGE",
+			value1 = "This role does not have any permissions."
+		);
+	}
+
+	macro tearDownCP {
+		Page.gotoCP(portletName = "Roles");
+
+		Type(locator1 = "CPRoles#SEARCH_FIELD", value1 = "Name");
+
+		AssertClick.assertValueClickAt(
+			locator1 = "CPRoles#SEARCH_BUTTON",
+			value1 = "Search"
+		);
+
+		while (IsElementPresent.pauseIsElementPresent(locator1 = "CPRoles#ROLE_TABLE_ACTIONS_1")) {
+			AssertClick.pauseAssertTextClickAt(
+				locator1 = "CPRoles#ROLE_TABLE_ACTIONS_1",
+				value1 = "Actions"
+			);
+
+			AssertClickNoError(locator1 = "CPRoles#ROLE_MENULIST_DELETE", value1 = "Delete");
+
+			Confirm(value1 = "Are you sure you want to delete this?");
+		}
+	}
+
+	macro tearDownDefinePermissionCP {
+		SOUser.firstLoginPG();
+
+		SOUserBar.gotoCP(portletName = "Roles");
+
+		Type(locator1 = "CPRoles#SEARCH_FIELD", value1 = "${roleName}");
+
+		AssertClick.assertValueClickAt(
+			locator1 = "CPRoles#SEARCH_BUTTON",
+			value1 = "Search"
+		);
+
+		AssertTextEquals(locator1 = "CPRoles#ROLE_TABLE_TITLE", value1 = "${roleName}");
+
+		AssertClick(locator1 = "CPRoles#ROLE_TABLE_ACTIONS", value1 = "Actions");
+
+		AssertClick(
+			locator1 = "CPRoles#ROLE_MENULIST_DEFINE_PERMISSIONS",
+			value1 = "Define Permissions"
+		);
+
+		var key_row = "1";
+
+		while (IsElementPresent(locator1 = "CPRolesDefinepermissions#PERMISSION_TABLE_DELETE_INCREMENT")) {
+			AssertClick(
+				locator1 = "CPRolesDefinepermissions#PERMISSION_TABLE_DELETE_INCREMENT",
+				value1 = "Delete"
+			);
+
+			AssertTextEquals(
+				locator1 = "CPRolesDefinepermissions#SUCCESS_MESSAGE",
+				value1 = "The permission was deleted."
+			);
+		}
+
+		AssertTextEquals(
+			locator1 = "CPRolesDefinepermissions#INFO_MESSAGE",
+			value1 = "This role does not have any permissions."
+		);
+	}
+
+	macro unassignRegRoleCP {
+		Page.gotoCP(portletName = "Roles");
+
+		Type(locator1 = "CPRoles#SEARCH_FIELD", value1 = "${roleName}");
+
+		AssertClick.assertValueClickAt(
+			locator1 = "CPRoles#SEARCH_BUTTON",
+			value1 = "Search"
+		);
+
+		AssertClick.pauseAssertTextClickAt(
+			locator1 = "CPRoles#ROLE_TABLE_ACTIONS_1",
+			value1 = "Actions"
+		);
+
+		AssertClick(
+			locator1 = "CPRoles#ROLE_MENULIST_ASSIGN_MEMBERS",
+			value1 = "Assign Members"
+		);
+
+		AssertClick.assertTextClickAt(
+			locator1 = "CPRolesAssignmembersUsers#STATUS_CURRENT",
+			value1 = "Current"
+		);
+
+		Type(
+			locator1 = "CPRolesAssignmembersUsers#BASIC_SEARCH_FIELD",
+			value1 = "${userScreenName}"
+		);
+
+		AssertClick.assertValueClickAtPause(
+			locator1 = "CPRolesAssignmembersUsers#BASIC_SEARCH_BUTTON",
+			value1 = "Search"
+		);
+
+		AssertTextEquals(
+			locator1 = "CPRolesAssignmembersUsers#SEARCH_RESULTS",
+			value1 = "Showing 1 result."
+		);
+
+		AssertTextEquals(
+			locator1 = "CPRolesAssignmembersUsers#USER_TABLE_SCREEN_NAME_1",
+			value1 = "${userScreenName}"
+		);
+
+		Uncheck(locator1 = "CPRolesAssignmembersUsers#USER_TABLE_CHECKBOX_1");
+
+		AssertClick.assertValueClickAt(
+			locator1 = "CPRolesAssignmembersUsers#UPDATE_ASSOCIATIONS_BUTTON",
+			value1 = "Update Associations"
+		);
+
+		AssertTextEquals(
+			locator1 = "CPRolesAssignmembersUsers#SUCCESS_MESSAGE",
+			value1 = "Your request completed successfully."
+		);
+	}
+
+	macro viewCP {
+		if ("${roleType}" == "Organization") {
+			Type(locator1 = "CPRoles#SEARCH_FIELD", value1 = "Orgrole");
+		}
+		else if ("${roleType}" == "Site") {
+			Type(locator1 = "CPRoles#SEARCH_FIELD", value1 = "Siterole");
+		}
+		else {
+			Type(locator1 = "CPRoles#SEARCH_FIELD", value1 = "Regrole");
+
+			var roleType = "Regular";
+		}
+
+		AssertClick.assertValueClickAt(
+			locator1 = "CPRoles#SEARCH_BUTTON",
+			value1 = "Search"
+		);
+
+		AssertTextEquals(
+			locator1 = "CPRoles#ROLE_TABLE_TITLE_1",
+			value1 = "${roleName}"
+		);
+
+		AssertTextEquals(locator1 = "CPRoles#ROLE_TABLE_TYPE_1", value1 = "${roleType}");
+
+		AssertClick.pauseAssertTextClickAt(
+			locator1 = "CPRoles#ROLE_TABLE_ACTIONS_1",
+			value1 = "Actions"
+		);
+
+		AssertClick(locator1 = "CPRoles#ROLE_MENULIST_EDIT", value1 = "Edit");
+
+		AssertTextEquals(locator1 = "CPRolesEdit#HEADER", value1 = "${roleName}");
+
+		AssertTextEquals(locator1 = "CPRolesEdit#NAME_FIELD", value1 = "${roleName}");
+	}
+}

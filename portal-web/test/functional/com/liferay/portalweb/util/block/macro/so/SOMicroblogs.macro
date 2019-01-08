@@ -1,629 +1,1015 @@
-<definition>
-	<command name="addMicroblogsEntry">
-		<if>
-			<equals arg1="${microblogsEntryViewableBy}" arg2="Connections" />
-			<then>
-				<execute function="Select" locator1="SOMicroblogs#MICROBLOGS_CONTENT_VIEW_FILTER" value1="Connections" />
-			</then>
-			<elseif>
-				<equals arg1="${microblogsEntryViewableBy}" arg2="Followers" />
-				<then>
-					<execute function="Select" locator1="SOMicroblogs#MICROBLOGS_CONTENT_VIEW_FILTER" value1="Followers" />
-				</then>
-			</elseif>
-			<else>
-				<execute function="Select" locator1="SOMicroblogs#MICROBLOGS_CONTENT_VIEW_FILTER" value1="Everyone" />
-			</else>
-		</if>
-
-		<execute function="Click" locator1="SOMicroblogs#MICROBLOGS_CONTENT_INPUT_FIELD" />
-
-		<if>
-			<isset var="number" />
-			<then>
-				<if>
-					<isset var="microblogsEntryCharacterCountdown" />
-					<then>
-						<var name="microblogsEntryCharacterCountdown" value="${microblogsEntryCharacterCountdown}" />
-					</then>
-					<else>
-						<var name="microblogsEntryCharacterCountdown" value="133" />
-					</else>
-				</if>
-
-				<var name="number" value="${number}" />
-
-				<execute function="Type#sendKeys" locator1="SOMicroblogs#MICROBLOGS_CONTENT_INPUT_FIELD" value1="${microblogsEntryContent}${number}" />
-				<execute function="AssertTextEquals" locator1="SOMicroblogs#MICROBLOGS_CONTENT_COUNTDOWN" value1="${microblogsEntryCharacterCountdown}" />
-				<execute function="Click" locator1="SOMicroblogs#POST_BUTTON" />
-				<execute function="AssertTextEquals" locator1="SOMicroblogs#MICROBLOGS_ENTRY_CONTENT_INCREMENT" value1="${microblogsEntryContent}${number}" />
-			</then>
-			<else>
-				<if>
-					<isset var="microblogsEntryCharacterCountdown" />
-					<then>
-						<var name="microblogsEntryCharacterCountdown" value="${microblogsEntryCharacterCountdown}" />
-					</then>
-					<else>
-						<var name="microblogsEntryCharacterCountdown" value="135" />
-					</else>
-				</if>
-
-				<execute function="Type#sendKeys" locator1="SOMicroblogs#MICROBLOGS_CONTENT_INPUT_FIELD" value1="${microblogsEntryContent}" />
-				<execute function="AssertTextEquals" locator1="SOMicroblogs#MICROBLOGS_CONTENT_COUNTDOWN" value1="${microblogsEntryCharacterCountdown}" />
-				<execute function="Click" locator1="SOMicroblogs#POST_BUTTON" />
-				<execute function="AssertTextEquals" locator1="SOMicroblogs#MICROBLOGS_ENTRY_CONTENT" value1="${microblogsEntryContent}" />
-			</else>
-		</if>
-	</command>
-
-	<command name="addMicroblogsEntryComment">
-		<if>
-			<isset var="microblogsEntryCharacterCountdown" />
-			<then>
-				<var name="microblogsEntryCharacterCountdown" value="${microblogsEntryCharacterCountdown}" />
-			</then>
-			<else>
-				<var name="microblogsEntryCharacterCountdown" value="127" />
-			</else>
-		</if>
-
-		<execute macro="SOMicroblogs#viewMicroblogsEntryAuthor" />
-
-		<execute function="AssertTextEquals" locator1="SOMicroblogs#MICROBLOGS_ENTRY_CONTENT" value1="${microblogsEntryContent}" />
-
-		<if>
-			<condition function="IsElementPresent" locator1="SOMicroblogs#MICROBLOGS_CONTENT_FIELD" />
-			<then>
-				<execute function="AssertClick" locator1="SOMicroblogs#MICROBLOGS_ENTRY_COMMENT_LINK" value1="Comment" />
-				<execute function="Click" locator1="SOMicroblogs#MICROBLOGS_ENTRY_COMMENT_CONTENT_FIELD" />
-				<execute function="Click" locator1="SOMicroblogs#MICROBLOGS_CONTENT_INPUT_FIELD" />
-				<execute function="Type#sendKeys" locator1="SOMicroblogs#MICROBLOGS_CONTENT_INPUT_FIELD" value1="${microblogsEntryCommentContent}" />
-				<execute function="AssertTextEquals" locator1="SOMicroblogs#MICROBLOGS_ENTRY_COMMENT_CONTENT_COUNTDOWN" value1="${microblogsEntryCharacterCountdown}" />
-				<execute function="Click" locator1="SOMicroblogs#MICROBLOGS_ENTRY_COMMENT_POST_BUTTON" />
-				<execute function="AssertTextEquals" locator1="SOMicroblogs#MICROBLOGS_ENTRY_COMMENT_CONTENT" value1="${microblogsEntryCommentContent}" />
-			</then>
-			<else>
-				<execute function="AssertClick" locator1="SOMicroblogs#MICROBLOGS_ENTRY_COMMENT_LINK" value1="Comment" />
-				<execute function="Click" locator1="SOMicroblogs#MICROBLOGS_CONTENT_FIELD" />
-				<execute function="Click" locator1="SOMicroblogs#MICROBLOGS_CONTENT_INPUT_FIELD" />
-				<execute function="Type#sendKeys" locator1="SOMicroblogs#MICROBLOGS_CONTENT_INPUT_FIELD" value1="${microblogsEntryCommentContent}" />
-				<execute function="AssertTextEquals" locator1="SOMicroblogs#MICROBLOGS_CONTENT_COUNTDOWN" value1="${microblogsEntryCharacterCountdown}" />
-				<execute function="Click" locator1="SOMicroblogs#POST_BUTTON" />
-				<execute function="AssertTextEquals" locator1="SOMicroblogs#MICROBLOGS_ENTRY_COMMENT_CONTENT" value1="${microblogsEntryCommentContent}" />
-			</else>
-		</if>
-	</command>
-
-	<command name="addMicroblogsEntryCommentMention">
-		<if>
-			<isset var="microblogsEntryCharacterCountdown" />
-			<then>
-				<var name="microblogsEntryCharacterCountdown" value="${microblogsEntryCharacterCountdown}" />
-			</then>
-			<else>
-				<var name="microblogsEntryCharacterCountdown" value="122" />
-			</else>
-		</if>
-
-		<execute macro="SOMicroblogs#viewMicroblogsEntryAuthor" />
-
-		<execute function="AssertTextEquals" locator1="SOMicroblogs#MICROBLOGS_ENTRY_CONTENT" value1="${microblogsEntryContent}" />
-		<execute function="AssertClick" locator1="SOMicroblogs#MICROBLOGS_ENTRY_COMMENT_LINK" value1="Comment" />
-
-		<if>
-			<condition function="IsElementPresent" locator1="SOMicroblogs#MICROBLOGS_ENTRY_COMMENT_CONTENT_FIELD" />
-			<then>
-				<execute function="Click" locator1="SOMicroblogs#MICROBLOGS_ENTRY_COMMENT_CONTENT_FIELD" />
-				<execute function="Click" locator1="SOMicroblogs#MICROBLOGS_CONTENT_INPUT_FIELD" />
-				<execute function="Type#sendKeys" locator1="SOMicroblogs#MICROBLOGS_CONTENT_INPUT_FIELD" value1="${microblogsEntryCommentContent} @${mentionUserFirstName}" />
-				<execute function="AssertTextEquals" locator1="SOMicroblogs#MICROBLOGS_CONTENT_AUTOCOMPLETE_USERNAME" value1="${mentionUserName}" />
-				<execute function="AssertTextEquals" locator1="SOMicroblogs#MICROBLOGS_CONTENT_AUTOCOMPLETE_EMAIL" value1="${mentionUserEmailAddress}" />
-				<execute function="Click" locator1="SOMicroblogs#MICROBLOGS_CONTENT_AUTOCOMPLETE_USERNAME" value1="${mentionUserEmailAddress}" />
-				<execute function="AssertTextEquals" locator1="SOMicroblogs#MICROBLOGS_ENTRY_COMMENT_CONTENT_COUNTDOWN" value1="${microblogsEntryCharacterCountdown}" />
-				<execute function="Click" locator1="SOMicroblogs#MICROBLOGS_ENTRY_COMMENT_POST_BUTTON" />
-				<execute function="AssertTextEquals" locator1="SOMicroblogs#MICROBLOGS_ENTRY_COMMENT_CONTENT" value1="${microblogsEntryCommentContent} ${mentionUserName}" />
-			</then>
-			<else>
-				<execute function="Click" locator1="SOMicroblogs#MICROBLOGS_CONTENT_FIELD" />
-				<execute function="Click" locator1="SOMicroblogs#MICROBLOGS_CONTENT_INPUT_FIELD" />
-				<execute function="Type#sendKeys" locator1="SOMicroblogs#MICROBLOGS_CONTENT_INPUT_FIELD" value1="${microblogsEntryCommentContent} @${mentionUserFirstName}" />
-				<execute function="AssertTextEquals" locator1="SOMicroblogs#MICROBLOGS_CONTENT_AUTOCOMPLETE_USERNAME" value1="${mentionUserName}" />
-				<execute function="AssertTextEquals" locator1="SOMicroblogs#MICROBLOGS_CONTENT_AUTOCOMPLETE_EMAIL" value1="${mentionUserEmailAddress}" />
-				<execute function="Click" locator1="SOMicroblogs#MICROBLOGS_CONTENT_AUTOCOMPLETE_USERNAME" value1="${mentionUserEmailAddress}" />
-				<execute function="AssertTextEquals" locator1="SOMicroblogs#MICROBLOGS_CONTENT_COUNTDOWN" value1="${microblogsEntryCharacterCountdown}" />
-				<execute function="Click" locator1="SOMicroblogs#POST_BUTTON" />
-				<execute function="AssertTextEquals" locator1="SOMicroblogs#MICROBLOGS_ENTRY_COMMENT_CONTENT" value1="${microblogsEntryCommentContent} ${mentionUserName}" />
-			</else>
-		</if>
-	</command>
-
-	<command name="addMicroblogsEntryHashtag">
-		<if>
-			<equals arg1="${microblogsEntryViewableBy}" arg2="Connections" />
-			<then>
-				<execute function="Select" locator1="SOMicroblogs#MICROBLOGS_CONTENT_VIEW_FILTER" value1="Connections" />
-			</then>
-			<elseif>
-				<equals arg1="${microblogsEntryViewableBy}" arg2="Followers" />
-				<then>
-					<execute function="Select" locator1="SOMicroblogs#MICROBLOGS_CONTENT_VIEW_FILTER" value1="Followers" />
-				</then>
-			</elseif>
-			<else>
-				<execute function="Select" locator1="SOMicroblogs#MICROBLOGS_CONTENT_VIEW_FILTER" value1="Everyone" />
-			</else>
-		</if>
-
-		<execute function="Click" locator1="SOMicroblogs#MICROBLOGS_CONTENT_INPUT_FIELD" />
-
-		<if>
-			<isset var="number" />
-			<then>
-				<if>
-					<isset var="microblogsEntryCharacterCountdown" />
-					<then>
-						<var name="microblogsEntryCharacterCountdown" value="${microblogsEntryCharacterCountdown}" />
-					</then>
-					<else>
-						<var name="microblogsEntryCharacterCountdown" value="132" />
-					</else>
-				</if>
-
-				<var name="number" value="${number}" />
-
-				<execute function="Type#sendKeys" locator1="SOMicroblogs#MICROBLOGS_CONTENT_INPUT_FIELD" value1="#${microblogsEntryContent}${number}" />
-				<execute function="AssertTextEquals" locator1="SOMicroblogs#MICROBLOGS_CONTENT_COUNTDOWN" value1="${microblogsEntryCharacterCountdown}" />
-				<execute function="Click" locator1="SOMicroblogs#POST_BUTTON" />
-				<execute function="AssertTextEquals" locator1="SOMicroblogs#MICROBLOGS_ENTRY_CONTENT_INCREMENT" value1="${microblogsEntryContent}${number}" />
-			</then>
-			<else>
-				<if>
-					<isset var="microblogsEntryCharacterCountdown" />
-					<then>
-						<var name="microblogsEntryCharacterCountdown" value="${microblogsEntryCharacterCountdown}" />
-					</then>
-					<else>
-						<var name="microblogsEntryCharacterCountdown" value="134" />
-					</else>
-				</if>
-
-				<execute function="Type#sendKeys" locator1="SOMicroblogs#MICROBLOGS_CONTENT_INPUT_FIELD" value1="#${microblogsEntryContent}" />
-				<execute function="AssertTextEquals" locator1="SOMicroblogs#MICROBLOGS_CONTENT_COUNTDOWN" value1="${microblogsEntryCharacterCountdown}" />
-				<execute function="Click" locator1="SOMicroblogs#POST_BUTTON" />
-				<execute function="AssertTextEquals" locator1="SOMicroblogs#MICROBLOGS_ENTRY_CONTENT" value1="${microblogsEntryContent}" />
-			</else>
-		</if>
-	</command>
-
-	<command name="addMicroblogsEntryMention">
-		<if>
-			<equals arg1="${microblogsEntryViewableBy}" arg2="Connections" />
-			<then>
-				<execute function="Select" locator1="SOMicroblogs#MICROBLOGS_CONTENT_VIEW_FILTER" value1="Connections" />
-			</then>
-			<elseif>
-				<equals arg1="${microblogsEntryViewableBy}" arg2="Followers" />
-				<then>
-					<execute function="Select" locator1="SOMicroblogs#MICROBLOGS_CONTENT_VIEW_FILTER" value1="Followers" />
-				</then>
-			</elseif>
-			<else>
-				<execute function="Select" locator1="SOMicroblogs#MICROBLOGS_CONTENT_VIEW_FILTER" value1="Everyone" />
-			</else>
-		</if>
-
-		<execute function="Click" locator1="SOMicroblogs#MICROBLOGS_CONTENT_INPUT_FIELD" />
-
-		<if>
-			<isset var="microblogsEntryCharacterCountdown" />
-			<then>
-				<var name="microblogsEntryCharacterCountdown" value="${microblogsEntryCharacterCountdown}" />
-			</then>
-			<else>
-				<var name="microblogsEntryCharacterCountdown" value="141" />
-			</else>
-		</if>
-
-		<execute function="Type#sendKeys" locator1="SOMicroblogs#MICROBLOGS_CONTENT_INPUT_FIELD" value1="@${mentionUserFirstName}" />
-		<execute function="AssertTextEquals" locator1="SOMicroblogs#MICROBLOGS_CONTENT_AUTOCOMPLETE_USERNAME" value1="${mentionUserName}" />
-		<execute function="AssertTextEquals" locator1="SOMicroblogs#MICROBLOGS_CONTENT_AUTOCOMPLETE_EMAIL" value1="${mentionUserEmailAddress}" />
-		<execute function="Click" locator1="SOMicroblogs#MICROBLOGS_CONTENT_AUTOCOMPLETE_USERNAME" value1="${mentionUserEmailAddress}" />
-		<execute function="AssertTextEquals" locator1="SOMicroblogs#MICROBLOGS_CONTENT_COUNTDOWN" value1="${microblogsEntryCharacterCountdown}" />
-		<execute function="Click" locator1="SOMicroblogs#POST_BUTTON" />
-		<execute function="AssertTextEquals" locator1="SOMicroblogs#MICROBLOGS_ENTRY_CONTENT" value1="${mentionUserName}" />
-	</command>
-
-	<command name="deleteMicroblogsEntry">
-		<execute function="MouseOver#makeVisible" locator1="SOMicroblogs#MICROBLOGS_ENTRY_EDIT" />
-		<execute function="MouseOver#makeVisible" locator1="SOMicroblogs#MICROBLOGS_ENTRY_DELETE" />
-		<execute function="AssertClickNoError#makeVisibleClick" locator1="SOMicroblogs#MICROBLOGS_ENTRY_DELETE_LINK" value1="Delete" />
-		<execute function="Confirm" value1="Are you sure you want to delete this post?" />
-	</command>
-
-	<command name="gotoMicroblogsContentField">
-		<execute function="Click#textClickAt" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
-
-		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_MICROBLOGS" value1="Microblogs" />
-
-		<if>
-			<condition function="IsElementNotPresent" locator1="SOMicroblogs#MICROBLOGS_ENTRY_CONTENT" />
-			<then>
-				<execute function="AssertTextEquals" locator1="SOMicroblogs#INFO_MESSAGE" value1="You do not have any microblog entries." />
-			</then>
-		</if>
-
-		<execute function="Click" locator1="SOMicroblogs#MICROBLOGS_CONTENT_FIELD" />
-	</command>
-
-	<command name="repostMicroblogsEntry">
-		<execute macro="SOMicroblogs#viewMicroblogsEntryViewableByEveryone" />
-
-		<execute function="AssertClick" locator1="SOProfileMicroblogs#MICROBLOGS_ENTRY_REPOST_LINK" value1="Repost" />
-
-		<execute function="AssertTextEquals" locator1="SOProfileMicroblogsRepost#HEADER" value1="Do you want to repost this entry?" />
-
-		<if>
-			<isset var="microblogsEntryAuthorMiddleName" />
-			<then>
-				<execute function="AssertTextEquals" locator1="SOProfileMicroblogs#MICROBLOGS_ENTRY_AUTHOR" value1="${microblogsEntryAuthorFirstName} ${microblogsEntryAuthorMiddleName} ${microblogsEntryAuthorLastName}" />
-			</then>
-			<else>
-				<execute function="AssertTextEquals" locator1="SOProfileMicroblogs#MICROBLOGS_ENTRY_AUTHOR" value1="${microblogsEntryAuthorFirstName} ${microblogsEntryAuthorLastName}" />
-			</else>
-		</if>
-
-		<execute function="AssertTextEquals" locator1="SOProfileMicroblogsRepost#MICROBLOGS_ENTRY_CONTENT" value1="${microblogsEntryContent}" />
-		<execute function="AssertClick" locator1="SOProfileMicroblogsRepost#POST_BUTTON" value1="Post" />
-
-		<execute function="AssertElementPresent" locator1="SOProfile#USER_NAME" />
-	</command>
-
-	<command name="tearDownMicroblogsEntry">
-		<execute macro="SOUser#firstLoginPG" />
-
-		<execute function="Click#textClickAt" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
-
-		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_MICROBLOGS" value1="Microblogs" />
-
-		<while>
-			<condition function="IsElementPresent#pauseIsElementPresent" locator1="SOMicroblogs#MICROBLOGS_ENTRY_DELETE_LINK" value1="Delete" />
-			<then>
-				<execute function="MouseOver#makeVisible" locator1="SOMicroblogs#MICROBLOGS_ENTRY_EDIT" />
-				<execute function="MouseOver#makeVisible" locator1="SOMicroblogs#MICROBLOGS_ENTRY_DELETE" />
-				<execute function="AssertClickNoError#makeVisibleClick" locator1="SOMicroblogs#MICROBLOGS_ENTRY_DELETE_LINK" value1="Delete" />
-				<execute function="Confirm" value1="Are you sure you want to delete this post?" />
-			</then>
-		</while>
-	</command>
-
-	<command name="viewMicroblogsEntryAuthor">
-		<if>
-			<isset var="microblogsEntryRepostAuthorFirstName" />
-			<then>
-				<if>
-					<isset var="microblogsEntryAuthorMiddleName" />
-					<then>
-						<if>
-							<isset var="microblogsEntryRepostAuthorMiddleName" />
-							<then>
-								<execute function="AssertTextEquals#assertPartialText" locator1="SOMicroblogs#MICROBLOGS_ENTRY_AUTHOR" value1="${microblogsEntryRepostAuthorFirstName} ${microblogsEntryRepostAuthorMiddleName} ${microblogsEntryRepostAuthorLastName} Reposted From ${microblogsEntryAuthorFirstName} ${microblogsEntryAuthorMiddleName} ${microblogsEntryAuthorLastName}" />
-							</then>
-							<else>
-								<execute function="AssertTextEquals#assertPartialText" locator1="SOMicroblogs#MICROBLOGS_ENTRY_AUTHOR" value1="${microblogsEntryRepostAuthorFirstName} ${microblogsEntryRepostAuthorLastName} Reposted From ${microblogsEntryAuthorFirstName} ${microblogsEntryAuthorMiddleName} ${microblogsEntryAuthorLastName}" />
-							</else>
-						</if>
-					</then>
-					<else>
-						<if>
-							<isset var="microblogsEntryRepostAuthorMiddleName" />
-							<then>
-								<execute function="AssertTextEquals#assertPartialText" locator1="SOMicroblogs#MICROBLOGS_ENTRY_AUTHOR" value1="${microblogsEntryRepostAuthorFirstName} ${microblogsEntryRepostAuthorMiddleName} ${microblogsEntryRepostAuthorLastName} Reposted From ${microblogsEntryAuthorFirstName} ${microblogsEntryAuthorLastName}" />
-							</then>
-							<else>
-								<execute function="AssertTextEquals#assertPartialText" locator1="SOMicroblogs#MICROBLOGS_ENTRY_AUTHOR" value1="${microblogsEntryRepostAuthorFirstName} ${microblogsEntryRepostAuthorLastName} Reposted From ${microblogsEntryAuthorFirstName} ${microblogsEntryAuthorLastName}" />
-							</else>
-						</if>
-					</else>
-				</if>
-			</then>
-			<else>
-				<if>
-					<isset var="microblogsEntryAuthorMiddleName" />
-					<then>
-						<execute function="AssertTextEquals#assertPartialText" locator1="SOMicroblogs#MICROBLOGS_ENTRY_AUTHOR" value1="${microblogsEntryAuthorFirstName} ${microblogsEntryAuthorMiddleName} ${microblogsEntryAuthorLastName}" />
-					</then>
-					<else>
-						<execute function="AssertTextEquals#assertPartialText" locator1="SOMicroblogs#MICROBLOGS_ENTRY_AUTHOR" value1="${microblogsEntryAuthorFirstName} ${microblogsEntryAuthorLastName}" />
-					</else>
-				</if>
-			</else>
-		</if>
-	</command>
-
-	<command name="viewMicroblogsEntryComment">
-		<if>
-			<equals arg1="${commentCount}" arg2="1" />
-			<then>
-				<execute function="AssertClick" locator1="SOMicroblogs#MICROBLOGS_ENTRY_COMMENT_LINK" value1="1 Comment" />
-			</then>
-			<else>
-				<execute function="AssertClick" locator1="SOMicroblogs#MICROBLOGS_ENTRY_COMMENT_LINK" value1="${commentCount} Comments" />
-			</else>
-		</if>
-
-		<if>
-			<isset var="microblogsEntryCommentAuthorMiddleName" />
-			<then>
-				<execute function="AssertTextEquals" locator1="SOMicroblogs#MICROBLOGS_ENTRY_COMMENT_AUTHOR" value1="${microblogsEntryCommentAuthorFirstName} ${microblogsEntryCommentAuthorMiddleName} ${microblogsEntryCommentAuthorLastName}" />
-			</then>
-			<else>
-				<execute function="AssertTextEquals" locator1="SOMicroblogs#MICROBLOGS_ENTRY_COMMENT_AUTHOR" value1="${microblogsEntryCommentAuthorFirstName} ${microblogsEntryCommentAuthorLastName}" />
-			</else>
-		</if>
-
-		<execute function="AssertTextEquals" locator1="SOMicroblogs#MICROBLOGS_ENTRY_COMMENT_CONTENT" value1="${microblogsEntryCommentContent}" />
-	</command>
-
-	<command name="viewMicroblogsEntryCommentLink">
-		<if>
-			<isset var="commentCount" />
-			<then>
-				<if>
-					<equals arg1="${commentCount}" arg2="1" />
-					<then>
-						<execute function="AssertTextEquals" locator1="SOMicroblogs#MICROBLOGS_ENTRY_COMMENT_LINK" value1="1 Comment" />
-					</then>
-					<else>
-						<execute function="AssertTextEquals" locator1="SOMicroblogs#MICROBLOGS_ENTRY_COMMENT_LINK" value1="${commentCount} Comments" />
-					</else>
-				</if>
-			</then>
-			<else>
-				<execute function="AssertTextEquals" locator1="SOMicroblogs#MICROBLOGS_ENTRY_COMMENT_LINK" value1="Comment" />
-			</else>
-		</if>
-	</command>
-
-	<command name="viewMicroblogsEntryCommentNotification">
-		<execute function="Click#textClickAt" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
-		<execute function="AssertElementPresent#assertElementPresent" locator1="SOUserBar#NOTIFICATION" />
-		<execute function="AssertTextEquals" locator1="SOUserBar#NOTIFICATION_MENU_COUNT" value1="1" />
-		<execute function="MouseOver" locator1="SOUserBar#NOTIFICATION" />
-
-		<if>
-			<isset var="microblogsEntryCommentAuthorMiddleName" />
-			<then>
-				<execute function="AssertTextEquals#assertPartialText" locator1="SOUserBar#NOTIFICATION_MENU_ENTRY_CONTENT" value1="${microblogsEntryCommentAuthorFirstName} ${microblogsEntryCommentAuthorMiddleName} ${microblogsEntryCommentAuthorLastName} commented on your post." />
-			</then>
-			<else>
-				<execute function="AssertTextEquals#assertPartialText" locator1="SOUserBar#NOTIFICATION_MENU_ENTRY_CONTENT" value1="${microblogsEntryCommentAuthorFirstName} ${microblogsEntryCommentAuthorLastName} commented on your post." />
-			</else>
-		</if>
-
-		<execute function="AssertTextEquals" locator1="SOUserBar#NOTIFICATION_MENU_ENTRY_SUBCONTENT" value1="${microblogsEntryCommentContent}" />
-		<execute function="AssertClick" locator1="SOUserBar#NOTIFICATION_MENU_MARK_ALL_AS_READ" value1="Mark All as Read" />
-		<execute function="AssertTextEquals" locator1="SOUserBar#NOTIFICATION_MENU_COUNT" value1="0" />
-	</command>
-
-	<command name="viewMicroblogsEntryMention">
-		<var name="microblogsEntryContent" value="${mentionUserName}" />
-
-		<execute function="Click#textClickAt" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
-
-		<if>
-			<condition function="IsElementNotPresent" locator1="SODashboard#WHATS_HAPPENING_ENTRY_CONTENT" />
-			<then>
-				<execute function="AssertTextEquals" locator1="SODashboard#WHATS_HAPPENING_INFO_MESSAGE" value1="You do not have any microblog entries." />
-			</then>
-		</if>
-
-		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_MICROBLOGS" value1="Microblogs" />
-
-		<execute macro="SOMicroblogs#viewMicroblogsEntryAuthor" />
-
-		<execute function="AssertTextEquals" locator1="SOMicroblogs#MICROBLOGS_ENTRY_CONTENT" value1="${microblogsEntryContent}" />
-
-		<execute macro="SOMicroblogs#viewMicroblogsEntryCommentLink" />
-
-		<execute function="AssertClick#assertTextClickAt" locator1="SOMicroblogs#TAB_MENTIONS" value1="Mentions" />
-
-		<execute macro="SOMicroblogs#viewMicroblogsEntryAuthor" />
-
-		<execute function="AssertTextEquals" locator1="SOMicroblogs#MICROBLOGS_ENTRY_CONTENT" value1="${microblogsEntryContent}" />
-
-		<execute macro="SOMicroblogs#viewMicroblogsEntryCommentLink" />
-
-		<execute function="AssertClick" locator1="SOMicroblogs#MICROBLOGS_ENTRY_CONTENT_TAG" value1="${microblogsEntryContent}" />
-
-		<execute function="AssertTextEquals" locator1="SOProfile#USER_NAME" value1="${mentionUserName}" />
-		<execute function="AssertTextEquals" locator1="SOProfile#USER_EMAIL" value1="${mentionUserEmailAddress}" />
-	</command>
-
-	<command name="viewMicroblogsEntryNone">
-		<execute function="Click#textClickAt" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
-
-		<execute function="AssertClick#assertTextClickAt" locator1="SOActivities#NAVIGATION_CONNECTIONS" value1="Connections" />
-		<execute function="AssertTextEquals" locator1="SOActivities#NO_ACTIVITIES" value1="There are no activities." />
-		<execute function="AssertTextNotPresent" value1="${microblogsEntryContent}" />
-		<execute function="AssertClick#assertTextClickAt" locator1="SOActivities#NAVIGATION_FOLLOWING" value1="Following" />
-		<execute function="AssertTextEquals" locator1="SOActivities#NO_ACTIVITIES" value1="There are no activities." />
-		<execute function="AssertTextNotPresent" value1="${microblogsEntryContent}" />
-
-		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_MICROBLOGS" value1="Microblogs" />
-
-		<execute function="AssertTextNotPresent" value1="${microblogsEntryContent}" />
-	</command>
-
-	<command name="viewMicroblogsEntryNotViewableByEveryone">
-		<execute function="Click#textClickAt" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
-
-		<execute function="AssertTextEquals" locator1="SODashboard#WHATS_HAPPENING_INFO_MESSAGE" value1="You do not have any microblog entries." />
-
-		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_MICROBLOGS" value1="Microblogs" />
-
-		<execute macro="SOMicroblogs#viewMicroblogsEntryAuthor" />
-
-		<execute function="AssertTextEquals" locator1="SOMicroblogs#MICROBLOGS_ENTRY_CONTENT" value1="${microblogsEntryContent}" />
-
-		<execute macro="SOMicroblogs#viewMicroblogsEntryCommentLink" />
-
-		<execute function="AssertElementNotPresent" locator1="SOMicroblogs#MICROBLOGS_ENTRY_REPOST_LINK" value1="Repost" />
-	</command>
-
-	<command name="viewMicroblogsEntryViewableByEveryone">
-		<execute function="Click#textClickAt" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
-
-		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_CONTACTS_CENTER" value1="Contacts Center" />
-
-		<execute function="Type" locator1="SOContactscenter#CONTACTS_LIST_SEARCH" value1="${microblogsEntryAuthorScreenName}" />
-		<execute function="AssertClick#pauseAssertTextClickAt" locator1="SOContactscenter#CONTACTS_LIST_NAME" value1="${microblogsEntryAuthorLastName}, ${microblogsEntryAuthorFirstName}" />
-
-		<if>
-			<isset var="microblogsEntryAuthorMiddleName" />
-			<then>
-				<execute function="AssertClick#assertTextClickAt" locator1="SOContactscenter#USER_DETAILS_NAME" value1="${microblogsEntryAuthorFirstName} ${microblogsEntryAuthorMiddleName} ${microblogsEntryAuthorLastName}" />
-			</then>
-			<else>
-				<execute function="AssertClick#assertTextClickAt" locator1="SOContactscenter#USER_DETAILS_NAME" value1="${microblogsEntryAuthorFirstName} ${microblogsEntryAuthorLastName}" />
-			</else>
-		</if>
-
-		<execute function="AssertTextEquals" locator1="SOProfile#WHATS_HAPPENING_ENTRY_CONTENT" value1="${microblogsEntryContent}" />
-
-		<execute function="Click" locator1="SOProfile#NAVIGATION_MICROBLOGS" />
-
-		<execute macro="SOMicroblogs#viewMicroblogsEntryAuthor" />
-
-		<execute function="AssertTextEquals" locator1="SOProfileMicroblogs#MICROBLOGS_ENTRY_CONTENT" value1="${microblogsEntryContent}" />
-
-		<if>
-			<isset var="commentCount" />
-			<then>
-				<if>
-					<equals arg1="${commentCount}" arg2="1" />
-					<then>
-						<execute function="AssertTextEquals" locator1="SOProfileMicroblogs#MICROBLOGS_ENTRY_COMMENT_LINK" value1="1 Comment" />
-					</then>
-					<else>
-						<execute function="AssertTextEquals" locator1="SOProfileMicroblogs#MICROBLOGS_ENTRY_COMMENT_LINK" value1="${commentCount} Comments" />
-					</else>
-				</if>
-			</then>
-			<else>
-				<execute function="AssertTextEquals" locator1="SOProfileMicroblogs#MICROBLOGS_ENTRY_COMMENT_LINK" value1="Comment" />
-			</else>
-		</if>
-
-		<execute function="AssertTextEquals" locator1="SOProfileMicroblogs#MICROBLOGS_ENTRY_REPOST_LINK" value1="Repost" />
-		<execute function="AssertElementNotPresent" locator1="SOProfileMicroblogs#MICROBLOGS_ENTRY_EDIT_LINK" value1="Edit" />
-		<execute function="AssertElementNotPresent" locator1="SOProfileMicroblogs#MICROBLOGS_ENTRY_DELETE_LINK" value1="Delete" />
-	</command>
-
-	<command name="viewOwnMicroblogsEntry">
-		<if>
-			<isset var="number" />
-			<then>
-				<var name="number" value="${number}" />
-				<var name="whatsHappeningNumber" value="${whatsHappeningNumber}" />
-
-				<execute function="Click#textClickAt" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
-
-				<execute function="AssertTextEquals" locator1="SODashboard#WHATS_HAPPENING_ENTRY_CONTENT" value1="${microblogsEntryContent}${whatsHappeningNumber}" />
-
-				<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_MICROBLOGS" value1="Microblogs" />
-
-				<execute macro="SOMicroblogs#viewMicroblogsEntryAuthor" />
-
-				<execute function="AssertTextEquals" locator1="SOMicroblogs#MICROBLOGS_ENTRY_CONTENT_INCREMENT" value1="${microblogsEntryContent}${number}" />
-
-				<execute macro="SOMicroblogs#viewMicroblogsEntryCommentLink" />
-
-				<execute function="AssertElementNotPresent" locator1="SOMicroblogs#MICROBLOGS_ENTRY_REPOST_LINK" value1="Repost" />
-			</then>
-			<else>
-				<execute function="Click#textClickAt" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
-
-				<execute function="AssertTextEquals" locator1="SODashboard#WHATS_HAPPENING_ENTRY_CONTENT" value1="${microblogsEntryContent}" />
-				<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_MICROBLOGS" value1="Microblogs" />
-
-				<execute macro="SOMicroblogs#viewMicroblogsEntryAuthor" />
-
-				<execute function="AssertTextEquals" locator1="SOMicroblogs#MICROBLOGS_ENTRY_CONTENT" value1="${microblogsEntryContent}" />
-
-				<execute macro="SOMicroblogs#viewMicroblogsEntryCommentLink" />
-
-				<execute function="AssertElementNotPresent" locator1="SOMicroblogs#MICROBLOGS_ENTRY_REPOST_LINK" value1="Repost" />
-			</else>
-		</if>
-	</command>
-
-	<command name="viewOwnMicroblogsEntryMention">
-		<var name="microblogsEntryContent" value="${mentionUserName}" />
-
-		<execute macro="SOMicroblogs#viewOwnMicroblogsEntry" />
-
-		<execute function="AssertClick" locator1="SOMicroblogs#MICROBLOGS_ENTRY_CONTENT_TAG" value1="${mentionUserName}" />
-
-		<execute function="AssertTextEquals" locator1="SOProfile#USER_NAME" value1="${mentionUserName}" />
-		<execute function="AssertTextEquals" locator1="SOProfile#USER_EMAIL" value1="${userEmailAddress}" />
-	</command>
-
-	<command name="viewOwnMicroblogsEntryTag">
-		<if>
-			<isset var="number" />
-			<then>
-				<var name="number" value="${number}" />
-
-				<execute macro="SOMicroblogs#viewOwnMicroblogsEntry" />
-
-				<execute function="AssertClick" locator1="SOMicroblogs#MICROBLOGS_ENTRY_CONTENT_TAG" value1="${microblogsEntryTagValue}" />
-
-				<execute macro="SOMicroblogs#viewMicroblogsEntryAuthor" />
-
-				<execute function="AssertTextEquals" locator1="SOMicroblogs#TAB_TAG_VALUE" value1="${microblogsEntryTagValue}" />
-				<execute function="AssertTextEquals" locator1="SOMicroblogs#MICROBLOGS_ENTRY_CONTENT_INCREMENT" value1="${microblogsEntryContent}${number}" />
-				<execute function="AssertTextEquals" locator1="SOMicroblogs#MICROBLOGS_ENTRY_CONTENT_TAG_INCREMENT" value1="${microblogsEntryTagValue}" />
-				<execute function="AssertClick#assertTextClickAt" locator1="SOMicroblogs#TAB_TAG_VALUE" value1="${microblogsEntryTagValue}" />
-
-				<execute macro="SOMicroblogs#viewMicroblogsEntryAuthor" />
-
-				<execute function="AssertTextEquals" locator1="SOMicroblogs#TAB_TAG_VALUE" value1="${microblogsEntryTagValue}" />
-				<execute function="AssertTextEquals" locator1="SOMicroblogs#MICROBLOGS_ENTRY_CONTENT_INCREMENT" value1="${microblogsEntryContent}${number}" />
-				<execute function="AssertTextEquals" locator1="SOMicroblogs#MICROBLOGS_ENTRY_CONTENT_TAG_INCREMENT" value1="${microblogsEntryTagValue}" />
-			</then>
-			<else>
-				<execute macro="SOMicroblogs#viewOwnMicroblogsEntry" />
-
-				<execute function="AssertClick" locator1="SOMicroblogs#MICROBLOGS_ENTRY_CONTENT_TAG" value1="${microblogsEntryTagValue}" />
-
-				<execute macro="SOMicroblogs#viewMicroblogsEntryAuthor" />
-
-				<execute function="AssertTextEquals" locator1="SOMicroblogs#TAB_TAG_VALUE" value1="${microblogsEntryTagValue}" />
-				<execute function="AssertTextEquals" locator1="SOMicroblogs#MICROBLOGS_ENTRY_CONTENT" value1="${microblogsEntryContent}" />
-				<execute function="AssertTextEquals" locator1="SOMicroblogs#MICROBLOGS_ENTRY_CONTENT_TAG" value1="${microblogsEntryTagValue}" />
-				<execute function="AssertClick#assertTextClickAt" locator1="SOMicroblogs#TAB_TAG_VALUE" value1="${microblogsEntryTagValue}" />
-
-				<execute macro="SOMicroblogs#viewMicroblogsEntryAuthor" />
-
-				<execute function="AssertTextEquals" locator1="SOMicroblogs#TAB_TAG_VALUE" value1="${microblogsEntryTagValue}" />
-				<execute function="AssertTextEquals" locator1="SOMicroblogs#MICROBLOGS_ENTRY_CONTENT" value1="${microblogsEntryContent}" />
-				<execute function="AssertTextEquals" locator1="SOMicroblogs#MICROBLOGS_ENTRY_CONTENT_TAG" value1="${microblogsEntryTagValue}" />
-			</else>
-		</if>
-	</command>
-
-	<command name="viewOwnMicroblogsRepost">
-		<execute function="Click#textClickAt" locator1="SOUserBar#DASHBOARD" value1="Dashboard" />
-
-		<execute function="Click#textClickAt" locator1="SODashboard#NAVIGATION_MICROBLOGS" value1="Microblogs" />
-
-		<execute macro="SOMicroblogs#viewMicroblogsEntryAuthor" />
-
-		<execute function="AssertTextEquals" locator1="SOMicroblogs#MICROBLOGS_ENTRY_CONTENT" value1="${microblogsEntryContent}" />
-
-		<execute macro="SOMicroblogs#viewMicroblogsEntryCommentLink" />
-
-		<execute function="AssertElementNotPresent" locator1="SOMicroblogs#MICROBLOGS_ENTRY_REPOST_LINK" value1="Repost" />
-	</command>
-</definition>
+definition {
+	macro addMicroblogsEntry {
+		if ("${microblogsEntryViewableBy}" == "Connections") {
+			Select(
+				locator1 = "SOMicroblogs#MICROBLOGS_CONTENT_VIEW_FILTER",
+				value1 = "Connections"
+			);
+		}
+		else if ("${microblogsEntryViewableBy}" == "Followers") {
+			Select(
+				locator1 = "SOMicroblogs#MICROBLOGS_CONTENT_VIEW_FILTER",
+				value1 = "Followers"
+			);
+		}
+		else {
+			Select(
+				locator1 = "SOMicroblogs#MICROBLOGS_CONTENT_VIEW_FILTER",
+				value1 = "Everyone"
+			);
+		}
+
+		Click(locator1 = "SOMicroblogs#MICROBLOGS_CONTENT_INPUT_FIELD");
+
+		if (isSet(number)) {
+			if (isSet(microblogsEntryCharacterCountdown)) {
+				var microblogsEntryCharacterCountdown = "${microblogsEntryCharacterCountdown}";
+			}
+			else {
+				var microblogsEntryCharacterCountdown = "133";
+			}
+
+			var number = "${number}";
+
+			Type.sendKeys(
+				locator1 = "SOMicroblogs#MICROBLOGS_CONTENT_INPUT_FIELD",
+				value1 = "${microblogsEntryContent}${number}"
+			);
+
+			AssertTextEquals(
+				locator1 = "SOMicroblogs#MICROBLOGS_CONTENT_COUNTDOWN",
+				value1 = "${microblogsEntryCharacterCountdown}"
+			);
+
+			Click(locator1 = "SOMicroblogs#POST_BUTTON");
+
+			AssertTextEquals(
+				locator1 = "SOMicroblogs#MICROBLOGS_ENTRY_CONTENT_INCREMENT",
+				value1 = "${microblogsEntryContent}${number}"
+			);
+		}
+		else {
+			if (isSet(microblogsEntryCharacterCountdown)) {
+				var microblogsEntryCharacterCountdown = "${microblogsEntryCharacterCountdown}";
+			}
+			else {
+				var microblogsEntryCharacterCountdown = "135";
+			}
+
+			Type.sendKeys(
+				locator1 = "SOMicroblogs#MICROBLOGS_CONTENT_INPUT_FIELD",
+				value1 = "${microblogsEntryContent}"
+			);
+
+			AssertTextEquals(
+				locator1 = "SOMicroblogs#MICROBLOGS_CONTENT_COUNTDOWN",
+				value1 = "${microblogsEntryCharacterCountdown}"
+			);
+
+			Click(locator1 = "SOMicroblogs#POST_BUTTON");
+
+			AssertTextEquals(
+				locator1 = "SOMicroblogs#MICROBLOGS_ENTRY_CONTENT",
+				value1 = "${microblogsEntryContent}"
+			);
+		}
+	}
+
+	macro addMicroblogsEntryComment {
+		if (isSet(microblogsEntryCharacterCountdown)) {
+			var microblogsEntryCharacterCountdown = "${microblogsEntryCharacterCountdown}";
+		}
+		else {
+			var microblogsEntryCharacterCountdown = "127";
+		}
+
+		SOMicroblogs.viewMicroblogsEntryAuthor();
+
+		AssertTextEquals(
+			locator1 = "SOMicroblogs#MICROBLOGS_ENTRY_CONTENT",
+			value1 = "${microblogsEntryContent}"
+		);
+
+		if (IsElementPresent(locator1 = "SOMicroblogs#MICROBLOGS_CONTENT_FIELD")) {
+			AssertClick(
+				locator1 = "SOMicroblogs#MICROBLOGS_ENTRY_COMMENT_LINK",
+				value1 = "Comment"
+			);
+
+			Click(locator1 = "SOMicroblogs#MICROBLOGS_ENTRY_COMMENT_CONTENT_FIELD");
+
+			Click(locator1 = "SOMicroblogs#MICROBLOGS_CONTENT_INPUT_FIELD");
+
+			Type.sendKeys(
+				locator1 = "SOMicroblogs#MICROBLOGS_CONTENT_INPUT_FIELD",
+				value1 = "${microblogsEntryCommentContent}"
+			);
+
+			AssertTextEquals(
+				locator1 = "SOMicroblogs#MICROBLOGS_ENTRY_COMMENT_CONTENT_COUNTDOWN",
+				value1 = "${microblogsEntryCharacterCountdown}"
+			);
+
+			Click(locator1 = "SOMicroblogs#MICROBLOGS_ENTRY_COMMENT_POST_BUTTON");
+
+			AssertTextEquals(
+				locator1 = "SOMicroblogs#MICROBLOGS_ENTRY_COMMENT_CONTENT",
+				value1 = "${microblogsEntryCommentContent}"
+			);
+		}
+		else {
+			AssertClick(
+				locator1 = "SOMicroblogs#MICROBLOGS_ENTRY_COMMENT_LINK",
+				value1 = "Comment"
+			);
+
+			Click(locator1 = "SOMicroblogs#MICROBLOGS_CONTENT_FIELD");
+
+			Click(locator1 = "SOMicroblogs#MICROBLOGS_CONTENT_INPUT_FIELD");
+
+			Type.sendKeys(
+				locator1 = "SOMicroblogs#MICROBLOGS_CONTENT_INPUT_FIELD",
+				value1 = "${microblogsEntryCommentContent}"
+			);
+
+			AssertTextEquals(
+				locator1 = "SOMicroblogs#MICROBLOGS_CONTENT_COUNTDOWN",
+				value1 = "${microblogsEntryCharacterCountdown}"
+			);
+
+			Click(locator1 = "SOMicroblogs#POST_BUTTON");
+
+			AssertTextEquals(
+				locator1 = "SOMicroblogs#MICROBLOGS_ENTRY_COMMENT_CONTENT",
+				value1 = "${microblogsEntryCommentContent}"
+			);
+		}
+	}
+
+	macro addMicroblogsEntryCommentMention {
+		if (isSet(microblogsEntryCharacterCountdown)) {
+			var microblogsEntryCharacterCountdown = "${microblogsEntryCharacterCountdown}";
+		}
+		else {
+			var microblogsEntryCharacterCountdown = "122";
+		}
+
+		SOMicroblogs.viewMicroblogsEntryAuthor();
+
+		AssertTextEquals(
+			locator1 = "SOMicroblogs#MICROBLOGS_ENTRY_CONTENT",
+			value1 = "${microblogsEntryContent}"
+		);
+
+		AssertClick(
+			locator1 = "SOMicroblogs#MICROBLOGS_ENTRY_COMMENT_LINK",
+			value1 = "Comment"
+		);
+
+		if (IsElementPresent(locator1 = "SOMicroblogs#MICROBLOGS_ENTRY_COMMENT_CONTENT_FIELD")) {
+			Click(locator1 = "SOMicroblogs#MICROBLOGS_ENTRY_COMMENT_CONTENT_FIELD");
+
+			Click(locator1 = "SOMicroblogs#MICROBLOGS_CONTENT_INPUT_FIELD");
+
+			Type.sendKeys(
+				locator1 = "SOMicroblogs#MICROBLOGS_CONTENT_INPUT_FIELD",
+				value1 = "${microblogsEntryCommentContent} @${mentionUserFirstName}"
+			);
+
+			AssertTextEquals(
+				locator1 = "SOMicroblogs#MICROBLOGS_CONTENT_AUTOCOMPLETE_USERNAME",
+				value1 = "${mentionUserName}"
+			);
+
+			AssertTextEquals(
+				locator1 = "SOMicroblogs#MICROBLOGS_CONTENT_AUTOCOMPLETE_EMAIL",
+				value1 = "${mentionUserEmailAddress}"
+			);
+
+			Click(
+				locator1 = "SOMicroblogs#MICROBLOGS_CONTENT_AUTOCOMPLETE_USERNAME",
+				value1 = "${mentionUserEmailAddress}"
+			);
+
+			AssertTextEquals(
+				locator1 = "SOMicroblogs#MICROBLOGS_ENTRY_COMMENT_CONTENT_COUNTDOWN",
+				value1 = "${microblogsEntryCharacterCountdown}"
+			);
+
+			Click(locator1 = "SOMicroblogs#MICROBLOGS_ENTRY_COMMENT_POST_BUTTON");
+
+			AssertTextEquals(
+				locator1 = "SOMicroblogs#MICROBLOGS_ENTRY_COMMENT_CONTENT",
+				value1 = "${microblogsEntryCommentContent} ${mentionUserName}"
+			);
+		}
+		else {
+			Click(locator1 = "SOMicroblogs#MICROBLOGS_CONTENT_FIELD");
+
+			Click(locator1 = "SOMicroblogs#MICROBLOGS_CONTENT_INPUT_FIELD");
+
+			Type.sendKeys(
+				locator1 = "SOMicroblogs#MICROBLOGS_CONTENT_INPUT_FIELD",
+				value1 = "${microblogsEntryCommentContent} @${mentionUserFirstName}"
+			);
+
+			AssertTextEquals(
+				locator1 = "SOMicroblogs#MICROBLOGS_CONTENT_AUTOCOMPLETE_USERNAME",
+				value1 = "${mentionUserName}"
+			);
+
+			AssertTextEquals(
+				locator1 = "SOMicroblogs#MICROBLOGS_CONTENT_AUTOCOMPLETE_EMAIL",
+				value1 = "${mentionUserEmailAddress}"
+			);
+
+			Click(
+				locator1 = "SOMicroblogs#MICROBLOGS_CONTENT_AUTOCOMPLETE_USERNAME",
+				value1 = "${mentionUserEmailAddress}"
+			);
+
+			AssertTextEquals(
+				locator1 = "SOMicroblogs#MICROBLOGS_CONTENT_COUNTDOWN",
+				value1 = "${microblogsEntryCharacterCountdown}"
+			);
+
+			Click(locator1 = "SOMicroblogs#POST_BUTTON");
+
+			AssertTextEquals(
+				locator1 = "SOMicroblogs#MICROBLOGS_ENTRY_COMMENT_CONTENT",
+				value1 = "${microblogsEntryCommentContent} ${mentionUserName}"
+			);
+		}
+	}
+
+	macro addMicroblogsEntryHashtag {
+		if ("${microblogsEntryViewableBy}" == "Connections") {
+			Select(
+				locator1 = "SOMicroblogs#MICROBLOGS_CONTENT_VIEW_FILTER",
+				value1 = "Connections"
+			);
+		}
+		else if ("${microblogsEntryViewableBy}" == "Followers") {
+			Select(
+				locator1 = "SOMicroblogs#MICROBLOGS_CONTENT_VIEW_FILTER",
+				value1 = "Followers"
+			);
+		}
+		else {
+			Select(
+				locator1 = "SOMicroblogs#MICROBLOGS_CONTENT_VIEW_FILTER",
+				value1 = "Everyone"
+			);
+		}
+
+		Click(locator1 = "SOMicroblogs#MICROBLOGS_CONTENT_INPUT_FIELD");
+
+		if (isSet(number)) {
+			if (isSet(microblogsEntryCharacterCountdown)) {
+				var microblogsEntryCharacterCountdown = "${microblogsEntryCharacterCountdown}";
+			}
+			else {
+				var microblogsEntryCharacterCountdown = "132";
+			}
+
+			var number = "${number}";
+
+			Type.sendKeys(
+				locator1 = "SOMicroblogs#MICROBLOGS_CONTENT_INPUT_FIELD",
+				value1 = "#${microblogsEntryContent}${number}"
+			);
+
+			AssertTextEquals(
+				locator1 = "SOMicroblogs#MICROBLOGS_CONTENT_COUNTDOWN",
+				value1 = "${microblogsEntryCharacterCountdown}"
+			);
+
+			Click(locator1 = "SOMicroblogs#POST_BUTTON");
+
+			AssertTextEquals(
+				locator1 = "SOMicroblogs#MICROBLOGS_ENTRY_CONTENT_INCREMENT",
+				value1 = "${microblogsEntryContent}${number}"
+			);
+		}
+		else {
+			if (isSet(microblogsEntryCharacterCountdown)) {
+				var microblogsEntryCharacterCountdown = "${microblogsEntryCharacterCountdown}";
+			}
+			else {
+				var microblogsEntryCharacterCountdown = "134";
+			}
+
+			Type.sendKeys(
+				locator1 = "SOMicroblogs#MICROBLOGS_CONTENT_INPUT_FIELD",
+				value1 = "#${microblogsEntryContent}"
+			);
+
+			AssertTextEquals(
+				locator1 = "SOMicroblogs#MICROBLOGS_CONTENT_COUNTDOWN",
+				value1 = "${microblogsEntryCharacterCountdown}"
+			);
+
+			Click(locator1 = "SOMicroblogs#POST_BUTTON");
+
+			AssertTextEquals(
+				locator1 = "SOMicroblogs#MICROBLOGS_ENTRY_CONTENT",
+				value1 = "${microblogsEntryContent}"
+			);
+		}
+	}
+
+	macro addMicroblogsEntryMention {
+		if ("${microblogsEntryViewableBy}" == "Connections") {
+			Select(
+				locator1 = "SOMicroblogs#MICROBLOGS_CONTENT_VIEW_FILTER",
+				value1 = "Connections"
+			);
+		}
+		else if ("${microblogsEntryViewableBy}" == "Followers") {
+			Select(
+				locator1 = "SOMicroblogs#MICROBLOGS_CONTENT_VIEW_FILTER",
+				value1 = "Followers"
+			);
+		}
+		else {
+			Select(
+				locator1 = "SOMicroblogs#MICROBLOGS_CONTENT_VIEW_FILTER",
+				value1 = "Everyone"
+			);
+		}
+
+		Click(locator1 = "SOMicroblogs#MICROBLOGS_CONTENT_INPUT_FIELD");
+
+		if (isSet(microblogsEntryCharacterCountdown)) {
+			var microblogsEntryCharacterCountdown = "${microblogsEntryCharacterCountdown}";
+		}
+		else {
+			var microblogsEntryCharacterCountdown = "141";
+		}
+
+		Type.sendKeys(
+			locator1 = "SOMicroblogs#MICROBLOGS_CONTENT_INPUT_FIELD",
+			value1 = "@${mentionUserFirstName}"
+		);
+
+		AssertTextEquals(
+			locator1 = "SOMicroblogs#MICROBLOGS_CONTENT_AUTOCOMPLETE_USERNAME",
+			value1 = "${mentionUserName}"
+		);
+
+		AssertTextEquals(
+			locator1 = "SOMicroblogs#MICROBLOGS_CONTENT_AUTOCOMPLETE_EMAIL",
+			value1 = "${mentionUserEmailAddress}"
+		);
+
+		Click(
+			locator1 = "SOMicroblogs#MICROBLOGS_CONTENT_AUTOCOMPLETE_USERNAME",
+			value1 = "${mentionUserEmailAddress}"
+		);
+
+		AssertTextEquals(
+			locator1 = "SOMicroblogs#MICROBLOGS_CONTENT_COUNTDOWN",
+			value1 = "${microblogsEntryCharacterCountdown}"
+		);
+
+		Click(locator1 = "SOMicroblogs#POST_BUTTON");
+
+		AssertTextEquals(
+			locator1 = "SOMicroblogs#MICROBLOGS_ENTRY_CONTENT",
+			value1 = "${mentionUserName}"
+		);
+	}
+
+	macro deleteMicroblogsEntry {
+		MouseOver.makeVisible(locator1 = "SOMicroblogs#MICROBLOGS_ENTRY_EDIT");
+
+		MouseOver.makeVisible(locator1 = "SOMicroblogs#MICROBLOGS_ENTRY_DELETE");
+
+		AssertClickNoError.makeVisibleClick(
+			locator1 = "SOMicroblogs#MICROBLOGS_ENTRY_DELETE_LINK",
+			value1 = "Delete"
+		);
+
+		Confirm(value1 = "Are you sure you want to delete this post?");
+	}
+
+	macro gotoMicroblogsContentField {
+		Click.textClickAt(locator1 = "SOUserBar#DASHBOARD", value1 = "Dashboard");
+
+		Click.textClickAt(
+			locator1 = "SODashboard#NAVIGATION_MICROBLOGS",
+			value1 = "Microblogs"
+		);
+
+		if (IsElementNotPresent(locator1 = "SOMicroblogs#MICROBLOGS_ENTRY_CONTENT")) {
+			AssertTextEquals(
+				locator1 = "SOMicroblogs#INFO_MESSAGE",
+				value1 = "You do not have any microblog entries."
+			);
+		}
+
+		Click(locator1 = "SOMicroblogs#MICROBLOGS_CONTENT_FIELD");
+	}
+
+	macro repostMicroblogsEntry {
+		SOMicroblogs.viewMicroblogsEntryViewableByEveryone();
+
+		AssertClick(
+			locator1 = "SOProfileMicroblogs#MICROBLOGS_ENTRY_REPOST_LINK",
+			value1 = "Repost"
+		);
+
+		AssertTextEquals(
+			locator1 = "SOProfileMicroblogsRepost#HEADER",
+			value1 = "Do you want to repost this entry?"
+		);
+
+		if (isSet(microblogsEntryAuthorMiddleName)) {
+			AssertTextEquals(
+				locator1 = "SOProfileMicroblogs#MICROBLOGS_ENTRY_AUTHOR",
+				value1 = "${microblogsEntryAuthorFirstName} ${microblogsEntryAuthorMiddleName} ${microblogsEntryAuthorLastName}"
+			);
+		}
+		else {
+			AssertTextEquals(
+				locator1 = "SOProfileMicroblogs#MICROBLOGS_ENTRY_AUTHOR",
+				value1 = "${microblogsEntryAuthorFirstName} ${microblogsEntryAuthorLastName}"
+			);
+		}
+
+		AssertTextEquals(
+			locator1 = "SOProfileMicroblogsRepost#MICROBLOGS_ENTRY_CONTENT",
+			value1 = "${microblogsEntryContent}"
+		);
+
+		AssertClick(locator1 = "SOProfileMicroblogsRepost#POST_BUTTON", value1 = "Post");
+
+		AssertElementPresent(locator1 = "SOProfile#USER_NAME");
+	}
+
+	macro tearDownMicroblogsEntry {
+		SOUser.firstLoginPG();
+
+		Click.textClickAt(locator1 = "SOUserBar#DASHBOARD", value1 = "Dashboard");
+
+		Click.textClickAt(
+			locator1 = "SODashboard#NAVIGATION_MICROBLOGS",
+			value1 = "Microblogs"
+		);
+
+		while (IsElementPresent.pauseIsElementPresent(locator1 = "SOMicroblogs#MICROBLOGS_ENTRY_DELETE_LINK", value1 = "Delete")) {
+			MouseOver.makeVisible(locator1 = "SOMicroblogs#MICROBLOGS_ENTRY_EDIT");
+
+			MouseOver.makeVisible(locator1 = "SOMicroblogs#MICROBLOGS_ENTRY_DELETE");
+
+			AssertClickNoError.makeVisibleClick(
+				locator1 = "SOMicroblogs#MICROBLOGS_ENTRY_DELETE_LINK",
+				value1 = "Delete"
+			);
+
+			Confirm(value1 = "Are you sure you want to delete this post?");
+		}
+	}
+
+	macro viewMicroblogsEntryAuthor {
+		if (isSet(microblogsEntryRepostAuthorFirstName)) {
+			if (isSet(microblogsEntryAuthorMiddleName)) {
+				if (isSet(microblogsEntryRepostAuthorMiddleName)) {
+					AssertTextEquals.assertPartialText(
+						locator1 = "SOMicroblogs#MICROBLOGS_ENTRY_AUTHOR",
+						value1 = "${microblogsEntryRepostAuthorFirstName} ${microblogsEntryRepostAuthorMiddleName} ${microblogsEntryRepostAuthorLastName} Reposted From ${microblogsEntryAuthorFirstName} ${microblogsEntryAuthorMiddleName} ${microblogsEntryAuthorLastName}"
+					);
+				}
+				else {
+					AssertTextEquals.assertPartialText(
+						locator1 = "SOMicroblogs#MICROBLOGS_ENTRY_AUTHOR",
+						value1 = "${microblogsEntryRepostAuthorFirstName} ${microblogsEntryRepostAuthorLastName} Reposted From ${microblogsEntryAuthorFirstName} ${microblogsEntryAuthorMiddleName} ${microblogsEntryAuthorLastName}"
+					);
+				}
+			}
+			else {
+				if (isSet(microblogsEntryRepostAuthorMiddleName)) {
+					AssertTextEquals.assertPartialText(
+						locator1 = "SOMicroblogs#MICROBLOGS_ENTRY_AUTHOR",
+						value1 = "${microblogsEntryRepostAuthorFirstName} ${microblogsEntryRepostAuthorMiddleName} ${microblogsEntryRepostAuthorLastName} Reposted From ${microblogsEntryAuthorFirstName} ${microblogsEntryAuthorLastName}"
+					);
+				}
+				else {
+					AssertTextEquals.assertPartialText(
+						locator1 = "SOMicroblogs#MICROBLOGS_ENTRY_AUTHOR",
+						value1 = "${microblogsEntryRepostAuthorFirstName} ${microblogsEntryRepostAuthorLastName} Reposted From ${microblogsEntryAuthorFirstName} ${microblogsEntryAuthorLastName}"
+					);
+				}
+			}
+		}
+		else {
+			if (isSet(microblogsEntryAuthorMiddleName)) {
+				AssertTextEquals.assertPartialText(
+					locator1 = "SOMicroblogs#MICROBLOGS_ENTRY_AUTHOR",
+					value1 = "${microblogsEntryAuthorFirstName} ${microblogsEntryAuthorMiddleName} ${microblogsEntryAuthorLastName}"
+				);
+			}
+			else {
+				AssertTextEquals.assertPartialText(
+					locator1 = "SOMicroblogs#MICROBLOGS_ENTRY_AUTHOR",
+					value1 = "${microblogsEntryAuthorFirstName} ${microblogsEntryAuthorLastName}"
+				);
+			}
+		}
+	}
+
+	macro viewMicroblogsEntryComment {
+		if ("${commentCount}" == "1") {
+			AssertClick(
+				locator1 = "SOMicroblogs#MICROBLOGS_ENTRY_COMMENT_LINK",
+				value1 = "1 Comment"
+			);
+		}
+		else {
+			AssertClick(
+				locator1 = "SOMicroblogs#MICROBLOGS_ENTRY_COMMENT_LINK",
+				value1 = "${commentCount} Comments"
+			);
+		}
+
+		if (isSet(microblogsEntryCommentAuthorMiddleName)) {
+			AssertTextEquals(
+				locator1 = "SOMicroblogs#MICROBLOGS_ENTRY_COMMENT_AUTHOR",
+				value1 = "${microblogsEntryCommentAuthorFirstName} ${microblogsEntryCommentAuthorMiddleName} ${microblogsEntryCommentAuthorLastName}"
+			);
+		}
+		else {
+			AssertTextEquals(
+				locator1 = "SOMicroblogs#MICROBLOGS_ENTRY_COMMENT_AUTHOR",
+				value1 = "${microblogsEntryCommentAuthorFirstName} ${microblogsEntryCommentAuthorLastName}"
+			);
+		}
+
+		AssertTextEquals(
+			locator1 = "SOMicroblogs#MICROBLOGS_ENTRY_COMMENT_CONTENT",
+			value1 = "${microblogsEntryCommentContent}"
+		);
+	}
+
+	macro viewMicroblogsEntryCommentLink {
+		if (isSet(commentCount)) {
+			if ("${commentCount}" == "1") {
+				AssertTextEquals(
+					locator1 = "SOMicroblogs#MICROBLOGS_ENTRY_COMMENT_LINK",
+					value1 = "1 Comment"
+				);
+			}
+			else {
+				AssertTextEquals(
+					locator1 = "SOMicroblogs#MICROBLOGS_ENTRY_COMMENT_LINK",
+					value1 = "${commentCount} Comments"
+				);
+			}
+		}
+		else {
+			AssertTextEquals(
+				locator1 = "SOMicroblogs#MICROBLOGS_ENTRY_COMMENT_LINK",
+				value1 = "Comment"
+			);
+		}
+	}
+
+	macro viewMicroblogsEntryCommentNotification {
+		Click.textClickAt(locator1 = "SOUserBar#DASHBOARD", value1 = "Dashboard");
+
+		AssertElementPresent.assertElementPresent(locator1 = "SOUserBar#NOTIFICATION");
+
+		AssertTextEquals(locator1 = "SOUserBar#NOTIFICATION_MENU_COUNT", value1 = "1");
+
+		MouseOver(locator1 = "SOUserBar#NOTIFICATION");
+
+		if (isSet(microblogsEntryCommentAuthorMiddleName)) {
+			AssertTextEquals.assertPartialText(
+				locator1 = "SOUserBar#NOTIFICATION_MENU_ENTRY_CONTENT",
+				value1 = "${microblogsEntryCommentAuthorFirstName} ${microblogsEntryCommentAuthorMiddleName} ${microblogsEntryCommentAuthorLastName} commented on your post."
+			);
+		}
+		else {
+			AssertTextEquals.assertPartialText(
+				locator1 = "SOUserBar#NOTIFICATION_MENU_ENTRY_CONTENT",
+				value1 = "${microblogsEntryCommentAuthorFirstName} ${microblogsEntryCommentAuthorLastName} commented on your post."
+			);
+		}
+
+		AssertTextEquals(
+			locator1 = "SOUserBar#NOTIFICATION_MENU_ENTRY_SUBCONTENT",
+			value1 = "${microblogsEntryCommentContent}"
+		);
+
+		AssertClick(
+			locator1 = "SOUserBar#NOTIFICATION_MENU_MARK_ALL_AS_READ",
+			value1 = "Mark All as Read"
+		);
+
+		AssertTextEquals(locator1 = "SOUserBar#NOTIFICATION_MENU_COUNT", value1 = "0");
+	}
+
+	macro viewMicroblogsEntryMention {
+		var microblogsEntryContent = "${mentionUserName}";
+
+		Click.textClickAt(locator1 = "SOUserBar#DASHBOARD", value1 = "Dashboard");
+
+		if (IsElementNotPresent(locator1 = "SODashboard#WHATS_HAPPENING_ENTRY_CONTENT")) {
+			AssertTextEquals(
+				locator1 = "SODashboard#WHATS_HAPPENING_INFO_MESSAGE",
+				value1 = "You do not have any microblog entries."
+			);
+		}
+
+		Click.textClickAt(
+			locator1 = "SODashboard#NAVIGATION_MICROBLOGS",
+			value1 = "Microblogs"
+		);
+
+		SOMicroblogs.viewMicroblogsEntryAuthor();
+
+		AssertTextEquals(
+			locator1 = "SOMicroblogs#MICROBLOGS_ENTRY_CONTENT",
+			value1 = "${microblogsEntryContent}"
+		);
+
+		SOMicroblogs.viewMicroblogsEntryCommentLink();
+
+		AssertClick.assertTextClickAt(
+			locator1 = "SOMicroblogs#TAB_MENTIONS",
+			value1 = "Mentions"
+		);
+
+		SOMicroblogs.viewMicroblogsEntryAuthor();
+
+		AssertTextEquals(
+			locator1 = "SOMicroblogs#MICROBLOGS_ENTRY_CONTENT",
+			value1 = "${microblogsEntryContent}"
+		);
+
+		SOMicroblogs.viewMicroblogsEntryCommentLink();
+
+		AssertClick(
+			locator1 = "SOMicroblogs#MICROBLOGS_ENTRY_CONTENT_TAG",
+			value1 = "${microblogsEntryContent}"
+		);
+
+		AssertTextEquals(
+			locator1 = "SOProfile#USER_NAME",
+			value1 = "${mentionUserName}"
+		);
+
+		AssertTextEquals(
+			locator1 = "SOProfile#USER_EMAIL",
+			value1 = "${mentionUserEmailAddress}"
+		);
+	}
+
+	macro viewMicroblogsEntryNone {
+		Click.textClickAt(locator1 = "SOUserBar#DASHBOARD", value1 = "Dashboard");
+
+		AssertClick.assertTextClickAt(
+			locator1 = "SOActivities#NAVIGATION_CONNECTIONS",
+			value1 = "Connections"
+		);
+
+		AssertTextEquals(
+			locator1 = "SOActivities#NO_ACTIVITIES",
+			value1 = "There are no activities."
+		);
+
+		AssertTextNotPresent(value1 = "${microblogsEntryContent}");
+
+		AssertClick.assertTextClickAt(
+			locator1 = "SOActivities#NAVIGATION_FOLLOWING",
+			value1 = "Following"
+		);
+
+		AssertTextEquals(
+			locator1 = "SOActivities#NO_ACTIVITIES",
+			value1 = "There are no activities."
+		);
+
+		AssertTextNotPresent(value1 = "${microblogsEntryContent}");
+
+		Click.textClickAt(
+			locator1 = "SODashboard#NAVIGATION_MICROBLOGS",
+			value1 = "Microblogs"
+		);
+
+		AssertTextNotPresent(value1 = "${microblogsEntryContent}");
+	}
+
+	macro viewMicroblogsEntryNotViewableByEveryone {
+		Click.textClickAt(locator1 = "SOUserBar#DASHBOARD", value1 = "Dashboard");
+
+		AssertTextEquals(
+			locator1 = "SODashboard#WHATS_HAPPENING_INFO_MESSAGE",
+			value1 = "You do not have any microblog entries."
+		);
+
+		Click.textClickAt(
+			locator1 = "SODashboard#NAVIGATION_MICROBLOGS",
+			value1 = "Microblogs"
+		);
+
+		SOMicroblogs.viewMicroblogsEntryAuthor();
+
+		AssertTextEquals(
+			locator1 = "SOMicroblogs#MICROBLOGS_ENTRY_CONTENT",
+			value1 = "${microblogsEntryContent}"
+		);
+
+		SOMicroblogs.viewMicroblogsEntryCommentLink();
+
+		AssertElementNotPresent(
+			locator1 = "SOMicroblogs#MICROBLOGS_ENTRY_REPOST_LINK",
+			value1 = "Repost"
+		);
+	}
+
+	macro viewMicroblogsEntryViewableByEveryone {
+		Click.textClickAt(locator1 = "SOUserBar#DASHBOARD", value1 = "Dashboard");
+
+		Click.textClickAt(
+			locator1 = "SODashboard#NAVIGATION_CONTACTS_CENTER",
+			value1 = "Contacts Center"
+		);
+
+		Type(
+			locator1 = "SOContactscenter#CONTACTS_LIST_SEARCH",
+			value1 = "${microblogsEntryAuthorScreenName}"
+		);
+
+		AssertClick.pauseAssertTextClickAt(
+			locator1 = "SOContactscenter#CONTACTS_LIST_NAME",
+			value1 = "${microblogsEntryAuthorLastName}, ${microblogsEntryAuthorFirstName}"
+		);
+
+		if (isSet(microblogsEntryAuthorMiddleName)) {
+			AssertClick.assertTextClickAt(
+				locator1 = "SOContactscenter#USER_DETAILS_NAME",
+				value1 = "${microblogsEntryAuthorFirstName} ${microblogsEntryAuthorMiddleName} ${microblogsEntryAuthorLastName}"
+			);
+		}
+		else {
+			AssertClick.assertTextClickAt(
+				locator1 = "SOContactscenter#USER_DETAILS_NAME",
+				value1 = "${microblogsEntryAuthorFirstName} ${microblogsEntryAuthorLastName}"
+			);
+		}
+
+		AssertTextEquals(
+			locator1 = "SOProfile#WHATS_HAPPENING_ENTRY_CONTENT",
+			value1 = "${microblogsEntryContent}"
+		);
+
+		Click(locator1 = "SOProfile#NAVIGATION_MICROBLOGS");
+
+		SOMicroblogs.viewMicroblogsEntryAuthor();
+
+		AssertTextEquals(
+			locator1 = "SOProfileMicroblogs#MICROBLOGS_ENTRY_CONTENT",
+			value1 = "${microblogsEntryContent}"
+		);
+
+		if (isSet(commentCount)) {
+			if ("${commentCount}" == "1") {
+				AssertTextEquals(
+					locator1 = "SOProfileMicroblogs#MICROBLOGS_ENTRY_COMMENT_LINK",
+					value1 = "1 Comment"
+				);
+			}
+			else {
+				AssertTextEquals(
+					locator1 = "SOProfileMicroblogs#MICROBLOGS_ENTRY_COMMENT_LINK",
+					value1 = "${commentCount} Comments"
+				);
+			}
+		}
+		else {
+			AssertTextEquals(
+				locator1 = "SOProfileMicroblogs#MICROBLOGS_ENTRY_COMMENT_LINK",
+				value1 = "Comment"
+			);
+		}
+
+		AssertTextEquals(
+			locator1 = "SOProfileMicroblogs#MICROBLOGS_ENTRY_REPOST_LINK",
+			value1 = "Repost"
+		);
+
+		AssertElementNotPresent(
+			locator1 = "SOProfileMicroblogs#MICROBLOGS_ENTRY_EDIT_LINK",
+			value1 = "Edit"
+		);
+
+		AssertElementNotPresent(
+			locator1 = "SOProfileMicroblogs#MICROBLOGS_ENTRY_DELETE_LINK",
+			value1 = "Delete"
+		);
+	}
+
+	macro viewOwnMicroblogsEntry {
+		if (isSet(number)) {
+			var number = "${number}";
+			var whatsHappeningNumber = "${whatsHappeningNumber}";
+
+			Click.textClickAt(locator1 = "SOUserBar#DASHBOARD", value1 = "Dashboard");
+
+			AssertTextEquals(
+				locator1 = "SODashboard#WHATS_HAPPENING_ENTRY_CONTENT",
+				value1 = "${microblogsEntryContent}${whatsHappeningNumber}"
+			);
+
+			Click.textClickAt(
+				locator1 = "SODashboard#NAVIGATION_MICROBLOGS",
+				value1 = "Microblogs"
+			);
+
+			SOMicroblogs.viewMicroblogsEntryAuthor();
+
+			AssertTextEquals(
+				locator1 = "SOMicroblogs#MICROBLOGS_ENTRY_CONTENT_INCREMENT",
+				value1 = "${microblogsEntryContent}${number}"
+			);
+
+			SOMicroblogs.viewMicroblogsEntryCommentLink();
+
+			AssertElementNotPresent(
+				locator1 = "SOMicroblogs#MICROBLOGS_ENTRY_REPOST_LINK",
+				value1 = "Repost"
+			);
+		}
+		else {
+			Click.textClickAt(locator1 = "SOUserBar#DASHBOARD", value1 = "Dashboard");
+
+			AssertTextEquals(
+				locator1 = "SODashboard#WHATS_HAPPENING_ENTRY_CONTENT",
+				value1 = "${microblogsEntryContent}"
+			);
+
+			Click.textClickAt(
+				locator1 = "SODashboard#NAVIGATION_MICROBLOGS",
+				value1 = "Microblogs"
+			);
+
+			SOMicroblogs.viewMicroblogsEntryAuthor();
+
+			AssertTextEquals(
+				locator1 = "SOMicroblogs#MICROBLOGS_ENTRY_CONTENT",
+				value1 = "${microblogsEntryContent}"
+			);
+
+			SOMicroblogs.viewMicroblogsEntryCommentLink();
+
+			AssertElementNotPresent(
+				locator1 = "SOMicroblogs#MICROBLOGS_ENTRY_REPOST_LINK",
+				value1 = "Repost"
+			);
+		}
+	}
+
+	macro viewOwnMicroblogsEntryMention {
+		var microblogsEntryContent = "${mentionUserName}";
+
+		SOMicroblogs.viewOwnMicroblogsEntry();
+
+		AssertClick(
+			locator1 = "SOMicroblogs#MICROBLOGS_ENTRY_CONTENT_TAG",
+			value1 = "${mentionUserName}"
+		);
+
+		AssertTextEquals(
+			locator1 = "SOProfile#USER_NAME",
+			value1 = "${mentionUserName}"
+		);
+
+		AssertTextEquals(
+			locator1 = "SOProfile#USER_EMAIL",
+			value1 = "${userEmailAddress}"
+		);
+	}
+
+	macro viewOwnMicroblogsEntryTag {
+		if (isSet(number)) {
+			var number = "${number}";
+
+			SOMicroblogs.viewOwnMicroblogsEntry();
+
+			AssertClick(
+				locator1 = "SOMicroblogs#MICROBLOGS_ENTRY_CONTENT_TAG",
+				value1 = "${microblogsEntryTagValue}"
+			);
+
+			SOMicroblogs.viewMicroblogsEntryAuthor();
+
+			AssertTextEquals(
+				locator1 = "SOMicroblogs#TAB_TAG_VALUE",
+				value1 = "${microblogsEntryTagValue}"
+			);
+
+			AssertTextEquals(
+				locator1 = "SOMicroblogs#MICROBLOGS_ENTRY_CONTENT_INCREMENT",
+				value1 = "${microblogsEntryContent}${number}"
+			);
+
+			AssertTextEquals(
+				locator1 = "SOMicroblogs#MICROBLOGS_ENTRY_CONTENT_TAG_INCREMENT",
+				value1 = "${microblogsEntryTagValue}"
+			);
+
+			AssertClick.assertTextClickAt(
+				locator1 = "SOMicroblogs#TAB_TAG_VALUE",
+				value1 = "${microblogsEntryTagValue}"
+			);
+
+			SOMicroblogs.viewMicroblogsEntryAuthor();
+
+			AssertTextEquals(
+				locator1 = "SOMicroblogs#TAB_TAG_VALUE",
+				value1 = "${microblogsEntryTagValue}"
+			);
+
+			AssertTextEquals(
+				locator1 = "SOMicroblogs#MICROBLOGS_ENTRY_CONTENT_INCREMENT",
+				value1 = "${microblogsEntryContent}${number}"
+			);
+
+			AssertTextEquals(
+				locator1 = "SOMicroblogs#MICROBLOGS_ENTRY_CONTENT_TAG_INCREMENT",
+				value1 = "${microblogsEntryTagValue}"
+			);
+		}
+		else {
+			SOMicroblogs.viewOwnMicroblogsEntry();
+
+			AssertClick(
+				locator1 = "SOMicroblogs#MICROBLOGS_ENTRY_CONTENT_TAG",
+				value1 = "${microblogsEntryTagValue}"
+			);
+
+			SOMicroblogs.viewMicroblogsEntryAuthor();
+
+			AssertTextEquals(
+				locator1 = "SOMicroblogs#TAB_TAG_VALUE",
+				value1 = "${microblogsEntryTagValue}"
+			);
+
+			AssertTextEquals(
+				locator1 = "SOMicroblogs#MICROBLOGS_ENTRY_CONTENT",
+				value1 = "${microblogsEntryContent}"
+			);
+
+			AssertTextEquals(
+				locator1 = "SOMicroblogs#MICROBLOGS_ENTRY_CONTENT_TAG",
+				value1 = "${microblogsEntryTagValue}"
+			);
+
+			AssertClick.assertTextClickAt(
+				locator1 = "SOMicroblogs#TAB_TAG_VALUE",
+				value1 = "${microblogsEntryTagValue}"
+			);
+
+			SOMicroblogs.viewMicroblogsEntryAuthor();
+
+			AssertTextEquals(
+				locator1 = "SOMicroblogs#TAB_TAG_VALUE",
+				value1 = "${microblogsEntryTagValue}"
+			);
+
+			AssertTextEquals(
+				locator1 = "SOMicroblogs#MICROBLOGS_ENTRY_CONTENT",
+				value1 = "${microblogsEntryContent}"
+			);
+
+			AssertTextEquals(
+				locator1 = "SOMicroblogs#MICROBLOGS_ENTRY_CONTENT_TAG",
+				value1 = "${microblogsEntryTagValue}"
+			);
+		}
+	}
+
+	macro viewOwnMicroblogsRepost {
+		Click.textClickAt(locator1 = "SOUserBar#DASHBOARD", value1 = "Dashboard");
+
+		Click.textClickAt(
+			locator1 = "SODashboard#NAVIGATION_MICROBLOGS",
+			value1 = "Microblogs"
+		);
+
+		SOMicroblogs.viewMicroblogsEntryAuthor();
+
+		AssertTextEquals(
+			locator1 = "SOMicroblogs#MICROBLOGS_ENTRY_CONTENT",
+			value1 = "${microblogsEntryContent}"
+		);
+
+		SOMicroblogs.viewMicroblogsEntryCommentLink();
+
+		AssertElementNotPresent(
+			locator1 = "SOMicroblogs#MICROBLOGS_ENTRY_REPOST_LINK",
+			value1 = "Repost"
+		);
+	}
+}

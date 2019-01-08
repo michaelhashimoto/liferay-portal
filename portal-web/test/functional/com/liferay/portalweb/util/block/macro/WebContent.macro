@@ -1,174 +1,394 @@
-<definition>
-	<command name="addCP">
-		<execute function="AssertClick#assertValueClickAt" locator1="CPWebcontent#ADD_BUTTON" value1="Add" />
+definition {
+	macro addCP {
+		AssertClick.assertValueClickAt(
+			locator1 = "CPWebcontent#ADD_BUTTON",
+			value1 = "Add"
+		);
 
-		<execute function="Type" locator1="CPWebcontentAddwebcontent#TITLE_FIELD" value1="${webContentTitle}" />
-		<execute function="Type#typeCKEditorWaitForCKEditor" locator1="CPWebcontentAddwebcontent#CONTENT_FIELD" value1="${webContentContent}" />
-		<execute function="AssertClick#assertValueClickAt" locator1="CPWebcontentAddwebcontent#PUBLISH_BUTTON" value1="Publish" />
+		Type(
+			locator1 = "CPWebcontentAddwebcontent#TITLE_FIELD",
+			value1 = "${webContentTitle}"
+		);
 
-		<var name="key_webContentTitle" value="${webContentTitle}" />
+		Type.typeCKEditorWaitForCKEditor(
+			locator1 = "CPWebcontentAddwebcontent#CONTENT_FIELD",
+			value1 = "${webContentContent}"
+		);
 
-		<execute function="AssertTextEquals" locator1="CPWebcontent#SUCCESS_MESSAGE" value1="Your request completed successfully." />
-		<execute function="AssertTextEquals" locator1="CPWebcontent#WEB_CONTENT_TABLE_TITLE" value1="${webContentTitle}" />
-		<execute function="AssertTextEquals" locator1="CPWebcontent#WEB_CONTENT_TABLE_STATUS" value1="Approved" />
-	</command>
+		AssertClick.assertValueClickAt(
+			locator1 = "CPWebcontentAddwebcontent#PUBLISH_BUTTON",
+			value1 = "Publish"
+		);
 
-	<command name="addCPwithStructure">
-		<execute function="AssertClick" locator1="CPWebcontent#ADD_DROPDOWN" value1="Add" />
-		<execute function="Click" locator1="//div[@class='lfr-component lfr-menu-list']/ul/li/a[contains(.,'${structureName}')]" />
+		var key_webContentTitle = "${webContentTitle}";
 
-		<execute function="Type" locator1="CPWebcontentAddwebcontent#TITLE_FIELD" value1="${webContentTitle}" />
-		<execute function="Type" locator1="//input[@name='_15_text_text']" value1="${webContentText}" />
-		<execute function="AssertClick#assertValueClickAt" locator1="CPWebcontentAddwebcontent#PUBLISH_BUTTON" value1="Publish" />
+		AssertTextEquals(
+			locator1 = "CPWebcontent#SUCCESS_MESSAGE",
+			value1 = "Your request completed successfully."
+		);
 
-		<var name="key_webContentTitle" value="${webContentTitle}" />
+		AssertTextEquals(
+			locator1 = "CPWebcontent#WEB_CONTENT_TABLE_TITLE",
+			value1 = "${webContentTitle}"
+		);
 
-		<execute function="AssertTextEquals" locator1="CPWebcontent#SUCCESS_MESSAGE" value1="Your request completed successfully." />
-		<execute function="AssertTextEquals" locator1="CPWebcontent#WEB_CONTENT_TABLE_TITLE" value1="${webContentTitle}" />
-	</command>
+		AssertTextEquals(
+			locator1 = "CPWebcontent#WEB_CONTENT_TABLE_STATUS",
+			value1 = "Approved"
+		);
+	}
 
-	<command name="addCPWithWorkflow">
-		<execute function="AssertClick#assertValueClickAt" locator1="CPWebcontent#ADD_BUTTON" value1="Add" />
+	macro addCPwithStructure {
+		AssertClick(locator1 = "CPWebcontent#ADD_DROPDOWN", value1 = "Add");
 
-		<execute function="Type" locator1="CPWebcontentAddwebcontent#TITLE_FIELD" value1="${webContentTitle}" />
-		<execute function="Type#typeCKEditorWaitForCKEditor" locator1="CPWebcontentAddwebcontent#CONTENT_FIELD" value1="${webContentContent}" />
-		<execute function="AssertClick#assertValueClickAt" locator1="CPWebcontentAddwebcontent#SUBMIT_FOR_PUBLICATION_BUTTON" value1="Submit for Publication" />
+		Click(
+			locator1 = "//div[@class='lfr-component lfr-menu-list']/ul/li/a[contains(.,'${structureName}')]"
+		);
 
-		<var name="key_webContentTitle" value="${webContentTitle}" />
+		Type(
+			locator1 = "CPWebcontentAddwebcontent#TITLE_FIELD",
+			value1 = "${webContentTitle}"
+		);
 
-		<execute function="AssertTextEquals" locator1="CPWebcontent#SUCCESS_MESSAGE" value1="Your request completed successfully." />
-		<execute function="AssertTextEquals" locator1="CPWebcontent#WEB_CONTENT_TABLE_TITLE" value1="${webContentTitle}" />
-		<execute function="AssertTextEquals" locator1="CPWebcontent#WEB_CONTENT_TABLE_STATUS" value1="Pending" />
-	</command>
+		Type(locator1 = "//input[@name='_15_text_text']", value1 = "${webContentText}");
 
-	<command name="addPGviaAP">
-		<execute function="AssertClick" locator1="PGAssetpublisher#ADD_NEW_DROPDOWN" value1="Add New" />
-		<execute function="AssertClick#assertTextClickAt" locator1="PGAssetpublisher#ADD_NEW_MENULIST_WEB_CONTENT" value1="Web Content" />
+		AssertClick.assertValueClickAt(
+			locator1 = "CPWebcontentAddwebcontent#PUBLISH_BUTTON",
+			value1 = "Publish"
+		);
 
-		<execute function="SelectFrame" locator1="PGAssetpublisherAddnewwebcontent#WEB_CONTENT_IFRAME" />
-		<execute function="Type" locator1="PGAssetpublisherAddnewwebcontent#TITLE_FIELD" value1="${webContentTitle}" />
-		<execute function="Type#typeCKEditorWaitForCKEditor" locator1="PGAssetpublisherAddnewwebcontent#CONTENT_FIELD" value1="${webContentContent}" />
-		<execute function="SelectFrame" locator1="PGAssetpublisherAddnewwebcontent#WEB_CONTENT_IFRAME" />
-		<execute function="AssertClick#assertValueClickAt" locator1="PGAssetpublisherAddnewwebcontent#PUBLISH_BUTTON" value1="Publish" />
+		var key_webContentTitle = "${webContentTitle}";
 
-		<execute function="SelectFrame" />
-		<execute function="AssertTextEquals" locator1="PGAssetpublisher#ASSET_TITLE_1" value1="${webContentTitle}" />
-		<execute function="AssertTextEquals" locator1="PGAssetpublisher#ASSET_SUMMARY_1" value1="${webContentContent}" />
-	</command>
+		AssertTextEquals(
+			locator1 = "CPWebcontent#SUCCESS_MESSAGE",
+			value1 = "Your request completed successfully."
+		);
 
-	<command name="addPGviaWCD">
-		<execute function="Click#clickAt" locator1="PGWebcontentdisplay#ADD_WEB_CONTENT" />
+		AssertTextEquals(
+			locator1 = "CPWebcontent#WEB_CONTENT_TABLE_TITLE",
+			value1 = "${webContentTitle}"
+		);
+	}
 
-		<execute function="Type" locator1="PGWebcontentdisplayAddwebcontent#TITLE_FIELD" value1="${webContentTitle}" />
-		<execute function="Type#typeCKEditorWaitForCKEditor" locator1="PGWebcontentdisplayAddwebcontent#CONTENT_FIELD" value1="${webContentContent}" />
-		<execute function="AssertClick#assertValueClickAt" locator1="PGWebcontentdisplayAddwebcontent#PUBLISH_BUTTON" value1="Publish" />
+	macro addCPWithWorkflow {
+		AssertClick.assertValueClickAt(
+			locator1 = "CPWebcontent#ADD_BUTTON",
+			value1 = "Add"
+		);
 
-		<execute function="AssertTextEquals" locator1="PGWebcontentdisplay#WEB_CONTENT_CONTENT" value1="${webContentContent}" />
-	</command>
+		Type(
+			locator1 = "CPWebcontentAddwebcontent#TITLE_FIELD",
+			value1 = "${webContentTitle}"
+		);
 
-	<command name="addPGWithWorkflowViaAP">
-		<execute function="AssertClick" locator1="PGAssetpublisher#ADD_NEW_DROPDOWN" value1="Add New" />
-		<execute function="AssertClick#assertTextClickAt" locator1="PGAssetpublisher#ADD_NEW_MENULIST_WEB_CONTENT" value1="Web Content" />
+		Type.typeCKEditorWaitForCKEditor(
+			locator1 = "CPWebcontentAddwebcontent#CONTENT_FIELD",
+			value1 = "${webContentContent}"
+		);
 
-		<execute function="SelectFrame" locator1="PGAssetpublisherAddnewwebcontent#WEB_CONTENT_IFRAME" />
-		<execute function="Type" locator1="PGAssetpublisherAddnewwebcontent#TITLE_FIELD" value1="${webContentTitle}" />
-		<execute function="Type#typeCKEditorWaitForCKEditor" locator1="PGAssetpublisherAddnewwebcontent#CONTENT_FIELD" value1="${webContentContent}" />
-		<execute function="SelectFrame" locator1="PGAssetpublisherAddnewwebcontent#WEB_CONTENT_IFRAME" />
-		<execute function="AssertClick" locator1="PGAssetpublisherAddnewwebcontent#SUBMIT_FOR_PUBLICATION_BUTTON" value1="Submit for Publication" />
+		AssertClick.assertValueClickAt(
+			locator1 = "CPWebcontentAddwebcontent#SUBMIT_FOR_PUBLICATION_BUTTON",
+			value1 = "Submit for Publication"
+		);
 
-		<execute function="SelectFrame" />
-		<execute function="AssertTextNotPresent" value1="${webContentTitle}" />
-		<execute function="AssertTextEquals" locator1="PGAssetpublisher#INFO_MESSAGE" value1="There are no results." />
-	</command>
+		var key_webContentTitle = "${webContentTitle}";
 
-	<command name="addPGWithWorkflowViaWCD">
-		<execute function="Click#clickAt" locator1="PGWebcontentdisplay#ADD_WEB_CONTENT" />
+		AssertTextEquals(
+			locator1 = "CPWebcontent#SUCCESS_MESSAGE",
+			value1 = "Your request completed successfully."
+		);
 
-		<execute function="Type" locator1="PGWebcontentdisplayAddwebcontent#TITLE_FIELD" value1="${webContentTitle}" />
-		<execute function="Type#typeCKEditorWaitForCKEditor" locator1="PGWebcontentdisplayAddwebcontent#CONTENT_FIELD" value1="${webContentContent}" />
-		<execute function="AssertClick" locator1="PGWebcontentdisplayAddwebcontent#SUBMIT_FOR_PUBLICATION_BUTTON" value1="Submit for Publication" />
+		AssertTextEquals(
+			locator1 = "CPWebcontent#WEB_CONTENT_TABLE_TITLE",
+			value1 = "${webContentTitle}"
+		);
 
-		<execute function="AssertTextEquals" locator1="PGWebcontentdisplay#ALERT_MESSAGE" value1="${webContentTitle} is not approved." />
-	</command>
+		AssertTextEquals(
+			locator1 = "CPWebcontent#WEB_CONTENT_TABLE_STATUS",
+			value1 = "Pending"
+		);
+	}
 
-	<command name="editPGviaWCD">
-		<execute function="Click#clickAt" locator1="PGWebcontentdisplay#EDIT_WEB_CONTENT" />
+	macro addPGviaAP {
+		AssertClick(locator1 = "PGAssetpublisher#ADD_NEW_DROPDOWN", value1 = "Add New");
 
-		<execute function="Type" locator1="PGWebcontentdisplayEditwebcontent#TITLE_FIELD" value1="${webContentTitleEdit}" />
-		<execute function="Type#typeCKEditorWaitForCKEditor" locator1="PGWebcontentdisplayEditwebcontent#CONTENT_FIELD" value1="${webContentContentEdit}" />
-		<execute function="AssertClick#assertValueClickAt" locator1="PGWebcontentdisplayEditwebcontent#PUBLISH_BUTTON" value1="Publish" />
+		AssertClick.assertTextClickAt(
+			locator1 = "PGAssetpublisher#ADD_NEW_MENULIST_WEB_CONTENT",
+			value1 = "Web Content"
+		);
 
-		<execute function="AssertTextEquals" locator1="PGWebcontentdisplay#WEB_CONTENT_CONTENT" value1="${webContentContentEdit}" />
-	</command>
+		SelectFrame(locator1 = "PGAssetpublisherAddnewwebcontent#WEB_CONTENT_IFRAME");
 
-	<command name="tearDownCP">
-		<execute macro="Page#gotoCP">
-			<var name="portletName" value="Web Content" />
-		</execute>
+		Type(
+			locator1 = "PGAssetpublisherAddnewwebcontent#TITLE_FIELD",
+			value1 = "${webContentTitle}"
+		);
 
-		<if>
-			<condition function="IsElementPresent#isVisible" locator1="CPWebcontent#WEB_CONTENT_TABLE_ALL_CHECKBOX" />
-			<then>
-				<execute function="Check" locator1="CPWebcontent#WEB_CONTENT_TABLE_ALL_CHECKBOX" />
-				<execute function="AssertClickNoError" locator1="CPWebcontent#DELETE_BUTTON" value1="Delete" />
-				<execute function="Confirm" value1="Are you sure you want to delete the selected web content?" />
-				<execute function="AssertTextEquals" locator1="CPWebcontent#SUCCESS_MESSAGE" value1="Your request completed successfully." />
-			</then>
-		</if>
+		Type.typeCKEditorWaitForCKEditor(
+			locator1 = "PGAssetpublisherAddnewwebcontent#CONTENT_FIELD",
+			value1 = "${webContentContent}"
+		);
 
-		<execute function="AssertTextEquals" locator1="CPWebcontent#INFO_MESSAGE" value1="No Web Content was found." />
-	</command>
+		SelectFrame(locator1 = "PGAssetpublisherAddnewwebcontent#WEB_CONTENT_IFRAME");
 
-	<command name="viewCP">
-		<var name="key_webContentTitle" value="${webContentTitle}" />
+		AssertClick.assertValueClickAt(
+			locator1 = "PGAssetpublisherAddnewwebcontent#PUBLISH_BUTTON",
+			value1 = "Publish"
+		);
 
-		<execute function="AssertTextEquals" locator1="CPWebcontent#WEB_CONTENT_TABLE_TITLE" value1="${webContentTitle}" />
-		<execute function="AssertTextEquals" locator1="CPWebcontent#WEB_CONTENT_TABLE_STATUS" value1="Approved" />
-	</command>
+		SelectFrame();
 
-	<command name="viewCPDraft">
-		<var name="key_webContentTitle" value="${webContentTitle}" />
+		AssertTextEquals(
+			locator1 = "PGAssetpublisher#ASSET_TITLE_1",
+			value1 = "${webContentTitle}"
+		);
 
-		<execute function="AssertTextEquals" locator1="CPWebcontent#WEB_CONTENT_TABLE_TITLE" value1="${webContentTitle}" />
-		<execute function="AssertTextEquals" locator1="CPWebcontent#WEB_CONTENT_TABLE_STATUS" value1="Draft" />
-	</command>
+		AssertTextEquals(
+			locator1 = "PGAssetpublisher#ASSET_SUMMARY_1",
+			value1 = "${webContentContent}"
+		);
+	}
 
-	<command name="viewCPWithWorkflow">
-		<var name="key_webContentTitle" value="${webContentTitle}" />
+	macro addPGviaWCD {
+		Click.clickAt(locator1 = "PGWebcontentdisplay#ADD_WEB_CONTENT");
 
-		<execute function="AssertTextEquals" locator1="CPWebcontent#WEB_CONTENT_TABLE_TITLE" value1="${webContentTitle}" />
-		<execute function="AssertTextEquals" locator1="CPWebcontent#WEB_CONTENT_TABLE_STATUS" value1="Pending" />
-	</command>
+		Type(
+			locator1 = "PGWebcontentdisplayAddwebcontent#TITLE_FIELD",
+			value1 = "${webContentTitle}"
+		);
 
-	<command name="viewPGViaAP">
-		<var name="key_webContentTitle" value="${webContentTitle}" />
+		Type.typeCKEditorWaitForCKEditor(
+			locator1 = "PGWebcontentdisplayAddwebcontent#CONTENT_FIELD",
+			value1 = "${webContentContent}"
+		);
 
-		<execute function="AssertTextEquals" locator1="PGAssetpublisher#ASSET_TITLE" value1="${webContentTitle}" />
-		<execute function="AssertTextEquals" locator1="PGAssetpublisher#ASSET_SUMMARY" value1="${webContentContent}" />
-		<execute function="AssertClick#assertPartialTextClickAt" locator1="PGAssetpublisher#ASSET_READ_MORE" value1="Read More" />
+		AssertClick.assertValueClickAt(
+			locator1 = "PGWebcontentdisplayAddwebcontent#PUBLISH_BUTTON",
+			value1 = "Publish"
+		);
 
-		<execute function="AssertTextEquals" locator1="PGAssetpublisherAsset#ASSET_TITLE" value1="${webContentTitle}" />
-		<execute function="AssertTextEquals" locator1="PGAssetpublisherAsset#ASSET_CONTENT" value1="${webContentContent}" />
-	</command>
+		AssertTextEquals(
+			locator1 = "PGWebcontentdisplay#WEB_CONTENT_CONTENT",
+			value1 = "${webContentContent}"
+		);
+	}
 
-	<command name="viewPGViaWCD">
-		<execute function="AssertTextEquals" locator1="PGWebcontentdisplay#WEB_CONTENT_CONTENT" value1="${webContentContent}" />
-	</command>
+	macro addPGWithWorkflowViaAP {
+		AssertClick(locator1 = "PGAssetpublisher#ADD_NEW_DROPDOWN", value1 = "Add New");
 
-	<command name="viewPGWithWorkflowViaAP">
-		<var name="key_webContentTitle" value="${webContentTitle}" />
+		AssertClick.assertTextClickAt(
+			locator1 = "PGAssetpublisher#ADD_NEW_MENULIST_WEB_CONTENT",
+			value1 = "Web Content"
+		);
 
-		<execute function="AssertTextNotPresent" value1="${webContentTitle}" />
-	</command>
+		SelectFrame(locator1 = "PGAssetpublisherAddnewwebcontent#WEB_CONTENT_IFRAME");
 
-	<command name="viewPGWithWorkflowViaWCD">
-		<execute function="AssertTextEquals" locator1="PGWebcontentdisplay#ALERT_MESSAGE" value1="${webContentTitle} is not approved." />
-		<execute function="AssertClick" locator1="PGWebcontentdisplay#ALERT_MESSAGE" value1="${webContentTitle} is not approved." />
+		Type(
+			locator1 = "PGAssetpublisherAddnewwebcontent#TITLE_FIELD",
+			value1 = "${webContentTitle}"
+		);
 
-		<execute function="AssertTextEquals" locator1="PGWebcontentdisplayEditwebcontent#WORKFLOW_STATUS" value1="Pending (${workflowTask})" />
-		<execute function="AssertTextEquals" locator1="PGWebcontentdisplayEditwebcontent#TITLE_FIELD" value1="${webContentTitle}" />
-		<execute function="SelectFrame" locator1="PGWebcontentdisplayEditwebcontent#CONTENT_FIELD" />
-		<execute function="AssertTextEquals" locator1="//body" value1="${webContentContent}" />
-		<execute function="SelectFrameTop" />
-	</command>
-</definition>
+		Type.typeCKEditorWaitForCKEditor(
+			locator1 = "PGAssetpublisherAddnewwebcontent#CONTENT_FIELD",
+			value1 = "${webContentContent}"
+		);
+
+		SelectFrame(locator1 = "PGAssetpublisherAddnewwebcontent#WEB_CONTENT_IFRAME");
+
+		AssertClick(
+			locator1 = "PGAssetpublisherAddnewwebcontent#SUBMIT_FOR_PUBLICATION_BUTTON",
+			value1 = "Submit for Publication"
+		);
+
+		SelectFrame();
+
+		AssertTextNotPresent(value1 = "${webContentTitle}");
+
+		AssertTextEquals(
+			locator1 = "PGAssetpublisher#INFO_MESSAGE",
+			value1 = "There are no results."
+		);
+	}
+
+	macro addPGWithWorkflowViaWCD {
+		Click.clickAt(locator1 = "PGWebcontentdisplay#ADD_WEB_CONTENT");
+
+		Type(
+			locator1 = "PGWebcontentdisplayAddwebcontent#TITLE_FIELD",
+			value1 = "${webContentTitle}"
+		);
+
+		Type.typeCKEditorWaitForCKEditor(
+			locator1 = "PGWebcontentdisplayAddwebcontent#CONTENT_FIELD",
+			value1 = "${webContentContent}"
+		);
+
+		AssertClick(
+			locator1 = "PGWebcontentdisplayAddwebcontent#SUBMIT_FOR_PUBLICATION_BUTTON",
+			value1 = "Submit for Publication"
+		);
+
+		AssertTextEquals(
+			locator1 = "PGWebcontentdisplay#ALERT_MESSAGE",
+			value1 = "${webContentTitle} is not approved."
+		);
+	}
+
+	macro editPGviaWCD {
+		Click.clickAt(locator1 = "PGWebcontentdisplay#EDIT_WEB_CONTENT");
+
+		Type(
+			locator1 = "PGWebcontentdisplayEditwebcontent#TITLE_FIELD",
+			value1 = "${webContentTitleEdit}"
+		);
+
+		Type.typeCKEditorWaitForCKEditor(
+			locator1 = "PGWebcontentdisplayEditwebcontent#CONTENT_FIELD",
+			value1 = "${webContentContentEdit}"
+		);
+
+		AssertClick.assertValueClickAt(
+			locator1 = "PGWebcontentdisplayEditwebcontent#PUBLISH_BUTTON",
+			value1 = "Publish"
+		);
+
+		AssertTextEquals(
+			locator1 = "PGWebcontentdisplay#WEB_CONTENT_CONTENT",
+			value1 = "${webContentContentEdit}"
+		);
+	}
+
+	macro tearDownCP {
+		Page.gotoCP(portletName = "Web Content");
+
+		if (IsElementPresent.isVisible(locator1 = "CPWebcontent#WEB_CONTENT_TABLE_ALL_CHECKBOX")) {
+			Check(locator1 = "CPWebcontent#WEB_CONTENT_TABLE_ALL_CHECKBOX");
+
+			AssertClickNoError(locator1 = "CPWebcontent#DELETE_BUTTON", value1 = "Delete");
+
+			Confirm(value1 = "Are you sure you want to delete the selected web content?");
+
+			AssertTextEquals(
+				locator1 = "CPWebcontent#SUCCESS_MESSAGE",
+				value1 = "Your request completed successfully."
+			);
+		}
+
+		AssertTextEquals(
+			locator1 = "CPWebcontent#INFO_MESSAGE",
+			value1 = "No Web Content was found."
+		);
+	}
+
+	macro viewCP {
+		var key_webContentTitle = "${webContentTitle}";
+
+		AssertTextEquals(
+			locator1 = "CPWebcontent#WEB_CONTENT_TABLE_TITLE",
+			value1 = "${webContentTitle}"
+		);
+
+		AssertTextEquals(
+			locator1 = "CPWebcontent#WEB_CONTENT_TABLE_STATUS",
+			value1 = "Approved"
+		);
+	}
+
+	macro viewCPDraft {
+		var key_webContentTitle = "${webContentTitle}";
+
+		AssertTextEquals(
+			locator1 = "CPWebcontent#WEB_CONTENT_TABLE_TITLE",
+			value1 = "${webContentTitle}"
+		);
+
+		AssertTextEquals(
+			locator1 = "CPWebcontent#WEB_CONTENT_TABLE_STATUS",
+			value1 = "Draft"
+		);
+	}
+
+	macro viewCPWithWorkflow {
+		var key_webContentTitle = "${webContentTitle}";
+
+		AssertTextEquals(
+			locator1 = "CPWebcontent#WEB_CONTENT_TABLE_TITLE",
+			value1 = "${webContentTitle}"
+		);
+
+		AssertTextEquals(
+			locator1 = "CPWebcontent#WEB_CONTENT_TABLE_STATUS",
+			value1 = "Pending"
+		);
+	}
+
+	macro viewPGViaAP {
+		var key_webContentTitle = "${webContentTitle}";
+
+		AssertTextEquals(
+			locator1 = "PGAssetpublisher#ASSET_TITLE",
+			value1 = "${webContentTitle}"
+		);
+
+		AssertTextEquals(
+			locator1 = "PGAssetpublisher#ASSET_SUMMARY",
+			value1 = "${webContentContent}"
+		);
+
+		AssertClick.assertPartialTextClickAt(
+			locator1 = "PGAssetpublisher#ASSET_READ_MORE",
+			value1 = "Read More"
+		);
+
+		AssertTextEquals(
+			locator1 = "PGAssetpublisherAsset#ASSET_TITLE",
+			value1 = "${webContentTitle}"
+		);
+
+		AssertTextEquals(
+			locator1 = "PGAssetpublisherAsset#ASSET_CONTENT",
+			value1 = "${webContentContent}"
+		);
+	}
+
+	macro viewPGViaWCD {
+		AssertTextEquals(
+			locator1 = "PGWebcontentdisplay#WEB_CONTENT_CONTENT",
+			value1 = "${webContentContent}"
+		);
+	}
+
+	macro viewPGWithWorkflowViaAP {
+		var key_webContentTitle = "${webContentTitle}";
+
+		AssertTextNotPresent(value1 = "${webContentTitle}");
+	}
+
+	macro viewPGWithWorkflowViaWCD {
+		AssertTextEquals(
+			locator1 = "PGWebcontentdisplay#ALERT_MESSAGE",
+			value1 = "${webContentTitle} is not approved."
+		);
+
+		AssertClick(
+			locator1 = "PGWebcontentdisplay#ALERT_MESSAGE",
+			value1 = "${webContentTitle} is not approved."
+		);
+
+		AssertTextEquals(
+			locator1 = "PGWebcontentdisplayEditwebcontent#WORKFLOW_STATUS",
+			value1 = "Pending (${workflowTask})"
+		);
+
+		AssertTextEquals(
+			locator1 = "PGWebcontentdisplayEditwebcontent#TITLE_FIELD",
+			value1 = "${webContentTitle}"
+		);
+
+		SelectFrame(locator1 = "PGWebcontentdisplayEditwebcontent#CONTENT_FIELD");
+
+		AssertTextEquals(locator1 = "//body", value1 = "${webContentContent}");
+
+		SelectFrameTop();
+	}
+}

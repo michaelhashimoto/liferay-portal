@@ -1,78 +1,69 @@
-<definition>
-	<command name="loopContainingContainsIfConditional">
-		<echo message="Test loops: loop containing contains if conditional" />
+definition {
+	macro loopContainingContainsIfConditional {
+		echo("Test loops: loop containing contains if conditional");
 
-		<var name="letter" value="a" />
+		var letter = "a";
 
-		<for list="abc,def,ghi,jkl" param="letters">
-			<if>
-				<contains string="${letters}" substring="${letter}" />
-				<then>
-					<execute macro="TestUtils#pass" />
-				</then>
-			</if>
-		</for>
-	</command>
+		for (var letters : list "abc,def,ghi,jkl") {
+			if (contains("${letters}", "${letter}")) {
+				TestUtils.pass();
+			}
+		}
+	}
 
-	<command name="loopContainingEchoStatement">
-		<echo message="Test loops: loop containing echo statement" />
+	macro loopContainingEchoStatement {
+		echo("Test loops: loop containing echo statement");
 
-		<var name="list" value="4,5" />
+		var list = "4,5";
 
-		<for list="1,2,3,${list}" param="param">
-			<echo message="${param}" />
-		</for>
+		for (var param : list "1,2,3,${list}") {
+			echo("${param}");
+		}
 
-		<execute macro="TestUtils#pass" />
-	</command>
+		TestUtils.pass();
+	}
 
-	<command name="loopContainingEqualsIfConditional">
-		<echo message="Test loops: loop containing equals if conditional" />
+	macro loopContainingEqualsIfConditional {
+		echo("Test loops: loop containing equals if conditional");
 
-		<var name="numberFound" value="" />
-		<var name="numberToMatch" value="4" />
+		var numberFound = "";
+		var numberToMatch = "4";
 
-		<for list="1,2,3,4,5" param="number">
-			<if>
-				<equals arg1="${number}" arg2="${numberToMatch}" />
-				<then>
-					<var name="numberFound" value="${number}" />
-				</then>
-			</if>
-		</for>
+		for (var number : list "1,2,3,4,5") {
+			if ("${number}" == "${numberToMatch}") {
+				var numberFound = "${number}";
+			}
+		}
 
-		<execute macro="TestUtils#assertEquals">
-			<var name="actual" value="${numberFound}" />
-			<var name="expected" value="${numberToMatch}" />
-		</execute>
-	</command>
+		TestUtils.assertEquals(actual = "${numberFound}", expected = "${numberToMatch}");
+	}
 
-	<command name="loopOnEmptyList">
-		<echo message="Test loops: loop on empty list" />
+	macro loopOnEmptyList {
+		echo("Test loops: loop on empty list");
 
-		<var name="list" value="" />
+		var list = "";
 
-		<for list="${list}" param="param">
-			<execute macro="TestUtils#fail" />
-		</for>
+		for (var param : list "${list}") {
+			TestUtils.fail();
+		}
 
-		<execute macro="TestUtils#pass" />
-	</command>
+		TestUtils.pass();
+	}
 
-	<command name="nestedForLoops">
-		<echo message="Test loops: checking to make sure that you can have nested loops" />
+	macro nestedForLoops {
+		echo("Test loops: checking to make sure that you can have nested loops");
 
-		<var name="string" value="" />
+		var string = "";
 
-		<for list="1,2,3" param="number">
-			<for list="a,b,c" param="letter">
-				<var name="string" value="${string}${number}${letter}," />
-			</for>
-		</for>
+		for (var number : list "1,2,3") {
+			for (var letter : list "a,b,c") {
+				var string = "${string}${number}${letter},";
+			}
+		}
 
-		<execute macro="TestUtils#assertEquals">
-			<var name="actual" value="${string}" />
-			<var name="expected" value="1a,1b,1c,2a,2b,2c,3a,3b,3c," />
-		</execute>
-	</command>
-</definition>
+		TestUtils.assertEquals(
+			actual = "${string}",
+			expected = "1a,1b,1c,2a,2b,2c,3a,3b,3c,"
+		);
+	}
+}

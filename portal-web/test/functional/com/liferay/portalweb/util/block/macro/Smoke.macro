@@ -1,61 +1,37 @@
-<definition>
-	<command name="runSmoke" summary-ignore="true">
-		<execute macro="Page#addPG">
-			<var name="pageName" value="Test Page1" />
-		</execute>
+definition {
+	@summary-ignore = "true"
+	macro runSmoke {
+		Page.addPG(pageName = "Test Page1");
 
-		<execute macro="Page#addPG">
-			<var name="pageName" value="Test Page2" />
-		</execute>
+		Page.addPG(pageName = "Test Page2");
 
-		<execute macro="Page#addPG">
-			<var name="pageName" value="Test Page3" />
-		</execute>
+		Page.addPG(pageName = "Test Page3");
 
-		<var name="pageName" value="Test Page1" />
-		<var name="portletBody" value="Welcome to Liferay Portal" />
-		<var name="portletName" value="Hello World" />
+		var pageName = "Test Page1";
+		var portletBody = "Welcome to Liferay Portal";
+		var portletName = "Hello World";
 
-		<task summary="Add a '${portletName}' portlet to the page named '${pageName}'">
-			<execute macro="Portlet#addPG">
-				<var name="pageName" value="${pageName}" />
-				<var name="portletName" value="${portletName}" />
-			</execute>
+		task ("Add a '${portletName}' portlet to the page named '${pageName}'") {
+			Portlet.addPG(pageName = "${pageName}", portletName = "${portletName}");
 
-			<execute macro="Portlet#viewTitle">
-				<var name="portletName" value="${portletName}" />
-			</execute>
+			Portlet.viewTitle(portletName = "${portletName}");
 
-			<execute macro="Portlet#viewBody">
-				<var name="portletBody" value="${portletBody}" />
-				<var name="portletName" value="${portletName}" />
-			</execute>
+			Portlet.viewBody(portletBody = "${portletBody}", portletName = "${portletName}");
 
-			<execute macro="Page#gotoPG">
-				<var name="pageName" value="${pageName}" />
-			</execute>
+			Page.gotoPG(pageName = "${pageName}");
 
-			<execute macro="Portlet#viewTitle">
-				<var name="portletName" value="${portletName}" />
-			</execute>
+			Portlet.viewTitle(portletName = "${portletName}");
 
-			<execute macro="Portlet#viewBody">
-				<var name="portletBody" value="${portletBody}" />
-				<var name="portletName" value="${portletName}" />
-			</execute>
-		</task>
+			Portlet.viewBody(portletBody = "${portletBody}", portletName = "${portletName}");
+		}
 
-		<var name="portletName" value="Blogs" />
-		<var name="portletTitle" value="Blogs" />
+		var portletName = "Blogs";
+		var portletTitle = "Blogs";
 
-		<task summary="Navigate to Go to > Control Panel > ${portletName}">
-			<execute macro="Page#gotoCP">
-				<var name="portletName" value="${portletName}" />
-			</execute>
+		task ("Navigate to Go to > Control Panel > ${portletName}") {
+			Page.gotoCP(portletName = "${portletName}");
 
-			<execute macro="ControlPanel#viewPortletTitle">
-				<var name="portletTitle" value="${portletTitle}" />
-			</execute>
-		</task>
-	</command>
-</definition>
+			ControlPanel.viewPortletTitle(portletTitle = "${portletTitle}");
+		}
+	}
+}
