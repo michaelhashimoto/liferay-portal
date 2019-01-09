@@ -505,6 +505,15 @@ public class GitWorkingDirectory {
 			return null;
 		}
 
+		StringBuilder gitBranchesSHAReportStringBuilder = new StringBuilder();
+
+		gitBranchesSHAReportStringBuilder.append(
+			_getLocalGitBranchesSHAReport());
+		gitBranchesSHAReportStringBuilder.append("\nRemote Git branch\n    ");
+		gitBranchesSHAReportStringBuilder.append(remoteGitRef.getName());
+		gitBranchesSHAReportStringBuilder.append(": ");
+		gitBranchesSHAReportStringBuilder.append(remoteGitRef.getSHA());
+
 		RemoteGitRepository remoteGitRepository =
 			remoteGitRef.getRemoteGitRepository();
 
@@ -568,16 +577,23 @@ public class GitWorkingDirectory {
 			3, GitUtil.RETRY_DELAY, 1000 * 60 * 30, sb.toString());
 
 		if (executionResult.getExitValue() != 0) {
+			System.out.println(gitBranchesSHAReportStringBuilder.toString());
+
 			throw new RuntimeException(
 				JenkinsResultsParserUtil.combine(
 					"Unable to fetch remote branch ", remoteGitRefName, "\n",
 					executionResult.getStandardError()));
 		}
 
+		long duration = System.currentTimeMillis() - start;
+
 		System.out.println(
 			"Fetch completed in " +
-				JenkinsResultsParserUtil.toDurationString(
-					System.currentTimeMillis() - start));
+				JenkinsResultsParserUtil.toDurationString(duration));
+
+		if (duration > (1000 * 60)) {
+			System.out.println(gitBranchesSHAReportStringBuilder.toString());
+		}
 
 		if (localSHAExists(remoteGitRefSHA) && (localGitBranch != null)) {
 			return createLocalGitBranch(
@@ -618,6 +634,14 @@ public class GitWorkingDirectory {
 				"Invalid remote url " + remoteURL);
 		}
 
+		StringBuilder gitBranchesSHAReportStringBuilder = new StringBuilder();
+
+		gitBranchesSHAReportStringBuilder.append(
+			_getLocalGitBranchesSHAReport());
+		gitBranchesSHAReportStringBuilder.append("\n");
+		gitBranchesSHAReportStringBuilder.append(
+			_getRemoteGitBranchesSHAReport(null, remoteURL));
+
 		StringBuilder sb = new StringBuilder();
 
 		sb.append("git fetch --progress -v -f ");
@@ -635,16 +659,23 @@ public class GitWorkingDirectory {
 			3, GitUtil.RETRY_DELAY, 1000 * 60 * 30, sb.toString());
 
 		if (executionResult.getExitValue() != 0) {
+			System.out.println(gitBranchesSHAReportStringBuilder.toString());
+
 			throw new RuntimeException(
 				JenkinsResultsParserUtil.combine(
 					"Unable to fetch from remote url ", remoteURL, "\n",
 					executionResult.getStandardError()));
 		}
 
+		long duration = System.currentTimeMillis() - start;
+
+		if (duration > (1000 * 60)) {
+			System.out.println(gitBranchesSHAReportStringBuilder.toString());
+		}
+
 		System.out.println(
 			"Fetch completed in " +
-				JenkinsResultsParserUtil.toDurationString(
-					System.currentTimeMillis() - start));
+				JenkinsResultsParserUtil.toDurationString(duration));
 	}
 
 	public LocalGitBranch fetch(
@@ -2038,6 +2069,20 @@ public class GitWorkingDirectory {
 		return true;
 	}
 
+	private String _getLocalGitBranchesSHAReport() {
+		StringBuilder sb = new StringBuilder("Local Git branches");
+
+		for (LocalGitBranch localGitBranch : getLocalGitBranches(null)) {
+			sb.append("\n    ");
+
+			sb.append(localGitBranch.getName());
+			sb.append(": ");
+			sb.append(localGitBranch.getSHA());
+		}
+
+		return sb.toString();
+	}
+
 	private String _getMergeBaseCommitSHA(LocalGitBranch... localGitBranches) {
 		if (localGitBranches.length < 2) {
 			throw new IllegalArgumentException(
@@ -2063,6 +2108,24 @@ public class GitWorkingDirectory {
 		}
 
 		return executionResult.getStandardOut();
+	}
+
+	private String _getRemoteGitBranchesSHAReport(
+		String remoteGitBranchName, String remoteURL) {
+
+		StringBuilder sb = new StringBuilder("Remote Git branches");
+
+		for (RemoteGitBranch remoteGitBranch :
+				getRemoteGitBranches(remoteGitBranchName, remoteURL)) {
+
+			sb.append("\n    ");
+
+			sb.append(remoteGitBranch.getName());
+			sb.append(": ");
+			sb.append(remoteGitBranch.getSHA());
+		}
+
+		return sb.toString();
 	}
 
 	private List<LocalGitCommit> _log(
