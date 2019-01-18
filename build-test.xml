@@ -360,24 +360,12 @@ counter.jdbc.prefix=jdbc.counter.]]></echo>
 
 			<var name="java.jdk.bundle.version" unset="true" />
 
-			<if>
-				<contains string="${test.batch.name}" substring="-jdk7" />
-				<then>
-					<property name="java.jdk.bundle.version" value="1.7" />
-				</then>
-				<elseif>
-					<contains string="${test.batch.name}" substring="-jdk8" />
-					<then>
-						<property name="java.jdk.bundle.version" value="1.8" />
-					</then>
-				</elseif>
-				<elseif>
-					<contains string="${test.batch.name}" substring="-open11" />
-					<then>
-						<property name="java.jdk.bundle.version" value="1.11" />
-					</then>
-				</elseif>
-			</if>
+			<propertyregex
+				input="${test.batch.name}"
+				property="java.jdk.bundle.version"
+				regexp="-jdk([0-9]+)(_(adopt|open|oracle|redhat|zulu))?"
+				select="1.\1"
+			/>
 
 			<property name="java.jdk.bundle.version" value="${ant.java.version}" />
 		</sequential>
