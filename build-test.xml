@@ -399,7 +399,7 @@ counter.jdbc.prefix=jdbc.counter.]]></echo>
 	</macrodef>
 
 	<macrodef name="get-java-jdk-home">
-		<attribute default="x64" name="architecture" />
+		<attribute default="${java.jdk.architecture}" name="architecture" />
 		<attribute default="jdk" name="type" />
 		<attribute default="${ant.java.version}" name="version" />
 
