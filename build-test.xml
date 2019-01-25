@@ -354,43 +354,34 @@ counter.jdbc.prefix=jdbc.counter.]]></echo>
 		<attribute default="${ant.java.version}" name="version" />
 
 		<sequential>
-			<if>
-				<and>
-					<equals arg1="@{version}" arg2="1.7" />
-					<isset property="java.@{type}.7.@{architecture}.home" />
-				</and>
-				<then>
-					<propertycopy from="java.@{type}.7.@{architecture}.home" name="java.jdk.home" />
-				</then>
-				<elseif>
-					<and>
-						<equals arg1="@{version}" arg2="1.8" />
-						<isset property="java.@{type}.8.@{architecture}.home" />
-					</and>
-					<then>
-						<propertycopy from="java.@{type}.8.@{architecture}.home" name="java.jdk.home" />
-					</then>
-				</elseif>
-				<elseif>
-					<and>
-						<equals arg1="@{version}" arg2="1.11" />
-						<isset property="java.@{type}.11.@{architecture}.home" />
-					</and>
-					<then>
-						<propertycopy from="java.@{type}.11.@{architecture}.home" name="java.jdk.home" />
-					</then>
-				</elseif>
-				<else>
-					<property name="java.jdk.home" value="${java.home}" />
-				</else>
-			</if>
+			<var name="java.jdk.home" unset="true" />
+
+			<local name="version" />
+
+			<propertyregex
+				defaultValue="@{version}"
+				input="@{version}"
+				property="version"
+				regexp="1\.([0-9]+)"
+				select="\1"
+			/>
+
+			<propertycopy
+				from="java.jdk.home[${version}][@{architecture}][@{type}]"
+				property="java.jdk.home"
+				silent="true"
+			/>
+
+			<property name="java.jdk.home" value="${java.home}" />
 
 			<if>
 				<not>
 					<available file="${java.jdk.home}" />
 				</not>
 				<then>
-					<var name="java.jdk.home" value="${java.home}" />
+					<var name="java.jdk.home" unset="true" />
+
+					<property name="java.jdk.home" value="${java.home}" />
 				</then>
 			</if>
 		</sequential>
