@@ -2072,7 +2072,11 @@ org.apache.catalina.startup.ClassLoaderFactory.level=INFO]]>
 				<then>
 					<local name="java.jdk.home" />
 
-					<get-java-jdk-home />
+					<get-java-jdk-bundle-version test.batch.name="${test.batch.name}" />
+
+					<get-java-jdk-bundle-type test.batch.name="${test.batch.name}" />
+
+					<get-java-jdk-home type="${java.jdk.bundle.type}" version="${java.jdk.bundle.version}" />
 
 					<exec dir="${test.app.server.bin.dir}" executable="${app.server.start.executable}" resolveexecutable="true">
 						<arg line="${app.server.start.executable.arg.line}" />
@@ -2250,7 +2254,11 @@ org.apache.catalina.startup.ClassLoaderFactory.level=INFO]]>
 						<then>
 							<local name="java.jdk.home" />
 
-							<get-java-jdk-home />
+							<get-java-jdk-bundle-version test.batch.name="${test.batch.name}" />
+
+							<get-java-jdk-bundle-type test.batch.name="${test.batch.name}" />
+
+							<get-java-jdk-home type="${java.jdk.bundle.type}" version="${java.jdk.bundle.version}" />
 
 							<exec dir="${test.app.server.bin.dir}" executable="${app.server.stop.executable}" resolveexecutable="true">
 								<arg line="${app.server.stop.executable.arg.line}" />
