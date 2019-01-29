@@ -400,7 +400,7 @@ counter.jdbc.prefix=jdbc.counter.]]></echo>
 
 	<macrodef name="get-java-jdk-home">
 		<attribute default="${java.jdk.architecture}" name="architecture" />
-		<attribute default="jdk" name="type" />
+		<attribute default="oracle" name="type" />
 		<attribute default="${ant.java.version}" name="version" />
 
 		<sequential>
