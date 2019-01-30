@@ -348,29 +348,6 @@ counter.jdbc.prefix=jdbc.counter.]]></echo>
 		</sequential>
 	</macrodef>
 
-	<macrodef name="get-java-jdk-bundle-version">
-		<attribute default="" name="test.batch.name" />
-
-		<sequential>
-			<local name="test.batch.name" />
-
-			<condition else="@{test.batch.name}" property="test.batch.name" value="${env.TEST_BATCH_NAME}">
-				<contains string="@{test.batch.name}" substring="{test.batch.name}" />
-			</condition>
-
-			<var name="java.jdk.bundle.version" unset="true" />
-
-			<propertyregex
-				input="${test.batch.name}"
-				property="java.jdk.bundle.version"
-				regexp="-jdk([0-9]+)(_(adopt|open|oracle|redhat|zulu))?"
-				select="1.\1"
-			/>
-
-			<property name="java.jdk.bundle.version" value="${ant.java.version}" />
-		</sequential>
-	</macrodef>
-
 	<macrodef name="get-java-jdk-bundle-type">
 		<attribute default="" name="test.batch.name" />
 
@@ -395,6 +372,29 @@ counter.jdbc.prefix=jdbc.counter.]]></echo>
 			</condition>
 
 			<property name="java.jdk.bundle.type" value="oracle" />
+		</sequential>
+	</macrodef>
+
+	<macrodef name="get-java-jdk-bundle-version">
+		<attribute default="" name="test.batch.name" />
+
+		<sequential>
+			<local name="test.batch.name" />
+
+			<condition else="@{test.batch.name}" property="test.batch.name" value="${env.TEST_BATCH_NAME}">
+				<contains string="@{test.batch.name}" substring="{test.batch.name}" />
+			</condition>
+
+			<var name="java.jdk.bundle.version" unset="true" />
+
+			<propertyregex
+				input="${test.batch.name}"
+				property="java.jdk.bundle.version"
+				regexp="-jdk([0-9]+)(_(adopt|open|oracle|redhat|zulu))?"
+				select="1.\1"
+			/>
+
+			<property name="java.jdk.bundle.version" value="${ant.java.version}" />
 		</sequential>
 	</macrodef>
 
