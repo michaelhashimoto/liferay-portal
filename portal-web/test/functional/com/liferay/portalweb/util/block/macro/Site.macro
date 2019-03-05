@@ -87,6 +87,7 @@ definition {
 		);
 
 		AssertTextEquals.assertPartialText(
+			key_siteName = "${siteName}",
 			locator1 = "CPSites#SITE_TABLE_NAME",
 			value1 = "${siteName}"
 		);
@@ -158,6 +159,7 @@ definition {
 		);
 
 		AssertTextEquals.assertPartialText(
+			key_siteName = "${siteName}",
 			locator1 = "CPSites#SITE_TABLE_NAME",
 			value1 = "${siteName}"
 		);
@@ -268,6 +270,7 @@ definition {
 		);
 
 		AssertTextEquals.assertPartialText(
+			key_siteName = "${siteName}",
 			locator1 = "CPSites#SITE_TABLE_NAME",
 			value1 = "${siteName}"
 		);
@@ -295,6 +298,7 @@ definition {
 		);
 
 		AssertTextEquals.assertPartialText(
+			key_siteName = "${siteName}",
 			locator1 = "CPSites#SITE_TABLE_NAME",
 			value1 = "${siteName}"
 		);
@@ -370,6 +374,7 @@ definition {
 		);
 
 		AssertTextEquals.assertPartialText(
+			key_siteName = "${siteName}",
 			locator1 = "CPSites#SITE_TABLE_NAME",
 			value1 = "${siteName}"
 		);

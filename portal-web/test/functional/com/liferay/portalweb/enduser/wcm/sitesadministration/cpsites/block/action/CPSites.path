@@ -73,7 +73,7 @@
 <!--SITE_TABLE-->
 <tr>
 	<td>SITE_TABLE_NAME</td>
-	<td>//table[@data-searchcontainerid='_134_groupsSearchContainer']//tr[3]/td[1]/a</td>
+	<td>//table[@data-searchcontainerid='_134_groupsSearchContainer']//tr[contains(.,'${key_siteName}')]/td[1]/a</td>
 	<td></td>
 </tr>
 <tr>
