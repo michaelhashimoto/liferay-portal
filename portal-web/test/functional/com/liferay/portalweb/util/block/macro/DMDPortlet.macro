@@ -2,10 +2,7 @@ definition {
 	macro configureShowAllPG {
 		Page.gotoPG(pageName = "${pageName}");
 
-		AssertClick.pauseAssertTextClickAt(
-			locator1 = "PGDocumentlibrarydisplay#OPTIONS_WRENCH_ICON",
-			value1 = "Options"
-		);
+		Click.pauseClickAt(locator1 = "PGDocumentlibrarydisplay#OPTIONS_WRENCH_ICON");
 
 		AssertClick.assertTextClickAt(
 			locator1 = "PGDocumentlibrarydisplay#OPTIONS_MENULIST_CONFIGURATION",

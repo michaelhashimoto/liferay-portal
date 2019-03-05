@@ -33,10 +33,7 @@ definition {
 
 		AssertElementPresent(locator1 = "PGWebform#DEFAULT_FORM_FIELDS_COMMENTS");
 
-		AssertClick.pauseAssertTextClickAt(
-			locator1 = "PGWebform#PORTLET_OPTIONS",
-			value1 = "Options"
-		);
+		Click.pauseClickAt(locator1 = "PGWebform#PORTLET_OPTIONS");
 
 		AssertClick.assertTextClickAt(
 			locator1 = "PGWebform#WEBFORM_OPTIONS_MENULIST_CONFIGURATION",

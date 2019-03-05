@@ -4,10 +4,7 @@ definition {
 
 		AssertElementPresent(locator1 = "PGMediagallery#OPTIONS");
 
-		AssertClick.pauseAssertTextClickAt(
-			locator1 = "PGMediagallery#OPTIONS",
-			value1 = "Options"
-		);
+		Click.pauseClickAt(locator1 = "PGMediagallery#OPTIONS");
 
 		AssertClick(
 			locator1 = "PGMediagallery#OPTIONS_MENULIST_CONFIGURATION",
