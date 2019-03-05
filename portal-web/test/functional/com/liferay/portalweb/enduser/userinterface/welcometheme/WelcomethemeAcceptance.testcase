@@ -117,23 +117,6 @@ definition {
 			value1 = "Go to My Portal"
 		);
 
-		AssertClick.assertValueClickAt(
-			locator1 = "PGLoginTermsofservice#I_AGREE_BUTTON",
-			value1 = "I Agree"
-		);
-
-		Type(locator1 = "PGLoginNewpassword#PASSWORD_FIELD", value1 = "${newPassword}");
-
-		Type(
-			locator1 = "PGLoginNewpassword#ENTER_AGAIN_FIELD",
-			value1 = "${newPassword}"
-		);
-
-		AssertClick.assertValueClickAt(
-			locator1 = "PGLoginNewpassword#SAVE_BUTTON",
-			value1 = "Save"
-		);
-
 		Type(
 			locator1 = "PGLoginPasswordreminder#ANSWER_FIELD",
 			value1 = "${passwordReminder}"
