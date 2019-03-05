@@ -59,6 +59,7 @@ definition {
 		Page.gotoCP(portletName = "Web Content");
 
 		WebContentTemplates.addCP(
+			structureDescription = "${structureDescription}",
 			structureName = "${structureName}",
 			templateDescription = "${templateDescription}",
 			templateName = "${templateName}"
@@ -97,6 +98,7 @@ definition {
 		Page.gotoCP(portletName = "Web Content");
 
 		WebContentTemplates.addCP(
+			structureDescription = "${structureDescription}",
 			structureName = "${structureName}",
 			templateDescription = "${templateDescription}",
 			templateName = "${templateName}"
