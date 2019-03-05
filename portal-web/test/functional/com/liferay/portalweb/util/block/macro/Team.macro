@@ -7,8 +7,9 @@ definition {
 			value1 = "Search"
 		);
 
+		var key_siteName = "${siteName}";
+
 		AssertTextEquals.assertPartialText(
-			key_siteName = "${siteName}",
 			locator1 = "CPSites#SITE_TABLE_NAME",
 			value1 = "${siteName}"
 		);
@@ -69,8 +70,9 @@ definition {
 			value1 = "Search"
 		);
 
+		var key_siteName = "${siteName}";
+
 		AssertTextEquals.assertPartialText(
-			key_siteName = "${siteName}",
 			locator1 = "CPSites#SITE_TABLE_NAME",
 			value1 = "${siteName}"
 		);

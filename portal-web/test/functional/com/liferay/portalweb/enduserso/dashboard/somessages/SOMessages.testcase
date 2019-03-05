@@ -67,8 +67,9 @@ definition {
 			value1 = "Messages"
 		);
 
+		var key_recipientName = "${userName}";
+
 		SOMessages.sendMessage(
-			key_recipientName = "${userName}",
 			messageBody = "${messageBody}",
 			messageSubject = "${messageSubject}",
 			recipientName = "${userName}",
@@ -111,8 +112,9 @@ definition {
 			value1 = "Messages"
 		);
 
+		var key_recipientName = "${userName}";
+
 		SOMessages.sendMessage(
-			key_recipientName = "${userName}",
 			messageBody = "${messageBody}",
 			messageSubject = "${messageSubject}",
 			recipientName = "${userName}",
@@ -200,8 +202,9 @@ definition {
 			value1 = "Messages"
 		);
 
+		var key_recipientName = "${userName}";
+
 		SOMessages.sendMessage(
-			key_recipientName = "${userName2}",
 			messageBody = "${messageBody}",
 			messageSubject = "${messageSubject}",
 			recipientName = "${userName2}",
@@ -308,8 +311,9 @@ definition {
 			value1 = "Messages"
 		);
 
+		var key_recipientName = "${userName}";
+
 		SOMessages.sendMessage(
-			key_recipientName = "${userName}",
 			messageBody = "${messageBody}",
 			messageSubject = "${messageSubject}",
 			recipientName = "${userName}",
@@ -359,8 +363,9 @@ definition {
 			value1 = "Messages"
 		);
 
+		var key_recipientName = "${userName}";
+
 		SOMessages.sendMessage(
-			key_recipientName = "${userName}",
 			messageBody = "${messageBody}",
 			messageSubject = "${messageSubject}",
 			number = "01",
@@ -376,8 +381,9 @@ definition {
 			value1 = "Messages"
 		);
 
+		var key_recipientName = "${userName}";
+
 		SOMessages.sendMessage(
-			key_recipientName = "${userName}",
 			messageBody = "${messageBody}",
 			messageSubject = "${messageSubject}",
 			number = "02",
@@ -393,8 +399,9 @@ definition {
 			value1 = "Messages"
 		);
 
+		var key_recipientName = "${userName}";
+
 		SOMessages.sendMessage(
-			key_recipientName = "${userName}",
 			messageBody = "${messageBody}",
 			messageSubject = "${messageSubject}",
 			number = "03",
@@ -453,8 +460,9 @@ definition {
 			value1 = "Messages"
 		);
 
+		var key_recipientName = "${userName}";
+
 		SOMessages.sendMessage(
-			key_recipientName = "${userName}",
 			messageBody = "${messageBody}",
 			messageSubject = "${messageSubject}",
 			recipientName = "${userName}",
@@ -498,8 +506,9 @@ definition {
 			value1 = "Messages"
 		);
 
+		var key_recipientName = "${userName}";
+
 		SOMessages.sendMessage(
-			key_recipientName = "${userName}",
 			messageBody = "${messageBody}",
 			messageSubject = "${messageSubject}",
 			recipientName = "${userName}",
@@ -554,8 +563,9 @@ definition {
 			value1 = "Messages"
 		);
 
+		var key_recipientName = "${userName}";
+
 		SOMessages.sendMessage(
-			key_recipientName = "${userName}",
 			messageBody = "${messageBody}",
 			messageSubject = "${messageSubject}",
 			number = "01",
@@ -571,8 +581,9 @@ definition {
 			value1 = "Messages"
 		);
 
+		var key_recipientName = "${userName}";
+
 		SOMessages.sendMessage(
-			key_recipientName = "${userName}",
 			messageBody = "${messageBody}",
 			messageSubject = "${messageSubject}",
 			number = "02",
@@ -588,8 +599,9 @@ definition {
 			value1 = "Messages"
 		);
 
+		var key_recipientName = "${userName}";
+
 		SOMessages.sendMessage(
-			key_recipientName = "${userName}",
 			messageBody = "${messageBody}",
 			messageSubject = "${messageSubject}",
 			number = "03",
@@ -665,8 +677,9 @@ definition {
 			value1 = "Messages"
 		);
 
+		var key_recipientName = "${userName}";
+
 		SOMessages.sendMessage(
-			key_recipientName = "${userName}",
 			messageBody = "${messageBody}",
 			messageSubject = "${messageSubject}",
 			recipientName = "${userName}",
@@ -718,8 +731,9 @@ definition {
 			value1 = "Messages"
 		);
 
+		var key_recipientName = "${userName}";
+
 		SOMessages.sendMessage(
-			key_recipientName = "${userName}",
 			messageAttachmentFile = "${attachmentFile}",
 			messageBody = "${messageBody}",
 			messageSubject = "${messageSubject}",
@@ -773,8 +787,9 @@ definition {
 
 		Page.gotoPG(pageName = "${pageName}");
 
+		var key_recipientName = "${userName}";
+
 		SOMessages.sendMessage(
-			key_recipientName = "${userName}",
 			messageBody = "${messageBody}",
 			messageSubject = "${messageSubject}",
 			recipientName = "${userName}",
@@ -816,8 +831,9 @@ definition {
 			value1 = "Messages"
 		);
 
+		var key_recipientName = "${userName}";
+
 		SOMessages.sendMessage(
-			key_recipientName = "${userName}",
 			messageBody = "${messageBody}",
 			messageSubject = "${messageSubject}",
 			recipientName = "${userName}",
@@ -898,8 +914,9 @@ definition {
 			value1 = "Messages"
 		);
 
+		var key_recipientName = "${userName}";
+
 		SOMessages.sendMessage(
-			key_recipientName = "${userName}",
 			messageBody = "${messageBody}",
 			messageSubject = "${messageSubject}",
 			recipientName = "${userName}",
@@ -984,8 +1001,9 @@ definition {
 
 		Page.gotoPG(pageName = "${pageName}");
 
+		var key_recipientName = "${userName}";
+
 		SOMessages.sendMessage(
-			key_recipientName = "${userName}",
 			messageBody = "${messageBody}",
 			messageSubject = "${messageSubject}",
 			recipientName = "${userName}",
