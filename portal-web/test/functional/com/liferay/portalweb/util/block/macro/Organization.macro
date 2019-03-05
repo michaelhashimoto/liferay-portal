@@ -68,8 +68,6 @@ definition {
 			value1 = "Available"
 		);
 
-		CPUsersandorganizationsAssignmembers.showBasicSearch();
-
 		Type(
 			locator1 = "CPUsersandorganizationsAssignmembers#BASIC_SEARCH_FIELD",
 			value1 = "${userScreenName}"
