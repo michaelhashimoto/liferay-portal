@@ -156,7 +156,7 @@ definition {
 
 		Page.addPG(pageName = "${pageName}");
 
-		Portlet.addPG(pageName = "${pageName}", potletName = "${portletName}");
+		Portlet.addPG(pageName = "${pageName}", portletName = "${portletName}");
 
 		Page.gotoCP(portletName = "Users and Organizations");
 
@@ -559,7 +559,7 @@ definition {
 
 		Page.addPG(pageName = "${pageName}");
 
-		Portlet.addPG(pageName = "${pageName}", potletName = "${portletName}");
+		Portlet.addPG(pageName = "${pageName}", portletName = "${portletName}");
 
 		Page.gotoCP(portletName = "Users and Organizations");
 
