@@ -2,8 +2,8 @@
 definition {
 	property database.sharding = "true";
 	property databases.size = "2";
-	property portal.release = "true";
-	property portal.upstream = "true";
+	property portal.release = "false";
+	property portal.upstream = "false";
 	property testray.main.component.name = "Tools";
 
 	@priority = "5"
