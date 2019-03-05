@@ -208,7 +208,10 @@ definition {
 
 		Page.gotoPG(pageName = "${pageName}");
 
-		DMFolderDocument.moveToFolderPG(dmDocumentTitle = "${dmDocumentTitle}");
+		DMFolderDocument.moveToFolderPG(
+			dmDocumentTitle = "${dmDocumentTitle}",
+			dmFolderName = "${dmFolderName1}"
+		);
 	}
 
 	tearDown {
