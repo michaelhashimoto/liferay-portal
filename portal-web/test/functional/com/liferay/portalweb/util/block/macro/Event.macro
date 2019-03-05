@@ -74,6 +74,8 @@ definition {
 				value1 = "${eventTitle}${number}"
 			);
 
+			SelectFrame(locator1 = "PGCalendarAddEvent#DESCRIPTION_FIELD");
+
 			Type.typeCKEditorWaitForCKEditor(
 				locator1 = "PGCalendarAddEvent#DESCRIPTION_FIELD",
 				value1 = "${eventDescription}${number}"

@@ -16,6 +16,8 @@ definition {
 
 		Type(locator1 = "PGWikiAddpage#TITLE_FIELD", value1 = "${wikiChildPageTitle}");
 
+		SelectFrame(locator1 = "PGWikiAddpage#BODY_FIELD");
+
 		Type.typeCKEditorWaitForCKEditor(
 			locator1 = "PGWikiAddpage#BODY_FIELD",
 			value1 = "${wikiChildPageContent}"

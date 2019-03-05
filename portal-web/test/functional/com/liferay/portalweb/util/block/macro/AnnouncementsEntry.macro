@@ -17,6 +17,8 @@ definition {
 
 		Type(locator1 = "PGAnnouncementsAddentry#TITLE_FIELD", value1 = "${entryTitle}");
 
+		SelectFrame(locator1 = "PGAnnouncementsAddentry#CONTENT_FIELD");
+
 		Type.typeCKEditorWaitForCKEditor(
 			locator1 = "PGAnnouncementsAddentry#CONTENT_FIELD",
 			value1 = "${entryContent}"

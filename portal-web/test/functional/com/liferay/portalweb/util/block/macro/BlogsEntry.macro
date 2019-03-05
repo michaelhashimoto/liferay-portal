@@ -4,6 +4,8 @@ definition {
 
 		Type(locator1 = "CPBlogsAdd#TITLE_FIELD", value1 = "${entryTitle}");
 
+		SelectFrame(locator1 = "CPBlogsAdd#CONTENT_FIELD");
+
 		Type.typeCKEditorWaitForCKEditor(
 			locator1 = "CPBlogsAdd#CONTENT_FIELD",
 			value1 = "${entryContent}"
@@ -106,6 +108,8 @@ definition {
 			var number = "${number}";
 
 			Type(locator1 = "PGBlogsAdd#TITLE_FIELD", value1 = "${entryTitle}${number}");
+
+			SelectFrame(locator1 = "PGBlogsAdd#CONTENT_FIELD");
 
 			Type.typeCKEditorWaitForCKEditor(
 				locator1 = "PGBlogsAdd#CONTENT_FIELD",
