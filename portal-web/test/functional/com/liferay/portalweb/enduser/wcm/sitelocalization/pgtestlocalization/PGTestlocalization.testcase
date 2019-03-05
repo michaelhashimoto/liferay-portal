@@ -5,7 +5,7 @@ definition {
 	property portlet.plugins.includes = "test-localized-portlet";
 	property testray.main.component.name = "WCM";
 	var pageName = "Test Localization";
-	var portletName = "Test Localized";
+	var portletName = "Test Localized Portlet";
 
 	setUp {
 		User.firstLoginPG();
