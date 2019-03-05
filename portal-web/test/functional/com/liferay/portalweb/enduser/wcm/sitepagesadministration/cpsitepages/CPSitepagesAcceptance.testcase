@@ -26,7 +26,7 @@ definition {
 		SitePage.addCP(
 			siteName = "${siteName}",
 			sitePageName = "${sitePageName}",
-			sitePagePrivacy = "sitePagePrivacy"
+			sitePagePrivacy = "${sitePagePrivacy}"
 		);
 
 		Page.gotoCP(portletName = "Sites");
@@ -35,7 +35,7 @@ definition {
 			siteChildPageName = "${siteChildPageName}",
 			siteName = "${siteName}",
 			sitePageName = "${sitePageName}",
-			sitePagePrivacy = "sitePagePrivacy"
+			sitePagePrivacy = "${sitePagePrivacy}"
 		);
 
 		Page.gotoPG(
