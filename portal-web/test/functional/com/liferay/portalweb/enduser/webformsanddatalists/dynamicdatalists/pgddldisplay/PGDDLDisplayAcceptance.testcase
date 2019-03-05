@@ -36,7 +36,7 @@ definition {
 			dataDefinitionName = "${dataDefinitionName}"
 		);
 
-		Page.gotoPG(portletName = "${pageName}");
+		Page.gotoPG(pageName = "${pageName}");
 
 		List.addPG(
 			dataDefinitionName = "${dataDefinitionName}",
@@ -45,7 +45,7 @@ definition {
 			pageName = "${pageName}"
 		);
 
-		Page.gotoPG(portletName = "${pageName}");
+		Page.gotoPG(pageName = "${pageName}");
 
 		List.viewPG(listName = "${listName}", pageName = "${pageName}");
 	}
@@ -65,7 +65,7 @@ definition {
 			dataDefinitionName = "${dataDefinitionName}"
 		);
 
-		Page.gotoPG(portletName = "${pageName}");
+		Page.gotoPG(pageName = "${pageName}");
 
 		List.addPG(
 			dataDefinitionName = "${dataDefinitionName}",
@@ -74,7 +74,7 @@ definition {
 			pageName = "${pageName}"
 		);
 
-		Page.gotoPG(portletName = "${pageName}");
+		Page.gotoPG(pageName = "${pageName}");
 
 		ListRecord.addPG(
 			listName = "${listName}",
@@ -113,7 +113,7 @@ definition {
 			listName = "${listName}"
 		);
 
-		Page.gotoPG(portletName = "${pageName}");
+		Page.gotoPG(pageName = "${pageName}");
 
 		List.deletePG(listName = "${listName}", pageName = "${pageName}");
 	}
@@ -133,7 +133,7 @@ definition {
 			dataDefinitionName = "${dataDefinitionName}"
 		);
 
-		Page.gotoPG(portletName = "${pageName}");
+		Page.gotoPG(pageName = "${pageName}");
 
 		List.addPG(
 			dataDefinitionName = "${dataDefinitionName}",
@@ -142,7 +142,7 @@ definition {
 			pageName = "${pageName}"
 		);
 
-		Page.gotoPG(portletName = "${pageName}");
+		Page.gotoPG(pageName = "${pageName}");
 
 		ListRecord.addPG(
 			listName = "${listName}",
@@ -169,7 +169,7 @@ definition {
 			dataDefinitionName = "${dataDefinitionName}"
 		);
 
-		Page.gotoPG(portletName = "${pageName}");
+		Page.gotoPG(pageName = "${pageName}");
 
 		List.addPG(
 			dataDefinitionName = "${dataDefinitionName}",
@@ -178,7 +178,7 @@ definition {
 			pageName = "${pageName}"
 		);
 
-		Page.gotoPG(portletName = "${pageName}");
+		Page.gotoPG(pageName = "${pageName}");
 
 		List.editPG(
 			listDescriptionEdit = "${listDescriptionEdit}",
@@ -187,7 +187,7 @@ definition {
 			pageName = "${pageName}"
 		);
 
-		Page.gotoPG(portletName = "${pageName}");
+		Page.gotoPG(pageName = "${pageName}");
 
 		List.viewPG(listName = "${listNameEdit}", pageName = "${pageName}");
 	}
@@ -208,7 +208,7 @@ definition {
 			dataDefinitionName = "${dataDefinitionName}"
 		);
 
-		Page.gotoPG(portletName = "${pageName}");
+		Page.gotoPG(pageName = "${pageName}");
 
 		List.addPG(
 			dataDefinitionName = "${dataDefinitionName}",
@@ -217,7 +217,7 @@ definition {
 			pageName = "${pageName}"
 		);
 
-		Page.gotoPG(portletName = "${pageName}");
+		Page.gotoPG(pageName = "${pageName}");
 
 		ListRecord.addPG(
 			listName = "${listName}",
@@ -260,11 +260,11 @@ definition {
 			listName = "${listName}"
 		);
 
-		Page.gotoPG(portletName = "${pageName}");
+		Page.gotoPG(pageName = "${pageName}");
 
 		List.selectPG(listName = "${listName}", pageName = "${pageName}");
 
-		Page.gotoPG(portletName = "${pageName}");
+		Page.gotoPG(pageName = "${pageName}");
 
 		List.viewPG(listName = "${listName}", pageName = "${pageName}");
 	}
