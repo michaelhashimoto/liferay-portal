@@ -34,7 +34,8 @@ definition {
 
 		DMDocument.downloadCP(
 			dmDocumentFile = "${dmDocumentFile}",
-			dmDocumentSize = "${dmDocumentSize}"
+			dmDocumentSize = "${dmDocumentSize}",
+			dmDocumentTitle = "${dmDocumentTitle}"
 		);
 
 		Page.gotoCP(portletName = "Documents and Media");

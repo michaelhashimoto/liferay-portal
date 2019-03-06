@@ -39,7 +39,10 @@ definition {
 			value1 = "Add Record"
 		);
 
-		ListRecord.addTextCmdCP(textNameLabel = "text");
+		ListRecord.addTextCmdCP(
+			textNameLabel = "text",
+			recordText = "${recordText}"
+		);
 
 		AssertClick.assertValueClickAt(
 			locator1 = "CPDynamicdatalistsListAddrecord#PUBLISH_BUTTON",
