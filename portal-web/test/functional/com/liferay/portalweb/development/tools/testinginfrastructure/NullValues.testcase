@@ -66,6 +66,8 @@ definition {
 	test TypeEmptyString {
 		echo("Test null values: typing the empty string into a field");
 
+		User.firstLoginPG();
+
 		TestUtils.typeIntoField(text = "");
 
 		TestUtils.pass();
