@@ -1,7 +1,7 @@
 @component-name = "portal-tools"
 definition {
 	property portal.release = "true";
-	property portal.upstream = "true";
+	property portal.upstream = "false";
 	property testcase.url = "";
 	property testray.main.component.name = "Tools";
 
