@@ -198,7 +198,7 @@ definition {
 			value1 = "Source"
 		);
 
-		Type(
+		Type.sendKeys(
 			locator1 = "PGWikiAddpage#CK_EDITOR_SOURCE_FIELD",
 			value1 = "${wikiPageContent}"
 		);

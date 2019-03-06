@@ -50,7 +50,7 @@
 </tr>
 <tr>
 	<td>CK_EDITOR_SOURCE_FIELD</td>
-	<td>//textarea[@class='cke_source cke_enable_context_menu']</td>
+	<td>//textarea[contains(@class,'cke_source')]</td>
 	<td></td>
 </tr>
 <tr>
