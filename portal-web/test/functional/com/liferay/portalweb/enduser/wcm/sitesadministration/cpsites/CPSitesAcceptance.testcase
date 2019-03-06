@@ -79,11 +79,6 @@ definition {
 		);
 
 		AssertTextNotPresent(value1 = "${siteName}");
-
-		AssertTextEquals(
-			locator1 = "PGPersonalsiteAvailablesites#AVAILABLE_SITES_INFO_MESSAGE",
-			value1 = "No sites were found."
-		);
 	}
 
 	@priority = "5"
