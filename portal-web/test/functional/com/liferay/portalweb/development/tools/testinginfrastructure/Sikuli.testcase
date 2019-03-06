@@ -4,6 +4,7 @@ definition {
 	property portal.upstream = "true";
 	property testray.main.component.name = "Tools";
 
+	@ignore = "true"
 	@priority = "5"
 	test Smoke {
 		SikuliAssertElementPresent(locator1 = "Sikuli#EMAIL_ADDRESS");
