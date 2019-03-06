@@ -64,6 +64,9 @@ definition {
 
 		Tag.addCP(tagName = "${tagName}");
 
-		Tag.editCP(tagNameEdit = "${tagNameEdit}");
+		Tag.editCP(
+			tagName = "${tagName}",
+			tagNameEdit = "${tagNameEdit}"
+		);
 	}
 }

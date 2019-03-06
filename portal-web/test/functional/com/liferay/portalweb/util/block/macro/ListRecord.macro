@@ -269,7 +269,10 @@ definition {
 			value1 = "Edit"
 		);
 
-		ListRecord.editTextCmdCP(textNameLabel = "text");
+		ListRecord.editTextCmdCP(
+			textNameLabel = "text",
+			recordTextEdit = "${recordTextEdit}"
+		);
 
 		AssertClick.assertValueClickAt(
 			locator1 = "CPDynamicdatalistsListEditrecord#PUBLISH_BUTTON",
@@ -335,23 +338,38 @@ definition {
 	}
 
 	macro editRadioCmdCP {
-		ListRecord.addRadioCmdCP(recordRadio = "${recordRadioEdit}");
+		ListRecord.addRadioCmdCP(
+			radioNameLabel = "${radioNameLabel}",
+			recordRadio = "${recordRadioEdit}"
+		);
 	}
 
 	macro editSelectCmdCP {
-		ListRecord.addSelectCmdCP(recordSelect = "${recordSelectEdit}");
+		ListRecord.addSelectCmdCP(
+			recordSelect = "${recordSelectEdit}",
+			selectNameLabel = "${selectNameLabel}"
+		);
 	}
 
 	macro editTextBoxCmdCP {
-		ListRecord.addTextBoxCmdCP(recordTextBox = "${recordTextBoxEdit}");
+		ListRecord.addTextBoxCmdCP(
+			recordTextBox = "${recordTextBoxEdit}",
+			textBoxNameLabel = "${textBoxNameLabel}"
+		);
 	}
 
 	macro editTextCmdCP {
-		ListRecord.addTextCmdCP(recordText = "${recordTextEdit}");
+		ListRecord.addTextCmdCP(
+			recordText = "${recordTextEdit}",
+			textNameLabel = "${textNameLabel}"
+		);
 	}
 
 	macro editTextCmdPG {
-		ListRecord.addTextCmdPG(recordText = "${recordTextEdit}");
+		ListRecord.addTextCmdPG(
+			recordText = "${recordTextEdit}",
+			textNameLabel = "${textNameLabel}"
+		);
 	}
 
 	macro spreadsheetViewCP {
