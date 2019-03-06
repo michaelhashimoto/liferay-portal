@@ -18,7 +18,7 @@ definition {
 
 		AssertTextEquals(
 			locator1 = "SOMessagesAdd#TO_FIELD",
-			value1 = "${recipientName} <${recipientScreenName}>, "
+			value1 = "${recipientName}<${recipientScreenName}>, "
 		);
 
 		if (isSet(number)) {

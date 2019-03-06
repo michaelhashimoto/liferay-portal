@@ -9,8 +9,6 @@ definition {
 
 		Click(locator1 = "PGDocumentsandmediaAddshortcut#SITE_BUTTON");
 
-		// <execute function="#selectwindow" locator1="PGDocumentsandmediaAddshortcutsites#DOCUMENTS_AND_MEDIA_POPUP" />
-
 		Click(locator1 = "PGDocumentsandmediaAddshortcutsites#SITES_GLOBAL_SITE");
 
 		AssertClick(

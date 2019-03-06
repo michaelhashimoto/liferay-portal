@@ -19,12 +19,12 @@ definition {
 	test AddWikiFrontPageContentJavascript {
 
 		var wikiPageContent = '''
-				<p id='demo'>PASS</p>
+<p id='demo'>PASS</p>
 
-				<script type='text/javascript'>
-					document.getElementById('demo').innerHTML = 'FAIL';
-				</script>
-			''';
+<script type='text/javascript'>
+	document.getElementById('demo').innerHTML = 'FAIL';
+</script>
+''';
 		var wikiPageText = "PASS";
 
 		Page.gotoPG(pageName = "${pageName}");

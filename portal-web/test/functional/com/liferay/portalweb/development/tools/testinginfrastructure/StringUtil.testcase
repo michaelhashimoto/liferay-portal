@@ -110,15 +110,6 @@ definition {
 		TestUtils.assertEquals(actual = "${string}", expected = "xoLovexo");
 	}
 
-	/* <command name="Remove" priority="5">
-		<var method="StringUtil#remove('The fox jumped over the lazy dog', 'lazy')" name="stringRemove" />
-
-		<execute macro="TestUtils#assertEquals">
-			<var name="actual" value="${stringRemove}" />
-			<var name="expected" value="The fox jumped over the dog" />
-		</execute>
-	</command> */
-
 	@priority = "5"
 	test Replace {
 		var string = StringUtil.replace("You are my guest", "guest", "friend");

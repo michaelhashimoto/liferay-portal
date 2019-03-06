@@ -435,8 +435,6 @@ definition {
 		);
 
 		Click(locator1 = "CPDocumentsandmedia#DOCUMENT_CONTAINER_FOLDER1");
-
-		// <execute function="AssertElementPresent" locator1="CPDocumentsandmedia#FOLDER_VIEW_FOLDER1" />
 	}
 
 	macro tearDownCP {
