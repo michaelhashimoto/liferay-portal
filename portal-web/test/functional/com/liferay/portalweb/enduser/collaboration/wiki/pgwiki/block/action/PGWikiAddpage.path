@@ -39,13 +39,18 @@
 	<td></td>
 </tr>
 <tr>
-	<td>BODY_FIELD</td>
+	<td>BODY_FRAME</td>
 	<td>//iframe[contains(@title,'Rich text editor')]</td>
 	<td></td>
 </tr>
 <tr>
 	<td>BODY_FIELD_TEXT</td>
 	<td>//body[@class='html-editor portlet portlet-wiki cke_show_borders']/p</td>
+	<td></td>
+</tr>
+<tr>
+	<td>CK_EDITOR_UNLINK_DISABLED_LINK</td>
+	<td>//a[@class='cke_button_unlink cke_disabled']</td>
 	<td></td>
 </tr>
 <tr>

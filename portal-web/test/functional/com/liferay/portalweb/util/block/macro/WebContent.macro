@@ -10,10 +10,16 @@ definition {
 			value1 = "${webContentTitle}"
 		);
 
-		Type.typeCKEditorWaitForCKEditor(
-			locator1 = "CPWebcontentAddwebcontent#CONTENT_FIELD",
+		AssertElementPresent.assertVisible(locator1 = "PGWikiAddpage#CK_EDITOR_UNLINK_DISABLED_LINK");
+
+		SelectFrame(locator1 = "CPWebcontentAddwebcontent#CONTENT_FIELD");
+
+		Type.sendKeys(
+			locator1 = "Home#BODY",
 			value1 = "${webContentContent}"
 		);
+
+		SelectFrameTop();
 
 		AssertClick.assertValueClickAt(
 			locator1 = "CPWebcontentAddwebcontent#PUBLISH_BUTTON",
@@ -81,10 +87,16 @@ definition {
 			value1 = "${webContentTitle}"
 		);
 
-		Type.typeCKEditorWaitForCKEditor(
-			locator1 = "CPWebcontentAddwebcontent#CONTENT_FIELD",
+		AssertElementPresent.assertVisible(locator1 = "PGWikiAddpage#CK_EDITOR_UNLINK_DISABLED_LINK");
+
+		SelectFrame(locator1 = "CPWebcontentAddwebcontent#CONTENT_FIELD");
+
+		Type.sendKeys(
+			locator1 = "Home#BODY",
 			value1 = "${webContentContent}"
 		);
+
+		SelectFrameTop();
 
 		AssertClick.assertValueClickAt(
 			locator1 = "CPWebcontentAddwebcontent#SUBMIT_FOR_PUBLICATION_BUTTON",
@@ -124,10 +136,16 @@ definition {
 			value1 = "${webContentTitle}"
 		);
 
-		Type.typeCKEditorWaitForCKEditor(
-			locator1 = "PGAssetpublisherAddnewwebcontent#CONTENT_FIELD",
+		AssertElementPresent.assertVisible(locator1 = "PGWikiAddpage#CK_EDITOR_UNLINK_DISABLED_LINK");
+
+		SelectFrame(locator1 = "CPWebcontentAddwebcontent#CONTENT_FIELD");
+
+		Type.sendKeys(
+			locator1 = "Home#BODY",
 			value1 = "${webContentContent}"
 		);
+
+		SelectFrameTop();
 
 		SelectFrame(locator1 = "PGAssetpublisherAddnewwebcontent#WEB_CONTENT_IFRAME");
 
@@ -157,10 +175,16 @@ definition {
 			value1 = "${webContentTitle}"
 		);
 
-		Type.typeCKEditorWaitForCKEditor(
-			locator1 = "PGWebcontentdisplayAddwebcontent#CONTENT_FIELD",
+		AssertElementPresent.assertVisible(locator1 = "PGWikiAddpage#CK_EDITOR_UNLINK_DISABLED_LINK");
+
+		SelectFrame(locator1 = "CPWebcontentAddwebcontent#CONTENT_FIELD");
+
+		Type.sendKeys(
+			locator1 = "Home#BODY",
 			value1 = "${webContentContent}"
 		);
+
+		SelectFrameTop();
 
 		AssertClick.assertValueClickAt(
 			locator1 = "PGWebcontentdisplayAddwebcontent#PUBLISH_BUTTON",
@@ -188,10 +212,16 @@ definition {
 			value1 = "${webContentTitle}"
 		);
 
-		Type.typeCKEditorWaitForCKEditor(
-			locator1 = "PGAssetpublisherAddnewwebcontent#CONTENT_FIELD",
+		AssertElementPresent.assertVisible(locator1 = "PGWikiAddpage#CK_EDITOR_UNLINK_DISABLED_LINK");
+
+		SelectFrame(locator1 = "PGAssetpublisherAddnewwebcontent#CONTENT_FIELD");
+
+		Type.sendKeys(
+			locator1 = "Home#BODY",
 			value1 = "${webContentContent}"
 		);
+
+		SelectFrameTop();
 
 		SelectFrame(locator1 = "PGAssetpublisherAddnewwebcontent#WEB_CONTENT_IFRAME");
 
@@ -218,10 +248,16 @@ definition {
 			value1 = "${webContentTitle}"
 		);
 
-		Type.typeCKEditorWaitForCKEditor(
-			locator1 = "PGWebcontentdisplayAddwebcontent#CONTENT_FIELD",
+		AssertElementPresent.assertVisible(locator1 = "PGWikiAddpage#CK_EDITOR_UNLINK_DISABLED_LINK");
+
+		SelectFrame(locator1 = "PGWebcontentdisplayAddwebcontent#CONTENT_FIELD");
+
+		Type.sendKeys(
+			locator1 = "Home#BODY",
 			value1 = "${webContentContent}"
 		);
+
+		SelectFrameTop();
 
 		AssertClick(
 			locator1 = "PGWebcontentdisplayAddwebcontent#SUBMIT_FOR_PUBLICATION_BUTTON",
@@ -242,10 +278,16 @@ definition {
 			value1 = "${webContentTitleEdit}"
 		);
 
-		Type.typeCKEditorWaitForCKEditor(
-			locator1 = "PGWebcontentdisplayEditwebcontent#CONTENT_FIELD",
+		AssertElementPresent.assertVisible(locator1 = "PGWikiAddpage#CK_EDITOR_UNLINK_DISABLED_LINK");
+
+		SelectFrame(locator1 = "PGWebcontentdisplayAddwebcontent#CONTENT_FIELD");
+
+		Type.sendKeys(
+			locator1 = "Home#BODY",
 			value1 = "${webContentContentEdit}"
 		);
+
+		SelectFrameTop();
 
 		AssertClick.assertValueClickAt(
 			locator1 = "PGWebcontentdisplayEditwebcontent#PUBLISH_BUTTON",

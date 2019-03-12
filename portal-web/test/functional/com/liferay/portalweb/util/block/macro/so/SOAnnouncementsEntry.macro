@@ -17,8 +17,12 @@ definition {
 			value1 = "${entryTitle}"
 		);
 
-		Type.typeCKEditor(
-			locator1 = "SODashboardAddAnnouncementsEntry#CONTENT_FIELD",
+		AssertElementPresent.assertVisible(locator1 = "PGWikiAddpage#CK_EDITOR_UNLINK_DISABLED_LINK");
+
+		SelectFrame(locator1 = "SODashboardAddAnnouncementsEntry#CONTENT_FIELD");
+
+		Type.sendKeys(
+			locator1 = "Home#BODY",
 			value1 = "${entryContent}"
 		);
 
@@ -83,8 +87,12 @@ definition {
 			value1 = "${entryTitleEdit}"
 		);
 
-		Type.typeCKEditor(
-			locator1 = "SODashboardAddAnnouncementsEntry#CONTENT_FIELD",
+		AssertElementPresent.assertVisible(locator1 = "PGWikiAddpage#CK_EDITOR_UNLINK_DISABLED_LINK");
+
+		SelectFrame(locator1 = "SODashboardAddAnnouncementsEntry#CONTENT_FIELD");
+
+		Type.sendKeys(
+			locator1 = "Home#BODY",
 			value1 = "${entryContentEdit}"
 		);
 

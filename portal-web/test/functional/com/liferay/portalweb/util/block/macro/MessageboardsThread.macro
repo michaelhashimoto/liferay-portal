@@ -29,12 +29,16 @@ definition {
 				value1 = "${threadSubject}${number}"
 			);
 
+			AssertElementPresent.assertVisible(locator1 = "PGWikiAddpage#CK_EDITOR_UNLINK_DISABLED_LINK");
+
 			SelectFrame(locator1 = "PGMessageboardsPostthread#BODY_FIELD");
 
-			Type.typeCKEditor(
-				locator1 = "PGMessageboardsPostthread#BODY_FIELD",
+			Type.sendKeys(
+				locator1 = "Home#BODY",
 				value1 = "${threadBody}${number}"
 			);
+
+			SelectFrameTop();
 		}
 		else {
 			Type(
@@ -42,10 +46,16 @@ definition {
 				value1 = "${threadSubject}"
 			);
 
-			Type.typeCKEditor(
-				locator1 = "PGMessageboardsPostthread#BODY_FIELD",
+			AssertElementPresent.assertVisible(locator1 = "PGWikiAddpage#CK_EDITOR_UNLINK_DISABLED_LINK");
+
+			SelectFrame(locator1 = "PGMessageboardsPostthread#BODY_FIELD");
+
+			Type.sendKeys(
+				locator1 = "Home#BODY",
 				value1 = "${threadBody}"
 			);
+
+			SelectFrameTop();
 		}
 
 		AssertClick.assertValueClickAt(
@@ -70,10 +80,16 @@ definition {
 			value1 = "${threadSubject}"
 		);
 
-		Type.typeCKEditor(
-			locator1 = "PGMessageboardsPostthread#BODY_FIELD",
+		AssertElementPresent.assertVisible(locator1 = "PGWikiAddpage#CK_EDITOR_UNLINK_DISABLED_LINK");
+
+		SelectFrame(locator1 = "PGMessageboardsPostthread#BODY_FIELD");
+
+		Type.sendKeys(
+			locator1 = "Home#BODY",
 			value1 = "${threadBody}"
 		);
+
+		SelectFrameTop();
 
 		AssertClick.assertValueClickAt(
 			locator1 = "PGMessageboardsPostthread#SUBMIT_FOR_PUBLICATION_BUTTON",
@@ -159,10 +175,16 @@ definition {
 			value1 = "${threadSubjectEdit}"
 		);
 
-		Type.typeCKEditor(
-			locator1 = "PGMessageboardsPostthread#BODY_FIELD",
+		AssertElementPresent.assertVisible(locator1 = "PGWikiAddpage#CK_EDITOR_UNLINK_DISABLED_LINK");
+
+		SelectFrame(locator1 = "PGMessageboardsPostthread#BODY_FIELD");
+
+		Type.sendKeys(
+			locator1 = "Home#BODY",
 			value1 = "${threadBodyEdit}"
 		);
+
+		SelectFrameTop();
 
 		AssertClick.assertValueClickAt(
 			locator1 = "PGMessageboardsPostthread#PUBLISH_BUTTON",
@@ -208,10 +230,16 @@ definition {
 			value1 = "Reply"
 		);
 
-		Type.typeCKEditor(
-			locator1 = "PGMessageboardsPostthread#BODY_FIELD",
+		AssertElementPresent.assertVisible(locator1 = "PGWikiAddpage#CK_EDITOR_UNLINK_DISABLED_LINK");
+
+		SelectFrame(locator1 = "PGMessageboardsPostthread#BODY_FIELD");
+
+		Type.sendKeys(
+			locator1 = "Home#BODY",
 			value1 = "${threadReplyBody}"
 		);
+
+		SelectFrameTop();
 
 		AssertClick.assertValueClickAt(
 			locator1 = "PGMessageboardsPostthread#PUBLISH_BUTTON",

@@ -4,12 +4,16 @@ definition {
 
 		Type(locator1 = "CPBlogsAdd#TITLE_FIELD", value1 = "${entryTitle}");
 
+		AssertElementPresent.assertVisible(locator1 = "PGWikiAddpage#CK_EDITOR_UNLINK_DISABLED_LINK");
+
 		SelectFrame(locator1 = "CPBlogsAdd#CONTENT_FIELD");
 
-		Type.typeCKEditorWaitForCKEditor(
-			locator1 = "CPBlogsAdd#CONTENT_FIELD",
+		Type.sendKeys(
+			locator1 = "Home#BODY",
 			value1 = "${entryContent}"
 		);
+
+		SelectFrameTop();
 
 		AssertClick.assertValueClickAtCKEditor(
 			locator1 = "CPBlogsAdd#PUBLISH_BUTTON",
@@ -46,10 +50,16 @@ definition {
 
 		Type(locator1 = "CPBlogsAdd#TITLE_FIELD", value1 = "${entryTitle}");
 
-		Type.typeCKEditorWaitForCKEditor(
-			locator1 = "CPBlogsAdd#CONTENT_FIELD",
+		AssertElementPresent.assertVisible(locator1 = "PGWikiAddpage#CK_EDITOR_UNLINK_DISABLED_LINK");
+
+		SelectFrame(locator1 = "CPBlogsAdd#CONTENT_FIELD");
+
+		Type.sendKeys(
+			locator1 = "Home#BODY",
 			value1 = "${entryContent}"
 		);
+
+		SelectFrameTop();
 
 		AssertClick.assertValueClickAtCKEditor(
 			locator1 = "CPBlogsAdd#SUBMIT_FOR_PUBLICATION_BUTTON",
@@ -109,12 +119,16 @@ definition {
 
 			Type(locator1 = "PGBlogsAdd#TITLE_FIELD", value1 = "${entryTitle}${number}");
 
+			AssertElementPresent.assertVisible(locator1 = "PGWikiAddpage#CK_EDITOR_UNLINK_DISABLED_LINK");
+
 			SelectFrame(locator1 = "PGBlogsAdd#CONTENT_FIELD");
 
-			Type.typeCKEditorWaitForCKEditor(
-				locator1 = "PGBlogsAdd#CONTENT_FIELD",
+			Type.sendKeys(
+				locator1 = "Home#BODY",
 				value1 = "${entryContent}${number}"
 			);
+
+			SelectFrameTop();
 
 			AssertClick.assertValueClickAtCKEditor(
 				locator1 = "PGBlogsAdd#PUBLISH_BUTTON",
@@ -139,10 +153,16 @@ definition {
 		else {
 			Type(locator1 = "PGBlogsAdd#TITLE_FIELD", value1 = "${entryTitle}");
 
-			Type.typeCKEditorWaitForCKEditor(
-				locator1 = "PGBlogsAdd#CONTENT_FIELD",
+			AssertElementPresent.assertVisible(locator1 = "PGWikiAddpage#CK_EDITOR_UNLINK_DISABLED_LINK");
+
+			SelectFrame(locator1 = "PGBlogsAdd#CONTENT_FIELD");
+
+			Type.sendKeys(
+				locator1 = "Home#BODY",
 				value1 = "${entryContent}"
 			);
+
+			SelectFrameTop();
 
 			AssertClick.assertValueClickAtCKEditor(
 				locator1 = "PGBlogsAdd#PUBLISH_BUTTON",
@@ -201,10 +221,16 @@ definition {
 
 		Type(locator1 = "PGBlogsEdit#TITLE_FIELD", value1 = "${entryTitleEdit}");
 
-		Type.typeCKEditorWaitForCKEditor(
-			locator1 = "PGBlogsEdit#CONTENT_FIELD",
+		AssertElementPresent.assertVisible(locator1 = "PGWikiAddpage#CK_EDITOR_UNLINK_DISABLED_LINK");
+
+		SelectFrame(locator1 = "PGBlogsAdd#CONTENT_FIELD");
+
+		Type.sendKeys(
+			locator1 = "Home#BODY",
 			value1 = "${entryContentEdit}"
 		);
+
+		SelectFrameTop();
 
 		AssertClick.assertValueClickAtCKEditor(
 			locator1 = "PGBlogsEdit#PUBLISH_BUTTON",

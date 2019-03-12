@@ -24,6 +24,11 @@
 	<td></td>
 </tr>
 <tr>
+	<td>BODY</td>
+	<td>//body</td>
+	<td></td>
+</tr>
+<tr>
 	<td>GUEST_URL</td>
 	<td>/web/guest/home/</td>
 	<td></td>
@@ -157,17 +162,17 @@
 </tr>
 <tr>
 	<td>PAGE_DELETE_1</td>
-	<td>//li[contains(@class,'lfr-nav-deletable')][1]/span[@class='delete-tab']</td>
+	<td>//li[contains(@class,'lfr-nav-deletable')][1]//span</td>
 	<td></td>
 </tr>
 <tr>
 	<td>PAGE_DELETE_2</td>
-	<td>//li[contains(@class,'lfr-nav-deletable')][2]/span[@class='delete-tab']</td>
+	<td>//li[contains(@class,'lfr-nav-deletable')][2]//span</td>
 	<td></td>
 </tr>
 <tr>
 	<td>PAGE_DELETE_3</td>
-	<td>//li[contains(@class,'lfr-nav-deletable')][3]/span[@class='delete-tab']</td>
+	<td>//li[contains(@class,'lfr-nav-deletable')][3]/span</td>
 	<td></td>
 </tr>
 <tr>

@@ -16,12 +16,16 @@ definition {
 
 		Type(locator1 = "PGWikiAddpage#TITLE_FIELD", value1 = "${wikiChildPageTitle}");
 
-		SelectFrame(locator1 = "PGWikiAddpage#BODY_FIELD");
+		AssertElementPresent.assertVisible(locator1 = "PGWikiAddpage#CK_EDITOR_UNLINK_DISABLED_LINK");
 
-		Type.typeCKEditorWaitForCKEditor(
-			locator1 = "PGWikiAddpage#BODY_FIELD",
+		SelectFrame(locator1 = "PGWikiAddpage#BODY_FRAME");
+
+		Type.sendKeys(
+			locator1 = "Home#BODY",
 			value1 = "${wikiChildPageContent}"
 		);
+
+		SelectFrameTop();
 
 		AssertClick.assertValueClickAtCKEditor(
 			locator1 = "PGWikiAddpage#PUBLISH_BUTTON",
@@ -129,7 +133,7 @@ definition {
 			value1 = "Status: Draft"
 		);
 
-		SelectFrame(locator1 = "PGWikiAddpage#BODY_FIELD");
+		SelectFrame(locator1 = "PGWikiAddpage#BODY_FRAME");
 
 		AssertTextEquals(
 			locator1 = "PGWikiAddpage#BODY_FIELD_TEXT",
@@ -160,10 +164,16 @@ definition {
 			value1 = "This page is empty. Edit it to add some text."
 		);
 
-		Type.typeCKEditorWaitForCKEditor(
-			locator1 = "PGWikiAddpage#BODY_FIELD",
+		AssertElementPresent.assertVisible(locator1 = "PGWikiAddpage#CK_EDITOR_UNLINK_DISABLED_LINK");
+
+		SelectFrame(locator1 = "PGWikiAddpage#BODY_FRAME");
+
+		Type.sendKeys(
+			locator1 = "Home#BODY",
 			value1 = "${wikiPageContent}"
 		);
+
+		SelectFrameTop();
 
 		AssertClick.assertValueClickAtCKEditor(
 			locator1 = "PGWikiAddpage#PUBLISH_BUTTON",
@@ -203,6 +213,8 @@ definition {
 			value1 = "${wikiPageContent}"
 		);
 
+		SelectFrameTop();
+
 		AssertClick.assertValueClickAtCKEditor(
 			locator1 = "PGWikiAddpage#PUBLISH_BUTTON",
 			value1 = "Publish"
@@ -229,10 +241,16 @@ definition {
 
 		Type(locator1 = "PGWikiAddpage#TITLE_FIELD", value1 = "${wikiPageTitle}");
 
-		Type.typeCKEditorWaitForCKEditor(
-			locator1 = "PGWikiAddpage#BODY_FIELD",
+		AssertElementPresent.assertVisible(locator1 = "PGWikiAddpage#CK_EDITOR_UNLINK_DISABLED_LINK");
+
+		SelectFrame(locator1 = "PGWikiAddpage#BODY_FRAME");
+
+		Type.sendKeys(
+			locator1 = "Home#BODY",
 			value1 = "${wikiPageContent}"
 		);
+
+		SelectFrameTop();
 
 		AssertClick.assertValueClickAtCKEditor(
 			locator1 = "PGWikiAddpage#PUBLISH_BUTTON",
@@ -278,10 +296,16 @@ definition {
 
 		Type(locator1 = "PGWikiAddpage#TITLE_FIELD", value1 = "${wikiPageTitle}");
 
-		Type.typeCKEditorWaitForCKEditor(
-			locator1 = "PGWikiAddpage#BODY_FIELD",
+		AssertElementPresent.assertVisible(locator1 = "PGWikiAddpage#CK_EDITOR_UNLINK_DISABLED_LINK");
+
+		SelectFrame(locator1 = "PGWikiAddpage#BODY_FRAME");
+
+		Type.sendKeys(
+			locator1 = "Home#BODY",
 			value1 = "${wikiPageContent}"
 		);
+
+		SelectFrameTop();
 
 		AssertClick.assertValueClickAt(
 			locator1 = "PGWikiAddpage#SUBMIT_FOR_PUBLICATION_BUTTON",
@@ -360,10 +384,16 @@ definition {
 			value1 = "Edit"
 		);
 
-		Type.typeCKEditorWaitForCKEditor(
-			locator1 = "PGWikiAddpage#BODY_FIELD",
+		AssertElementPresent.assertVisible(locator1 = "PGWikiAddpage#CK_EDITOR_UNLINK_DISABLED_LINK");
+
+		SelectFrame(locator1 = "PGWikiAddpage#BODY_FRAME");
+
+		Type.sendKeys(
+			locator1 = "Home#BODY",
 			value1 = "${wikiPageContentEdit}"
 		);
+
+		SelectFrameTop();
 
 		AssertClick.assertValueClickAtCKEditor(
 			locator1 = "PGWikiAddpage#PUBLISH_BUTTON",
@@ -387,10 +417,16 @@ definition {
 			value1 = "This page is empty. Edit it to add some text."
 		);
 
-		Type.typeCKEditorWaitForCKEditor(
-			locator1 = "PGWikiAddpage#BODY_FIELD",
+		AssertElementPresent.assertVisible(locator1 = "PGWikiAddpage#CK_EDITOR_UNLINK_DISABLED_LINK");
+
+		SelectFrame(locator1 = "PGWikiAddpage#BODY_FRAME");
+
+		Type.sendKeys(
+			locator1 = "Home#BODY",
 			value1 = "${wikiPageContent}"
 		);
+
+		SelectFrameTop();
 
 		AssertClick.assertValueClickAtCKEditor(
 			locator1 = "PGWikiAddpage#SAVE_AS_DRAFT_BUTTON",
@@ -407,7 +443,7 @@ definition {
 			value1 = "Status: Draft"
 		);
 
-		SelectFrame(locator1 = "PGWikiAddpage#BODY_FIELD");
+		SelectFrame(locator1 = "PGWikiAddpage#BODY_FRAME");
 
 		AssertTextEquals(
 			locator1 = "PGWikiAddpage#BODY_FIELD_TEXT",
@@ -566,7 +602,7 @@ definition {
 			value1 = "Status: Draft"
 		);
 
-		SelectFrame(locator1 = "PGWikiAddpage#BODY_FIELD");
+		SelectFrame(locator1 = "PGWikiAddpage#BODY_FRAME");
 
 		AssertTextEquals(
 			locator1 = "PGWikiAddpage#BODY_FIELD_TEXT",

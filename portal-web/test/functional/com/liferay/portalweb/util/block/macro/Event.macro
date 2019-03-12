@@ -74,12 +74,16 @@ definition {
 				value1 = "${eventTitle}${number}"
 			);
 
+			AssertElementPresent.assertVisible(locator1 = "PGWikiAddpage#CK_EDITOR_UNLINK_DISABLED_LINK");
+
 			SelectFrame(locator1 = "PGCalendarAddEvent#DESCRIPTION_FIELD");
 
-			Type.typeCKEditorWaitForCKEditor(
-				locator1 = "PGCalendarAddEvent#DESCRIPTION_FIELD",
+			Type.sendKeys(
+				locator1 = "Home#BODY",
 				value1 = "${eventDescription}${number}"
 			);
+
+			SelectFrameTop();
 
 			AssertClick.assertValueClickAt(
 				locator1 = "PGCalendarAddEvent#SAVE_BUTTON",
@@ -116,10 +120,16 @@ definition {
 		else {
 			Type(locator1 = "PGCalendarAddEvent#TITLE_FIELD", value1 = "${eventTitle}");
 
-			Type.typeCKEditorWaitForCKEditor(
-				locator1 = "PGCalendarAddEvent#DESCRIPTION_FIELD",
+			AssertElementPresent.assertVisible(locator1 = "PGWikiAddpage#CK_EDITOR_UNLINK_DISABLED_LINK");
+
+			SelectFrame(locator1 = "PGCalendarAddEvent#DESCRIPTION_FIELD");
+
+			Type.sendKeys(
+				locator1 = "Home#BODY",
 				value1 = "${eventDescription}"
 			);
+
+			SelectFrameTop();
 
 			AssertClick.assertValueClickAt(
 				locator1 = "PGCalendarAddEvent#SAVE_BUTTON",
@@ -180,10 +190,16 @@ definition {
 
 		Type(locator1 = "PGCalendarAddEvent#TITLE_FIELD", value1 = "${eventTitle}");
 
-		Type.typeCKEditorWaitForCKEditor(
-			locator1 = "PGCalendarAddEvent#DESCRIPTION_FIELD",
+		AssertElementPresent.assertVisible(locator1 = "PGWikiAddpage#CK_EDITOR_UNLINK_DISABLED_LINK");
+
+		SelectFrame(locator1 = "PGCalendarAddEvent#DESCRIPTION_FIELD");
+
+		Type.sendKeys(
+			locator1 = "Home#BODY",
 			value1 = "${eventDescription}"
 		);
+
+		SelectFrameTop();
 
 		Select(locator1 = "PGCalendarAddEvent#TYPE_SELECT", value1 = "${eventType}");
 
@@ -267,10 +283,16 @@ definition {
 
 		Type(locator1 = "PGCalendarAddEvent#TITLE_FIELD", value1 = "${eventTitle}");
 
-		Type.typeCKEditorWaitForCKEditor(
-			locator1 = "PGCalendarAddEvent#DESCRIPTION_FIELD",
+		AssertElementPresent.assertVisible(locator1 = "PGWikiAddpage#CK_EDITOR_UNLINK_DISABLED_LINK");
+
+		SelectFrame(locator1 = "PGCalendarAddEvent#DESCRIPTION_FIELD");
+
+		Type.sendKeys(
+			locator1 = "Home#BODY",
 			value1 = "${eventDescription}"
 		);
+
+		SelectFrameTop();
 
 		Select(locator1 = "PGCalendarAddEvent#TYPE_SELECT", value1 = "${eventType}");
 
@@ -449,10 +471,16 @@ definition {
 
 		Type(locator1 = "PGCalendarEditEvent#TITLE_FIELD", value1 = "${eventTitleEdit}");
 
-		Type.typeCKEditorWaitForCKEditor(
-			locator1 = "PGCalendarEditEvent#DESCRIPTION_FIELD",
+		AssertElementPresent.assertVisible(locator1 = "PGWikiAddpage#CK_EDITOR_UNLINK_DISABLED_LINK");
+
+		SelectFrame(locator1 = "PGCalendarAddEvent#DESCRIPTION_FIELD");
+
+		Type.sendKeys(
+			locator1 = "Home#BODY",
 			value1 = "${eventDescriptionEdit}"
 		);
+
+		SelectFrameTop();
 
 		AssertClick.assertValueClickAt(
 			locator1 = "PGCalendarEditEvent#SAVE_BUTTON",
