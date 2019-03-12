@@ -51,7 +51,11 @@ definition {
 
 		Page.gotoCP(portletName = "Sites");
 
-		Team.addCP(teamDescription = "${teamDescription}", teamName = "${teamName}");
+		Team.addCP(
+			teamDescription = "${teamDescription}",
+			siteName = "${siteName}",
+			teamName = "${teamName}"
+		);
 	}
 
 	@priority = "5"
@@ -79,7 +83,11 @@ definition {
 
 		Page.gotoCP(portletName = "Sites");
 
-		Team.addCP(teamDescription = "${teamDescription}", teamName = "${teamName}");
+		Team.addCP(
+			teamDescription = "${teamDescription}",
+			siteName = "${siteName}",
+			teamName = "${teamName}"
+		);
 
 		Page.gotoCP(portletName = "Sites");
 
