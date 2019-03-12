@@ -49,7 +49,7 @@ definition {
 			value1 = "Save"
 		);
 
-		Confirm.waitForConfirmation(value1 = "Are you sure you want to activate local staging for Liferay?");
+		Confirm(value1 = "Are you sure you want to activate local staging for Liferay?");
 
 		AssertTextEquals(
 			locator1 = "CPSitesEdit#SUCCESS_MESSAGE",
