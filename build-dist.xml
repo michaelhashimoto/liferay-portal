@@ -2186,6 +2186,12 @@ cd('/Servers/AdminServer')
 set('ListenAddress', '')
 set('ListenPort', 8080)
 
+create('AdminServer', 'Log')
+
+cd('/Servers/AdminServer/Log/AdminServer')
+
+cmo.setStdoutSeverity(weblogic.logging.Severities.ERROR_TEXT)
+
 writeDomain('${app.server.weblogic.instance.dir}')
 
 closeTemplate()
@@ -2216,7 +2222,7 @@ closeTemplate()
 							@echo off
 
 							set "MW_HOME=${app.server.weblogic.dir.windows}"
-							set "USER_MEM_ARGS=-Xmx1024m -XX:MetaspaceSize=256m"
+							set "USER_MEM_ARGS=-Xmx2048m -XX:MetaspaceSize=256m"
 							set "WL_HOME=${app.server.weblogic.wlserver.dir.windows}"
 
 							call %MW_HOME%/oracle_common/common/bin/commEnv.cmd
