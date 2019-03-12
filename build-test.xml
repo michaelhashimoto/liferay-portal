@@ -2154,7 +2154,8 @@ tell application "Safari" to quit
 
 	<macrodef name="prepare-test-app-server-custom">
 		<sequential>
-			<ant antfile="build-dist.xml" inheritAll="false" target="unzip-${app.server.type}-custom" />
+			<!-- <ant antfile="build-dist.xml" inheritAll="false" target="unzip-${app.server.type}-custom" /> -->
+			<ant antfile="build-dist.xml" inheritAll="false" target="unzip-${app.server.type}" />
 
 			<if>
 				<equals arg1="${app.server.type}" arg2="weblogic" />
