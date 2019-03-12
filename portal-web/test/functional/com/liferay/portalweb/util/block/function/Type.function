@@ -113,28 +113,6 @@ definition {
 		selenium.assertLiferayErrors();
 	}
 
-	function typeCKEditor {
-		selenium.waitForVisible();
-
-		selenium.typeCKEditor();
-
-		selenium.assertJavaScriptErrors();
-
-		selenium.assertLiferayErrors();
-	}
-
-	function typeCKEditorWaitForCKEditor {
-		selenium.waitForVisible();
-
-		selenium.waitForVisible("//a[@class='cke_button_cut cke_disabled']");
-
-		selenium.typeCKEditor();
-
-		selenium.assertJavaScriptErrors();
-
-		selenium.assertLiferayErrors();
-	}
-
 	function typeWaitForNotValueNull {
 		selenium.waitForNotValue();
 
