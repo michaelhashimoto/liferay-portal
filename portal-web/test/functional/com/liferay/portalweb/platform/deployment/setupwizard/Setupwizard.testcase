@@ -137,12 +137,12 @@ definition {
 
 		AssertTextEquals.assertPartialText(
 			locator1 = "PGSignin#PORTLET_CONTENT",
-			value1 = "You are signed in as ${administratorFirstName} ${administratorLastName}"
+			value1 = "You are signed in as Joe Bloggs"
 		);
 
 		AssertTextEquals(
 			locator1 = "PGSignin#PORTLET_CONTENT_USER_NAME",
-			value1 = "${administratorFirstName} ${administratorLastName}"
+			value1 = "Joe Bloggs"
 		);
 
 		AssertTextEquals.assertText(
