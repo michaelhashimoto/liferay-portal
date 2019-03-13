@@ -128,6 +128,7 @@ definition {
 		);
 	}
 
+	@ignore = "true"
 	@priority = "5"
 	test WelcomeThemeView {
 		AssertElementPresent.assertVisible(locator1 = "PGWelcomePage1#GO_TO_LIFERAY");

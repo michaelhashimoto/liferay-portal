@@ -14,6 +14,7 @@ definition {
 		User.logoutPG();
 	}
 
+	@ignore = "true"
 	@priority = "5"
 	test AddDocumentWithUploadTempFile {
 		var dmDocumentDescription = "DM Document Description";
@@ -37,6 +38,8 @@ definition {
 			dmDocumentSize = "${dmDocumentSize}",
 			dmDocumentTitle = "${dmDocumentTitle}"
 		);
+
+		Page.openURL();
 
 		Page.gotoCP(portletName = "Documents and Media");
 
