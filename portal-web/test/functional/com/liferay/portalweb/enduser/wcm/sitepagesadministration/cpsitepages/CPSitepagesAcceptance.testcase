@@ -99,7 +99,10 @@ definition {
 
 		Site.addBlankCP(siteName = "${siteName}");
 
-		Page.gotoCP(portletName = "Sites");
+		Page.gotoCP(
+			pageType = "Site",
+			portletName = "Sites"
+		);
 
 		SitePage.addCP(
 			siteName = "${siteName}",
@@ -130,7 +133,10 @@ definition {
 
 		Site.addBlankCP(siteName = "${siteName}");
 
-		Page.gotoCP(portletName = "Sites");
+		Page.gotoCP(
+			pageType = "Site",
+			portletName = "Sites"
+		);
 
 		SitePage.addCP(
 			siteName = "${siteName}",
@@ -138,7 +144,10 @@ definition {
 			sitePagePrivacy = "${sitePagePrivacy}"
 		);
 
-		Page.gotoCP(portletName = "Sites");
+		Page.gotoCP(
+			pageType = "Site",
+			portletName = "Sites"
+		);
 
 		SitePage.addChildCP(
 			siteChildPageName = "${siteChildPageName}",
@@ -147,7 +156,10 @@ definition {
 			sitePagePrivacy = "${sitePagePrivacy}"
 		);
 
-		Page.gotoPG(pageName = "${sitePageName}", pageType = "Site");
+		Page.gotoPG(
+			pageName = "${sitePageName}",
+			pageType = "Site"
+		);
 
 		SitePage.viewChildPG(
 			siteChildPageName = "${siteChildPageName}",
@@ -170,7 +182,10 @@ definition {
 
 		Site.addBlankCP(siteName = "${siteName}");
 
-		Page.gotoCP(portletName = "Sites");
+		Page.gotoCP(
+			pageType = "Site",
+			portletName = "Sites"
+		);
 
 		SitePage.addCP(
 			siteName = "${siteName}",
@@ -178,7 +193,10 @@ definition {
 			sitePagePrivacy = "${sitePagePrivacy}"
 		);
 
-		Page.gotoPG(pageName = "${sitePageName}", pageType = "Site");
+		Page.gotoPG(
+			pageName = "${sitePageName}",
+			pageType = "Site"
+		);
 
 		SitePage.viewPG(
 			siteGuestName = "${siteGuestName}",
@@ -200,7 +218,10 @@ definition {
 
 		Site.addBlankCP(siteName = "${siteName}");
 
-		Page.gotoCP(portletName = "Sites");
+		Page.gotoCP(
+			pageType = "Site",
+			portletName = "Sites"
+		);
 
 		SitePage.addCP(
 			siteName = "${siteName}",
@@ -208,7 +229,10 @@ definition {
 			sitePagePrivacy = "${sitePagePrivacy}"
 		);
 
-		Page.addPG(pageName = "${pageName}", pageType = "Site");
+		Page.addPG(
+			pageName = "${pageName}",
+			pageType = "Site"
+		);
 
 		Portlet.addPG(
 			pageName = "${pageName}",

@@ -1,7 +1,11 @@
 definition {
 	@summary = "Add a page named '${pageName}'"
 	macro addPG {
-		Page.openURL();
+		Page.openURL(
+			pageAccess = "${pageAccess}",
+			pageStaging = "${pageStaging}",
+			pageType = "${pageType}"
+		);
 
 		if (IsElementPresent(locator1 = "SOUserBar#USER_BAR")) {
 			if (IsElementNotPresent(locator1 = "SOUserBar#VISIBLE_DOCKBAR")) {
@@ -23,7 +27,11 @@ definition {
 	}
 
 	macro addPGWithWorkflow {
-		Page.openURL();
+		Page.openURL(
+			pageAccess = "${pageAccess}",
+			pageStaging = "${pageStaging}",
+			pageType = "${pageType}"
+		);
 
 		MouseOver.textMouseOverClickDockbar(locator1 = "Dockbar#ADD", value1 = "Add");
 
@@ -50,7 +58,11 @@ definition {
 
 	@summary = "Navigate to Go to > Control Panel > ${portletName}"
 	macro gotoCP {
-		Page.openURL();
+		Page.openURL(
+			pageAccess = "${pageAccess}",
+			pageStaging = "${pageStaging}",
+			pageType = "${pageType}"
+		);
 
 		MouseOver.textMouseOverClickDockbar(
 			locator1 = "Dockbar#GO_TO",

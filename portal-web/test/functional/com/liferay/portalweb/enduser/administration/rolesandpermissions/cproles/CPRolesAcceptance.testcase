@@ -47,11 +47,17 @@ definition {
 
 		Organization.addCP(orgName = "${orgName}", orgType = "${orgType}");
 
-		Page.gotoCP(portletName = "Users and Organizations");
+		Page.gotoCP(
+			pageType = "Organization",
+			portletName = "Users and Organizations"
+		);
 
 		Organization.addSiteCP(orgName = "${orgName}");
 
-		Page.gotoCP(portletName = "Users and Organizations");
+		Page.gotoCP(
+			pageType = "Organization",
+			portletName = "Users and Organizations"
+		);
 
 		Organization.addMemberCP(
 			orgName = "${orgName}",

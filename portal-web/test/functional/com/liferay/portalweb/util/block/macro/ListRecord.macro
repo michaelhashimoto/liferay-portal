@@ -107,7 +107,10 @@ definition {
 			value1 = "Add Record"
 		);
 
-		ListRecord.addTextCmdPG(textNameLabel = "text");
+		ListRecord.addTextCmdPG(
+			recordText = "${recordText}",
+			textNameLabel = "text"
+		);
 
 		AssertClick.assertValueClickAt(
 			locator1 = "PGDDLDisplayAddrecord#PUBLISH_BUTTON",
