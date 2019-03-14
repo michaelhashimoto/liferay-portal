@@ -38,7 +38,11 @@ definition {
 			vocabularyName = "${vocabularyName}"
 		);
 
-		Subcategory.addCP(subcategoryName = "${subcategoryName}");
+		Subcategory.addCP(
+			categoryName = "${categoryName}",
+			subcategoryName = "${subcategoryName}",
+			vocabularyName = "${vocabularyName}"
+		);
 	}
 
 	@priority = "5"
@@ -73,7 +77,10 @@ definition {
 			vocabularyName = "${vocabularyName}"
 		);
 
-		Category.deleteCPByActions(categoryName = "${categoryName}");
+		Category.deleteCPByActions(
+			categoryName = "${categoryName}",
+			vocabularyName = "${vocabularyName}"
+		);
 	}
 
 	@priority = "5"
@@ -91,9 +98,17 @@ definition {
 			vocabularyName = "${vocabularyName}"
 		);
 
-		Subcategory.addCP(subcategoryName = "${subcategoryName}");
+		Subcategory.addCP(
+			categoryName = "${categoryName}",
+			subcategoryName = "${subcategoryName}",
+			vocabularyName = "${vocabularyName}"
+		);
 
-		Subcategory.deleteCPByActions(subcategoryName = "${subcategoryName}");
+		Subcategory.deleteCPByActions(
+			categoryName = "${categoryName}",
+			subcategoryName = "${subcategoryName}",
+			vocabularyName = "${vocabularyName}"
+		);
 	}
 
 	@priority = "5"
@@ -124,7 +139,8 @@ definition {
 
 		Category.editCP(
 			categoryName = "${categoryName}",
-			categoryNameEdit = "${categoryNameEdit}"
+			categoryNameEdit = "${categoryNameEdit}",
+			vocabularyName = "${vocabularyName}"
 		);
 	}
 
@@ -144,11 +160,17 @@ definition {
 			vocabularyName = "${vocabularyName}"
 		);
 
-		Subcategory.addCP(subcategoryName = "${subcategoryName}");
+		Subcategory.addCP(
+			categoryName = "${categoryName}",
+			subcategoryName = "${subcategoryName}",
+			vocabularyName = "${vocabularyName}"
+		);
 
 		Subcategory.editCP(
+			categoryName = "${categoryName}",
 			subcategoryName = "${subcategoryName}",
-			subcategoryNameEdit = "${subcategoryNameEdit}"
+			subcategoryNameEdit = "${subcategoryNameEdit}",
+			vocabularyName = "${vocabularyName}"
 		);
 	}
 
