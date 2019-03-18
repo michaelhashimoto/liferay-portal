@@ -525,6 +525,8 @@ definition {
 			value1 = "The permission was deleted."
 		);
 
+		Refresh();
+
 		AssertTextEquals(
 			locator1 = "CPRolesDefinepermissions#INFO_MESSAGE",
 			value1 = "This role does not have any permissions."

@@ -103,9 +103,9 @@ definition {
 		);
 
 		Click(
+			key_pageName = "${pageName}",
 			locator1 = "Home#PAGE",
-			value1 = "${pageName}",
-			key_pageName = "${pageName}"
+			value1 = "${pageName}"
 		);
 	}
 

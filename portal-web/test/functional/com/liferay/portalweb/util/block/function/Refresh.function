@@ -1,0 +1,10 @@
+@default = "refresh"
+definition {
+	function refresh {
+		selenium.refresh();
+
+		selenium.assertJavaScriptErrors();
+
+		selenium.assertLiferayErrors();
+	}
+}
