@@ -282,12 +282,6 @@ definition {
 				value1 = "Assign to Me"
 			);
 		}
-		else {
-			AssertClick(
-				locator1 = "CPMyworkflowtasksTask#MENU_ASSIGN_TO_ME",
-				value1 = "Assign to Me"
-			);
-		}
 
 		AssertClick(
 			locator1 = "CPMyworkflowtasksTask#MENU_ASSIGN_TO_ME",
@@ -760,7 +754,7 @@ definition {
 	macro withdrawTaskCompletedNoByActions {
 		var key_workflowAssetTitle = "${workflowAssetTitle}";
 
-		AssertClick(locator1 = "NAVIGATION_COMPLETED", value1 = "Completed");
+		AssertClick(locator1 = "CPMysubmissions#NAVIGATION_COMPLETED", value1 = "Completed");
 
 		AssertTextEquals(
 			locator1 = "CPMysubmissionsCompleted#COMPLETED_TABLE_DEFINITION",
@@ -801,7 +795,7 @@ definition {
 		var key_workflowAssetContent = "${workflowAssetContent}";
 		var key_workflowAssetTitle = "${workflowAssetTitle}";
 
-		AssertClick(locator1 = "NAVIGATION_COMPLETED", value1 = "Completed");
+		AssertClick(locator1 = "CPMysubmissions#NAVIGATION_COMPLETED", value1 = "Completed");
 
 		AssertTextEquals(
 			locator1 = "CPMysubmissionsCompleted#COMPLETED_TABLE_DEFINITION",

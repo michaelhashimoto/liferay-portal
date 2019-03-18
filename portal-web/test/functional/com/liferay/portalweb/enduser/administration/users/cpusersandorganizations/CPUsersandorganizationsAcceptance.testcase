@@ -261,12 +261,5 @@ definition {
 			userFirstName = "${userFirstName}",
 			userScreenName = "${userScreenName}"
 		);
-
-		Page.gotoCP(portletName = "Users and Organizations");
-
-		Organization.removeMemberCP(
-			orgName = "${orgName}",
-			userFirstName = "${userFirstName}"
-		);
 	}
 }
