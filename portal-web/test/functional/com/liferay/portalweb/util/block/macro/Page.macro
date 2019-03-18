@@ -102,8 +102,9 @@ definition {
 			pageType = "${pageType}"
 		);
 
+		var key_pageName = "${pageName}";
+
 		Click(
-			key_pageName = "${pageName}",
 			locator1 = "Home#PAGE",
 			value1 = "${pageName}"
 		);

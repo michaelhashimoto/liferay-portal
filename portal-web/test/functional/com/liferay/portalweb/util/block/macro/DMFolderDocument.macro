@@ -579,7 +579,7 @@ definition {
 
 		Pause(locator1 = "10000");
 
-		SelectWindow();
+		SelectWindow(locator1 = "null");
 
 		AssertClick.assertValueClickAt(
 			locator1 = "PGDocumentsandmediaMovefiles#MOVE",
