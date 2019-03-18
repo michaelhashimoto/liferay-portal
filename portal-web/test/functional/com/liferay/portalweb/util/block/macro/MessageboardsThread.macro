@@ -208,7 +208,7 @@ definition {
 
 		AssertTextEquals(
 			locator1 = "PGMessageboardsThread#MESSAGE_BODY_1",
-			value1 = "${threadBodyEdit}"
+			value1 = "${threadBody}${threadBodyEdit}"
 		);
 	}
 
@@ -493,11 +493,6 @@ definition {
 		AssertTextEquals(
 			locator1 = "PGMessageboardsThread#MESSAGE_USERNAME_2",
 			value1 = "${userName}"
-		);
-
-		AssertTextEquals(
-			locator1 = "PGMessageboardsThread#MESSAGE_RATING_2",
-			value1 = "0 (0 Votes)"
 		);
 	}
 }

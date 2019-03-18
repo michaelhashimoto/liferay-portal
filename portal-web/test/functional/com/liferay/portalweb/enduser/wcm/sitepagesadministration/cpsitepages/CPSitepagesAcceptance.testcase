@@ -21,7 +21,10 @@ definition {
 
 		Site.addBlankCP(siteName = "${siteName}");
 
-		Page.gotoCP(portletName = "Sites");
+		Page.gotoCP(
+			pageType = "Site",
+			portletName = "Sites"
+		);
 
 		SitePage.addCP(
 			siteName = "${siteName}",
@@ -65,7 +68,10 @@ definition {
 
 		Site.addBlankCP(siteName = "${siteName}");
 
-		Page.gotoCP(portletName = "Sites");
+		Page.gotoCP(
+			pageType = "Site",
+			portletName = "Sites"
+		);
 
 		SitePage.addCP(
 			siteName = "${siteName}",

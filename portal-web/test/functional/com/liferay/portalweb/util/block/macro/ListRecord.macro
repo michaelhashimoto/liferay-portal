@@ -327,7 +327,10 @@ definition {
 			value1 = "Edit"
 		);
 
-		ListRecord.editTextCmdPG(textNameLabel = "text");
+		ListRecord.editTextCmdPG(
+			recordText = "${recordTextEdit}",
+			textNameLabel = "${textNameLabel}"
+		);
 
 		AssertClick.assertValueClickAt(
 			locator1 = "PGDDLDisplayEditrecord#PUBLISH_BUTTON",

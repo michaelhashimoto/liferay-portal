@@ -312,6 +312,7 @@ definition {
 
 		Site.assignRoleCP(
 			roleName = "${roleName}",
+			searchTerm = "Siterole",
 			siteName = "${siteName}",
 			userFirstName = "${userFirstName}",
 			userLastName = "${userLastName}",

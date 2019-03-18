@@ -76,7 +76,10 @@ definition {
 
 		Page.gotoPG(pageName = "${pageName}");
 
-		BlogsEntry.addPG(entryContent = "${entryContent}", entryTitle = "${entryTitle}");
+		BlogsEntry.addPG(
+			entryContent = "${entryContent}",
+			entryTitle = "${entryTitle}"
+		);
 
 		BlogsEntry.editPG(
 			entryContent = "${entryContent}",

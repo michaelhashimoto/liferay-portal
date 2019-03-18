@@ -102,6 +102,7 @@ definition {
 
 		Team.assignMembersCP(
 			siteName = "${siteName}",
+			teamName = "${teamName}",
 			userFirstName = "${userFirstName}",
 			userLastName = "${userLastName}",
 			userScreenName = "${userScreenName}"

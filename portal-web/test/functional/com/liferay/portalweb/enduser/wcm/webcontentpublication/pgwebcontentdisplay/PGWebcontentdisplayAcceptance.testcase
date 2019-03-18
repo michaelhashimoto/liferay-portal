@@ -44,7 +44,9 @@ definition {
 		Page.gotoPG(pageName = "${pageName}");
 
 		WebContent.editPGviaWCD(
+			webContentContent = "${webContentContent}",
 			webContentContentEdit = "${webContentContentEdit}",
+			webContentTitle = "${webContentTitle}",
 			webContentTitleEdit = "${webContentTitleEdit}"
 		);
 	}

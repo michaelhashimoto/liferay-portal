@@ -139,6 +139,7 @@ definition {
 		MessageboardsThread.replyPG(
 			siteName = "${siteName}",
 			threadBody = "${threadBody}",
+			threadReplyBody = "${threadReplyBody}",
 			threadSubject = "${threadSubject}"
 		);
 
