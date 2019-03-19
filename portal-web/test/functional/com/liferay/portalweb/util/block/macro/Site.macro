@@ -57,11 +57,6 @@ definition {
 			value1 = "Save"
 		);
 
-		AssertClick.assertValueClickAt(
-			locator1 = "CPSitesAdd#MENU_SAVE",
-			value1 = "Save"
-		);
-
 		AssertTextEquals(
 			locator1 = "CPSitesEdit#SUCCESS_MESSAGE",
 			value1 = "Your request completed successfully."
@@ -267,13 +262,11 @@ definition {
 		var key_siteName = "${siteName}";
 
 		AssertTextEquals.assertPartialText(
-			key_siteName = "${siteName}",
 			locator1 = "CPSites#SITE_TABLE_NAME",
 			value1 = "${siteName}"
 		);
 
 		AssertClick(
-			key_siteName = "${siteName}",
 			locator1 = "CPSites#SPECIFIC_SITE_TABLE_ACTIONS",
 			value1 = "Actions"
 		);
@@ -380,20 +373,18 @@ definition {
 		);
 
 		AssertTextEquals(
-			key_siteName = "${siteName}"
 			locator1 = "CPSites#SITE_TABLE_TYPE",
-			value1 = "${siteType}");
+			value1 = "${siteType}"
+		);
 
 		if ("${siteMember}" == "Organization") {
 			AssertTextEquals.assertPartialText(
-				key_siteName = "${siteName}",
 				locator1 = "CPSites#SITE_TABLE_MEMBERS_ORGS",
 				value1 = "1 ${siteMember}"
 			);
 		}
 		else {
 			AssertTextEquals(
-				key_siteName = "${siteName}",
 				locator1 = "CPSites#SITE_TABLE_MEMBERS_USERS",
 				value1 = "1 ${siteMember}"
 			);

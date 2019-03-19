@@ -99,8 +99,7 @@ definition {
 
 		AnnouncementsEntry.viewPG(
 			distributionScope = "${distributionScope}",
-			entryContent = "${entryContentEdit}",
-			entryContentEdit = "${entryContentEdit}",
+			entryContent = "${entryContent}${entryContentEdit}",
 			entryTitle = "${entryTitleEdit}",
 			entryURL = "${entryURLEdit}"
 		);

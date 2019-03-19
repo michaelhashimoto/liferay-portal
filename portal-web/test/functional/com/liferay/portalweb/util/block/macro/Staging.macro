@@ -44,14 +44,14 @@ definition {
 
 		Check(locator1 = "CPSitesEdit#STAGING_WIKI_DISPLAY_CHECKBOX");
 
-		AssertClick.assertValueClickAt(
+		AssertClickNoError(
 			locator1 = "CPSitesEdit#MENU_SAVE",
 			value1 = "Save"
 		);
 
 		Pause(locator1 = "10000");
 
-		Confirm(value1 = "Are you sure you want to activate local staging for Liferay?");
+		Confirm(value1 = "Are you sure you want to activate local staging for ${siteName}?");
 
 		AssertTextEquals(
 			locator1 = "CPSitesEdit#SUCCESS_MESSAGE",

@@ -329,7 +329,7 @@ definition {
 
 		ListRecord.editTextCmdPG(
 			recordText = "${recordTextEdit}",
-			textNameLabel = "${textNameLabel}"
+			textNameLabel = "text"
 		);
 
 		AssertClick.assertValueClickAt(
