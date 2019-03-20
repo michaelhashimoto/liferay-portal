@@ -273,8 +273,8 @@ definition {
 		);
 
 		ListRecord.editTextCmdCP(
-			textNameLabel = "text",
-			recordTextEdit = "${recordTextEdit}"
+			recordTextEdit = "${recordTextEdit}",
+			textNameLabel = "text"
 		);
 
 		AssertClick.assertValueClickAt(
@@ -328,7 +328,7 @@ definition {
 		);
 
 		ListRecord.editTextCmdPG(
-			recordText = "${recordTextEdit}",
+			recordTextEdit = "${recordTextEdit}",
 			textNameLabel = "text"
 		);
 

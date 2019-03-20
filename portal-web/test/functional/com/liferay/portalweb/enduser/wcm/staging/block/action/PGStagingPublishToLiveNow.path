@@ -40,7 +40,7 @@
 </tr>
 <tr>
 	<td>APPLICATIONS_EXPAND</td>
-	<td>//a[@title='Expand']</td>
+	<td>//form//a[@class='lfr-panel-button' and @title='Expand']</td>
 	<td></td>
 </tr>
 </tbody>

@@ -71,13 +71,6 @@ definition {
 			locator1 = "PGWebformConfiguration#SAVE_BUTTON",
 			value1 = "Save"
 		);
-
-		Pause(locator1 = "10000");
-
-		AssertTextEquals(
-			locator1 = "PGWebformConfiguration#SUCCESS_MESSAGE",
-			value1 = "You have successfully updated the setup."
-		);
 	}
 
 	macro viewConfigureWebformPG {

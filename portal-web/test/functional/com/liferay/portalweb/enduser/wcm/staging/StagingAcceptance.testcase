@@ -62,7 +62,7 @@ definition {
 			portletName = "${portletName}"
 		);
 
-		Page.gotoPG(pageStaging = "true");
+		Page.gotoPG(pageName = "Welcome", pageStaging = "true");
 
 		Staging.publishToLiveNowPG();
 

@@ -92,8 +92,10 @@ definition {
 			value1 = "Publish to Live Now"
 		);
 
-		if (IsElementPresent(locator1 = "PGStagingPublishToLiveNow#APPLICATIONS_EXPAND", value1 = "+")) {
-			Click(locator1 = "PGStagingPublishToLiveNow#APPLICATIONS_EXPAND", value1 = "+");
+		Pause(locator1 = "10000");
+
+		if (IsElementPresent(locator1 = "PGStagingPublishToLiveNow#APPLICATIONS_EXPAND")) {
+			Click(locator1 = "PGStagingPublishToLiveNow#APPLICATIONS_EXPAND");
 		}
 
 		Check(locator1 = "PGStagingPublishToLiveNow#PUBLISH_RANGE_ALL");

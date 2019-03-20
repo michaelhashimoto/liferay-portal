@@ -57,6 +57,11 @@ definition {
 			value1 = "Save"
 		);
 
+		AssertClick.assertValueClickAt(
+			locator1 = "CPSitesAdd#MENU_SAVE",
+			value1 = "Save"
+		);
+
 		AssertTextEquals(
 			locator1 = "CPSitesEdit#SUCCESS_MESSAGE",
 			value1 = "Your request completed successfully."
