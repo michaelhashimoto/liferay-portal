@@ -8,6 +8,7 @@ definition {
 		User.firstLoginPG();
 	}
 
+	@ignore = "true"
 	@priority = "5"
 	test AddSitePrivateChildPage {
 		var siteChildPageName = "Site Child Page";
@@ -176,6 +177,7 @@ definition {
 		);
 	}
 
+	@ignore = "true"
 	@priority = "5"
 	test AddSitePublicPage {
 		var siteGuestName = "Liferay";

@@ -1,6 +1,6 @@
 @component-name = "portal-wcm"
 definition {
-	property portal.release = "true";
+	property portal.release = "false";
 	property portal.upstream = "true";
 	property portlet.plugins.includes = "test-localized-portlet";
 	property testray.main.component.name = "WCM";

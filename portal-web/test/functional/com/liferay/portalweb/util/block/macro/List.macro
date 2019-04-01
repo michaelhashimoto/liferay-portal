@@ -46,7 +46,7 @@ definition {
 			value1 = "${dataDefinitionName}"
 		);
 
-		AssertClick.assertValueClickAt(
+		AssertClick(
 			locator1 = "CPDynamicdatalistsAddlist#SAVE_BUTTON",
 			value1 = "Save"
 		);
@@ -98,7 +98,7 @@ definition {
 			value1 = "${dataDefinitionName}"
 		);
 
-		AssertClick.assertValueClickAtClickAt(
+		AssertClick(
 			locator1 = "PGDDLDisplayAddlist#SAVE_BUTTON",
 			value1 = "Save"
 		);
@@ -207,7 +207,7 @@ definition {
 			value1 = "${listDescriptionEdit}"
 		);
 
-		AssertClick.assertValueClickAt(
+		AssertClick(
 			locator1 = "CPDynamicdatalistsEditlist#SAVE_BUTTON",
 			value1 = "Save"
 		);
@@ -258,7 +258,7 @@ definition {
 			value1 = "${listDescriptionEdit}"
 		);
 
-		AssertClick.assertValueClickAt(
+		AssertClick(
 			locator1 = "PGDDLDisplayConfigurationEditlist#SAVE_BUTTON",
 			value1 = "Save"
 		);
@@ -306,7 +306,7 @@ definition {
 			value1 = "Displaying List: ${listName} (Modified)"
 		);
 
-		AssertClick.assertValueClickAt(
+		AssertClick(
 			locator1 = "PGDDLDisplayConfiguration#SAVE_BUTTON",
 			value1 = "Save"
 		);
