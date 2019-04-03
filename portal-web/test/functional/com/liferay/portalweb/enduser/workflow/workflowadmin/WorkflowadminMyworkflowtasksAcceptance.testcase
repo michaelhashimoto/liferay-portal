@@ -1,12 +1,18 @@
 @component-name = "portal-workflow"
 definition {
-	property hook.plugins.includes = "kaleo-upgrade-hook,portal-compat-hook";
+	property hook.plugins.includes = "kaleo-upgrade-hook";
 	property portal.release = "true";
 	property portal.upstream = "true";
 	property testray.main.component.name = "Workflow";
 	property web.plugins.includes = "kaleo-web";
 
 	setUp {
+		User.firstLoginPG();
+
+		Portlet.shutdownServer();
+
+		Portlet.startServer(deleteLiferayHome = "false");
+
 		User.firstLoginPG();
 
 		Page.gotoCP(portletName = "Workflow Configuration");

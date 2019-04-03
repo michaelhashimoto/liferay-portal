@@ -18,6 +18,10 @@ definition {
 		var portalName = "Liferay";
 		var portletName = "Blogs";
 
+		Portlet.shutdownServer();
+
+		Portlet.startServer(deleteLiferayHome = "false");
+
 		Page.openURL();
 
 		AssertTextEquals(

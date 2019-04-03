@@ -116,6 +116,10 @@ definition {
 			value1 = "Go to My Portal"
 		);
 
+		if (IsElementPresent(locator1 = "PGLoginTermsofservice#I_AGREE_BUTTON")) {
+			Click(locator1 = "PGLoginTermsofservice#I_AGREE_BUTTON");
+		}
+
 		Type(
 			locator1 = "PGLoginPasswordreminder#ANSWER_FIELD",
 			value1 = "${passwordReminder}"

@@ -13,6 +13,12 @@ definition {
 		Page.addPG(pageName = "${pageName}");
 
 		Portlet.addPG(pageName = "${pageName}", portletName = "${portletName}");
+
+		Portlet.shutdownServer();
+
+		Portlet.startServer(deleteLiferayHome = "false");
+
+		User.firstLoginPG();
 	}
 
 	@priority = "5"

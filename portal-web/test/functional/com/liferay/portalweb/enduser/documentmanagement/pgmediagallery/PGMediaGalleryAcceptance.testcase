@@ -129,6 +129,7 @@ definition {
 		Page.gotoPG(pageName = "${pageName}");
 
 		DMFolderDocument.editPGviaMG(
+			mgDocumentDescription = "${mgDocumentDescription}",
 			mgDocumentDescriptionEdit = "${mgDocumentDescription} Edit",
 			mgDocumentTitle = "${mgDocumentTitle}",
 			mgDocumentTitleEdit = "${mgDocumentTitle} Edit",

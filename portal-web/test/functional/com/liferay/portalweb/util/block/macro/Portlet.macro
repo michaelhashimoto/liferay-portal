@@ -38,6 +38,16 @@ definition {
 		AssertElementNotPresent(locator1 = "Home#PORTLET_1");
 	}
 
+	@description = "This will shutdown the server at ${base_branch}-bundles\tomcat."
+	macro shutdownServer {
+		AntCommand(locator1 = "build-test.xml", value1 = "stop-app-server");
+	}
+
+	@description = "This will start the server at ${base_branch}-bundles\tomcat."
+	macro startServer {
+		AntCommand(locator1 = "build-test.xml", value1 = "start-app-server");
+	}
+
 	@summary = "Assert that the ${portletName} portlet body has the text '${portletBody}'"
 	macro viewBody {
 		var key_portletName = "${portletName}";

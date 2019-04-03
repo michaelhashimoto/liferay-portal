@@ -10,6 +10,12 @@ definition {
 	setUp {
 		User.firstLoginPG();
 
+		Portlet.shutdownServer();
+
+		Portlet.startServer(deleteLiferayHome = "false");
+
+		User.firstLoginPG();
+
 		Page.addPG(pageName = "${pageName}");
 
 		Portlet.addPG(pageName = "${pageName}", portletName = "${portletName}");
