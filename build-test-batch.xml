@@ -657,22 +657,11 @@ app.server.type=@{app.server.type}]]></echo>
 				</test-action>
 
 				<test-set-up>
-					<if>
-						<and>
-							<available file="liferay-portal-bundle-${app.server.type}.tar.gz" />
-							<available file="liferay-portal-source.tar.gz" />
-						</and>
-						<then>
-							<prepare-test-environment />
+					<setup-test-environment />
 
-							<antcall target="record-test-class-file-names" inheritAll="false">
-								<param name="test.class.groups.size" value="${test.batch.size}" />
-							</antcall>
-						</then>
-						<else>
-							<prepare-test-build />
-						</else>
-					</if>
+					<antcall target="record-test-class-file-names" inheritAll="false">
+						<param name="test.class.groups.size" value="${test.batch.size}" />
+					</antcall>
 				</test-set-up>
 			</run-batch-test>
 		</sequential>
@@ -692,6 +681,23 @@ app.server.type=@{app.server.type}]]></echo>
 		</sequential>
 	</macrodef>
 
+	<macrodef name="setup-test-environment">
+		<sequential>
+			<if>
+				<and>
+					<available file="liferay-portal-bundle-${app.server.type}.tar.gz" />
+					<available file="liferay-portal-source.tar.gz" />
+				</and>
+				<then>
+					<prepare-test-environment />
+				</then>
+				<else>
+					<prepare-test-build />
+				</else>
+			</if>
+		</sequential>
+	</macrodef>
+
 	<target name="compile-jsp-jdk7">
 		<run-batch-test>
 			<test-action>
@@ -699,18 +705,7 @@ app.server.type=@{app.server.type}]]></echo>
 			</test-action>
 
 			<test-set-up>
-				<if>
-					<and>
-						<available file="liferay-portal-bundle-${app.server.type}.tar.gz" />
-						<available file="liferay-portal-source.tar.gz" />
-					</and>
-					<then>
-						<prepare-test-environment />
-					</then>
-					<else>
-						<prepare-test-build />
-					</else>
-				</if>
+				<setup-test-environment />
 			</test-set-up>
 		</run-batch-test>
 	</target>
@@ -804,22 +799,11 @@ app.server.type=@{app.server.type}]]></echo>
 			</test-action>
 
 			<test-set-up>
-				<if>
-					<and>
-						<available file="liferay-portal-bundle-${app.server.type}.tar.gz" />
-						<available file="liferay-portal-source.tar.gz" />
-					</and>
-					<then>
-						<prepare-test-environment />
+				<setup-test-environment />
 
-						<antcall target="record-test-plugin-names" inheritAll="false">
-							<param name="test.plugin.groups.size" value="${test.batch.size}" />
-						</antcall>
-					</then>
-					<else>
-						<prepare-test-build />
-					</else>
-				</if>
+				<antcall target="record-test-plugin-names" inheritAll="false">
+					<param name="test.plugin.groups.size" value="${test.batch.size}" />
+				</antcall>
 			</test-set-up>
 		</run-batch-test>
 	</target>
@@ -885,18 +869,7 @@ app.server.type=@{app.server.type}]]></echo>
 			</test-action>
 
 			<test-set-up>
-				<if>
-					<and>
-						<available file="liferay-portal-bundle-${app.server.type}.tar.gz" />
-						<available file="liferay-portal-source.tar.gz" />
-					</and>
-					<then>
-						<prepare-test-environment />
-					</then>
-					<else>
-						<prepare-test-build />
-					</else>
-				</if>
+				<setup-test-environment />
 			</test-set-up>
 		</run-batch-test>
 	</target>
@@ -949,18 +922,7 @@ app.server.type=@{app.server.type}]]></echo>
 			</test-action>
 
 			<test-set-up>
-				<if>
-					<and>
-						<available file="liferay-portal-bundle-${app.server.type}.tar.gz" />
-						<available file="liferay-portal-source.tar.gz" />
-					</and>
-					<then>
-						<prepare-test-environment />
-					</then>
-					<else>
-						<prepare-test-build />
-					</else>
-				</if>
+				<setup-test-environment />
 
 				<antcall target="prepare-portal-ext-properties" />
 
@@ -987,22 +949,11 @@ app.server.type=@{app.server.type}]]></echo>
 			</test-action>
 
 			<test-set-up>
-				<if>
-					<and>
-						<available file="liferay-portal-bundle-${app.server.type}.tar.gz" />
-						<available file="liferay-portal-source.tar.gz" />
-					</and>
-					<then>
-						<prepare-test-environment />
+				<setup-test-environment />
 
-						<antcall target="record-test-class-file-names" inheritAll="false">
-							<param name="test.class.groups.size" value="${test.batch.size}" />
-						</antcall>
-					</then>
-					<else>
-						<prepare-test-build />
-					</else>
-				</if>
+				<antcall target="record-test-class-file-names" inheritAll="false">
+					<param name="test.class.groups.size" value="${test.batch.size}" />
+				</antcall>
 			</test-set-up>
 		</run-batch-test>
 	</target>
