@@ -716,7 +716,9 @@ app.server.type=@{app.server.type}]]></echo>
 	</target>
 
 	<target name="dist-jdk7">
-		<prepare-test-build-dist app.server.type="${axis.variable}" />
+		<parallel threadCount="1" timeout="7200000">
+			<prepare-test-build-dist app.server.type="${axis.variable}" />
+		</parallel>
 	</target>
 
 	<target name="functional-bundle-tomcat70-mysql55-jdk7">
