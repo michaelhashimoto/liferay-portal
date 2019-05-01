@@ -1299,6 +1299,8 @@ rerun your task.
 	</target>
 
 	<target name="test-class-group" depends="compile,compile-test">
+		<lstopwatch action="start" name="test.class.group" />
+
 		<if>
 			<not>
 				<isset property="test.class.group.index" />
@@ -1425,6 +1427,8 @@ rerun your task.
 				</if>
 			</then>
 		</if>
+
+		<lstopwatch action="total" name="test.class.group" />
 	</target>
 
 	<target name="test-integration" depends="compile,instrument-test-coverage,compile-test-integration">
