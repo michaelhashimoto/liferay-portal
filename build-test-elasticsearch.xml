@@ -5,6 +5,8 @@
 
 	<macrodef name="prepare-elasticsearch">
 		<sequential>
+			<lstopwatch action="start" name="prepare.elasticsearch" />
+
 			<chmod file="${elasticsearch.dir}/bin/**" perm="a+x" />
 
 			<if>
@@ -98,6 +100,8 @@
 					</then>
 				</elseif>
 			</if>
+
+			<lstopwatch action="total" name="prepare.elasticsearch" />
 		</sequential>
 	</macrodef>
 
@@ -126,6 +130,8 @@
 	</macrodef>
 
 	<target name="start-elasticsearch">
+		<lstopwatch action="start" name="start.elasticsearch" />
+
 		<unzip-elasticsearch />
 
 		<prepare-elasticsearch />
@@ -170,6 +176,8 @@
 		<waitfor maxwait="20" maxwaitunit="second" timeoutproperty="elasticsearch.server.not.started">
 			<http url="http://localhost:9200/" />
 		</waitfor>
+
+		<lstopwatch action="total" name="start.elasticsearch" />
 
 		<fail if="elasticsearch.server.not.started" message="Elasticsearch server failed to initialize." />
 	</target>

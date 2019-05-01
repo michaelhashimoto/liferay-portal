@@ -4,6 +4,8 @@
 	<import file="build-test.xml" />
 
 	<target name="run-selenium-websphere-8.0">
+		<lstopwatch action="start" name="run.selenium.websphere-8.0" />
+
 		<app-server-properties-update>
 			app.server.type=websphere
 		</app-server-properties-update>
@@ -234,9 +236,13 @@ print AdminControl.invoke(appManager, 'startApplication', 'liferay-portal')</ech
 		<exec dir="${vm.drive}/${vm.host}" executable="${vmware-cmd.executable}">
 			<arg line="${vm.drive}\${vm.host}\${vm.host}.vmx stop hard" />
 		</exec>
+
+		<lstopwatch action="total" name="run.selenium.websphere-8.0" />
 	</target>
 
 	<target name="run-websphere-8.0">
+		<lstopwatch action="start" name="run.websphere-8.0" />
+
 		<antcall target="rebuild-database" inheritAll="false" />
 
 		<exec executable="${plink.executable}">
@@ -256,5 +262,7 @@ print AdminControl.invoke(appManager, 'startApplication', 'liferay-portal')</ech
 		<exec executable="${pscp.executable}">
 			<arg line="-pw ${vm.password} ${vm.username}@${vm.host}:/WINDOWS/system32/config/systemprofile/liferay/logs/liferay.${log.tstamp.value}.log log" />
 		</exec>
+
+		<lstopwatch action="total" name="run.websphere-8.0" />
 	</target>
 </project>

@@ -55,6 +55,8 @@
 	</target>
 
 	<target name="start-solr">
+		<lstopwatch action="start" name="start.solr" />
+
 		<unzip-solr />
 
 		<prepare-solr />
@@ -70,5 +72,7 @@
 				</exec>
 			</daemons>
 		</parallel>
+
+		<lstopwatch action="total" name="start.solr" />
 	</target>
 </project>
