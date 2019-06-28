@@ -236,9 +236,17 @@ mariadb.executable=${mariadb.executable}]]></echo>
 
 			<database-test-action app.server.type="@{app.server.type}" database.type="@{database.type}">
 				<action>
-					<exec executable="${database.service.executable}" failonerror="true">
-						<arg line="${database.service.cmd.stop}" />
-					</exec>
+					<if>
+						<isset property="env.KUBERNETES_SERVICE_HOST" />
+						<then>
+							<stop-k8s-database database.type="@{database.type}" database.version="@{database.version}" />
+						</then>
+						<else>
+							<exec executable="${database.service.executable}" failonerror="true">
+								<arg line="${database.service.cmd.stop}" />
+							</exec>
+						</else>
+					</if>
 				</action>
 			</database-test-action>
 
@@ -248,9 +256,19 @@ mariadb.executable=${mariadb.executable}]]></echo>
 
 					<set-portal-impl-portal-test-ext-properties />
 
-					<exec executable="${database.service.executable}" failonerror="true">
-						<arg line="${database.service.cmd.start}" />
-					</exec>
+					<if>
+						<isset property="env.KUBERNETES_SERVICE_HOST" />
+						<then>
+							<get-database-property property.name="database.port" />
+
+							<start-k8s-database database.port="${database.port}" database.type="@{database.type}" database.version="@{database.version}" />
+						</then>
+						<else>
+							<exec executable="${database.service.executable}" failonerror="true">
+								<arg line="${database.service.cmd.start}" />
+							</exec>
+						</else>
+					</if>
 
 					<antcall target="copy-optional-jars" inheritall="false">
 						<param name="database.type" value="@{database.type}" />
@@ -277,9 +295,17 @@ mariadb.executable=${mariadb.executable}]]></echo>
 						</then>
 					</if>
 
-					<exec executable="${database.service.executable}" failonerror="true">
-						<arg line="${database.service.cmd.stop}" />
-					</exec>
+					<if>
+						<isset property="env.KUBERNETES_SERVICE_HOST" />
+						<then>
+							<stop-k8s-database database.type="@{database.type}" database.version="@{database.version}" />
+						</then>
+						<else>
+							<exec executable="${database.service.executable}" failonerror="true">
+								<arg line="${database.service.cmd.stop}" />
+							</exec>
+						</else>
+					</if>
 				</action>
 			</database-test-action>
 		</sequential>
@@ -422,7 +448,7 @@ app.server.type=@{app.server.type}]]></echo>
 				]]>
 			</execute>
 
-			<lstopwatch action="total" name="prepare-test-build-dist.bundles.@{app.server.type}.compress" />	
+			<lstopwatch action="total" name="prepare-test-build-dist.bundles.@{app.server.type}.compress" />
 
 			<lstopwatch action="total" name="prepare-test-build-dist.bundles.@{app.server.type}" />
 		</sequential>
