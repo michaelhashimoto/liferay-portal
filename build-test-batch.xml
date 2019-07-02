@@ -215,7 +215,7 @@ mariadb.executable=${mariadb.executable}]]></echo>
 							<if>
 								<isset property="env.KUBERNETES_SERVICE_HOST" />
 								<then>
-									<echo>Using kubernetes for ${database.type}</echo>
+									<echo>Using Kubernetes for ${database.type}.</echo>
 								</then>
 								<else>
 									<echo></echo>

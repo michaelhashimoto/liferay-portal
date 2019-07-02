@@ -8670,7 +8670,7 @@ cluster.link.bind.addr["cluster-link-udp"]=127.0.0.1
 								<catch>
 									<echo>${fail.message}</echo>
 
-									<fail message="Unable to create database on kubernetes database pod" />
+									<fail message="Unable to create database on Kubernetes database pod." />
 								</catch>
 							</trycatch>
 						</then>
