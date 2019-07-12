@@ -1191,6 +1191,12 @@ public class JenkinsResultsParserUtil {
 				remoteURLAuthority, localURLAuthority);
 		}
 
+		if (localURL.contains("https://ci-1-0.liferay.com/")) {
+			localURL = localURL.replace(
+				"https://ci-1-0.liferay.com/",
+				"http://ci-1-0.k8s-1.lax.liferay.com/");
+		}
+
 		return localURL + localURLQueryString;
 	}
 
@@ -1483,6 +1489,12 @@ public class JenkinsResultsParserUtil {
 				localURLAuthority, remoteURLAuthority);
 		}
 
+		if (remoteURL.contains("https://ci-1-0.liferay.com/")) {
+			remoteURL = remoteURL.replace(
+				"https://ci-1-0.liferay.com/",
+				"http://ci-1-0.k8s-1.lax.liferay.com/");
+		}
+
 		return remoteURL + remoteURLQueryString;
 	}
 
@@ -1523,6 +1535,12 @@ public class JenkinsResultsParserUtil {
 					buildProperties.getProperty(propertyName.toString()));
 
 				for (String slave : slavesString.split(",")) {
+					slave = slave.trim();
+
+					if (slave.startsWith("slave-ci-")) {
+						slave = slave + ".ssh-svc.ci-1.svc.cluster.local";
+					}
+
 					slaves.add(slave.trim());
 				}
 			}
@@ -1601,7 +1619,8 @@ public class JenkinsResultsParserUtil {
 	public static boolean isCINode() {
 		String hostName = getHostName("");
 
-		if (hostName.startsWith("cloud-10-0-") ||
+		if (hostName.startsWith("cloud-10-0-") || hostName.contains("ci-1") ||
+			hostName.contains("ci-x") || hostName.contains("k8s-") ||
 			hostName.startsWith("test-")) {
 
 			return true;

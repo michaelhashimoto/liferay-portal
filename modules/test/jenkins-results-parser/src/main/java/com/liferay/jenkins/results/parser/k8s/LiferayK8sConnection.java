@@ -88,6 +88,8 @@ public class LiferayK8sConnection {
 			return pod;
 		}
 		catch (ApiException ae) {
+			ae.printStackTrace();
+
 			throw new RuntimeException(ae);
 		}
 	}
