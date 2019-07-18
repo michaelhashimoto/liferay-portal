@@ -2723,6 +2723,22 @@ create database lportal${database.index} character set utf8;</echo>
 				<if>
 					<equals arg1="${database.type}" arg2="db2" />
 					<then>
+						<if>
+							<isset property="env.KUBERNETES_SERVICE_HOST" />
+							<then>
+								<replace
+									file="create.sql"
+									token="create database lportal;"
+									value="attach to liferay user ${database.username} using ${database.password};${line.separator}create database lportal;"
+								/>
+								<replace
+									file="create.sql"
+									token="connect to lportal;"
+									value="connect to lportal user ${database.username} using ${database.password};"
+								/>
+							</then>
+						</if>
+
 						<replace file="create.sql">
 							<replacetoken>create database lportal;</replacetoken>
 							<replacevalue>create database lportal pagesize 8192;</replacevalue>
@@ -8586,6 +8602,20 @@ cluster.link.bind.addr["cluster-link-udp"]=127.0.0.1
 								</exec>
 							</then>
 							<else>
+								<if>
+									<isset property="env.KUBERNETES_SERVICE_HOST" />
+									<then>
+										<get-database-property property.name="database.password" />
+										<get-database-property property.name="database.username" />
+
+										<retry retrycount="10" retrydelay="60000">
+											<exec executable="${db2.executable}" failonerror="true">
+												<arg line="attach to liferay user ${database.username} using ${database.password}" />
+											</exec>
+										</retry>
+									</then>
+								</if>
+
 								<exec executable="${db2.executable}">
 									<arg line="disconnect lportal" />
 								</exec>
