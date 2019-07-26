@@ -213,7 +213,12 @@ mariadb.executable=${mariadb.executable}]]></echo>
 							</if>
 
 							<if>
-								<isset property="env.KUBERNETES_SERVICE_HOST" />
+								<and>
+									<isset property="env.KUBERNETES_SERVICE_HOST" />
+									<not>
+										<equals arg1="${database.type}" arg2="hypersonic" />
+									</not>
+								</and>
 								<then>
 									<echo>Using Kubernetes for ${database.type}.</echo>
 								</then>
@@ -237,7 +242,12 @@ mariadb.executable=${mariadb.executable}]]></echo>
 			<database-test-action app.server.type="@{app.server.type}" database.type="@{database.type}">
 				<action>
 					<if>
-						<isset property="env.KUBERNETES_SERVICE_HOST" />
+						<and>
+							<isset property="env.KUBERNETES_SERVICE_HOST" />
+							<not>
+								<equals arg1="${database.type}" arg2="hypersonic" />
+							</not>
+						</and>
 						<then>
 							<get-database-property property.name="database.version" />
 
@@ -259,7 +269,12 @@ mariadb.executable=${mariadb.executable}]]></echo>
 					<set-portal-impl-portal-test-ext-properties />
 
 					<if>
-						<isset property="env.KUBERNETES_SERVICE_HOST" />
+						<and>
+							<isset property="env.KUBERNETES_SERVICE_HOST" />
+							<not>
+								<equals arg1="${database.type}" arg2="hypersonic" />
+							</not>
+						</and>
 						<then>
 							<get-database-property property.name="database.port" />
 							<get-database-property property.name="database.version" />
@@ -299,7 +314,12 @@ mariadb.executable=${mariadb.executable}]]></echo>
 					</if>
 
 					<if>
-						<isset property="env.KUBERNETES_SERVICE_HOST" />
+						<and>
+							<isset property="env.KUBERNETES_SERVICE_HOST" />
+							<not>
+								<equals arg1="${database.type}" arg2="hypersonic" />
+							</not>
+						</and>
 						<then>
 							<get-database-property property.name="database.version" />
 
