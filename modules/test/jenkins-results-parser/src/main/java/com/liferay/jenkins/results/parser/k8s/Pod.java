@@ -14,14 +14,58 @@
 
 package com.liferay.jenkins.results.parser.k8s;
 
+import com.liferay.jenkins.results.parser.JenkinsResultsParserUtil;
+
+import io.kubernetes.client.Exec;
 import io.kubernetes.client.models.V1ObjectMeta;
 import io.kubernetes.client.models.V1Pod;
 import io.kubernetes.client.models.V1PodStatus;
+
+import java.io.IOException;
 
 /**
  * @author Kenji Heigel
  */
 public class Pod {
+
+	public void exec(String... commands) throws Exception {
+		Exec exec = new Exec();
+
+		boolean tty = false;
+
+		if (System.console() != null) {
+			tty = true;
+		}
+
+		Process process = exec.exec(
+			getNamespace(), getName(), commands, true, tty);
+
+		process.waitFor();
+
+		try {
+			System.out.println(
+				JenkinsResultsParserUtil.readInputStream(
+					process.getInputStream()));
+		}
+		catch (IOException ioe) {
+			throw new RuntimeException(
+				"Unable to read process input stream", ioe);
+		}
+
+		if (process.exitValue() != 0) {
+			String standardErr = "";
+
+			try {
+				JenkinsResultsParserUtil.readInputStream(
+					process.getErrorStream());
+			}
+			catch (IOException ioe) {
+				standardErr = "";
+			}
+
+			throw new RuntimeException(standardErr);
+		}
+	}
 
 	public String getIP() {
 		V1Pod v1Pod = getV1Pod();
