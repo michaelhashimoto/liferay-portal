@@ -175,6 +175,10 @@ public class LiferayK8sConnection {
 		return "default";
 	}
 
+	public Pod getPod(Pod pod) {
+		return getPod(pod, getNamespace());
+	}
+
 	public Pod getPod(Pod pod, String namespace) {
 		try {
 			return new Pod(
