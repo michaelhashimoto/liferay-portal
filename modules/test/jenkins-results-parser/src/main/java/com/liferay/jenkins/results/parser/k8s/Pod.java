@@ -23,6 +23,8 @@ import io.kubernetes.client.models.V1PodStatus;
 
 import java.io.IOException;
 
+import java.util.concurrent.TimeUnit;
+
 /**
  * @author Kenji Heigel
  */
@@ -40,7 +42,7 @@ public class Pod {
 		Process process = exec.exec(
 			getNamespace(), getName(), commands, true, tty);
 
-		process.waitFor();
+		process.waitFor(5L, TimeUnit.MINUTES);
 
 		try {
 			System.out.println(
