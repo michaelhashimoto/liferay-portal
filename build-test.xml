@@ -335,10 +335,21 @@ counter.jdbc.prefix=jdbc.counter.]]></echo>
 				<elseif>
 					<os family="unix" />
 					<then>
-						<exec executable="/bin/bash" os="${os.unix}" outputproperty="ip.address">
-							<arg value="-c" />
-							<arg value="ifconfig eth0 | grep 'inet addr:' | cut -d: -f2 | awk '{ print $1}'" />
-						</exec>
+						<if>
+							<isset property="env.JENKINS_HOME" />
+							<then>
+								<exec executable="/bin/bash" os="${os.unix}" outputproperty="ip.address">
+									<arg value="-c" />
+									<arg value="ip addr show eth0 | grep 'inet\b' | cut -d/ -f1 | awk '{print $2}'" />
+								</exec>
+							</then>
+							<else>
+								<exec executable="/bin/bash" os="${os.unix}" outputproperty="ip.address">
+									<arg value="-c" />
+									<arg value="ifconfig eth0 | grep 'inet addr:' | cut -d: -f2 | awk '{ print $1}'" />
+								</exec>
+							</else>
+						</if>
 					</then>
 				</elseif>
 				<else>
