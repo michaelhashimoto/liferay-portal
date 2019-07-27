@@ -399,10 +399,22 @@ jdbc.counter.connectionProperties=oracle.jdbc.ReadTimeout=0;oracle.net.CONNECT_T
 				<elseif>
 					<os family="unix" />
 					<then>
-						<exec executable="/bin/bash" os="${os.unix}" outputproperty="ip.address">
-							<arg value="-c" />
-							<arg value="ifconfig eth0 | grep 'inet addr:' | cut -d: -f2 | awk '{ print $1}'" />
-						</exec>
+						<if>
+							<isset property="env.JENKINS_HOME" />
+							<then>
+
+								<exec executable="/bin/bash" os="${os.unix}" outputproperty="ip.address">
+									<arg value="-c" />
+									<arg value="ip addr show eth0 | grep 'inet\b' | awk '{print $2}' | cut -d/ -f1" />
+								</exec>
+							</then>
+							<else>
+								<exec executable="/bin/bash" os="${os.unix}" outputproperty="ip.address">
+									<arg value="-c" />
+									<arg value="ifconfig eth0 | grep 'inet addr:' | cut -d: -f2 | awk '{ print $1}'" />
+								</exec>
+							</else>
+						</if>
 					</then>
 				</elseif>
 				<elseif>
@@ -9745,13 +9757,7 @@ cluster.link.bind.addr["cluster-link-udp"]=127.0.0.1</echo>
 
 									LiferayK8sConnection liferayK8sConnection = LiferayK8sConnection.getInstance();
 
-									String databaseType = project.getProperty("database.type");
-									String databaseVersion = project.getProperty("database.version");
-
-									System.out.println("databaseType=" + databaseType);
-									System.out.println("databaseVersion=" + databaseVersion);
-
-									Pod pod = liferayK8sConnection.getPod(ResourceConfigurationFactory.getConfigurationPod(databaseType, databaseVersion));
+									Pod pod = liferayK8sConnection.getPod(ResourceConfigurationFactory.getConfigurationPod(project.getProperty("database.type"), project.getProperty("database.version")));
 
 									pod.exec(new String[] {"mysql_upgrade"});
 								]]>
