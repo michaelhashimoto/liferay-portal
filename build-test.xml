@@ -9761,7 +9761,11 @@ cluster.link.bind.addr["cluster-link-udp"]=127.0.0.1</echo>
 
 									pod.exec(new String[] {"/bin/bash", "-c", "while ! mysqladmin ping --silent; do sleep 1; done"});
 
-									pod.exec(new String[] {"/bin/bash", "-c", "mysql_upgrade --password" + project.getProperty("database.password") + " --user" + project.getProperty("database.username")});
+									String command = "mysql_upgrade --password=" + project.getProperty("database.password") + " --user=" + project.getProperty("database.username");
+
+									System.out.println(command);
+
+									pod.exec(new String[] {"/bin/bash", "-c", command});
 								]]>
 							</beanshell>
 						</then>
