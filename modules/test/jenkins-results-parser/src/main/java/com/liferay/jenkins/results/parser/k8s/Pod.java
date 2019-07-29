@@ -22,6 +22,7 @@ import io.kubernetes.client.models.V1Pod;
 import io.kubernetes.client.models.V1PodStatus;
 
 import java.io.IOException;
+import java.io.InputStream;
 
 /**
  * @author Kenji Heigel
@@ -40,30 +41,48 @@ public class Pod {
 		Process process = exec.exec(
 			getNamespace(), getName(), commands, true, tty);
 
-		process.waitFor();
+		InputStream errorStream = process.getErrorStream();
+		InputStream inputStream = process.getInputStream();
 
 		try {
-			System.out.println(
-				JenkinsResultsParserUtil.readInputStream(
-					process.getInputStream()));
-		}
-		catch (IOException ioe) {
-			throw new RuntimeException(
-				"Unable to read process input stream", ioe);
-		}
-
-		if (process.exitValue() != 0) {
-			String standardErr = "";
+			String standardOut;
 
 			try {
-				JenkinsResultsParserUtil.readInputStream(
-					process.getErrorStream());
+				standardOut = JenkinsResultsParserUtil.readInputStream(
+					inputStream, true);
 			}
 			catch (IOException ioe) {
-				standardErr = "";
+				throw new RuntimeException(
+					"Unable to read process input stream", ioe);
+			}
+			finally {
+				inputStream.close();
 			}
 
-			throw new RuntimeException(standardErr);
+			System.out.println(standardOut);
+
+			if (process.exitValue() != 0) {
+				String standardErr;
+
+				try {
+					standardErr = JenkinsResultsParserUtil.readInputStream(
+						errorStream);
+				}
+				catch (IOException ioe) {
+					standardErr = "";
+				}
+				finally {
+					errorStream.close();
+				}
+
+				throw new RuntimeException(standardErr);
+			}
+		}
+		catch (Exception e) {
+			throw e;
+		}
+		finally {
+			process.destroy();
 		}
 	}
 
