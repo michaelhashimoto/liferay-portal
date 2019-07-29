@@ -19,6 +19,8 @@ import com.google.gson.JsonSyntaxException;
 import com.liferay.jenkins.results.parser.JenkinsResultsParserUtil;
 import com.liferay.jenkins.results.parser.Retry;
 
+import com.squareup.okhttp.OkHttpClient;
+
 import io.kubernetes.client.ApiClient;
 import io.kubernetes.client.ApiException;
 import io.kubernetes.client.Configuration;
@@ -33,6 +35,7 @@ import java.io.IOException;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author Kenji Heigel
@@ -404,6 +407,12 @@ public class LiferayK8sConnection {
 	static {
 		try {
 			_apiClient = Config.defaultClient();
+
+			OkHttpClient okHttpClient = _apiClient.getHttpClient();
+
+			okHttpClient.setConnectTimeout(5, TimeUnit.MINUTES);
+			okHttpClient.setReadTimeout(5, TimeUnit.MINUTES);
+			okHttpClient.setWriteTimeout(5, TimeUnit.MINUTES);
 
 			Configuration.setDefaultApiClient(_apiClient);
 
