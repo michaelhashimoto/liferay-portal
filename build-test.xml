@@ -9520,6 +9520,14 @@ cluster.link.bind.addr["cluster-link-udp"]=127.0.0.1</echo>
 												<arg line="attach to liferay user ${database.username} using ${database.password}" />
 											</exec>
 										</retry>
+
+										<exec executable="${db2.executable}">
+											<arg line="uncatalog db lportal" />
+										</exec>
+
+										<exec executable="${db2.executable}">
+											<arg line="uncatalog db lportal${databases.size}" />
+										</exec>
 									</then>
 								</if>
 
