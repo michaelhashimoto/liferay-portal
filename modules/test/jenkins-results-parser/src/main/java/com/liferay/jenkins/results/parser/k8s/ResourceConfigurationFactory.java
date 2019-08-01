@@ -16,6 +16,7 @@ package com.liferay.jenkins.results.parser.k8s;
 
 import com.liferay.jenkins.results.parser.JenkinsResultsParserUtil;
 
+import io.kubernetes.client.custom.Quantity;
 import io.kubernetes.client.models.V1Container;
 import io.kubernetes.client.models.V1ContainerPort;
 import io.kubernetes.client.models.V1EmptyDirVolumeSource;
@@ -23,8 +24,10 @@ import io.kubernetes.client.models.V1EnvVar;
 import io.kubernetes.client.models.V1ObjectMeta;
 import io.kubernetes.client.models.V1Pod;
 import io.kubernetes.client.models.V1PodSpec;
+import io.kubernetes.client.models.V1ResourceRequirements;
 import io.kubernetes.client.models.V1SecurityContext;
 import io.kubernetes.client.models.V1Volume;
+import io.kubernetes.client.models.V1VolumeMount;
 
 import java.io.IOException;
 
@@ -201,6 +204,36 @@ public class ResourceConfigurationFactory {
 		v1Container.setSecurityContext(
 			_newConfigurationSecurityContext(privileged));
 
+		V1VolumeMount v1VolumeMount = new V1VolumeMount();
+
+		v1VolumeMount.setMountPath("/database");
+
+		v1VolumeMount.setName(dockerBaseImageName);
+
+		v1Container.setVolumeMounts(Arrays.asList(v1VolumeMount));
+
+		V1ResourceRequirements v1ResourceRequirements =
+			new V1ResourceRequirements();
+
+		Map<String, Quantity> limits = new HashMap<String, Quantity>() {
+			{
+				put("memory", new Quantity("3.5Gi"));
+			}
+		};
+
+		v1ResourceRequirements.setLimits(limits);
+//
+//		Map<String, Quantity> requests = new HashMap<String, Quantity>() {
+//			{
+//				put("cpu", new Quantity("1.5"));
+//				put("memory", new Quantity("8Gi"));
+//			}
+//		};
+//
+//		v1ResourceRequirements.setRequests(requests);
+
+		v1Container.setResources(v1ResourceRequirements);
+
 		V1PodSpec v1PodSpec = _newConfigurationPodSpec(v1Container);
 
 		v1PodSpec.setHostname(hostname.toLowerCase());
@@ -237,7 +270,6 @@ public class ResourceConfigurationFactory {
 
 		List<V1EnvVar> v1EnvVars = new ArrayList<>(
 			Arrays.asList(
-				_newConfigurationEnvVar("BLU", "true"),
 				_newConfigurationEnvVar("DB2INSTANCE", "db2inst1"),
 				_newConfigurationEnvVar("DB2INST1_PASSWORD", db2Password),
 				_newConfigurationEnvVar("LICENSE", "accept")));
@@ -252,7 +284,13 @@ public class ResourceConfigurationFactory {
 
 		V1Volume v1Volume = new V1Volume();
 
-		v1Volume.setEmptyDir(new V1EmptyDirVolumeSource());
+		V1EmptyDirVolumeSource v1EmptyDirVolumeSource =
+			new V1EmptyDirVolumeSource();
+
+		v1EmptyDirVolumeSource.setMedium("Memory");
+		v1EmptyDirVolumeSource.setSizeLimit("3Gi");
+
+		v1Volume.setEmptyDir(v1EmptyDirVolumeSource);
 		v1Volume.setName(dockerImageName);
 
 		return v1Volume;
