@@ -9805,6 +9805,12 @@ cluster.link.bind.addr["cluster-link-udp"]=127.0.0.1</echo>
 			<elseif>
 				<equals arg1="${database.type}" arg2="oracle" />
 				<then>
+					<antcall target="rebuild-database">
+						<param name="database.type" value="${database.type}" />
+						<param name="sql.dir" value="sql/create-bare/" />
+						<param name="sql.file" value="create-bare-${database.type}.sql" />
+					</antcall>
+
 					<sql classpath="${app.server.lib.global.dir}/${jdbc.oracle.driver}" driver="oracle.jdbc.OracleDriver" onerror="continue" output="data.pump.log" password="${oracle.admin.password}" print="true" url="${database.oracle.url}" userid="${oracle.admin.user}">
 						<![CDATA[
 							drop user lportal cascade;
