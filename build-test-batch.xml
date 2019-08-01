@@ -408,10 +408,6 @@ mariadb.executable=${mariadb.executable}]]></echo>
 						<param name="todir" value="${test.app.server.lib.global.dir}" />
 					</antcall>
 
-					<antcall inheritall="false" target="rebuild-database">
-						<param name="database.type" value="@{database.type}" />
-					</antcall>
-
 					<test-action />
 
 					<if if:true="@{stop.app.server}">
