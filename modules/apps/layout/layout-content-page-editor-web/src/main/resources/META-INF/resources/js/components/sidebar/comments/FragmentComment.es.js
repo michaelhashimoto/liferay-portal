@@ -29,14 +29,17 @@ import {
 import EditCommentForm from './EditCommentForm.es';
 import InlineConfirm from '../../common/InlineConfirm.es';
 import UserIcon from '../../common/UserIcon.es';
-import Loader from '../../common/Loader.es';
+import ResolveButton from './ResolveButton.es';
 
 const FragmentComment = props => {
-	const [deleteRequested, setDeleteRequested] = useState(false);
+	const isReply = props.parentCommentId;
+	const [resolved, setResolved] = useState(false);
+
 	const [dropDownActive, setDropDownActive] = useState(false);
 	const [editing, setEditing] = useState(false);
-	const [resolving, setResolving] = useState(false);
-	const [resolved, setResolved] = useState(false);
+	const [hidden, setHidden] = useState(false);
+	const [showDeleteMask, setShowDeleteMash] = useState(false);
+	const [showResolveMask, setShowResolveMask] = useState(false);
 
 	const dateDescriptionProps = {
 		className: 'm-0 text-secondary'
@@ -53,15 +56,24 @@ const FragmentComment = props => {
 
 	const commentClassname = classNames({
 		'fragments-editor__fragment-comment': true,
-		'fragments-editor__fragment-comment--deleting': deleteRequested,
-		'fragments-editor__fragment-comment--reply': Boolean(
-			props.parentCommentId
-		),
+		'fragments-editor__fragment-comment--hidden': hidden,
+		'fragments-editor__fragment-comment--reply': isReply,
 		'fragments-editor__fragment-comment--resolved': resolved,
-		'fragments-editor__fragment-comment--resolving': resolving,
-		'px-3': !props.parentCommentId,
+		'fragments-editor__fragment-comment--with-delete-mask': showDeleteMask,
+		'fragments-editor__fragment-comment--with-resolve-mask': showResolveMask,
+		'px-3': !isReply,
 		small: true
 	});
+
+	const hideComment = () => {
+		setHidden(true);
+
+		setTimeout(() => {
+			setShowDeleteMash(false);
+			setShowResolveMask(false);
+			props.onDelete(props.comment);
+		}, 1000);
+	};
 
 	return (
 		<article className={commentClassname}>
@@ -83,38 +95,25 @@ const FragmentComment = props => {
 					</p>
 				</div>
 
-				{!props.parentCommentId && (
-					<ClayButton
-						className="text-secondary btn-monospaced btn-sm flex-shrink-0"
-						disabled={resolving}
-						displayType="unstyled"
+				{!isReply && (
+					<ResolveButton
+						loading={showResolveMask}
 						onClick={() => {
-							setResolving(true);
-
-							editFragmentEntryLinkComment(
-								props.comment.commentId,
-								props.comment.body,
-								true
-							).then(() => {
+							if (resolved) {
+								setResolved(false);
+							} else {
 								setResolved(true);
+								setShowResolveMask(true);
 
-								setTimeout(() => {
-									props.onDelete(props.comment);
-								}, 1000);
-							});
+								editFragmentEntryLinkComment(
+									props.comment.commentId,
+									props.comment.commentBody,
+									true
+								).then(hideComment);
+							}
 						}}
-					>
-						{resolving ? (
-							<Loader />
-						) : (
-							<span
-								className="lfr-portal-tooltip ml-1 text-lowercase"
-								data-title={Liferay.Language.get('resolve')}
-							>
-								<ClayIcon symbol="check-circle" />
-							</span>
-						)}
-					</ClayButton>
+						resolved={resolved}
+					/>
 				)}
 
 				{Liferay.ThemeDisplay.getUserId() ===
@@ -124,9 +123,12 @@ const FragmentComment = props => {
 						onActiveChange={setDropDownActive}
 						trigger={
 							<ClayButton
-								className="text-secondary btn-monospaced btn-sm"
+								borderless
 								disabled={editing}
-								displayType="unstyled"
+								displayType="secondary"
+								monospaced
+								outline
+								small
 							>
 								<ClayIcon symbol="ellipsis-v" />
 							</ClayButton>
@@ -145,7 +147,7 @@ const FragmentComment = props => {
 							<ClayDropDown.Item
 								onClick={() => {
 									setDropDownActive(false);
-									setDeleteRequested(true);
+									setShowDeleteMash(true);
 								}}
 							>
 								{Liferay.Language.get('delete')}
@@ -169,7 +171,7 @@ const FragmentComment = props => {
 				/>
 			)}
 
-			{!props.parentCommentId && (
+			{!isReply && (
 				<React.Fragment>
 					<footer className="fragments-editor__fragment-comment-replies">
 						{props.comment.children &&
@@ -197,27 +199,24 @@ const FragmentComment = props => {
 				</React.Fragment>
 			)}
 
-			{deleteRequested && (
+			{showDeleteMask && (
 				<InlineConfirm
 					cancelButtonLabel={Liferay.Language.get('cancel')}
 					confirmButtonLabel={Liferay.Language.get('delete')}
 					message={Liferay.Language.get(
 						'are-you-sure-you-want-to-delete-this-comment'
 					)}
-					onCancelButtonClick={() => setDeleteRequested(false)}
+					onCancelButtonClick={() => setShowDeleteMash(false)}
 					onConfirmButtonClick={() =>
 						deleteFragmentEntryLinkComment(
 							props.comment.commentId
-						).then(() => {
-							setDeleteRequested(false);
-							props.onDelete(props.comment);
-						})
+						).then(hideComment)
 					}
 				/>
 			)}
 
-			{resolved && (
-				<div className="resolved">
+			{showResolveMask && (
+				<div className="resolve-mask">
 					<ClayIcon symbol="check-circle" />
 				</div>
 			)}

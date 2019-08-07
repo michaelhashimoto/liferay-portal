@@ -60,6 +60,7 @@ import com.liferay.layout.content.page.editor.web.internal.configuration.util.Co
 import com.liferay.layout.content.page.editor.web.internal.configuration.util.FragmentServiceConfigurationUtil;
 import com.liferay.layout.page.template.model.LayoutPageTemplateStructure;
 import com.liferay.layout.page.template.service.LayoutPageTemplateStructureLocalServiceUtil;
+import com.liferay.petra.string.CharPool;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.comment.Comment;
 import com.liferay.portal.kernel.comment.CommentManager;
@@ -466,6 +467,26 @@ public class ContentPageEditorDisplayContext {
 		);
 
 		soyContexts.add(availableSoyContext);
+
+		if (classNameId == PortalUtil.getClassNameId(Layout.class)) {
+			availableSoyContext = SoyContextFactoryUtil.createSoyContext();
+
+			availableSoyContext.put("type", "separator");
+
+			soyContexts.add(availableSoyContext);
+
+			availableSoyContext = SoyContextFactoryUtil.createSoyContext();
+
+			availableSoyContext.put(
+				"icon", "format"
+			).put(
+				"label", LanguageUtil.get(resourceBundle, "look-and-feel")
+			).put(
+				"sidebarPanelId", "lookAndFeel"
+			);
+
+			soyContexts.add(availableSoyContext);
+		}
 
 		if (ContentPageEditorCommentsConfigurationUtil.isEnabled()) {
 			availableSoyContext = SoyContextFactoryUtil.createSoyContext();
@@ -1626,7 +1647,8 @@ public class ContentPageEditorDisplayContext {
 		long count =
 			PortletPreferencesLocalServiceUtil.getPortletPreferencesCount(
 				PortletKeys.PREFS_OWNER_TYPE_LAYOUT, plid,
-				portlet.getPortletId());
+				PortletIdCodec.encode(
+					portlet.getPortletId(), String.valueOf(CharPool.NUMBER_0)));
 
 		if (count > 0) {
 			return true;
