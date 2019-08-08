@@ -4836,12 +4836,29 @@ update db cfg for lportal${databases.size} using logsecond 254;</echo>
 					<elseif>
 						<equals arg1="${database.type}" arg2="oracle" />
 						<then>
+							<if>
+								<isset property="env.KUBERNETES_SERVICE_HOST" />
+								<then>
+									<replace
+										file="create.sql"
+									>
+										<replacetoken>drop user &amp;1 cascade;</replacetoken>
+										<replacevalue>alter session set "_ORACLE_SCRIPT"=true;
+
+drop user &amp;1 cascade;]</replacevalue>
+									</replace>
+								</then>
+							</if>
+
 							<replace
 								file="create.sql"
 							>
 								<replacetoken>grant connect,resource to &amp;1;</replacetoken>
 								<replacevalue>grant connect,resource to &amp;1;
-	grant unlimited tablespace to &amp;1;</replacevalue>
+
+GRANT CREATE SESSION TO USERNAME WITH ADMIN OPTION;
+
+grant unlimited tablespace to &amp;1;</replacevalue>
 							</replace>
 
 							<if>
@@ -4851,7 +4868,7 @@ update db cfg for lportal${databases.size} using logsecond 254;</echo>
 										file="create.sql"
 									>
 										<replacetoken>grant connect,resource to &amp;1;
-	grant unlimited tablespace to &amp;1;</replacetoken>
+grant unlimited tablespace to &amp;1;</replacetoken>
 										<replacevalue>grant all privileges to &amp;1;</replacevalue>
 									</replace>
 									<replace
@@ -9811,41 +9828,91 @@ cluster.link.bind.addr["cluster-link-udp"]=127.0.0.1</echo>
 						<param name="sql.file" value="create-bare-${database.type}.sql" />
 					</antcall>
 
-					<sql classpath="${app.server.lib.global.dir}/${jdbc.oracle.driver}" driver="oracle.jdbc.OracleDriver" onerror="continue" output="data.pump.log" password="${oracle.admin.password}" print="true" url="${database.oracle.url}" userid="${oracle.admin.user}">
-						<![CDATA[
-							drop user lportal cascade;
-							select directory_name, directory_path from dba_directories where directory_name='DATA_PUMP_DIR';
-						]]>
-					</sql>
+					<if>
+						<and>
+							<isset property="env.KUBERNETES_SERVICE_HOST" />
+							<isset property="env.TOP_LEVEL_MASTER_HOSTNAME" />
+							<isset property="env.TOP_LEVEL_JOB_NAME" />
+							<isset property="env.TOP_LEVEL_BUILD_NUMBER" />
+						</and>
+						<then>
+							<tstamp>
+								<format pattern="yyyyMMddkkmmssSSS" property="tstamp.value" />
+							</tstamp>
 
-					<loadfile
-						property="data.pump.log.content"
-						srcFile="data.pump.log"
-					/>
+							<local name="oracle.dmp.url.path" />
 
-					<propertyregex
-						input="${data.pump.log.content}"
-						override="true"
-						property="data.pump.dir"
-						regexp="[\s\S]+DATA_PUMP_DIR,(.*)[\s\S]+"
-						replace="\1"
-					/>
+							<property name="oracle.dmp.url.path" value="jobs/${env.TOP_LEVEL_JOB_NAME}/builds/${env.TOP_LEVEL_BUILD_NUMBER}/${tstamp.value}.dmp" />
 
-					<move
-						file="${liferay.home}/${database.type}.dmp"
-						todir="${data.pump.dir}"
-					/>
+							<rsync
+								rsync.dest="usercontent/${oracle.dmp.url.path}"
+								rsync.src="${liferay.home}/${database.type}.dmp"
+							/>
 
-					<chown file="${data.pump.dir}/${database.type}.dmp" owner="oracle" />
-					<chgrp file="${data.pump.dir}/${database.type}.dmp" group="oracle" />
+							<beanshell>
+								<![CDATA[
+									import com.liferay.jenkins.results.parser.k8s.LiferayK8sConnection;
+									import com.liferay.jenkins.results.parser.k8s.Pod;
+									import com.liferay.jenkins.results.parser.k8s.ResourceConfigurationFactory;
 
-					<exec executable="impdp">
-						<arg value="${oracle.admin.user}/${oracle.admin.password}" />
-						<arg value="dumpfile=${database.type}.dmp" />
-						<arg value="table_exists_action=replace" />
-					</exec>
+									LiferayK8sConnection liferayK8sConnection = LiferayK8sConnection.getInstance();
 
-					<delete file="${data.pump.dir}/${database.type}.dmp" />
+									Pod pod = liferayK8sConnection.getPod(ResourceConfigurationFactory.getConfigurationPod(project.getProperty("database.type"), project.getProperty("database.version")));
+
+									pod.exec(new String[] {"/bin/bash", "-c", "echo \"" + project.getProperty("script") "\" > /home/oracle/script.sh"});
+
+									pod.exec(new String[] {"/bin/bash", "-c", "/home/oracle/script.sh"});
+
+									pod.exec(new String[] {"/bin/bash", "-c", "curl http://" + project.getProperty("env.TOP_LEVEL_MASTER_HOSTNAME") + "/userContent/" + project.getProperty("oracle.dmp.url.path") + " -o /home/oracle/oracle.dmp"});
+
+									pod.exec(new String[] {"/bin/bash", "-c", "echo \"drop user lportal cascade;\" > /home/oracle/oracle.sql"});
+									pod.exec(new String[] {"/bin/bash", "-c", "echo \"select directory_name, directory_path from dba_directories where directory_name='DATA_PUMP_DIR';\" >> /home/oracle/oracle.sql"});
+									pod.exec(new String[] {"/bin/bash", "-c", "echo \"exit;\" >> /home/oracle/oracle.sql"});
+
+									pod.exec(new String[] {"/bin/bash", "-c", "sqlplus " + project.getProperty("oracle.admin.user") + "/" + project.getProperty("oracle.admin.password") + " @oracle.sql > oracle.log"});
+								]]>
+							</beanshell>
+						</then>
+						<else>
+							<sql classpath="${app.server.lib.global.dir}/${jdbc.oracle.driver}" driver="oracle.jdbc.OracleDriver" onerror="continue" output="data.pump.log" password="${oracle.admin.password}" print="true" url="${database.oracle.url}" userid="${oracle.admin.user}">
+								<![CDATA[
+									drop user lportal cascade;
+									select directory_name, directory_path from dba_directories where directory_name='DATA_PUMP_DIR';
+
+									create or replace directory data_pump_dir as '/home/oracle/data_pump_dir';
+								]]>
+							</sql>
+
+							<loadfile
+								property="data.pump.log.content"
+								srcFile="data.pump.log"
+							/>
+
+							<propertyregex
+								input="${data.pump.log.content}"
+								override="true"
+								property="data.pump.dir"
+								regexp="[\s\S]+DATA_PUMP_DIR,(.*)[\s\S]+"
+								replace="\1"
+							/>
+
+							<move
+								file="${liferay.home}/${database.type}.dmp"
+								todir="${data.pump.dir}"
+							/>
+
+							<chown file="${data.pump.dir}/${database.type}.dmp" owner="oracle" />
+							<chgrp file="${data.pump.dir}/${database.type}.dmp" group="oracle" />
+
+							<exec executable="impdp">
+								<arg value="${oracle.admin.user}/${oracle.admin.password}" />
+								<arg value="dumpfile=${database.type}.dmp" />
+								<arg value="table_exists_action=replace" />
+							</exec>
+
+							<delete file="${data.pump.dir}/${database.type}.dmp" />
+						</else>
+					</if>
 				</then>
 			</elseif>
 			<elseif>
@@ -9868,6 +9935,12 @@ cluster.link.bind.addr["cluster-link-udp"]=127.0.0.1</echo>
 				</then>
 			</elseif>
 			<elseif>
+				<antcall target="rebuild-database">
+					<param name="database.type" value="${database.type}" />
+					<param name="sql.dir" value="sql/create-bare/" />
+					<param name="sql.file" value="create-bare-${database.type}.sql" />
+				</antcall>
+
 				<equals arg1="${database.type}" arg2="sybase" />
 				<then>
 					<echo file="import-sybase.sql">load database lportal from "${liferay.home}/${database.type}.dmp"

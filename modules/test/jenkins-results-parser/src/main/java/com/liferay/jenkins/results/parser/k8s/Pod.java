@@ -22,16 +22,26 @@ import io.kubernetes.client.models.V1ObjectMeta;
 import io.kubernetes.client.models.V1Pod;
 import io.kubernetes.client.models.V1PodStatus;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
 
 /**
  * @author Kenji Heigel
  */
 public class Pod {
 
-	public void exec(String... commands) {
+	public ExecutionResult exec(List<String> commands) {
+		return exec(commands.toArray(new String[0]));
+	}
+
+	public ExecutionResult exec(String... commands) {
 		Process process = null;
+
+		int exitValue = 0;
+		String standardError = "";
+		String standardOut = "";
 
 		try {
 			Exec exec = new Exec();
@@ -40,26 +50,25 @@ public class Pod {
 				getNamespace(), getName(), commands, true,
 				System.console() != null);
 
-			try (InputStream inputStream = process.getInputStream()) {
-				System.out.println(
-					JenkinsResultsParserUtil.readInputStream(
-						inputStream, true));
+			try (InputStream inputStream = process.getInputStream() ;
+				 InputStream errorStream = process.getErrorStream()) {
+
+				standardOut = JenkinsResultsParserUtil.readInputStream(
+					inputStream, true);
+
+				exitValue = process.exitValue();
+
+				if (exitValue != 0) {
+					standardError = JenkinsResultsParserUtil.readInputStream(
+						errorStream);
+				}
 			}
 			catch (IOException ioe) {
 				throw new RuntimeException(
 					"Unable to read process input stream", ioe);
 			}
 
-			if (process.exitValue() != 0) {
-				try (InputStream errorStream = process.getErrorStream()) {
-					throw new RuntimeException(
-						JenkinsResultsParserUtil.readInputStream(errorStream));
-				}
-				catch (IOException ioe) {
-					throw new RuntimeException(
-						"Unable to read process error stream", ioe);
-				}
-			}
+			return new ExecutionResult(exitValue, standardError, standardOut);
 		}
 		catch (ApiException | IOException e) {
 			throw new RuntimeException(e);
@@ -119,6 +128,34 @@ public class Pod {
 		Pod pod = liferayK8sConnection.getPod(this, getNamespace());
 
 		_v1Pod = pod.getV1Pod();
+	}
+
+	public static class ExecutionResult {
+
+		public int getExitValue() {
+			return _exitValue;
+		}
+
+		public String getStandardError() {
+			return _standardError;
+		}
+
+		public String getStandardOut() {
+			return _standardOut;
+		}
+
+		protected ExecutionResult(
+			int exitValue, String standardError, String standardOut) {
+
+			_exitValue = exitValue;
+			_standardError = standardError;
+			_standardOut = standardOut;
+		}
+
+		private final int _exitValue;
+		private final String _standardError;
+		private final String _standardOut;
+
 	}
 
 	private V1Pod _v1Pod;

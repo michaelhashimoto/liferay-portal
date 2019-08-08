@@ -282,7 +282,9 @@ public class ResourceConfigurationFactory {
 		List<V1EnvVar> v1EnvVars = new ArrayList<>(
 			Arrays.asList(
 				_newConfigurationEnvVar("DB_DOMAIN", ""),
-				_newConfigurationEnvVar("DB_PDB", "oracl")));
+				_newConfigurationEnvVar("DB_PDB", "oracl"),
+				_newConfigurationEnvVar(
+					"SSH_SECRET_VOLUME", "/mnt/ssh-secret-volume")));
 
 		try {
 			Properties buildProperties =
