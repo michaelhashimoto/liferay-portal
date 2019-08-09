@@ -9521,13 +9521,19 @@ cluster.link.bind.addr["cluster-link-udp"]=127.0.0.1</echo>
 											</exec>
 										</retry>
 
+										<echo>attach to liferay user ${database.username} using ${database.password}</echo>
+
 										<exec executable="${db2.executable}">
 											<arg line="uncatalog db lportal" />
 										</exec>
 
+										<echo>uncatalog db lportal</echo>
+
 										<exec executable="${db2.executable}">
 											<arg line="uncatalog db lportal${databases.size}" />
 										</exec>
+
+										<echo>uncatalog db lportal${databases.size}</echo>
 									</then>
 								</if>
 
@@ -9535,9 +9541,13 @@ cluster.link.bind.addr["cluster-link-udp"]=127.0.0.1</echo>
 									<arg line="disconnect lportal" />
 								</exec>
 
+								<echo>disconnect lportal</echo>
+
 								<exec executable="${db2.executable}">
 									<arg line="drop db lportal" />
 								</exec>
+
+								<echo>drop db lportal</echo>
 
 								<if>
 									<isset property="databases.size" />
@@ -9545,8 +9555,17 @@ cluster.link.bind.addr["cluster-link-udp"]=127.0.0.1</echo>
 										<exec executable="${db2.executable}">
 											<arg line="drop db lportal${databases.size}" />
 										</exec>
+
+										<echo>drop db lportal${databases.size}</echo>
 									</then>
 								</if>
+
+								<loadfile
+									property="create.sql.file"
+									srcFile="create.sql"
+								/>
+
+								<echo>${create.sql.file}</echo>
 
 								<exec executable="${db2.executable}" failonerror="true">
 									<arg value="-fcreate.sql" />
