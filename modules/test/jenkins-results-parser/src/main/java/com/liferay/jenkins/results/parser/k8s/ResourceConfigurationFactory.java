@@ -206,7 +206,7 @@ public class ResourceConfigurationFactory {
 
 		V1VolumeMount v1VolumeMount = new V1VolumeMount();
 
-		v1VolumeMount.setMountPath("/database");
+		v1VolumeMount.setMountPath("/database/data");
 
 		v1VolumeMount.setName(dockerBaseImageName);
 
@@ -217,7 +217,7 @@ public class ResourceConfigurationFactory {
 
 		Map<String, Quantity> limits = new HashMap<String, Quantity>() {
 			{
-				put("memory", new Quantity("3.5Gi"));
+				put("memory", new Quantity("8Gi"));
 			}
 		};
 
