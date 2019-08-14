@@ -9839,6 +9839,8 @@ cluster.link.bind.addr["cluster-link-udp"]=127.0.0.1</echo>
 								drop user lportal cascade;
 
 								create or replace directory DATA_PUMP_DIR as '${data.pump.dir}';
+
+								quit;
 							</echo>
 
 							<beanshell>
@@ -9856,13 +9858,13 @@ cluster.link.bind.addr["cluster-link-udp"]=127.0.0.1</echo>
 										String dataPumpDirPath = project.getProperty("data.pump.dir");
 										String setupSQLFilePath = "/home/oracle/setup.sql";
 										String oracleAdminPassword = project.getProperty("oracle.admin.password");
-										String oracleAdminUser = project.getProperty("oracle.admin.user");
+										String oracleAdminUsername = project.getProperty("oracle.admin.user");
 
 										System.out.println("Copying from root@" + project.getProperty("env.HOSTNAME") + " " + project.getProperty("project.dir") + "/setup.sql to oracle-pod:" + setupSQLFilePath);
 										pod.copyFileToPod("root@" + project.getProperty("env.HOSTNAME"), project.getProperty("project.dir") + "/setup.sql", setupSQLFilePath);
 
-										System.out.println("sqlplus " + oracleAdminUser + "/" + oracleAdminPassword + " @" + setupSQLFilePath);
-										pod.exec(new String[] {"/bin/bash", "-c", "sqlplus " + oracleAdminUser + "/" + oracleAdminPassword + " @" + setupSQLFilePath});
+										System.out.println("sqlplus " + oracleAdminUsername + "/" + oracleAdminPassword + " @" + setupSQLFilePath);
+										pod.exec(new String[] {"/bin/bash", "-c", "sqlplus " + oracleAdminUsername + "/" + oracleAdminPassword + " @" + setupSQLFilePath});
 
 										System.out.println("rm -f " + setupSQLFilePath);
 										pod.exec(new String[] {"/bin/bash", "-c", "rm -f " + setupSQLFilePath});
@@ -9875,8 +9877,8 @@ cluster.link.bind.addr["cluster-link-udp"]=127.0.0.1</echo>
 										System.out.println("Copying from root@" + project.getProperty("env.HOSTNAME") + " " + JenkinsResultsParserUtil.getCanonicalPath(oracleDmpFile) + " to oracle-pod:" + dataPumpDirPath + "/oracle.dmp");
 										pod.copyFileToPod("root@" + project.getProperty("env.HOSTNAME"), JenkinsResultsParserUtil.getCanonicalPath(oracleDmpFile), dataPumpDirPath + "/oracle.dmp");
 
-										System.out.println("impdp " + oracleAdminUser + "/" + oracleAdminPassword + " dumpfile=oracle.dmp table_exists_action=replace");
-										pod.exec(new String[] {"/bin/bash", "-c", "impdp " + oracleAdminUser + "/" + oracleAdminPassword + " dumpfile=oracle.dmp table_exists_action=replace"});
+										System.out.println("impdp " + oracleAdminUsername + "/" + oracleAdminPassword + " dumpfile=oracle.dmp table_exists_action=replace");
+										pod.exec(new String[] {"/bin/bash", "-c", "impdp " + oracleAdminUsername + "/" + oracleAdminPassword + " dumpfile=oracle.dmp table_exists_action=replace"});
 									}
 									catch (Exception e) {
 										e.printStackTrace();
