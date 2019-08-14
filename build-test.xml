@@ -9847,6 +9847,12 @@ cluster.link.bind.addr["cluster-link-udp"]=127.0.0.1</echo>
 								quit;
 							</echo>
 
+							<antcall target="rebuild-database">
+								<param name="database.type" value="${database.type}" />
+								<param name="sql.dir" value="${project.dir}/" />
+								<param name="sql.file" value="setup.sql" />
+							</antcall>
+
 							<print-file file.name="${project.dir}/setup.sql" />
 
 							<beanshell>
@@ -9866,14 +9872,14 @@ cluster.link.bind.addr["cluster-link-udp"]=127.0.0.1</echo>
 										String oracleAdminPassword = project.getProperty("oracle.admin.password");
 										String oracleAdminUsername = project.getProperty("oracle.admin.user");
 
-										System.out.println("Copying from root@" + project.getProperty("env.HOSTNAME") + " " + project.getProperty("project.dir") + "/setup.sql to oracle-pod:" + setupSQLFilePath);
-										pod.copyFileToPod("root@" + project.getProperty("env.HOSTNAME"), project.getProperty("project.dir") + "/setup.sql", setupSQLFilePath);
+										//System.out.println("Copying from root@" + project.getProperty("env.HOSTNAME") + " " + project.getProperty("project.dir") + "/setup.sql to oracle-pod:" + setupSQLFilePath);
+										//pod.copyFileToPod("root@" + project.getProperty("env.HOSTNAME"), project.getProperty("project.dir") + "/setup.sql", setupSQLFilePath);
 
-										System.out.println("source /home/oracle/.bashrc ; sqlplus " + oracleAdminUsername + "/" + oracleAdminPassword + " @" + setupSQLFilePath);
-										pod.exec(new String[] {"/bin/bash", "-c", "source /home/oracle/.bashrc ; sqlplus " + oracleAdminUsername + "/" + oracleAdminPassword + " @" + setupSQLFilePath});
+										//System.out.println("source /home/oracle/.bashrc ; sqlplus " + oracleAdminUsername + "/" + oracleAdminPassword + " @" + setupSQLFilePath);
+										//pod.exec(new String[] {"/bin/bash", "-c", "source /home/oracle/.bashrc ; sqlplus " + oracleAdminUsername + "/" + oracleAdminPassword + " @" + setupSQLFilePath});
 
-										System.out.println("rm -f " + setupSQLFilePath);
-										pod.exec(new String[] {"/bin/bash", "-c", "rm -f " + setupSQLFilePath});
+										//System.out.println("rm -f " + setupSQLFilePath);
+										//pod.exec(new String[] {"/bin/bash", "-c", "rm -f " + setupSQLFilePath});
 
 										System.out.println("mkdir -p " + dataPumpDirPath);
 										pod.exec(new String[] {"/bin/bash", "-c", "mkdir -p " + dataPumpDirPath});
