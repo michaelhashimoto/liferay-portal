@@ -9844,6 +9844,8 @@ cluster.link.bind.addr["cluster-link-udp"]=127.0.0.1</echo>
 
 								create or replace directory DATA_PUMP_DIR as '${data.pump.dir}';
 
+								show parameter stream;
+
 								quit;
 							</echo>
 
