@@ -4841,7 +4841,7 @@ update db cfg for lportal${databases.size} using logsecond 254;</echo>
 							>
 								<replacetoken>grant connect,resource to &amp;1;</replacetoken>
 								<replacevalue>grant connect,resource to &amp;1;
-	grant unlimited tablespace to &amp;1;</replacevalue>
+grant unlimited tablespace to &amp;1;</replacevalue>
 							</replace>
 
 							<if>
@@ -4851,7 +4851,7 @@ update db cfg for lportal${databases.size} using logsecond 254;</echo>
 										file="create.sql"
 									>
 										<replacetoken>grant connect,resource to &amp;1;
-	grant unlimited tablespace to &amp;1;</replacetoken>
+grant unlimited tablespace to &amp;1;</replacetoken>
 										<replacevalue>grant all privileges to &amp;1;</replacevalue>
 									</replace>
 									<replace
@@ -4862,11 +4862,11 @@ update db cfg for lportal${databases.size} using logsecond 254;</echo>
 									</replace>
 
 									<echo append="true" file="create.sql">
-	drop user lportal1 cascade;
-	create user lportal1 identified by lportal1;
-	grant connect,resource to lportal1;
-	grant unlimited tablespace to lportal1;
-	quit</echo>
+drop user lportal1 cascade;
+create user lportal1 identified by lportal1;
+grant connect,resource to lportal1;
+grant unlimited tablespace to lportal1;
+quit</echo>
 								</then>
 							</if>
 						</then>
@@ -9824,41 +9824,88 @@ cluster.link.bind.addr["cluster-link-udp"]=127.0.0.1</echo>
 			<elseif>
 				<equals arg1="${database.type}" arg2="oracle" />
 				<then>
-					<sql classpath="${app.server.lib.global.dir}/${jdbc.oracle.driver}" driver="oracle.jdbc.OracleDriver" onerror="continue" output="data.pump.log" password="${oracle.admin.password}" print="true" url="${database.oracle.url}" userid="${oracle.admin.user}">
-						<![CDATA[
-							drop user lportal cascade;
-							select directory_name, directory_path from dba_directories where directory_name='DATA_PUMP_DIR';
-						]]>
-					</sql>
+					<if>
+						<isset property="env.KUBERNETES_SERVICE_HOST" />
+						<then>
+							<sql classpath="${app.server.lib.global.dir}/${jdbc.oracle.driver}" driver="oracle.jdbc.OracleDriver" onerror="continue" output="data.pump.log" password="${oracle.admin.password}" print="true" url="${database.oracle.url}" userid="${oracle.admin.user}">
+								<![CDATA[
+									alter system set streams_pool_size=40M scope=spfile;
 
-					<loadfile
-						property="data.pump.log.content"
-						srcFile="data.pump.log"
-					/>
+									drop user lportal cascade;
 
-					<propertyregex
-						input="${data.pump.log.content}"
-						override="true"
-						property="data.pump.dir"
-						regexp="[\s\S]+DATA_PUMP_DIR,(.*)[\s\S]+"
-						replace="\1"
-					/>
+									create or replace directory DATA_PUMP_DIR as '/home/oracle/data_pump_dir';
+								]]>
+							</sql>
 
-					<move
-						file="${liferay.home}/${database.type}.dmp"
-						todir="${data.pump.dir}"
-					/>
+							<get-database-property property.name="database.password" />
+							<get-database-property property.name="database.username" />
+							<get-database-property property.name="database.version" />
 
-					<chown file="${data.pump.dir}/${database.type}.dmp" owner="oracle" />
-					<chgrp file="${data.pump.dir}/${database.type}.dmp" group="oracle" />
+							<beanshell>
+								<![CDATA[
+									import com.liferay.jenkins.results.parser.k8s.LiferayK8sConnection;
+									import com.liferay.jenkins.results.parser.k8s.Pod;
+									import com.liferay.jenkins.results.parser.k8s.ResourceConfigurationFactory;
 
-					<exec executable="impdp">
-						<arg value="${oracle.admin.user}/${oracle.admin.password}" />
-						<arg value="dumpfile=${database.type}.dmp" />
-						<arg value="table_exists_action=replace" />
-					</exec>
+									try {
+										LiferayK8sConnection liferayK8sConnection = LiferayK8sConnection.getInstance();
 
-					<delete file="${data.pump.dir}/${database.type}.dmp" />
+										Pod pod = liferayK8sConnection.getPod(ResourceConfigurationFactory.getConfigurationPod(project.getProperty("database.type"), project.getProperty("database.version")));
+
+										pod.exec(new String[] {"/bin/bash", "-c", "mkdir -p /home/oracle/data_pump_dir"});
+
+										File oracleDmpFile = new File(project.getProperty("liferay.home"), "oracle.dmp");
+
+										pod.copyFileToPod("root@" + project.getProperty("env.HOSTNAME"), oracleDmpFile.getCanonicalPath(), "/home/oracle/data_pump_dir/oracle.dmp");
+
+										pod.exec(new String[] {"/bin/bash", "-c", "impdp " + project.getProperty("database.username") + "/" + project.getProperty("database.password") + " dumpfile=oracle.dmp table_exists_action=replace"});
+									}
+									catch (Exception e) {
+										e.printStackTrace();
+
+										throw e;
+									}
+								]]>
+							</beanshell>
+						</then>
+						<else>
+							<sql classpath="${app.server.lib.global.dir}/${jdbc.oracle.driver}" driver="oracle.jdbc.OracleDriver" onerror="continue" output="data.pump.log" password="${oracle.admin.password}" print="true" url="${database.oracle.url}" userid="${oracle.admin.user}">
+								<![CDATA[
+									drop user lportal cascade;
+									select directory_name, directory_path from dba_directories where directory_name='DATA_PUMP_DIR';
+								]]>
+							</sql>
+
+							<loadfile
+								property="data.pump.log.content"
+								srcFile="data.pump.log"
+							/>
+
+							<propertyregex
+								input="${data.pump.log.content}"
+								override="true"
+								property="data.pump.dir"
+								regexp="[\s\S]+DATA_PUMP_DIR,(.*)[\s\S]+"
+								replace="\1"
+							/>
+
+							<move
+								file="${liferay.home}/${database.type}.dmp"
+								todir="${data.pump.dir}"
+							/>
+
+							<chown file="${data.pump.dir}/${database.type}.dmp" owner="oracle" />
+							<chgrp file="${data.pump.dir}/${database.type}.dmp" group="oracle" />
+
+							<exec executable="impdp">
+								<arg value="${oracle.admin.user}/${oracle.admin.password}" />
+								<arg value="dumpfile=${database.type}.dmp" />
+								<arg value="table_exists_action=replace" />
+							</exec>
+
+							<delete file="${data.pump.dir}/${database.type}.dmp" />
+						</else>
+					</if>
 				</then>
 			</elseif>
 			<elseif>
