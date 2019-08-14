@@ -9841,6 +9841,8 @@ cluster.link.bind.addr["cluster-link-udp"]=127.0.0.1</echo>
 								quit;
 							</echo>
 
+							<print-file file.name="${project.dir}/setup.sql" />
+
 							<beanshell>
 								<![CDATA[
 									import com.liferay.jenkins.results.parser.JenkinsResultsParserUtil;
@@ -9862,7 +9864,7 @@ cluster.link.bind.addr["cluster-link-udp"]=127.0.0.1</echo>
 										pod.copyFileToPod("root@" + project.getProperty("env.HOSTNAME"), project.getProperty("project.dir") + "/setup.sql", setupSQLFilePath);
 
 										System.out.println("sqlplus " + oracleAdminUsername + "/" + oracleAdminPassword + " @" + setupSQLFilePath);
-										pod.exec(new String[] {"/bin/bash", "-c", "sqlplus " + oracleAdminUsername + "/" + oracleAdminPassword + " @" + setupSQLFilePath});
+										pod.exec(new String[] {"sqlplus", oracleAdminUsername + "/" + oracleAdminPassword, "@" + setupSQLFilePath});
 
 										System.out.println("rm -f " + setupSQLFilePath);
 										pod.exec(new String[] {"/bin/bash", "-c", "rm -f " + setupSQLFilePath});
