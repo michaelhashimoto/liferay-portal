@@ -9856,10 +9856,10 @@ cluster.link.bind.addr["cluster-link-udp"]=127.0.0.1</echo>
 										String dataPumpDirPath = project.getProperty("data.pump.dir");
 										String setupSQLFilePath = "/home/oracle/setup.sql";
 
-										System.out.println("Copying from " + project.getProperty("env.HOSTNAME") + " " + project.getProperty("project.dir") + "/setup.sql to oracle-pod:" setupSQLFilePath);
+										System.out.println("Copying from " + project.getProperty("env.HOSTNAME") + " " + project.getProperty("project.dir") + "/setup.sql to oracle-pod:" + setupSQLFilePath);
 										pod.copyFileToPod(project.getProperty("env.HOSTNAME"), project.getProperty("project.dir") + "/setup.sql", setupSQLFilePath);
 
-										System.out.println(sqlplus " + project.getProperty("database.username") + "/" + project.getProperty("database.password") + " @" + setupSQLFilePath);
+										System.out.println("sqlplus " + project.getProperty("database.username") + "/" + project.getProperty("database.password") + " @" + setupSQLFilePath);
 										pod.exec(new String[] {"/bin/bash", "-c", "sqlplus " + project.getProperty("database.username") + "/" + project.getProperty("database.password") + " @" + setupSQLFilePath});
 
 										System.out.println("rm -f " + setupSQLFilePath);
