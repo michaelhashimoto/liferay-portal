@@ -9856,8 +9856,8 @@ cluster.link.bind.addr["cluster-link-udp"]=127.0.0.1</echo>
 										String dataPumpDirPath = project.getProperty("data.pump.dir");
 										String setupSQLFilePath = "/home/oracle/setup.sql";
 
-										System.out.println("Copying from " + project.getProperty("env.HOSTNAME") + " " + project.getProperty("project.dir") + "/setup.sql to oracle-pod:" + setupSQLFilePath);
-										pod.copyFileToPod(project.getProperty("env.HOSTNAME"), project.getProperty("project.dir") + "/setup.sql", setupSQLFilePath);
+										System.out.println("Copying from root@" + project.getProperty("env.HOSTNAME") + " " + project.getProperty("project.dir") + "/setup.sql to oracle-pod:" + setupSQLFilePath);
+										pod.copyFileToPod("root@" + project.getProperty("env.HOSTNAME"), project.getProperty("project.dir") + "/setup.sql", setupSQLFilePath);
 
 										System.out.println("sqlplus " + project.getProperty("database.username") + "/" + project.getProperty("database.password") + " @" + setupSQLFilePath);
 										pod.exec(new String[] {"/bin/bash", "-c", "sqlplus " + project.getProperty("database.username") + "/" + project.getProperty("database.password") + " @" + setupSQLFilePath});
@@ -9870,7 +9870,7 @@ cluster.link.bind.addr["cluster-link-udp"]=127.0.0.1</echo>
 
 										File oracleDmpFile = new File(project.getProperty("liferay.home"), "oracle.dmp");
 
-										System.out.println("Copying from " + project.getProperty("env.HOSTNAME") + " " + JenkinsResultsParserUtil.getCanonicalPath(oracleDmpFile) + " to oracle-pod:" + dataPumpDirPath + "/oracle.dmp");
+										System.out.println("Copying from root@" + project.getProperty("env.HOSTNAME") + " " + JenkinsResultsParserUtil.getCanonicalPath(oracleDmpFile) + " to oracle-pod:" + dataPumpDirPath + "/oracle.dmp");
 										pod.copyFileToPod("root@" + project.getProperty("env.HOSTNAME"), JenkinsResultsParserUtil.getCanonicalPath(oracleDmpFile), dataPumpDirPath + "/oracle.dmp");
 
 										System.out.println("impdp " + project.getProperty("database.username") + "/" + project.getProperty("database.password") + " dumpfile=oracle.dmp table_exists_action=replace");
