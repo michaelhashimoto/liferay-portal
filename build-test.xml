@@ -9837,7 +9837,7 @@ cluster.link.bind.addr["cluster-link-udp"]=127.0.0.1</echo>
 								<param name="sql.file" value="create-bare-${database.type}.sql" />
 							</antcall>
 
-							<!-- <property name="data.pump.dir" value="/home/oracle/data_pump_dir" />
+							<property name="data.pump.dir" value="/home/oracle/data_pump_dir" />
 
 							<echo file="${project.dir}/setup.sql">
 								create or replace directory DATA_PUMP_DIR as '${data.pump.dir}';
@@ -9875,10 +9875,12 @@ cluster.link.bind.addr["cluster-link-udp"]=127.0.0.1</echo>
 										throw e;
 									}
 								]]>
-							</beanshell> -->
+							</beanshell>
 
 							<echo file="data.pump.sql">
 								<![CDATA[
+									drop user lportal cascade;
+
 									select directory_name, directory_path from dba_directories where directory_name='DATA_PUMP_DIR';
 								]]>
 							</echo>
@@ -9888,8 +9890,6 @@ cluster.link.bind.addr["cluster-link-udp"]=127.0.0.1</echo>
 								<arg value="@data.pump.sql" />
 							</exec>
 
-							<echo>${data.pump.log.content}</echo>
-
 							<propertyregex
 								input="${data.pump.log.content}"
 								override="true"
@@ -9898,15 +9898,7 @@ cluster.link.bind.addr["cluster-link-udp"]=127.0.0.1</echo>
 								replace="\1"
 							/>
 
-							<echo>data.pump.dir=${data.pump.dir}</echo>
-							<echo>data.pump.dir=${data.pump.dir}</echo>
-							<echo>data.pump.dir=${data.pump.dir}</echo>
-							<echo>data.pump.dir=${data.pump.dir}</echo>
-							<echo>data.pump.dir=${data.pump.dir}</echo>
-							<echo>data.pump.dir=${data.pump.dir}</echo>
-							<echo>data.pump.dir=${data.pump.dir}</echo>
-							<echo>data.pump.dir=${data.pump.dir}</echo>
-							<echo>data.pump.dir=${data.pump.dir}</echo>
+							<property name="oracle.dump.path" location="${liferay.home}/oracle.dmp"/>
 
 							<beanshell>
 								<![CDATA[
@@ -9920,11 +9912,7 @@ cluster.link.bind.addr["cluster-link-udp"]=127.0.0.1</echo>
 
 										Pod pod = liferayK8sConnection.getPod(ResourceConfigurationFactory.getConfigurationPod(project.getProperty("database.type"), project.getProperty("database.version")));
 
-										String dataPumpDirPath = project.getProperty("data.pump.dir");
-
-										File oracleDmpFile = new File(project.getProperty("liferay.home"), "oracle.dmp");
-
-										pod.copyFileToPod("root@" + project.getProperty("env.HOSTNAME"), JenkinsResultsParserUtil.getCanonicalPath(oracleDmpFile), dataPumpDirPath + "/oracle.dmp");
+										pod.copyFileToPod("root@" + project.getProperty("env.HOSTNAME"), project.getProperty("oracle.dump.path"), project.getProperty("data.pump.dir") + "/oracle.dmp");
 									}
 									catch (Exception e) {
 										e.printStackTrace();
@@ -9934,7 +9922,7 @@ cluster.link.bind.addr["cluster-link-udp"]=127.0.0.1</echo>
 								]]>
 							</beanshell>
 
-							<exec executable="impdp">
+							<exec executable="impdp" failonerror="true">
 								<arg value="${oracle.admin.user}/${oracle.admin.password}" />
 								<arg value="dumpfile=oracle.dmp" />
 								<arg value="logfile=oracle.log" />
