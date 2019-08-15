@@ -9951,21 +9951,23 @@ cluster.link.bind.addr["cluster-link-udp"]=127.0.0.1</echo>
 								replace="\1"
 							/>
 
+							<property name="oracle.dump.file.name" value="${database.type}.dmp" />
+
 							<move
-								file="${liferay.home}/${database.type}.dmp"
+								file="${liferay.home}/${oracle.dump.file.name}"
 								todir="${data.pump.dir}"
 							/>
 
-							<chown file="${data.pump.dir}/${database.type}.dmp" owner="oracle" />
-							<chgrp file="${data.pump.dir}/${database.type}.dmp" group="oracle" />
+							<chown file="${data.pump.dir}/${oracle.dump.file.name}" owner="oracle" />
+							<chgrp file="${data.pump.dir}/${oracle.dump.file.name}" group="oracle" />
 
 							<exec executable="impdp">
 								<arg value="${oracle.admin.user}/${oracle.admin.password}" />
-								<arg value="dumpfile=${database.type}.dmp" />
+								<arg value="dumpfile=${oracle.dump.file.name}" />
 								<arg value="table_exists_action=replace" />
 							</exec>
 
-							<delete file="${data.pump.dir}/${database.type}.dmp" />
+							<delete file="${data.pump.dir}/${oracle.dump.file.name}" />
 						</else>
 					</if>
 				</then>
