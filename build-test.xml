@@ -9840,6 +9840,7 @@ cluster.link.bind.addr["cluster-link-udp"]=127.0.0.1</echo>
 							<echo file="${project.dir}/setup.sql">
 								<![CDATA[
 									alter system set memory_target=1G scope=spfile;
+									alter system set shared_pool_size=250M scope=spfile;
 									alter system set streams_pool_size=40M scope=spfile;
 
 									create or replace directory DATA_PUMP_DIR as '/home/oracle/data_pump_dir';
@@ -9852,7 +9853,6 @@ cluster.link.bind.addr["cluster-link-udp"]=127.0.0.1</echo>
 
 							<beanshell>
 								<![CDATA[
-									import com.liferay.jenkins.results.parser.JenkinsResultsParserUtil;
 									import com.liferay.jenkins.results.parser.k8s.LiferayK8sConnection;
 									import com.liferay.jenkins.results.parser.k8s.Pod;
 									import com.liferay.jenkins.results.parser.k8s.ResourceConfigurationFactory;
@@ -9905,7 +9905,6 @@ cluster.link.bind.addr["cluster-link-udp"]=127.0.0.1</echo>
 
 							<beanshell>
 								<![CDATA[
-									import com.liferay.jenkins.results.parser.JenkinsResultsParserUtil;
 									import com.liferay.jenkins.results.parser.k8s.LiferayK8sConnection;
 									import com.liferay.jenkins.results.parser.k8s.Pod;
 									import com.liferay.jenkins.results.parser.k8s.ResourceConfigurationFactory;
