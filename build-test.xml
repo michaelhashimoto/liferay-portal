@@ -9841,6 +9841,8 @@ cluster.link.bind.addr["cluster-link-udp"]=127.0.0.1</echo>
 
 							<echo file="${project.dir}/setup.sql">
 								alter system set streams_pool_size=40M scope=spfile;
+								alter system set streams_pool_size=40M;
+								alter system set streams_pool_size=4M;
 
 								create or replace directory DATA_PUMP_DIR as '${data.pump.dir}';
 
