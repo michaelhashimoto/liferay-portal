@@ -9840,7 +9840,7 @@ cluster.link.bind.addr["cluster-link-udp"]=127.0.0.1</echo>
 							<property name="data.pump.dir" value="/home/oracle/data_pump_dir" />
 
 							<echo file="${project.dir}/setup.sql">
-								alter system set streams_pool_size=40M;
+								alter system set streams_pool_size=4M scope=spfile;
 
 								create or replace directory DATA_PUMP_DIR as '${data.pump.dir}';
 
@@ -9863,30 +9863,13 @@ cluster.link.bind.addr["cluster-link-udp"]=127.0.0.1</echo>
 
 										Pod pod = liferayK8sConnection.getPod(ResourceConfigurationFactory.getConfigurationPod(project.getProperty("database.type"), project.getProperty("database.version")));
 
-										String dataPumpDirPath = project.getProperty("data.pump.dir");
 										String setupSQLFilePath = "/home/oracle/setup.sql";
 										String oracleAdminPassword = project.getProperty("oracle.admin.password");
 										String oracleAdminUsername = project.getProperty("oracle.admin.user");
 
-										System.out.println("Copying from root@" + project.getProperty("env.HOSTNAME") + " " + project.getProperty("project.dir") + "/setup.sql to oracle-pod:" + setupSQLFilePath);
 										pod.copyFileToPod("root@" + project.getProperty("env.HOSTNAME"), project.getProperty("project.dir") + "/setup.sql", setupSQLFilePath);
 
-										System.out.println("source /home/oracle/.bashrc ; sqlplus " + oracleAdminUsername + "/" + oracleAdminPassword + " @" + setupSQLFilePath);
 										pod.exec(new String[] {"/bin/bash", "-c", "source /home/oracle/.bashrc ; sqlplus " + oracleAdminUsername + "/" + oracleAdminPassword + " @" + setupSQLFilePath + " | tee /home/oracle/output.txt"});
-
-										System.out.println("rm -f " + setupSQLFilePath);
-										pod.exec(new String[] {"/bin/bash", "-c", "rm -f " + setupSQLFilePath});
-
-										System.out.println("mkdir -p " + dataPumpDirPath);
-										pod.exec(new String[] {"/bin/bash", "-c", "mkdir -p " + dataPumpDirPath});
-
-										File oracleDmpFile = new File(project.getProperty("liferay.home"), "oracle.dmp");
-
-										System.out.println("Copying from root@" + project.getProperty("env.HOSTNAME") + " " + JenkinsResultsParserUtil.getCanonicalPath(oracleDmpFile) + " to oracle-pod:" + dataPumpDirPath + "/oracle.dmp");
-										pod.copyFileToPod("root@" + project.getProperty("env.HOSTNAME"), JenkinsResultsParserUtil.getCanonicalPath(oracleDmpFile), dataPumpDirPath + "/oracle.dmp");
-
-										System.out.println("source /home/oracle/.bashrc ; impdp " + oracleAdminUsername + "/" + oracleAdminPassword + " dumpfile=oracle.dmp table_exists_action=replace");
-										pod.exec(new String[] {"/bin/bash", "-c", "source /home/oracle/.bashrc ; impdp " + oracleAdminUsername + "/" + oracleAdminPassword + " dumpfile=oracle.dmp table_exists_action=replace"});
 									}
 									catch (Exception e) {
 										e.printStackTrace();
@@ -9895,6 +9878,59 @@ cluster.link.bind.addr["cluster-link-udp"]=127.0.0.1</echo>
 									}
 								]]>
 							</beanshell>
+
+							<echo file="data.pump.sql">
+								<![CDATA[
+									select directory_name, directory_path from dba_directories where directory_name='DATA_PUMP_DIR';
+								]]>
+							</echo>
+
+							<exec executable="${oracle.sqlplus.executable}" failonerror="true" outputproperty="data.pump.log.content">
+								<arg value="${oracle.admin.user}/${oracle.admin.password}" />
+								<arg value="@${data.pump.sql}" />
+							</exec>
+
+							<propertyregex
+								input="${data.pump.log.content}"
+								override="true"
+								property="data.pump.dir"
+								regexp="[\s\S]+DATA_PUMP_DIR,(.*)[\s\S]+"
+								replace="\1"
+							/>
+
+							<beanshell>
+								<![CDATA[
+									import com.liferay.jenkins.results.parser.JenkinsResultsParserUtil;
+									import com.liferay.jenkins.results.parser.k8s.LiferayK8sConnection;
+									import com.liferay.jenkins.results.parser.k8s.Pod;
+									import com.liferay.jenkins.results.parser.k8s.ResourceConfigurationFactory;
+
+									try {
+										LiferayK8sConnection liferayK8sConnection = LiferayK8sConnection.getInstance();
+
+										Pod pod = liferayK8sConnection.getPod(ResourceConfigurationFactory.getConfigurationPod(project.getProperty("database.type"), project.getProperty("database.version")));
+
+										String dataPumpDirPath = project.getProperty("data.pump.dir");
+
+										File oracleDmpFile = new File(project.getProperty("liferay.home"), "oracle.dmp");
+
+										pod.copyFileToPod("root@" + project.getProperty("env.HOSTNAME"), JenkinsResultsParserUtil.getCanonicalPath(oracleDmpFile), dataPumpDirPath + "/oracle.dmp");
+									}
+									catch (Exception e) {
+										e.printStackTrace();
+
+										throw e;
+									}
+								]]>
+							</beanshell>
+
+							<exec executable="impdp">
+								<arg value="${oracle.admin.user}/${oracle.admin.password}" />
+								<arg value="dumpfile=oracle.dmp" />
+								<arg value="logfile=oracle.log" />
+								<arg value="schemas=lportal" />
+								<arg value="table_exists_action=replace" />
+							</exec>
 						</then>
 						<else>
 							<sql classpath="${app.server.lib.global.dir}/${jdbc.oracle.driver}" driver="oracle.jdbc.OracleDriver" onerror="continue" output="data.pump.log" password="${oracle.admin.password}" print="true" url="${database.oracle.url}" userid="${oracle.admin.user}">
