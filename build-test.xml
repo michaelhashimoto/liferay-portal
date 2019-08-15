@@ -9924,17 +9924,9 @@ cluster.link.bind.addr["cluster-link-udp"]=127.0.0.1</echo>
 								]]>
 							</beanshell>
 
-							<!-- <exec executable="impdp" failonerror="true">
-								<arg value="${oracle.admin.user}/${oracle.admin.password}" />
-								<arg value="dumpfile=oracle.dmp" />
-								<arg value="logfile=oracle.log" />
-								<arg value="schemas=lportal" />
-								<arg value="table_exists_action=replace" />
-							</exec> -->
-
 							<exec executable="impdp">
 								<arg value="${oracle.admin.user}/${oracle.admin.password}" />
-								<arg value="dumpfile=${database.type}.dmp" />
+								<arg value="dumpfile=${oracle.dump.file.name}" />
 								<arg value="table_exists_action=replace" />
 							</exec>
 						</then>
