@@ -9887,7 +9887,7 @@ cluster.link.bind.addr["cluster-link-udp"]=127.0.0.1</echo>
 
 							<exec executable="${oracle.sqlplus.executable}" failonerror="true" outputproperty="data.pump.log.content">
 								<arg value="${oracle.admin.user}/${oracle.admin.password}" />
-								<arg value="@${data.pump.sql}" />
+								<arg value="@data.pump.sql" />
 							</exec>
 
 							<echo>${data.pump.log.content}</echo>
