@@ -9837,7 +9837,7 @@ cluster.link.bind.addr["cluster-link-udp"]=127.0.0.1</echo>
 								<param name="sql.file" value="create-bare-${database.type}.sql" />
 							</antcall>
 
-							<property name="data.pump.dir" value="/home/oracle/data_pump_dir" />
+							<!-- <property name="data.pump.dir" value="/home/oracle/data_pump_dir" />
 
 							<echo file="${project.dir}/setup.sql">
 								create or replace directory DATA_PUMP_DIR as '${data.pump.dir}';
@@ -9875,7 +9875,7 @@ cluster.link.bind.addr["cluster-link-udp"]=127.0.0.1</echo>
 										throw e;
 									}
 								]]>
-							</beanshell>
+							</beanshell> -->
 
 							<echo file="data.pump.sql">
 								<![CDATA[
