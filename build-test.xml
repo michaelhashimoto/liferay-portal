@@ -9896,7 +9896,7 @@ cluster.link.bind.addr["cluster-link-udp"]=127.0.0.1</echo>
 								input="${data.pump.log.content}"
 								override="true"
 								property="data.pump.dir"
-								regexp="[\s\S]+DATA_PUMP_DIR[^/]*(^\s*)[\s]*"
+								regexp="[\s\S]+DATA_PUMP_DIR[^/]+(.+)[\S\s]*"
 								replace="\1"
 							/>
 
