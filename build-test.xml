@@ -9839,9 +9839,8 @@ cluster.link.bind.addr["cluster-link-udp"]=127.0.0.1</echo>
 
 							<echo file="${project.dir}/setup.sql">
 								<![CDATA[
-									alter system set MEMORY_MAX_TARGET=1GB;
-									alter system set MEMORY_TARGET=1GB;									
-									alter system set STREAMS_POOL_SIZE=40M scope=spfile;
+									alter system set memory_target=1G scope=spfile;
+									alter system set streams_pool_size=40M scope=spfile;
 
 									create or replace directory DATA_PUMP_DIR as '/home/oracle/data_pump_dir';
 
@@ -9879,7 +9878,7 @@ cluster.link.bind.addr["cluster-link-udp"]=127.0.0.1</echo>
 								<![CDATA[
 									drop user lportal cascade;
 
-									select directory_name, directory_path from dba_directories where directory_name='DATA_PUMP_DIR';
+									select directory_name,directory_path from dba_directories where directory_name='DATA_PUMP_DIR';
 
 									quit;
 								]]>
