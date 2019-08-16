@@ -9840,6 +9840,7 @@ cluster.link.bind.addr["cluster-link-udp"]=127.0.0.1</echo>
 							<echo file="${project.dir}/setup.sql">
 								<![CDATA[
 									alter system set memory_target=1G scope=spfile;
+									alter system set shared_pool_reserved_size=250M scope=spfile;
 									alter system set shared_pool_size=250M scope=spfile;
 									alter system set streams_pool_size=250M scope=spfile;
 
