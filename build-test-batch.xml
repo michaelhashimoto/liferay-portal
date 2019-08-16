@@ -2916,22 +2916,29 @@ log.sanitizer.enabled=false</echo>
 					import com.liferay.jenkins.results.parser.k8s.Pod;
 					import com.liferay.jenkins.results.parser.k8s.ResourceConfigurationFactory;
 
-					LiferayK8sConnection liferayK8sConnection = LiferayK8sConnection.getInstance();
+					try {
+						LiferayK8sConnection liferayK8sConnection = LiferayK8sConnection.getInstance();
 
-					String databaseType = "@{database.type}";
+						String databaseType = "@{database.type}";
 
-					Pod pod = liferayK8sConnection.createPod(ResourceConfigurationFactory.getConfigurationPod(databaseType, "@{database.version}"));
+						Pod pod = liferayK8sConnection.createPod(ResourceConfigurationFactory.getConfigurationPod(databaseType, "@{database.version}"));
 
-					if (databaseType.contains("mysql")) {
-						pod.exec(new String[] {"/bin/bash", "-c", "while ! mysqladmin ping --silent; do sleep 1; done"});
+						if (databaseType.contains("mysql")) {
+							pod.exec(new String[] {"/bin/bash", "-c", "while ! mysqladmin ping --silent; do sleep 1; done"});
+						}
+
+						String databaseIP = pod.getIP();
+						String hostIP = project.getProperty("ip.address");
+
+						String[] commands = {"iptables -A OUTPUT -t nat -o lo -p tcp -m tcp --dport @{database.port} -j DNAT --to-destination " + databaseIP + ":@{database.port} && iptables -A POSTROUTING -t nat -p tcp -d " + databaseIP + " --dport @{database.port} -j SNAT --to-source " + hostIP};
+
+						JenkinsResultsParserUtil.executeBashCommands(commands);
 					}
+					catch (Exception e) {
+						e.printStackTrace();
 
-					String databaseIP = pod.getIP();
-					String hostIP = project.getProperty("ip.address");
-
-					String[] commands = {"iptables -A OUTPUT -t nat -o lo -p tcp -m tcp --dport @{database.port} -j DNAT --to-destination " + databaseIP + ":@{database.port} && iptables -A POSTROUTING -t nat -p tcp -d " + databaseIP + " --dport @{database.port} -j SNAT --to-source " + hostIP};
-
-					JenkinsResultsParserUtil.executeBashCommands(commands);
+						throw e;
+					}
 				]]>
 			</beanshell>
 		</sequential>
