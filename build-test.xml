@@ -9849,6 +9849,7 @@ cluster.link.bind.addr["cluster-link-udp"]=127.0.0.1</echo>
 								]]>
 							</echo>
 
+							<property name="oracle.pod.hostname" value="root@${env.HOSTNAME}" />
 							<property name="setup.sql.file.path" location="${project.dir}/setup.sql" />
 
 							<beanshell>
@@ -9862,7 +9863,7 @@ cluster.link.bind.addr["cluster-link-udp"]=127.0.0.1</echo>
 
 										Pod pod = liferayK8sConnection.getPod(ResourceConfigurationFactory.getConfigurationPod(project.getProperty("database.type"), project.getProperty("database.version")));
 
-										pod.copyFileToPod("root@" + project.getProperty("env.HOSTNAME"), project.getProperty("setup.sql.file.path"), "/home/oracle/setup.sql");
+										pod.copyFileToPod(project.getProperty("setup.sql.file.path"), project.getProperty("oracle.pod.hostname"), "/home/oracle/setup.sql");
 
 										pod.exec(new String[] {"/bin/bash", "-c", "source /home/oracle/.bashrc ; sqlplus " + project.getProperty("oracle.admin.user") + "/" + project.getProperty("oracle.admin.password") + " @/home/oracle/setup.sql"});
 									}
@@ -9914,7 +9915,7 @@ cluster.link.bind.addr["cluster-link-udp"]=127.0.0.1</echo>
 
 										Pod pod = liferayK8sConnection.getPod(ResourceConfigurationFactory.getConfigurationPod(project.getProperty("database.type"), project.getProperty("database.version")));
 
-										pod.copyFileToPod("root@" + project.getProperty("env.HOSTNAME"), project.getProperty("oracle.dump.file.path"), project.getProperty("data.pump.dir") + "/" + project.getProperty("oracle.dump.file.name"));
+										pod.copyFileToPod(project.getProperty("oracle.dump.file.path"), project.getProperty("oracle.pod.hostname"), project.getProperty("data.pump.dir") + "/" + project.getProperty("oracle.dump.file.name"));
 									}
 									catch (Exception e) {
 										e.printStackTrace();
