@@ -972,12 +972,8 @@ app.server.type=@{app.server.type}]]></echo>
 	</macrodef>
 
 	<macrodef name="prepare-test-build-dist-dummy">
-		<attribute name="app.server.type" />
-
 		<sequential>
-			<lstopwatch action="start" name="prepare-test-build-dist.bundles.@{app.server.type}" />
-
-			<lstopwatch action="start" name="prepare-test-build-dist.bundles.source.compress" />
+			<lstopwatch action="start" name="prepare-test-build-dist.bundles.dummy" />
 
 			<echo file="dummy-source-status">SUCCESS</echo>
 
@@ -992,10 +988,6 @@ app.server.type=@{app.server.type}]]></echo>
 
 			<prepare-liferay-classes if:true="${test.batch.code.coverage}" merged.jar="${project.dir}/jacoco/merged.jar" portal.bundle.dir="bundles" />
 
-			<lstopwatch action="total" name="prepare-test-build-dist.bundles.source.compress" />
-
-			<lstopwatch action="start" name="prepare-test-build-dist.bundles.@{app.server.type}.compress" />
-
 			<delete dir="bundles" failonerror="false" />
 
 			<mkdir dir="bundles" />
@@ -1005,20 +997,18 @@ app.server.type=@{app.server.type}]]></echo>
 			<tar
 				basedir="."
 				compression="gzip"
-				destfile="liferay-portal-bundle-@{app.server.type}.tar.gz"
+				destfile="liferay-portal-bundle-dummy.tar.gz"
 				includes="bundles/**"
 				longfile="posix"
 			/>
 
 			<execute>
 				<![CDATA[
-					tar --file=liferay-portal-bundle-@{app.server.type}.tar.gz --gzip --list --verbose
+					tar --file=liferay-portal-bundle-dummy.tar.gz --gzip --list --verbose
 				]]>
 			</execute>
 
-			<lstopwatch action="total" name="prepare-test-build-dist.bundles.@{app.server.type}.compress" />
-
-			<lstopwatch action="total" name="prepare-test-build-dist.bundles.@{app.server.type}" />
+			<lstopwatch action="total" name="prepare-test-build-dist.bundles.dummy" />
 		</sequential>
 	</macrodef>
 
