@@ -849,6 +849,22 @@ mariadb.executable=${mariadb.executable}]]></echo>
 		<attribute name="app.server.type" />
 
 		<sequential>
+			<if>
+				<equals arg1="@{app.server.type}" arg2="dummy" />
+				<then>
+					<prepare-test-build-dist-dummy />
+				</then>
+				<else>
+					<prepare-test-build-dist-bundle app.server.type="@{app.server.type}" />
+				</else>
+			</if>
+		</sequential>
+	</macrodef>
+
+	<macrodef name="prepare-test-build-dist-bundle">
+		<attribute name="app.server.type" />
+
+		<sequential>
 			<lstopwatch action="start" name="prepare-test-build-dist.bundles.@{app.server.type}" />
 
 			<var name="app.server.type" value="@{app.server.type}" />
@@ -934,6 +950,57 @@ app.server.type=@{app.server.type}]]></echo>
 					<include name="**/bin/*" />
 				</fileset>
 			</chmod>
+
+			<tar
+				basedir="."
+				compression="gzip"
+				destfile="liferay-portal-bundle-@{app.server.type}.tar.gz"
+				includes="bundles/**"
+				longfile="posix"
+			/>
+
+			<execute>
+				<![CDATA[
+					tar --file=liferay-portal-bundle-@{app.server.type}.tar.gz --gzip --list --verbose
+				]]>
+			</execute>
+
+			<lstopwatch action="total" name="prepare-test-build-dist.bundles.@{app.server.type}.compress" />
+
+			<lstopwatch action="total" name="prepare-test-build-dist.bundles.@{app.server.type}" />
+		</sequential>
+	</macrodef>
+
+	<macrodef name="prepare-test-build-dist-dummy">
+		<attribute name="app.server.type" />
+
+		<sequential>
+			<lstopwatch action="start" name="prepare-test-build-dist.bundles.@{app.server.type}" />
+
+			<lstopwatch action="start" name="prepare-test-build-dist.bundles.source.compress" />
+
+			<echo file="dummy-source-status">SUCCESS</echo>
+
+			<tar
+				basedir="${project.dir}"
+				compression="gzip"
+				destfile="liferay-portal-source.tar.gz"
+				excludes="**/*.*"
+				includes="dummy-source-status"
+				longfile="posix"
+			/>
+
+			<prepare-liferay-classes if:true="${test.batch.code.coverage}" merged.jar="${project.dir}/jacoco/merged.jar" portal.bundle.dir="bundles" />
+
+			<lstopwatch action="total" name="prepare-test-build-dist.bundles.source.compress" />
+
+			<lstopwatch action="start" name="prepare-test-build-dist.bundles.@{app.server.type}.compress" />
+
+			<delete dir="bundles" failonerror="false" />
+
+			<mkdir dir="bundles" />
+
+			<echo file="bundles/dummy-bundle-status">SUCCESS</echo>
 
 			<tar
 				basedir="."
@@ -3200,6 +3267,56 @@ log.sanitizer.enabled=false</echo>
 		<parallel threadCount="1" timeout="7200000">
 			<prepare-test-build-dist app.server.type="${axis.variable}" />
 		</parallel>
+	</target>
+
+	<target name="dummy-jdk8">
+		<run-batch-test>
+			<test-set-up>
+				<untar
+					compression="gzip"
+					dest="."
+					src="liferay-portal-bundle-dummy.tar.gz"
+				/>
+
+				<local name="dummy.bundle.status" />
+
+				<loadfile
+					property="dummy.bundle.status"
+					srcfile="bundles/dummy-bundle-status"
+				/>
+
+				<if>
+					<not>
+						<equals arg1="${dummy.bundle.status}" value="SUCCESS" />
+					</not>
+					<then>
+						<fail message="Dummy bundle failed to be distributed." />
+					</then>
+				</if>
+
+				<untar
+					compression="gzip"
+					dest="."
+					src="liferay-portal-source.tar.gz"
+				/>
+
+				<local name="dummy.source.status" />
+
+				<loadfile
+					property="dummy.source.status"
+					srcfile="dummy-source-status"
+				/>
+
+				<if>
+					<not>
+						<equals arg1="${dummy.source.status}" value="SUCCESS" />
+					</not>
+					<then>
+						<fail message="Dummy source failed to be distributed." />
+					</then>
+				</if>
+			</test-set-up>
+		</run-batch-test>
 	</target>
 
 	<target name="empty-temp-dir-jdk8">
