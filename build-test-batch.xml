@@ -997,14 +997,14 @@ app.server.type=@{app.server.type}]]></echo>
 			<tar
 				basedir="."
 				compression="gzip"
-				destfile="liferay-portal-bundle-dummy-${lp.version}.tar.gz"
+				destfile="liferay-portal-bundle-dummy.tar.gz"
 				includes="bundles/**"
 				longfile="posix"
 			/>
 
 			<execute>
 				<![CDATA[
-					tar --file=liferay-portal-bundle-dummy-${lp.version}.tar.gz --gzip --list --verbose
+					tar --file=liferay-portal-bundle-dummy.tar.gz --gzip --list --verbose
 				]]>
 			</execute>
 
