@@ -3271,7 +3271,7 @@ log.sanitizer.enabled=false</echo>
 
 				<if>
 					<not>
-						<equals arg1="${dummy.bundle.status}" value="SUCCESS" />
+						<equals arg1="${dummy.bundle.status}" arg2="SUCCESS" />
 					</not>
 					<then>
 						<fail message="Dummy bundle failed to be distributed." />
@@ -3287,7 +3287,7 @@ log.sanitizer.enabled=false</echo>
 
 				<if>
 					<not>
-						<equals arg1="${dummy.source.status}" value="SUCCESS" />
+						<equals arg1="${dummy.source.status}" arg2="SUCCESS" />
 					</not>
 					<then>
 						<fail message="Dummy source failed to be distributed." />
