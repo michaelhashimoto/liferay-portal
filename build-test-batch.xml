@@ -3261,13 +3261,7 @@ log.sanitizer.enabled=false</echo>
 
 	<target name="dummy-jdk8">
 		<run-batch-test>
-			<test-set-up>
-				<untar
-					compression="gzip"
-					dest="."
-					src="liferay-portal-bundle-dummy.tar.gz"
-				/>
-
+			<test-action>
 				<local name="dummy.bundle.status" />
 
 				<loadfile
@@ -3284,12 +3278,6 @@ log.sanitizer.enabled=false</echo>
 					</then>
 				</if>
 
-				<untar
-					compression="gzip"
-					dest="."
-					src="liferay-portal-source.tar.gz"
-				/>
-
 				<local name="dummy.source.status" />
 
 				<loadfile
@@ -3305,6 +3293,20 @@ log.sanitizer.enabled=false</echo>
 						<fail message="Dummy source failed to be distributed." />
 					</then>
 				</if>
+			</test-action>
+
+			<test-set-up>
+				<untar
+					compression="gzip"
+					dest="."
+					src="liferay-portal-bundle-dummy.tar.gz"
+				/>
+
+				<untar
+					compression="gzip"
+					dest="."
+					src="liferay-portal-source.tar.gz"
+				/>
 			</test-set-up>
 		</run-batch-test>
 	</target>
