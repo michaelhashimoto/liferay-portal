@@ -3774,6 +3774,11 @@ org.apache.catalina.startup.ClassLoaderFactory.level=INFO]]>
 								<param name="keep.hypersonicdb" value="true" />
 							</antcall>
 						</then>
+						<else>
+							<set-app-server-properties />
+
+							<delete dir="${test.app.server.liferay.home}/osgi/state" />
+						</else>
 					</if>
 
 					<delete failonerror="false" includeemptydirs="true">
@@ -9545,6 +9550,11 @@ cluster.link.bind.addr["cluster-link-udp"]=127.0.0.1</echo>
 					<then>
 						<antcall target="delete-liferay-home" />
 					</then>
+					<else>
+						<set-app-server-properties />
+
+						<delete dir="${test.app.server.liferay.home}/osgi/state" />
+					</else>
 				</if>
 
 				<if>
