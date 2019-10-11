@@ -9862,11 +9862,11 @@ cluster.link.bind.addr["cluster-link-udp"]=127.0.0.1</echo>
 						<then>
 							<lstopwatch action="start" name="mysql.upgrade" />
 
-							<execute>
+							<!-- <execute>
 								<![CDATA[
-									docker exec ${env.HOSTNAME}_mysql mysql_upgrade --password=${database.password} --user=${database.username}
+									docker exec ${env.HOSTNAME}_mysql mysql_upgrade
 								]]>
-							</execute>
+							</execute> -->
 
 							<lstopwatch action="total" name="mysql.upgrade" />
 						</then>
