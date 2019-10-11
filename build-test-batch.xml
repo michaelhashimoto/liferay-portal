@@ -3043,9 +3043,11 @@ log.sanitizer.enabled=false</echo>
 						\
 						${database.docker.image} \
 						\
-						--sql-mode=""
+						--sql-modes=""
 				]]>
 			</echo>
+
+			<print-file file.name="${docker.start.script}" />
 
 			<chmod perm="a+x">
 				<fileset dir="." includes="${docker.start.script}" />
