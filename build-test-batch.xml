@@ -3041,7 +3041,9 @@ log.sanitizer.enabled=false</echo>
 						${database.docker.network.run.option} \
 						${database.docker.run.options} \
 						\
-						${database.docker.image}
+						${database.docker.image} \
+						\
+						--sql-mode=""
 				]]>
 			</echo>
 
