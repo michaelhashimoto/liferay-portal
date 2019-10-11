@@ -3043,7 +3043,7 @@ log.sanitizer.enabled=false</echo>
 						\
 						${database.docker.image} \
 						\
-						--sql-modes=""
+						--sql-mode=""
 				]]>
 			</echo>
 
