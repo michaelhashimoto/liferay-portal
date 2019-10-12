@@ -9854,9 +9854,7 @@ cluster.link.bind.addr["cluster-link-udp"]=127.0.0.1</echo>
 					<local name="database.host.arg.line" />
 
 					<condition else=" " property="database.host.arg.line" value="--host=${database.host}">
-						<not>
-							<equals arg1="${database.host}" arg2="localhost" />
-						</not>
+						<equals arg1="${env.DOCKER_ENABLED}" arg2="true" />
 					</condition>
 
 					<echo>database.host=${database.host}</echo>
@@ -9889,9 +9887,7 @@ cluster.link.bind.addr["cluster-link-udp"]=127.0.0.1</echo>
 					<local name="database.host.arg.line" />
 
 					<condition else=" " property="database.host.arg.line" value="--host=${database.host}">
-						<not>
-							<equals arg1="${database.host}" arg2="localhost" />
-						</not>
+						<equals arg1="${env.DOCKER_ENABLED}" arg2="true" />
 					</condition>
 
 					<echo>database.host=${database.host}</echo>
