@@ -9851,9 +9851,22 @@ cluster.link.bind.addr["cluster-link-udp"]=127.0.0.1</echo>
 					<get-database-property property.name="database.schema" />
 					<get-database-property property.name="database.username" />
 
+					<local name="database.host.arg.line" />
+
+					<condition else=" " property="database.host.arg.line" value="--host=${database.host}">
+						<not>
+							<equals arg1="${database.host}" arg2="localhost" />
+						</not>
+					</condition>
+
+					<echo>database.host=${database.host}</echo>
+					<echo>database.host=${database.host}</echo>
+					<echo>database.host.arg.line=${database.host.arg.line}</echo>
+					<echo>database.host.arg.line=${database.host.arg.line}</echo>
+
 					<exec executable="${mariadb.executable}" input="${liferay.home}/${database.type}.sql">
+						<arg value="${database.host.arg.line}" />
 						<arg value="--database=${database.schema}" />
-						<arg value="--host=${database.host}" />
 						<arg value="--password=${database.password}" />
 						<arg value="--user=${database.username}" />
 					</exec>
@@ -9873,9 +9886,22 @@ cluster.link.bind.addr["cluster-link-udp"]=127.0.0.1</echo>
 					<get-database-property property.name="database.schema" />
 					<get-database-property property.name="database.username" />
 
+					<local name="database.host.arg.line" />
+
+					<condition else=" " property="database.host.arg.line" value="--host=${database.host}">
+						<not>
+							<equals arg1="${database.host}" arg2="localhost" />
+						</not>
+					</condition>
+
+					<echo>database.host=${database.host}</echo>
+					<echo>database.host=${database.host}</echo>
+					<echo>database.host.arg.line=${database.host.arg.line}</echo>
+					<echo>database.host.arg.line=${database.host.arg.line}</echo>
+
 					<exec executable="${mysql.executable}" input="${liferay.home}/${database.type}.sql">
+						<arg value="${database.host.arg.line}" />
 						<arg value="--database=${database.schema}" />
-						<arg value="--host=${database.host}" />
 						<arg value="--password=${database.password}" />
 						<arg value="--user=${database.username}" />
 					</exec>
