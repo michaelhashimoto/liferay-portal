@@ -782,6 +782,8 @@ definition {
 	macro searchForAssetsAfterUpgrade {
 		Navigator.openURL();
 
+		Pause(locator1 = "100000");
+
 		SearchPortlets.searchEmbedded(searchTerm = "Web Content");
 
 		SearchResultPortlet.viewSearchResults(
