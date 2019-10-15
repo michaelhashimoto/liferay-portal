@@ -782,7 +782,9 @@ definition {
 	macro searchForAssetsAfterUpgrade {
 		Navigator.openURL();
 
-		Pause(locator1 = "100000");
+		echo("I'm about to break!");
+
+		Pause(locator1 = "100000000");
 
 		SearchPortlets.searchEmbedded(searchTerm = "Web Content");
 
