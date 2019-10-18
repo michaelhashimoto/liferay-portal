@@ -9743,7 +9743,7 @@ cluster.link.bind.addr["cluster-link-udp"]=127.0.0.1</echo>
 	<exec executable="docker" failonerror="true">
 		<arg value="cp" />
 		<arg value="create.sql" />
-		<arg value="${database.host}:~/create.sql" />
+		<arg value="${database.host}:/tmp/create.sql" />
 	</exec>
 </retry>]]></echo>
 
@@ -9751,7 +9751,7 @@ cluster.link.bind.addr["cluster-link-udp"]=127.0.0.1</echo>
 										<exec executable="docker" failonerror="true">
 											<arg value="cp" />
 											<arg value="create.sql" />
-											<arg value="${database.host}:~/create.sql" />
+											<arg value="${database.host}:/tmp/create.sql" />
 										</exec>
 									</retry>
 
@@ -9763,7 +9763,7 @@ cluster.link.bind.addr["cluster-link-udp"]=127.0.0.1</echo>
 		<arg value="${database.host}" />
 		<arg value="${oracle.sqlplus.executable}" />
 		<arg value="${oracle.admin.user}/${oracle.admin.password}" />
-		<arg value="@create.sql" />
+		<arg value="@/tmp/create.sql" />
 		<arg value="${database.username}" />
 		<arg value="${database.password}" />
 	</exec>
@@ -9775,7 +9775,7 @@ cluster.link.bind.addr["cluster-link-udp"]=127.0.0.1</echo>
 											<arg value="${database.host}" />
 											<arg value="${oracle.sqlplus.executable}" />
 											<arg value="${oracle.admin.user}/${oracle.admin.password}" />
-											<arg value="@create.sql" />
+											<arg value="@/tmp/create.sql" />
 											<arg value="${database.username}" />
 											<arg value="${database.password}" />
 										</exec>
