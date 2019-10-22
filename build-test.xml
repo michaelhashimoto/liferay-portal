@@ -10002,7 +10002,7 @@ cluster.link.bind.addr["cluster-link-udp"]=127.0.0.1</echo>
 
 							<property location="${liferay.home}/oracle.dmp" name="oracle.dump.file.path" />
 
-							<execute>
+							<execute failonerror="false">
 								<![CDATA[
 									echo "bash-1"
 									docker cp ${setup.sql.file} ${database.host}:/tmp/setup.sql
