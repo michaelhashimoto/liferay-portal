@@ -9701,9 +9701,9 @@ cluster.link.bind.addr["cluster-link-udp"]=127.0.0.1</echo>
 								</else>
 							</if>
 
-							<var name="arg.line" unless:blank="${mysql.host}" value="${arg.line} -h ${mysql.host}" />
-							<var name="arg.line" unless:blank="${database.username}" value="${arg.line} -u ${database.username}" />
-							<var name="arg.line" unless:blank="${database.password}" value="${arg.line} -p${database.password}" />
+							<var name="arg.line" unless:blank="${database.password}" value="${arg.line} --password=${database.password}" />
+							<var name="arg.line" unless:blank="${database.username}" value="${arg.line} --user=${database.username}" />
+							<var name="arg.line" unless:blank="${mysql.host}" value="${arg.line} --host=${mysql.host}" />
 
 							<propertycopy from="${database.type}.executable" name="database.executable" override="true" />
 
@@ -9905,10 +9905,10 @@ cluster.link.bind.addr["cluster-link-udp"]=127.0.0.1</echo>
 						</else>
 					</if>
 
-					<var name="arg.line" unless:blank="${mysql.host}" value="${arg.line} -h ${mysql.host}" />
-					<var name="arg.line" unless:blank="${database.username}" value="${arg.line} -u ${database.username}" />
-					<var name="arg.line" unless:blank="${database.password}" value="${arg.line} -p${database.password}" />
+					<var name="arg.line" unless:blank="${database.password}" value="${arg.line} --password=${database.password}" />
 					<var name="arg.line" unless:blank="${database.schema}" value="${arg.line} --database=${database.schema}" />
+					<var name="arg.line" unless:blank="${database.username}" value="${arg.line} --user=${database.username}" />
+					<var name="arg.line" unless:blank="${mysql.host}" value="${arg.line} --host=${mysql.host}" />
 
 					<echo><![CDATA[<retry retrycount="3" retrydelay="60000">
 	<exec executable="${mysql.executable}" input="${liferay.home}/${database.type}.sql">
