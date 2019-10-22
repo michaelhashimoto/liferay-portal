@@ -9761,11 +9761,9 @@ cluster.link.bind.addr["cluster-link-udp"]=127.0.0.1</echo>
 	<exec executable="docker" failonerror="true">
 		<arg value="exec" />
 		<arg value="${database.host}" />
-		<arg value="${oracle.sqlplus.executable}" />
-		<arg value="${oracle.admin.user}/${oracle.admin.password}" />
-		<arg value="@/tmp/create.sql" />
-		<arg value="${database.username}" />
-		<arg value="${database.password}" />
+		<arg value="/bin/bash" />
+		<arg value="-c" />
+		<arg value="source ~/.bashrc ; ${oracle.sqlplus.executable} ${oracle.admin.user}/${oracle.admin.password} @/tmp/create.sql ${database.username} ${database.password}" />
 	</exec>
 </retry>]]></echo>
 
@@ -9773,11 +9771,9 @@ cluster.link.bind.addr["cluster-link-udp"]=127.0.0.1</echo>
 										<exec executable="docker" failonerror="true">
 											<arg value="exec" />
 											<arg value="${database.host}" />
-											<arg value="${oracle.sqlplus.executable}" />
-											<arg value="${oracle.admin.user}/${oracle.admin.password}" />
-											<arg value="@/tmp/create.sql" />
-											<arg value="${database.username}" />
-											<arg value="${database.password}" />
+											<arg value="/bin/bash" />
+											<arg value="-c" />
+											<arg value="source ~/.bashrc ; ${oracle.sqlplus.executable} ${oracle.admin.user}/${oracle.admin.password} @/tmp/create.sql ${database.username} ${database.password}" />
 										</exec>
 									</retry>
 
@@ -10018,7 +10014,7 @@ cluster.link.bind.addr["cluster-link-udp"]=127.0.0.1</echo>
 									docker cp ${setup.sql.file} ${database.host}:/tmp/setup.sql
 
 									echo "bash-2"
-									docker exec ${database.host} ${oracle.sqlplus.executable} ${oracle.admin.user}/${oracle.admin.password} as sysdba @/tmp/setup.sql
+									docker exec ${database.host} /bin/bash -c "source ~/.bashrc ; ${oracle.sqlplus.executable} ${oracle.admin.user}/${oracle.admin.password} as sysdba @/tmp/setup.sql"
 
 									echo "bash-3"
 									docker exec ${database.host} mkdir -p /tmp/data_pump_dir
@@ -10027,7 +10023,7 @@ cluster.link.bind.addr["cluster-link-udp"]=127.0.0.1</echo>
 									docker cp ${oracle.dump.file.path} ${database.host}:/tmp/data_pump_dir/oracle.dmp
 
 									echo "bash-5"
-									docker exec ${database.host} impdp ${oracle.admin.user}/${oracle.admin.password} dumpfile=${database.type}.dmp table_exists_action=replace
+									docker exec ${database.host} /bin/bash -c "source ~/.bashrc ; impdp ${oracle.admin.user}/${oracle.admin.password} dumpfile=${database.type}.dmp table_exists_action=replace"
 
 									echo "bash-6"
 								]]>
