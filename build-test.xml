@@ -5356,7 +5356,7 @@ go</echo>
 
 					<mirrors-get
 						dest="${todir}"
-						src="${test.jdbc.drivers.url}/oracle/${database.version}/${jdbc.oracle.driver}"
+						src="https://test-5-1.liferay.com/userContent/ojdbc10.jar"
 					/>
 				</then>
 			</elseif>
