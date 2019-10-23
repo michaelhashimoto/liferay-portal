@@ -9770,13 +9770,22 @@ cluster.link.bind.addr["cluster-link-udp"]=127.0.0.1</echo>
 </exec>]]></echo>
 
 									<retry retrycount="10" retrydelay="60000">
-										<exec executable="docker" failonerror="true">
-											<arg value="exec" />
-											<arg value="${database.host}" />
-											<arg value="/bin/bash" />
-											<arg value="-c" />
-											<arg value="source ~/.bashrc ; ${oracle.sqlplus.executable} ${oracle.admin.user}/${oracle.admin.password} as sysdba @/tmp/setup.sql" />
-										</exec>
+										<sequential>
+											<exec executable="docker" failonerror="true" outputproperty="setup.oracle.output">
+												<arg value="exec" />
+												<arg value="${database.host}" />
+												<arg value="/bin/bash" />
+												<arg value="-c" />
+												<arg value="source ~/.bashrc ; ${oracle.sqlplus.executable} ${oracle.admin.user}/${oracle.admin.password} as sysdba @/tmp/setup.sql" />
+											</exec>
+
+											<if>
+												<contains string="${setup.oracle.output}" substring="invalid username/password; logon denied" />
+												<then>
+													<fail message="Could not login to as ${oracle.admin.user}/${oracle.admin.password}" />
+												</then>
+											</if>
+										</sequential>
 									</retry>
 
 									<retry retrycount="10" retrydelay="60000">
