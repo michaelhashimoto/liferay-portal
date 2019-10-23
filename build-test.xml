@@ -9755,10 +9755,8 @@ cluster.link.bind.addr["cluster-link-udp"]=127.0.0.1</echo>
 
 									<execute failonerror="false">
 										<![CDATA[
-											echo "bash-1"
 											docker cp ${setup.sql.file} ${database.host}:/tmp/setup.sql
 
-											echo "bash-2"
 											docker cp ${create.sql.file.path} ${database.host}:/tmp/create.sql
 										]]>
 									</execute>
