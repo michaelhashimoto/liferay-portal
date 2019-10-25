@@ -9780,20 +9780,37 @@ cluster.link.bind.addr["cluster-link-udp"]=127.0.0.1</echo>
 
 									<lstopwatch action="start" name="oracle.upgrade" />
 
+									<condition else="/opt/oracle/product/19.3.0.0.0/dbhome_1" property="oracle.home" value="/u01/app/oracle/product/12.2.0/db_1">
+										<contains string="${database.version}" substring="19.3" />
+									</condition>
+
 									<for list="0,1,2,3" param="time">
 										<sequential>
-											<exec executable="docker" failonerror="true">
+											<echo></echo>
+											<echo>=====================================================</echo>
+											<echo></echo>
+
+											<exec executable="docker" failonerror="false">
 												<arg value="exec" />
 												<arg value="${database.host}" />
-												<arg value="ps" />
-												<arg value="-aux" />
+												<arg value="/bin/bash" />
+												<arg value="-c" />
+												<arg value="\${ORACLE_HOME}/bin/lsnrctl status" />
 											</exec>
-
-											<sleep seconds="15" />
 
 											<echo></echo>
 											<echo>-----------------------------------------------------</echo>
 											<echo></echo>
+
+											<exec executable="docker" failonerror="false">
+												<arg value="exec" />
+												<arg value="${database.host}" />
+												<arg value="/bin/bash" />
+												<arg value="-c" />
+												<arg value="${oracle.home}/bin/lsnrctl status" />
+											</exec>
+
+											<sleep seconds="15" />
 										</sequential>
 									</for>
 
