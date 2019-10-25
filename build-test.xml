@@ -9776,9 +9776,20 @@ cluster.link.bind.addr["cluster-link-udp"]=127.0.0.1</echo>
 										</exec>
 									</retry>
 
-									<echo>Sleep for 60 seconds</echo>
+									<lstopwatch action="start" name="oracle.upgrade" />
 
-									<sleep seconds="60" />
+									<waitfor maxwait="60" maxwaitunit="second">
+										<socket port="1521" server="${database.host}" />
+									</waitfor>
+
+									<exec executable="docker" failonerror="true">
+										<arg value="exec" />
+										<arg value="${database.host}" />
+										<arg value="ps" />
+										<arg value="-aux" />
+									</exec>
+
+									<lstopwatch action="stop" name="oracle.upgrade" />
 								</then>
 								<elseif>
 									<os family="windows" />
