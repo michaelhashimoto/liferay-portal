@@ -9752,9 +9752,13 @@ cluster.link.bind.addr["cluster-link-udp"]=127.0.0.1</echo>
 
 											sqlplus ${oracle.admin.user}/${oracle.admin.password} @/tmp/setup.sql
 
-											while [[ $(${ORACLE_HOME}/bin/lsnrctl status | grep READY) == "" ]]
+											echo "Checking ORACLE"
+
+											while [[ "$(${ORACLE_HOME}/bin/lsnrctl status | grep READY)" == "" ]]
 											do
 												sleep 1000
+
+												${ORACLE_HOME}/bin/lsnrctl status
 
 												echo "Oracle is starting up"
 											done
