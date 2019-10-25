@@ -5343,9 +5343,7 @@ go</echo>
 				</then>
 			</elseif>
 			<elseif>
-				<and>
-					<equals arg1="${database.type}" arg2="oracle" />
-				</and>
+				<equals arg1="${database.type}" arg2="oracle" />
 				<then>
 					<delete failonerror="false" includeemptydirs="true">
 						<fileset
@@ -5354,9 +5352,13 @@ go</echo>
 						/>
 					</delete>
 
+					<condition else="${test.jdbc.drivers.url}/oracle/${database.version}/${jdbc.oracle.driver}" property="database.client.jar.url" value="${test.jdbc.drivers.url}/oracle/12.2.0.1/${jdbc.oracle.driver}">
+						<contains string="${database.version}" substring="19.3" />
+					</condition>
+
 					<mirrors-get
 						dest="${todir}"
-						src="${test.jdbc.drivers.url}/oracle/${database.version}/${jdbc.oracle.driver}"
+						src="${database.client.jar.url}"
 					/>
 				</then>
 			</elseif>
