@@ -9744,6 +9744,36 @@ cluster.link.bind.addr["cluster-link-udp"]=127.0.0.1</echo>
 										]]>
 									</echo>
 
+									<property location="${project.dir}/setup.sh" name="setup.sh.file" />
+
+									<condition else="/opt/oracle/product/19.3.0.0.0/dbhome_1" property="oracle.home" value="/u01/app/oracle/product/12.2.0/db_1">
+										<contains string="${database.version}" substring="19.3" />
+									</condition>
+
+									<echo file="${setup.sh.file}">
+										<![CDATA[
+											#!/bin/bash
+
+											sqlplus ${oracle.admin.user}/${oracle.admin.password} @/tmp/setup.sql
+
+											while [[ $(${oracle.home}/bin/lsnrctl status | grep READY) != "" ]]
+											do
+												sleep 1000
+
+												echo "Oracle is starting up"
+											done
+
+											${oracle.home}/bin/lsnrctl status
+
+											echo "==============================================="
+											echo "oracle.home=${oracle.home}"
+											echo "ORACLE_HOME=${ORACLE_HOME}"
+											echo "ORACLE_HOME=\${ORACLE_HOME}"
+											echo "ORACLE_HOME=\\${ORACLE_HOME}"
+											echo "==============================================="
+										]]>
+									</echo>
+
 									<get-database-property property.name="database.host" />
 
 									<property location="create.sql" name="create.sql.file.path" />
@@ -9753,20 +9783,17 @@ cluster.link.bind.addr["cluster-link-udp"]=127.0.0.1</echo>
 											docker cp ${create.sql.file.path} ${database.host}:/tmp/create.sql
 
 											docker cp ${setup.sql.file} ${database.host}:/tmp/setup.sql
+
+											docker cp ${setup.sh.file} ${database.host}:/tmp/setup.sh
 										]]>
 									</execute>
 
-									<retry retrycount="10" retrydelay="60000">
-										<sequential>
-											<exec executable="docker" failonerror="true" outputproperty="setup.oracle.output">
-												<arg value="exec" />
-												<arg value="${database.host}" />
-												<arg value="/bin/bash" />
-												<arg value="-c" />
-												<arg value="sqlplus ${oracle.admin.user}/${oracle.admin.password} @/tmp/setup.sql" />
-											</exec>
-										</sequential>
-									</retry>
+									<exec executable="docker" failonerror="true">
+										<arg value="exec" />
+										<arg value="${database.host}" />
+										<arg value="/bin/bash" />
+										<arg value="/tmp/setup.sh" />
+									</exec>
 
 									<retry retrycount="10" retrydelay="60000">
 										<exec executable="docker" failonerror="true">
@@ -9777,44 +9804,6 @@ cluster.link.bind.addr["cluster-link-udp"]=127.0.0.1</echo>
 											<arg value="sqlplus ${oracle.admin.user}/${oracle.admin.password} @/tmp/create.sql ${database.username} ${database.password}" />
 										</exec>
 									</retry>
-
-									<lstopwatch action="start" name="oracle.upgrade" />
-
-									<condition else="/opt/oracle/product/19.3.0.0.0/dbhome_1" property="oracle.home" value="/u01/app/oracle/product/12.2.0/db_1">
-										<contains string="${database.version}" substring="19.3" />
-									</condition>
-
-									<for list="0,1,2,3" param="time">
-										<sequential>
-											<echo></echo>
-											<echo>=====================================================</echo>
-											<echo></echo>
-
-											<exec executable="docker" failonerror="false">
-												<arg value="exec" />
-												<arg value="${database.host}" />
-												<arg value="/bin/bash" />
-												<arg value="-c" />
-												<arg value="\${ORACLE_HOME}/bin/lsnrctl status" />
-											</exec>
-
-											<echo></echo>
-											<echo>-----------------------------------------------------</echo>
-											<echo></echo>
-
-											<exec executable="docker" failonerror="false">
-												<arg value="exec" />
-												<arg value="${database.host}" />
-												<arg value="/bin/bash" />
-												<arg value="-c" />
-												<arg value="${oracle.home}/bin/lsnrctl status" />
-											</exec>
-
-											<sleep seconds="15" />
-										</sequential>
-									</for>
-
-									<lstopwatch action="total" name="oracle.upgrade" />
 								</then>
 								<elseif>
 									<os family="windows" />
