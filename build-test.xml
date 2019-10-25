@@ -9754,6 +9754,10 @@ cluster.link.bind.addr["cluster-link-udp"]=127.0.0.1</echo>
 
 											echo "Checking ORACLE"
 
+											${ORACLE_HOME}/bin/lsnrctl status
+
+											echo "Did it freeze?"
+
 											while [[ "$(${ORACLE_HOME}/bin/lsnrctl status | grep READY)" == "" ]]
 											do
 												sleep 1000
