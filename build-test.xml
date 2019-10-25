@@ -9775,6 +9775,10 @@ cluster.link.bind.addr["cluster-link-udp"]=127.0.0.1</echo>
 											<arg value="sqlplus ${oracle.admin.user}/${oracle.admin.password} @/tmp/create.sql ${database.username} ${database.password}" />
 										</exec>
 									</retry>
+
+									<echo>Sleep for 60 seconds</echo>
+
+									<sleep seconds="60" />
 								</then>
 								<elseif>
 									<os family="windows" />
