@@ -9780,18 +9780,24 @@ cluster.link.bind.addr["cluster-link-udp"]=127.0.0.1</echo>
 
 									<lstopwatch action="start" name="oracle.upgrade" />
 
-									<waitfor maxwait="60" maxwaitunit="second">
-										<socket port="1521" server="${database.host}" />
-									</waitfor>
+									<for list="0,1,2,3" param="time">
+										<sequential>
+											<exec executable="docker" failonerror="true">
+												<arg value="exec" />
+												<arg value="${database.host}" />
+												<arg value="ps" />
+												<arg value="-aux" />
+											</exec>
 
-									<exec executable="docker" failonerror="true">
-										<arg value="exec" />
-										<arg value="${database.host}" />
-										<arg value="ps" />
-										<arg value="-aux" />
-									</exec>
+											<sleep seconds="15" />
 
-									<lstopwatch action="stop" name="oracle.upgrade" />
+											<echo></echo>
+											<echo>-----------------------------------------------------</echo>
+											<echo></echo>
+										</sequential>
+									</for>
+
+									<lstopwatch action="total" name="oracle.upgrade" />
 								</then>
 								<elseif>
 									<os family="windows" />
