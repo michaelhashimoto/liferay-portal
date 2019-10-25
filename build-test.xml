@@ -9746,27 +9746,22 @@ cluster.link.bind.addr["cluster-link-udp"]=127.0.0.1</echo>
 
 									<property location="${project.dir}/setup.sh" name="setup.sh.file" />
 
-									<condition else="/opt/oracle/product/19.3.0.0.0/dbhome_1" property="oracle.home" value="/u01/app/oracle/product/12.2.0/db_1">
-										<contains string="${database.version}" substring="19.3" />
-									</condition>
-
 									<echo file="${setup.sh.file}">
 										<![CDATA[
 											#!/bin/bash
 
 											sqlplus ${oracle.admin.user}/${oracle.admin.password} @/tmp/setup.sql
 
-											while [[ $(${oracle.home}/bin/lsnrctl status | grep READY) != "" ]]
+											while [[ $(${ORACLE_HOME}/bin/lsnrctl status | grep READY) == "" ]]
 											do
 												sleep 1000
 
 												echo "Oracle is starting up"
 											done
 
-											${oracle.home}/bin/lsnrctl status
+											${ORACLE_HOME}/bin/lsnrctl status
 
 											echo "==============================================="
-											echo "oracle.home=${oracle.home}"
 											echo "ORACLE_HOME=${ORACLE_HOME}"
 											echo "ORACLE_HOME=\${ORACLE_HOME}"
 											echo "ORACLE_HOME=\\${ORACLE_HOME}"
