@@ -10089,7 +10089,7 @@ cluster.link.bind.addr["cluster-link-udp"]=127.0.0.1</echo>
 									<arg value="${database.host}" />
 									<arg value="/bin/bash" />
 									<arg value="-c" />
-									<arg value="impdp ${oracle.admin.user}/${oracle.admin.password} dumpfile=oracle.dmp table_exists_action=replace" />
+									<arg value="\${ORACLE_HOME}/bin/impdp ${oracle.admin.user}/${oracle.admin.password} dumpfile=oracle.dmp table_exists_action=replace" />
 								</exec>
 							</retry>
 						</then>
