@@ -9966,11 +9966,13 @@ cluster.link.bind.addr["cluster-link-udp"]=127.0.0.1</echo>
 								<![CDATA[
 									#!/bin/bash
 
-									mysql --database=${database.schema} --password=${database.password} --user=${database.username} < /tmp/${database.type}.sql
+									mysql ${arg.line} < /tmp/${database.type}.sql
 								]]>
 							</echo>
 
 							<property location="${liferay.home}/${database.type}.sql" name="sql.file.path" />
+
+							<property name="arg.line" value="--database=${database.schema} --password=${database.password} --user=${database.username}" />
 
 							<execute>
 								<![CDATA[
