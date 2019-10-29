@@ -9725,13 +9725,24 @@ cluster.link.bind.addr["cluster-link-udp"]=127.0.0.1</echo>
 							<if>
 								<equals arg1="${env.DOCKER_ENABLED}" arg2="true" />
 								<then>
+									<property location="create.sh" name="create.sh.file.path" />
+
+									<echo file="create.sh">
+										<![CDATA[
+											#!/bin/bash
+
+											mysql ${arg.line} < /tmp/create.sql
+										]]>
+									</echo>
+
 									<property location="create.sql" name="create.sql.file.path" />
 
 									<execute failonerror="false">
 										<![CDATA[
+											docker cp ${create.sh.file.path} ${database.host}:/tmp/create.sh
 											docker cp ${create.sql.file.path} ${database.host}:/tmp/create.sql
 
-											docker exec ${database.host} mysql ${arg.line} < /tmp/create.sql
+											docker exec ${database.host} /bin/bash /tmp/create.sh
 										]]>
 									</execute>
 								</then>
@@ -9943,15 +9954,26 @@ cluster.link.bind.addr["cluster-link-udp"]=127.0.0.1</echo>
 					<if>
 						<equals arg1="${env.DOCKER_ENABLED}" arg2="true" />
 						<then>
+							<property location="${database.type}.sh" name="sh.file.path" />
+
+							<echo file="${database.type}.sh">
+								<![CDATA[
+									#!/bin/bash
+
+									mysql ${arg.line} < /tmp/${database.type}.sql
+								]]>
+							</echo>
+
 							<property location="${liferay.home}/${database.type}.sql" name="sql.file.path" />
 
 							<property name="arg.line" value="--database=${database.schema} --password=${database.password} --user=${database.username}" />
 
 							<execute>
 								<![CDATA[
+									docker cp ${sh.file.path} ${database.host}:/tmp/${database.type}.sh
 									docker cp ${sql.file.path} ${database.host}:/tmp/${database.type}.sql
 
-									docker exec ${database.host} mysql ${arg.line} < /tmp/${database.type}.sql
+									docker exec ${database.host} /bin/bash /tmp/${database.type}.sh
 								]]>
 							</execute>
 						</then>
@@ -10012,15 +10034,26 @@ cluster.link.bind.addr["cluster-link-udp"]=127.0.0.1</echo>
 					<if>
 						<equals arg1="${env.DOCKER_ENABLED}" arg2="true" />
 						<then>
+							<property location="${database.type}.sh" name="sh.file.path" />
+
+							<echo file="${database.type}.sh">
+								<![CDATA[
+									#!/bin/bash
+
+									mysql ${arg.line} < /tmp/${database.type}.sql
+
+									mysql_upgrade --password=${database.password} --user=${database.username}
+								]]>
+							</echo>
+
 							<property location="${liferay.home}/${database.type}.sql" name="sql.file.path" />
 
 							<execute>
 								<![CDATA[
+									docker cp ${sh.file.path} ${database.host}:/tmp/${database.type}.sh
 									docker cp ${sql.file.path} ${database.host}:/tmp/${database.type}.sql
 
-									docker exec ${database.host} mysql ${arg.line} < /tmp/${database.type}.sql
-
-									docker exec ${database.host} mysql_upgrade --password=${database.password} --user=${database.username}
+									docker exec ${database.host} /bin/bash /tmp/${database.type}.sh
 								]]>
 							</execute>
 						</then>
