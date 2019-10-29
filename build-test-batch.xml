@@ -3043,7 +3043,7 @@ log.sanitizer.enabled=false</echo>
 
 							echo "================================================"
 
-							while [[ ! mysqladmin ping --host=localhost --silent ]]
+							while ! mysqladmin ping --host=localhost --silent
 							do
 								echo "Waiting for MySQL to be ready"
 
