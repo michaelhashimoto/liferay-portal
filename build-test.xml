@@ -10258,6 +10258,8 @@ cluster.link.bind.addr["cluster-link-udp"]=127.0.0.1</echo>
 								<param name="sql.file" value="create-bare-${database.type}.sql" />
 							</antcall>
 
+							<get-database-property property.name="database.password" />
+
 							<property location="postgresql.sh" name="postgresql.sh.file.path" />
 
 							<echo file="${postgresql.sh.file.path}">
