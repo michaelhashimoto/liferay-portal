@@ -9662,6 +9662,8 @@ cluster.link.bind.addr["cluster-link-udp"]=127.0.0.1</echo>
 								<if>
 									<equals arg1="${env.DOCKER_ENABLED}" arg2="true" />
 									<then>
+										<property name="databases.size" value="" />
+
 										<get-database-property property.name="database.password" />
 										<get-database-property property.name="database.username" />
 
@@ -9673,7 +9675,10 @@ cluster.link.bind.addr["cluster-link-udp"]=127.0.0.1</echo>
 
 												db2 uncatalog db lportal
 
-												db2 uncatalog db lportal${databases.size}
+												if [[ "${databases.size}" != "" ]]
+												then
+													db2 uncatalog db lportal${databases.size}
+												fi
 
 												db2 terminate
 
@@ -9682,7 +9687,11 @@ cluster.link.bind.addr["cluster-link-udp"]=127.0.0.1</echo>
 												db2 disconnect lportal
 
 												db2 drop db lportal
-												db2 drop db lportal${database.size}
+
+												if [[ "${databases.size}" != "" ]]
+												then
+													db2 drop db lportal${databases.size}
+												fi
 
 												db2 -f/tmp/create.sql -t
 											]]>
@@ -10004,7 +10013,7 @@ cluster.link.bind.addr["cluster-link-udp"]=127.0.0.1</echo>
 						<execute>
 							<![CDATA[
 								docker cp ${create.sh.file.path} ${database.host}:/tmp/create.sh
-								docker cp ${create.sql.file.path} cp ${liferay.home}/. ${database.host}:/opt/ibm/db2
+								docker cp ${create.sql.file.path} ${liferay.home}/. ${database.host}:/opt/ibm/db2
 
 								docker exec ${database.host} /bin/bash /tmp/create.sh
 							]]>
