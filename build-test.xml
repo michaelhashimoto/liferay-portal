@@ -9734,12 +9734,10 @@ cluster.link.bind.addr["cluster-link-udp"]=127.0.0.1</echo>
 												echo ""
 
 												db2 -f/tmp/create.sql -t
-
-												echo "#"
-												echo "# ---END---"
-												echo "#"
 											]]>
 										</echo>
+
+										<echo>---------------END---------------</echo>
 
 										<property location="create.sql" name="create.sql.file.path" />
 
@@ -10066,12 +10064,10 @@ cluster.link.bind.addr["cluster-link-udp"]=127.0.0.1</echo>
 								echo "${db2.executable} restore database lportal user ${database.username} using ${database.password} from /opt/ibm/db2 replace existing"
 
 								db2 restore database lportal user ${database.username} using ${database.password} from /opt/ibm/db2 replace existing
-
-								echo "#"
-								echo "# ---END---"
-								echo "#"
 							]]>
 						</echo>
+
+						<echo>---------------END---------------</echo>
 
 						<get-database-property property.name="database.host" />
 
