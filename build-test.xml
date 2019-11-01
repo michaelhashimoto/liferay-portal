@@ -9673,77 +9673,35 @@ cluster.link.bind.addr["cluster-link-udp"]=127.0.0.1</echo>
 											<![CDATA[
 												#!/bin/bash
 
-												echo "#"
-												echo "# db2 uncatalog db lportal"
-												echo "#"
-												echo ""
-
 												db2 uncatalog db lportal
-
-												echo "#"
-												echo "# db2 uncatalog db lportal${databases.size}"
-												echo "#"
-												echo ""
 
 												if [[ "${databases.size}" != "" ]]
 												then
 													db2 uncatalog db lportal${databases.size}
 												fi
 
-												echo "#"
-												echo "# db2 terminate"
-												echo "#"
-												echo ""
-
 												db2 terminate
-
-												echo "#"
-												echo "# db2 attach to liferay user ${database.username} using ${database.password}"
-												echo "#"
-												echo ""
 
 												db2 attach to liferay user ${database.username} using ${database.password}
 
-												echo "#"
-												echo "# db2 disconnect lportal"
-												echo "#"
-												echo ""
-
 												db2 disconnect lportal
 
-												echo "#"
-												echo "# db2 drop db lportal"
-												echo "#"
-												echo ""
-
 												db2 drop db lportal
-
-												echo "#"
-												echo "# db2 drop db lportal${databases.size}"
-												echo "#"
-												echo ""
 
 												if [[ "${databases.size}" != "" ]]
 												then
 													db2 drop db lportal${databases.size}
 												fi
 
-												echo "#"
-												echo "# db2 -f/tmp/create.sql -t"
-												echo "#"
-												echo ""
-
 												db2 -f/tmp/create.sql -t
 											]]>
 										</echo>
-
-										<echo>---------------END---------------</echo>
 
 										<property location="create.sql" name="create.sql.file.path" />
 
 										<get-database-property property.name="database.host" />
 
-										<execute>
+										<execute failonerror="false">
 											<![CDATA[
 												docker cp ${create.sh.file.path} ${database.host}:/tmp/create.sh
 												docker cp ${create.sql.file.path} ${database.host}:/tmp/create.sql
@@ -10032,34 +9990,14 @@ cluster.link.bind.addr["cluster-link-udp"]=127.0.0.1</echo>
 							<![CDATA[
 								#!/bin/bash
 
-								echo "#"
-								echo "# db2 uncatalog db lportal"
-								echo "#"
-								echo ""
-
 								db2 uncatalog db lportal
-
-								echo "#"
-								echo "# db2 uncatalog db lportal${databases.size}"
-								echo "#"
-								echo ""
 
 								if [[ "${databases.size}" != "" ]]
 								then
 									db2 uncatalog db lportal${databases.size}
 								fi
 
-								echo "#"
-								echo "# db2 terminate"
-								echo "#"
-								echo ""
-
 								db2 terminate
-
-								echo "#"
-								echo "# db2 restore database lportal user ${database.username} using ${database.password} from /opt/ibm/db2 replace existing"
-								echo "#"
-								echo ""
 
 								echo "${db2.executable} restore database lportal user ${database.username} using ${database.password} from /opt/ibm/db2 replace existing"
 
@@ -10067,11 +10005,9 @@ cluster.link.bind.addr["cluster-link-udp"]=127.0.0.1</echo>
 							]]>
 						</echo>
 
-						<echo>---------------END---------------</echo>
-
 						<get-database-property property.name="database.host" />
 
-						<execute>
+						<execute failonerror="false">
 							<![CDATA[
 								docker cp ${db2.sh.file.path} ${database.host}:/tmp/db2.sh
 								docker cp ${liferay.home}/. ${database.host}:/opt/ibm/db2
