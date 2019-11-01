@@ -9734,6 +9734,10 @@ cluster.link.bind.addr["cluster-link-udp"]=127.0.0.1</echo>
 												echo ""
 
 												db2 -f/tmp/create.sql -t
+
+												echo "#"
+												echo "# ---END---"
+												echo "#"
 											]]>
 										</echo>
 
@@ -10064,28 +10068,8 @@ cluster.link.bind.addr["cluster-link-udp"]=127.0.0.1</echo>
 								db2 restore database lportal user ${database.username} using ${database.password} from /opt/ibm/db2 replace existing
 
 								echo "#"
-								echo "# db2 disconnect lportal"
+								echo "# ---END---"
 								echo "#"
-								echo ""
-
-								db2 disconnect lportal
-
-								echo "#"
-								echo "# db2 drop db lportal"
-								echo "#"
-								echo ""
-
-								db2 drop db lportal
-
-								echo "#"
-								echo "# db2 drop db lportal${databases.size}"
-								echo "#"
-								echo ""
-
-								if [[ "${databases.size}" != "" ]]
-								then
-									db2 drop db lportal${databases.size}
-								fi
 							]]>
 						</echo>
 
@@ -10106,10 +10090,10 @@ cluster.link.bind.addr["cluster-link-udp"]=127.0.0.1</echo>
 						<exec executable="${db2.executable}" outputproperty="db2.executable.output">
 							<arg line="restore database lportal from ${liferay.home} replace existing" />
 						</exec>
+
+						<echo>${db2.executable.output}</echo>
 					</else>
 				</if>
-
-				<echo>${db2.executable.output}</echo>
 			</then>
 			<elseif>
 				<equals arg1="${database.type}" arg2="mariadb" />
