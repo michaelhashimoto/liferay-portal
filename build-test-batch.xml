@@ -4334,7 +4334,11 @@ log.sanitizer.enabled=false</echo>
 	</target>
 
 	<target name="jsf-jdk8">
+		<echo>1 - database.version=${database.version}</echo>
+
 		<ant antfile="build-test-batch/jsf.xml" target="jsf-jdk8" />
+
+		<echo>2 - database.version=${database.version}</echo>
 	</target>
 
 	<target name="jsp-runtime-compile-jdk8">

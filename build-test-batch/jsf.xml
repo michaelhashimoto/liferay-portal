@@ -4,13 +4,25 @@
 	<import file="../build-test-batch.xml" />
 
 	<target name="jsf-jdk8">
+		<echo>3 - database.version=${database.version}</echo>
+
+		<get-database-property property.name="database.version" />
+
+		<echo>4 - database.version=${database.version}</echo>
+
 		<run-batch-test>
 			<test-action>
 				<database-test-run-test database.type="mysql" database.version="${database.version}" stop.app.server="true">
 					<test-action>
 						<propertycopy from="app.server.${app.server.type}.classes.portal.dir" name="app.server.classes.portal.dir" override="true" />
 
+						<echo>5 - database.version=${database.version}</echo>
+						<echo>6 - database.version=@{database.version}</echo>
+
 						<get-database-property property.name="database.version" />
+
+						<echo>7 - database.version=${database.version}</echo>
+						<echo>8 - database.version=@{database.version}</echo>
 
 						<antcall target="prepare-portal-ext-properties">
 							<param name="app.server.classes.portal.dir" value="${app.server.classes.portal.dir}" />
