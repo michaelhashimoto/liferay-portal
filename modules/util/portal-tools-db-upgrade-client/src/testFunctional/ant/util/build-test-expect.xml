@@ -79,6 +79,8 @@
 				perm="+x"
 			/>
 
+			<print-file file.name="temp.expect" />
+
 			<exec executable="./temp.expect" failonerror="true" logError="true" />
 		</sequential>
 	</macrodef>
