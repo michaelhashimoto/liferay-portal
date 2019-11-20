@@ -1746,6 +1746,8 @@ jdbc.default.password=${database.password}</echo>
 			<print-file file.name="${liferay.home}/tools/portal-tools-db-upgrade-client/app-server.properties" />
 
 			<print-file file.name="${liferay.home}/tools/portal-tools-db-upgrade-client/portal-upgrade-ext.properties" />
+
+			<print-file file.name="${liferay.home}/tools/portal-tools-db-upgrade-client/portal-upgrade-database.properties" />
 		</sequential>
 	</macrodef>
 
