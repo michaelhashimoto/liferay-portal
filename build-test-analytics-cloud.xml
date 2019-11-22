@@ -119,6 +119,14 @@
 				<arg value="${analytics.cloud.faro.container.name}" />
 			</exec>
 
+			<propertyregex
+				input="${analytics.cloud.gateway.ip}"
+				override="true"
+				property="analytics.cloud.gateway.ip"
+				regexp="'([^\']+)'"
+				select="\1"
+			/>
+
 			<echo>analytics.cloud.url=http://${analytics.cloud.gateway.ip}:8081</echo>
 			<echo>analytics.cloud.url=http://${analytics.cloud.gateway.ip}:8081</echo>
 			<echo>analytics.cloud.url=http://${analytics.cloud.gateway.ip}:8081</echo>
