@@ -22,6 +22,12 @@ definition {
 
 		takeScreenshot();
 
+		Open(locator1 = "https://localhost:8443/");
+
+		takeScreenshot();
+
+		Pause(locator1 = "1800000");
+
 		TestCase.setUpPortalInstance();
 
 		SignIn.signInTestSetup();
