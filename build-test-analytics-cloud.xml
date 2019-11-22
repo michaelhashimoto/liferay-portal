@@ -69,6 +69,10 @@
 				<then>
 					<execute dir="${analytics.cloud.faro.dir}">
 						./gradlew createDocker -Pcom.liferay.osb.faro.environment.name=asah-local
+
+						docker kill ${analytics.cloud.faro.container.name}
+
+						docker rm ${analytics.cloud.faro.container.name}
 					</execute>
 				</then>
 			</if>
