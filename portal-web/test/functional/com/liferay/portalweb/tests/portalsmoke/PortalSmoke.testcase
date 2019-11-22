@@ -16,6 +16,8 @@ definition {
 
 		var analyticsCloudURL = PropsUtil.get("analytics.cloud.url");
 
+		echo("${analyticsCloudURL}");
+
 		Open(locator1 = "${analyticsCloudURL}");
 
 		takeScreenshot();

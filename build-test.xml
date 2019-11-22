@@ -7941,6 +7941,26 @@ auto.deploy.dest.dir=C:/WINDOWS/system32/config/systemprofile/liferay/websphere-
 		<antcall target="prepare-selenium-sharepoint-properties" />
 		<antcall target="prepare-selenium-testcase-properties" />
 
+		<local name="analytics.cloud.url" />
+
+		<exec executable="docker" outputproperty="analytics.cloud.gateway.ip">
+			<arg value="inspect" />
+			<arg value="--format='{{ $network := index .NetworkSettings.Networks &quot;${analytics.cloud.project.name}_default&quot; }}{{ $network.Gateway }}'" />
+			<arg value="${analytics.cloud.faro.container.name}" />
+		</exec>
+
+		<propertyregex
+			input="${analytics.cloud.gateway.ip}"
+			override="true"
+			property="analytics.cloud.gateway.ip"
+			regexp="'([^\']+)'"
+			select="\1"
+		/>
+
+		<echo append="true" file="${test.ext.properties.file}">
+			analytics.cloud.url=http://${analytics.cloud.gateway.ip}:8081
+		</echo>
+
 		<if>
 			<isset property="legacy.theme.ids" />
 			<then>
@@ -8094,6 +8114,8 @@ auto.deploy.dest.dir=C:/WINDOWS/system32/config/systemprofile/liferay/websphere-
 				</echo>
 			</then>
 		</if>
+
+		<print-file file.name="${test.ext.properties.file}" />
 	</target>
 
 	<target name="prepare-selenium-app-server-properties">
