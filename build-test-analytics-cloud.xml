@@ -110,6 +110,23 @@
 			</exec>
 
 			<delete file="${analytics.cloud.start.sh}" />
+
+			<local name="analytics.cloud.url" />
+
+			<exec executable="docker" outputproperty="analytics.cloud.gateway.ip">
+				<arg value="inspect" />
+				<arg value="--format='{{ $network := index .NetworkSettings.Networks &quot;${analytics.cloud.project.name}_default&quot; }}{{ $network.Gateway }}'" />
+				<arg value="${analytics.cloud.faro.container.name}" />
+			</exec>
+
+			<echo>analytics.cloud.url=http://${analytics.cloud.gateway.ip}:8081</echo>
+			<echo>analytics.cloud.url=http://${analytics.cloud.gateway.ip}:8081</echo>
+			<echo>analytics.cloud.url=http://${analytics.cloud.gateway.ip}:8081</echo>
+			<echo>analytics.cloud.url=http://${analytics.cloud.gateway.ip}:8081</echo>
+
+			<echo append="true" file="${test.ext.properties.file}">
+				analytics.cloud.url=http://${analytics.cloud.gateway.ip}:8081
+			</echo>
 		</sequential>
 	</macrodef>
 

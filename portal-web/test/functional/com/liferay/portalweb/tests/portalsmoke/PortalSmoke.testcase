@@ -8,6 +8,18 @@ definition {
 	property test.assert.warning.exceptions = "true";
 
 	setUp {
+		var portalURL = PropsUtil.get("portal.url");
+
+		Open(locator1 = "${portalURL}");
+
+		takeScreenshot();
+
+		var analyticsCloudURL = PropsUtil.get("analytics.cloud.url");
+
+		Open(locator1 = "${analyticsCloudURL}");
+
+		takeScreenshot();
+
 		TestCase.setUpPortalInstance();
 
 		SignIn.signInTestSetup();
