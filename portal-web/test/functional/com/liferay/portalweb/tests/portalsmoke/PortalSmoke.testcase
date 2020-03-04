@@ -1,7 +1,6 @@
 @component-name = "portal-smoke"
 definition {
 
-	property analytics.cloud.enabled = "true";
 	property portal.release = "true";
 	property portal.smoke = "true";
 	property portal.upstream = "true";
@@ -32,11 +31,24 @@ definition {
 	@description = "Ensure that the super admin can add pages, add portlets, navigate to the product menu, use the WYSIWYG editor, and view alert messages."
 	@priority = "5"
 	test Smoke {
+		property analytics.cloud.enabled = "true";
 		property app.server.types = "jboss,tcserver,tomcat,weblogic,websphere,wildfly";
 		property database.bare.enabled = "true";
 		property database.types = "db2,hypersonic,mariadb,mysql,oracle,postgresql,sqlserver,sybase";
 		property environment.acceptance = "true";
 		property testray.component.names = "Training";
+
+		var analyticsCloudURL = PropsUtil.get("analytics.cloud.url");
+
+		Navigator.openURL(baseURL = "${analyticsCloudURL}");
+
+		takeScreenshot();
+
+		SignIn._signIn(
+			userEmailAddress = "${userEmailAddress}",
+			userPassword = "${userPassword}");
+
+		takeScreenshot();
 
 		Smoke.viewWelcomePage();
 
