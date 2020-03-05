@@ -25,6 +25,7 @@ definition {
 	@description = "Ensure that a user can add multiple Blogs Entries."
 	@priority = "4"
 	test AddBlogsEntries {
+		property portal.smoke = "true";
 		property testray.component.names = "Blogs";
 		property testray.main.component.name = "Blogs";
 
