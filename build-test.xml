@@ -8421,6 +8421,8 @@ auto.deploy.dest.dir=C:/WINDOWS/system32/config/systemprofile/liferay/websphere-
 					test.batch.max.subgroup.size=${test.batch.max.subgroup.size}
 					test.batch.run.type=${test.batch.run.type}
 				</echo>
+
+				<echo>${test.batch.property.query}</echo>
 			</then>
 			<elseif>
 				<and>
