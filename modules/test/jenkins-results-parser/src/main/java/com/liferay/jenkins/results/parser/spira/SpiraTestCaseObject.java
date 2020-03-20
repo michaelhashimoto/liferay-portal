@@ -35,6 +35,14 @@ import org.json.JSONObject;
  */
 public class SpiraTestCaseObject extends PathSpiraArtifact {
 
+	public static void main(String args[]) {
+		SpiraProject spiraProject = SpiraProject.getSpiraProjectByID(12);
+
+		createSpiraTestCaseByPath(
+			spiraProject,
+			"/Sample #5/liferay-portal-ee/7.2.x/portal-impl/test/unit/com/DBInspectorUnitTest#testHasColumnReturnsTrueWithExistingColumn");
+	}
+
 	public static SpiraTestCaseObject createSpiraTestCase(
 		SpiraProject spiraProject, String testCaseName) {
 
