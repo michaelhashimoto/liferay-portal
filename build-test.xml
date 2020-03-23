@@ -3932,6 +3932,14 @@ org.apache.catalina.startup.ClassLoaderFactory.level=INFO]]>
 					</if>
 				</then>
 			</if>
+
+			<echo>------------------------------</echo>
+			<echo>------------------------------</echo>
+			<echo>------------------------------</echo>
+			<print-file file.name="${app.server.log}" />
+			<echo>------------------------------</echo>
+			<echo>------------------------------</echo>
+			<echo>------------------------------</echo>
 		</sequential>
 	</macrodef>
 
