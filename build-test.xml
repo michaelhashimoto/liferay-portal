@@ -7535,7 +7535,7 @@ osb.lcs.portlet.oauth.consumer.secret=${osb.lcs.portlet.oauth.consumer.secret}</
 <!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
 
 <log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
-	<appender class="org.apache.log4j.ConsoleAppender" name="TEXT_FILE">
+	<appender class="org.apache.log4j.ConsoleAppender" name="CONSOLE">
 		<layout class="org.apache.log4j.EnhancedPatternLayout">
 			<param name="ConversionPattern" value="%d{ABSOLUTE} %-5p [%t][%c{1}:%L] %m%n" />
 		</layout>
@@ -7587,6 +7587,7 @@ osb.lcs.portlet.oauth.consumer.secret=${osb.lcs.portlet.oauth.consumer.secret}</
 
 	<root>
 		<priority value="INFO" />
+		<appender-ref ref="CONSOLE" />
 		<appender-ref ref="TEXT_FILE" />
 		<appender-ref ref="XML_FILE" />
 	</root>
@@ -7652,8 +7653,6 @@ osb.lcs.portlet.oauth.consumer.secret=${osb.lcs.portlet.oauth.consumer.secret}</
 		<priority value="ERROR" />
 	</category>
 </log4j:configuration>]]></echo>
-
-		<print-file file.name="${app.server.classes.portal.dir}/META-INF/portal-log4j-ext.xml" />
 	</target>
 
 	<target name="prepare-mobile-device">
