@@ -3876,17 +3876,9 @@ org.apache.catalina.startup.ClassLoaderFactory.level=INFO]]>
 										</parallel>
 									</then>
 									<else>
-										<dirname file="${app.server.log}" property="app.server.log.dir" />
+										<mkdir dir="${app.server.logs.dir}" />
 
-										<mkdir dir="${app.server.log.dir}" />
-
-										<echo>app.server.log.dir=${app.server.log.dir}</echo>
-										<echo>app.server.log.dir=${app.server.log.dir}</echo>
-										<echo>app.server.log.dir=${app.server.log.dir}</echo>
-
-										<mkdir dir="logs" />
-
-										<exec dir="${test.app.server.bin.dir}" executable="${app.server.start.executable}" output="${app.server.log}" resolveexecutable="true">
+										<exec dir="${test.app.server.bin.dir}" executable="${app.server.start.executable}" output="${app.server.logs.dir}/liferay-log.start.txt" resolveexecutable="true">
 											<arg line="${app.server.start.executable.arg.line}" />
 											<env key="JAVA_HOME" path="${java.jdk.home}" />
 										</exec>
@@ -3930,17 +3922,9 @@ org.apache.catalina.startup.ClassLoaderFactory.level=INFO]]>
 											</exec>
 										</then>
 										<else>
-											<dirname file="${app.server.log}" property="app.server.log.dir" />
+											<mkdir dir="${app.server.logs.dir}" />
 
-											<mkdir dir="${app.server.log.dir}" />
-
-											<echo>app.server.log.dir=${app.server.log.dir}</echo>
-											<echo>app.server.log.dir=${app.server.log.dir}</echo>
-											<echo>app.server.log.dir=${app.server.log.dir}</echo>
-
-											<mkdir dir="logs" />
-
-											<exec dir="${test.app.server.bin.dir}" executable="${app.server.start.executable}" failonerror="true" output="${app.server.log}" resolveexecutable="true">
+											<exec dir="${test.app.server.bin.dir}" executable="${app.server.start.executable}" failonerror="true" output="${app.server.logs.dir}/liferay-log.start.txt" resolveexecutable="true">
 												<arg line="${app.server.start.executable.arg.line}" />
 												<env key="JAVA_HOME" path="${java.jdk.home}" />
 											</exec>
@@ -4322,17 +4306,9 @@ org.apache.catalina.startup.ClassLoaderFactory.level=INFO]]>
 
 			<parallel>
 				<daemons>
-					<dirname file="${app.server.log}" property="app.server.log.dir" />
+					<mkdir dir="${app.server.logs.dir}" />
 
-					<mkdir dir="${app.server.log.dir}" />
-
-					<echo>app.server.log.dir=${app.server.log.dir}</echo>
-					<echo>app.server.log.dir=${app.server.log.dir}</echo>
-					<echo>app.server.log.dir=${app.server.log.dir}</echo>
-
-					<mkdir dir="logs" />
-
-					<exec dir="${test.app.server.bin.dir}" executable="${app.server.stop.executable}" output="${app.server.log}" resolveexecutable="true">
+					<exec dir="${test.app.server.bin.dir}" executable="${app.server.stop.executable}" output="${app.server.logs.dir}/liferay-log.stop.txt" resolveexecutable="true">
 						<arg line="${app.server.stop.executable.arg.line}" />
 						<env key="JAVA_HOME" path="${java.jdk.home}" />
 					</exec>
