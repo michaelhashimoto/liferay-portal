@@ -737,60 +737,76 @@ public class JenkinsResultsParserUtil {
 		Properties properties, String basePropertyName, String batchName,
 		String testSuiteName) {
 
-		String propertyValue = getProperty(
-			properties,
-			combine(
-				basePropertyName, "[", batchName, "]", "[", testSuiteName,
-				"]"));
+		if ((batchName != null) && !batchName.isEmpty() &&
+			(testSuiteName != null) && !testSuiteName.isEmpty()) {
 
-		if (propertyValue != null) {
-			return propertyValue;
+			String propertyValue = getProperty(
+				properties,
+				combine(
+					basePropertyName, "[", batchName, "]", "[", testSuiteName,
+					"]"));
+
+			if (propertyValue != null) {
+				return propertyValue;
+			}
+
+			String batchTestSuitePropertyNameRegex = combine(
+				basePropertyName, "\\[([^\\]]+)\\]\\[", testSuiteName + "\\]");
+
+			for (String propertyName : properties.stringPropertyNames()) {
+				if (!propertyName.matches(batchTestSuitePropertyNameRegex)) {
+					continue;
+				}
+
+				String batchNameRegex = propertyName.replaceAll(
+					batchTestSuitePropertyNameRegex, "$1");
+
+				batchNameRegex = batchNameRegex.replace("*", ".+");
+
+				if (!batchName.matches(batchNameRegex)) {
+					continue;
+				}
+
+				return getProperty(properties, propertyName);
+			}
 		}
 
-		String batchTestSuitePropertyNameRegex = combine(
-			basePropertyName, "\\[([^\\]]+)\\]\\[", testSuiteName + "\\]");
+		if ((batchName != null) && !batchName.isEmpty()) {
+			String propertyValue = getProperty(
+				properties, combine(basePropertyName, "[", batchName, "]"));
 
-		for (String propertyName : properties.stringPropertyNames()) {
-			if (!propertyName.matches(batchTestSuitePropertyNameRegex)) {
-				continue;
+			if (propertyValue != null) {
+				return propertyValue;
 			}
 
-			String batchNameRegex = propertyName.replaceAll(
-				batchTestSuitePropertyNameRegex, "$1");
+			String batchPropertyNameRegex =
+				basePropertyName + "\\[([^\\]]+)\\]";
 
-			batchNameRegex = batchNameRegex.replace("*", ".+");
+			for (String propertyName : properties.stringPropertyNames()) {
+				if (!propertyName.matches(batchPropertyNameRegex)) {
+					continue;
+				}
 
-			if (!batchName.matches(batchNameRegex)) {
-				continue;
+				String batchNameRegex = propertyName.replaceAll(
+					batchPropertyNameRegex, "$1");
+
+				batchNameRegex = batchNameRegex.replace("*", ".+");
+
+				if (!batchName.matches(batchNameRegex)) {
+					continue;
+				}
+
+				return getProperty(properties, propertyName);
 			}
-
-			return getProperty(properties, propertyName);
 		}
 
-		propertyValue = getProperty(
-			properties, combine(basePropertyName, "[", batchName, "]"));
+		if ((testSuiteName != null) && !testSuiteName.isEmpty()) {
+			String propertyValue = getProperty(
+				properties, combine(basePropertyName, "[", testSuiteName, "]"));
 
-		if (propertyValue != null) {
-			return propertyValue;
-		}
-
-		String batchPropertyNameRegex = basePropertyName + "\\[([^\\]]+)\\]";
-
-		for (String propertyName : properties.stringPropertyNames()) {
-			if (!propertyName.matches(batchPropertyNameRegex)) {
-				continue;
+			if (propertyValue != null) {
+				return propertyValue;
 			}
-
-			String batchNameRegex = propertyName.replaceAll(
-				batchPropertyNameRegex, "$1");
-
-			batchNameRegex = batchNameRegex.replace("*", ".+");
-
-			if (!batchName.matches(batchNameRegex)) {
-				continue;
-			}
-
-			return getProperty(properties, propertyName);
 		}
 
 		return getProperty(properties, basePropertyName);
