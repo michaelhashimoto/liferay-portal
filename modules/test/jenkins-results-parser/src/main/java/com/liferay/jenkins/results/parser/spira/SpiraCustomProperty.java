@@ -98,8 +98,9 @@ public class SpiraCustomProperty extends BaseSpiraArtifact {
 					requestJSONObject.toString()),
 				spiraProject, spiraArtifactClass);
 
-			cachedSpiraArtifacts(
-				Collections.singletonList(spiraCustomProperty));
+			cacheSpiraArtifacts(
+				Collections.singletonList(spiraCustomProperty),
+				spiraArtifactClass);
 
 			SearchQuery.clearSearchQueries(SpiraCustomProperty.class);
 

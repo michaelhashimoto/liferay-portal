@@ -68,7 +68,8 @@ public class SpiraCustomList extends BaseSpiraArtifact {
 					requestJSONObject.toString()),
 				spiraProject, spiraArtifactClass);
 
-			cachedSpiraArtifacts(Collections.singletonList(spiraCustomList));
+			cacheSpiraArtifacts(
+				Collections.singletonList(spiraCustomList), spiraArtifactClass);
 
 			return spiraCustomList;
 		}

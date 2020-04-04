@@ -20,6 +20,7 @@ import java.lang.reflect.Field;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -112,13 +113,14 @@ public abstract class BaseSpiraArtifact implements SpiraArtifact {
 		return jsonObject.toString();
 	}
 
-	protected static void cachedSpiraArtifacts(
-		List<? extends SpiraArtifact> spiraArtifacts) {
+	protected static void cacheSpiraArtifacts(
+		List<? extends SpiraArtifact> spiraArtifacts,
+		Class<? extends SpiraArtifact> spiraArtifactClass) {
+
+		List<SpiraArtifact> cachedSpiraArtifacts = _spiraArtifactMap.get(
+			spiraArtifactClass);
 
 		for (SpiraArtifact spiraArtifact : spiraArtifacts) {
-			List<SpiraArtifact> cachedSpiraArtifacts = _spiraArtifactMap.get(
-				spiraArtifact.getClass());
-
 			if (cachedSpiraArtifacts == null) {
 				cachedSpiraArtifacts = new ArrayList<>();
 
@@ -128,6 +130,20 @@ public abstract class BaseSpiraArtifact implements SpiraArtifact {
 
 			if (cachedSpiraArtifacts.contains(spiraArtifact)) {
 				continue;
+			}
+
+			boolean found = false;
+
+			for (SpiraArtifact cachedSpiraArtifact : cachedSpiraArtifacts) {
+				if (cachedSpiraArtifact.equals(spiraArtifact)) {
+					found = true;
+
+					break;
+				}
+			}
+
+			if (found) {
+				throw new RuntimeException("FOuND!");
 			}
 
 			cachedSpiraArtifacts.add(spiraArtifact);
@@ -140,21 +156,32 @@ public abstract class BaseSpiraArtifact implements SpiraArtifact {
 		Function<JSONObject, S> spiraArtifactCreator,
 		SearchQuery.SearchParameter... searchParameters) {
 
+		long start0 = System.currentTimeMillis();
 		SearchQuery<S> searchQuery =
 			(SearchQuery<S>)SearchQuery.getCachedSearchQuery(
 				spiraArtifactClass, searchParameters);
 
 		if (searchQuery != null) {
+			printTime(spiraArtifactClass, "FULL_0", start0);
+
 			return searchQuery.getSpiraArtifacts();
 		}
+
+		long start1 = System.currentTimeMillis();
 
 		searchQuery = new SearchQuery<>(spiraArtifactClass, searchParameters);
 
 		List<S> cachedSpiraArtifacts = _getCachedSpiraArtifacts(
 			spiraArtifactClass);
+		printTime(spiraArtifactClass, "getCacheArtifacts", start1);
 
 		if (searchQuery.hasDistinctResult()) {
+			printTime(
+				spiraArtifactClass, "DISTINCT", System.currentTimeMillis());
+
 			S distinctSpiraArtifact = null;
+
+			long start2 = System.currentTimeMillis();
 
 			for (S cachedSpiraArtifact : cachedSpiraArtifacts) {
 				if (searchQuery.matches(cachedSpiraArtifact)) {
@@ -164,8 +191,12 @@ public abstract class BaseSpiraArtifact implements SpiraArtifact {
 				}
 			}
 
+			printTime(spiraArtifactClass, "distinct0", start2);
+
 			if (distinctSpiraArtifact == null) {
 				JSONObject distinctJSONObject = null;
+
+				long start3 = System.currentTimeMillis();
 
 				for (JSONObject jsonObject : spiraArtifactRequest.get()) {
 					if (searchQuery.matches(spiraArtifactClass, jsonObject)) {
@@ -175,19 +206,31 @@ public abstract class BaseSpiraArtifact implements SpiraArtifact {
 					}
 				}
 
+				printTime(spiraArtifactClass, "distinct1", start3);
+
+				long start4 = System.currentTimeMillis();
+
 				if (distinctJSONObject != null) {
 					distinctSpiraArtifact = spiraArtifactCreator.apply(
 						distinctJSONObject);
 				}
+
+				printTime(spiraArtifactClass, "distinct2", start4);
 			}
 
 			if (distinctSpiraArtifact == null) {
+				printTime(spiraArtifactClass, "FULL_2", start0);
+
 				return new ArrayList<>();
 			}
 
-			cachedSpiraArtifacts.add(distinctSpiraArtifact);
+			long start5 = System.currentTimeMillis();
 
 			searchQuery.addSpiraArtifact(distinctSpiraArtifact);
+
+			cacheSpiraArtifacts(
+				Collections.singletonList(distinctSpiraArtifact),
+				spiraArtifactClass);
 
 			List<S> searchQuerySpiraArtifacts = searchQuery.getSpiraArtifacts();
 
@@ -195,17 +238,32 @@ public abstract class BaseSpiraArtifact implements SpiraArtifact {
 				SearchQuery.cacheSearchQuery(searchQuery);
 			}
 
-			return searchQuery.getSpiraArtifacts();
+			List<S> spiraArtifacts = searchQuery.getSpiraArtifacts();
+
+			printTime(spiraArtifactClass, "getCacheEnd", start5);
+			printTime(spiraArtifactClass, "FULL_3", start0);
+
+			return spiraArtifacts;
 		}
 
-		for (JSONObject jsonObject : spiraArtifactRequest.get()) {
+		long slowStart = System.currentTimeMillis();
+
+		long requestMissingStart = System.currentTimeMillis();
+		List<JSONObject> jsonObjects = spiraArtifactRequest.get();
+		printTime(spiraArtifactClass, "SLOW_request", requestMissingStart);
+
+		long findMatchStart = System.currentTimeMillis();
+
+		for (JSONObject jsonObject : jsonObjects) {
 			S spiraArtifact = _getCachedSpiraArtifact(
 				spiraArtifactClass, jsonObject);
 
 			if (spiraArtifact == null) {
 				spiraArtifact = spiraArtifactCreator.apply(jsonObject);
 
-				cachedSpiraArtifacts.add(spiraArtifact);
+				cacheSpiraArtifacts(
+					Collections.singletonList(spiraArtifact),
+					spiraArtifactClass);
 			}
 
 			if (searchQuery.matches(spiraArtifact)) {
@@ -213,13 +271,50 @@ public abstract class BaseSpiraArtifact implements SpiraArtifact {
 			}
 		}
 
+		printTime(spiraArtifactClass, "SLOW_match", findMatchStart);
+
+		long retrieveStart = System.currentTimeMillis();
 		List<S> searchQuerySpiraArtifacts = searchQuery.getSpiraArtifacts();
 
 		if (!searchQuerySpiraArtifacts.isEmpty()) {
 			SearchQuery.cacheSearchQuery(searchQuery);
 		}
 
+		printTime(spiraArtifactClass, "SLOW_retrieve", retrieveStart);
+
+		printTime(spiraArtifactClass, "SLOW", slowStart);
+
+		if (spiraArtifactClass == SpiraTestCaseObject.class) {
+			List<S> list = _getCachedSpiraArtifacts(spiraArtifactClass);
+
+			System.out.println("\t\t- CACHE_COUNT: " + list.size());
+		}
+
+		printTime(spiraArtifactClass, "FULL_4", start0);
+
+		cacheSpiraArtifacts(searchQuerySpiraArtifacts, spiraArtifactClass);
+
 		return searchQuerySpiraArtifacts;
+	}
+
+	protected static void printTime(
+		Class<? extends SpiraArtifact> spiraArtifactClass, String name,
+		long start) {
+
+		if (spiraArtifactClass != SpiraTestCaseObject.class) {
+			return;
+		}
+
+		String tab = "";
+
+		if (!name.startsWith("FULL")) {
+			tab = "\t";
+		}
+
+		System.out.println(
+			tab + "\t+ " + name + ": " +
+				JenkinsResultsParserUtil.toDurationString(
+					System.currentTimeMillis() - start));
 	}
 
 	protected static void removeCachedSpiraArtifacts(
@@ -279,8 +374,16 @@ public abstract class BaseSpiraArtifact implements SpiraArtifact {
 		List<S> cachedSpiraArtifacts = _getCachedSpiraArtifacts(
 			spiraArtifactClass);
 
+		String idKey = getIDKey(spiraArtifactClass);
+
 		for (S cachedSpiraArtifact : cachedSpiraArtifacts) {
 			if (!jsonObject.similar(cachedSpiraArtifact.toJSONObject())) {
+				continue;
+			}
+
+			if (jsonObject.getInt(idKey) != cachedSpiraArtifact.getID()) {
+				System.out.println("CACHE____1");
+
 				continue;
 			}
 

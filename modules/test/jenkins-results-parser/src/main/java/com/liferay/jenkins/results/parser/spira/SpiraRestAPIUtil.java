@@ -57,7 +57,9 @@ public class SpiraRestAPIUtil {
 			String requestTime = JenkinsResultsParserUtil.toDurationString(
 				System.currentTimeMillis() - start);
 
-			System.out.println("+ Request: " + requestTime);
+			System.out.println("\t\t\t+ Request: " + requestTime);
+			System.out.println("\t\t\t+ Request URL: " + urlPath);
+			System.out.println("\t\t\t+ Request Data: " + requestData);
 		}
 	}
 
