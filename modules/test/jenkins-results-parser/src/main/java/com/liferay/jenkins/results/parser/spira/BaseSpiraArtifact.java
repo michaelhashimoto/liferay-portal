@@ -246,6 +246,44 @@ public abstract class BaseSpiraArtifact implements SpiraArtifact {
 			return spiraArtifacts;
 		}
 
+		if (spiraArtifactClass == SpiraTestCaseObject.class) {
+			long fastStart = System.currentTimeMillis();
+
+			boolean hasPathSearch = false;
+
+			for (SearchQuery.SearchParameter searchParameter :
+					searchParameters) {
+
+				String searchParameterName = searchParameter.getName();
+
+				if (searchParameterName.equals("Path")) {
+					hasPathSearch = true;
+
+					break;
+				}
+			}
+
+			if (hasPathSearch) {
+				for (S spiraArtifact : cachedSpiraArtifacts) {
+					if (searchQuery.matches(spiraArtifact)) {
+						searchQuery.addSpiraArtifact(spiraArtifact);
+					}
+				}
+
+				List<S> searchQuerySpiraArtifacts =
+					searchQuery.getSpiraArtifacts();
+
+				if (!searchQuerySpiraArtifacts.isEmpty()) {
+					SearchQuery.cacheSearchQuery(searchQuery);
+
+					printTime(spiraArtifactClass, "FAST", fastStart);
+					printTime(spiraArtifactClass, "FULL_3", start0);
+
+					return searchQuerySpiraArtifacts;
+				}
+			}
+		}
+
 		long slowStart = System.currentTimeMillis();
 
 		long requestMissingStart = System.currentTimeMillis();
