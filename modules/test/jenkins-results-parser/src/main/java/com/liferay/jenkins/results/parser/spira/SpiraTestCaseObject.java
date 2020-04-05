@@ -14,7 +14,6 @@
 
 package com.liferay.jenkins.results.parser.spira;
 
-import com.liferay.jenkins.results.parser.JenkinsResultsParserUtil;
 import com.liferay.jenkins.results.parser.JenkinsResultsParserUtil.HttpRequestMethod;
 
 import java.io.IOException;
@@ -111,51 +110,21 @@ public class SpiraTestCaseObject extends PathSpiraArtifact {
 			return spiraTestCases.get(0);
 		}
 
-		long start1 = System.currentTimeMillis();
 		String testCaseName = getPathName(testCasePath);
-		System.out.println(
-			"\t+ GetPathName: " +
-				JenkinsResultsParserUtil.toDurationString(
-					System.currentTimeMillis() - start1));
-
-		long start2 = System.currentTimeMillis();
 		String parentTestCaseFolderPath = getParentPath(testCasePath);
-		System.out.println(
-			"\t+ GetParentPath: " +
-				JenkinsResultsParserUtil.toDurationString(
-					System.currentTimeMillis() - start2));
 
 		if (parentTestCaseFolderPath.isEmpty()) {
-			long start3 = System.currentTimeMillis();
-			SpiraTestCaseObject spiraTestCase = createSpiraTestCase(
+			return createSpiraTestCase(
 				spiraProject, testCaseName, spiraTestCaseType);
-			System.out.println(
-				"\t+ CreateCase0: " +
-					JenkinsResultsParserUtil.toDurationString(
-						System.currentTimeMillis() - start3));
-
-			return spiraTestCase;
 		}
 
-		long start3 = System.currentTimeMillis();
 		SpiraTestCaseFolder parentSpiraTestCaseFolder =
 			SpiraTestCaseFolder.createSpiraTestCaseFolderByPath(
 				spiraProject, parentTestCaseFolderPath);
-		System.out.println(
-			"\t+ CreateParentFolder: " +
-				JenkinsResultsParserUtil.toDurationString(
-					System.currentTimeMillis() - start3));
 
-		long start4 = System.currentTimeMillis();
-		SpiraTestCaseObject spiraTestCase = createSpiraTestCase(
+		return createSpiraTestCase(
 			spiraProject, testCaseName, spiraTestCaseType,
 			parentSpiraTestCaseFolder.getID());
-		System.out.println(
-			"\t+ CreateCase1: " +
-				JenkinsResultsParserUtil.toDurationString(
-					System.currentTimeMillis() - start4));
-
-		return spiraTestCase;
 	}
 
 	public static void deleteSpiraTestCaseByID(
@@ -183,7 +152,7 @@ public class SpiraTestCaseObject extends PathSpiraArtifact {
 			throw new RuntimeException(ioException);
 		}
 
-		removeCachedSpiraArtifacts(spiraTestCases);
+		removeCachedSpiraArtifacts(spiraTestCases, SpiraTestCaseObject.class);
 	}
 
 	public static void deleteSpiraTestCasesByPath(

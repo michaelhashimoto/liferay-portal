@@ -137,7 +137,7 @@ public class SpiraRelease extends PathSpiraArtifact {
 			throw new RuntimeException(ioException);
 		}
 
-		removeCachedSpiraArtifacts(spiraReleases);
+		removeCachedSpiraArtifacts(spiraReleases, SpiraRelease.class);
 	}
 
 	public static void deleteSpiraReleasesByPath(

@@ -69,7 +69,8 @@ public class SpiraCustomList extends BaseSpiraArtifact {
 				spiraProject, spiraArtifactClass);
 
 			cacheSpiraArtifacts(
-				Collections.singletonList(spiraCustomList), spiraArtifactClass);
+				Collections.singletonList(spiraCustomList),
+				SpiraCustomList.class);
 
 			return spiraCustomList;
 		}

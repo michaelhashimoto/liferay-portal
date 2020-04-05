@@ -143,7 +143,8 @@ public class SpiraTestSetFolder extends PathSpiraArtifact {
 			throw new RuntimeException(ioException);
 		}
 
-		removeCachedSpiraArtifacts(spiraTestSetFolders);
+		removeCachedSpiraArtifacts(
+			spiraTestSetFolders, SpiraTestSetFolder.class);
 	}
 
 	public static void deleteSpiraTestSetFoldersByPath(

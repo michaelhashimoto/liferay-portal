@@ -142,7 +142,8 @@ public class SpiraTestCaseFolder extends PathSpiraArtifact {
 				"projects/{project_id}/test-folders/{test_case_folder_id}",
 				null, urlPathReplacements, HttpRequestMethod.DELETE, null);
 
-			removeCachedSpiraArtifacts(spiraTestCaseFolders);
+			removeCachedSpiraArtifacts(
+				spiraTestCaseFolders, SpiraTestCaseFolder.class);
 		}
 		catch (IOException ioException) {
 			throw new RuntimeException(ioException);

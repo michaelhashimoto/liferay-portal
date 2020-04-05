@@ -37,30 +37,18 @@ public class SpiraRestAPIUtil {
 			HttpRequestMethod httpRequestMethod, String requestData)
 		throws IOException {
 
-		long start = System.currentTimeMillis();
+		String spiraBaseURL = _SPIRA_BASE_URL;
 
-		try {
-			String spiraBaseURL = _SPIRA_BASE_URL;
-
-			if (urlPath.contains("/test-sets/search")) {
-				spiraBaseURL = spiraBaseURL.replace("v6_0", "v5_0");
-			}
-
-			return JenkinsResultsParserUtil.toString(
-				JenkinsResultsParserUtil.combine(
-					spiraBaseURL,
-					_applyURLPathReplacements(urlPath, urlPathReplacements),
-					_toURLParametersString(urlParameters)),
-				false, httpRequestMethod, requestData);
+		if (urlPath.contains("/test-sets/search")) {
+			spiraBaseURL = spiraBaseURL.replace("v6_0", "v5_0");
 		}
-		finally {
-			String requestTime = JenkinsResultsParserUtil.toDurationString(
-				System.currentTimeMillis() - start);
 
-			System.out.println("\t\t\t+ Request: " + requestTime);
-			System.out.println("\t\t\t+ Request URL: " + urlPath);
-			System.out.println("\t\t\t+ Request Data: " + requestData);
-		}
+		return JenkinsResultsParserUtil.toString(
+			JenkinsResultsParserUtil.combine(
+				spiraBaseURL,
+				_applyURLPathReplacements(urlPath, urlPathReplacements),
+				_toURLParametersString(urlParameters)),
+			false, httpRequestMethod, requestData);
 	}
 
 	protected static JSONArray requestJSONArray(

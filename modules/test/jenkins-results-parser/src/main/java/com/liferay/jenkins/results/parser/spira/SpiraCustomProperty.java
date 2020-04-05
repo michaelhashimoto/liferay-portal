@@ -100,7 +100,7 @@ public class SpiraCustomProperty extends BaseSpiraArtifact {
 
 			cacheSpiraArtifacts(
 				Collections.singletonList(spiraCustomProperty),
-				spiraArtifactClass);
+				SpiraCustomProperty.class);
 
 			SearchQuery.clearSearchQueries(SpiraCustomProperty.class);
 
