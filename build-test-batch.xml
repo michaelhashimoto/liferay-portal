@@ -5152,7 +5152,7 @@ log.sanitizer.enabled=false</echo>
 	</target>
 
 	<target name="modules-integration-project-templates-jdk8">
-		<antcall target="modules-unit-jdk8">
+		<antcall inheritAll="false" target="modules-unit-jdk8">
 			<param name="project.templates.test.builds" value="false" />
 		</antcall>
 	</target>
@@ -5339,7 +5339,7 @@ log.sanitizer.enabled=false</echo>
 	</target>
 
 	<target name="modules-unit-project-templates-jdk8">
-		<antcall target="modules-unit-jdk8">
+		<antcall inheritAll="false" target="modules-unit-jdk8">
 			<param name="project.templates.test.builds" value="true" />
 		</antcall>
 	</target>
