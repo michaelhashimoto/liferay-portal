@@ -341,6 +341,11 @@ public class SpiraTestCaseObject extends PathSpiraArtifact {
 		urlPathReplacements.put(
 			"project_id", String.valueOf(spiraProject.getID()));
 
+		Map<String, String> urlParameters = new HashMap<>();
+
+		urlParameters.put("number_of_rows", String.valueOf(15000));
+		urlParameters.put("starting_row", String.valueOf(1));
+
 		JSONArray requestJSONArray = new JSONArray();
 
 		for (SearchQuery.SearchParameter searchParameter : searchParameters) {
@@ -348,30 +353,10 @@ public class SpiraTestCaseObject extends PathSpiraArtifact {
 		}
 
 		try {
-			JSONArray responseJSONArray = new JSONArray();
-
-			int startingRow = 1;
-
-			while (true) {
-				Map<String, String> urlParameters = new HashMap<>();
-
-				urlParameters.put(
-					"number_of_rows", String.valueOf(_NUMBER_OF_ROWS));
-
-				urlParameters.put("starting_row", String.valueOf(startingRow));
-
-				responseJSONArray.put(
-					SpiraRestAPIUtil.requestJSONArray(
-						"projects/{project_id}/test-cases/search",
-						urlParameters, urlPathReplacements,
-						HttpRequestMethod.POST, requestJSONArray.toString()));
-
-				if ((responseJSONArray.length() % _NUMBER_OF_ROWS) != 0) {
-					break;
-				}
-
-				startingRow += _NUMBER_OF_ROWS;
-			}
+			JSONArray responseJSONArray = SpiraRestAPIUtil.requestJSONArray(
+				"projects/{project_id}/test-cases/search", urlParameters,
+				urlPathReplacements, HttpRequestMethod.POST,
+				requestJSONArray.toString());
 
 			List<JSONObject> spiraTestCases = new ArrayList<>();
 
@@ -393,8 +378,6 @@ public class SpiraTestCaseObject extends PathSpiraArtifact {
 	}
 
 	private static final String _CUSTOM_FIELD_FILE_PATH_KEY = "File Path";
-
-	private static final int _NUMBER_OF_ROWS = 500;
 
 	private SpiraTestCaseFolder _parentSpiraTestCaseFolder;
 
