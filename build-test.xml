@@ -4225,8 +4225,8 @@ org.apache.catalina.startup.ClassLoaderFactory.level=INFO]]>
 										</then>
 									</elseif>
 									<else>
-										<exec dir="${test.app.server.bin.dir}" executable="${app.server.start.executable}" outputproperty="app.server.log" resolveexecutable="true">
-											<arg line="${app.server.start.executable.arg.line}" />
+										<exec dir="${test.app.server.bin.dir}" executable="${app.server.start.executable}" resolveexecutable="true">
+											<arg line="${app.server.start.executable.arg.line} | head -c ${app.server.log.max.length}" />
 											<env key="JAVA_HOME" path="${java.jdk.home}" />
 										</exec>
 									</else>
@@ -4287,8 +4287,8 @@ org.apache.catalina.startup.ClassLoaderFactory.level=INFO]]>
 											</then>
 										</elseif>
 										<else>
-											<exec dir="${test.app.server.bin.dir}" executable="${app.server.start.executable}" failonerror="true" output="app.server.log" resolveexecutable="true">
-												<arg line="${app.server.start.executable.arg.line}" />
+											<exec dir="${test.app.server.bin.dir}" executable="${app.server.start.executable}" failonerror="true" resolveexecutable="true">
+												<arg line="${app.server.start.executable.arg.line} | head -c ${app.server.log.max.length}" />
 												<env key="JAVA_HOME" path="${java.jdk.home}" />
 											</exec>
 										</else>
@@ -4763,8 +4763,8 @@ org.apache.catalina.startup.ClassLoaderFactory.level=INFO]]>
 
 			<parallel>
 				<daemons>
-					<exec dir="${test.app.server.bin.dir}" executable="${app.server.stop.executable}" output="app.server.log" resolveexecutable="true">
-						<arg line="${app.server.stop.executable.arg.line}" />
+					<exec dir="${test.app.server.bin.dir}" executable="${app.server.stop.executable}" resolveexecutable="true">
+						<arg line="${app.server.stop.executable.arg.line} | head -c ${app.server.log.max.length}" />
 						<env key="JAVA_HOME" path="${java.jdk.home}" />
 					</exec>
 				</daemons>
