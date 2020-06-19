@@ -4228,14 +4228,12 @@ org.apache.catalina.startup.ClassLoaderFactory.level=INFO]]>
 										<echo>
 											<![CDATA[
 												<exec dir="${test.app.server.bin.dir}" executable="/bin/bash" resolveexecutable="true">
-													<arg line="-c" />
 													<arg line="${app.server.start.executable.arg.line} | head -c ${app.server.log.max.length}" />
 													<env key="JAVA_HOME" path="${java.jdk.home}" />
 												</exec>
 											]]>
 										</echo>
 										<exec dir="${test.app.server.bin.dir}" executable="/bin/bash" resolveexecutable="true">
-											<arg line="-c" />
 											<arg line="${app.server.start.executable.arg.line} | head -c ${app.server.log.max.length}" />
 											<env key="JAVA_HOME" path="${java.jdk.home}" />
 										</exec>
@@ -4300,14 +4298,12 @@ org.apache.catalina.startup.ClassLoaderFactory.level=INFO]]>
 											<echo>
 												<![CDATA[
 													<exec dir="${test.app.server.bin.dir}" executable="/bin/bash" failonerror="true" resolveexecutable="true">
-														<arg line="-c" />
 														<arg line="${app.server.start.executable} ${app.server.start.executable.arg.line} | head -c ${app.server.log.max.length}" />
 														<env key="JAVA_HOME" path="${java.jdk.home}" />
 													</exec>
 												]]>
 											</echo>
 											<exec dir="${test.app.server.bin.dir}" executable="/bin/bash" failonerror="true" resolveexecutable="true">
-												<arg line="-c" />
 												<arg line="${app.server.start.executable} ${app.server.start.executable.arg.line} | head -c ${app.server.log.max.length}" />
 												<env key="JAVA_HOME" path="${java.jdk.home}" />
 											</exec>
@@ -4785,13 +4781,11 @@ org.apache.catalina.startup.ClassLoaderFactory.level=INFO]]>
 				<daemons>
 					<echo><![CDATA[
 					<exec dir="${test.app.server.bin.dir}" executable="/bin/bash" resolveexecutable="true">
-						<arg line="-c" />
 						<arg line="${app.server.start.executable} ${app.server.start.executable.arg.line} | head -c ${app.server.log.max.length}" />
 						<env key="JAVA_HOME" path="${java.jdk.home}" />
 					</exec>
 					]]></echo>
 					<exec dir="${test.app.server.bin.dir}" executable="/bin/bash" resolveexecutable="true">
-						<arg line="-c" />
 						<arg line="${app.server.start.executable} ${app.server.start.executable.arg.line} | head -c ${app.server.log.max.length}" />
 						<env key="JAVA_HOME" path="${java.jdk.home}" />
 					</exec>
