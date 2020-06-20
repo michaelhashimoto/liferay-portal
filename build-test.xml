@@ -4781,12 +4781,12 @@ org.apache.catalina.startup.ClassLoaderFactory.level=INFO]]>
 				<daemons>
 					<echo><![CDATA[
 					<exec dir="${test.app.server.bin.dir}" executable="/bin/bash" resolveexecutable="true">
-						<arg line="${app.server.start.executable} ${app.server.start.executable.arg.line} | head -c ${app.server.log.max.length}" />
+						<arg line="${app.server.stop.executable} ${app.server.stop.executable.arg.line} | head -c ${app.server.log.max.length}" />
 						<env key="JAVA_HOME" path="${java.jdk.home}" />
 					</exec>
 					]]></echo>
 					<exec dir="${test.app.server.bin.dir}" executable="/bin/bash" resolveexecutable="true">
-						<arg line="${app.server.start.executable} ${app.server.start.executable.arg.line} | head -c ${app.server.log.max.length}" />
+						<arg line="${app.server.stop.executable} ${app.server.stop.executable.arg.line} | head -c ${app.server.log.max.length}" />
 						<env key="JAVA_HOME" path="${java.jdk.home}" />
 					</exec>
 				</daemons>
