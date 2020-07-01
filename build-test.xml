@@ -4225,18 +4225,66 @@ org.apache.catalina.startup.ClassLoaderFactory.level=INFO]]>
 										</then>
 									</elseif>
 									<else>
-										<echo>
-											<![CDATA[
-												<exec dir="${test.app.server.bin.dir}" executable="/bin/bash" resolveexecutable="true">
-													<arg line="${app.server.start.executable.arg.line} | head -c ${app.server.log.max.length}" />
-													<env key="JAVA_HOME" path="${java.jdk.home}" />
-												</exec>
-											]]>
-										</echo>
-										<exec dir="${test.app.server.bin.dir}" executable="/bin/bash" resolveexecutable="true">
-											<arg line="${app.server.start.executable.arg.line} | head -c ${app.server.log.max.length}" />
-											<env key="JAVA_HOME" path="${java.jdk.home}" />
-										</exec>
+										<beanshell>
+											Runnable runnable = new Runnable() {
+
+												public void run() {
+													Runtime runtime = Runtime.getRuntime();
+
+													File appServerBinDir = new File(project.getProperty("test.app.server.bin.dir"));
+													Integer appServerLogMaxSize = Integer.valueOf(project.getProperty("app.server.log.max.size.in.mb")) * 1024 * 1024;
+													String appServerStartExecutable = project.getProperty("app.server.start.executable");
+													String appServerStartExecutableArgLine = project.getProperty("app.server.start.executable.arg.line");
+
+													if (appServerStartExecutableArgLine == null) {
+														appServerStartExecutableArgLine = "";
+													}
+
+													StringBuilder sb = new StringBuilder();
+
+													sb.append("JAVA_HOME=");
+													sb.append(project.getProperty("java.jdk.home"));
+													sb.append(";");
+
+													sb.append("/bin/bash ");
+													sb.append(appServerStartExecutable);
+													sb.append(" ");
+													sb.append(appServerStartExecutableArgLine);
+
+													Process process = runtime.exec(sb.toString(), null, appServerBinDir);
+
+													InputStream inputStream = process.getInputStream();
+
+													int i;
+
+													long count = 0;
+
+													try {
+														while ((i = inputStream.read()) != -1) {
+															System.out.print((char)i);
+
+															count++;
+
+															if (count > appServerLogMaxSize) {
+																break;
+															}
+														}
+													}
+													catch (IOException ioException) {
+														throw new RuntimeException(ioException);
+													}
+
+													process.waitFor();
+												}
+
+											};
+
+											Thread thread = new Thread(runnable);
+
+											thread.start();
+
+											thread.join();
+										</beanshell>
 									</else>
 								</if>
 
@@ -4295,18 +4343,66 @@ org.apache.catalina.startup.ClassLoaderFactory.level=INFO]]>
 											</then>
 										</elseif>
 										<else>
-											<echo>
-												<![CDATA[
-													<exec dir="${test.app.server.bin.dir}" executable="/bin/bash" failonerror="true" resolveexecutable="true">
-														<arg line="${app.server.start.executable} ${app.server.start.executable.arg.line} | head -c ${app.server.log.max.length}" />
-														<env key="JAVA_HOME" path="${java.jdk.home}" />
-													</exec>
-												]]>
-											</echo>
-											<exec dir="${test.app.server.bin.dir}" executable="/bin/bash" failonerror="true" resolveexecutable="true">
-												<arg line="${app.server.start.executable} ${app.server.start.executable.arg.line} | head -c ${app.server.log.max.length}" />
-												<env key="JAVA_HOME" path="${java.jdk.home}" />
-											</exec>
+											<beanshell>
+												Runnable runnable = new Runnable() {
+
+													public void run() {
+														Runtime runtime = Runtime.getRuntime();
+
+														File appServerBinDir = new File(project.getProperty("test.app.server.bin.dir"));
+														Integer appServerLogMaxSize = Integer.valueOf(project.getProperty("app.server.log.max.size.in.mb")) * 1024 * 1024;
+														String appServerStartExecutable = project.getProperty("app.server.start.executable");
+														String appServerStartExecutableArgLine = project.getProperty("app.server.start.executable.arg.line");
+
+														if (appServerStartExecutableArgLine == null) {
+															appServerStartExecutableArgLine = "";
+														}
+
+														StringBuilder sb = new StringBuilder();
+
+														sb.append("JAVA_HOME=");
+														sb.append(project.getProperty("java.jdk.home"));
+														sb.append(";");
+
+														sb.append("/bin/bash ");
+														sb.append(appServerStartExecutable);
+														sb.append(" ");
+														sb.append(appServerStartExecutableArgLine);
+
+														Process process = runtime.exec(sb.toString(), null, appServerBinDir);
+
+														InputStream inputStream = process.getInputStream();
+
+														int i;
+
+														long count = 0;
+
+														try {
+															while ((i = inputStream.read()) != -1) {
+																System.out.print((char)i);
+
+																count++;
+
+																if (count > appServerLogMaxSize) {
+																	break;
+																}
+															}
+														}
+														catch (IOException ioException) {
+															throw new RuntimeException(ioException);
+														}
+
+														process.waitFor();
+													}
+
+												};
+
+												Thread thread = new Thread(runnable);
+
+												thread.start();
+
+												thread.join();
+											</beanshell>
 										</else>
 									</if>
 								</daemons>
@@ -4779,14 +4875,8 @@ org.apache.catalina.startup.ClassLoaderFactory.level=INFO]]>
 
 			<parallel>
 				<daemons>
-					<echo><![CDATA[
-					<exec dir="${test.app.server.bin.dir}" executable="/bin/bash" resolveexecutable="true">
-						<arg line="${app.server.stop.executable} ${app.server.stop.executable.arg.line} | head -c ${app.server.log.max.length}" />
-						<env key="JAVA_HOME" path="${java.jdk.home}" />
-					</exec>
-					]]></echo>
-					<exec dir="${test.app.server.bin.dir}" executable="/bin/bash" resolveexecutable="true">
-						<arg line="${app.server.stop.executable} ${app.server.stop.executable.arg.line} | head -c ${app.server.log.max.length}" />
+					<exec dir="${test.app.server.bin.dir}" executable="${app.server.stop.executable}" output="app.server.log" resolveexecutable="true">
+						<arg line="${app.server.stop.executable.arg.line}" />
 						<env key="JAVA_HOME" path="${java.jdk.home}" />
 					</exec>
 				</daemons>
