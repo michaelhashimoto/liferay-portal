@@ -4305,7 +4305,7 @@ org.apache.catalina.startup.ClassLoaderFactory.level=INFO]]>
 					Runnable runnable = new Runnable() {
 
 						public void run() {
-							Integer appServerLogMaxSize = Integer.valueOf(project.getProperty("app.server.log.max.size.in.mb")) * 1024;
+							Integer appServerLogMaxSize = Integer.valueOf(project.getProperty("app.server.log.max.size.in.mb")) * 1024 * 1024;
 
 							Runtime runtime = Runtime.getRuntime();
 
