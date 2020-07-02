@@ -4321,18 +4321,16 @@ org.apache.catalina.startup.ClassLoaderFactory.level=INFO]]>
 
 							try {
 								while ((i = inputStream.read()) != -1) {
-									System.out.print((char)i);
-
 									count++;
 
 									if (count <= appServerLogMaxSize) {
+										System.out.print((char)i);
+
 										continue;
 									}
 
-									System.out.print(".");
-
 									if ((count % 1024) == 0) {
-										System.out.println();
+										System.out.println("1kb");
 									}
 								}
 							}
