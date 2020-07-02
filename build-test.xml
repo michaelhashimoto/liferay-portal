@@ -4323,15 +4323,11 @@ org.apache.catalina.startup.ClassLoaderFactory.level=INFO]]>
 								while ((i = inputStream.read()) != -1) {
 									count++;
 
-									if (count <= appServerLogMaxSize) {
-										System.out.print((char)i);
-
+									if (count > appServerLogMaxSize) {
 										continue;
 									}
 
-									if ((count % 1024) == 0) {
-										System.out.println("1kb");
-									}
+									System.out.print((char)i);
 								}
 							}
 							catch (IOException ioException) {
