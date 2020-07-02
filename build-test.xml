@@ -4225,59 +4225,7 @@ org.apache.catalina.startup.ClassLoaderFactory.level=INFO]]>
 										</then>
 									</elseif>
 									<else>
-										<echo file="${test.app.server.bin.dir}/quick.sh">
-											<![CDATA[
-												#!/bin/bash
-
-												export JAVA_HOME=${java.jdk.home}
-
-												/bin/bash ${app.server.start.executable} ${app.server.start.executable.arg.line}
-											]]>
-										</echo>
-
-										<beanshell>
-											Runnable runnable = new Runnable() {
-
-												public void run() {
-													Runtime runtime = Runtime.getRuntime();
-
-													File appServerBinDir = new File(project.getProperty("test.app.server.bin.dir"));
-													Integer appServerLogMaxSize = Integer.valueOf(project.getProperty("app.server.log.max.size.in.mb")) * 1024 * 1024;
-
-													Process process = runtime.exec("/bin/bash quick.sh", null, appServerBinDir);
-
-													InputStream inputStream = process.getInputStream();
-
-													int i;
-
-													long count = 0;
-
-													try {
-														while ((i = inputStream.read()) != -1) {
-															System.out.print((char)i);
-
-															count++;
-
-															if (count > appServerLogMaxSize) {
-																break;
-															}
-														}
-													}
-													catch (IOException ioException) {
-														throw new RuntimeException(ioException);
-													}
-
-													process.waitFor();
-												}
-
-											};
-
-											Thread thread = new Thread(runnable);
-
-											thread.start();
-
-											thread.join();
-										</beanshell>
+										<start-app-server-cmd-bash />
 									</else>
 								</if>
 
@@ -4336,59 +4284,7 @@ org.apache.catalina.startup.ClassLoaderFactory.level=INFO]]>
 											</then>
 										</elseif>
 										<else>
-											<echo file="${test.app.server.bin.dir}/quick.sh">
-												<![CDATA[
-													#!/bin/bash
-
-													export JAVA_HOME=${java.jdk.home}
-
-													/bin/bash ${app.server.start.executable} ${app.server.start.executable.arg.line}
-												]]>
-											</echo>
-
-											<beanshell>
-												Runnable runnable = new Runnable() {
-
-													public void run() {
-														Runtime runtime = Runtime.getRuntime();
-
-														File appServerBinDir = new File(project.getProperty("test.app.server.bin.dir"));
-														Integer appServerLogMaxSize = Integer.valueOf(project.getProperty("app.server.log.max.size.in.mb")) * 1024 * 1024;
-
-														Process process = runtime.exec("/bin/bash quick.sh", null, appServerBinDir);
-
-														InputStream inputStream = process.getInputStream();
-
-														int i;
-
-														long count = 0;
-
-														try {
-															while ((i = inputStream.read()) != -1) {
-																System.out.print((char)i);
-
-																count++;
-
-																if (count > appServerLogMaxSize) {
-																	break;
-																}
-															}
-														}
-														catch (IOException ioException) {
-															throw new RuntimeException(ioException);
-														}
-
-														process.waitFor();
-													}
-
-												};
-
-												Thread thread = new Thread(runnable);
-
-												thread.start();
-
-												thread.join();
-											</beanshell>
+											<start-app-server-cmd-bash />
 										</else>
 									</if>
 								</daemons>
@@ -4397,6 +4293,83 @@ org.apache.catalina.startup.ClassLoaderFactory.level=INFO]]>
 					</if>
 				</then>
 			</if>
+		</sequential>
+	</macrodef>
+
+	<macrodef name="start-app-server-cmd-bash">
+		<sequential>
+			<beanshell>
+				<![CDATA[
+					import com.liferay.jenkins.results.parser.JenkinsResultsParserUtil;
+
+					Runnable runnable = new Runnable() {
+
+						public void run() {
+							Integer appServerLogMaxSize = Integer.valueOf(project.getProperty("app.server.log.max.size.in.mb")) * 1024 * 1024;
+
+							Runtime runtime = Runtime.getRuntime();
+
+							File startBashFile = _getStartBashFile();
+
+							Process process = runtime.exec("/bin/bash " + startBashFile.getName(), null, startBashFile.getParentFile());
+
+							InputStream inputStream = process.getInputStream();
+
+							int i;
+
+							long count = 0;
+
+							try {
+								while ((i = inputStream.read()) != -1) {
+									System.out.print((char)i);
+
+									count++;
+
+									if (count > appServerLogMaxSize) {
+										break;
+									}
+								}
+							}
+							catch (IOException ioException) {
+								throw new RuntimeException(ioException);
+							}
+
+							process.waitFor();
+						}
+
+						private File _getStartBashFile() {
+							StringBuilder sb = new StringBuilder();
+
+							sb.append("export JAVA_HOME=");
+							sb.append(project.getProperty("java.jdk.home"));
+							sb.append(";\n");
+
+							sb.append("/bin/bash ");
+							sb.append(project.getProperty("app.server.start.executable"));
+							sb.append(" ");
+							sb.append(project.getProperty("app.server.start.executable.arg.line"));
+
+							File startBashFile = new File(project.getProperty("test.app.server.bin.dir"), "start.sh");
+
+							try {
+								JenkinsResultsParserUtil.write(startBashFile, sb.toString());
+
+								return startBashFile;
+							}
+							catch (IOException ioException) {
+								throw new RuntimeException(ioException);
+							}
+						}
+
+					};
+
+					Thread thread = new Thread(runnable);
+
+					thread.start();
+
+					thread.join();
+				]]>
+			</beanshell>
 		</sequential>
 	</macrodef>
 
