@@ -4329,14 +4329,18 @@ org.apache.catalina.startup.ClassLoaderFactory.level=INFO]]>
 										continue;
 									}
 
-									if (process.waitFor() == 0) {
-										break;
+									System.out.print(".");
+
+									if ((count % 1024) == 0) {
+										System.out.println();
 									}
 								}
 							}
 							catch (IOException ioException) {
 								throw new RuntimeException(ioException);
 							}
+
+							process.waitFor();
 						}
 
 						private File _getStartBashFile() {
@@ -4369,7 +4373,7 @@ org.apache.catalina.startup.ClassLoaderFactory.level=INFO]]>
 
 					thread.start();
 
-					thread.join();
+					//thread.join();
 				]]>
 			</beanshell>
 		</sequential>
