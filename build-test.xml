@@ -4325,7 +4325,11 @@ org.apache.catalina.startup.ClassLoaderFactory.level=INFO]]>
 
 									count++;
 
-									if (count > appServerLogMaxSize) {
+									if (count <= appServerLogMaxSize) {
+										continue;
+									}
+
+									if (process.waitFor() == 0) {
 										break;
 									}
 								}
@@ -4333,8 +4337,6 @@ org.apache.catalina.startup.ClassLoaderFactory.level=INFO]]>
 							catch (IOException ioException) {
 								throw new RuntimeException(ioException);
 							}
-
-							process.waitFor();
 						}
 
 						private File _getStartBashFile() {
