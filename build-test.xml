@@ -4317,7 +4317,7 @@ org.apache.catalina.startup.ClassLoaderFactory.level=INFO]]>
 
 							Runtime runtime = Runtime.getRuntime();
 
-							Process process = runtime.exec(sb.toString(), null, startBashFile.getParentFile());
+							Process process = runtime.exec(sb.toString(), null, new File(project.getProperty("test.app.server.bin.dir")));
 
 							InputStream inputStream = process.getInputStream();
 
