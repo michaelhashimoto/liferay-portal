@@ -4305,11 +4305,21 @@ org.apache.catalina.startup.ClassLoaderFactory.level=INFO]]>
 					Runnable runnable = new Runnable() {
 
 						public void run() {
-							File startBashFile = _getStartBashFile();
+							StringBuilder sb = new StringBuilder();
+
+							sb.append("export JAVA_HOME=");
+							sb.append(project.getProperty("java.jdk.home"));
+							sb.append(" ; ");
+
+							sb.append(project.getProperty("app.server.start.executable"));
+							sb.append(" ");
+							sb.append(project.getProperty("app.server.start.executable.arg.line"));
+
+							return sb.toString();
 
 							Runtime runtime = Runtime.getRuntime();
 
-							Process process = runtime.exec("/bin/bash " + startBashFile.getName(), null, startBashFile.getParentFile());
+							Process process = runtime.exec(sb.toString(), null, startBashFile.getParentFile());
 
 							InputStream inputStream = process.getInputStream();
 
@@ -4338,30 +4348,6 @@ org.apache.catalina.startup.ClassLoaderFactory.level=INFO]]>
 							}
 
 							process.waitFor();
-						}
-
-						private File _getStartBashFile() {
-							StringBuilder sb = new StringBuilder();
-
-							sb.append("export JAVA_HOME=");
-							sb.append(project.getProperty("java.jdk.home"));
-							sb.append(" ; ");
-
-							sb.append("/bin/bash ");
-							sb.append(project.getProperty("app.server.start.executable"));
-							sb.append(" ");
-							sb.append(project.getProperty("app.server.start.executable.arg.line"));
-
-							File startBashFile = new File(project.getProperty("test.app.server.bin.dir"), "start.sh");
-
-							try {
-								JenkinsResultsParserUtil.write(startBashFile, sb.toString());
-
-								return startBashFile;
-							}
-							catch (IOException ioException) {
-								throw new RuntimeException(ioException);
-							}
 						}
 
 					};
