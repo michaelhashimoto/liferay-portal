@@ -4311,12 +4311,17 @@ org.apache.catalina.startup.ClassLoaderFactory.level=INFO]]>
 								sb.append("set");
 							}
 							else {
-								sb.append("export");
+								sb.append("/bin/bash export");
 							}
 
 							sb.append(" JAVA_HOME=");
 							sb.append(project.getProperty("java.jdk.home"));
 							sb.append(" ; ");
+
+
+							if (!JenkinsResultsParserUtil.isWindows()) {
+								sb.append("/bin/bash ");
+							}
 
 							sb.append(project.getProperty("app.server.start.executable"));
 							sb.append(" ");
