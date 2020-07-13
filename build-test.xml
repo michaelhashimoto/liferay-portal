@@ -4307,7 +4307,14 @@ org.apache.catalina.startup.ClassLoaderFactory.level=INFO]]>
 						public void run() {
 							StringBuilder sb = new StringBuilder();
 
-							sb.append("export JAVA_HOME=");
+							if (JenkinsResultsParserUtil.isWindows()) {
+								sb.append("set");
+							}
+							else {
+								sb.append("export");
+							}
+
+							sb.append(" JAVA_HOME=");
 							sb.append(project.getProperty("java.jdk.home"));
 							sb.append(" ; ");
 
