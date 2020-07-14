@@ -4336,6 +4336,12 @@ org.apache.catalina.startup.ClassLoaderFactory.level=INFO]]>
 								while ((appServerLogByte = inputStream.read()) != -1) {
 									appServerLogCount++;
 
+									if (appServerLogCount == appServerLogMaxSize) {
+										System.out.println("Limit exceded!!");
+
+										continue;
+									}
+
 									if (appServerLogCount > appServerLogMaxSize) {
 										continue;
 									}
