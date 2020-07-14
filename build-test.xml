@@ -4308,7 +4308,7 @@ org.apache.catalina.startup.ClassLoaderFactory.level=INFO]]>
 							StringBuilder sb = new StringBuilder();
 
 							if (JenkinsResultsParserUtil.isWindows()) {
-								sb.append("set ");
+								sb.append("cmd.exe /c set ");
 							}
 
 							sb.append("JAVA_HOME=");
