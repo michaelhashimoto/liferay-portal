@@ -4310,6 +4310,9 @@ org.apache.catalina.startup.ClassLoaderFactory.level=INFO]]>
 							if (JenkinsResultsParserUtil.isWindows()) {
 								sb.append("cmd.exe /c ");
 							}
+							else {
+								sb.append("/bin/bash ");
+							}
 
 							sb.append(project.getProperty("app.server.start.executable"));
 							sb.append(" ");
