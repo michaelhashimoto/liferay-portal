@@ -4308,12 +4308,8 @@ org.apache.catalina.startup.ClassLoaderFactory.level=INFO]]>
 							StringBuilder sb = new StringBuilder();
 
 							if (JenkinsResultsParserUtil.isWindows()) {
-								sb.append("cmd.exe /c set ");
+								sb.append("cmd.exe /c ");
 							}
-
-							sb.append("JAVA_HOME=");
-							sb.append(project.getProperty("java.jdk.home"));
-							sb.append(" ; ");
 
 							sb.append(project.getProperty("app.server.start.executable"));
 							sb.append(" ");
@@ -4323,7 +4319,7 @@ org.apache.catalina.startup.ClassLoaderFactory.level=INFO]]>
 
 							Runtime runtime = Runtime.getRuntime();
 
-							Process process = runtime.exec(sb.toString(), null, new File(project.getProperty("test.app.server.bin.dir")));
+							Process process = runtime.exec(sb.toString(), new String[] {"JAVA_HOME=" + project.getProperty("java.jdk.home")}, new File(project.getProperty("test.app.server.bin.dir")));
 
 							InputStream inputStream = process.getInputStream();
 
