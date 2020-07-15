@@ -4325,6 +4325,8 @@ org.apache.catalina.startup.ClassLoaderFactory.level=INFO]]>
 							System.out.println("-------------------------------------------------");
 							System.out.println("JAVA_OPTS=" + project.getProperty("env.JAVA_OPTS"));
 							System.out.println("-------------------------------------------------");
+							System.out.println("JAVA_HOME=" + project.getProperty("java.jdk.home"));
+							System.out.println("-------------------------------------------------");
 
 							Process process = runtime.exec(sb.toString(), new String[] {"JAVA_HOME=" + project.getProperty("java.jdk.home"), "JAVA_OPTS=" + project.getProperty("env.JAVA_OPTS"), "PATH=" + project.getProperty("env.PATH")}, new File(project.getProperty("test.app.server.bin.dir")));
 
