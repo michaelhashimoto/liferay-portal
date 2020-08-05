@@ -4410,84 +4410,42 @@ org.apache.catalina.startup.ClassLoaderFactory.level=INFO]]>
 				<![CDATA[
 					import com.liferay.jenkins.results.parser.JenkinsResultsParserUtil;
 
-					Runnable runnable = new Runnable() {
+					File basedir = new File(project.getProperty("test.app.server.bin.dir");
 
-						public void run() {
-							StringBuilder sb = new StringBuilder();
+					int timeout = 1000 * 60 * 60;
 
-							if (JenkinsResultsParserUtil.isWindows()) {
-								sb.append("cmd.exe /c ");
-							}
-							else {
-								sb.append("/bin/bash ");
-							}
+					Map envs = new HashMap();
 
-							sb.append(project.getProperty("app.server.start.executable"));
-							sb.append(" ");
-							sb.append(project.getProperty("app.server.start.executable.arg.line"));
+					String javaHome = project.getProperty("java.jdk.home");
 
-							Runtime runtime = Runtime.getRuntime();
+					envs.put("JAVA_HOME", javaHome);
 
-							String javaHome = project.getProperty("java.jdk.home");
+					String path = project.getProperty("env.PATH");
 
-							List arguments = new ArrayList();
+					if (JenkinsResultsParserUtil.isWindows()) {
+						path = path.replaceAll("[^;]+\\\\jdk[^\\\\]*\\\\[^;]*bin", javaHome.replaceAll("\\\\", "\\\\") + "\\\\bin");
+					}
+					else {
+						path = path.replaceAll("[^:]+/jdk[^/]*/[^:]*bin", javaHome + "/bin");
+					}
 
-							arguments.add("JAVA_HOME=" + javaHome);
+					envs.put("PATH", path);
 
-							String path = project.getProperty("env.PATH");
+					String javaOpts = project.getProperty("env.JAVA_OPTS");
 
-							if (JenkinsResultsParserUtil.isWindows()) {
-								path = path.replaceAll("[^;]+\\\\jdk[^\\\\]*\\\\[^;]*bin", javaHome.replaceAll("\\\\", "\\\\") + "\\\\bin");
-							}
-							else {
-								path = path.replaceAll("[^:]+/jdk[^/]*/[^:]*bin", javaHome + "/bin");
-							}
+					if ((javaOpts != null) && !javaOpts.isEmpty()) {
+						envs.put("JAVA_OPTS", javaOpts);
+					}
 
-							arguments.add("PATH=" + path);
+					int appServerLogMaxSize = Integer.valueOf(project.getProperty("app.server.log.max.size.in.mb")) * 1024 * 1024;
 
-							String javaOpts = project.getProperty("env.JAVA_OPTS");
+					StringBuilder sb = new StringBuilder();
 
-							if ((javaOpts != null) && !javaOpts.isEmpty()) {
-								arguments.add("JAVA_OPTS=" + javaOpts);
-							}
+					sb.append(project.getProperty("app.server.start.executable"));
+					sb.append(" ");
+					sb.append(project.getProperty("app.server.start.executable.arg.line"));
 
-							String[] argumentsArray = new String[arguments.size()];
-
-							Process process = runtime.exec(sb.toString(), arguments.toArray(argumentsArray), new File(project.getProperty("test.app.server.bin.dir")));
-
-							InputStream inputStream = process.getInputStream();
-
-							int appServerLogByte;
-							int appServerLogSize = 0;
-
-							int appServerLogMaxSize = Integer.valueOf(project.getProperty("app.server.log.max.size.in.mb")) * 1024 * 1024;
-
-							try {
-								while ((appServerLogByte = inputStream.read()) != -1) {
-									appServerLogSize++;
-
-									if (appServerLogSize > appServerLogMaxSize) {
-										continue;
-									}
-
-									System.out.print((char)appServerLogByte);
-								}
-							}
-							catch (IOException ioException) {
-								throw new RuntimeException(ioException);
-							}
-							finally {
-								inputStream.close();
-							}
-
-							process.waitFor();
-						}
-
-					};
-
-					Thread thread = new Thread(runnable);
-
-					thread.start();
+					JenkinsResultsParserUtil.executeBashCommandService(true, basedir, timeout, envs, appServerLogMaxSize, new String[]{ sb.toString() });
 				]]>
 			</beanshell>
 		</sequential>
