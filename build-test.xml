@@ -4451,6 +4451,11 @@ org.apache.catalina.startup.ClassLoaderFactory.level=INFO]]>
 						return Integer.valueOf(project.getProperty("app.server.log.max.size.in.mb")) * 1024 * 1024;
 					}
 
+					System.out.println("getCommand=" + getCommand());
+					System.out.println("getBaseDir=" + getBaseDir());
+					System.out.println("getEnvironments=" + getEnvironments());
+					System.out.println("getMaxLogSize=" + getMaxLogSize());
+
 					JenkinsResultsParserUtil.executeBashService(getCommand(), getBaseDir(), getEnvironments(), getMaxLogSize());
 				]]>
 			</beanshell>
