@@ -4463,11 +4463,17 @@ org.apache.catalina.startup.ClassLoaderFactory.level=INFO]]>
 					System.out.println("appServerType=" + appServerType);
 
 					if (appServerType.contains("websphere")) {
+						File websphereLogLogFile = new File(project.getProperty("app.server.websphere.log.dir"), "server_log.sh");
+
+						System.out.println("websphereLogLogFile=" + websphereLogLogFile);
+
 						File websphereLogFile = new File(project.getProperty("app.server.websphere.log.dir"), "startServer.log");
+
+						JenkinsResultsParserUtil.write(websphereLogLogFile, "#!/bin/bash\ntail -f " + websphereLogFile);
 
 						System.out.println("websphereLogFile=" + websphereLogFile);
 
-						JenkinsResultsParserUtil.executeBashService("tail -f " + websphereLogFile, websphereLogFile.getParentFile(), getEnvironments(), getMaxLogSize());
+						JenkinsResultsParserUtil.executeBashService(websphereLogLogFile.toString(), websphereLogLogFile.getParentFile(), getEnvironments(), getMaxLogSize());
 					}
 				]]>
 			</beanshell>
