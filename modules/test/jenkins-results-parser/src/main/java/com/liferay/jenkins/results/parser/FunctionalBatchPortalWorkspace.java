@@ -52,8 +52,6 @@ public class FunctionalBatchPortalWorkspace extends BatchPortalWorkspace {
 	private void _setPortalBuildProperties() {
 		Properties properties = new Properties();
 
-		properties.put("jsp.precompile", "on");
-
 		PortalWorkspaceGitRepository primaryPortalWorkspaceGitRepository =
 			getPrimaryPortalWorkspaceGitRepository();
 
