@@ -4415,7 +4415,7 @@ org.apache.catalina.startup.ClassLoaderFactory.level=INFO]]>
 					}
 
 					public String getCommand() {
-						return JenkinsResultsParserUtil.combin(new String[] {project.getProperty("app.server.start.executable"), " ", project.getProperty("app.server.start.executable.arg.line")});
+						return JenkinsResultsParserUtil.combine(new String[] {project.getProperty("app.server.start.executable"), " ", project.getProperty("app.server.start.executable.arg.line")});
 					}
 
 					public Map getEnvironments() {
