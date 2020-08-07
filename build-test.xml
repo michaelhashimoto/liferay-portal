@@ -4457,6 +4457,12 @@ org.apache.catalina.startup.ClassLoaderFactory.level=INFO]]>
 					System.out.println("getMaxLogSize=" + getMaxLogSize());
 
 					JenkinsResultsParserUtil.executeBashService(getCommand(), getBaseDir(), getEnvironments(), getMaxLogSize());
+
+					String appServerType = project.getProperty("app.server.type");
+
+					if (appServerType.contains("websphere")) {
+						JenkinsResultsParserUtil.executeBashService("tail -f startServer.log", new File(project.getProperty("app.server.websphere.log.dir")), getEnvironments(), getMaxLogSize());
+					}
 				]]>
 			</beanshell>
 		</sequential>
