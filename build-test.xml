@@ -4410,15 +4410,27 @@ org.apache.catalina.startup.ClassLoaderFactory.level=INFO]]>
 				<![CDATA[
 					import com.liferay.jenkins.results.parser.JenkinsResultsParserUtil;
 
-					File basedir = new File(project.getProperty("test.app.server.bin.dir");
+					StringBuilder sb = new StringBuilder();
 
-					int timeout = 1000 * 60 * 60;
+					sb.append(project.getProperty("app.server.start.executable"));
+					sb.append(" ");
+					sb.append(project.getProperty("app.server.start.executable.arg.line"));
 
-					Map envs = new HashMap();
+					File baseDir = new File(project.getProperty("test.app.server.bin.dir"));
+
+					Map environments = new HashMap();
 
 					String javaHome = project.getProperty("java.jdk.home");
 
-					envs.put("JAVA_HOME", javaHome);
+					if (javaHome != null) {
+						environments.put("JAVA_HOME", javaHome);
+					}
+
+					String javaOpts = project.getProperty("env.JAVA_OPTS");
+
+					if ((javaOpts != null) && !javaOpts.isEmpty()) {
+						environments.put("JAVA_OPTS", javaOpts);
+					}
 
 					String path = project.getProperty("env.PATH");
 
@@ -4429,23 +4441,11 @@ org.apache.catalina.startup.ClassLoaderFactory.level=INFO]]>
 						path = path.replaceAll("[^:]+/jdk[^/]*/[^:]*bin", javaHome + "/bin");
 					}
 
-					envs.put("PATH", path);
-
-					String javaOpts = project.getProperty("env.JAVA_OPTS");
-
-					if ((javaOpts != null) && !javaOpts.isEmpty()) {
-						envs.put("JAVA_OPTS", javaOpts);
-					}
+					environments.put("PATH", path);
 
 					int appServerLogMaxSize = Integer.valueOf(project.getProperty("app.server.log.max.size.in.mb")) * 1024 * 1024;
 
-					StringBuilder sb = new StringBuilder();
-
-					sb.append(project.getProperty("app.server.start.executable"));
-					sb.append(" ");
-					sb.append(project.getProperty("app.server.start.executable.arg.line"));
-
-					JenkinsResultsParserUtil.executeBashCommandService(true, basedir, timeout, envs, appServerLogMaxSize, new String[]{ sb.toString() });
+					JenkinsResultsParserUtil.executeBashService(sb.toString(), baseDir, environments, appServerLogMaxSize);
 				]]>
 			</beanshell>
 		</sequential>
