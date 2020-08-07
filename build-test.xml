@@ -4480,6 +4480,8 @@ org.apache.catalina.startup.ClassLoaderFactory.level=INFO]]>
 
 						System.out.println("liferayLogFile=" + liferayLogFile);
 
+						System.out.println("#!/bin/bash\ntail -f " + project.getProperty("app.server.parent.dir") + "/logs/liferay.*.log");
+
 						JenkinsResultsParserUtil.write(liferayLogFile, "#!/bin/bash\ntail -f " + project.getProperty("app.server.parent.dir") + "/logs/liferay.*.log");
 
 						JenkinsResultsParserUtil.executeBashService(liferayLogFile.toString(), liferayLogFile.getParentFile(), getEnvironments(), getMaxLogSize());
