@@ -4410,42 +4410,48 @@ org.apache.catalina.startup.ClassLoaderFactory.level=INFO]]>
 				<![CDATA[
 					import com.liferay.jenkins.results.parser.JenkinsResultsParserUtil;
 
-					StringBuilder sb = new StringBuilder();
-
-					sb.append(project.getProperty("app.server.start.executable"));
-					sb.append(" ");
-					sb.append(project.getProperty("app.server.start.executable.arg.line"));
-
-					File baseDir = new File(project.getProperty("test.app.server.bin.dir"));
-
-					Map environments = new HashMap();
-
-					String javaHome = project.getProperty("java.jdk.home");
-
-					if (javaHome != null) {
-						environments.put("JAVA_HOME", javaHome);
+					public File getBaseDir() {
+						return new File(project.getProperty("test.app.server.bin.dir"));
 					}
 
-					String javaOpts = project.getProperty("env.JAVA_OPTS");
-
-					if ((javaOpts != null) && !javaOpts.isEmpty()) {
-						environments.put("JAVA_OPTS", javaOpts);
+					public String getCommand() {
+						return JenkinsResultsParserUtil.combin(new String[] {project.getProperty("app.server.start.executable"), " ", project.getProperty("app.server.start.executable.arg.line")});
 					}
 
-					String path = project.getProperty("env.PATH");
+					public Map getEnvironments() {
+						Map environments = new HashMap();
 
-					if (JenkinsResultsParserUtil.isWindows()) {
-						path = path.replaceAll("[^;]+\\\\jdk[^\\\\]*\\\\[^;]*bin", javaHome.replaceAll("\\\\", "\\\\") + "\\\\bin");
+						String javaHome = project.getProperty("java.jdk.home");
+
+						if (javaHome != null) {
+							environments.put("JAVA_HOME", javaHome);
+						}
+
+						String javaOpts = project.getProperty("env.JAVA_OPTS");
+
+						if ((javaOpts != null) && !javaOpts.isEmpty()) {
+							environments.put("JAVA_OPTS", javaOpts);
+						}
+
+						String path = project.getProperty("env.PATH");
+
+						if (JenkinsResultsParserUtil.isWindows()) {
+							path = path.replaceAll("[^;]+\\\\jdk[^\\\\]*\\\\[^;]*bin", javaHome.replaceAll("\\\\", "\\\\") + "\\\\bin");
+						}
+						else {
+							path = path.replaceAll("[^:]+/jdk[^/]*/[^:]*bin", javaHome + "/bin");
+						}
+
+						environments.put("PATH", path);
+
+						return environments;
 					}
-					else {
-						path = path.replaceAll("[^:]+/jdk[^/]*/[^:]*bin", javaHome + "/bin");
+
+					public int getMaxLogSize() {
+						return Integer.valueOf(project.getProperty("app.server.log.max.size.in.mb")) * 1024 * 1024;
 					}
 
-					environments.put("PATH", path);
-
-					int appServerLogMaxSize = Integer.valueOf(project.getProperty("app.server.log.max.size.in.mb")) * 1024 * 1024;
-
-					JenkinsResultsParserUtil.executeBashService(sb.toString(), baseDir, environments, appServerLogMaxSize);
+					JenkinsResultsParserUtil.executeBashService(getCommand(), getBaseDir(), getEnvironments(), getMaxLogSize());
 				]]>
 			</beanshell>
 		</sequential>
