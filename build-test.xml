@@ -4460,7 +4460,12 @@ org.apache.catalina.startup.ClassLoaderFactory.level=INFO]]>
 
 					String appServerType = project.getProperty("app.server.type");
 
+					System.out.println("appServerType=" + appServerType);
+
 					if (appServerType.contains("websphere")) {
+						System.out.println("tailCommand=tail -f startServer.log");
+						System.out.println("tailBaseDir=" + new File(project.getProperty("app.server.websphere.log.dir")));
+
 						JenkinsResultsParserUtil.executeBashService("tail -f startServer.log", new File(project.getProperty("app.server.websphere.log.dir")), getEnvironments(), getMaxLogSize());
 					}
 				]]>
