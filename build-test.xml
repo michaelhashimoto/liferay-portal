@@ -4475,7 +4475,7 @@ org.apache.catalina.startup.ClassLoaderFactory.level=INFO]]>
 
 						sb.append("#!/bin/bash\n");
 
-						sb.append(while ! tail -f ");
+						sb.append("while ! tail -f ");
 						sb.append(websphereLogFile);
 						sb.append("\n");
 						sb.append("do\n");
@@ -4505,7 +4505,7 @@ org.apache.catalina.startup.ClassLoaderFactory.level=INFO]]>
 
 						sb.append("#!/bin/bash\n");
 
-						sb.append(while ! tail -f ");
+						sb.append("while ! tail -f ");
 						sb.append(filePath);
 						sb.append("\n");
 						sb.append("do\n");
