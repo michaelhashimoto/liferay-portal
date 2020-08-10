@@ -4485,6 +4485,11 @@ org.apache.catalina.startup.ClassLoaderFactory.level=INFO]]>
 						sb.append(tail -f ");
 						sb.append(websphereLogFile);
 
+						System.out.println("##");
+						System.out.println("## " + websphereLogLogFile);
+						System.out.println("##");
+						System.out.println(sb.toString());
+
 						JenkinsResultsParserUtil.write(websphereLogLogFile, sb.toString());
 
 						JenkinsResultsParserUtil.executeBashService(websphereLogLogFile.toString(), websphereLogLogFile.getParentFile(), getEnvironments(), getMaxLogSize());
@@ -4509,6 +4514,11 @@ org.apache.catalina.startup.ClassLoaderFactory.level=INFO]]>
 
 						sb.append(tail -f ");
 						sb.append(filePath);
+
+						System.out.println("##");
+						System.out.println("## " + liferayLogFile);
+						System.out.println("##");
+						System.out.println(sb.toString());
 
 						JenkinsResultsParserUtil.write(liferayLogFile, sb.toString());
 
