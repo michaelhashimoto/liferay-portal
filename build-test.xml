@@ -4469,9 +4469,23 @@ org.apache.catalina.startup.ClassLoaderFactory.level=INFO]]>
 
 						File websphereLogFile = new File(project.getProperty("app.server.websphere.log.dir"), "startServer.log");
 
-						JenkinsResultsParserUtil.write(websphereLogLogFile, "#!/bin/bash\ntail -f " + websphereLogFile);
+						System.out.println("websphereLogLogFile=" + websphereLogLogFile);
 
-						System.out.println("websphereLogFile=" + websphereLogFile);
+						StringBuilder sb = new StringBuilder();
+
+						sb.append("#!/bin/bash\n");
+
+						sb.append(while ! tail -f ");
+						sb.append(websphereLogFile);
+						sb.append("\n");
+						sb.append("do\n");
+						sb.append("sleep 1\n");
+						sb.append("done\n");
+
+						sb.append(tail -f ");
+						sb.append(websphereLogFile);
+
+						JenkinsResultsParserUtil.write(websphereLogLogFile, sb.toString());
 
 						JenkinsResultsParserUtil.executeBashService(websphereLogLogFile.toString(), websphereLogLogFile.getParentFile(), getEnvironments(), getMaxLogSize());
 
@@ -4480,9 +4494,23 @@ org.apache.catalina.startup.ClassLoaderFactory.level=INFO]]>
 
 						System.out.println("liferayLogFile=" + liferayLogFile);
 
-						System.out.println("#!/bin/bash\ntail -f " + project.getProperty("app.server.parent.dir") + "/logs/liferay.*.log");
+						sb = new StringBuilder();
 
-						JenkinsResultsParserUtil.write(liferayLogFile, "#!/bin/bash\ntail -f " + project.getProperty("app.server.parent.dir") + "/logs/liferay.*.log");
+						String filePath = project.getProperty("app.server.parent.dir") + "/logs/liferay.*.log";
+
+						sb.append("#!/bin/bash\n");
+
+						sb.append(while ! tail -f ");
+						sb.append(filePath);
+						sb.append("\n");
+						sb.append("do\n");
+						sb.append("sleep 1\n");
+						sb.append("done\n");
+
+						sb.append(tail -f ");
+						sb.append(filePath);
+
+						JenkinsResultsParserUtil.write(liferayLogFile, sb.toString());
 
 						JenkinsResultsParserUtil.executeBashService(liferayLogFile.toString(), liferayLogFile.getParentFile(), getEnvironments(), getMaxLogSize());
 					}
