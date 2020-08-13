@@ -4472,7 +4472,12 @@ org.apache.catalina.startup.ClassLoaderFactory.level=INFO]]>
 
 					System.out.println("maxLogSize=" + maxLogSize);
 
-					JenkinsResultsParserUtil.executeBashService(command, baseDir, environments, maxLogSize);
+					if (JenkinsResultsParserUtil.isWindows()) {
+						JenkinsResultsParserUtil.executeBatchCommandService(command, baseDir, environments, maxLogSize);
+					}
+					else {
+						JenkinsResultsParserUtil.executeBashCommandService(command, baseDir, environments, maxLogSize);
+					}
 				]]>
 			</beanshell>
 		</sequential>
