@@ -4406,55 +4406,11 @@ org.apache.catalina.startup.ClassLoaderFactory.level=INFO]]>
 		<sequential>
 			<beanshell>
 				<![CDATA[
-					import com.liferay.jenkins.results.parser.JenkinsResultsParserUtil;
+					import com.liferay.jenkins.results.parser.AppServer;
 
-					public File getBaseDir() {
-						return new File(project.getProperty("test.app.server.bin.dir"));
-					}
+					AppServer appServer = new AppServer(project);
 
-					public String getCommand() {
-						return JenkinsResultsParserUtil.combine(new String[] {project.getProperty("app.server.start.executable"), " ", project.getProperty("app.server.start.executable.arg.line")});
-					}
-
-					public Map getEnvironments() {
-						Map environments = new HashMap();
-
-						String javaHome = project.getProperty("java.jdk.home");
-
-						if (javaHome != null) {
-							environments.put("JAVA_HOME", javaHome);
-						}
-
-						String javaOpts = project.getProperty("env.JAVA_OPTS");
-
-						if ((javaOpts != null) && !javaOpts.isEmpty()) {
-							environments.put("JAVA_OPTS", javaOpts);
-						}
-
-						String path = project.getProperty("env.PATH");
-
-						if (JenkinsResultsParserUtil.isWindows()) {
-							path = path.replaceAll("[^;]+\\\\jdk[^\\\\]*\\\\[^;]*bin", javaHome.replaceAll("\\\\", "\\\\") + "\\\\bin");
-						}
-						else {
-							path = path.replaceAll("[^:]+/jdk[^/]*/[^:]*bin", javaHome + "/bin");
-						}
-
-						environments.put("PATH", path);
-
-						return environments;
-					}
-
-					public long getMaxLogSize() {
-						return Long.valueOf(project.getProperty("app.server.max.log.size.in.mb")) * 1024 * 1024;
-					}
-
-					if (JenkinsResultsParserUtil.isWindows()) {
-						JenkinsResultsParserUtil.executeBatchCommandService(getCommand(), getBaseDir(), getEnvironments(), getMaxLogSize());
-					}
-					else {
-						JenkinsResultsParserUtil.executeBashCommandService(getCommand(), getBaseDir(), getEnvironments(), getMaxLogSize());
-					}
+					appServer.startService();
 				]]>
 			</beanshell>
 		</sequential>
