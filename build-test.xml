@@ -4327,7 +4327,15 @@ org.apache.catalina.startup.ClassLoaderFactory.level=INFO]]>
 										</then>
 									</elseif>
 									<else>
-										<start-app-server-cmd-bash />
+										<beanshell>
+											<![CDATA[
+												import com.liferay.jenkins.results.parser.AppServer;
+
+												AppServer appServer = new AppServer(project);
+
+												appServer.startService();
+											]]>
+										</beanshell>
 									</else>
 								</if>
 
@@ -4390,7 +4398,15 @@ org.apache.catalina.startup.ClassLoaderFactory.level=INFO]]>
 											</then>
 										</elseif>
 										<else>
-											<start-app-server-cmd-bash />
+											<beanshell>
+												<![CDATA[
+													import com.liferay.jenkins.results.parser.AppServer;
+
+													AppServer appServer = new AppServer(project);
+
+													appServer.startService();
+												]]>
+											</beanshell>
 										</else>
 									</if>
 								</daemons>
@@ -4399,20 +4415,6 @@ org.apache.catalina.startup.ClassLoaderFactory.level=INFO]]>
 					</if>
 				</then>
 			</if>
-		</sequential>
-	</macrodef>
-
-	<macrodef name="start-app-server-cmd-bash">
-		<sequential>
-			<beanshell>
-				<![CDATA[
-					import com.liferay.jenkins.results.parser.AppServer;
-
-					AppServer appServer = new AppServer(project);
-
-					appServer.startService();
-				]]>
-			</beanshell>
 		</sequential>
 	</macrodef>
 
@@ -4877,10 +4879,15 @@ org.apache.catalina.startup.ClassLoaderFactory.level=INFO]]>
 
 			<parallel>
 				<daemons>
-					<exec dir="${test.app.server.bin.dir}" executable="${app.server.stop.executable}" output="app.server.log" resolveexecutable="true">
-						<arg line="${app.server.stop.executable.arg.line}" />
-						<env key="JAVA_HOME" path="${java.jdk.home}" />
-					</exec>
+					<beanshell>
+						<![CDATA[
+							import com.liferay.jenkins.results.parser.AppServer;
+
+							AppServer appServer = new AppServer(project);
+
+							appServer.stopService();
+						]]>
+					</beanshell>
 				</daemons>
 				<sequential>
 					<if>
