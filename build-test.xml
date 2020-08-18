@@ -4327,10 +4327,7 @@ org.apache.catalina.startup.ClassLoaderFactory.level=INFO]]>
 										</then>
 									</elseif>
 									<else>
-										<exec dir="${test.app.server.bin.dir}" executable="${app.server.start.executable}" outputproperty="app.server.log" resolveexecutable="true">
-											<arg line="${app.server.start.executable.arg.line}" />
-											<env key="JAVA_HOME" path="${java.jdk.home}" />
-										</exec>
+										<start-app-server-cmd-bash />
 									</else>
 								</if>
 
@@ -4393,10 +4390,7 @@ org.apache.catalina.startup.ClassLoaderFactory.level=INFO]]>
 											</then>
 										</elseif>
 										<else>
-											<exec dir="${test.app.server.bin.dir}" executable="${app.server.start.executable}" failonerror="true" output="app.server.log" resolveexecutable="true">
-												<arg line="${app.server.start.executable.arg.line}" />
-												<env key="JAVA_HOME" path="${java.jdk.home}" />
-											</exec>
+											<start-app-server-cmd-bash />
 										</else>
 									</if>
 								</daemons>
@@ -4405,6 +4399,106 @@ org.apache.catalina.startup.ClassLoaderFactory.level=INFO]]>
 					</if>
 				</then>
 			</if>
+		</sequential>
+	</macrodef>
+
+	<macrodef name="start-app-server-cmd-bash">
+		<sequential>
+			<beanshell>
+				<![CDATA[
+					import com.google.common.io.CountingInputStream;
+
+					import com.liferay.jenkins.results.parser.JenkinsResultsParserUtil;
+
+					Runnable runnable = new Runnable() {
+
+						public void run() {
+							StringBuilder sb = new StringBuilder();
+
+							if (JenkinsResultsParserUtil.isWindows()) {
+								sb.append("cmd.exe /c ");
+							}
+							else {
+								sb.append("/bin/bash ");
+							}
+
+							sb.append(project.getProperty("app.server.start.executable"));
+							sb.append(" ");
+							sb.append(project.getProperty("app.server.start.executable.arg.line"));
+
+							Runtime runtime = Runtime.getRuntime();
+
+							String javaHome = project.getProperty("java.jdk.home");
+
+							List arguments = new ArrayList();
+
+							arguments.add("JAVA_HOME=" + javaHome);
+
+							String path = project.getProperty("env.PATH");
+
+							if (JenkinsResultsParserUtil.isWindows()) {
+								path = path.replaceAll("[^;]+\\\\jdk[^\\\\]*\\\\[^;]*bin", javaHome.replaceAll("\\\\", "\\\\") + "\\\\bin");
+							}
+							else {
+								path = path.replaceAll("[^:]+/jdk[^/]*/[^:]*bin", javaHome + "/bin");
+							}
+
+							arguments.add("PATH=" + path);
+
+							String javaOpts = project.getProperty("env.JAVA_OPTS");
+
+							if ((javaOpts != null) && !javaOpts.isEmpty()) {
+								arguments.add("JAVA_OPTS=" + javaOpts);
+							}
+
+							String[] argumentsArray = new String[arguments.size()];
+
+							Process process = runtime.exec(sb.toString(), arguments.toArray(argumentsArray), new File(project.getProperty("test.app.server.bin.dir")));
+
+							InputStream inputStream = process.getInputStream();
+
+							CountingInputStream countingInputStream = new CountingInputStream(inputStreamO);
+
+							InputStreamReader inputStreamReader = new InputStreamReader(countingInputStream, "UTF-8");
+
+							int appServerLogMaxSize = Integer.valueOf(project.getProperty("app.server.log.max.size.in.mb")) * 1024 * 1024;
+
+							try {
+								while ((int appServerLogCharInt = inputStreamReader.read()) != -1) {
+									if (countingInputStream.getCount() > appServerLogMaxSize) {
+										continue;
+									}
+
+									System.out.print((char)appServerLogCharInt);
+								}
+							}
+							catch (IOException ioException) {
+								throw new RuntimeException(ioException);
+							}
+							finally {
+								try {
+									inputStreamReader.close();
+								}
+								finally {
+									try {
+										countingInputStream.close();
+									}
+									finally {
+										inputStream.close();
+									}
+								}
+							}
+
+							process.waitFor();
+						}
+
+					};
+
+					Thread thread = new Thread(runnable);
+
+					thread.start();
+				]]>
+			</beanshell>
 		</sequential>
 	</macrodef>
 
