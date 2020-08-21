@@ -4282,7 +4282,7 @@ org.apache.catalina.startup.ClassLoaderFactory.level=INFO]]>
 					<get-java-jdk-home type="${java.jdk.bundle.type}" version="${java.jdk.bundle.version}" />
 
 					<if>
-						<equals arg1="${test.ant.launched.by.selenium}" arg2="truth" />
+						<equals arg1="${test.ant.launched.by.selenium}" arg2="true" />
 						<then>
 							<parallel>
 								<if>
@@ -4364,7 +4364,7 @@ org.apache.catalina.startup.ClassLoaderFactory.level=INFO]]>
 										<echo>app.server.tomcat.stop.executable=${app.server.tomcat.stop.executable}</echo>
 										<echo>app.server.tomcat.stop.executable.arg.line=${app.server.tomcat.stop.executable.arg.line}</echo>
 
-										<beanshell>
+										<beanshell classpathref="lib.classpath">
 											<![CDATA[
 												import com.liferay.jenkins.results.parser.AppServer;
 
