@@ -4374,6 +4374,8 @@ org.apache.catalina.startup.ClassLoaderFactory.level=INFO]]>
 
 												System.out.println("appServer=" + appServer);
 
+												System.out.println("appServer#getType()=" + appServer.getType());
+
 												try {
 													appServer.start();
 												}
