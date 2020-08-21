@@ -13,6 +13,7 @@ definition {
 		property database.types = "mariadb,mysql,postgresql";
 		property portal.version = "6.2.5";
 		property setup.wizard.enabled = "true";
+		property portal.smoke = "hashi";
 
 		Upgrade.resetTestUserPassword(administratorEmail = "test@liferay.com");
 	}
