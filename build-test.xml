@@ -4282,7 +4282,7 @@ org.apache.catalina.startup.ClassLoaderFactory.level=INFO]]>
 					<get-java-jdk-home type="${java.jdk.bundle.type}" version="${java.jdk.bundle.version}" />
 
 					<if>
-						<equals arg1="${test.ant.launched.by.selenium}" arg2="true" />
+						<equals arg1="${test.ant.launched.by.selenium}" arg2="truth" />
 						<then>
 							<parallel>
 								<if>
