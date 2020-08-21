@@ -4327,9 +4327,46 @@ org.apache.catalina.startup.ClassLoaderFactory.level=INFO]]>
 										</then>
 									</elseif>
 									<else>
+										<echo>-------------------BEFORE-------------------</echo>
+										<echo>test.app.server.bin.dir=${test.app.server.bin.dir}</echo>
+										<echo>app.server.bin.dir=${app.server.bin.dir}</echo>
+										<echo>app.server.type=${app.server.type}</echo>
+										<echo>app.server.tomcat.bin.dir=${app.server.tomcat.bin.dir}</echo>
+
+										<echo>-------------------BEFORE-------------------</echo>
+										<echo>java.jdk.home=${java.jdk.home}</echo>
+										<echo>env.JAVA_HOME=${env.JAVA_HOME}</echo>
+										<echo>JAVA_HOME=${JAVA_HOME}</echo>
+
+										<echo>-------------------BEFORE-------------------</echo>
+										<echo>java.jdk.opts=${java.jdk.opts}</echo>
+										<echo>env.JAVA_OPTS=${env.JAVA_OPTS}</echo>
+										<echo>JAVA_OPTS=${JAVA_OPTS}</echo>
+
+										<echo>-------------------BEFORE-------------------</echo>
+										<echo>app.server.max.log.size.in.mb=${app.server.max.log.size.in.mb}</echo>
+
+										<echo>-------------------BEFORE-------------------</echo>
+										<echo>env.PATH=${env.PATH}</echo>
+										<echo>PATH=${PATH}</echo>
+
+										<echo>-------------------BEFORE-------------------</echo>
+										<echo>app.server.start.executable=${app.server.start.executable}</echo>
+										<echo>app.server.start.executable.arg.line=${app.server.start.executable.arg.line}</echo>
+										<echo>app.server.tomcat.start.executable=${app.server.tomcat.start.executable}</echo>
+										<echo>app.server.tomcat.start.executable.arg.line=${app.server.tomcat.start.executable.arg.line}</echo>
+
+										<echo>-------------------BEFORE-------------------</echo>
+										<echo>app.server.stop.executable=${app.server.stop.executable}</echo>
+										<echo>app.server.stop.executable.arg.line=${app.server.stop.executable.arg.line}</echo>
+										<echo>app.server.tomcat.stop.executable=${app.server.tomcat.stop.executable}</echo>
+										<echo>app.server.tomcat.stop.executable.arg.line=${app.server.tomcat.stop.executable.arg.line}</echo>
+
 										<beanshell>
 											<![CDATA[
 												import com.liferay.jenkins.results.parser.AppServer;
+
+												System.out.println("project=" + project);
 
 												AppServer appServer = new AppServer(project);
 
@@ -4338,6 +4375,41 @@ org.apache.catalina.startup.ClassLoaderFactory.level=INFO]]>
 												appServer.start();
 											]]>
 										</beanshell>
+
+										<echo>-------------------AFTER-------------------</echo>
+										<echo>test.app.server.bin.dir=${test.app.server.bin.dir}</echo>
+										<echo>app.server.bin.dir=${app.server.bin.dir}</echo>
+										<echo>app.server.type=${app.server.type}</echo>
+										<echo>app.server.tomcat.bin.dir=${app.server.tomcat.bin.dir}</echo>
+
+										<echo>-------------------AFTER-------------------</echo>
+										<echo>java.jdk.home=${java.jdk.home}</echo>
+										<echo>env.JAVA_HOME=${env.JAVA_HOME}</echo>
+										<echo>JAVA_HOME=${JAVA_HOME}</echo>
+
+										<echo>-------------------AFTER-------------------</echo>
+										<echo>java.jdk.opts=${java.jdk.opts}</echo>
+										<echo>env.JAVA_OPTS=${env.JAVA_OPTS}</echo>
+										<echo>JAVA_OPTS=${JAVA_OPTS}</echo>
+
+										<echo>-------------------AFTER-------------------</echo>
+										<echo>app.server.max.log.size.in.mb=${app.server.max.log.size.in.mb}</echo>
+
+										<echo>-------------------AFTER-------------------</echo>
+										<echo>env.PATH=${env.PATH}</echo>
+										<echo>PATH=${PATH}</echo>
+
+										<echo>-------------------AFTER-------------------</echo>
+										<echo>app.server.start.executable=${app.server.start.executable}</echo>
+										<echo>app.server.start.executable.arg.line=${app.server.start.executable.arg.line}</echo>
+										<echo>app.server.tomcat.start.executable=${app.server.tomcat.start.executable}</echo>
+										<echo>app.server.tomcat.start.executable.arg.line=${app.server.tomcat.start.executable.arg.line}</echo>
+
+										<echo>-------------------AFTER-------------------</echo>
+										<echo>app.server.stop.executable=${app.server.stop.executable}</echo>
+										<echo>app.server.stop.executable.arg.line=${app.server.stop.executable.arg.line}</echo>
+										<echo>app.server.tomcat.stop.executable=${app.server.tomcat.stop.executable}</echo>
+										<echo>app.server.tomcat.stop.executable.arg.line=${app.server.tomcat.stop.executable.arg.line}</echo>
 									</else>
 								</if>
 
