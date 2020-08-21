@@ -4333,7 +4333,7 @@ org.apache.catalina.startup.ClassLoaderFactory.level=INFO]]>
 
 												AppServer appServer = new AppServer(project);
 
-												appServer.startService();
+												appServer.start();
 											]]>
 										</beanshell>
 									</else>
