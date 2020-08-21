@@ -4374,7 +4374,14 @@ org.apache.catalina.startup.ClassLoaderFactory.level=INFO]]>
 
 												System.out.println("appServer=" + appServer);
 
-												appServer.start();
+												try {
+													appServer.start();
+												}
+												catch (Exception e) {
+													e.printStackTrace();
+
+													throw e;
+												}
 											]]>
 										</beanshell>
 
