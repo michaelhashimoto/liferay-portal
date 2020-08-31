@@ -36,4 +36,14 @@ public class DummyUnitTest {
 		Assert.fail("This is a failure");
 	}
 
+	@Test
+	public void testUnit2() {
+		Assert.fail("This is a failure");
+	}
+
+	@Test
+	public void testUnit3() {
+		Assert.fail("This is a failure");
+	}
+
 }
