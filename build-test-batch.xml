@@ -752,6 +752,7 @@ mariadb.executable=${mariadb.executable}]]></echo>
 		<attribute default="" name="test.license.xml.url" />
 		<attribute default="" name="test.plugins.war.zip.url" />
 		<attribute default="" name="test.portal.bundle.dependencies.zip.url" />
+		<attribute default="" name="test.portal.bundle.elasticsearch.zip.url" />
 		<attribute default="" name="test.portal.bundle.osgi.zip.url" />
 		<attribute default="" name="test.portal.bundle.tools.zip.url" />
 		<attribute default="" name="test.portal.bundle.war.url" />
@@ -760,6 +761,26 @@ mariadb.executable=${mariadb.executable}]]></echo>
 
 		<sequential>
 			<propertycopy from="app.server.@{app.server.type}.bin.dir" name="test.app.server.bin.dir" />
+
+			<echo>-----------------------------------------------------------</echo>
+			<echo>app.server.type=@{app.server.type}</echo>
+			<echo>setup.testable.jboss=@{setup.testable.jboss}</echo>
+			<echo>setup.testable.tomcat=@{setup.testable.tomcat}</echo>
+			<echo>test.build.fix.pack.zip.url=@{test.build.fix.pack.zip.url}</echo>
+			<echo>test.fix.pack.base.url=@{test.fix.pack.base.url}</echo>
+			<echo>test.license.xml.url=@{test.license.xml.url}</echo>
+			<echo>test.plugins.war.zip.url=@{test.plugins.war.zip.url}</echo>
+			<echo>test.portal.bundle.dependencies.zip.url=@{test.portal.bundle.dependencies.zip.url}</echo>
+			<echo>test.portal.bundle.elasticsearch.zip.url=@{test.portal.bundle.elasticsearch.zip.url}</echo>
+			<echo>test.portal.bundle.osgi.zip.url=@{test.portal.bundle.osgi.zip.url}</echo>
+			<echo>test.portal.bundle.tools.zip.url=@{test.portal.bundle.tools.zip.url}</echo>
+			<echo>test.portal.bundle.war.url=@{test.portal.bundle.war.url}</echo>
+			<echo>test.portal.bundle.zip.url=@{test.portal.bundle.zip.url}</echo>
+			<echo>test.sql.zip.url=@{test.sql.zip.url}</echo>
+			<echo>-----------------------------------------------------------</echo>
+			<echo>test.app.server.bin.dir=${test.app.server.bin.dir}</echo>
+			<echo>test.class=${test.class}</echo>
+			<echo>-----------------------------------------------------------</echo>
 
 			<antcall inheritAll="false" target="prepare-test-bundle">
 				<param if:set="test.class" name="test.class" value="${test.class}" />
@@ -1569,6 +1590,7 @@ app.server.type=@{app.server.type}]]></echo>
 									test.license.xml.url="${test.license.xml.url}"
 									test.plugins.war.zip.url="@{test.plugins.war.zip.url}"
 									test.portal.bundle.dependencies.zip.url="${test.portal.bundle.dependencies.zip.url}"
+									test.portal.bundle.elasticsearch.zip.url="${test.portal.bundle.elasticsearch.zip.url}"
 									test.portal.bundle.osgi.zip.url="${test.portal.bundle.osgi.zip.url}"
 									test.portal.bundle.tools.zip.url="${test.portal.bundle.tools.zip.url}"
 									test.portal.bundle.war.url="${test.portal.bundle.war.url}"
@@ -2768,6 +2790,7 @@ log.sanitizer.enabled=false</echo>
 								test.fix.pack.base.url="${test.fix.pack.base.url}"
 								test.license.xml.url="${test.license.xml.url}"
 								test.portal.bundle.dependencies.zip.url="${test.portal.bundle.dependencies.zip.url}"
+								test.portal.bundle.elasticsearch.zip.url="${test.portal.bundle.elasticsearch.zip.url}"
 								test.portal.bundle.osgi.zip.url="${test.portal.bundle.osgi.zip.url}"
 								test.portal.bundle.tools.zip.url="${test.portal.bundle.tools.zip.url}"
 								test.portal.bundle.war.url="${test.portal.bundle.war.url}"
@@ -6265,6 +6288,7 @@ ${output.content}</echo>
 									test.fix.pack.base.url="${test.fix.pack.base.url}"
 									test.license.xml.url="${test.license.xml.url}"
 									test.portal.bundle.dependencies.zip.url="${test.portal.bundle.dependencies.zip.url}"
+									test.portal.bundle.elasticsearch.zip.url="${test.portal.bundle.elasticsearch.zip.url}"
 									test.portal.bundle.osgi.zip.url="${test.portal.bundle.osgi.zip.url}"
 									test.portal.bundle.tools.zip.url="${test.portal.bundle.tools.zip.url}"
 									test.portal.bundle.war.url="${test.portal.bundle.war.url}"
