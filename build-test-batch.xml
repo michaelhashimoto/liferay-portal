@@ -789,6 +789,7 @@ mariadb.executable=${mariadb.executable}]]></echo>
 				<param name="test.build.bundle.zip.url" value="@{test.portal.bundle.zip.url}" />
 				<param name="test.build.fix.pack.zip.url" value="@{test.build.fix.pack.zip.url}" />
 				<param name="test.build.portal.dependencies.zip.url" value="@{test.portal.bundle.dependencies.zip.url}" />
+				<param name="test.build.portal.elasticsearch.zip.url" value="@{test.portal.bundle.elasticsearch.zip.url}" />
 				<param name="test.build.portal.osgi.zip.url" value="@{test.portal.bundle.osgi.zip.url}" />
 				<param name="test.build.portal.tools.zip.url" value="@{test.portal.bundle.tools.zip.url}" />
 				<param name="test.build.portal.war.url" value="@{test.portal.bundle.war.url}" />
@@ -870,6 +871,12 @@ mariadb.executable=${mariadb.executable}]]></echo>
 					<delete file="plugins.war.zip" />
 				</then>
 			</if>
+
+			<execute>
+				<![CDATA[
+					ls ${liferay.home}
+				]]>
+			</execute>
 		</sequential>
 	</macrodef>
 

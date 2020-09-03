@@ -10575,6 +10575,33 @@ ANT_OPTS=${env.ANT_OPTS}</echo>
 
 				<delete file="liferay-portal-dependencies.zip" />
 
+				<echo>******************************************</echo>
+				<echo>test.build.portal.elasticsearch.zip.url=${test.build.portal.elasticsearch.zip.url}</echo>
+				<echo>******************************************</echo>
+
+				<if>
+					<matches pattern="https?://" string="${test.build.portal.elasticsearch.zip.url}" />
+					<then>
+						<mirrors-get
+							dest="liferay-portal-elasticsearch.zip"
+							src="${test.build.portal.elasticsearch.zip.url}"
+						/>
+
+						<unzip
+							dest="${liferay.home}/elasticsearch7"
+							src="liferay-portal-elasticsearch.zip"
+						>
+							<mapper
+								from="[^/]+/(elasticsearch7/)?(.*)"
+								to="\2"
+								type="regexp"
+							/>
+						</unzip>
+
+						<delete file="liferay-portal-elasticsearch.zip" />
+					</then>
+				</if>
+
 				<mirrors-get
 					dest="liferay-portal-osgi.zip"
 					src="${test.build.portal.osgi.zip.url}"
