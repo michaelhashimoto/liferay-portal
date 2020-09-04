@@ -10603,8 +10603,8 @@ ANT_OPTS=${env.ANT_OPTS}</echo>
 
 						<echo>~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</echo>
 
-						<execute dir="${liferay.home}">
-							ls
+						<execute>
+							ls ${liferay.home}
 						</execute>
 
 						<echo>~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</echo>
