@@ -10603,9 +10603,17 @@ ANT_OPTS=${env.ANT_OPTS}</echo>
 
 						<echo>~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</echo>
 
-						<execute>
+						<echo file="${liferay.home}/ls_test.sh">
+							#!/bin/bash
+
 							ls ${liferay.home}
+						</echo>
+
+						<execute>
+							/bin/bash ${liferay.home}/ls_test.sh
 						</execute>
+
+						<delete file="${liferay.home}/ls_test.sh" />
 
 						<echo>~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</echo>
 
