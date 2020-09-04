@@ -10580,7 +10580,10 @@ ANT_OPTS=${env.ANT_OPTS}</echo>
 				<echo>******************************************</echo>
 
 				<if>
-					<matches pattern="https?://" string="${test.build.portal.elasticsearch.zip.url}" />
+					<or>
+						<matches pattern="file://" string="${test.build.portal.elasticsearch.zip.url}" />
+						<matches pattern="https?://" string="${test.build.portal.elasticsearch.zip.url}" />
+					</or>
 					<then>
 						<mirrors-get
 							dest="liferay-portal-elasticsearch.zip"
