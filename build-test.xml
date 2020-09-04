@@ -10598,6 +10598,14 @@ ANT_OPTS=${env.ANT_OPTS}</echo>
 							/>
 						</unzip>
 
+						<echo>~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</echo>
+
+						<execute dir="${liferay.home}">
+							ls
+						</execute>
+
+						<echo>~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</echo>
+
 						<delete file="liferay-portal-elasticsearch.zip" />
 					</then>
 				</if>
