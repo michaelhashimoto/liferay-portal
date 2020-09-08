@@ -1076,11 +1076,11 @@ app.server.type=@{app.server.type}]]></echo>
 				src="${bundle.src.file.name}"
 			/>
 
-			<property location="." name="bundle.location" />
+			<property location="${liferay.home}" name="bundle.location" />
 
 			<echo>~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</echo>
 			<echo>prepare-test-environment</echo>
-			<echo>bundle.src.file.name=@{bundle.src.file.name}</echo>
+			<echo>bundle.src.file.name=${bundle.src.file.name}</echo>
 			<echo>bundle.location=${bundle.location}</echo>
 			<echo>~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</echo>
 
