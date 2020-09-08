@@ -1088,6 +1088,8 @@ app.server.type=@{app.server.type}]]></echo>
 				#!/bin/bash
 
 				ls ${bundle.location}
+
+				find ${bundle.location}/elasticsearch7
 			</echo>
 
 			<execute>
