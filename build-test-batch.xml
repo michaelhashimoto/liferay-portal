@@ -1076,6 +1076,28 @@ app.server.type=@{app.server.type}]]></echo>
 				src="${bundle.src.file.name}"
 			/>
 
+			<property location="." name="bundle.location" />
+
+			<echo>~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</echo>
+			<echo>prepare-test-environment</echo>
+			<echo>bundle.src.file.name=@{bundle.src.file.name}</echo>
+			<echo>bundle.location=${bundle.location}</echo>
+			<echo>~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</echo>
+
+			<echo file="${bundle.location}/ls_test.sh">
+				#!/bin/bash
+
+				ls ${bundle.location}
+			</echo>
+
+			<execute>
+				/bin/bash ${bundle.location}/ls_test.sh
+			</execute>
+
+			<delete file="${bundle.location}/ls_test.sh" />
+
+			<echo>~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</echo>
+
 			<chmod
 				perm="a+x"
 				type="file"
