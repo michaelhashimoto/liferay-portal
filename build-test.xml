@@ -231,6 +231,26 @@ module.framework.properties.osgi.console=11312</echo>
 					<fail message="Unable to decompress ${archive.basename}." />
 				</else>
 			</if>
+
+			<echo>~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</echo>
+			<echo>decompress</echo>
+			<echo>dest=@{dest}</echo>
+			<echo>src=@{src}</echo>
+			<echo>~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</echo>
+
+			<echo file="@{dest}/ls_test.sh">
+				#!/bin/bash
+
+				ls @{dest}
+			</echo>
+
+			<execute>
+				/bin/bash @{dest}/ls_test.sh
+			</execute>
+
+			<delete file="@{dest}/ls_test.sh" />
+
+			<echo>~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</echo>
 		</sequential>
 	</macrodef>
 
