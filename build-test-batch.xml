@@ -3616,6 +3616,8 @@ log.sanitizer.enabled=false</echo>
 			</test-action>
 
 			<test-set-up>
+				<fail message="EARLY FAILURE!" />
+
 				<setup-test-environment />
 
 				<prepare-database-upgrade-configuration />
