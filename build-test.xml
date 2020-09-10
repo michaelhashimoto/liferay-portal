@@ -10605,21 +10605,47 @@ ANT_OPTS=${env.ANT_OPTS}</echo>
 						<matches pattern="https?://" string="${test.build.portal.elasticsearch.zip.url}" />
 					</or>
 					<then>
+						<propertyregex
+							input="${test.build.portal.elasticsearch.zip.url}"
+							override="true"
+							property="test.build.portal.elasticsearch.zip.name"
+							regexp=".+/([^/]+)"
+							replace="\1"
+						/>
+
 						<mirrors-get
-							dest="liferay-portal-elasticsearch.zip"
+							dest="${test.build.portal.elasticsearch.zip.name}"
 							src="${test.build.portal.elasticsearch.zip.url}"
 						/>
 
-						<unzip
-							dest="${liferay.home}/elasticsearch7"
-							src="liferay-portal-elasticsearch.zip"
-						>
-							<mapper
-								from="[^/]+/(elasticsearch7/)?(.*)"
-								to="\2"
-								type="regexp"
-							/>
-						</unzip>
+						<tstamp>
+							<format pattern="yyyyMMddkkmmssSSS" property="tstamp.value" />
+						</tstamp>
+
+						<mkdir dir="${tstamp.value}" />
+
+						<decompress
+							dest="${tstamp.value}"
+							src="${test.build.portal.elasticsearch.zip.name}"
+						/>
+
+						<execute>
+							echo "---------------"
+
+							ls bundles/
+
+							echo "---------------"
+
+							cp -r ${tstamp.value}/*/elasticsearch7 bundles/
+
+							ls bundles/
+
+							echo "---------------"
+						</execute>
+
+						<delete file="${test.build.portal.elasticsearch.zip.name}" />
+
+						<delete dir="${tstamp.value}" />
 
 						<echo>~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</echo>
 
