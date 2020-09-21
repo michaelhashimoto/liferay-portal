@@ -133,7 +133,7 @@ public class PoshiProseDefinitionTest extends TestCase {
 		"PoshiXMLSyntax.testcase";
 
 	private static final String _TEST_BASE_DIR_NAME =
-		"src/test/resources/com/liferay/poshi/runner/dependencies/prose/";
+		"src/test/resources/com/liferay/poshi/core/dependencies/prose/";
 
 	private PoshiProseDefinition _poshiProseDefinition;
 	private File _testBaseDir;

@@ -914,7 +914,7 @@ public class PoshiValidationTest extends TestCase {
 		String invalidClassName = "com.liferay.poshi.runner.util.FakeUtil";
 		String invalidMethodName = "FakeMethod";
 		String invalidUtilityClassName =
-			"com.liferay.poshi.runner.PoshiGetterUtil";
+			"com.liferay.poshi.core.PoshiGetterUtil";
 		String invalidUtilityClassMethodName = "getCurrentNamespace";
 		String validClassName = "com.liferay.poshi.core.util.StringUtil";
 		String validMethodName = "add";

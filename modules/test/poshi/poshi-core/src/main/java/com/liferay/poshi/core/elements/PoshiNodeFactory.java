@@ -221,7 +221,7 @@ public abstract class PoshiNodeFactory {
 
 			for (ClassPath.ClassInfo classInfo :
 					classPath.getTopLevelClasses(
-						"com.liferay.poshi.runner.elements")) {
+						"com.liferay.poshi.core.elements")) {
 
 				poshiElementClasses.add(classInfo.load());
 			}

@@ -298,6 +298,6 @@ public class PoshiElementFactoryTest {
 	}
 
 	private static final String _BASE_DIR =
-		"src/test/resources/com/liferay/poshi/runner/dependencies/elements/";
+		"src/test/resources/com/liferay/poshi/core/dependencies/elements/";
 
 }
