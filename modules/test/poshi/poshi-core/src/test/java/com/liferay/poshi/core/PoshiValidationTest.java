@@ -58,8 +58,7 @@ public class PoshiValidationTest extends TestCase {
 			"src/test/resources/com/liferay/poshi/core/dependencies/test";
 
 		String poshiValidationDirName =
-			"src/test/resources/com/liferay/poshi/core/dependencies" +
-				"/validation";
+			"src/test/resources/com/liferay/poshi/core/dependencies/validation";
 
 		PoshiContext.readFiles(
 			poshiFileNames, poshiTestDirName, poshiValidationDirName);

@@ -80,8 +80,8 @@ public class PoshiGetterUtilTest extends TestCase {
 	@Test
 	public void testGetRootElementFromURL() throws Exception {
 		URL url = new URL(
-			"file:src/test/resources/com/liferay/poshi/core/dependencies" +
-				"/test/Test.testcase");
+			"file:src/test/resources/com/liferay/poshi/core/dependencies/test" +
+				"/Test.testcase");
 
 		Element rootElement = PoshiGetterUtil.getRootElementFromURL(url);
 
