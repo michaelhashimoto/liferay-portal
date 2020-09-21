@@ -43,7 +43,7 @@ public class PoshiGetterUtilTest extends TestCase {
 	@Test
 	public void testGetClassNameFromFilePath() {
 		String className = PoshiGetterUtil.getClassNameFromFilePath(
-			"/com/liferay/poshi/runner/dependencies/test/Test.testcase");
+			"/com/liferay/poshi/core/dependencies/test/Test.testcase");
 
 		Assert.assertEquals(
 			"getClassNameFromFilePath is failing", "Test", className);
@@ -52,7 +52,7 @@ public class PoshiGetterUtilTest extends TestCase {
 	@Test
 	public void testGetClassTypeFromFilePath() {
 		String classType = PoshiGetterUtil.getClassTypeFromFilePath(
-			"/com/liferay/poshi/runner/dependencies/test/Test.testcase");
+			"/com/liferay/poshi/core/dependencies/test/Test.testcase");
 
 		Assert.assertEquals(
 			"getClassTypeFromFilePath is failing", "test-case", classType);
@@ -80,7 +80,7 @@ public class PoshiGetterUtilTest extends TestCase {
 	@Test
 	public void testGetRootElementFromURL() throws Exception {
 		URL url = new URL(
-			"file:src/test/resources/com/liferay/poshi/runner/dependencies" +
+			"file:src/test/resources/com/liferay/poshi/core/dependencies" +
 				"/test/Test.testcase");
 
 		Element rootElement = PoshiGetterUtil.getRootElementFromURL(url);

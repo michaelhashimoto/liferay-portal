@@ -43,7 +43,7 @@ public class PoshiContextTest extends TestCase {
 			PoshiContext.POSHI_TEST_FILE_INCLUDES);
 
 		String poshiFileDir =
-			"src/test/resources/com/liferay/poshi/runner/dependencies/test";
+			"src/test/resources/com/liferay/poshi/core/dependencies/test";
 
 		PoshiContext.readFiles(poshiFileNames, poshiFileDir);
 	}
@@ -60,7 +60,7 @@ public class PoshiContextTest extends TestCase {
 			"Action2.action", PoshiContext.getDefaultNamespace());
 
 		String baseDirName = FileUtil.getCanonicalPath(
-			"src/test/resources/com/liferay/poshi/runner/");
+			"src/test/resources/com/liferay/poshi/core/");
 
 		File file = new File(baseDirName, "/dependencies/test/Action2.action");
 

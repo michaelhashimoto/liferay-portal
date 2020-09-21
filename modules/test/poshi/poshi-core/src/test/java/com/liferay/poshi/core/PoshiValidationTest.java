@@ -55,10 +55,10 @@ public class PoshiValidationTest extends TestCase {
 			PoshiContext.POSHI_TEST_FILE_INCLUDES);
 
 		String poshiTestDirName =
-			"src/test/resources/com/liferay/poshi/runner/dependencies/test";
+			"src/test/resources/com/liferay/poshi/core/dependencies/test";
 
 		String poshiValidationDirName =
-			"src/test/resources/com/liferay/poshi/runner/dependencies" +
+			"src/test/resources/com/liferay/poshi/core/dependencies" +
 				"/validation";
 
 		PoshiContext.readFiles(
@@ -911,7 +911,7 @@ public class PoshiValidationTest extends TestCase {
 	@Test
 	public void testValidateMethodExecuteElement() {
 		String filePath = "validateMethodExecuteElement.macro";
-		String invalidClassName = "com.liferay.poshi.runner.util.FakeUtil";
+		String invalidClassName = "com.liferay.poshi.core.util.FakeUtil";
 		String invalidMethodName = "FakeMethod";
 		String invalidUtilityClassName =
 			"com.liferay.poshi.core.PoshiGetterUtil";
@@ -1473,7 +1473,7 @@ public class PoshiValidationTest extends TestCase {
 	protected String getFilePath(String fileName) {
 		String filePath = FileUtil.getCanonicalPath(
 			PropsValues.TEST_BASE_DIR_NAME +
-				"resources/com/liferay/poshi/runner/dependencies/validation/" +
+				"resources/com/liferay/poshi/core/dependencies/validation/" +
 					fileName);
 
 		if (OSDetector.isWindows()) {
