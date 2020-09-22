@@ -1,0 +1,5 @@
+<definition>
+	<command name="Smoke">
+		<echo message="test" />
+	</command>
+</definition>
