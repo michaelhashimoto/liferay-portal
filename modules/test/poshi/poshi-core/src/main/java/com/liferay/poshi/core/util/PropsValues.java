@@ -129,14 +129,14 @@ public class PropsValues {
 	public static final String TEST_BASE_DIR_NAME = PropsUtil.get(
 		"test.base.dir.name");
 
+	public static final int TEST_BATCH_GROUP_COUNT = GetterUtil.getInteger(
+		PropsUtil.get("test.batch.group.count"));
+
 	public static final String TEST_BATCH_GROUP_IGNORE_REGEX = PropsUtil.get(
 		"test.batch.group.ignore.regex");
 
 	public static final int TEST_BATCH_MAX_GROUP_SIZE = GetterUtil.getInteger(
 		PropsUtil.get("test.batch.max.group.size"));
-
-	public static final int TEST_BATCH_MAX_SUBGROUP_SIZE =
-		GetterUtil.getInteger(PropsUtil.get("test.batch.max.subgroup.size"));
 
 	public static final String TEST_BATCH_PROPERTY_QUERY = PropsUtil.get(
 		"test.batch.property.query");

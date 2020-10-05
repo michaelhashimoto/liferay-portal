@@ -21,6 +21,7 @@ import com.liferay.poshi.core.util.FileUtil;
 import java.io.FileInputStream;
 import java.io.InputStream;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
@@ -103,7 +104,9 @@ public class PoshiRunnerCommandExecutor {
 	protected static void executePQLQuery() throws Exception {
 		System.out.println("Executing task: executePQLQuery");
 
-		PoshiContext.executePQLQuery();
+		for (String classCommandName : PoshiContext.executePQLQuery()) {
+			System.out.println(classCommandName);
+		}
 	}
 
 	protected static void populateSystemProperties() throws Exception {
