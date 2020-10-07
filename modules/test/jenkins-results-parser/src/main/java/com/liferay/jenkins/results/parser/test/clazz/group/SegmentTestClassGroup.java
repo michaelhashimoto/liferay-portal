@@ -32,6 +32,14 @@ public class SegmentTestClassGroup extends BaseTestClassGroup {
 		axisTestClassGroup.setSegmentTestClassGroup(this, segmentIndex);
 	}
 
+	public int getAxisCount() {
+		return _axisTestClassGroups.size();
+	}
+
+	public AxisTestClassGroup getAxisTestClassGroup(int segmentIndex) {
+		return _axisTestClassGroups.get(segmentIndex);
+	}
+
 	public int getBatchIndex() {
 		return _batchIndex;
 	}
