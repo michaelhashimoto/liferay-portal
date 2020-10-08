@@ -456,8 +456,6 @@ public abstract class BatchTestClassGroup extends BaseTestClassGroup {
 
 			batchIndex++;
 		}
-
-		setSegmentTestClassGroups();
 	}
 
 	protected void setSegmentTestClassGroups() {
