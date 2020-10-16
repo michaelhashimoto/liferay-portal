@@ -94,13 +94,29 @@ public class LiferaySeleniumUtil {
 
 		SAXReader saxReader = new SAXReader();
 
-		content = "<log4j>" + content + "</log4j>";
-		content = content.replaceAll("log4j:", "");
+		String newContent = "<log4j>" + content + "</log4j>";
+
+		newContent = newContent.replaceAll("log4j:", "");
 
 		InputStream inputStream = new ByteArrayInputStream(
-			content.getBytes("UTF-8"));
+			newContent.getBytes("UTF-8"));
 
-		Document document = saxReader.read(inputStream);
+		Document document;
+
+		try {
+			document = saxReader.read(inputStream);
+		}
+		catch (Exception exception) {
+			System.out.println("=============================================");
+			System.out.println(PropsValues.TEST_CONSOLE_LOG_FILE_NAME);
+			System.out.println("---------------------------------------------");
+			System.out.println(content);
+			System.out.println("---------------------------------------------");
+			System.out.println(newContent);
+			System.out.println("---------------------------------------------");
+
+			throw exception;
+		}
 
 		Element rootElement = document.getRootElement();
 
@@ -513,6 +529,8 @@ public class LiferaySeleniumUtil {
 				throw new PoshiRunnerWarningException(
 					largeConsoleLogSizeMessage);
 			}
+
+			System.out.println("Reading: " + url);
 
 			sb.append(FileUtil.read(url));
 		}
