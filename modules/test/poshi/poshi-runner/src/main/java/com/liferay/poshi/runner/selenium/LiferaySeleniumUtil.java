@@ -93,19 +93,14 @@ public class LiferaySeleniumUtil {
 			return;
 		}
 
-		SAXReader saxReader = new SAXReader();
-
 		String newContent = "<log4j>" + content + "</log4j>";
 
 		newContent = newContent.replaceAll("log4j:", "");
 
-		InputStream inputStream = new ByteArrayInputStream(
-			newContent.getBytes("UTF-8"));
-
 		Document document;
 
 		try {
-			document = saxReader.read(inputStream);
+			document = Dom4JUtil.parse(newContent);
 		}
 		catch (Exception exception) {
 			System.out.println("=============================================");
