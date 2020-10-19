@@ -15,12 +15,15 @@
 package com.liferay.poshi.core;
 
 import com.liferay.poshi.core.elements.PoshiElement;
+import com.liferay.poshi.core.util.Dom4JUtil;
+import com.liferay.poshi.core.util.FileUtil;
 import com.liferay.poshi.core.util.OSDetector;
 import com.liferay.poshi.core.util.PropsUtil;
 import com.liferay.poshi.core.util.PropsValues;
 import com.liferay.poshi.core.util.StringUtil;
 import com.liferay.poshi.core.util.Validator;
 
+import java.io.File;
 import java.lang.reflect.Method;
 
 import java.util.ArrayList;
@@ -35,6 +38,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.dom4j.Attribute;
+import org.dom4j.Document;
 import org.dom4j.Element;
 
 /**
@@ -55,6 +59,62 @@ public class PoshiValidation {
 		PoshiContext.readFiles();
 
 		validate();
+
+		List<String> _errorTimestamps = new ArrayList<>();
+
+		String content = FileUtil.read(
+				new File("/Users/michaelhashimoto/Downloads/test.xml"));
+
+		if (content.equals("")) {
+			return;
+		}
+
+		Document document = Dom4JUtil.parse(content);
+
+		Element rootElement = document.getRootElement();
+
+		List<Element> eventElements = rootElement.elements("event");
+
+		List<Exception> exceptions = new ArrayList<>();
+
+		for (Element eventElement : eventElements) {
+			Element messageElement0 = eventElement.element("message");
+
+			String messageText0 = messageElement0.getText();
+
+			if (messageText0.length() > 1000) {
+				System.out.println(messageText0.length());
+				System.out.println(messageText0);
+				System.out.println("--------");
+			}
+
+			String level = eventElement.attributeValue("level");
+
+			if (level.equals("ERROR") || level.equals("FATAL") ||
+				level.equals("WARN")) {
+
+				String timestamp = eventElement.attributeValue("timestamp");
+
+				if (_errorTimestamps.contains(timestamp)) {
+					continue;
+				}
+
+				_errorTimestamps.add(timestamp);
+
+				Element messageElement = eventElement.element("message");
+
+				String messageText = messageElement.getText();
+
+				StringBuilder sb = new StringBuilder();
+
+				sb.append("LIFERAY_ERROR: ");
+				sb.append(messageText);
+
+				System.out.println(sb.toString());
+
+				exceptions.add(new RuntimeException(sb.toString()));
+			}
+		}
 	}
 
 	public static void validate() throws Exception {
