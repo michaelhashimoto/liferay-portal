@@ -62,8 +62,7 @@ public class PoshiValidation {
 
 		List<String> _errorTimestamps = new ArrayList<>();
 
-		String content = FileUtil.read(
-				new File("/Users/michaelhashimoto/Downloads/test.xml"));
+		String content = FileUtil.read(new File("test.xml"));
 
 		if (content.equals("")) {
 			return;
