@@ -15,6 +15,7 @@
 package com.liferay.poshi.runner.selenium;
 
 import com.liferay.poshi.core.selenium.LiferaySelenium;
+import com.liferay.poshi.core.util.Dom4JUtil;
 import com.liferay.poshi.core.util.FileUtil;
 import com.liferay.poshi.core.util.GetterUtil;
 import com.liferay.poshi.core.util.OSDetector;
@@ -643,14 +644,9 @@ public class LiferaySeleniumUtil {
 		throws Exception {
 
 		if (Validator.isNotNull(PropsValues.IGNORE_ERRORS_FILE_NAME)) {
-			SAXReader saxReader = new SAXReader();
-
 			String content = FileUtil.read(PropsValues.IGNORE_ERRORS_FILE_NAME);
 
-			InputStream inputStream = new ByteArrayInputStream(
-				content.getBytes("UTF-8"));
-
-			Document document = saxReader.read(inputStream);
+			Document document = Dom4JUtil.parse(content);
 
 			Element rootElement = document.getRootElement();
 
