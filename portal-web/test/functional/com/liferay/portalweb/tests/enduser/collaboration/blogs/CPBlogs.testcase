@@ -246,6 +246,7 @@ definition {
 
 	@priority = "5"
 	test DeleteBlogsEntries {
+		property minimum.slave.ram = "32";
 		property portal.acceptance = "true";
 
 		JSONBlog.addEntry(
