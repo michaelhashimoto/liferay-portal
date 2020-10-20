@@ -3043,65 +3043,145 @@ ${tomcat-gc-log}
 				<isset property="env.TOP_LEVEL_JOB_NAME" />
 			</condition>
 
-			<beanshell>
-				<![CDATA[
-					import com.liferay.jenkins.results.parser.Job;
-					import com.liferay.jenkins.results.parser.JobFactory;
-					import com.liferay.jenkins.results.parser.test.clazz.group.AxisTestClassGroup;
-					import com.liferay.jenkins.results.parser.test.clazz.group.BatchTestClassGroup;
-					import com.liferay.jenkins.results.parser.test.clazz.group.TestClassGroupFactory;
+			<if>
+				<equals arg1="${test.batch.segment.enabled}" arg2="true" />
+				<then>
+					<local name="test.batch.segment.index" />
 
-					Job job = JobFactory.newJob(project.getProperty("top.level.job.name"), project.getProperty("env.CI_TEST_SUITE"), project.getProperty("portal.branch.name"), project.getProperty("env.REPOSITORY_NAME"));
+					<propertyregex
+						input="${env.JOB_VARIANT}"
+						property="test.batch.segment.index"
+						regexp="[^/]+/(\d+)"
+						replace="\1"
+					/>
 
-					BatchTestClassGroup.BuildProfile buildProfile = BatchTestClassGroup.BuildProfile.PORTAL;
+					<property name="test.batch.segment.index" value="0" />
 
-					String testPortalBuildProfile = project.getProperty("build.profile");
+					<beanshell>
+						<![CDATA[
+							import com.liferay.jenkins.results.parser.Job;
+							import com.liferay.jenkins.results.parser.JobFactory;
+							import com.liferay.jenkins.results.parser.test.clazz.group.AxisTestClassGroup;
+							import com.liferay.jenkins.results.parser.test.clazz.group.BatchTestClassGroup;
+							import com.liferay.jenkins.results.parser.test.clazz.group.SegmentTestClassGroup;
+							import com.liferay.jenkins.results.parser.test.clazz.group.TestClassGroupFactory;
 
-					if ((testPortalBuildProfile != null) && testPortalBuildProfile.equals("dxp")) {
-						buildProfile = BatchTestClassGroup.BuildProfile.DXP;
-					}
+							Job job = JobFactory.newJob(project.getProperty("top.level.job.name"), project.getProperty("env.CI_TEST_SUITE"), project.getProperty("portal.branch.name"), project.getProperty("env.REPOSITORY_NAME"));
 
-					BatchTestClassGroup batchTestClassGroup = TestClassGroupFactory.newBatchTestClassGroup(project.getProperty("test.batch.name"), buildProfile, job);
+							BatchTestClassGroup.BuildProfile buildProfile = BatchTestClassGroup.BuildProfile.PORTAL;
 
-					int axisCount = batchTestClassGroup.getAxisCount();
+							String testPortalBuildProfile = project.getProperty("build.profile");
 
-					StringBuilder sb = new StringBuilder();
+							if ((testPortalBuildProfile != null) && testPortalBuildProfile.equals("dxp")) {
+								buildProfile = BatchTestClassGroup.BuildProfile.DXP;
+							}
 
-					for (i = 0; i < axisCount; i++) {
-						AxisTestClassGroup axisTestClassGroup = batchTestClassGroup.getAxisTestClassGroup(i);
+							BatchTestClassGroup batchTestClassGroup = TestClassGroupFactory.newBatchTestClassGroup(project.getProperty("test.batch.name"), buildProfile, job);
 
-						List testClassGroup = axisTestClassGroup.getTestClassFiles();
+							SegmentTestClassGroup segmentTestClassGroup = batchTestClassGroup.getSegmentTestClassGroup(Integer.valueOf(project.getProperty("test.batch.segment.index")));
 
-						sb.append("TEST_CLASS_GROUP_");
-						sb.append(i);
-						sb.append("=");
+							int axisCount = segmentTestClassGroup.getAxisCount();
 
-						for (File testClass : testClassGroup) {
-							sb.append(testClass.toPath());
-							sb.append(",");
-						}
+							StringBuilder sb = new StringBuilder();
 
-						if (!testClassGroup.isEmpty()) {
-							sb.setLength(sb.length() - 1);
-						}
+							for (i = 0; i < axisCount; i++) {
+								AxisTestClassGroup axisTestClassGroup = segmentTestClassGroup.getAxisTestClassGroup(i);
 
-						sb.append("\n\n");
-					}
+								List testClassGroup = axisTestClassGroup.getTestClassFiles();
 
-					sb.append("TEST_CLASS_GROUPS=");
+								sb.append("TEST_CLASS_GROUP_");
+								sb.append(i);
+								sb.append("=");
 
-					for (int i = 0; i < axisCount; i++) {
-						sb.append(i);
-						sb.append(" ");
-					}
+								for (File testClass : testClassGroup) {
+									sb.append(testClass.toPath());
+									sb.append(",");
+								}
 
-					if (axisCount > 0) {
-						sb.setLength(sb.length() - 1);
-					}
+								if (!testClassGroup.isEmpty()) {
+									sb.setLength(sb.length() - 1);
+								}
 
-					project.setProperty("test.class.file.names.properties.content", sb.toString());
-				]]>
-			</beanshell>
+								sb.append("\n\n");
+							}
+
+							sb.append("TEST_CLASS_GROUPS=");
+
+							for (int i = 0; i < axisCount; i++) {
+								sb.append(i);
+								sb.append(" ");
+							}
+
+							if (axisCount > 0) {
+								sb.setLength(sb.length() - 1);
+							}
+
+							project.setProperty("test.class.file.names.properties.content", sb.toString());
+						]]>
+					</beanshell>
+				</then>
+				<else>
+					<beanshell>
+						<![CDATA[
+							import com.liferay.jenkins.results.parser.Job;
+							import com.liferay.jenkins.results.parser.JobFactory;
+							import com.liferay.jenkins.results.parser.test.clazz.group.AxisTestClassGroup;
+							import com.liferay.jenkins.results.parser.test.clazz.group.BatchTestClassGroup;
+							import com.liferay.jenkins.results.parser.test.clazz.group.TestClassGroupFactory;
+
+							Job job = JobFactory.newJob(project.getProperty("top.level.job.name"), project.getProperty("env.CI_TEST_SUITE"), project.getProperty("portal.branch.name"), project.getProperty("env.REPOSITORY_NAME"));
+
+							BatchTestClassGroup.BuildProfile buildProfile = BatchTestClassGroup.BuildProfile.PORTAL;
+
+							String testPortalBuildProfile = project.getProperty("build.profile");
+
+							if ((testPortalBuildProfile != null) && testPortalBuildProfile.equals("dxp")) {
+								buildProfile = BatchTestClassGroup.BuildProfile.DXP;
+							}
+
+							BatchTestClassGroup batchTestClassGroup = TestClassGroupFactory.newBatchTestClassGroup(project.getProperty("test.batch.name"), buildProfile, job);
+
+							int axisCount = batchTestClassGroup.getAxisCount();
+
+							StringBuilder sb = new StringBuilder();
+
+							for (i = 0; i < axisCount; i++) {
+								AxisTestClassGroup axisTestClassGroup = batchTestClassGroup.getAxisTestClassGroup(i);
+
+								List testClassGroup = axisTestClassGroup.getTestClassFiles();
+
+								sb.append("TEST_CLASS_GROUP_");
+								sb.append(i);
+								sb.append("=");
+
+								for (File testClass : testClassGroup) {
+									sb.append(testClass.toPath());
+									sb.append(",");
+								}
+
+								if (!testClassGroup.isEmpty()) {
+									sb.setLength(sb.length() - 1);
+								}
+
+								sb.append("\n\n");
+							}
+
+							sb.append("TEST_CLASS_GROUPS=");
+
+							for (int i = 0; i < axisCount; i++) {
+								sb.append(i);
+								sb.append(" ");
+							}
+
+							if (axisCount > 0) {
+								sb.setLength(sb.length() - 1);
+							}
+
+							project.setProperty("test.class.file.names.properties.content", sb.toString());
+						]]>
+					</beanshell>
+				</else>
+			</if>
 
 			<echo file="test.class.file.names.properties">${test.class.file.names.properties.content}</echo>
 
