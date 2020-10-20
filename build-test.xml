@@ -12181,31 +12181,126 @@ if (ppstate.equals("normal")) {
 	<target name="record-test-case-method-names">
 		<setup-libs />
 
-		<delete failonerror="false" file="${test.ext.properties.file}" />
-
 		<if>
-			<isset property="test.base.dir.name" />
+			<equals arg1="${test.batch.segment.enabled}" arg2="true" />
 			<then>
-				<antcall inheritAll="false" target="prepare-poshi-runner-properties">
-					<param name="test.base.dir.name" value="${test.base.dir.name}" />
-					<param name="test.batch.run.type" value="${test.batch.run.type}" />
-					<param name="test.portal.instance" value="${test.portal.instance}" />
-				</antcall>
+				<beanshell>
+					<![CDATA[
+						import com.liferay.jenkins.results.parser.JenkinsResultsParserUtil;
+						import com.liferay.jenkins.results.parser.Job;
+						import com.liferay.jenkins.results.parser.JobFactory;
+						import com.liferay.jenkins.results.parser.test.clazz.group.AxisTestClassGroup;
+						import com.liferay.jenkins.results.parser.test.clazz.group.BatchTestClassGroup;
+						import com.liferay.jenkins.results.parser.test.clazz.group.SegmentTestClassGroup;
+						import com.liferay.jenkins.results.parser.test.clazz.group.TestClassGroupFactory;
+
+						Job job = JobFactory.newJob(project.getProperty("top.level.job.name"), project.getProperty("env.CI_TEST_SUITE"), project.getProperty("portal.branch.name"), project.getProperty("env.REPOSITORY_NAME"));
+
+						BatchTestClassGroup.BuildProfile buildProfile = BatchTestClassGroup.BuildProfile.PORTAL;
+
+						String testPortalBuildProfile = project.getProperty("build.profile");
+
+						if ((testPortalBuildProfile != null) && testPortalBuildProfile.equals("dxp")) {
+							buildProfile = BatchTestClassGroup.BuildProfile.DXP;
+						}
+
+						StringBuilder sb = new StringBuilder();
+
+						BatchTestClassGroup batchTestClassGroup = TestClassGroupFactory.newBatchTestClassGroup(project.getProperty("test.batch.name"), buildProfile, job);
+
+						int segmentCount = batchTestClassGroup.getSegmentCount();
+
+						for (i = 0; i < segmentCount; i++) {
+							SegmentTestClassGroup segmentTestClassGroup = batchTestClassGroup.getSegmentTestClassGroup(i);
+
+							int axisCount = segmentTestClassGroup.getAxisCount();
+
+							for (j = 0; j < axisCount; j++) {
+								AxisTestClassGroup axisTestClassGroup = segmentTestClassGroup.getAxisTestClassGroup(j);
+
+								List testClassGroup = axisTestClassGroup.getTestClassFiles();
+
+								sb.append("RUN_TEST_CASE_METHOD_GROUP_");
+								sb.append(i);
+								sb.append("_");
+								sb.append(j);
+								sb.append("=");
+
+								for (File testClass : testClassGroup) {
+									sb.append(testClass.toPath());
+									sb.append(",");
+								}
+
+								if (!testClassGroup.isEmpty()) {
+									sb.setLength(sb.length() - 1);
+								}
+
+								sb.append("\n");
+							}
+
+							sb.append("RUN_TEST_CASE_METHOD_GROUP_");
+							sb.append(i);
+							sb.append("=");
+
+							for (int j = 0; j < axisCount; j++) {
+								sb.append(i);
+								sb.append("_");
+								sb.append(j);
+								sb.append(" ");
+							}
+
+							if (axisCount > 0) {
+								sb.setLength(sb.length() - 1);
+							}
+
+							sb.append("\n\n");
+						}
+
+						sb.append("RUN_TEST_CASE_METHOD_GROUPS=");
+
+						for (int i = 0; i < segmentCount; i++) {
+							sb.append(i);
+							sb.append(" ");
+						}
+
+						if (segmentCount > 0) {
+							sb.setLength(sb.length() - 1);
+						}
+
+						project.setProperty("test.class.file.names.properties.content", sb.toString());
+
+						JenkinsResultsParserUtil.write(new File(project.getProperty("test.case.method.names.properties")), sb.toString());
+					]]>
+				</beanshell>
 			</then>
 			<else>
-				<antcall inheritAll="false" target="prepare-poshi-runner-properties">
-					<param name="test.batch.run.type" value="${test.batch.run.type}" />
-					<param name="test.portal.instance" value="${test.portal.instance}" />
-				</antcall>
+				<delete failonerror="false" file="${test.ext.properties.file}" />
+
+				<if>
+					<isset property="test.base.dir.name" />
+					<then>
+						<antcall inheritAll="false" target="prepare-poshi-runner-properties">
+							<param name="test.base.dir.name" value="${test.base.dir.name}" />
+							<param name="test.batch.run.type" value="${test.batch.run.type}" />
+							<param name="test.portal.instance" value="${test.portal.instance}" />
+						</antcall>
+					</then>
+					<else>
+						<antcall inheritAll="false" target="prepare-poshi-runner-properties">
+							<param name="test.batch.run.type" value="${test.batch.run.type}" />
+							<param name="test.portal.instance" value="${test.portal.instance}" />
+						</antcall>
+					</else>
+				</if>
+
+				<poshi-execute task="writePoshiProperties" />
+
+				<move
+					file="portal-web/test.case.method.names.properties"
+					tofile="test.case.method.names.properties"
+				/>
 			</else>
 		</if>
-
-		<poshi-execute task="writePoshiProperties" />
-
-		<move
-			file="portal-web/test.case.method.names.properties"
-			tofile="test.case.method.names.properties"
-		/>
 
 		<echo></echo>
 		<echo>##</echo>
