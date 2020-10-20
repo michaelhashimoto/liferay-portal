@@ -14,6 +14,8 @@
 
 package com.liferay.jenkins.results.parser.test.clazz.group;
 
+import com.liferay.jenkins.results.parser.AntException;
+import com.liferay.jenkins.results.parser.AntUtil;
 import com.liferay.jenkins.results.parser.JenkinsResultsParserUtil;
 import com.liferay.jenkins.results.parser.PortalTestClassJob;
 
@@ -65,6 +67,15 @@ public class TCKJunitBatchTestClassGroup extends BatchTestClassGroup {
 		PortalTestClassJob portalTestClassJob) {
 
 		super(batchName, buildProfile, portalTestClassJob);
+
+		try {
+			AntUtil.callTarget(
+				portalGitWorkingDirectory.getWorkingDirectory(),
+				"build-test-tck.xml", "prepare-tck");
+		}
+		catch (AntException antException) {
+			throw new RuntimeException(antException);
+		}
 
 		_tckHomeDirectory = new File(
 			JenkinsResultsParserUtil.getProperty(jobProperties, "tck.home"));
