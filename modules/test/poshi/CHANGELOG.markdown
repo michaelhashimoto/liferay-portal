@@ -1,5 +1,25 @@
 # Poshi Runner Change Log
 
+## 1.0.289
+
+### WebDriver
+
+* [POSHI-119](https://issues.liferay.com/browse/POSHI-119) - Make StringUtil.randomString generate the same random string with backend
+* [POSHI-124](https://issues.liferay.com/browse/POSHI-124) - Update poshi runner to 'org.seleniumhq.selenium:selenium-java:3.141.59'
+
+### Gradle
+
+* [POSHI-122](https://issues.liferay.com/browse/POSHI-122) - Use compile group for poshi-core in poshi-runner
+
+### Other
+
+* [LPS-105380](https://issues.liferay.com/browse/LPS-105380) - SourceFormatter Improvements
+* [LPS-111291](https://issues.liferay.com/browse/LPS-111291) - Upgrade Gradle to 6.2.2
+* [LPS-121824](https://issues.liferay.com/browse/LPS-121824) - Prepare branch for 7.4 releases
+* [LPS-122376](https://issues.liferay.com/browse/LPS-122376) - Use of library with known vulnerability: JUnit 4.12
+* [LRCI-1752](https://issues.liferay.com/browse/LRCI-1752) - Split Poshi Test Cases into lists so that it can be used in Jenkins Results Parser
+* [LRCI-1756](https://issues.liferay.com/browse/LRCI-1756) - Use Poshi Core within Jenkins Results Parser
+
 ## 1.0.283
 
 ### PQL
