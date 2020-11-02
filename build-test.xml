@@ -1020,7 +1020,7 @@ jdbc.counter.connectionProperties=oracle.jdbc.ReadTimeout=0;oracle.net.CONNECT_T
 					import com.liferay.jenkins.results.parser.test.clazz.group.SegmentTestClassGroup;
 					import com.liferay.jenkins.results.parser.test.clazz.group.TestClassGroupFactory;
 
-					public BatchTestClassGroup.BuildProfile getBuildProfile() {
+					public BatchTestClassGroup.BuildProfile getBatchBuildProfile() {
 						String buildProfile = project.getProperty("build.profile");
 
 						if ((buildProfile != null) && buildProfile.equals("dxp")) {
@@ -1028,6 +1028,16 @@ jdbc.counter.connectionProperties=oracle.jdbc.ReadTimeout=0;oracle.net.CONNECT_T
 						}
 
 						return BatchTestClassGroup.BuildProfile.PORTAL;
+					}
+
+					public Job.BuildProfile getJobBuildProfile() {
+						String buildProfile = project.getProperty("build.profile");
+
+						if ((buildProfile != null) && buildProfile.equals("dxp")) {
+							return Job.BuildProfile.DXP;
+						}
+
+						return Job.BuildProfile.PORTAL;
 					}
 
 					public int getSegmentID() {
@@ -1042,9 +1052,9 @@ jdbc.counter.connectionProperties=oracle.jdbc.ReadTimeout=0;oracle.net.CONNECT_T
 						return Integer.valueOf(jobVariant.replaceAll(jobVariantRegex, "$1"));
 					}
 
-					Job job = JobFactory.newJob(project.getProperty("top.level.job.name"), project.getProperty("test.suite.name"), project.getProperty("portal.branch.name"), project.getProperty("repository.name"), getBuildProfile());
+					Job job = JobFactory.newJob(project.getProperty("top.level.job.name"), project.getProperty("test.suite.name"), project.getProperty("portal.branch.name"), project.getProperty("repository.name"), getJobBuildProfile());
 
-					BatchTestClassGroup batchTestClassGroup = TestClassGroupFactory.newBatchTestClassGroup(project.getProperty("test.batch.name"), getBuildProfile(), job);
+					BatchTestClassGroup batchTestClassGroup = TestClassGroupFactory.newBatchTestClassGroup(project.getProperty("test.batch.name"), getBatchBuildProfile(), job);
 
 					if (job.isSegmentEnabled()) {
 						SegmentTestClassGroup segmentTestClassGroup = batchTestClassGroup.getSegmentTestClassGroup(getSegmentID());
