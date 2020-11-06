@@ -52,15 +52,24 @@ definition {
 
 	@priority = "5"
 	test SmokeWithDeveloperProperties {
-		property custom.properties = "include-and-override=portal-developer.properties";
-		property osgi.module.configuration.file.names = "com.liferay.document.library.document.conversion.configuration.OpenOfficeConfiguration";
-		property osgi.module.configurations = "cacheEnabled=&quot;false&quot;";
-		property portal.acceptance = "true";
-		property portal.smoke = "false";
+		property app.server.types = "jboss,tcserver,tomcat,weblogic,websphere,wildfly";
+		property database.bare.enabled = "true";
+		property database.types = "db2,hypersonic,mariadb,mysql,oracle,postgresql,sqlserver,sybase";
+		property environment.acceptance = "true";
+		property testray.component.names = "Training";
+		property minimum.slave.ram = "32";
 
 		Smoke.viewWelcomeContentPage();
 
 		Smoke.runSmoke();
+
+		// Assert mismatching checksum for release bundles
+
+		AssertConsoleTextNotPresent(value1 = "Running validation because of mismatched checksum");
+
+		// Assert all bundles installed
+
+		AssertConsoleTextNotPresent(value1 = "The portal instance needs to be restarted to complete the installation");
 	}
 
 	@priority = "4"
