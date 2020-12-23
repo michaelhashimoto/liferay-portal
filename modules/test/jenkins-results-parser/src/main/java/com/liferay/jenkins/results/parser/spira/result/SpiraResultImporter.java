@@ -214,6 +214,8 @@ public class SpiraResultImporter {
 
 		_checkoutPortalBaseBranch();
 
+		_prepareTCK();
+
 		_checkoutOSBFaroBranch();
 		_checkoutPluginsBranch();
 		_checkoutQAWebsitesBranch();
@@ -532,6 +534,19 @@ public class SpiraResultImporter {
 		}
 	}
 
+	private GitWorkingDirectory _getJenkinsGitWorkingDirectory() {
+		String upstreamBranchName = "master";
+
+		String upstreamDirPath = JenkinsResultsParserUtil.getProperty(
+			_getBuildProperties(), "jenkins.dir", upstreamBranchName);
+
+		String upstreamRepository = JenkinsResultsParserUtil.getProperty(
+			_getBuildProperties(), "jenkins.repository", upstreamBranchName);
+
+		return GitWorkingDirectoryFactory.newGitWorkingDirectory(
+			upstreamBranchName, upstreamDirPath, upstreamRepository);
+	}
+
 	private PortalGitWorkingDirectory _getPortalGitWorkingDirectory() {
 		return GitWorkingDirectoryFactory.newPortalGitWorkingDirectory(
 			_topLevelBuild.getBranchName());
@@ -613,6 +628,40 @@ public class SpiraResultImporter {
 		}
 
 		return sb.toString();
+	}
+
+	private void _prepareTCK() {
+		PortalGitWorkingDirectory portalGitWorkingDirectory =
+			_getPortalGitWorkingDirectory();
+
+		Map<String, String> parameters = new HashMap<>();
+
+		String portalUpstreamBranchName =
+			portalGitWorkingDirectory.getUpstreamBranchName();
+
+		if (!portalUpstreamBranchName.contains("ee-")) {
+			GitWorkingDirectory jenkinsGitWorkingDirectory =
+				_getJenkinsGitWorkingDirectory();
+
+			Properties testProperties = JenkinsResultsParserUtil.getProperties(
+				new File(
+					jenkinsGitWorkingDirectory.getWorkingDirectory(),
+					"commands/dependencies/test.properties"));
+
+			parameters.put(
+				"tck.home",
+				JenkinsResultsParserUtil.getProperty(
+					testProperties, "tck.home"));
+		}
+
+		try {
+			AntUtil.callTarget(
+				portalGitWorkingDirectory.getWorkingDirectory(),
+				"build-test-tck.xml", "prepare-tck", parameters);
+		}
+		catch (AntException antException) {
+			throw new RuntimeException(antException);
+		}
 	}
 
 	private void _updateCurrentBuildDescription() {
