@@ -214,7 +214,7 @@ public class SpiraResultImporter {
 
 		_checkoutPortalBaseBranch();
 
-		_prepareTCK();
+		_callPrepareTCK();
 
 		_checkoutOSBFaroBranch();
 		_checkoutPluginsBranch();
@@ -352,6 +352,40 @@ public class SpiraResultImporter {
 				" Spira Test Cases in ",
 				JenkinsResultsParserUtil.toDurationString(
 					System.currentTimeMillis() - start)));
+	}
+
+	private void _callPrepareTCK() {
+		PortalGitWorkingDirectory portalGitWorkingDirectory =
+			_getPortalGitWorkingDirectory();
+
+		Map<String, String> parameters = new HashMap<>();
+
+		String portalUpstreamBranchName =
+			portalGitWorkingDirectory.getUpstreamBranchName();
+
+		if (!portalUpstreamBranchName.contains("ee-")) {
+			GitWorkingDirectory jenkinsGitWorkingDirectory =
+				_getJenkinsGitWorkingDirectory();
+
+			Properties testProperties = JenkinsResultsParserUtil.getProperties(
+				new File(
+					jenkinsGitWorkingDirectory.getWorkingDirectory(),
+					"commands/dependencies/test.properties"));
+
+			parameters.put(
+				"tck.home",
+				JenkinsResultsParserUtil.getProperty(
+					testProperties, "tck.home"));
+		}
+
+		try {
+			AntUtil.callTarget(
+				portalGitWorkingDirectory.getWorkingDirectory(),
+				"build-test-tck.xml", "prepare-tck", parameters);
+		}
+		catch (AntException antException) {
+			throw new RuntimeException(antException);
+		}
 	}
 
 	private void _checkoutOSBFaroBranch() {
@@ -628,40 +662,6 @@ public class SpiraResultImporter {
 		}
 
 		return sb.toString();
-	}
-
-	private void _prepareTCK() {
-		PortalGitWorkingDirectory portalGitWorkingDirectory =
-			_getPortalGitWorkingDirectory();
-
-		Map<String, String> parameters = new HashMap<>();
-
-		String portalUpstreamBranchName =
-			portalGitWorkingDirectory.getUpstreamBranchName();
-
-		if (!portalUpstreamBranchName.contains("ee-")) {
-			GitWorkingDirectory jenkinsGitWorkingDirectory =
-				_getJenkinsGitWorkingDirectory();
-
-			Properties testProperties = JenkinsResultsParserUtil.getProperties(
-				new File(
-					jenkinsGitWorkingDirectory.getWorkingDirectory(),
-					"commands/dependencies/test.properties"));
-
-			parameters.put(
-				"tck.home",
-				JenkinsResultsParserUtil.getProperty(
-					testProperties, "tck.home"));
-		}
-
-		try {
-			AntUtil.callTarget(
-				portalGitWorkingDirectory.getWorkingDirectory(),
-				"build-test-tck.xml", "prepare-tck", parameters);
-		}
-		catch (AntException antException) {
-			throw new RuntimeException(antException);
-		}
 	}
 
 	private void _updateCurrentBuildDescription() {
