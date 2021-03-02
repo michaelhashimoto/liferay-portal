@@ -1,0 +1,224 @@
+@component-name = "portal-smoke"
+definition {
+
+	property portal.release = "true";
+	property portal.smoke = "true";
+	property portal.upstream = "true";
+	property test.assert.warning.exceptions = "true";
+	property testray.main.component.name = "Smoke";
+
+	setUp {
+		TestCase.setUpPortalInstance();
+
+		SignIn.signInTestSetup();
+	}
+
+	tearDown {
+		var testPortalInstance = PropsUtil.get("test.portal.instance");
+
+		if ("${testPortalInstance}" == "true") {
+			PortalInstances.tearDownCP();
+		}
+		else {
+			Page.tearDownCP();
+
+			Site.tearDownCP();
+
+			WebContent.tearDownCP();
+		}
+	}
+
+	@description = "Ensure that the super admin can add pages, add portlets, navigate to the product menu, use the WYSIWYG editor, and view alert messages."
+	@priority = "5"
+	test Smoke {
+		property app.server.types = "jboss,tcserver,tomcat,weblogic,websphere,wildfly";
+		property database.bare.enabled = "true";
+		property database.types = "db2,hypersonic,mariadb,mysql,oracle,postgresql,sqlserver,sybase";
+		property environment.acceptance = "true";
+		property testray.component.names = "Training";
+
+		Smoke.viewWelcomeContentPage();
+
+		Smoke.runSmoke();
+
+		// Assert mismatching checksum for release bundles
+
+		AssertConsoleTextNotPresent(value1 = "Running validation because of mismatched checksum");
+
+		// Assert all bundles installed
+
+		AssertConsoleTextNotPresent(value1 = "The portal instance needs to be restarted to complete the installation");
+	}
+
+	@priority = "5"
+	test SmokeWithDeveloperProperties {
+		property custom.properties = "include-and-override=portal-developer.properties";
+		property osgi.module.configuration.file.names = "com.liferay.document.library.document.conversion.configuration.OpenOfficeConfiguration";
+		property osgi.module.configurations = "cacheEnabled=&quot;false&quot;";
+		property portal.acceptance = "true";
+		property portal.smoke = "false";
+
+		Smoke.viewWelcomeContentPage();
+
+		Smoke.runSmoke();
+	}
+
+	@priority = "4"
+	test SmokeWithJNDI {
+		property app.server.types = "tomcat,wildfly,weblogic,websphere";
+		property database.jndi.enabled = "true";
+		property database.types = "mariadb,mysql";
+		property portal.smoke = "false";
+
+		Smoke.viewWelcomeContentPage();
+
+		Smoke.runSmoke();
+	}
+
+	@priority = "5"
+	test SmokeWithLiferayOnlineProperties {
+		property database.types = "mysql";
+		property liferay.online.properties = "true";
+		property portal.acceptance = "true";
+		property portal.smoke = "true";
+
+		AssertConsoleTextPresent(value1 = "Stopping blacklisted bundle");
+
+		HeadlessPortalInstanceAPI.addPortalInstance(
+			domain = "liferay.com",
+			portalInstanceId = "www.able.com",
+			virtualHost = "www.able.com");
+
+		User.firstLoginPG(
+			password = "test",
+			userEmailAddress = "test@liferay.com",
+			virtualHostsURL = "http://www.able.com:8080");
+
+		Smoke.viewWelcomeContentPage();
+
+		ProductMenu.gotoPortlet(
+			category = "Site Builder",
+			portlet = "Pages");
+
+		SitePages.addPublicPage(pageName = "Test Page1");
+
+		SitePages.addPublicPage(pageName = "Test Page2");
+
+		SitePages.addPublicPage(pageName = "Test Page3");
+
+		var pageName = "Test Page1";
+		var portletBody = "Welcome to Liferay";
+		var portletName = "Hello World";
+
+		task ("Add a '${portletName}' portlet to the page named '${pageName}'") {
+			Navigator.gotoSpecificURLPage(
+				pageName = "${pageName}",
+				url = "http://www.able.com:8080");
+
+			Portlet.addPG(
+				i = "${i}",
+				portletName = "${portletName}");
+
+			Portlet.viewTitle(portletName = "${portletName}");
+
+			Portlet.viewBody(
+				portletBody = "${portletBody}",
+				portletName = "${portletName}");
+
+			Navigator.gotoSpecificURLPage(
+				pageName = "${pageName}",
+				url = "http://www.able.com:8080");
+
+			Portlet.viewTitle(portletName = "${portletName}");
+
+			Portlet.viewBody(
+				portletBody = "${portletBody}",
+				portletName = "${portletName}");
+		}
+
+		var collectionName = "Basic Components";
+		var contentPageName = "Test Content Page";
+		var fragmentId = "Heading";
+		var fragmentName = "Heading";
+
+		task ("Add a '${fragmentName}' fragment to the content page named '${contentPageName}'") {
+			task ("Create a Content Page") {
+				Navigator.openSpecificURL(url = "http://www.able.com:8080");
+
+				ProductMenu.gotoPortlet(
+					category = "Site Builder",
+					portlet = "Pages");
+
+				ContentPages.addPage(pageName = "${contentPageName}");
+			}
+
+			task ("Add a basic '${fragmentName}' component") {
+				PageEditor.addFragment(
+					collectionName = "${collectionName}",
+					fragmentName = "${fragmentName}");
+			}
+
+			task ("Publish Content Page") {
+				PageEditor.clickPublish();
+			}
+
+			task ("Navigate to the content page") {
+				Navigator.gotoSpecificURLPage(
+					pageName = "${contentPageName}",
+					url = "http://www.able.com:8080");
+			}
+
+			task ("Assert the '${fragmentName}' fragment is present") {
+				AssertElementPresent(locator1 = "//h1[contains(.,'Heading Example')]");
+			}
+		}
+
+		var portlet = "Web Content";
+
+		task ("Navigate to Product Menu > Sites > Content > ${portlet}") {
+			Navigator.openSpecificURL(url = "http://www.able.com:8080");
+
+			ProductMenu.gotoPortlet(
+				category = "Content &amp; Data",
+				portlet = "${portlet}");
+
+			SiteAdmin.viewPortletTitle(portletTitle = "${portlet}");
+		}
+
+		var webContentContent = "Web Content Content";
+		var webContentTitle = "Web Content Title";
+
+		task ("Add a web content article with '${webContentTitle}' as the title and '${webContentContent}' as the content") {
+			WebContentNavigator.gotoAddCP();
+
+			WebContent.addCP(
+				webContentContent = "${webContentContent}",
+				webContentTitle = "${webContentTitle}");
+
+			PortletEntry.publish();
+
+			WebContent.viewTitle(webContentTitle = "${webContentTitle}");
+		}
+	}
+
+	@priority = "5"
+	test SmokeWithRuntimeJSPCompile {
+		property delete.precompiled.jsps = "true";
+		property portal.smoke = "false";
+
+		Smoke.viewWelcomeContentPage();
+
+		Smoke.runSmoke();
+	}
+
+	@priority = "5"
+	test SmokeWithSPADisabled {
+		property custom.properties = "javascript.single.page.application.enabled=false";
+		property portal.smoke = "false";
+
+		Smoke.viewWelcomeContentPage();
+
+		Smoke.runSmoke();
+	}
+
+}
