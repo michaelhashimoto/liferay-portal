@@ -39,7 +39,7 @@ definition {
 
 		Smoke.viewWelcomeContentPage();
 
-		Smoke.viewWelcomeContentPages();
+		// Smoke.viewWelcomeContentPages();
 
 		Smoke.runSmoke();
 
