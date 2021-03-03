@@ -41,6 +41,8 @@ definition {
 
 		Smoke.runSmoke();
 
+		Smoke.runSmokes();
+
 		// Assert mismatching checksum for release bundles
 
 		AssertConsoleTextNotPresent(value1 = "Running validation because of mismatched checksum");
