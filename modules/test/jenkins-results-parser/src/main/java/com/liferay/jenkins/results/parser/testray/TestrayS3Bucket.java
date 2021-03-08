@@ -75,7 +75,9 @@ public class TestrayS3Bucket {
 			else if (fileName.endsWith("jpg") || fileName.endsWith("jpg.gz")) {
 				objectMetadata.setContentType("image/jpeg");
 			}
-			else if (fileName.endsWith("txt") || fileName.endsWith("txt.gz")) {
+			else if (fileName.endsWith("txt") || fileName.endsWith("txt.gz") ||
+					 fileName.endsWith("xml") || fileName.endsWith("xml.gz")) {
+
 				objectMetadata.setContentType("text/plain");
 			}
 
@@ -92,8 +94,8 @@ public class TestrayS3Bucket {
 
 			System.out.println(
 				JenkinsResultsParserUtil.combine(
-					"Created S3 Object ",
-					String.valueOf(testrayS3Object.getURL()), " in ",
+					"Created S3 Object ", testrayS3Object.getURLString(),
+					" in ",
 					JenkinsResultsParserUtil.toDurationString(
 						JenkinsResultsParserUtil.getCurrentTimeMillis() -
 							start)));
@@ -133,8 +135,8 @@ public class TestrayS3Bucket {
 
 			System.out.println(
 				JenkinsResultsParserUtil.combine(
-					"Created S3 Object ",
-					String.valueOf(testrayS3Object.getURL()), " in ",
+					"Created S3 Object ", testrayS3Object.getURLString(),
+					" in ",
 					JenkinsResultsParserUtil.toDurationString(
 						JenkinsResultsParserUtil.getCurrentTimeMillis() -
 							start)));
@@ -146,18 +148,34 @@ public class TestrayS3Bucket {
 		}
 	}
 
+	public List<TestrayS3Object> createTestrayS3Objects(File dir) {
+		return createTestrayS3Objects(null, dir);
+	}
+
 	public List<TestrayS3Object> createTestrayS3Objects(
 		String baseKey, File dir) {
 
 		List<TestrayS3Object> testrayS3Objects = new ArrayList<>();
 
+		if ((dir == null) || !dir.isDirectory()) {
+			return testrayS3Objects;
+		}
+
 		for (File file : JenkinsResultsParserUtil.findFiles(dir, ".*")) {
 			StringBuilder sb = new StringBuilder();
 
-			sb.append(baseKey);
+			if (!JenkinsResultsParserUtil.isNullOrEmpty(baseKey) &&
+				!baseKey.equals("/")) {
 
-			if (!baseKey.endsWith("/")) {
-				sb.append("/");
+				if (baseKey.startsWith("/")) {
+					baseKey = baseKey.substring(1);
+				}
+
+				sb.append(baseKey);
+
+				if (!baseKey.endsWith("/")) {
+					sb.append("/");
+				}
 			}
 
 			sb.append(JenkinsResultsParserUtil.getPathRelativeTo(file, dir));
@@ -183,8 +201,7 @@ public class TestrayS3Bucket {
 
 		System.out.println(
 			JenkinsResultsParserUtil.combine(
-				"Deleted S3 Object ", String.valueOf(testrayS3Object.getURL()),
-				" in ",
+				"Deleted S3 Object ", testrayS3Object.getURLString(), " in ",
 				JenkinsResultsParserUtil.toDurationString(
 					JenkinsResultsParserUtil.getCurrentTimeMillis() - start)));
 	}

@@ -85,6 +85,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.zip.GZIPOutputStream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
@@ -630,6 +631,26 @@ public class JenkinsResultsParserUtil {
 		}
 
 		return files;
+	}
+
+	public static List<File> findSiblingFiles(File file) {
+		if ((file == null) || !file.exists()) {
+			return new ArrayList<>();
+		}
+
+		File parentFile = file.getParentFile();
+
+		if ((parentFile == null) || !parentFile.exists()) {
+			return new ArrayList<>();
+		}
+
+		File[] siblingFiles = parentFile.listFiles();
+
+		if (siblingFiles == null) {
+			return new ArrayList<>();
+		}
+
+		return Arrays.asList(siblingFiles);
 	}
 
 	public static String fixFileName(String fileName) {
@@ -2308,6 +2329,26 @@ public class JenkinsResultsParserUtil {
 
 	public static File getUserHomeDir() {
 		return _userHomeDir;
+	}
+
+	public static void gzip(File sourceFile, File targetFile) {
+		try (FileOutputStream fileOutputStream = new FileOutputStream(
+				targetFile);
+			GZIPOutputStream gzipOutputStream = new GZIPOutputStream(
+				fileOutputStream);
+			FileInputStream fileInputStream = new FileInputStream(sourceFile)) {
+
+			byte[] bytes = new byte[1024];
+
+			int len;
+
+			while ((len = fileInputStream.read(bytes)) > 0) {
+				gzipOutputStream.write(bytes, 0, len);
+			}
+		}
+		catch (IOException ioException) {
+			throw new RuntimeException(ioException);
+		}
 	}
 
 	public static boolean isCINode() {
