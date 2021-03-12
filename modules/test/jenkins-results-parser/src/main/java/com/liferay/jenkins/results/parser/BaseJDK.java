@@ -29,4 +29,8 @@ public abstract class BaseJDK implements JDK {
 		return "/opt/java";
 	}
 
+	protected void getJavaHomeRoots() {
+		return "/opt/java";
+	}
+
 }
