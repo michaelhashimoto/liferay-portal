@@ -296,7 +296,7 @@ public class TestrayS3Bucket {
 			Permission.FullControl);
 
 		accessControlList.grantPermission(
-			GroupGrantee.AllUsers, Permission.Read);
+			GroupGrantee.AuthenticatedUsers, Permission.Read);
 
 		return accessControlList;
 	}
