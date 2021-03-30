@@ -2013,6 +2013,12 @@ public class TestrayImporter {
 				portalGitWorkingDirectory.getWorkingDirectory(),
 				"build-test.xml", "set-tomcat-version-number", parameters);
 
+			parameters.put(
+				"test.app.server.bin.dir",
+				JenkinsResultsParserUtil.getProperty(
+					portalGitWorkingDirectory.getAppServerProperties(),
+					"app.server.tomcat.bin.dir"));
+
 			AntUtil.callTarget(
 				portalGitWorkingDirectory.getWorkingDirectory(),
 				"build-test.xml", "prepare-test-bundle", parameters);
