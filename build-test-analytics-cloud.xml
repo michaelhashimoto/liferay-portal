@@ -120,7 +120,6 @@ networks:
 			/>
 
 			<echo file="${analytics.cloud.asah.dir}/local.env">OSB_ASAH_BACKEND_URL=${analytics.cloud.asah.backend.url}
-OSB_ASAH_PUBSUB_EMULATOR_URL=${analytics.cloud.asah.pubsub.emulator.url}
 OSB_ASAH_PUBLISHER_URL=${analytics.cloud.asah.publisher.url}
 OSB_FARO_FRONTEND_URL=${analytics.cloud.faro.frontend.url}</echo>
 
