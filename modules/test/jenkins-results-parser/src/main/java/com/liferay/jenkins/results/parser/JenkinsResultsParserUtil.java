@@ -2827,6 +2827,8 @@ public class JenkinsResultsParserUtil {
 	}
 
 	public static String read(File file) throws IOException {
+		System.out.println("Reading file " + file);
+
 		return new String(Files.readAllBytes(Paths.get(file.toURI())));
 	}
 
