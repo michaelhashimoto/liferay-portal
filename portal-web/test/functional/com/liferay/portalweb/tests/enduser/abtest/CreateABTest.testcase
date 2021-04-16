@@ -71,7 +71,13 @@ definition {
 
 		ABTest.runTest();
 
+		takeScreenshot();
+
+		echo("ABTest.checkAnalyticsCloudInfo('AB test title')");
+
 		ABTest.checkAnalyticsCloudInfo(ABtestTitle = "AB test title");
+
+		takeScreenshot();
 
 		ABTest.terminateTest();
 	}

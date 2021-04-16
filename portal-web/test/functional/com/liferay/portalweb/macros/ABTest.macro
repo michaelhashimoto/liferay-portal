@@ -3,9 +3,17 @@ definition {
 	macro checkAnalyticsCloudInfo {
 		Click(locator1 = "ABTest#CONTROL_VARIANT");
 
+		takeScreenshot();
+
 		Click(locator1 = "ABTest#VIEW_DATA_ANALYTICS_CLOUD_BUTTON");
 
+		takeScreenshot();
+
 		SelectWindow(locator1 = "name=undefined");
+
+		takeScreenshot();
+
+		echo("AnalyticsCloud.loginAnalyticsCloud('test@liferay.com', 'test')");
 
 		AnalyticsCloud.loginAnalyticsCloud(
 			emailAddress = "test@liferay.com",

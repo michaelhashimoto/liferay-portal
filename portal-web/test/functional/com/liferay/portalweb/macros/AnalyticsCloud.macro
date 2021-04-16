@@ -3,17 +3,27 @@ definition {
 	macro loginAnalyticsCloud {
 		Click(locator1 = "AnalyticsCloudConnection#ANALYTICS_CLOUD_USER_LOGIN_FIELD");
 
+		takeScreenshot();
+
 		Type(
 			locator1 = "AnalyticsCloudConnection#ANALYTICS_CLOUD_USER_LOGIN_FIELD",
 			value1 = "${emailAddress}");
 
+		takeScreenshot();
+
 		Click(locator1 = "AnalyticsCloudConnection#ANALYTICS_CLOUD_PASSWORD_LOGIN_FIELD");
+
+		takeScreenshot();
 
 		Type(
 			locator1 = "AnalyticsCloudConnection#ANALYTICS_CLOUD_PASSWORD_LOGIN_FIELD",
 			value1 = "${password}");
 
+		takeScreenshot();
+
 		Check(locator1 = "AnalyticsCloudConnection#REMEMBER_ME_CHECKBOX");
+
+		takeScreenshot();
 
 		Click(locator1 = "AnalyticsCloudConnection#ANALYTICS_CLOUD_LOGIN_BUTTON");
 	}
