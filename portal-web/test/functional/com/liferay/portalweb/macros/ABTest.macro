@@ -26,15 +26,25 @@ definition {
 	}
 
 	macro createABTest {
+		takeScreenshot();
+
 		Click(locator1 = "ABTest#AB_TEST_BUTTON");
+
+		takeScreenshot();
 
 		if (IsElementNotPresent(locator1 = "ABTest#CREATE_TEST_BUTTON")) {
 			Click(locator1 = "ABTest#AB_TEST_BUTTON");
 		}
 
+		takeScreenshot();
+
 		Click(locator1 = "ABTest#CREATE_TEST_BUTTON");
 
+		takeScreenshot();
+
 		Click(locator1 = "ABTest#AB_TEST_TITLE_FIELD");
+
+		takeScreenshot();
 
 		Type(
 			locator1 = "ABTest#AB_TEST_TITLE_FIELD",
