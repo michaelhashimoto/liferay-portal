@@ -368,6 +368,8 @@ public class JenkinsMaster implements JenkinsNode<JenkinsMaster> {
 			}
 		}
 
+		System.out.println(getName() + " count " + _buildURLs.size());
+
 		_queueCount = 0;
 
 		if (!queueAPIJSONObject.has("items")) {
