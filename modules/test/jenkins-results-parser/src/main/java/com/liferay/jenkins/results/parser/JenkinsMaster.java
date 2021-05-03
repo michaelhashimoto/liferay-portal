@@ -153,7 +153,9 @@ public class JenkinsMaster implements JenkinsNode<JenkinsMaster> {
 	}
 
 	public List<String> getBuildURLs() {
-		return _buildURLs;
+		synchronized (_buildURLs) {
+			return _buildURLs;
+		}
 	}
 
 	public int getIdleJenkinsSlavesCount() {
@@ -317,6 +319,8 @@ public class JenkinsMaster implements JenkinsNode<JenkinsMaster> {
 
 		_available = true;
 
+		List<String> buildURLs = new ArrayList<>();
+
 		JSONArray computerJSONArray = computerAPIJSONObject.getJSONArray(
 			"computer");
 
@@ -360,12 +364,18 @@ public class JenkinsMaster implements JenkinsNode<JenkinsMaster> {
 								"currentExecutable");
 
 						if (currentExecutableJSONObject.has("url")) {
-							_buildURLs.add(
+							buildURLs.add(
 								currentExecutableJSONObject.getString("url"));
 						}
 					}
 				}
 			}
+		}
+
+		synchronized (_buildURLs) {
+			_buildURLs.clear();
+
+			_buildURLs.addAll(buildURLs);
 		}
 
 		System.out.println(getName() + " count " + _buildURLs.size());
