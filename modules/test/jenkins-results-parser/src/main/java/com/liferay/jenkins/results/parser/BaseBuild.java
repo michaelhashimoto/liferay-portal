@@ -369,8 +369,6 @@ public abstract class BaseBuild implements Build {
 			}
 		}
 
-		JSONArray testResultsJSONArray = new JSONArray();
-
 		List<TestResult> testResults = new ArrayList<>();
 
 		if (testStatuses == null) {
@@ -445,6 +443,8 @@ public abstract class BaseBuild implements Build {
 		}
 
 		if (dataTypesList.contains("testResults")) {
+			JSONArray testResultsJSONArray = new JSONArray();
+
 			for (TestResult testResult : testResults) {
 				JSONObject testResultJSONObject = new JSONObject();
 
