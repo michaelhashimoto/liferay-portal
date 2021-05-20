@@ -780,19 +780,19 @@ jdbc.counter.connectionProperties=oracle.jdbc.ReadTimeout=0;oracle.net.CONNECT_T
 			<if>
 				<contains string="${jps.output}" substring="@{process.name}" />
 				<then>
-					<local name="bootstrap.pid" />
+					<local name="process.pid" />
 
 					<propertyregex
 						input="${jps.output}"
 						override="true"
-						property="bootstrap.pid"
+						property="process.pid"
 						regexp="(|[\S\s]*\n)([0-9]+) @{process.name}[\S\s]*"
 						replace="\2"
 					/>
 
 					<execute>
 						<![CDATA[
-							jstack -l ${bootstrap.pid} > jstack_output
+							jstack -l ${process.pid} > jstack_output
 						]]>
 					</execute>
 
@@ -800,6 +800,13 @@ jdbc.counter.connectionProperties=oracle.jdbc.ReadTimeout=0;oracle.net.CONNECT_T
 						property="jstack.output"
 						srcfile="jstack_output"
 					/>
+
+					<if>
+						<isset property="env.BUILD_DIR" />
+						<then>
+							<echo file="${env.BUILD_DIR}/jstacks/@{process.name}__${process.pid}.txt">${jstack.output}</echo>
+						</then>
+					</if>
 				</then>
 			</if>
 
