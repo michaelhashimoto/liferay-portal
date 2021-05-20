@@ -5009,7 +5009,7 @@ org.apache.catalina.startup.ClassLoaderFactory.level=INFO]]>
 								</then>
 							</if>
 
-							<fail message="Server is still available at ${app.server.waiting.url}.${line.separator}${jstack.output}">
+							<fail message="Server is still available at ${app.server.waiting.url}.">
 								<condition>
 									<equals arg1="@{app.server.explicit.stop.count}" arg2="3" />
 								</condition>
@@ -5801,7 +5801,7 @@ war.path=${app.server.portal.dir}/</echo>
 
 					<stop-app-server app.server.bundle.index="@{app.server.bundle.index}" />
 
-					<fail if="app.server.waiting.timeout" message="No server is available at ${app.server.waiting.url}${line.separator}${jstack.output}" />
+					<fail if="app.server.waiting.timeout" message="No server is available at ${app.server.waiting.url}" />
 				</then>
 			</if>
 
@@ -5925,7 +5925,7 @@ war.path=${app.server.portal.dir}/</echo>
 						<then>
 							<get-jstack-output process.name="Bootstrap" />
 
-							<fail message="${wait.for.app.server.log.timed.out.message}${line.separator}${jstack.output}" />
+							<fail message="${wait.for.app.server.log.timed.out.message}" />
 						</then>
 					</if>
 				</then>
@@ -6012,7 +6012,7 @@ war.path=${app.server.portal.dir}/</echo>
 				<then>
 					<get-jstack-output process.name="Bootstrap" />
 
-					<fail message="${timed.out.message}${line.separator}${jstack.output}" />
+					<fail message="${timed.out.message}" />
 				</then>
 			</if>
 		</sequential>
@@ -14055,7 +14055,7 @@ url=${short.hostname}:8080</echo>
 			<catch>
 				<get-jstack-output process.name="DBUpgrader" />
 
-				<fail message="${upgrade.error}${line.separator}${jstack.output}" />
+				<fail message="${upgrade.error}" />
 			</catch>
 		</trycatch>
 	</target>
