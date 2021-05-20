@@ -804,7 +804,9 @@ jdbc.counter.connectionProperties=oracle.jdbc.ReadTimeout=0;oracle.net.CONNECT_T
 					<if>
 						<isset property="env.BUILD_DIR" />
 						<then>
-							<echo file="${env.BUILD_DIR}/jstacks/@{process.name}__${process.pid}.txt">${jstack.output}</echo>
+							<mkdir dir="${env.BUILD_DIR}/jstacks" />
+
+							<echo file="${env.BUILD_DIR}/jstacks/@{process.name}__${process.pid}.log">${jstack.output}</echo>
 						</then>
 					</if>
 				</then>
@@ -3284,16 +3286,29 @@ tell application "Safari" to quit
 			<if>
 				<available file="/tmp/ant-gc.log" />
 				<then>
-					<loadfile
-						property="ant-gc-log"
-						srcFile="/tmp/ant-gc.log"
-					/>
+					<if>
+						<isset property="env.BUILD_DIR" />
+						<then>
+							<mkdir dir="${env.BUILD_DIR}/gc" />
 
-					<echo>
+							<copy
+								file="/tmp/ant-gc.log"
+								todir="${env.BUILD_DIR}/gc"
+							/>
+						</then>
+						<else>
+							<loadfile
+								property="ant-gc-log"
+								srcFile="/tmp/ant-gc.log"
+							/>
+
+							<echo>
 Ant GC log:
 
 ${ant-gc-log}
-					</echo>
+							</echo>
+						</else>
+					</if>
 				</then>
 				<else>
 					<echo>Unable to read /tmp/ant-gc.log</echo>
@@ -3303,16 +3318,29 @@ ${ant-gc-log}
 			<if if:true="@{tomcat.gc.log}">
 				<available file="/tmp/tomcat-gc.log" />
 				<then>
-					<loadfile
-						property="tomcat-gc-log"
-						srcFile="/tmp/tomcat-gc.log"
-					/>
+					<if>
+						<isset property="env.BUILD_DIR" />
+						<then>
+							<mkdir dir="${env.BUILD_DIR}/gc" />
 
-					<echo>
+							<copy
+								file="/tmp/tomcat-gc.log"
+								todir="${env.BUILD_DIR}/gc"
+							/>
+						</then>
+						<else>
+							<loadfile
+								property="tomcat-gc-log"
+								srcFile="/tmp/tomcat-gc.log"
+							/>
+
+							<echo>
 Tomcat GC log:
 
 ${tomcat-gc-log}
-					</echo>
+							</echo>
+						</else>
+					</if>
 				</then>
 				<else>
 					<echo>Unable to read /tmp/tomcat-gc.log</echo>
@@ -3322,15 +3350,28 @@ ${tomcat-gc-log}
 			<if if:true="@{tsant.gc.log}">
 				<available file="/tmp/tsant-gc.log" />
 				<then>
-					<loadfile
-						property="tsant-gc-log"
-						srcFile="/tmp/tsant-gc.log"
-					/>
+					<if>
+						<isset property="env.BUILD_DIR" />
+						<then>
+							<mkdir dir="${env.BUILD_DIR}/gc" />
 
-					<echo>
+							<copy
+								file="/tmp/tsant-gc.log"
+								todir="${env.BUILD_DIR}/gc"
+							/>
+						</then>
+						<else>
+							<loadfile
+								property="tsant-gc-log"
+								srcFile="/tmp/tsant-gc.log"
+							/>
+
+							<echo>
 	Tsant GC log:
 
 	${tsant-gc-log}</echo>
+						</else>
+					</if>
 				</then>
 				<else>
 					<echo>Unable to read /tmp/tsant-gc.log</echo>
