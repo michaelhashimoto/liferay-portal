@@ -3273,6 +3273,8 @@ tell application "Safari" to quit
 
 					for (int i = 0; i < fileLines.length; i++) {
 						if (fileLineCount <= i) {
+							System.out.println();
+
 							break;
 						}
 
@@ -3330,16 +3332,16 @@ tell application "Safari" to quit
 							<isset property="env.BUILD_USER_CONTENT_URL" />
 						</and>
 						<then>
-							<echo>${env.BUILD_USER_CONTENT_URL}/gc/ant-gc.log</echo>
-
-							<print-file file.name="/tmp/ant-gc.log" file.line.count="10" />
-
 							<mkdir dir="${env.BUILD_DIR}/gc" />
 
 							<copy
 								file="/tmp/ant-gc.log"
 								todir="${env.BUILD_DIR}/gc"
 							/>
+
+							<echo>${env.BUILD_USER_CONTENT_URL}/gc/ant-gc.log</echo>
+
+							<print-file file.name="/tmp/ant-gc.log" file.line.count="10" />
 						</then>
 						<else>
 							<print-file file.name="/tmp/ant-gc.log" />
@@ -3360,16 +3362,16 @@ tell application "Safari" to quit
 							<isset property="env.BUILD_USER_CONTENT_URL" />
 						</and>
 						<then>
-							<echo>${env.BUILD_USER_CONTENT_URL}/gc/tomcat-gc.log</echo>
-
-							<print-file file.name="/tmp/tomcat-gc.log" file.line.count="10" />
-
 							<mkdir dir="${env.BUILD_DIR}/gc" />
 
 							<copy
 								file="/tmp/tomcat-gc.log"
 								todir="${env.BUILD_DIR}/gc"
 							/>
+
+							<echo>${env.BUILD_USER_CONTENT_URL}/gc/tomcat-gc.log</echo>
+
+							<print-file file.name="/tmp/tomcat-gc.log" file.line.count="10" />
 						</then>
 						<else>
 							<print-file file.name="/tmp/tomcat-gc.log" />
@@ -3390,16 +3392,16 @@ tell application "Safari" to quit
 							<isset property="env.BUILD_USER_CONTENT_URL" />
 						</and>
 						<then>
-							<echo>${env.BUILD_USER_CONTENT_URL}/gc/tsant-gc.log</echo>
-
-							<print-file file.name="/tmp/tsant-gc.log" file.line.count="10" />
-
 							<mkdir dir="${env.BUILD_DIR}/gc" />
 
 							<copy
 								file="/tmp/tsant-gc.log"
 								todir="${env.BUILD_DIR}/gc"
 							/>
+
+							<echo>${env.BUILD_USER_CONTENT_URL}/gc/tsant-gc.log</echo>
+
+							<print-file file.name="/tmp/tsant-gc.log" file.line.count="10" />
 						</then>
 						<else>
 							<print-file file.name="/tmp/tsant-gc.log" />
