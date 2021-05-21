@@ -3265,7 +3265,13 @@ tell application "Safari" to quit
 						return -1;
 					}
 
-					String fileContent = JenkinsResultsParserUtil.read(new File("@{file.name}"));
+					File file = new File("@{file.name}");
+
+					if (!file.exists()) {
+						return;
+					}
+
+					String fileContent = JenkinsResultsParserUtil.read(file);
 
 					String[] fileLines = fileContent.split("\n");
 
