@@ -943,8 +943,7 @@ public class TestrayImporter {
 				axisTestClassGroup.getTestBaseDir());
 
 			TestrayRun testrayRun = new TestrayRun(
-				testrayBuild, axisTestClassGroup.getBatchName(),
-				_getPropertiesList(axisTestClassGroup.getTestBaseDir()));
+				testrayBuild, axisTestClassGroup.getBatchName());
 
 			long start = JenkinsResultsParserUtil.getCurrentTimeMillis();
 
