@@ -10237,6 +10237,8 @@ auto.deploy.dest.dir=C:/WINDOWS/system32/config/systemprofile/liferay/websphere-
 				</then>
 			</elseif>
 		</if>
+
+		<print-file file.name="${test.ext.properties.file}" />
 	</target>
 
 	<target name="prepare-selenium-click-to-chat-properties">
