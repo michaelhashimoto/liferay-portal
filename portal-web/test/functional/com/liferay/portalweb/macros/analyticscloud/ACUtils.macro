@@ -16,8 +16,10 @@ definition {
 	}
 
 	macro closeAllSessions {
+		var analyticsCloudAsahCuratorURL = PropsUtil.get("analytics.cloud.asah.curator.url");
+
 		var cleanCurl = '''
-			http://localhost:8082/admin/sessions/close \
+			${analyticsCloudAsahCuratorURL}/admin/sessions/close \
 			-H 'Content-Type: application/json' \
 			-d '{
 				"query": {
@@ -111,6 +113,8 @@ definition {
 
 		Navigator.openURL(baseURL = "${analyticsCloudURL}");
 
+		takeScreenshot();
+
 		ACLogin.loginAs();
 
 		ACWorkspace.openWorkspace();
@@ -118,6 +122,8 @@ definition {
 
 	macro launchDXP {
 		Navigator.openURL();
+
+		takeScreenshot();
 
 		if (IsElementNotPresent(locator1 = "ApplicationsMenu#APPLICATIONS_MENU")) {
 			User.firstLoginPG();
