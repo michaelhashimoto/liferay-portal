@@ -12860,6 +12860,8 @@ if (ppstate.equals("normal")) {
 			srcFile="test.case.method.names.properties"
 		/>
 
+		<print-file file.name="test.case.method.names.properties" />
+
 		<if>
 			<contains string="${file.content}" substring="RUN_TEST_CASE_METHOD_GROUP" />
 			<then>
