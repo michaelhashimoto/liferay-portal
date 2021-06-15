@@ -39,6 +39,7 @@ definition {
 	@priority = "5"
 	test DisplayVideoFromDocumentsAndMediaInExternalVideo {
 		property dummy.socket.proxy.disabled = "true";
+		property portal.acceptance = "tim";
 
 		task ("Add an external video shortcut") {
 			DMNavigator.openDocumentsAndMediaAdmin(siteURLKey = "test-site-name");
@@ -114,6 +115,7 @@ definition {
 	@priority = "5"
 	test DisplayVideoFromURLInExternalVideo {
 		property dummy.socket.proxy.disabled = "true";
+		property portal.acceptance = "tim";
 
 		task ("Add an External Video fragment to page") {
 			ContentPagesNavigator.openEditContentPage(

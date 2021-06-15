@@ -221,6 +221,7 @@ definition {
 	@priority = "3"
 	test RecycleBinBookmarks {
 		property dummy.socket.proxy.disabled = "true";
+		property portal.acceptance = "tim";
 		property portal.release = "false";
 
 		JSONLayout.addWidgetToPublicLayout(
