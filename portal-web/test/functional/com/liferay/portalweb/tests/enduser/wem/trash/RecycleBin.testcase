@@ -223,6 +223,7 @@ definition {
 		property dummy.socket.proxy.disabled = "true";
 		property portal.acceptance = "tim";
 		property portal.release = "false";
+		property test.name.skip.portal.instance = "RecycleBin#RecycleBinBookmarks";
 
 		JSONLayout.addWidgetToPublicLayout(
 			groupName = "Site Name",

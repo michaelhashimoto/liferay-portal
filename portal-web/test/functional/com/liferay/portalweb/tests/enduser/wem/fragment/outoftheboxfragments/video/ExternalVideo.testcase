@@ -40,6 +40,7 @@ definition {
 	test DisplayVideoFromDocumentsAndMediaInExternalVideo {
 		property dummy.socket.proxy.disabled = "true";
 		property portal.acceptance = "tim";
+		property test.name.skip.portal.instance = "ExternalVideo#DisplayVideoFromDocumentsAndMediaInExternalVideo";
 
 		task ("Add an external video shortcut") {
 			DMNavigator.openDocumentsAndMediaAdmin(siteURLKey = "test-site-name");
@@ -116,6 +117,7 @@ definition {
 	test DisplayVideoFromURLInExternalVideo {
 		property dummy.socket.proxy.disabled = "true";
 		property portal.acceptance = "tim";
+		property test.name.skip.portal.instance = "ExternalVideo#DisplayVideoFromURLInExternalVideo";
 
 		task ("Add an External Video fragment to page") {
 			ContentPagesNavigator.openEditContentPage(
