@@ -13368,6 +13368,8 @@ module.framework.properties.blacklist.portal.profile.names=${blacklist.portal.pr
 
 		<get-testcase-property property.name="dummy.socket.proxy.disabled" />
 
+		<print-file file.name="${app.server.tomcat.dir}/bin/setenv${file.suffix.bat}" />
+
 		<if>
 			<and>
 				<equals arg1="${app.server.type}" arg2="tomcat" />
@@ -13415,6 +13417,8 @@ module.framework.properties.blacklist.portal.profile.names=${blacklist.portal.pr
 				</if>
 			</then>
 		</if>
+
+		<print-file file.name="${app.server.tomcat.dir}/bin/setenv${file.suffix.bat}" />
 
 		<get-testcase-property property.name="web.xml.timeout" />
 
