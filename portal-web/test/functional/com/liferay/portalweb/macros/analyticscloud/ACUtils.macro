@@ -124,6 +124,8 @@ definition {
 
 		Navigator.openURL(baseURL = "${analyticsCloudURL}");
 
+		takeScreenshot();
+
 		ACLogin.loginAs();
 
 		ACWorkspace.openWorkspace();
@@ -131,6 +133,8 @@ definition {
 
 	macro launchDXP {
 		Navigator.openURL();
+
+		takeScreenshot();
 
 		if (IsElementNotPresent(locator1 = "ApplicationsMenu#APPLICATIONS_MENU")) {
 			User.firstLoginPG();
