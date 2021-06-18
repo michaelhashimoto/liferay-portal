@@ -3956,7 +3956,7 @@ tell application "Safari" to quit
 
 					import java.util.Properties;
 
-					Properties properties = JenkinsResultsParserUtil.getProperties(new String[] {new File(project.getProperty("app.server.properties.file"))});
+					Properties properties = JenkinsResultsParserUtil.getProperties(new File[] {new File(project.getProperty("app.server.properties.file"))});
 
 					for (String propertyName : properties.stringPropertyNames()) {
 						String propertyValue = JenkinsResultsParserUtil.getProperty(properties, propertyName);
