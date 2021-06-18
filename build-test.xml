@@ -3800,6 +3800,13 @@ tell application "Safari" to quit
 		<attribute default="" name="app.server.version.build" />
 
 		<sequential>
+			<echo>app.server.type=@{app.server.type}</echo>
+			<echo>app.server.version=@{app.server.version}</echo>
+			<echo>app.server.type=@{app.server.type}</echo>
+			<echo>app.server.version=@{app.server.version}</echo>
+			<echo>app.server.type=@{app.server.type}</echo>
+			<echo>app.server.version=@{app.server.version}</echo>
+
 			<if>
 				<equals arg1="@{app.server.type}" arg2="jboss" />
 				<then>
@@ -3952,6 +3959,8 @@ tell application "Safari" to quit
 				</else>
 			</if>
 
+			<echo>START</echo>
+
 			<beanshell>
 				<![CDATA[
 					import com.liferay.jenkins.results.parser.JenkinsResultsParserUtil;
@@ -3973,6 +3982,8 @@ tell application "Safari" to quit
 					}
 				]]>
 			</beanshell>
+
+			<echo>END</echo>
 		</sequential>
 	</macrodef>
 
