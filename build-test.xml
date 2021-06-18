@@ -3800,12 +3800,16 @@ tell application "Safari" to quit
 		<attribute default="" name="app.server.version.build" />
 
 		<sequential>
-			<echo>app.server.type=@{app.server.type}</echo>
-			<echo>app.server.version=@{app.server.version}</echo>
-			<echo>app.server.type=@{app.server.type}</echo>
-			<echo>app.server.version=@{app.server.version}</echo>
-			<echo>app.server.type=@{app.server.type}</echo>
-			<echo>app.server.version=@{app.server.version}</echo>
+			<local name="app.server.properties.file" />
+
+			<condition else="${project.dir}/app.server.${env.COMPUTERNAME}.properties" property="app.server.properties.file" value="${project.dir}/app.server.${env.HOSTNAME}.properties">
+				<isset property="env.HOSTNAME" />
+			</condition>
+
+			<echo append="true" file="${app.server.properties.file}">
+				app.server.type=@{app.server.type}
+				app.server.version=@{app.server.version}
+			</echo>
 
 			<if>
 				<equals arg1="@{app.server.type}" arg2="jboss" />
@@ -3912,19 +3916,10 @@ tell application "Safari" to quit
 				</then>
 			</if>
 
-			<local name="app.server.properties.file" />
-
-			<condition else="${project.dir}/app.server.${env.COMPUTERNAME}.properties" property="app.server.properties.file" value="${project.dir}/app.server.${env.HOSTNAME}.properties">
-				<isset property="env.HOSTNAME" />
-			</condition>
-
-			<echo>app.server.properties.file=${app.server.properties.file}</echo>
-
 			<echo append="true" file="${app.server.properties.file}">
 				app.server.@{app.server.type}.dir=${app.server.dir}
 				app.server.@{app.server.type}.bin.dir=${app.server.bin.dir}
 				app.server.@{app.server.type}.classes.portal.dir=${app.server.classes.portal.dir}
-				app.server.@{app.server.type}.instance.dir=${app.server.instance.dir}
 				app.server.@{app.server.type}.lib.global.dir=${app.server.lib.global.dir}
 				app.server.@{app.server.type}.lib.portal.dir=${app.server.lib.portal.dir}
 				app.server.@{app.server.type}.version=@{app.server.version}
@@ -3959,8 +3954,6 @@ tell application "Safari" to quit
 				</else>
 			</if>
 
-			<echo>START</echo>
-
 			<beanshell>
 				<![CDATA[
 					import com.liferay.jenkins.results.parser.JenkinsResultsParserUtil;
@@ -3969,21 +3962,13 @@ tell application "Safari" to quit
 
 					File file = new File(project.getProperty("app.server.properties.file"));
 
-					System.out.println("file=" + JenkinsResultsParserUtil.getCanonicalPath(file));
-
 					Properties properties = JenkinsResultsParserUtil.getProperties(new File[] {new File(project.getProperty("app.server.properties.file"))});
 
 					for (String propertyName : properties.stringPropertyNames()) {
-						String propertyValue = JenkinsResultsParserUtil.getProperty(properties, propertyName);
-
-						project.setProperty(propertyName, propertyValue);
-
-						System.out.println(propertyName + "=" + propertyValue);
+						project.setProperty(propertyName, JenkinsResultsParserUtil.getProperty(properties, propertyName));
 					}
 				]]>
 			</beanshell>
-
-			<echo>END</echo>
 		</sequential>
 	</macrodef>
 
