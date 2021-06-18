@@ -3914,7 +3914,7 @@ tell application "Safari" to quit
 
 			<local name="app.server.properties.file" />
 
-			<condition else="app.server.${env.COMPUTERNAME}.properties" property="app.server.properties.file" value="app.server.${env.HOSTNAME}.properties">
+			<condition else="${project.dir}/app.server.${env.COMPUTERNAME}.properties" property="app.server.properties.file" value="${project.dir}/app.server.${env.HOSTNAME}.properties">
 				<isset property="env.HOSTNAME" />
 			</condition>
 
