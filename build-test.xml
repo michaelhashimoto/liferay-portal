@@ -3943,7 +3943,7 @@ tell application "Safari" to quit
 
 			<echo>app.server.properties.content=${app.server.properties.content}</echo>
 
-			<print-file file.name="app.server.${env.HOSTNAME}.properties" />
+			<print-file file.line.count="25" file.name="app.server.${env.HOSTNAME}.properties" />
 		</sequential>
 	</macrodef>
 
