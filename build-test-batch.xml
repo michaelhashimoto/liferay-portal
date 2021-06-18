@@ -1591,8 +1591,6 @@ app.server.type=@{app.server.type}]]></echo>
 		<attribute default="false" name="tsant.gc.log" />
 
 		<sequential>
-			<set-app-server-version-number app.server.type="@{app.server.type}" app.server.version="@{app.server.version}" />
-
 			<var name="app.server.type" value="@{app.server.type}" />
 			<var name="app.server.version" value="@{app.server.version}" />
 			<var name="database.type" value="@{database.type}" />
@@ -4309,6 +4307,8 @@ log.sanitizer.enabled=false</echo>
 	</target>
 
 	<target name="functional-smoke-bundle-jboss72-mysql57-jdk8">
+		<set-app-server-version-number app.server.type="jboss" app.server.version="7.2.0" />
+
 		<run-functional-test
 			app.server.type="jboss"
 			app.server.version="7.2.0"
@@ -4332,6 +4332,8 @@ log.sanitizer.enabled=false</echo>
 	</target>
 
 	<target name="functional-smoke-bundle-jboss73-mysql57-jdk8">
+		<set-app-server-version-number app.server.type="jboss" app.server.version="7.3.0" />
+
 		<run-functional-test
 			app.server.type="jboss"
 			app.server.version="7.3.0"
