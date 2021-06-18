@@ -3808,6 +3808,7 @@ tell application "Safari" to quit
 
 					<var name="app.server.bin.dir" value="${app.server.dir}/bin" />
 					<var name="app.server.classes.portal.dir" value="${app.server.dir}/standalone/deployments/ROOT.war/WEB-INF/classes/" />
+					<var name="app.server.instance.dir" value="${app.server.dir}/standalone" />
 					<var name="app.server.lib.global.dir" value="${app.server.dir}/modules/com/liferay/portal/main" />
 					<var name="app.server.lib.portal.dir" value="${app.server.dir}/standalone/deployments/ROOT.war/WEB-INF/lib/" />
 					<var name="app.server.zip.url" value="http://developers.redhat.com/download-manager/file/${app.server.zip.name}" />
@@ -3859,6 +3860,7 @@ tell application "Safari" to quit
 
 					<var name="app.server.bin.dir" value="${app.server.dir}/domains/liferay/bin" />
 					<var name="app.server.classes.portal.dir" value="${app.server.dir}/domains/liferay/autodeploy/ROOT/WEB-INF/classes" />
+					<var name="app.server.instance.dir" value="${app.server.dir}/domains/liferay" />
 					<var name="app.server.lib.global.dir" value="${app.server.dir}/domains/liferay/lib" />
 					<var name="app.server.lib.portal.dir" value="${app.server.dir}/domains/liferay/autodeploy/ROOT/WEB-INF/lib/" />
 
@@ -3882,6 +3884,7 @@ tell application "Safari" to quit
 
 					<var name="app.server.bin.dir" value="${app.server.dir}/bin" />
 					<var name="app.server.classes.portal.dir" value="${app.server.dir}/standalone/deployments/ROOT.war/WEB-INF/classes/" />
+					<var name="app.server.instance.dir" value="${app.server.dir}/profiles/liferay" />
 					<var name="app.server.lib.global.dir" value="${app.server.dir}/modules/com/liferay/portal/main" />
 					<var name="app.server.lib.portal.dir" value="${app.server.dir}/standalone/deployments/ROOT.war/WEB-INF/lib/" />
 				</then>
@@ -3895,6 +3898,7 @@ tell application "Safari" to quit
 
 					<var name="app.server.bin.dir" value="${app.server.dir}/bin" />
 					<var name="app.server.classes.portal.dir" value="${app.server.dir}/standalone/deployments/ROOT.war/WEB-INF/classes" />
+					<var name="app.server.instance.dir" value="${app.server.dir}/standalone" />
 					<var name="app.server.lib.global.dir" value="${app.server.dir}/modules/com/liferay/portal/main" />
 					<var name="app.server.lib.portal.dir" value="${app.server.dir}/standalone/deployments/ROOT.war/WEB-INF/lib/" />
 					<var name="app.server.zip.url" value="http://download.jboss.org/wildfly/@{app.server.version}.Final/${app.server.zip.name}" />
@@ -3905,6 +3909,7 @@ tell application "Safari" to quit
 				app.server.@{app.server.type}.dir=${app.server.dir}
 				app.server.@{app.server.type}.bin.dir=${app.server.bin.dir}
 				app.server.@{app.server.type}.classes.portal.dir=${app.server.classes.portal.dir}
+				app.server.@{app.server.type}.instance.dir=${app.server.instance.dir}
 				app.server.@{app.server.type}.lib.global.dir=${app.server.lib.global.dir}
 				app.server.@{app.server.type}.lib.portal.dir=${app.server.lib.portal.dir}
 				app.server.@{app.server.type}.version=@{app.server.version}
@@ -3916,10 +3921,25 @@ tell application "Safari" to quit
 				app.server.@{app.server.type}.dir=${app.server.dir}
 				app.server.@{app.server.type}.bin.dir=${app.server.bin.dir}
 				app.server.@{app.server.type}.classes.portal.dir=${app.server.classes.portal.dir}
+				app.server.@{app.server.type}.instance.dir=${app.server.instance.dir}
 				app.server.@{app.server.type}.lib.global.dir=${app.server.lib.global.dir}
 				app.server.@{app.server.type}.lib.portal.dir=${app.server.lib.portal.dir}
 				app.server.@{app.server.type}.version=@{app.server.version}
 			</echo>
+
+			<if>
+				<or>
+					<equals arg1="@{app.server.type}" arg2="jboss" />
+					<equals arg1="@{app.server.type}" arg2="weblogic" />
+					<equals arg1="@{app.server.type}" arg2="websphere" />
+					<equals arg1="@{app.server.type}" arg2="wildfly" />
+				</or>
+				<then>
+					<echo append="true" file="app.server.${env.HOSTNAME}.properties">
+						app.server.@{app.server.type}.instance.dir=${app.server.instance.dir}
+					</echo>
+				</then>
+			</if>
 
 			<if>
 				<equals arg1="@{app.server.type}" arg2="websphere" />
@@ -3935,15 +3955,6 @@ tell application "Safari" to quit
 					</echo>
 				</else>
 			</if>
-
-			<loadfile
-				property="app.server.properties.content"
-				srcfile="app.server.${env.HOSTNAME}.properties"
-			/>
-
-			<echo>app.server.properties.content=${app.server.properties.content}</echo>
-
-			<print-file file.line.count="25" file.name="app.server.${env.HOSTNAME}.properties" />
 		</sequential>
 	</macrodef>
 
