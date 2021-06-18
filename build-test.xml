@@ -3911,6 +3911,8 @@ tell application "Safari" to quit
 				<isset property="env.HOSTNAME" />
 			</condition>
 
+			<echo>app.server.properties.file=${app.server.properties.file}</echo>
+
 			<echo append="true" file="${app.server.properties.file}">
 				app.server.@{app.server.type}.dir=${app.server.dir}
 				app.server.@{app.server.type}.bin.dir=${app.server.bin.dir}
@@ -3955,6 +3957,10 @@ tell application "Safari" to quit
 					import com.liferay.jenkins.results.parser.JenkinsResultsParserUtil;
 
 					import java.util.Properties;
+
+					File file = new File(project.getProperty("app.server.properties.file"));
+
+					System.out.println("file=" + JenkinsResultsParserUtil.getCanonicalPath(file));
 
 					Properties properties = JenkinsResultsParserUtil.getProperties(new File[] {new File(project.getProperty("app.server.properties.file"))});
 
