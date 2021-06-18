@@ -1595,6 +1595,8 @@ app.server.type=@{app.server.type}]]></echo>
 			<var name="app.server.version" value="@{app.server.version}" />
 			<var name="database.type" value="@{database.type}" />
 
+			<set-app-server-version-number app.server.type="@{app.server.type}" app.server.version="@{app.server.version}" />
+
 			<condition else="${run.test.case.method.group}_${axis.variable}" property="test.class" value="${axis.variable}">
 				<matches pattern="[A-z]+" string="${axis.variable}" />
 			</condition>
