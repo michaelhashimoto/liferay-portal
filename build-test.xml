@@ -3912,7 +3912,7 @@ tell application "Safari" to quit
 				app.server.@{app.server.type}.zip.url=${app.server.zip.url}
 			</echo>
 
-			<echo append="true" file="app.server.${env.COMPUTERNAME}.properties">
+			<echo append="true" file="app.server.${env.HOSTNAME}.properties">
 				app.server.@{app.server.type}.dir=${app.server.dir}
 				app.server.@{app.server.type}.bin.dir=${app.server.bin.dir}
 				app.server.@{app.server.type}.classes.portal.dir=${app.server.classes.portal.dir}
@@ -3924,19 +3924,19 @@ tell application "Safari" to quit
 			<if>
 				<equals arg1="@{app.server.type}" arg2="websphere" />
 				<then>
-					<echo append="true" file="app.server.${env.COMPUTERNAME}.properties">
+					<echo append="true" file="app.server.${env.HOSTNAME}.properties">
 						app.server.@{app.server.type}.custom.zip.name=${app.server.zip.name}
 					</echo>
 				</then>
 				<else>
-					<echo append="true" file="app.server.${env.COMPUTERNAME}.properties">
+					<echo append="true" file="app.server.${env.HOSTNAME}.properties">
 						app.server.@{app.server.type}.zip.name=${app.server.zip.name}
 						app.server.@{app.server.type}.zip.url=${app.server.zip.url}
 					</echo>
 				</else>
 			</if>
 
-			<print-file file.name="app.server.${env.COMPUTERNAME}.properties" />
+			<print-file file.name="app.server.${env.HOSTNAME}.properties" />
 		</sequential>
 	</macrodef>
 
