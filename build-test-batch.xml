@@ -1595,8 +1595,6 @@ app.server.type=@{app.server.type}]]></echo>
 			<var name="app.server.version" value="@{app.server.version}" />
 			<var name="database.type" value="@{database.type}" />
 
-			<set-app-server-version-number app.server.type="@{app.server.type}" app.server.version="@{app.server.version}" />
-
 			<condition else="${run.test.case.method.group}_${axis.variable}" property="test.class" value="${axis.variable}">
 				<matches pattern="[A-z]+" string="${axis.variable}" />
 			</condition>
@@ -4309,6 +4307,8 @@ log.sanitizer.enabled=false</echo>
 	</target>
 
 	<target name="functional-smoke-bundle-jboss72-mysql57-jdk8">
+		<set-app-server-version-number app.server.type="jboss" app.server.version="7.2.0" />
+
 		<run-functional-test
 			app.server.type="jboss"
 			app.server.version="7.2.0"
@@ -4332,6 +4332,8 @@ log.sanitizer.enabled=false</echo>
 	</target>
 
 	<target name="functional-smoke-bundle-jboss73-mysql57-jdk8">
+		<set-app-server-version-number app.server.type="jboss" app.server.version="7.3.0" />
+
 		<run-functional-test
 			app.server.type="jboss"
 			app.server.version="7.3.0"
@@ -4475,6 +4477,8 @@ log.sanitizer.enabled=false</echo>
 	</target>
 
 	<target name="functional-smoke-bundle-wildfly14-mysql57-jdk8">
+		<set-app-server-version-number app.server.type="wildfly" app.server.version="14.0.0" />
+
 		<run-functional-test
 			app.server.type="wildfly"
 			app.server.version="14.0.0"
@@ -4498,6 +4502,8 @@ log.sanitizer.enabled=false</echo>
 	</target>
 
 	<target name="functional-smoke-bundle-wildfly22-mysql57-jdk8">
+		<set-app-server-version-number app.server.type="wildfly" app.server.version="22.0.0" />
+
 		<run-functional-test
 			app.server.type="wildfly"
 			app.server.version="22.0.0"
@@ -4529,6 +4535,8 @@ log.sanitizer.enabled=false</echo>
 	</target>
 
 	<target name="functional-smoke-jboss73-mysql57-jdk8">
+		<set-app-server-version-number app.server.type="jboss" app.server.version="7.3.0" />
+
 		<run-functional-test app.server.type="jboss" app.server.version="7.3.0" database.type="mysql" database.version="5.7" test.portal.log.assert="true" />
 	</target>
 
@@ -4673,26 +4681,38 @@ log.sanitizer.enabled=false</echo>
 	</target>
 
 	<target name="functional-smoke-wildfly170-mariadb102-jdk8">
+		<set-app-server-version-number app.server.type="wildfly" app.server.version="17.0.0" />
+
 		<run-functional-test app.server.type="wildfly" app.server.version="17.0.0" database.type="mariadb" test.portal.log.assert="true" />
 	</target>
 
 	<target name="functional-smoke-wildfly170-mariadb102-jdk11_open">
+		<set-app-server-version-number app.server.type="wildfly" app.server.version="17.0.0" />
+
 		<run-functional-test app.server.type="wildfly" app.server.version="17.0.0" database.type="mariadb" test.portal.log.assert="true" />
 	</target>
 
 	<target name="functional-smoke-wildfly170-mariadb104-jdk8">
+		<set-app-server-version-number app.server.type="wildfly" app.server.version="17.0.0" />
+
 		<run-functional-test app.server.type="wildfly" app.server.version="17.0.0" database.type="mariadb" test.portal.log.assert="true" />
 	</target>
 
 	<target name="functional-smoke-wildfly170-mariadb104-jdk11_open">
+		<set-app-server-version-number app.server.type="wildfly" app.server.version="17.0.0" />
+
 		<run-functional-test app.server.type="wildfly" app.server.version="17.0.0" database.type="mariadb" test.portal.log.assert="true" />
 	</target>
 
 	<target name="functional-smoke-wildfly220-mariadb104-jdk8">
+		<set-app-server-version-number app.server.type="wildfly" app.server.version="22.0.0" />
+
 		<run-functional-test app.server.type="wildfly" app.server.version="22.0.0" database.type="mariadb" test.portal.log.assert="true" />
 	</target>
 
 	<target name="functional-smoke-wildfly220-mariadb104-jdk11_open">
+		<set-app-server-version-number app.server.type="wildfly" app.server.version="22.0.0" />
+
 		<run-functional-test app.server.type="wildfly" app.server.version="22.0.0" database.type="mariadb" test.portal.log.assert="true" />
 	</target>
 
@@ -4985,6 +5005,8 @@ log.sanitizer.enabled=false</echo>
 	</target>
 
 	<target name="functional-wildfly170-mariadb104-jdk8">
+		<set-app-server-version-number app.server.type="wildfly" app.server.version="17.0.0" />
+
 		<run-functional-test app.server.type="wildfly" app.server.version="17.0.0" database.type="mariadb" />
 	</target>
 
