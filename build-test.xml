@@ -11677,7 +11677,7 @@ ANT_OPTS=${env.ANT_OPTS}</echo>
 				<mkdir dir="dist" />
 
 				<if>
-					<matches pattern="(file|https?)://" string="${test.portal.bundle.war.url}" />
+					<matches pattern="(file|https?)://" string="${test.build.portal.war.url}" />
 					<then>
 						<mirrors-get
 							dest="liferay-portal.war"
