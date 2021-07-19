@@ -433,7 +433,7 @@ mariadb.executable=${mariadb.executable}]]></echo>
 									<available file="${test.app.server.lib.portal.dir}/portal-impl.jar" />
 								</not>
 								<then>
-									<propertycopy from="app.server.${app.server.type}.shielded-container-lib.portal.dir" name="test.app.server.lib.portal.dir" />
+									<propertycopy from="app.server.${app.server.type}.shielded-container-lib.portal.dir" name="test.app.server.lib.portal.dir" override="true" />
 								</then>
 							</if>
 
@@ -1843,7 +1843,7 @@ app.server.type=@{app.server.type}]]></echo>
 										<available file="${test.app.server.lib.portal.dir}/portal-impl.jar" />
 									</not>
 									<then>
-										<propertycopy from="app.server.${app.server.type}.shielded-container-lib.portal.dir" name="test.app.server.lib.portal.dir" />
+										<propertycopy from="app.server.${app.server.type}.shielded-container-lib.portal.dir" name="test.app.server.lib.portal.dir" override="true" />
 									</then>
 								</if>
 
@@ -3073,7 +3073,7 @@ log.sanitizer.enabled=false</echo>
 									<available file="${test.app.server.lib.portal.dir}/portal-impl.jar" />
 								</not>
 								<then>
-									<propertycopy from="app.server.${app.server.type}.shielded-container-lib.portal.dir" name="test.app.server.lib.portal.dir" />
+									<propertycopy from="app.server.${app.server.type}.shielded-container-lib.portal.dir" name="test.app.server.lib.portal.dir" override="true" />
 								</then>
 							</if>
 
