@@ -3811,6 +3811,7 @@ tell application "Safari" to quit
 					<var name="app.server.instance.dir" value="${app.server.dir}/standalone" />
 					<var name="app.server.lib.global.dir" value="${app.server.dir}/modules/com/liferay/portal/main" />
 					<var name="app.server.lib.portal.dir" value="${app.server.dir}/standalone/deployments/ROOT.war/WEB-INF/lib/" />
+					<var name="app.server.shielded-container-lib.portal.dir" value="${app.server.dir}/standalone/deployments/ROOT.war/WEB-INF/shielded-container-lib/" />
 					<var name="app.server.zip.url" value="http://developers.redhat.com/download-manager/file/${app.server.zip.name}" />
 				</then>
 			</if>
@@ -3825,6 +3826,7 @@ tell application "Safari" to quit
 					<var name="app.server.classes.portal.dir" value="${app.server.dir}/webapps/ROOT/WEB-INF/classes" />
 					<var name="app.server.lib.global.dir" value="${app.server.dir}/lib/ext" />
 					<var name="app.server.lib.portal.dir" value="${app.server.dir}/webapps/ROOT/WEB-INF/lib/" />
+					<var name="app.server.shielded-container-lib.portal.dir" value="${app.server.dir}/webapps/ROOT/WEB-INF/shielded-container-lib/" />
 					<var name="app.server.zip.url" value="http://archive.apache.org/dist/tomcat/tomcat-9/v@{app.server.version}/bin/${app.server.zip.name}" />
 				</then>
 			</if>
@@ -3839,6 +3841,7 @@ tell application "Safari" to quit
 					<var name="app.server.classes.portal.dir" value="${app.server.dir}/standalone/deployments/ROOT.war/WEB-INF/classes/" />
 					<var name="app.server.lib.global.dir" value="${app.server.dir}/modules/com/liferay/portal/main" />
 					<var name="app.server.lib.portal.dir" value="${app.server.dir}/standalone/deployments/ROOT.war/WEB-INF/lib/" />
+					<var name="app.server.shielded-container-lib.portal.dir" value="${app.server.dir}/standalone/deployments/ROOT.war/WEB-INF/shielded-container-lib/" />
 
 					<propertyregex
 						input="@{app.server.version}"
@@ -3863,6 +3866,7 @@ tell application "Safari" to quit
 					<var name="app.server.instance.dir" value="${app.server.dir}/domains/liferay" />
 					<var name="app.server.lib.global.dir" value="${app.server.dir}/domains/liferay/lib" />
 					<var name="app.server.lib.portal.dir" value="${app.server.dir}/domains/liferay/autodeploy/ROOT/WEB-INF/lib/" />
+					<var name="app.server.shielded-container-lib.portal.dir" value="${app.server.dir}/domains/liferay/autodeploy/ROOT/WEB-INF/shielded-container-lib/" />
 
 					<propertyregex
 						input="@{app.server.version}"
@@ -3887,6 +3891,7 @@ tell application "Safari" to quit
 					<var name="app.server.instance.dir" value="${app.server.dir}/profiles/liferay" />
 					<var name="app.server.lib.global.dir" value="${app.server.dir}/modules/com/liferay/portal/main" />
 					<var name="app.server.lib.portal.dir" value="${app.server.dir}/standalone/deployments/ROOT.war/WEB-INF/lib/" />
+					<var name="app.server.shielded-container-lib.portal.dir" value="${app.server.dir}/standalone/deployments/ROOT.war/WEB-INF/shielded-container-lib/" />
 				</then>
 			</if>
 
@@ -3901,6 +3906,7 @@ tell application "Safari" to quit
 					<var name="app.server.instance.dir" value="${app.server.dir}/standalone" />
 					<var name="app.server.lib.global.dir" value="${app.server.dir}/modules/com/liferay/portal/main" />
 					<var name="app.server.lib.portal.dir" value="${app.server.dir}/standalone/deployments/ROOT.war/WEB-INF/lib/" />
+					<var name="app.server.shielded-container-lib.portal.dir" value="${app.server.dir}/standalone/deployments/ROOT.war/WEB-INF/shielded-container-lib/" />
 					<var name="app.server.zip.url" value="http://download.jboss.org/wildfly/@{app.server.version}.Final/${app.server.zip.name}" />
 				</then>
 			</if>
@@ -3920,6 +3926,7 @@ tell application "Safari" to quit
 				app.server.@{app.server.type}.classes.portal.dir=${app.server.classes.portal.dir}
 				app.server.@{app.server.type}.lib.global.dir=${app.server.lib.global.dir}
 				app.server.@{app.server.type}.lib.portal.dir=${app.server.lib.portal.dir}
+				app.server.@{app.server.type}.shielded-container-lib.portal.dir=${app.server.shielded-container-lib.portal.dir}
 				app.server.@{app.server.type}.version=@{app.server.version}
 			</echo>
 

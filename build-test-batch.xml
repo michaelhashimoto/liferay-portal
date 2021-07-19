@@ -428,6 +428,15 @@ mariadb.executable=${mariadb.executable}]]></echo>
 
 							<propertycopy from="app.server.${app.server.type}.lib.portal.dir" name="test.app.server.lib.portal.dir" />
 
+							<if>
+								<not>
+									<available file="${test.app.server.lib.portal.dir}/portal-impl.jar" />
+								</not>
+								<then>
+									<propertycopy from="app.server.${app.server.type}.shielded-container-lib.portal.dir" name="test.app.server.lib.portal.dir" override="true" />
+								</then>
+							</if>
+
 							<antcall inheritall="false" target="copy-optional-jars">
 								<param name="database.type" value="@{database.type}" />
 								<param name="todir" value="${test.app.server.lib.portal.dir}" />
@@ -1829,6 +1838,15 @@ app.server.type=@{app.server.type}]]></echo>
 
 								<propertycopy from="app.server.${app.server.type}.lib.portal.dir" name="test.app.server.lib.portal.dir" />
 
+								<if>
+									<not>
+										<available file="${test.app.server.lib.portal.dir}/portal-impl.jar" />
+									</not>
+									<then>
+										<propertycopy from="app.server.${app.server.type}.shielded-container-lib.portal.dir" name="test.app.server.lib.portal.dir" override="true" />
+									</then>
+								</if>
+
 								<unzip
 									dest="portal-impl/classes"
 									src="${test.app.server.lib.portal.dir}/portal-impl.jar"
@@ -3049,6 +3067,15 @@ log.sanitizer.enabled=false</echo>
 							</gradle-execute>
 
 							<propertycopy from="app.server.${app.server.type}.lib.portal.dir" name="test.app.server.lib.portal.dir" />
+
+							<if>
+								<not>
+									<available file="${test.app.server.lib.portal.dir}/portal-impl.jar" />
+								</not>
+								<then>
+									<propertycopy from="app.server.${app.server.type}.shielded-container-lib.portal.dir" name="test.app.server.lib.portal.dir" override="true" />
+								</then>
+							</if>
 
 							<unzip
 								dest="portal-impl/classes"
