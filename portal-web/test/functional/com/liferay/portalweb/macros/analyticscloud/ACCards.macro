@@ -8,12 +8,37 @@ definition {
 			value1 = "${cardTitle}");
 	}
 
+	macro viewMetricBarStyle {
+		AssertAttributeValue(
+			attribute1 = "style",
+			entryName = "${entryName}",
+			key_cardTitle = "${cardTitle}",
+			locator1 = "ACCards#METRIC_BAR",
+			value1 = "${style}");
+
+		AssertCssValue(
+			entryName = "${entryName}",
+			key_cardTitle = "${cardTitle}",
+			locator1 = "ACCards#METRIC_BAR",
+			locator2 = "background-color",
+			value1 = "${backgroundColor}");
+	}
+
 	macro viewMetricValue {
 		AssertTextEquals(
 			key_cardTitle = "${cardTitle}",
 			key_metricName = "${metricName}",
 			locator1 = "ACCards#METRIC_VALUE",
 			value1 = "${metricValue}");
+	}
+
+	macro viewTableEntryInfo {
+		AssertVisible(
+			column = "${column}",
+			entryInfo = "${entryInfo}",
+			entryName = "${entryName}",
+			key_cardTitle = "${cardTitle}",
+			locator1 = "ACCards#TABLE_ENTRY_INFO");
 	}
 
 	macro viewTopSitesByIndexes {

@@ -27,6 +27,11 @@
 	<td></td>
 </tr>
 <tr>
+	<td>METRIC_BAR</td>
+	<td>//div[contains(@class,'card-root')][.//h5[contains(@class,'card-title')][normalize-space(text())='${key_cardTitle}']]//tbody[.//td[contains(@class,'name')][normalize-space()='${entryName}']]//div[contains(@class,'metric-bar-root')]//div[contains(@class,'bar')]</td>
+	<td></td>
+</tr>
+<tr>
 	<td>METRIC_VALUE</td>
 	<td>//div[contains(@class,'card-root')][.//h5[contains(@class,'card-title')][normalize-space(text())='${key_cardTitle}']]//li[contains(@class,'card-tab')][.//*[normalize-space(text())='${key_metricName}']]//div[contains(@class,'metric-value')]</td>
 	<td></td>
@@ -34,6 +39,11 @@
 <tr>
 	<td>NO_RESULTS_TITLE</td>
 	<td>//h4[@class='no-results-title' and contains(.,'${key_cardTitle}')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>TABLE_ENTRY_INFO</td>
+	<td>//div[contains(@class,'card-root')][.//h5[contains(@class,'card-title')][normalize-space(text())='${key_cardTitle}']]//tbody//td[contains(@class,'name')][normalize-space()='${entryName}']//following-sibling::td[contains(@class,'table-${column}')][normalize-space()='${entryInfo}']</td>
 	<td></td>
 </tr>
 <tr>
