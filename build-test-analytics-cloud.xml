@@ -121,7 +121,7 @@ networks:
 
 					Collections.sort(dockerImageNames);
 
-					project.setProperty("docker.image.names", JenkinsResultsParserUtil.join(" ", dockerImageNames.toArray(new String[0])));
+					project.setProperty("docker.image.names", JenkinsResultsParserUtil.join(",", dockerImageNames.toArray(new String[0])));
 				]]>
 			</beanshell>
 
