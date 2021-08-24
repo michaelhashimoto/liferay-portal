@@ -87,6 +87,52 @@ networks:
 		</sequential>
 	</macrodef>
 
+	<macrodef name="pull-docker-images">
+		<attribute name="analytics.cloud.repository.dir" />
+
+		<sequential>
+			<local name="analytics.cloud.repository.dir" />
+
+			<property name="analytics.cloud.repository.dir" value="@{analytics.cloud.repository.dir}" />
+
+			<local name="docker.image.names" />
+
+			<beanshell>
+				<![CDATA[
+					import com.liferay.jenkins.results.parser.JenkinsResultsParserUtil;
+
+					List dockerFiles = JenkinsResultsParserUtil.findFiles(new File(project.getProperty("analytics.cloud.repository.dir")), "Dockerfile");
+
+					List dockerImageNames = new ArrayList();
+
+					for (File dockerFile : dockerFiles) {
+						String dockerFileContent = JenkinsResultsParserUtil.read(dockerFile);
+
+						String dockerImageName = dockerFileContent.replaceAll("FROM ([^\\s]+)( AS builder)?\\n[\\s\\S]*", "$1");
+
+						if (dockerImageNames.contains(dockerImageName)) {
+							continue;
+						}
+
+						dockerImageNames.add(dockerImageName);
+					}
+
+					Collections.sort(dockerImageNames);
+
+					project.setProperty("docker.image.names", JenkinsResultsParserUtil.join(" ", dockerImageNames.toArray(new String[0])));
+				]]>
+			</beanshell>
+
+			<for list="${docker.image.names}" param="docker.image.name">
+				<sequential>
+					<execute dir="@{analytics.cloud.repository.dir}">
+						docker pull @{docker.image.name}
+					</execute>
+				</sequential>
+			</for>
+		</sequential>
+	</macrodef>
+
 	<macrodef name="start-analytics-cloud">
 		<sequential>
 			<fail message="Please set the property ${env.DOCKER_ENABLED}." unless="env.DOCKER_ENABLED" />
@@ -126,6 +172,8 @@ OSB_FARO_FRONTEND_URL=${analytics.cloud.faro.frontend.url}</echo>
 			<if>
 				<equals arg1="${analytics.cloud.asah.build}" arg2="true" />
 				<then>
+					<pull-docker-images analytics.cloud.repository.dir="${analytics.cloud.asah.dir}" />
+
 					<execute dir="${analytics.cloud.asah.dir}">
 						./gradlew jar -Dliferay.ci=true
 
@@ -139,6 +187,8 @@ OSB_FARO_FRONTEND_URL=${analytics.cloud.faro.frontend.url}</echo>
 			<if>
 				<equals arg1="${analytics.cloud.faro.build}" arg2="true" />
 				<then>
+					<pull-docker-images analytics.cloud.repository.dir="${analytics.cloud.faro.dir}" />
+
 					<local name="portal.gradlew" />
 
 					<property location="${project.dir}/gradlew" name="portal.gradlew" />
