@@ -115,6 +115,8 @@ networks:
 						}
 
 						dockerImageNames.add(dockerImageName);
+
+						System.out.println(dockerImageName);
 					}
 
 					Collections.sort(dockerImageNames);
@@ -125,6 +127,8 @@ networks:
 
 			<for list="${docker.image.names}" param="docker.image.name">
 				<sequential>
+					<echo>docker pull @{docker.image.name}</echo>
+
 					<execute dir="@{analytics.cloud.repository.dir}">
 						docker pull @{docker.image.name}
 					</execute>
