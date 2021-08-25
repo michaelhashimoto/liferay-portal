@@ -7274,15 +7274,6 @@ information. Make sure to commit in all build services results.
 			</test-action>
 
 			<test-set-up>
-				<if>
-					<equals arg1="${build.profile}" arg2="dxp" />
-					<then>
-						<antcall inheritAll="false" target="setup-profile-dxp" />
-
-						<antcall target="install-portal-snapshots" />
-					</then>
-				</if>
-
 				<setup-test-environment />
 			</test-set-up>
 		</run-batch-test>
