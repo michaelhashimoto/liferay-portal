@@ -101,38 +101,77 @@ networks:
 				<![CDATA[
 					import com.liferay.jenkins.results.parser.JenkinsResultsParserUtil;
 
-					List dockerFiles = JenkinsResultsParserUtil.findFiles(new File(project.getProperty("analytics.cloud.repository.dir")), "Dockerfile");
+					import java.util.regex.Matcher;
+					import java.util.regex.Pattern;
 
-					List dockerImageNames = new ArrayList();
+					Pattern dockerFilePattern = Pattern.compile("FROM (?<imageName>[^\\s]+)( AS builder)?\\n[\\s\\S]*");
 
-					for (File dockerFile : dockerFiles) {
-						String dockerFileContent = JenkinsResultsParserUtil.read(dockerFile);
+					public List getExcludedImageNames() {
+						String excludedImageNames = project.getProperty("analytics.cloud.image.names.excludes");
 
-						String dockerImageName = dockerFileContent.replaceAll("FROM ([^\\s]+)( AS builder)?\\n[\\s\\S]*", "$1");
-
-						if (dockerImageName.contains("liferay/dxp")) {
-							continue;
+						if (JenkinsResultsParserUtil.isNullOrEmpty(excludedImageNames)) {
+							return Collections.emptyList();
 						}
 
-						if (dockerImageNames.contains(dockerImageName)) {
-							continue;
-						}
-
-						dockerImageNames.add(dockerImageName);
-
-						System.out.println(dockerImageName);
+						return Arrays.asList(excludedImageNames.split(","));
 					}
 
-					Collections.sort(dockerImageNames);
+					public String getImageName(File dockerFile) {
+						if ((dockerFile == null) || !dockerFile.exists()) {
+							return null;
+						}
 
-					project.setProperty("docker.image.names", JenkinsResultsParserUtil.join(",", dockerImageNames.toArray(new String[0])));
+						String dockerFileContent = JenkinsResultsParserUtil.read(dockerFile);
+
+						if (JenkinsResultsParserUtil.isNullOrEmpty(dockerFileContent)) {
+							return null;
+						}
+
+						Matcher dockerFileMatcher = dockerFilePattern.matcher(dockerFileContent);
+
+						if (!dockerFileMatcher.find()) {
+							return null;
+						}
+
+						return dockerFileMatcher.group("imageName");
+					}
+
+					List imageNames = new ArrayList();
+
+					List dockerFiles = JenkinsResultsParserUtil.findFiles(new File(project.getProperty("analytics.cloud.repository.dir")), "Dockerfile");
+
+					for (File dockerFile : dockerFiles) {
+						String imageName = getImageName(dockerFile);
+
+						if (imageNames.contains(imageName)) {
+							continue;
+						}
+
+						boolean excludeImageName = false;
+
+						for (String excludedImageName : getExcludedImageNames()) {
+							if (imageName.matches(excludedImageName)) {
+								excludeImageName = true;
+
+								break;
+							}
+						}
+
+						if (excludeImageName) {
+							continue;
+						}
+
+						imageNames.add(imageName);
+					}
+
+					Collections.sort(imageNames);
+
+					project.setProperty("docker.image.names", JenkinsResultsParserUtil.join(",", imageNames.toArray(new String[0])));
 				]]>
 			</beanshell>
 
 			<for list="${docker.image.names}" param="docker.image.name">
 				<sequential>
-					<echo>docker pull @{docker.image.name}</echo>
-
 					<execute dir="@{analytics.cloud.repository.dir}">
 						docker pull @{docker.image.name}
 					</execute>
@@ -243,7 +282,7 @@ OSB_FARO_FRONTEND_URL=${analytics.cloud.faro.frontend.url}</echo>
 				<sequential>
 					<local name="analytics.cloud.start.result" />
 
-					<exec dir="${analytics.cloud.asah.dir}" executable="/bin/bash" resultproperty="analytics.cloud.start.result" timeout="900000">
+					<exec dir="${analytics.cloud.asah.dir}" executable="/bin/bash" resultproperty="analytics.cloud.start.result" timeout="300000">
 						<arg value="${analytics.cloud.start.sh}" />
 					</exec>
 
