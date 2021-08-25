@@ -110,6 +110,10 @@ networks:
 
 						String dockerImageName = dockerFileContent.replaceAll("FROM ([^\\s]+)( AS builder)?\\n[\\s\\S]*", "$1");
 
+						if (dockerImageName.contains("liferay/dxp")) {
+							continue;
+						}
+
 						if (dockerImageNames.contains(dockerImageName)) {
 							continue;
 						}
