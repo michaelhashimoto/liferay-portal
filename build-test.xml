@@ -9805,18 +9805,34 @@ auto.deploy.dest.dir=C:/WINDOWS/system32/config/systemprofile/liferay/websphere-
 			</then>
 		</if>
 
-		<for list="${test.case.available.property.names}" param="test.case.available.property.name">
-			<sequential>
-				<if>
-					<isset property="test.case.available.property.values[@{test.case.available.property.name}]" />
-					<then>
-						<echo append="true" file="${test.ext.properties.file}">
-							test.case.available.property.values[@{test.case.available.property.name}]=${test.case.available.property.values[@{test.case.available.property.name}]}
-						</echo>
-					</then>
-				</if>
-			</sequential>
-		</for>
+		<local name="test.case.property.content" />
+
+		<beanshell>
+			<![CDATA[
+				import com.liferay.jenkins.results.parser.JenkinsResultsParserUtil;
+
+				Properties testProperties = JenkinsResultsParserUtil.getProperties(new File[]{new File("test.properties")});
+
+				StringBuilder sb = new StringBuilder();
+
+				for (String testPropertyName : testProperties.stringPropertyNames()) {
+					if (!testPropertyName.startsWith("test.case.available.property.values[") && !testPropertyName.startsWith("test.case.property.group[")) {
+						continue;
+					}
+
+					sb.append("\n");
+					sb.append(testPropertyName);
+					sb.append("=");
+					sb.append(testProperties.getProperty(testPropertyName));
+				}
+
+				sb.append("\n");
+
+				project.setProperty("test.case.property.content", sb.toString());
+			]]>
+		</beanshell>
+
+		<echo append="true" file="${test.ext.properties.file}" message="${test.case.property.content}" />
 
 		<if>
 			<isset property="test.case.required.property.names" />
