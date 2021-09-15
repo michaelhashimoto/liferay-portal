@@ -3090,9 +3090,9 @@ log.sanitizer.enabled=false</echo>
 							<copy-artifact-to-local-cache artifact.file="${test.app.server.lib.portal.dir}/util-java.jar" artifact.name="com.liferay.util.java" artifact.version="${artifact.version}" />
 							<copy-artifact-to-local-cache artifact.file="${test.app.server.lib.portal.dir}/util-taglib.jar" artifact.name="com.liferay.util.taglib" artifact.version="${artifact.version}" />
 
-							<deploy-release-dependency-modules-pre-startup />
-
 							<gradle-execute dir="modules/apps/static/required-dependencies/required-dependencies" task="deployReqTestLibs" />
+
+							<deploy-release-dependency-modules-pre-startup />
 						</then>
 						<elseif>
 							<and>
