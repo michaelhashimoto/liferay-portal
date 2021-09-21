@@ -63,6 +63,8 @@ public class CompanionPortalWorkspaceGitRepository
 			return;
 		}
 
+		_setupProfileDXP();
+
 		File modulesPrivateDir = new File(getDirectory(), "modules/private");
 
 		if (!modulesPrivateDir.exists()) {
@@ -106,6 +108,18 @@ public class CompanionPortalWorkspaceGitRepository
 		super(remoteGitRef, upstreamBranchName);
 
 		_parentWorkspaceGitRepository = parentWorkspaceGitRepository;
+	}
+
+	private void _setupProfileDXP() {
+		try {
+			AntUtil.callTarget(
+				_parentWorkspaceGitRepository.getDirectory(), "build.xml",
+				"setup-profile-dxp");
+		}
+		catch (AntException antException) {
+			throw new RuntimeException(
+				"Unable to set up DXP profile", antException);
+		}
 	}
 
 	private final WorkspaceGitRepository _parentWorkspaceGitRepository;
