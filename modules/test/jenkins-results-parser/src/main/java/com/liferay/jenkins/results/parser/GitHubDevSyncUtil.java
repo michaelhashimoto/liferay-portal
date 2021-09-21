@@ -1509,20 +1509,6 @@ public class GitHubDevSyncUtil {
 		RemoteGitBranch cacheRemoteGitBranch = fetchCacheBranchFromGitHubDev(
 			gitWorkingDirectory, cacheBranchName);
 
-		if (cacheRemoteGitBranch == null) {
-			return gitWorkingDirectory.getRebasedLocalGitBranch(
-				JenkinsResultsParserUtil.combine(
-					gitWorkingDirectory.getUpstreamBranchName(), "-temp-",
-					String.valueOf(
-						JenkinsResultsParserUtil.getCurrentTimeMillis())),
-				senderBranchName,
-				JenkinsResultsParserUtil.combine(
-					"git@github.com:", senderUsername, "/",
-					localGitRepository.getName()),
-				senderBranchSHA, gitWorkingDirectory.getUpstreamBranchName(),
-				upstreamBranchSHA);
-		}
-
 		return gitWorkingDirectory.fetch(
 			cacheLocalGitBranch, cacheRemoteGitBranch);
 	}
