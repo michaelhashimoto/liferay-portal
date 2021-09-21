@@ -16,8 +16,10 @@ package com.liferay.jenkins.results.parser;
 
 import java.io.File;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -35,6 +37,26 @@ public class PortalEnvironmentJob
 	public PortalGitWorkingDirectory getPortalGitWorkingDirectory() {
 		return GitWorkingDirectoryFactory.newPortalGitWorkingDirectory(
 			getPortalBranchName());
+	}
+
+	@Override
+	public PortalWorkspaceGitRepository getPortalWorkspaceGitRepository() {
+		return null;
+	}
+
+	@Override
+	public List<WorkspaceGitRepository> getWorkspaceGitRepositories() {
+		List<WorkspaceGitRepository> workspaceGitRepositories =
+			new ArrayList<>();
+
+		workspaceGitRepositories.add(getPortalWorkspaceGitRepository());
+
+		return workspaceGitRepositories;
+	}
+
+	@Override
+	public void setPortalWorkspaceGitRepository(
+		PortalWorkspaceGitRepository portalWorkspaceRepository) {
 	}
 
 	protected PortalEnvironmentJob(

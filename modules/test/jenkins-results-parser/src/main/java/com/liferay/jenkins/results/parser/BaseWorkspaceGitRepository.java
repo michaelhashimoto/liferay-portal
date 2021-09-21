@@ -27,6 +27,8 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 import java.util.Stack;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -89,6 +91,11 @@ public abstract class BaseWorkspaceGitRepository
 		}
 
 		return _historicalLocalGitCommits;
+	}
+
+	@Override
+	public String getRemoteBranchName() {
+		return getString("remote_branch_name");
 	}
 
 	@Override
@@ -293,6 +300,26 @@ public abstract class BaseWorkspaceGitRepository
 	}
 
 	@Override
+	public void synchronizeToGitHubDev() {
+		Matcher matcher = _pattern.matcher(getGitHubDevBranchName());
+
+		if (!matcher.find()) {
+			return;
+		}
+
+		try {
+			GitHubDevSyncUtil.synchronizeToGitHubDev(
+				getGitWorkingDirectory(), matcher.group("receiverUsername"),
+				getRemoteBranchName(), matcher.group("senderUsername"),
+				matcher.group("senderBranchSHA"),
+				matcher.group("upstreamBranchSHA"));
+		}
+		catch (IOException ioException) {
+			throw new RuntimeException(ioException);
+		}
+	}
+
+	@Override
 	public void tearDown() {
 		GitWorkingDirectory gitWorkingDirectory = getGitWorkingDirectory();
 
@@ -353,12 +380,14 @@ public abstract class BaseWorkspaceGitRepository
 
 		LocalGitBranch localGitBranch =
 			GitHubDevSyncUtil.createCacheLocalGitBranch(
-				this, pullRequest, JenkinsResultsParserUtil.isCINode());
+				this, pullRequest, false);
 
 		_setBranchHeadSHA(localGitBranch.getSHA());
 		_setBranchName(localGitBranch.getName());
 
 		setBranchSHA(localGitBranch.getSHA());
+
+		_setRemoteBranchName(pullRequest.getSenderBranchName());
 
 		_setType();
 
@@ -385,12 +414,14 @@ public abstract class BaseWorkspaceGitRepository
 
 		LocalGitBranch localGitBranch =
 			GitHubDevSyncUtil.createCacheLocalGitBranch(
-				this, remoteGitRef, JenkinsResultsParserUtil.isCINode());
+				this, remoteGitRef, false);
 
 		_setBranchHeadSHA(localGitBranch.getSHA());
 		_setBranchName(localGitBranch.getName());
 
 		setBranchSHA(localGitBranch.getSHA());
+
+		_setRemoteBranchName(remoteGitRef.getName());
 
 		_setType();
 
@@ -512,6 +543,14 @@ public abstract class BaseWorkspaceGitRepository
 		put("git_hub_url", gitHubURL);
 	}
 
+	private void _setRemoteBranchName(String remoteBranchName) {
+		if (remoteBranchName == null) {
+			throw new RuntimeException("Remote branch name is null");
+		}
+
+		put("remote_branch_name", remoteBranchName);
+	}
+
 	private void _setType() {
 		put("type", getType());
 	}
@@ -523,8 +562,13 @@ public abstract class BaseWorkspaceGitRepository
 	private static final String _REGEX_SHA = "[0-9a-f]{7,40}";
 
 	private static final String[] _REQUIRED_KEYS = {
-		"branch_head_sha", "branch_name", "branch_sha", "git_hub_url", "type"
+		"branch_head_sha", "branch_name", "branch_sha", "git_hub_url",
+		"remote_branch_name", "type"
 	};
+
+	private static final Pattern _pattern = Pattern.compile(
+		"cache-(?<receiverUsername>[^-])+-(?<upstreamBranchSHA>[^-]+)-" +
+			"(?<senderUsername>[^-]+)-(?<senderBranchSHA>[^-]+)");
 
 	private List<LocalGitCommit> _historicalLocalGitCommits;
 	private final Map<String, Properties> _propertiesFilesMap = new HashMap<>();

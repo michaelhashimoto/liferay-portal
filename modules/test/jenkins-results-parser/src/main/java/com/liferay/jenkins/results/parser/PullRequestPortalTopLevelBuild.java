@@ -68,6 +68,14 @@ public class PullRequestPortalTopLevelBuild
 		_pullRequest = new PullRequest(sb.toString());
 	}
 
+	public PortalWorkspaceGitRepository getPortalWorkspaceGitRepository() {
+		if (_portalWorkspaceRepository != null) {
+			return _portalWorkspaceRepository;
+		}
+
+		return _portalWorkspaceRepository;
+	}
+
 	@Override
 	public PullRequest getPullRequest() {
 		return _pullRequest;
@@ -367,6 +375,7 @@ public class PullRequestPortalTopLevelBuild
 		return rootElement;
 	}
 
+	private PortalWorkspaceGitRepository _portalWorkspaceRepository;
 	private final PullRequest _pullRequest;
 	private Job _stableJob;
 	private String _stableJobResult;

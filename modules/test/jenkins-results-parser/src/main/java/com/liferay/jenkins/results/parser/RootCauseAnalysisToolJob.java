@@ -16,7 +16,9 @@ package com.liferay.jenkins.results.parser;
 
 import java.io.File;
 
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -70,8 +72,28 @@ public class RootCauseAnalysisToolJob
 	}
 
 	@Override
+	public PortalWorkspaceGitRepository getPortalWorkspaceGitRepository() {
+		return null;
+	}
+
+	@Override
+	public List<WorkspaceGitRepository> getWorkspaceGitRepositories() {
+		List<WorkspaceGitRepository> workspaceGitRepositories =
+			new ArrayList<>();
+
+		workspaceGitRepositories.add(getPortalWorkspaceGitRepository());
+
+		return workspaceGitRepositories;
+	}
+
+	@Override
 	public boolean isSegmentEnabled() {
 		return true;
+	}
+
+	@Override
+	public void setPortalWorkspaceGitRepository(
+		PortalWorkspaceGitRepository portalWorkspaceRepository) {
 	}
 
 	@Override

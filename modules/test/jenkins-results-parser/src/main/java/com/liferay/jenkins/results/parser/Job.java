@@ -61,6 +61,8 @@ public interface Job {
 
 	public String getTestPropertiesContent();
 
+	public List<WorkspaceGitRepository> getWorkspaceGitRepositories();
+
 	public boolean isSegmentEnabled();
 
 	public boolean isValidationRequired();

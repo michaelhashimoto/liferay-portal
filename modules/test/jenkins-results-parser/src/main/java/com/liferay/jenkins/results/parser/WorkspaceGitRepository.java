@@ -30,6 +30,8 @@ public interface WorkspaceGitRepository extends LocalGitRepository {
 
 	public List<LocalGitCommit> getHistoricalLocalGitCommits();
 
+	public String getRemoteBranchName();
+
 	public String getType();
 
 	public Properties getWorkspaceJobProperties(String propertyType, Job job);
@@ -42,6 +44,8 @@ public interface WorkspaceGitRepository extends LocalGitRepository {
 	public void setUp();
 
 	public void storeCommitHistory(List<String> commitSHAs);
+
+	public void synchronizeToGitHubDev();
 
 	public void tearDown();
 

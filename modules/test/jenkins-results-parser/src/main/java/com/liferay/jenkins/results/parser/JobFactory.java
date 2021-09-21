@@ -29,11 +29,13 @@ public class JobFactory {
 	public static Job newJob(Build build) {
 		TopLevelBuild topLevelBuild = build.getTopLevelBuild();
 
-		return _newJob(
+		Job job = _newJob(
 			topLevelBuild.getJobName(), topLevelBuild.getTestSuiteName(),
 			topLevelBuild.getBranchName(),
 			topLevelBuild.getBaseGitRepositoryName(),
 			topLevelBuild.getBuildProfile(), topLevelBuild.getProjectNames());
+
+		return job;
 	}
 
 	public static Job newJob(BuildData buildData) {

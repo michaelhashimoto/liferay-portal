@@ -314,6 +314,11 @@ public abstract class BaseJob implements Job {
 	}
 
 	@Override
+	public List<WorkspaceGitRepository> getWorkspaceGitRepositories() {
+		return new ArrayList<>();
+	}
+
+	@Override
 	public boolean isSegmentEnabled() {
 		String testSuiteName = "default";
 

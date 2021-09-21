@@ -107,6 +107,16 @@ public class GitHubDevSyncUtil {
 			synchronize);
 	}
 
+	public static LocalGitBranch createCacheLocalGitBranch(
+		LocalGitRepository localGitRepository, String receiverUsername,
+		String senderBranchName, String senderUsername, String senderBranchSHA,
+		String upstreamBranchSHA, boolean synchronize) {
+
+		return _createCacheLocalGitBranch(
+			localGitRepository, receiverUsername, senderBranchName,
+			senderUsername, senderBranchSHA, upstreamBranchSHA, synchronize);
+	}
+
 	public static RemoteGitBranch fetchCacheBranchFromGitHubDev(
 		GitWorkingDirectory gitWorkingDirectory, String cacheBranchName) {
 
