@@ -131,15 +131,23 @@ public abstract class BasePortalWorkspace
 
 		_primaryPortalWorkspaceGitRepository.setUp();
 
+		_primaryPortalWorkspaceGitRepository.synchronizeToGitHubDev();
+
 		if (_companionPortalWorkspaceGitRepository != null) {
 			_companionPortalWorkspaceGitRepository.setUp();
+
+			_companionPortalWorkspaceGitRepository.synchronizeToGitHubDev();
 		}
 
 		if (_otherPortalWorkspaceGitRepository != null) {
 			_otherPortalWorkspaceGitRepository.setUp();
+
+			_otherPortalWorkspaceGitRepository.synchronizeToGitHubDev();
 		}
 
 		_pluginsWorkspaceGitRepository.setUp();
+
+		_pluginsWorkspaceGitRepository.synchronizeToGitHubDev();
 	}
 
 	@Override
