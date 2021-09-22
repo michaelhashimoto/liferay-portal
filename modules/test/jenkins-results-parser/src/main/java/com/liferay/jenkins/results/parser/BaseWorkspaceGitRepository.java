@@ -439,8 +439,7 @@ public abstract class BaseWorkspaceGitRepository
 				_getBranchName(), _getSenderBranchName(),
 				JenkinsResultsParserUtil.combine(
 					"git@github.com:", _getSenderUsername(), "/", getName()),
-				_getSenderBranchSHA(), getUpstreamBranchName(),
-				_getUpstreamBranchSHA());
+				senderBranchSHA, getUpstreamBranchName(), upstreamBranchSHA);
 
 		setBranchSHA(localGitBranch.getSHA());
 

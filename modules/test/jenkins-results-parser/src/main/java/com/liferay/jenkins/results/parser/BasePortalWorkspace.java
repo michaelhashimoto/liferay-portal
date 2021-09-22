@@ -124,25 +124,25 @@ public abstract class BasePortalWorkspace
 	protected void setUpWorkspaceGitRepositories() {
 		setUpJenkinsWorkspaceGitRepository();
 
-		_primaryPortalWorkspaceGitRepository.synchronizeToGitHubDev();
-
 		_primaryPortalWorkspaceGitRepository.setUp();
 
-		if (_companionPortalWorkspaceGitRepository != null) {
-			_companionPortalWorkspaceGitRepository.synchronizeToGitHubDev();
+		_primaryPortalWorkspaceGitRepository.synchronizeToGitHubDev();
 
+		if (_companionPortalWorkspaceGitRepository != null) {
 			_companionPortalWorkspaceGitRepository.setUp();
+
+			_companionPortalWorkspaceGitRepository.synchronizeToGitHubDev();
 		}
 
 		if (_otherPortalWorkspaceGitRepository != null) {
-			_otherPortalWorkspaceGitRepository.synchronizeToGitHubDev();
-
 			_otherPortalWorkspaceGitRepository.setUp();
+
+			_otherPortalWorkspaceGitRepository.synchronizeToGitHubDev();
 		}
 
-		_pluginsWorkspaceGitRepository.synchronizeToGitHubDev();
-
 		_pluginsWorkspaceGitRepository.setUp();
+
+		_pluginsWorkspaceGitRepository.synchronizeToGitHubDev();
 	}
 
 	@Override

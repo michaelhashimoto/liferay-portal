@@ -36,9 +36,9 @@ public class FunctionalBatchPortalWorkspace extends BatchPortalWorkspace {
 		super.setUpWorkspaceGitRepositories();
 
 		if (legacyWorkspaceGitRepository != null) {
-			legacyWorkspaceGitRepository.synchronizeToGitHubDev();
-
 			legacyWorkspaceGitRepository.setUp();
+
+			legacyWorkspaceGitRepository.synchronizeToGitHubDev();
 		}
 	}
 
