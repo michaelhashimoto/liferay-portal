@@ -71,9 +71,9 @@ public abstract class BaseWorkspace implements Workspace {
 
 	protected void setUpJenkinsWorkspaceGitRepository() {
 		if (_jenkinsWorkspaceGitRepository != null) {
-			_jenkinsWorkspaceGitRepository.setUp();
-
 			_jenkinsWorkspaceGitRepository.synchronizeToGitHubDev();
+
+			_jenkinsWorkspaceGitRepository.setUp();
 		}
 	}
 

@@ -218,7 +218,7 @@ public abstract class BaseWorkspaceGitRepository
 
 		GitWorkingDirectory gitWorkingDirectory = getGitWorkingDirectory();
 
-		if (!gitWorkingDirectory.localSHAExists(_getBranchHeadSHA())) {
+		if (!gitWorkingDirectory.localSHAExists(getBranchSHA())) {
 			GitHubDevSyncUtil.fetchCacheBranchFromGitHubDev(
 				gitWorkingDirectory, getGitHubDevBranchName());
 		}
