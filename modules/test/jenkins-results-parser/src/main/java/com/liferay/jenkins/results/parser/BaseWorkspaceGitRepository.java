@@ -425,84 +425,29 @@ public abstract class BaseWorkspaceGitRepository
 
 		super(remoteGitRef.getRepositoryName(), upstreamBranchName);
 
-		System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-		long start0 = JenkinsResultsParserUtil.getCurrentTimeMillis();
-
 		_setGitHubURL(
 			JenkinsResultsParserUtil.combine(
 				"https://github.com/", remoteGitRef.getUsername(), "/",
 				remoteGitRef.getRepositoryName(), "/tree/",
 				remoteGitRef.getName()));
 
+		setBranchSHA(remoteGitRef.getSHA());
+		_setBranchHeadSHA(remoteGitRef.getSHA());
 		_setReceiverUsername(remoteGitRef.getUsername());
+		_setRemoteBranchName(remoteGitRef.getName());
 		_setSenderBranchName(remoteGitRef.getName());
 		_setSenderUsername(remoteGitRef.getUsername());
 		_setSenderBranchSHA(remoteGitRef.getSHA());
+		_setType();
 		_setUpstreamBranchSHA(remoteGitRef.getSHA());
-
-		_setBranchName(
-			JenkinsResultsParserUtil.combine(
-				getUpstreamBranchName(), "-temp-",
-				String.valueOf(
-					JenkinsResultsParserUtil.getCurrentTimeMillis())));
 
 		String branchName = JenkinsResultsParserUtil.combine(
 			getUpstreamBranchName(), "-temp-",
 			String.valueOf(JenkinsResultsParserUtil.getCurrentTimeMillis()));
 
-		System.out.println(
-			JenkinsResultsParserUtil.toDurationString(
-				JenkinsResultsParserUtil.getCurrentTimeMillis() - start0));
-		System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-		long start1 = JenkinsResultsParserUtil.getCurrentTimeMillis();
-
-		GitWorkingDirectory gitWorkingDirectory = getGitWorkingDirectory();
-
-		System.out.println(
-			JenkinsResultsParserUtil.toDurationString(
-				JenkinsResultsParserUtil.getCurrentTimeMillis() - start1));
-		System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-		long start2 = JenkinsResultsParserUtil.getCurrentTimeMillis();
-
-		LocalGitBranch localGitBranch =
-			gitWorkingDirectory.createLocalGitBranch(branchName);
-
-		System.out.println(
-			JenkinsResultsParserUtil.toDurationString(
-				JenkinsResultsParserUtil.getCurrentTimeMillis() - start2));
-		System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-		long start3 = JenkinsResultsParserUtil.getCurrentTimeMillis();
-
-		localGitBranch = gitWorkingDirectory.fetch(
-			localGitBranch, true, remoteGitRef);
-
-		System.out.println(
-			JenkinsResultsParserUtil.toDurationString(
-				JenkinsResultsParserUtil.getCurrentTimeMillis() - start3));
-		System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-		long start4 = JenkinsResultsParserUtil.getCurrentTimeMillis();
-
-		_setBranchHeadSHA(localGitBranch.getSHA());
-
-		setBranchSHA(localGitBranch.getSHA());
-
-		_setRemoteBranchName(remoteGitRef.getName());
-
-		_setType();
-
-		System.out.println(
-			JenkinsResultsParserUtil.toDurationString(
-				JenkinsResultsParserUtil.getCurrentTimeMillis() - start4));
-		System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-		long start5 = JenkinsResultsParserUtil.getCurrentTimeMillis();
+		_setBranchName(branchName);
 
 		validateKeys(_REQUIRED_KEYS);
-
-		System.out.println(
-			JenkinsResultsParserUtil.toDurationString(
-				JenkinsResultsParserUtil.getCurrentTimeMillis() - start5));
-		System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-		long start6 = JenkinsResultsParserUtil.getCurrentTimeMillis();
 
 		if (JenkinsResultsParserUtil.isCINode()) {
 			_setGitHubDevBranchName(
@@ -510,11 +455,6 @@ public abstract class BaseWorkspaceGitRepository
 
 			validateKeys(_CI_KEYS_REQUIRED);
 		}
-
-		System.out.println(
-			JenkinsResultsParserUtil.toDurationString(
-				JenkinsResultsParserUtil.getCurrentTimeMillis() - start6));
-		System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
 	}
 
 	protected String getBranchSHA() {

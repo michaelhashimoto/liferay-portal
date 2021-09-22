@@ -627,15 +627,6 @@ public class GitWorkingDirectory {
 
 		String remoteGitRefSHA = remoteGitRef.getSHA();
 
-		System.out.println("++++++++++++++++++++++++++++++++");
-		System.out.println("localGitBranch=" + localGitBranch);
-		System.out.println("noTags=" + noTags);
-		System.out.println("remoteGitRef=" + remoteGitRef);
-		System.out.println("retries=" + retries);
-		System.out.println("getWorkingDirectory()=" + getWorkingDirectory());
-		System.out.println("remoteGitRefSHA=" + remoteGitRefSHA);
-		System.out.println("++++++++++++++++++++++++++++++++");
-
 		if (localSHAExists(remoteGitRefSHA)) {
 			System.out.println(
 				remoteGitRefSHA + " already exists in Git repository");
@@ -1835,13 +1826,6 @@ public class GitWorkingDirectory {
 		GitUtil.ExecutionResult executionResult = executeBashCommands(
 			GitUtil.RETRIES_SIZE_MAX, GitUtil.MILLIS_RETRY_DELAY, 1000 * 60 * 3,
 			command);
-
-
-		System.out.println("**************************************");
-		System.out.println("command=" + command);
-		System.out.println("_workingDirectory=" + _workingDirectory);
-		System.out.println(
-			"executionResult.getExitValue()=" + executionResult.getExitValue());
 
 		if (executionResult.getExitValue() == 0) {
 			return true;
