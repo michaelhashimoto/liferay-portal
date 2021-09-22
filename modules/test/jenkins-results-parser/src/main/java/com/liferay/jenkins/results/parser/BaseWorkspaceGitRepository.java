@@ -374,41 +374,33 @@ public abstract class BaseWorkspaceGitRepository
 		super(
 			pullRequest.getGitHubRemoteGitRepositoryName(), upstreamBranchName);
 
-		_setGitHubURL(pullRequest.getHtmlURL());
+		String branchName = JenkinsResultsParserUtil.combine(
+			upstreamBranchName, "-temp-",
+			String.valueOf(JenkinsResultsParserUtil.getCurrentTimeMillis()));
+
+		if (upstreamBranchSHA == null) {
+			upstreamBranchSHA = pullRequest.getUpstreamBranchSHA();
+		}
 
 		GitWorkingDirectory gitWorkingDirectory = getGitWorkingDirectory();
 
+		LocalGitBranch localGitBranch =
+			gitWorkingDirectory.getRebasedLocalGitBranch(
+				branchName, pullRequest.getSenderBranchName(),
+				pullRequest.getSenderRemoteURL(), pullRequest.getSenderSHA(),
+				upstreamBranchName, upstreamBranchSHA);
+
+		setBranchSHA(localGitBranch.getSHA());
+		_setBranchName(branchName);
+		_setBranchHeadSHA(localGitBranch.getSHA());
+		_setGitHubURL(pullRequest.getHtmlURL());
 		_setReceiverUsername(pullRequest.getReceiverUsername());
+		_setRemoteBranchName(pullRequest.getSenderBranchName());
 		_setSenderBranchName(pullRequest.getSenderBranchName());
 		_setSenderUsername(pullRequest.getSenderUsername());
 		_setSenderBranchSHA(pullRequest.getSenderSHA());
-
-		if (upstreamBranchSHA != null) {
-			_setUpstreamBranchSHA(upstreamBranchSHA);
-		}
-		else {
-			_setUpstreamBranchSHA(pullRequest.getUpstreamBranchSHA());
-		}
-
-		_setBranchName(
-			JenkinsResultsParserUtil.combine(
-				getUpstreamBranchName(), "-temp-",
-				String.valueOf(
-					JenkinsResultsParserUtil.getCurrentTimeMillis())));
-
-		LocalGitBranch localGitBranch =
-			gitWorkingDirectory.getRebasedLocalGitBranch(
-				_getBranchName(), _getSenderBranchName(),
-				pullRequest.getSenderRemoteURL(), _getSenderBranchSHA(),
-				getUpstreamBranchName(), _getUpstreamBranchSHA());
-
-		_setBranchHeadSHA(localGitBranch.getSHA());
-
-		setBranchSHA(localGitBranch.getSHA());
-
-		_setRemoteBranchName(pullRequest.getSenderBranchName());
-
 		_setType();
+		_setUpstreamBranchSHA(upstreamBranchSHA);
 
 		validateKeys(_REQUIRED_KEYS);
 
