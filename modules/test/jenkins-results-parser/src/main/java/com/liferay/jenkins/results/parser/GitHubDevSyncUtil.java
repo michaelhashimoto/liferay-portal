@@ -212,6 +212,46 @@ public class GitHubDevSyncUtil {
 		return parallelExecutor.execute();
 	}
 
+	public static boolean remoteGitBranchExists(
+		final String remoteGitBranchName,
+		final GitWorkingDirectory gitWorkingDirectory,
+		List<GitRemote> gitRemotes) {
+
+		List<Callable<Boolean>> callables = new ArrayList<>(gitRemotes.size());
+
+		for (final GitRemote gitRemote : gitRemotes) {
+			Callable<Boolean> callable = new SafeCallable<Boolean>() {
+
+				@Override
+				public Boolean safeCall() {
+					try {
+						return gitWorkingDirectory.remoteGitBranchExists(
+							remoteGitBranchName, gitRemote);
+					}
+					catch (Exception exception) {
+						exception.printStackTrace();
+
+						return true;
+					}
+				}
+
+			};
+
+			callables.add(callable);
+		}
+
+		ParallelExecutor<Boolean> parallelExecutor = new ParallelExecutor<>(
+			callables, _threadPoolExecutor);
+
+		for (Boolean bool : parallelExecutor.execute()) {
+			if (!bool) {
+				return false;
+			}
+		}
+
+		return true;
+	}
+
 	public static String synchronizeToGitHubDev(
 			GitWorkingDirectory gitWorkingDirectory, String receiverUsername,
 			String senderBranchName, String senderUsername,
@@ -1000,46 +1040,6 @@ public class GitHubDevSyncUtil {
 				remoteGitBranchName, " on ", String.valueOf(gitRemotes.size()),
 				" Git nodes in ",
 				JenkinsResultsParserUtil.toDurationString(duration)));
-	}
-
-	protected static boolean remoteGitBranchExists(
-		final String remoteGitBranchName,
-		final GitWorkingDirectory gitWorkingDirectory,
-		List<GitRemote> gitRemotes) {
-
-		List<Callable<Boolean>> callables = new ArrayList<>(gitRemotes.size());
-
-		for (final GitRemote gitRemote : gitRemotes) {
-			Callable<Boolean> callable = new SafeCallable<Boolean>() {
-
-				@Override
-				public Boolean safeCall() {
-					try {
-						return gitWorkingDirectory.remoteGitBranchExists(
-							remoteGitBranchName, gitRemote);
-					}
-					catch (Exception exception) {
-						exception.printStackTrace();
-
-						return true;
-					}
-				}
-
-			};
-
-			callables.add(callable);
-		}
-
-		ParallelExecutor<Boolean> parallelExecutor = new ParallelExecutor<>(
-			callables, _threadPoolExecutor);
-
-		for (Boolean bool : parallelExecutor.execute()) {
-			if (!bool) {
-				return false;
-			}
-		}
-
-		return true;
 	}
 
 	protected static String synchronizeToGitHubDev(

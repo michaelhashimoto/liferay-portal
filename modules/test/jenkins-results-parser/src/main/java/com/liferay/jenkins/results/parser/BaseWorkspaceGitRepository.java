@@ -373,11 +373,31 @@ public abstract class BaseWorkspaceGitRepository
 
 		GitWorkingDirectory gitWorkingDirectory = getGitWorkingDirectory();
 
-		LocalGitBranch localGitBranch =
-			gitWorkingDirectory.getRebasedLocalGitBranch(
+		String gitHubDevBranchName = GitHubDevSyncUtil.getCacheBranchName(
+			pullRequest);
+
+		LocalGitBranch localGitBranch;
+
+		List<GitRemote> gitHubDevGitRemotes =
+			GitHubDevSyncUtil.getGitHubDevGitRemotes(gitWorkingDirectory);
+
+		if (GitHubDevSyncUtil.remoteGitBranchExists(
+				gitHubDevBranchName, gitWorkingDirectory,
+				gitHubDevGitRemotes)) {
+
+			RemoteGitBranch remoteGitBranch =
+				GitHubDevSyncUtil.fetchCacheBranchFromGitHubDev(
+					gitWorkingDirectory, gitHubDevBranchName);
+
+			localGitBranch = gitWorkingDirectory.createLocalGitBranch(
+				branchName, true, remoteGitBranch.getSHA());
+		}
+		else {
+			localGitBranch = gitWorkingDirectory.getRebasedLocalGitBranch(
 				branchName, pullRequest.getSenderBranchName(),
 				pullRequest.getSenderRemoteURL(), pullRequest.getSenderSHA(),
 				upstreamBranchName, pullRequest.getUpstreamBranchSHA());
+		}
 
 		setBranchSHA(localGitBranch.getSHA());
 		_setBranchName(branchName);
@@ -394,8 +414,7 @@ public abstract class BaseWorkspaceGitRepository
 		validateKeys(_REQUIRED_KEYS);
 
 		if (JenkinsResultsParserUtil.isCINode()) {
-			_setGitHubDevBranchName(
-				GitHubDevSyncUtil.getCacheBranchName(pullRequest));
+			_setGitHubDevBranchName(gitHubDevBranchName);
 
 			validateKeys(_CI_KEYS_REQUIRED);
 		}
