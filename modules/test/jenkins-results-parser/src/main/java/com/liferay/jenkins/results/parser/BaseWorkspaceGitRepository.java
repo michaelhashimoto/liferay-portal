@@ -24,6 +24,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Properties;
 import java.util.Set;
 import java.util.Stack;
@@ -53,7 +54,9 @@ public abstract class BaseWorkspaceGitRepository
 
 	@Override
 	public String getGitHubDevBranchName() {
-		return getString("git_hub_dev_branch_name");
+		return GitHubDevSyncUtil.getCacheBranchName(
+			_getReceiverUsername(), _getSenderUsername(), _getSenderBranchSHA(),
+			_getUpstreamBranchSHA());
 	}
 
 	@Override
@@ -218,20 +221,11 @@ public abstract class BaseWorkspaceGitRepository
 
 		GitWorkingDirectory gitWorkingDirectory = getGitWorkingDirectory();
 
-		if (!gitWorkingDirectory.localSHAExists(getBranchSHA())) {
-			GitHubDevSyncUtil.fetchCacheBranchFromGitHubDev(
-				gitWorkingDirectory, getGitHubDevBranchName());
-		}
-
-		LocalGitBranch localGitBranch =
-			gitWorkingDirectory.createLocalGitBranch(
-				_getBranchName(), true, getBranchSHA());
-
-		gitWorkingDirectory.createLocalGitBranch(localGitBranch, true);
+		LocalGitBranch localGitBranch = createLocalGitBranch();
 
 		gitWorkingDirectory.checkoutLocalGitBranch(localGitBranch);
 
-		gitWorkingDirectory.reset("--hard " + localGitBranch.getSHA());
+		gitWorkingDirectory.reset("--hard " + getBranchSHA());
 
 		gitWorkingDirectory.clean();
 
@@ -302,7 +296,7 @@ public abstract class BaseWorkspaceGitRepository
 		try {
 			GitHubDevSyncUtil.synchronizeToGitHubDev(
 				getGitWorkingDirectory(), _getReceiverUsername(),
-				getRemoteBranchName(), _getSenderUsername(),
+				_getSenderBranchName(), _getSenderUsername(),
 				_getSenderBranchSHA(), _getUpstreamBranchSHA());
 		}
 		catch (IOException ioException) {
@@ -355,10 +349,6 @@ public abstract class BaseWorkspaceGitRepository
 		super(jsonObject);
 
 		validateKeys(_REQUIRED_KEYS);
-
-		if (JenkinsResultsParserUtil.isCINode()) {
-			validateKeys(_CI_KEYS_REQUIRED);
-		}
 	}
 
 	protected BaseWorkspaceGitRepository(
@@ -367,44 +357,8 @@ public abstract class BaseWorkspaceGitRepository
 		super(
 			pullRequest.getGitHubRemoteGitRepositoryName(), upstreamBranchName);
 
-		String branchName = JenkinsResultsParserUtil.combine(
-			upstreamBranchName, "-temp-",
-			String.valueOf(JenkinsResultsParserUtil.getCurrentTimeMillis()));
-
-		GitWorkingDirectory gitWorkingDirectory = getGitWorkingDirectory();
-
-		String gitHubDevBranchName = GitHubDevSyncUtil.getCacheBranchName(
-			pullRequest);
-
-		LocalGitBranch localGitBranch;
-
-		List<GitRemote> gitHubDevGitRemotes =
-			GitHubDevSyncUtil.getGitHubDevGitRemotes(gitWorkingDirectory);
-
-		if (GitHubDevSyncUtil.remoteGitBranchExists(
-				gitHubDevBranchName, gitWorkingDirectory,
-				gitHubDevGitRemotes)) {
-
-			RemoteGitBranch remoteGitBranch =
-				GitHubDevSyncUtil.fetchCacheBranchFromGitHubDev(
-					gitWorkingDirectory, gitHubDevBranchName);
-
-			localGitBranch = gitWorkingDirectory.createLocalGitBranch(
-				branchName, true, remoteGitBranch.getSHA());
-		}
-		else {
-			localGitBranch = gitWorkingDirectory.getRebasedLocalGitBranch(
-				branchName, pullRequest.getSenderBranchName(),
-				pullRequest.getSenderRemoteURL(), pullRequest.getSenderSHA(),
-				upstreamBranchName, pullRequest.getUpstreamBranchSHA());
-		}
-
-		setBranchSHA(localGitBranch.getSHA());
-		_setBranchName(branchName);
-		_setBranchHeadSHA(localGitBranch.getSHA());
 		_setGitHubURL(pullRequest.getHtmlURL());
 		_setReceiverUsername(pullRequest.getReceiverUsername());
-		_setRemoteBranchName(pullRequest.getSenderBranchName());
 		_setSenderBranchName(pullRequest.getSenderBranchName());
 		_setSenderUsername(pullRequest.getSenderUsername());
 		_setSenderBranchSHA(pullRequest.getSenderSHA());
@@ -412,12 +366,6 @@ public abstract class BaseWorkspaceGitRepository
 		_setUpstreamBranchSHA(pullRequest.getUpstreamBranchSHA());
 
 		validateKeys(_REQUIRED_KEYS);
-
-		if (JenkinsResultsParserUtil.isCINode()) {
-			_setGitHubDevBranchName(gitHubDevBranchName);
-
-			validateKeys(_CI_KEYS_REQUIRED);
-		}
 	}
 
 	protected BaseWorkspaceGitRepository(
@@ -425,22 +373,13 @@ public abstract class BaseWorkspaceGitRepository
 
 		super(remoteGitRef.getRepositoryName(), upstreamBranchName);
 
-		_setBranchName(
-			JenkinsResultsParserUtil.combine(
-				upstreamBranchName, "-temp-",
-				String.valueOf(
-					JenkinsResultsParserUtil.getCurrentTimeMillis())));
-
 		_setGitHubURL(
 			JenkinsResultsParserUtil.combine(
 				"https://github.com/", remoteGitRef.getUsername(), "/",
 				remoteGitRef.getRepositoryName(), "/tree/",
 				remoteGitRef.getName()));
 
-		setBranchSHA(remoteGitRef.getSHA());
-		_setBranchHeadSHA(remoteGitRef.getSHA());
 		_setReceiverUsername(remoteGitRef.getUsername());
-		_setRemoteBranchName(remoteGitRef.getName());
 		_setSenderBranchName(remoteGitRef.getName());
 		_setSenderUsername(remoteGitRef.getUsername());
 		_setSenderBranchSHA(remoteGitRef.getSHA());
@@ -448,13 +387,64 @@ public abstract class BaseWorkspaceGitRepository
 		_setUpstreamBranchSHA(remoteGitRef.getSHA());
 
 		validateKeys(_REQUIRED_KEYS);
+	}
 
-		if (JenkinsResultsParserUtil.isCINode()) {
-			_setGitHubDevBranchName(
-				GitHubDevSyncUtil.getCacheBranchName(remoteGitRef));
+	protected boolean _isPullRequest() {
+		return !Objects.equals(_getSenderBranchSHA(), _getUpstreamBranchSHA());
+	}
 
-			validateKeys(_CI_KEYS_REQUIRED);
+	protected LocalGitBranch createLocalGitBranch() {
+		GitWorkingDirectory gitWorkingDirectory = getGitWorkingDirectory();
+
+		String senderBranchSHA = _getSenderBranchSHA();
+
+		if (gitWorkingDirectory.localSHAExists(senderBranchSHA) &&
+			!_isPullRequest()) {
+
+			return gitWorkingDirectory.createLocalGitBranch(
+				_getBranchName(), true, getBranchSHA());
 		}
+
+		RemoteGitBranch remoteGitBranch = GitHubDevSyncUtil.getRemoteGitBranch(
+			gitWorkingDirectory, getGitHubDevBranchName());
+
+		if (remoteGitBranch != null) {
+			if (!gitWorkingDirectory.localSHAExists(remoteGitBranch.getSHA())) {
+				gitWorkingDirectory.fetch(remoteGitBranch);
+			}
+
+			return gitWorkingDirectory.createLocalGitBranch(
+				_getBranchName(), true, getBranchSHA());
+		}
+
+		if (!gitWorkingDirectory.localSHAExists(senderBranchSHA)) {
+			gitWorkingDirectory.fetch(
+				GitUtil.getRemoteGitRef(_getSenderGitHubURL()));
+		}
+
+		if (!_isPullRequest()) {
+			return gitWorkingDirectory.createLocalGitBranch(
+				_getBranchName(), true, getBranchSHA());
+		}
+
+		String upstreamBranchSHA = _getUpstreamBranchSHA();
+
+		if (!gitWorkingDirectory.localSHAExists(upstreamBranchSHA)) {
+			gitWorkingDirectory.fetch(
+				GitUtil.getRemoteGitRef(_getUpstreamGitHubURL()));
+		}
+
+		LocalGitBranch localGitBranch =
+			gitWorkingDirectory.getRebasedLocalGitBranch(
+				_getBranchName(), _getSenderBranchName(),
+				JenkinsResultsParserUtil.combine(
+					"git@github.com:", _getSenderUsername(), "/", getName()),
+				_getSenderBranchSHA(), getUpstreamBranchName(),
+				_getUpstreamBranchSHA());
+
+		setBranchSHA(localGitBranch.getSHA());
+
+		return localGitBranch;
 	}
 
 	protected String getBranchSHA() {
@@ -482,28 +472,34 @@ public abstract class BaseWorkspaceGitRepository
 		_propertiesFilesMap.put(filePath, fileProperties);
 	}
 
-	private String _getBranchHeadSHA() {
-		return getString("branch_head_sha");
-	}
-
 	private String _getBranchName() {
-		return getString("branch_name");
+		if (_branchName != null) {
+			return _branchName;
+		}
+
+		_branchName = JenkinsResultsParserUtil.combine(
+			getUpstreamBranchName(), "-temp-",
+			String.valueOf(JenkinsResultsParserUtil.getCurrentTimeMillis()));
+
+		return _branchName;
 	}
 
 	private String _getReceiverUsername() {
 		return optString("receiver_username");
 	}
 
-	private String _getRemoteBranchName() {
-		return optString("remote_branch_name");
-	}
-
 	private String _getSenderBranchName() {
-		return optString("remote_branch_name");
+		return optString("sender_branch_name");
 	}
 
 	private String _getSenderBranchSHA() {
 		return optString("sender_branch_sha");
+	}
+
+	private String _getSenderGitHubURL() {
+		return JenkinsResultsParserUtil.combine(
+			"https://github.com/", _getSenderUsername(), "/", getName(),
+			"/tree/", _getSenderBranchName());
 	}
 
 	private String _getSenderUsername() {
@@ -512,6 +508,12 @@ public abstract class BaseWorkspaceGitRepository
 
 	private String _getUpstreamBranchSHA() {
 		return optString("upstream_branch_sha");
+	}
+
+	private String _getUpstreamGitHubURL() {
+		return JenkinsResultsParserUtil.combine(
+			"https://github.com/liferay/", getName(), "/tree/",
+			getUpstreamBranchName());
 	}
 
 	private String _getWorkspaceJobPropertyName(String jobPropertyName) {
@@ -553,34 +555,6 @@ public abstract class BaseWorkspaceGitRepository
 		return null;
 	}
 
-	private void _setBranchHeadSHA(String branchHeadSHA) {
-		if (branchHeadSHA == null) {
-			throw new RuntimeException("Branch head SHA is null");
-		}
-
-		if (!branchHeadSHA.matches(_REGEX_SHA)) {
-			throw new RuntimeException("Branch head SHA is invalid");
-		}
-
-		put("branch_head_sha", branchHeadSHA);
-	}
-
-	private void _setBranchName(String branchName) {
-		if (branchName == null) {
-			throw new RuntimeException("Branch name is null");
-		}
-
-		put("branch_name", branchName);
-	}
-
-	private void _setGitHubDevBranchName(String gitHubDevBranchName) {
-		if (gitHubDevBranchName == null) {
-			throw new RuntimeException("GitHub dev branch name is null");
-		}
-
-		put("git_hub_dev_branch_name", gitHubDevBranchName);
-	}
-
 	private void _setGitHubURL(String gitHubURL) {
 		if (gitHubURL == null) {
 			throw new RuntimeException("GitHub URL is null");
@@ -595,14 +569,6 @@ public abstract class BaseWorkspaceGitRepository
 		}
 
 		put("receiver_username", receiverUsername);
-	}
-
-	private void _setRemoteBranchName(String remoteBranchName) {
-		if (remoteBranchName == null) {
-			throw new RuntimeException("Remote branch name is null");
-		}
-
-		put("remote_branch_name", remoteBranchName);
 	}
 
 	private void _setSenderBranchName(String senderBranchName) {
@@ -649,18 +615,14 @@ public abstract class BaseWorkspaceGitRepository
 		put("upstream_branch_sha", upstreamBranchSHA);
 	}
 
-	private static final String[] _CI_KEYS_REQUIRED = {
-		"git_hub_dev_branch_name"
-	};
-
 	private static final String _REGEX_SHA = "[0-9a-f]{7,40}";
 
 	private static final String[] _REQUIRED_KEYS = {
-		"branch_head_sha", "branch_name", "branch_sha", "git_hub_url",
-		"receiver_username", "remote_branch_name", "sender_branch_name",
+		"git_hub_url", "receiver_username", "sender_branch_name",
 		"sender_branch_sha", "sender_username", "type", "upstream_branch_sha"
 	};
 
+	private String _branchName;
 	private List<LocalGitCommit> _historicalLocalGitCommits;
 	private final Map<String, Properties> _propertiesFilesMap = new HashMap<>();
 

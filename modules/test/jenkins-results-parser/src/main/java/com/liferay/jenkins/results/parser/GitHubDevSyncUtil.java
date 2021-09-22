@@ -212,6 +212,58 @@ public class GitHubDevSyncUtil {
 		return parallelExecutor.execute();
 	}
 
+	public static RemoteGitBranch getRemoteGitBranch(
+		final GitWorkingDirectory gitWorkingDirectory,
+		final String cacheBranchName) {
+
+		List<GitRemote> gitHubDevGitRemotes = getGitHubDevGitRemotes(
+			gitWorkingDirectory);
+
+		List<Callable<RemoteGitBranch>> callables = new ArrayList<>(
+			gitHubDevGitRemotes.size());
+
+		for (final GitRemote gitHubDevGitRemote : gitHubDevGitRemotes) {
+			Callable<RemoteGitBranch> callable =
+				new SafeCallable<RemoteGitBranch>() {
+
+					@Override
+					public RemoteGitBranch safeCall() {
+						try {
+							RemoteGitBranch remoteGitBranch =
+								gitWorkingDirectory.getRemoteGitBranch(
+									cacheBranchName,
+									gitHubDevGitRemote.getRemoteURL());
+
+							if (remoteGitBranch != null) {
+								return remoteGitBranch;
+							}
+						}
+						catch (Exception exception) {
+							exception.printStackTrace();
+
+							return null;
+						}
+
+						return null;
+					}
+
+				};
+
+			callables.add(callable);
+		}
+
+		ParallelExecutor<RemoteGitBranch> parallelExecutor =
+			new ParallelExecutor<>(callables, _threadPoolExecutor);
+
+		for (RemoteGitBranch remoteGitBranch : parallelExecutor.execute()) {
+			if (remoteGitBranch != null) {
+				return remoteGitBranch;
+			}
+		}
+
+		return null;
+	}
+
 	public static boolean remoteGitBranchExists(
 		final String remoteGitBranchName,
 		final GitWorkingDirectory gitWorkingDirectory,
