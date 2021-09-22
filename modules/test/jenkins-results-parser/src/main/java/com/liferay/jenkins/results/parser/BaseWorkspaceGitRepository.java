@@ -425,6 +425,12 @@ public abstract class BaseWorkspaceGitRepository
 
 		super(remoteGitRef.getRepositoryName(), upstreamBranchName);
 
+		_setBranchName(
+			JenkinsResultsParserUtil.combine(
+				upstreamBranchName, "-temp-",
+				String.valueOf(
+					JenkinsResultsParserUtil.getCurrentTimeMillis())));
+
 		_setGitHubURL(
 			JenkinsResultsParserUtil.combine(
 				"https://github.com/", remoteGitRef.getUsername(), "/",
@@ -440,12 +446,6 @@ public abstract class BaseWorkspaceGitRepository
 		_setSenderBranchSHA(remoteGitRef.getSHA());
 		_setType();
 		_setUpstreamBranchSHA(remoteGitRef.getSHA());
-
-		String branchName = JenkinsResultsParserUtil.combine(
-			getUpstreamBranchName(), "-temp-",
-			String.valueOf(JenkinsResultsParserUtil.getCurrentTimeMillis()));
-
-		_setBranchName(branchName);
 
 		validateKeys(_REQUIRED_KEYS);
 
