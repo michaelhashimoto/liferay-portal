@@ -364,13 +364,6 @@ public abstract class BaseWorkspaceGitRepository
 	protected BaseWorkspaceGitRepository(
 		PullRequest pullRequest, String upstreamBranchName) {
 
-		this(pullRequest, upstreamBranchName, null);
-	}
-
-	protected BaseWorkspaceGitRepository(
-		PullRequest pullRequest, String upstreamBranchName,
-		String upstreamBranchSHA) {
-
 		super(
 			pullRequest.getGitHubRemoteGitRepositoryName(), upstreamBranchName);
 
@@ -378,17 +371,13 @@ public abstract class BaseWorkspaceGitRepository
 			upstreamBranchName, "-temp-",
 			String.valueOf(JenkinsResultsParserUtil.getCurrentTimeMillis()));
 
-		if (upstreamBranchSHA == null) {
-			upstreamBranchSHA = pullRequest.getUpstreamBranchSHA();
-		}
-
 		GitWorkingDirectory gitWorkingDirectory = getGitWorkingDirectory();
 
 		LocalGitBranch localGitBranch =
 			gitWorkingDirectory.getRebasedLocalGitBranch(
 				branchName, pullRequest.getSenderBranchName(),
 				pullRequest.getSenderRemoteURL(), pullRequest.getSenderSHA(),
-				upstreamBranchName, upstreamBranchSHA);
+				upstreamBranchName, pullRequest.getUpstreamBranchSHA());
 
 		setBranchSHA(localGitBranch.getSHA());
 		_setBranchName(branchName);
@@ -400,7 +389,7 @@ public abstract class BaseWorkspaceGitRepository
 		_setSenderUsername(pullRequest.getSenderUsername());
 		_setSenderBranchSHA(pullRequest.getSenderSHA());
 		_setType();
-		_setUpstreamBranchSHA(upstreamBranchSHA);
+		_setUpstreamBranchSHA(pullRequest.getUpstreamBranchSHA());
 
 		validateKeys(_REQUIRED_KEYS);
 

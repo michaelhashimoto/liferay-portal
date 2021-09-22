@@ -81,12 +81,12 @@ public class WorkspaceUtil {
 		String repositoryType, String gitHubURL, String upstreamBranchName) {
 
 		return getWorkspaceGitRepository(
-			repositoryType, gitHubURL, upstreamBranchName, null);
+			repositoryType, gitHubURL, upstreamBranchName, null, null);
 	}
 
 	public static WorkspaceGitRepository getWorkspaceGitRepository(
 		String repositoryType, String gitHubURL, String upstreamBranchName,
-		String branchSHA) {
+		String branchSHA, String upstreamBranchSHA) {
 
 		WorkspaceGitRepository workspaceGitRepository = null;
 
@@ -99,6 +99,14 @@ public class WorkspaceUtil {
 		else if (PullRequest.isValidGitHubPullRequestURL(gitHubURL)) {
 			PullRequest pullRequest = new PullRequest(gitHubURL);
 
+			if (!JenkinsResultsParserUtil.isNullOrEmpty(branchSHA)) {
+				pullRequest.setSenderSHA(branchSHA);
+			}
+
+			if (!JenkinsResultsParserUtil.isNullOrEmpty(upstreamBranchSHA)) {
+				pullRequest.setUpstreamBranchSHA(upstreamBranchSHA);
+			}
+
 			workspaceGitRepository =
 				GitRepositoryFactory.getWorkspaceGitRepository(
 					gitHubURL, pullRequest, upstreamBranchName);
@@ -108,14 +116,14 @@ public class WorkspaceUtil {
 				GitRepositoryFactory.getWorkspaceGitRepository(
 					gitHubURL, GitUtil.getRemoteGitRef(gitHubURL),
 					upstreamBranchName);
+
+			if (branchSHA != null) {
+				workspaceGitRepository.setBranchSHA(branchSHA);
+			}
 		}
 
 		if (workspaceGitRepository == null) {
 			throw new RuntimeException("Invalid repository GitHub URL");
-		}
-
-		if (branchSHA != null) {
-			workspaceGitRepository.setBranchSHA(branchSHA);
 		}
 
 		return workspaceGitRepository;
