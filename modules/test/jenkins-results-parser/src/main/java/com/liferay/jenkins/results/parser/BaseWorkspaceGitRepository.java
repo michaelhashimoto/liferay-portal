@@ -215,7 +215,13 @@ public abstract class BaseWorkspaceGitRepository
 		System.out.println();
 		System.out.println("##");
 		System.out.println("## " + getDirectory());
-		System.out.println("## " + toString());
+		System.out.println("## " + getGitHubURL());
+		System.out.println("## " + _getSenderRemoteGitRef());
+
+		if (_isPullRequest()) {
+			System.out.println("## " + _getUpstreamRemoteGitRef());
+		}
+
 		System.out.println("##");
 		System.out.println();
 
@@ -329,12 +335,6 @@ public abstract class BaseWorkspaceGitRepository
 	}
 
 	@Override
-	public String toString() {
-		return JenkinsResultsParserUtil.combine(
-			getGitHubURL(), " - ", getBranchSHA());
-	}
-
-	@Override
 	public void writePropertiesFiles() {
 		for (Map.Entry<String, Properties> entry :
 				_propertiesFilesMap.entrySet()) {
@@ -389,10 +389,6 @@ public abstract class BaseWorkspaceGitRepository
 		validateKeys(_REQUIRED_KEYS);
 	}
 
-	protected boolean _isPullRequest() {
-		return !Objects.equals(_getSenderBranchSHA(), _getUpstreamBranchSHA());
-	}
-
 	protected LocalGitBranch createLocalGitBranch() {
 		GitWorkingDirectory gitWorkingDirectory = getGitWorkingDirectory();
 
@@ -411,6 +407,12 @@ public abstract class BaseWorkspaceGitRepository
 		if (remoteGitBranch != null) {
 			if (!gitWorkingDirectory.localSHAExists(remoteGitBranch.getSHA())) {
 				gitWorkingDirectory.fetch(remoteGitBranch);
+			}
+
+			String branchSHA = getBranchSHA();
+
+			if (branchSHA == null) {
+				setBranchSHA(remoteGitBranch.getSHA());
 			}
 
 			return gitWorkingDirectory.createLocalGitBranch(
@@ -447,7 +449,7 @@ public abstract class BaseWorkspaceGitRepository
 	}
 
 	protected String getBranchSHA() {
-		return optString("branch_sha");
+		return optString("branch_sha", _getSenderBranchSHA());
 	}
 
 	@Override
@@ -501,6 +503,10 @@ public abstract class BaseWorkspaceGitRepository
 			"/tree/", _getSenderBranchName());
 	}
 
+	private RemoteGitRef _getSenderRemoteGitRef() {
+		return GitUtil.getRemoteGitRef(_getSenderGitHubURL());
+	}
+
 	private String _getSenderUsername() {
 		return optString("sender_username");
 	}
@@ -513,6 +519,10 @@ public abstract class BaseWorkspaceGitRepository
 		return JenkinsResultsParserUtil.combine(
 			"https://github.com/liferay/", getName(), "/tree/",
 			getUpstreamBranchName());
+	}
+
+	private RemoteGitRef _getUpstreamRemoteGitRef() {
+		return GitUtil.getRemoteGitRef(_getUpstreamGitHubURL());
 	}
 
 	private String _getWorkspaceJobPropertyName(String jobPropertyName) {
@@ -552,6 +562,10 @@ public abstract class BaseWorkspaceGitRepository
 		}
 
 		return null;
+	}
+
+	private boolean _isPullRequest() {
+		return !Objects.equals(_getSenderBranchSHA(), _getUpstreamBranchSHA());
 	}
 
 	private void _setGitHubURL(String gitHubURL) {
