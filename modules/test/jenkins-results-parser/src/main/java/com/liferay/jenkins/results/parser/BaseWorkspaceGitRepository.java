@@ -216,12 +216,6 @@ public abstract class BaseWorkspaceGitRepository
 		System.out.println("##");
 		System.out.println("## " + getDirectory());
 		System.out.println("## " + getGitHubURL());
-		System.out.println("## " + _getSenderRemoteGitRef());
-
-		if (_isPullRequest()) {
-			System.out.println("## " + _getUpstreamRemoteGitRef());
-		}
-
 		System.out.println("##");
 		System.out.println();
 
@@ -389,35 +383,6 @@ public abstract class BaseWorkspaceGitRepository
 		validateKeys(_REQUIRED_KEYS);
 	}
 
-	protected LocalGitBranch _createRemoteGitRefLocalGitBranch() {
-		String branchSHA = getBranchSHA();
-
-		if (branchSHA == null) {
-			branchSHA = _getSenderBranchSHA();
-
-			setBranchSHA(branchSHA);
-		}
-
-		GitWorkingDirectory gitWorkingDirectory = getGitWorkingDirectory();
-
-		if (!gitWorkingDirectory.localSHAExists(branchSHA)) {
-			RemoteGitBranch remoteGitBranch =
-				GitHubDevSyncUtil.getRemoteGitBranch(
-					gitWorkingDirectory, getGitHubDevBranchName());
-
-			if (remoteGitBranch != null) {
-				gitWorkingDirectory.fetch(remoteGitBranch);
-			}
-		}
-
-		if (!gitWorkingDirectory.localSHAExists(branchSHA)) {
-			gitWorkingDirectory.fetch(_getSenderRemoteGitRef());
-		}
-
-		return gitWorkingDirectory.createLocalGitBranch(
-			_getBranchName(), true, branchSHA);
-	}
-
 	protected LocalGitBranch createLocalGitBranch() {
 		if (_isPullRequest()) {
 			return _createPullRequestLocalGitBranch();
@@ -496,6 +461,37 @@ public abstract class BaseWorkspaceGitRepository
 		return localGitBranch;
 	}
 
+	private LocalGitBranch _createRemoteGitRefLocalGitBranch() {
+		String branchSHA = getBranchSHA();
+
+		if (branchSHA == null) {
+			branchSHA = _getSenderBranchSHA();
+
+			setBranchSHA(branchSHA);
+		}
+
+		GitWorkingDirectory gitWorkingDirectory = getGitWorkingDirectory();
+
+		if (gitWorkingDirectory.localSHAExists(branchSHA)) {
+			return gitWorkingDirectory.createLocalGitBranch(
+				_getBranchName(), true, branchSHA);
+		}
+
+		RemoteGitBranch remoteGitBranch = GitHubDevSyncUtil.getRemoteGitBranch(
+			gitWorkingDirectory, getGitHubDevBranchName());
+
+		if (remoteGitBranch != null) {
+			gitWorkingDirectory.fetch(remoteGitBranch);
+		}
+
+		if (!gitWorkingDirectory.localSHAExists(branchSHA)) {
+			gitWorkingDirectory.fetch(_getSenderRemoteGitRef());
+		}
+
+		return gitWorkingDirectory.createLocalGitBranch(
+			_getBranchName(), true, branchSHA);
+	}
+
 	private String _getBranchName() {
 		if (_branchName != null) {
 			return _branchName;
@@ -520,17 +516,17 @@ public abstract class BaseWorkspaceGitRepository
 		return optString("sender_branch_sha");
 	}
 
-	private String _getSenderGitHubURL() {
-		return JenkinsResultsParserUtil.combine(
-			"https://github.com/", _getSenderUsername(), "/", getName(),
-			"/tree/", _getSenderBranchName());
-	}
-
 	private RemoteGitRef _getSenderRemoteGitRef() {
-		return GitUtil.getRemoteGitRef(
+		if (_senderRemoteGitRef != null) {
+			return _senderRemoteGitRef;
+		}
+
+		_senderRemoteGitRef = GitUtil.getRemoteGitRef(
 			JenkinsResultsParserUtil.combine(
 				"https://github.com/", _getSenderUsername(), "/", getName(),
 				"/tree/", _getSenderBranchName()));
+
+		return _senderRemoteGitRef;
 	}
 
 	private String _getSenderUsername() {
@@ -541,14 +537,17 @@ public abstract class BaseWorkspaceGitRepository
 		return optString("upstream_branch_sha");
 	}
 
-	private String _getUpstreamGitHubURL() {
-		return JenkinsResultsParserUtil.combine(
-			"https://github.com/liferay/", getName(), "/tree/",
-			getUpstreamBranchName());
-	}
-
 	private RemoteGitRef _getUpstreamRemoteGitRef() {
-		return GitUtil.getRemoteGitRef(_getUpstreamGitHubURL());
+		if (_upstreamRemoteGitRef != null) {
+			return _upstreamRemoteGitRef;
+		}
+
+		_upstreamRemoteGitRef = GitUtil.getRemoteGitRef(
+			JenkinsResultsParserUtil.combine(
+				"https://github.com/liferay/", getName(), "/tree/",
+				getUpstreamBranchName()));
+
+		return _upstreamRemoteGitRef;
 	}
 
 	private String _getWorkspaceJobPropertyName(String jobPropertyName) {
@@ -665,5 +664,7 @@ public abstract class BaseWorkspaceGitRepository
 	private String _branchSHA;
 	private List<LocalGitCommit> _historicalLocalGitCommits;
 	private final Map<String, Properties> _propertiesFilesMap = new HashMap<>();
+	private RemoteGitRef _senderRemoteGitRef;
+	private RemoteGitRef _upstreamRemoteGitRef;
 
 }
