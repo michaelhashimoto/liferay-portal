@@ -21,4 +21,9 @@ public interface PortalTestClassJob extends Job {
 
 	public PortalGitWorkingDirectory getPortalGitWorkingDirectory();
 
+	public PortalWorkspaceGitRepository getPortalWorkspaceGitRepository();
+
+	public void setPortalWorkspaceGitRepository(
+		PortalWorkspaceGitRepository portalWorkspaceRepository);
+
 }

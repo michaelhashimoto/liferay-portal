@@ -17,6 +17,8 @@ package com.liferay.jenkins.results.parser;
 import java.io.File;
 import java.io.IOException;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Properties;
@@ -48,6 +50,11 @@ public class QAWebsitesGitRepositoryJob
 			"master");
 	}
 
+	@Override
+	public PortalWorkspaceGitRepository getPortalWorkspaceGitRepository() {
+		return _portalWorkspaceRepository;
+	}
+
 	public List<String> getProjectNames() {
 		return _projectNames;
 	}
@@ -55,6 +62,25 @@ public class QAWebsitesGitRepositoryJob
 	@Override
 	public String getTestSuiteName() {
 		return _testSuiteName;
+	}
+
+	@Override
+	public List<WorkspaceGitRepository> getWorkspaceGitRepositories() {
+		List<WorkspaceGitRepository> workspaceGitRepositories =
+			new ArrayList<>();
+
+		workspaceGitRepositories.add(getPortalWorkspaceGitRepository());
+
+		workspaceGitRepositories.removeAll(Collections.singleton(null));
+
+		return workspaceGitRepositories;
+	}
+
+	@Override
+	public void setPortalWorkspaceGitRepository(
+		PortalWorkspaceGitRepository portalWorkspaceRepository) {
+
+		_portalWorkspaceRepository = portalWorkspaceRepository;
 	}
 
 	protected QAWebsitesGitRepositoryJob(
@@ -134,6 +160,7 @@ public class QAWebsitesGitRepositoryJob
 		return qaWebsitesRepository;
 	}
 
+	private PortalWorkspaceGitRepository _portalWorkspaceRepository;
 	private final List<String> _projectNames;
 	private final String _testSuiteName;
 	private final String _upstreamBranchName;

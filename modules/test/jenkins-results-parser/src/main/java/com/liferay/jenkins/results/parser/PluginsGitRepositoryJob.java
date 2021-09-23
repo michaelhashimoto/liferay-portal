@@ -17,6 +17,8 @@ package com.liferay.jenkins.results.parser;
 import java.io.File;
 import java.io.IOException;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Properties;
 import java.util.Set;
@@ -62,6 +64,30 @@ public abstract class PluginsGitRepositoryJob
 	@Override
 	public PortalGitWorkingDirectory getPortalGitWorkingDirectory() {
 		return portalGitWorkingDirectory;
+	}
+
+	@Override
+	public PortalWorkspaceGitRepository getPortalWorkspaceGitRepository() {
+		return _portalWorkspaceRepository;
+	}
+
+	@Override
+	public List<WorkspaceGitRepository> getWorkspaceGitRepositories() {
+		List<WorkspaceGitRepository> workspaceGitRepositories =
+			new ArrayList<>();
+
+		workspaceGitRepositories.add(getPortalWorkspaceGitRepository());
+
+		workspaceGitRepositories.removeAll(Collections.singleton(null));
+
+		return workspaceGitRepositories;
+	}
+
+	@Override
+	public void setPortalWorkspaceGitRepository(
+		PortalWorkspaceGitRepository portalWorkspaceRepository) {
+
+		_portalWorkspaceRepository = portalWorkspaceRepository;
 	}
 
 	protected PluginsGitRepositoryJob(
@@ -120,5 +146,6 @@ public abstract class PluginsGitRepositoryJob
 	protected PortalGitWorkingDirectory portalGitWorkingDirectory;
 
 	private final String _branchName;
+	private PortalWorkspaceGitRepository _portalWorkspaceRepository;
 
 }

@@ -107,6 +107,16 @@ public class GitHubDevSyncUtil {
 			synchronize);
 	}
 
+	public static LocalGitBranch createCacheLocalGitBranch(
+		LocalGitRepository localGitRepository, String receiverUsername,
+		String senderBranchName, String senderUsername, String senderBranchSHA,
+		String upstreamBranchSHA, boolean synchronize) {
+
+		return _createCacheLocalGitBranch(
+			localGitRepository, receiverUsername, senderBranchName,
+			senderUsername, senderBranchSHA, upstreamBranchSHA, synchronize);
+	}
+
 	public static RemoteGitBranch fetchCacheBranchFromGitHubDev(
 		GitWorkingDirectory gitWorkingDirectory, String cacheBranchName) {
 
@@ -200,6 +210,98 @@ public class GitHubDevSyncUtil {
 			callables, true, _threadPoolExecutor);
 
 		return parallelExecutor.execute();
+	}
+
+	public static RemoteGitBranch getRemoteGitBranch(
+		final GitWorkingDirectory gitWorkingDirectory,
+		final String cacheBranchName) {
+
+		List<GitRemote> gitHubDevGitRemotes = getGitHubDevGitRemotes(
+			gitWorkingDirectory);
+
+		List<Callable<RemoteGitBranch>> callables = new ArrayList<>(
+			gitHubDevGitRemotes.size());
+
+		for (final GitRemote gitHubDevGitRemote : gitHubDevGitRemotes) {
+			Callable<RemoteGitBranch> callable =
+				new SafeCallable<RemoteGitBranch>() {
+
+					@Override
+					public RemoteGitBranch safeCall() {
+						try {
+							RemoteGitBranch remoteGitBranch =
+								gitWorkingDirectory.getRemoteGitBranch(
+									cacheBranchName,
+									gitHubDevGitRemote.getRemoteURL());
+
+							if (remoteGitBranch != null) {
+								return remoteGitBranch;
+							}
+						}
+						catch (Exception exception) {
+							exception.printStackTrace();
+
+							return null;
+						}
+
+						return null;
+					}
+
+				};
+
+			callables.add(callable);
+		}
+
+		ParallelExecutor<RemoteGitBranch> parallelExecutor =
+			new ParallelExecutor<>(callables, _threadPoolExecutor);
+
+		for (RemoteGitBranch remoteGitBranch : parallelExecutor.execute()) {
+			if (remoteGitBranch != null) {
+				return remoteGitBranch;
+			}
+		}
+
+		return null;
+	}
+
+	public static boolean remoteGitBranchExists(
+		final String remoteGitBranchName,
+		final GitWorkingDirectory gitWorkingDirectory,
+		List<GitRemote> gitRemotes) {
+
+		List<Callable<Boolean>> callables = new ArrayList<>(gitRemotes.size());
+
+		for (final GitRemote gitRemote : gitRemotes) {
+			Callable<Boolean> callable = new SafeCallable<Boolean>() {
+
+				@Override
+				public Boolean safeCall() {
+					try {
+						return gitWorkingDirectory.remoteGitBranchExists(
+							remoteGitBranchName, gitRemote);
+					}
+					catch (Exception exception) {
+						exception.printStackTrace();
+
+						return true;
+					}
+				}
+
+			};
+
+			callables.add(callable);
+		}
+
+		ParallelExecutor<Boolean> parallelExecutor = new ParallelExecutor<>(
+			callables, _threadPoolExecutor);
+
+		for (Boolean bool : parallelExecutor.execute()) {
+			if (!bool) {
+				return false;
+			}
+		}
+
+		return true;
 	}
 
 	public static String synchronizeToGitHubDev(
@@ -990,46 +1092,6 @@ public class GitHubDevSyncUtil {
 				remoteGitBranchName, " on ", String.valueOf(gitRemotes.size()),
 				" Git nodes in ",
 				JenkinsResultsParserUtil.toDurationString(duration)));
-	}
-
-	protected static boolean remoteGitBranchExists(
-		final String remoteGitBranchName,
-		final GitWorkingDirectory gitWorkingDirectory,
-		List<GitRemote> gitRemotes) {
-
-		List<Callable<Boolean>> callables = new ArrayList<>(gitRemotes.size());
-
-		for (final GitRemote gitRemote : gitRemotes) {
-			Callable<Boolean> callable = new SafeCallable<Boolean>() {
-
-				@Override
-				public Boolean safeCall() {
-					try {
-						return gitWorkingDirectory.remoteGitBranchExists(
-							remoteGitBranchName, gitRemote);
-					}
-					catch (Exception exception) {
-						exception.printStackTrace();
-
-						return true;
-					}
-				}
-
-			};
-
-			callables.add(callable);
-		}
-
-		ParallelExecutor<Boolean> parallelExecutor = new ParallelExecutor<>(
-			callables, _threadPoolExecutor);
-
-		for (Boolean bool : parallelExecutor.execute()) {
-			if (!bool) {
-				return false;
-			}
-		}
-
-		return true;
 	}
 
 	protected static String synchronizeToGitHubDev(

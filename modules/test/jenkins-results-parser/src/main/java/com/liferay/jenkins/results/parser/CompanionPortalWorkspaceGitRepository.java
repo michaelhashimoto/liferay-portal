@@ -40,12 +40,14 @@ public class CompanionPortalWorkspaceGitRepository
 			_parentWorkspaceGitRepository.getUpstreamBranchName();
 
 		if (parentUpstreamBranchName.contains("-private")) {
+			LocalGitBranch localGitBranch = createLocalGitBranch();
+
 			try {
 				JenkinsResultsParserUtil.write(
 					new File(
 						_parentWorkspaceGitRepository.getDirectory(),
 						"git-commit-portal"),
-					getBranchSHA());
+					localGitBranch.getSHA());
 			}
 			catch (IOException ioException) {
 				throw new RuntimeException(ioException);
@@ -63,21 +65,14 @@ public class CompanionPortalWorkspaceGitRepository
 			return;
 		}
 
-		File modulesPrivateDir = new File(getDirectory(), "modules/private");
-
-		if (!modulesPrivateDir.exists()) {
-			return;
-		}
-
-		File parentModulesPrivateDir = new File(
-			_parentWorkspaceGitRepository.getDirectory(), "modules/private");
-
 		try {
-			JenkinsResultsParserUtil.copy(
-				modulesPrivateDir, parentModulesPrivateDir);
+			AntUtil.callTarget(
+				_parentWorkspaceGitRepository.getDirectory(), "build.xml",
+				"setup-profile-dxp");
 		}
-		catch (IOException ioException) {
-			throw new RuntimeException(ioException);
+		catch (AntException antException) {
+			throw new RuntimeException(
+				"Unable to set up DXP profile", antException);
 		}
 	}
 

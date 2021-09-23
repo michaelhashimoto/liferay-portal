@@ -16,6 +16,9 @@ package com.liferay.jenkins.results.parser;
 
 import java.io.File;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -41,6 +44,30 @@ public abstract class PortalGitRepositoryJob
 		}
 
 		return (PortalGitWorkingDirectory)gitWorkingDirectory;
+	}
+
+	@Override
+	public PortalWorkspaceGitRepository getPortalWorkspaceGitRepository() {
+		return _portalWorkspaceRepository;
+	}
+
+	@Override
+	public List<WorkspaceGitRepository> getWorkspaceGitRepositories() {
+		List<WorkspaceGitRepository> workspaceGitRepositories =
+			new ArrayList<>();
+
+		workspaceGitRepositories.add(getPortalWorkspaceGitRepository());
+
+		workspaceGitRepositories.removeAll(Collections.singleton(null));
+
+		return workspaceGitRepositories;
+	}
+
+	@Override
+	public void setPortalWorkspaceGitRepository(
+		PortalWorkspaceGitRepository portalWorkspaceRepository) {
+
+		_portalWorkspaceRepository = portalWorkspaceRepository;
 	}
 
 	protected PortalGitRepositoryJob(
@@ -85,5 +112,7 @@ public abstract class PortalGitRepositoryJob
 
 		readJobProperties();
 	}
+
+	private PortalWorkspaceGitRepository _portalWorkspaceRepository;
 
 }

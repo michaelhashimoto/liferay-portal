@@ -91,17 +91,12 @@ public abstract class BasePortalWorkspace
 
 		_primaryPortalWorkspaceGitRepository.setUp();
 
-		if (portalUpstreamBranchName.endsWith("private")) {
-			_companionPortalWorkspaceGitRepository =
-				WorkspaceUtil.getDependencyWorkspaceGitRepository(
-					CompanionPortalWorkspaceGitRepository.TYPE,
-					_primaryPortalWorkspaceGitRepository);
+		_companionPortalWorkspaceGitRepository =
+			WorkspaceUtil.getDependencyWorkspaceGitRepository(
+				CompanionPortalWorkspaceGitRepository.TYPE,
+				_primaryPortalWorkspaceGitRepository);
 
-			_companionPortalWorkspaceGitRepository.setUp();
-		}
-		else {
-			_companionPortalWorkspaceGitRepository = null;
-		}
+		_companionPortalWorkspaceGitRepository.setUp();
 
 		workspaceGitRepository = WorkspaceUtil.getWorkspaceGitRepository(
 			LegacyWorkspaceGitRepository.TYPE,
@@ -131,15 +126,23 @@ public abstract class BasePortalWorkspace
 
 		_primaryPortalWorkspaceGitRepository.setUp();
 
+		_primaryPortalWorkspaceGitRepository.synchronizeToGitHubDev();
+
 		if (_companionPortalWorkspaceGitRepository != null) {
 			_companionPortalWorkspaceGitRepository.setUp();
+
+			_companionPortalWorkspaceGitRepository.synchronizeToGitHubDev();
 		}
 
 		if (_otherPortalWorkspaceGitRepository != null) {
 			_otherPortalWorkspaceGitRepository.setUp();
+
+			_otherPortalWorkspaceGitRepository.synchronizeToGitHubDev();
 		}
 
 		_pluginsWorkspaceGitRepository.setUp();
+
+		_pluginsWorkspaceGitRepository.synchronizeToGitHubDev();
 	}
 
 	@Override

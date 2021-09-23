@@ -16,7 +16,9 @@ package com.liferay.jenkins.results.parser;
 
 import java.io.File;
 
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -35,8 +37,32 @@ public class PortalAppReleaseJob extends BaseJob implements PortalTestClassJob {
 	}
 
 	@Override
+	public PortalWorkspaceGitRepository getPortalWorkspaceGitRepository() {
+		return _portalWorkspaceRepository;
+	}
+
+	@Override
+	public List<WorkspaceGitRepository> getWorkspaceGitRepositories() {
+		List<WorkspaceGitRepository> workspaceGitRepositories =
+			new ArrayList<>();
+
+		workspaceGitRepositories.add(getPortalWorkspaceGitRepository());
+
+		workspaceGitRepositories.removeAll(Collections.singleton(null));
+
+		return workspaceGitRepositories;
+	}
+
+	@Override
 	public boolean isSegmentEnabled() {
 		return true;
+	}
+
+	@Override
+	public void setPortalWorkspaceGitRepository(
+		PortalWorkspaceGitRepository portalWorkspaceRepository) {
+
+		_portalWorkspaceRepository = portalWorkspaceRepository;
 	}
 
 	protected PortalAppReleaseJob(
@@ -87,5 +113,6 @@ public class PortalAppReleaseJob extends BaseJob implements PortalTestClassJob {
 	}
 
 	private final PortalGitWorkingDirectory _portalGitWorkingDirectory;
+	private PortalWorkspaceGitRepository _portalWorkspaceRepository;
 
 }

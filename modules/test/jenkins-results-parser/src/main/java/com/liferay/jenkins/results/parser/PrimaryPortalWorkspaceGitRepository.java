@@ -29,19 +29,6 @@ public class PrimaryPortalWorkspaceGitRepository
 		return TYPE;
 	}
 
-	@Override
-	public void setUp() {
-		super.setUp();
-
-		String upstreamBranchName = getUpstreamBranchName();
-
-		if (!upstreamBranchName.startsWith("ee-") &&
-			!upstreamBranchName.endsWith("-private")) {
-
-			_setupProfileDXP();
-		}
-	}
-
 	protected PrimaryPortalWorkspaceGitRepository(JSONObject jsonObject) {
 		super(jsonObject);
 	}
