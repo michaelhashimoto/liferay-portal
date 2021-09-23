@@ -462,34 +462,34 @@ public abstract class BaseWorkspaceGitRepository
 	}
 
 	private LocalGitBranch _createRemoteGitRefLocalGitBranch() {
-		String branchSHA = getBranchSHA();
+		String senderBranchSHA = _getSenderBranchSHA();
 
-		if (branchSHA == null) {
-			branchSHA = _getSenderBranchSHA();
-
-			setBranchSHA(branchSHA);
+		if (getBranchSHA() == null) {
+			setBranchSHA(senderBranchSHA);
 		}
 
 		GitWorkingDirectory gitWorkingDirectory = getGitWorkingDirectory();
 
-		if (gitWorkingDirectory.localSHAExists(branchSHA)) {
+		if (gitWorkingDirectory.localSHAExists(senderBranchSHA)) {
 			return gitWorkingDirectory.createLocalGitBranch(
-				_getBranchName(), true, branchSHA);
+				_getBranchName(), true, getBranchSHA());
 		}
 
 		RemoteGitBranch remoteGitBranch = GitHubDevSyncUtil.getRemoteGitBranch(
 			gitWorkingDirectory, getGitHubDevBranchName());
 
-		if (remoteGitBranch != null) {
+		if ((remoteGitBranch != null) &&
+			!gitWorkingDirectory.localSHAExists(remoteGitBranch.getSHA())) {
+
 			gitWorkingDirectory.fetch(remoteGitBranch);
 		}
 
-		if (!gitWorkingDirectory.localSHAExists(branchSHA)) {
+		if (!gitWorkingDirectory.localSHAExists(senderBranchSHA)) {
 			gitWorkingDirectory.fetch(_getSenderRemoteGitRef());
 		}
 
 		return gitWorkingDirectory.createLocalGitBranch(
-			_getBranchName(), true, branchSHA);
+			_getBranchName(), true, getBranchSHA());
 	}
 
 	private String _getBranchName() {
