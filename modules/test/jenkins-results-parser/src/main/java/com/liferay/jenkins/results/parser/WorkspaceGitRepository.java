@@ -43,6 +43,8 @@ public interface WorkspaceGitRepository extends LocalGitRepository {
 
 	public void storeCommitHistory(List<String> commitSHAs);
 
+	public void synchronizeToGitHubDev();
+
 	public void tearDown();
 
 	public void writePropertiesFiles();

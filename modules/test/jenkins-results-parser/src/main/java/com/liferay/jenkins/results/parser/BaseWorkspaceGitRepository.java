@@ -285,6 +285,19 @@ public abstract class BaseWorkspaceGitRepository
 	}
 
 	@Override
+	public void synchronizeToGitHubDev() {
+		try {
+			GitHubDevSyncUtil.synchronizeToGitHubDev(
+				getGitWorkingDirectory(), _getReceiverUsername(),
+				_getSenderBranchName(), _getSenderUsername(),
+				_getSenderBranchSHA(), _getUpstreamBranchSHA());
+		}
+		catch (IOException ioException) {
+			throw new RuntimeException(ioException);
+		}
+	}
+
+	@Override
 	public void tearDown() {
 		GitWorkingDirectory gitWorkingDirectory = getGitWorkingDirectory();
 
