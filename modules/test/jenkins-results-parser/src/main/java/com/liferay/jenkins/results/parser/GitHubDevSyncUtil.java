@@ -166,6 +166,57 @@ public class GitHubDevSyncUtil {
 		return gitHubDevGitRemotes;
 	}
 
+	public static List<RemoteGitBranch> getGitHubDevRemoteGitBranches(
+		final GitWorkingDirectory gitWorkingDirectory,
+		final String cacheBranchName) {
+
+		List<GitRemote> gitHubDevGitRemotes = getGitHubDevGitRemotes(
+			gitWorkingDirectory);
+
+		List<Callable<RemoteGitBranch>> callables = new ArrayList<>(
+			gitHubDevGitRemotes.size());
+
+		for (final GitRemote gitHubDevGitRemote : gitHubDevGitRemotes) {
+			Callable<RemoteGitBranch> callable =
+				new SafeCallable<RemoteGitBranch>() {
+
+					@Override
+					public RemoteGitBranch safeCall() {
+						try {
+							RemoteGitBranch remoteGitBranch =
+								gitWorkingDirectory.getRemoteGitBranch(
+									cacheBranchName,
+									gitHubDevGitRemote.getRemoteURL());
+
+							if (remoteGitBranch != null) {
+								return remoteGitBranch;
+							}
+						}
+						catch (Exception exception) {
+							exception.printStackTrace();
+
+							return null;
+						}
+
+						return null;
+					}
+
+				};
+
+			callables.add(callable);
+		}
+
+		ParallelExecutor<RemoteGitBranch> parallelExecutor =
+			new ParallelExecutor<>(callables, _threadPoolExecutor);
+
+		List<RemoteGitBranch> gitHubDevRemoteGitBranches =
+			parallelExecutor.execute();
+
+		gitHubDevRemoteGitBranches.removeAll(Collections.singleton(null));
+
+		return gitHubDevRemoteGitBranches;
+	}
+
 	public static List<GitRemote> getGitRemotesWithBranch(
 		final String branchName, List<GitRemote> gitRemotes,
 		final GitWorkingDirectory gitWorkingDirectory) {
