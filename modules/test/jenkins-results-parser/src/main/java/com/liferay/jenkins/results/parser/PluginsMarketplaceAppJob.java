@@ -16,7 +16,9 @@ package com.liferay.jenkins.results.parser;
 
 import java.io.File;
 
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -36,8 +38,32 @@ public class PluginsMarketplaceAppJob
 	}
 
 	@Override
+	public PortalWorkspaceGitRepository getPortalWorkspaceGitRepository() {
+		return _portalWorkspaceRepository;
+	}
+
+	@Override
 	public String getTestSuiteName() {
 		return _appType;
+	}
+
+	@Override
+	public List<WorkspaceGitRepository> getWorkspaceGitRepositories() {
+		List<WorkspaceGitRepository> workspaceGitRepositories =
+			new ArrayList<>();
+
+		workspaceGitRepositories.add(getPortalWorkspaceGitRepository());
+
+		workspaceGitRepositories.removeAll(Collections.singleton(null));
+
+		return workspaceGitRepositories;
+	}
+
+	@Override
+	public void setPortalWorkspaceGitRepository(
+		PortalWorkspaceGitRepository portalWorkspaceRepository) {
+
+		_portalWorkspaceRepository = portalWorkspaceRepository;
 	}
 
 	protected PluginsMarketplaceAppJob(
@@ -78,5 +104,6 @@ public class PluginsMarketplaceAppJob
 
 	private final String _appType;
 	private final PortalGitWorkingDirectory _portalGitWorkingDirectory;
+	private PortalWorkspaceGitRepository _portalWorkspaceRepository;
 
 }

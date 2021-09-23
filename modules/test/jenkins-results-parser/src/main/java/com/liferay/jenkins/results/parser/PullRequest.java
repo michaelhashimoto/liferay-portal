@@ -408,9 +408,15 @@ public class PullRequest {
 	}
 
 	public String getSenderSHA() {
+		if (_senderSHA != null) {
+			return _senderSHA;
+		}
+
 		JSONObject headJSONObject = _jsonObject.getJSONObject("head");
 
-		return headJSONObject.getString("sha");
+		_senderSHA = headJSONObject.getString("sha");
+
+		return _senderSHA;
 	}
 
 	public JSONArray getSenderSHAStatusesJSONArray() {
@@ -468,9 +474,15 @@ public class PullRequest {
 	}
 
 	public String getUpstreamBranchSHA() {
+		if (_upstreamBranchSHA != null) {
+			return _upstreamBranchSHA;
+		}
+
 		RemoteGitBranch upstreamRemoteGitBranch = getUpstreamRemoteGitBranch();
 
-		return upstreamRemoteGitBranch.getSHA();
+		_upstreamBranchSHA = upstreamRemoteGitBranch.getSHA();
+
+		return _upstreamBranchSHA;
 	}
 
 	public RemoteGitBranch getUpstreamRemoteGitBranch() {
@@ -616,6 +628,14 @@ public class PullRequest {
 		_autoCloseCommentAvailable = null;
 	}
 
+	public void setSenderSHA(String senderSHA) {
+		if (JenkinsResultsParserUtil.isNullOrEmpty(senderSHA)) {
+			throw new RuntimeException("Invalid sender SHA " + senderSHA);
+		}
+
+		_senderSHA = senderSHA;
+	}
+
 	public void setTestSuiteStatus(
 		String testSuiteName, TestSuiteStatus testSuiteStatus) {
 
@@ -727,6 +747,15 @@ public class PullRequest {
 
 		gitHubRemoteGitCommit.setStatus(
 			status, context, sb.toString(), targetURL);
+	}
+
+	public void setUpstreamBranchSHA(String upstreamBranchSHA) {
+		if (JenkinsResultsParserUtil.isNullOrEmpty(upstreamBranchSHA)) {
+			throw new RuntimeException(
+				"Invalid upstream branch SHA " + upstreamBranchSHA);
+		}
+
+		_upstreamBranchSHA = upstreamBranchSHA;
 	}
 
 	public Comment updateComment(Comment comment) {
@@ -967,5 +996,7 @@ public class PullRequest {
 	private final Integer _number;
 	private final String _ownerUsername;
 	private RemoteGitBranch _senderRemoteGitBranch;
+	private String _senderSHA;
+	private String _upstreamBranchSHA;
 
 }

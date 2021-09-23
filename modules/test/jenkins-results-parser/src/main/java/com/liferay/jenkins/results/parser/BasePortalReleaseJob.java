@@ -108,8 +108,28 @@ public abstract class BasePortalReleaseJob
 	}
 
 	@Override
+	public PortalWorkspaceGitRepository getPortalWorkspaceGitRepository() {
+		return null;
+	}
+
+	@Override
 	public String getTestSuiteName() {
 		return _testSuiteName;
+	}
+
+	@Override
+	public List<WorkspaceGitRepository> getWorkspaceGitRepositories() {
+		List<WorkspaceGitRepository> workspaceGitRepositories =
+			new ArrayList<>();
+
+		workspaceGitRepositories.add(getPortalWorkspaceGitRepository());
+
+		return workspaceGitRepositories;
+	}
+
+	@Override
+	public void setPortalWorkspaceGitRepository(
+		PortalWorkspaceGitRepository portalWorkspaceRepository) {
 	}
 
 	protected GitWorkingDirectory getJenkinsGitWorkingDirectory() {
