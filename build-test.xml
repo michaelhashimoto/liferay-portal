@@ -9907,6 +9907,8 @@ auto.deploy.dest.dir=C:/WINDOWS/system32/config/systemprofile/liferay/websphere-
 			browser.version=${browser.version}
 		</echo>
 
+		<property location="${basedir.unix}/portal-web/${selenium.executable.dir.name}" name="selenium.executable.dir.path" />
+
 		<if>
 			<equals arg1="${browser.type}" arg2="chrome" />
 			<then>
@@ -9915,7 +9917,7 @@ auto.deploy.dest.dir=C:/WINDOWS/system32/config/systemprofile/liferay/websphere-
 				<echo append="true" file="${test.ext.properties.file}">
 					selenium.chrome.driver.executable=${selenium.chrome.driver.executable}
 					selenium.chrome.driver.version=${selenium.chrome.driver.version}
-					selenium.executable.dir.name=${selenium.executable.dir.name}
+					selenium.executable.dir.name=${selenium.executable.dir.path}/
 				</echo>
 			</then>
 		</if>
@@ -9927,7 +9929,7 @@ auto.deploy.dest.dir=C:/WINDOWS/system32/config/systemprofile/liferay/websphere-
 
 				<echo append="true" file="${test.ext.properties.file}">
 					selenium.edge.driver.executable=${selenium.edge.driver.executable}
-					selenium.executable.dir.name=${selenium.executable.dir.name}
+					selenium.executable.dir.name=${selenium.executable.dir.path}/
 				</echo>
 			</then>
 		</if>
@@ -9941,7 +9943,7 @@ auto.deploy.dest.dir=C:/WINDOWS/system32/config/systemprofile/liferay/websphere-
 				<prepare-gecko-driver />
 
 				<echo append="true" file="${test.ext.properties.file}">
-					selenium.executable.dir.name=${selenium.executable.dir.name}
+					selenium.executable.dir.name=${selenium.executable.dir.path}/
 					selenium.gecko.driver.executable=${selenium.gecko.driver.executable}
 				</echo>
 			</then>
@@ -9953,7 +9955,7 @@ auto.deploy.dest.dir=C:/WINDOWS/system32/config/systemprofile/liferay/websphere-
 				<prepare-ie-driver />
 
 				<echo append="true" file="${test.ext.properties.file}">
-					selenium.executable.dir.name=${selenium.executable.dir.name}
+					selenium.executable.dir.name=${selenium.executable.dir.path}/
 					selenium.ie.driver.executable=${selenium.ie.driver.executable}
 					selenium.ie.driver.version=${selenium.ie.driver.version}
 				</echo>
