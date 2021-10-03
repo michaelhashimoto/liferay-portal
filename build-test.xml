@@ -1208,7 +1208,15 @@ jdbc.counter.connectionProperties=oracle.jdbc.ReadTimeout=0;oracle.net.CONNECT_T
 						return topLevelJobName;
 					}
 
+					System.out.println("getTopLevelJobName()=" + getTopLevelJobName());
+					System.out.println("getTestSuite()=" + getTestSuite());
+					System.out.println("getBranchName()=" + getBranchName());
+					System.out.println("getRepositoryName()=" + getRepositoryName());
+					System.out.println("getBuildProfile()=" + getBuildProfile());
+
 					Job job = JobFactory.newJob(getTopLevelJobName(), getTestSuite(), getBranchName(), getRepositoryName(), getBuildProfile());
+
+					System.out.println("job=" + job);
 
 					BatchTestClassGroup batchTestClassGroup = TestClassGroupFactory.newBatchTestClassGroup(project.getProperty("test.batch.name"), job);
 
@@ -11149,6 +11157,8 @@ ANT_OPTS=${env.ANT_OPTS}</echo>
 
 				<mkdir dir="dist" />
 
+				<echo>test.build.portal.war.url=${test.build.portal.war.url}</echo>
+
 				<if>
 					<matches pattern="(file|https?)://" string="${test.build.portal.war.url}" />
 					<then>
@@ -11217,6 +11227,8 @@ ANT_OPTS=${env.ANT_OPTS}</echo>
 					</then>
 				</if>
 
+				<echo>test.build.portal.elasticsearch.zip.url=${test.build.portal.elasticsearch.zip.url}</echo>
+
 				<if>
 					<matches pattern="(file|https?)://" string="${test.build.portal.elasticsearch.zip.url}" />
 					<then>
@@ -11237,12 +11249,16 @@ ANT_OPTS=${env.ANT_OPTS}</echo>
 							<format pattern="yyyyMMddkkmmssSSS" property="tstamp.value" />
 						</tstamp>
 
+						<echo>tstamp.value=${tstamp.value}</echo>
+
 						<mkdir dir="${tstamp.value}" />
 
 						<decompress
 							dest="${tstamp.value}"
 							src="${test.build.portal.elasticsearch.zip.name}"
 						/>
+
+						<echo>cp -r ${tstamp.value}/*/elasticsearch7 ${liferay.home}/</echo>
 
 						<execute>
 							cp -r ${tstamp.value}/*/elasticsearch-sidecar ${liferay.home}/
@@ -11253,6 +11269,8 @@ ANT_OPTS=${env.ANT_OPTS}</echo>
 						<delete dir="${tstamp.value}" />
 					</then>
 				</if>
+
+				<echo>test.build.portal.osgi.zip.url=${test.build.portal.osgi.zip.url}</echo>
 
 				<if>
 					<matches pattern="(file|https?)://" string="${test.build.portal.osgi.zip.url}" />
@@ -11276,6 +11294,8 @@ ANT_OPTS=${env.ANT_OPTS}</echo>
 				</unzip>
 
 				<delete file="liferay-portal-osgi.zip" />
+
+				<echo>test.build.portal.tools.zip.url=${test.build.portal.tools.zip.url}</echo>
 
 				<if>
 					<matches pattern="(file|https?)://" string="${test.build.portal.tools.zip.url}" />
