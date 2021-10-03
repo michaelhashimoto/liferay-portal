@@ -5303,10 +5303,26 @@ log.sanitizer.enabled=false</echo>
 	<target name="js-unit-jdk8">
 		<run-batch-test>
 			<test-action>
-				<gradle-execute dir="modules" task="packageRunTest">
-					<arg value="--continue" />
-					<arg value="--parallel" />
-				</gradle-execute>
+				<antcall inheritAll="false" target="record-test-class-file-names" />
+
+				<property file="test.class.file.names.properties" />
+
+				<propertycopy from="TEST_CLASS_GROUP_${env.AXIS_VARIABLE}" name="test.class.group" />
+
+				<for list="${test.class.group}" param="test.class" trim="true">
+					<sequential>
+						<echo></echo>
+						<echo>##</echo>
+						<echo>## @{test.class}</echo>
+						<echo>##</echo>
+						<echo></echo>
+
+						<gradle-execute dir="modules" task="@{test.class}">
+							<arg value="--continue" />
+							<arg value="--parallel" />
+						</gradle-execute>
+					</sequential>
+				</for>
 
 				<replace
 					dir="modules"
