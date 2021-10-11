@@ -43,6 +43,8 @@ definition {
 
 		Smoke.runSmoke();
 
+		fail("Fail to see errors.");
+
 		// Assert all bundles installed
 
 		AssertConsoleTextNotPresent(value1 = "The portal instance needs to be restarted to complete the installation");
