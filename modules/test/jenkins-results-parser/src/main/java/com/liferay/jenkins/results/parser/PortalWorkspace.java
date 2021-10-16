@@ -30,8 +30,19 @@ import org.json.JSONObject;
  */
 public class PortalWorkspace extends BaseWorkspace {
 
-	public String getPortalBuildProfile() {
-		return jsonObject.optString("portal_build_profile", "dxp");
+	public Job.BuildProfile getBuildProfile() {
+		String buildProfileString = jsonObject.optString(
+			"build_profile", "dxp");
+
+		return Job.BuildProfile.getByString(buildProfileString);
+	}
+
+	public void setBuildProfile(Job.BuildProfile buildProfile) {
+		if (buildProfile == null) {
+			throw new RuntimeException("Invalid build profile " + buildProfile);
+		}
+
+		jsonObject.put("build_profile", buildProfile.toString());
 	}
 
 	public void setOSBAsahGitHubURL(String osbAsahGitHubURL) {
@@ -42,19 +53,6 @@ public class PortalWorkspace extends BaseWorkspace {
 		_osbFaroGitHubURL = osbFaroGitHubURL;
 	}
 
-	public void setPortalBuildProfile(String portalBuildProfile) {
-		portalBuildProfile = portalBuildProfile.toLowerCase();
-
-		if (!portalBuildProfile.equals("dxp") &&
-			!portalBuildProfile.equals("portal")) {
-
-			throw new RuntimeException(
-				"Invalid portal build profile " + portalBuildProfile);
-		}
-
-		jsonObject.put("portal_build_profile", portalBuildProfile);
-	}
-
 	@Override
 	public void setUp() {
 		PortalWorkspaceGitRepository portalWorkspaceGitRepository =
@@ -62,9 +60,9 @@ public class PortalWorkspace extends BaseWorkspace {
 
 		portalWorkspaceGitRepository.setUp();
 
-		String portalBuildProfile = getPortalBuildProfile();
+		Job.BuildProfile buildProfile = getBuildProfile();
 
-		if (portalBuildProfile.equals("dxp")) {
+		if (buildProfile == Job.BuildProfile.DXP) {
 			portalWorkspaceGitRepository.setUpPortalProfile();
 		}
 
@@ -95,6 +93,13 @@ public class PortalWorkspace extends BaseWorkspace {
 		String primaryRepositoryName, String upstreamBranchName) {
 
 		super(primaryRepositoryName, upstreamBranchName);
+	}
+
+	protected PortalWorkspace(
+		String primaryRepositoryName, String upstreamBranchName,
+		String jobName) {
+
+		super(primaryRepositoryName, upstreamBranchName, jobName);
 	}
 
 	private void _configureBladeSamplesWorkspaceGitRepository() {
@@ -411,6 +416,13 @@ public class PortalWorkspace extends BaseWorkspace {
 			portalWorkspaceGitRepository.getGitWorkingDirectory();
 
 		System.out.println(gitWorkingDirectory.status());
+
+		gitWorkingDirectory.commitFileToCurrentBranch(
+			"modules/dxp/apps/osb/osb-asah",
+			JenkinsResultsParserUtil.combine(
+				"Committing changes from ", workspaceGitRepository.getName(),
+				" at ", workspaceGitRepository.getSenderBranchSHA(),
+				" for testing on CI"));
 	}
 
 	private boolean _updateWorkspaceGitRepository(
