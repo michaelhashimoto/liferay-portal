@@ -1215,24 +1215,24 @@ jdbc.counter.connectionProperties=oracle.jdbc.ReadTimeout=0;oracle.net.CONNECT_T
 						return topLevelJobName;
 					}
 
-					System.out.project("getTopLevelJobName()=" + getTopLevelJobName());
-					System.out.project("getTestSuite()=" + getTestSuite());
-					System.out.project("getBranchName()=" + getBranchName());
-					System.out.project("getRepositoryName()=" + getRepositoryName());
-					System.out.project("getBuildProfile()=" + getBuildProfile());
+					System.out.println("getTopLevelJobName()=" + getTopLevelJobName());
+					System.out.println("getTestSuite()=" + getTestSuite());
+					System.out.println("getBranchName()=" + getBranchName());
+					System.out.println("getRepositoryName()=" + getRepositoryName());
+					System.out.println("getBuildProfile()=" + getBuildProfile());
 
 					Job job = JobFactory.newJob(getTopLevelJobName(), getTestSuite(), getBranchName(), getRepositoryName(), getBuildProfile());
 
-					System.out.project("job=" + job);
+					System.out.println("job=" + job);
 
 					BatchTestClassGroup batchTestClassGroup = TestClassGroupFactory.newBatchTestClassGroup(project.getProperty("test.batch.name"), job);
 
-					System.out.project("batchTestClassGroup=" + batchTestClassGroup);
+					System.out.println("batchTestClassGroup=" + batchTestClassGroup);
 
 					if (job.isSegmentEnabled()) {
 						SegmentTestClassGroup segmentTestClassGroup = batchTestClassGroup.getSegmentTestClassGroup(getSegmentID());
 
-						System.out.project("segmentTestClassGroup=" + segmentTestClassGroup);
+						System.out.println("segmentTestClassGroup=" + segmentTestClassGroup);
 
 						project.setProperty("test.case.properties.content", segmentTestClassGroup.getTestCasePropertiesContent());
 					}
@@ -1241,7 +1241,7 @@ jdbc.counter.connectionProperties=oracle.jdbc.ReadTimeout=0;oracle.net.CONNECT_T
 					}
 
 
-					System.out.project("test.case.properties.content=" + project.getProperty("test.case.properties.content"));
+					System.out.println("test.case.properties.content=" + project.getProperty("test.case.properties.content"));
 				]]>
 			</beanshell>
 		</sequential>
