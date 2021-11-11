@@ -1215,18 +1215,33 @@ jdbc.counter.connectionProperties=oracle.jdbc.ReadTimeout=0;oracle.net.CONNECT_T
 						return topLevelJobName;
 					}
 
+					System.out.println("getTopLevelJobName()=" + getTopLevelJobName());
+					System.out.println("getTestSuite()=" + getTestSuite());
+					System.out.println("getBranchName()=" + getBranchName());
+					System.out.println("getRepositoryName()=" + getRepositoryName());
+					System.out.println("getBuildProfile()=" + getBuildProfile());
+
 					Job job = JobFactory.newJob(getTopLevelJobName(), getTestSuite(), getBranchName(), getRepositoryName(), getBuildProfile());
+
+					System.out.println("job=" + job);
 
 					BatchTestClassGroup batchTestClassGroup = TestClassGroupFactory.newBatchTestClassGroup(project.getProperty("test.batch.name"), job);
 
+					System.out.println("batchTestClassGroup=" + batchTestClassGroup);
+
 					if (job.isSegmentEnabled()) {
 						SegmentTestClassGroup segmentTestClassGroup = batchTestClassGroup.getSegmentTestClassGroup(getSegmentID());
+
+						System.out.println("segmentTestClassGroup=" + segmentTestClassGroup);
 
 						project.setProperty("test.case.properties.content", segmentTestClassGroup.getTestCasePropertiesContent());
 					}
 					else {
 						project.setProperty("test.case.properties.content", batchTestClassGroup.getTestCasePropertiesContent());
 					}
+
+
+					System.out.println("test.case.properties.content=" + project.getProperty("test.case.properties.content"));
 				]]>
 			</beanshell>
 		</sequential>
