@@ -41,6 +41,8 @@ definition {
 
 		Smoke.viewWelcomeContentPage();
 
+		takeScreenshot();
+
 		Smoke.runSmoke();
 
 		// Assert all bundles installed

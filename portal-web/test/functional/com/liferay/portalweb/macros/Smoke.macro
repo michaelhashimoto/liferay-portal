@@ -32,6 +32,8 @@ definition {
 
 		SitePages.addPublicPage(pageName = "Test Page3");
 
+		fail("Breaking change!");
+
 		var pageName = "Test Page1";
 		var portletBody = "Test Page1";
 		var portletName = "Navigation Menu";
