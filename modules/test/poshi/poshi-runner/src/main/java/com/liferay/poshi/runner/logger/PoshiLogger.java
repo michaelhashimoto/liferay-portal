@@ -94,7 +94,7 @@ public class PoshiLogger {
 				indexHTMLContent,
 				"<script defer src=\"../js/update_images.js\"",
 				"<script defer src=\"" + PropsValues.LOGGER_RESOURCES_URL +
-					"/js/main.js\"");
+					"/js/update_images.js\"");
 		}
 
 		StringBuilder sb = new StringBuilder();
