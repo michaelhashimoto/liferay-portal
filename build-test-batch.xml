@@ -205,6 +205,12 @@ lportal_BS
 
 			<get-database-property property.name="database.docker.image" />
 
+			<propertycopy from="database.${database.type}.docker.image" name="database.docker.image.tmp" />
+
+			<echo>database.type=${database.type}</echo>
+			<echo>database.${database.type}.docker.image=${database.docker.image.tmp}</echo>
+			<echo>database.docker.image=${database.docker.image}</echo>
+
 			<if>
 				<not>
 					<isset property="database.docker.image" />
