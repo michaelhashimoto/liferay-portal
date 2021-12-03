@@ -129,7 +129,7 @@ definition {
 		ContentPages.viewFragmentText(
 			fragmentName = "heading",
 			id = "element-text",
-			text = "Welcome to Liferay");
+			text = "Welcome to Liferays");
 
 		ContentPages.viewFragmentImage(
 			fragmentName = "image",
