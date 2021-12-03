@@ -58,7 +58,7 @@
     <dependency>
       <groupId>com.liferay</groupId>
       <artifactId>com.liferay.poshi.core</artifactId>
-      <version>1.0.40</version>
+      <version>1.0.41</version>
       <scope>compile</scope>
     </dependency>
     <dependency>
