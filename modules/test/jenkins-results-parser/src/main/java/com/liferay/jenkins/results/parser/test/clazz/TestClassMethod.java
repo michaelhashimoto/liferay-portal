@@ -12,24 +12,35 @@
  * details.
  */
 
-package com.liferay.jenkins.results.parser.test.clazz.group;
-
-import com.liferay.jenkins.results.parser.Job;
-import com.liferay.jenkins.results.parser.test.clazz.TestClass;
-
-import java.io.File;
-
-import java.util.List;
+package com.liferay.jenkins.results.parser.test.clazz;
 
 /**
- * @author Peter Yoo
+ * @author Michael Hashimoto
  */
-public interface TestClassGroup {
+public class TestClassMethod {
 
-	public Job getJob();
+	public String getName() {
+		return _name;
+	}
 
-	public List<TestClass> getTestClasses();
+	public TestClass getTestClass() {
+		return _testClass;
+	}
 
-	public List<File> getTestClassFiles();
+	public boolean isIgnored() {
+		return _ignored;
+	}
+
+	protected TestClassMethod(
+		boolean ignored, String name, TestClass testClass) {
+
+		_ignored = ignored;
+		_name = name;
+		_testClass = testClass;
+	}
+
+	private final boolean _ignored;
+	private final String _name;
+	private final TestClass _testClass;
 
 }

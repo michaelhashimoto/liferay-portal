@@ -12,24 +12,23 @@
  * details.
  */
 
-package com.liferay.jenkins.results.parser.test.clazz.group;
+package com.liferay.jenkins.results.parser.test.clazz;
 
-import com.liferay.jenkins.results.parser.Job;
-import com.liferay.jenkins.results.parser.test.clazz.TestClass;
+import com.liferay.jenkins.results.parser.test.clazz.group.BatchTestClassGroup;
 
 import java.io.File;
 
-import java.util.List;
-
 /**
- * @author Peter Yoo
+ * @author Michael Hashimoto
  */
-public interface TestClassGroup {
+public class PluginsGulpTestClass extends BaseTestClass {
 
-	public Job getJob();
+	protected PluginsGulpTestClass(
+		BatchTestClassGroup batchTestClassGroup, File testBaseDirName) {
 
-	public List<TestClass> getTestClasses();
+		super(batchTestClassGroup, testBaseDirName);
 
-	public List<File> getTestClassFiles();
+		addTestClassMethod("gulpfile.js");
+	}
 
 }

@@ -12,24 +12,23 @@
  * details.
  */
 
-package com.liferay.jenkins.results.parser.test.clazz.group;
-
-import com.liferay.jenkins.results.parser.Job;
-import com.liferay.jenkins.results.parser.test.clazz.TestClass;
+package com.liferay.jenkins.results.parser.test.clazz;
 
 import java.io.File;
 
 import java.util.List;
 
 /**
- * @author Peter Yoo
+ * @author Michael Hashimoto
  */
-public interface TestClassGroup {
+public interface TestClass extends Comparable<TestClass> {
 
-	public Job getJob();
+	public File getTestClassFile();
 
-	public List<TestClass> getTestClasses();
+	public List<TestClassMethod> getTestClassMethods();
 
-	public List<File> getTestClassFiles();
+	public boolean hasTestClassMethods();
+
+	public boolean isIgnored();
 
 }
