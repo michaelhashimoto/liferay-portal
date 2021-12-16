@@ -64,6 +64,10 @@ public class BuildDatabaseUtil {
 	}
 
 	private static void _downloadBuildDatabaseFile(File buildDir, Build build) {
+		if (build == null) {
+			return;
+		}
+
 		if (!buildDir.exists()) {
 			buildDir.mkdirs();
 		}
@@ -72,24 +76,6 @@ public class BuildDatabaseUtil {
 			buildDir, BuildDatabase.FILE_NAME_BUILD_DATABASE);
 
 		if (buildDatabaseFile.exists()) {
-			return;
-		}
-
-		String distNodes = System.getenv("DIST_NODES");
-		String distPath = System.getenv("DIST_PATH");
-
-		if (!JenkinsResultsParserUtil.isNullOrEmpty(distNodes) &&
-			!JenkinsResultsParserUtil.isNullOrEmpty(distPath)) {
-
-			_downloadBuildDatabaseFileFromDistNodes(
-				buildDatabaseFile, distNodes, distPath);
-		}
-
-		if (buildDatabaseFile.exists()) {
-			return;
-		}
-
-		if (build == null) {
 			return;
 		}
 
@@ -105,6 +91,20 @@ public class BuildDatabaseUtil {
 					"Unable to write build-database.json", ioException);
 			}
 
+			return;
+		}
+
+		String distNodes = System.getenv("DIST_NODES");
+		String distPath = System.getenv("DIST_PATH");
+
+		if (!JenkinsResultsParserUtil.isNullOrEmpty(distNodes) &&
+			!JenkinsResultsParserUtil.isNullOrEmpty(distPath)) {
+
+			_downloadBuildDatabaseFileFromDistNodes(
+				buildDatabaseFile, distNodes, distPath);
+		}
+
+		if (buildDatabaseFile.exists()) {
 			return;
 		}
 
