@@ -34,11 +34,7 @@ public class BuildDatabaseUtil {
 	}
 
 	public static BuildDatabase getBuildDatabase(Build build) {
-		TopLevelBuild topLevelBuild = null;
-
-		if (build != null) {
-			topLevelBuild = build.getTopLevelBuild();
-		}
+		TopLevelBuild topLevelBuild = build.getTopLevelBuild();
 
 		if ((build instanceof TopLevelBuild) || (topLevelBuild == null)) {
 			File buildDir = _getBuildDir(build);
@@ -64,10 +60,6 @@ public class BuildDatabaseUtil {
 	}
 
 	private static void _downloadBuildDatabaseFile(File buildDir, Build build) {
-		if (build == null) {
-			return;
-		}
-
 		if (!buildDir.exists()) {
 			buildDir.mkdirs();
 		}
