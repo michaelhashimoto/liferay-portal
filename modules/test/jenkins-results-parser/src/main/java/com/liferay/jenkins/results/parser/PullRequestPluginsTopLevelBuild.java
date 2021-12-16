@@ -43,12 +43,6 @@ public class PullRequestPluginsTopLevelBuild
 		sb.append("/pull/");
 		sb.append(getParameterValue("GITHUB_PULL_REQUEST_NUMBER"));
 
-		if (isFromArchive()) {
-			_pullRequest = null;
-
-			return;
-		}
-
 		_pullRequest = PullRequestFactory.newPullRequest(sb.toString());
 	}
 
