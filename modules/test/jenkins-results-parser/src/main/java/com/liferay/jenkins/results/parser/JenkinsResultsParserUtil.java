@@ -979,13 +979,9 @@ public class JenkinsResultsParserUtil {
 			sb.append("=");
 
 			try {
-				String queryParameterValue = URLEncoder.encode(
-					matcher.group(2), StandardCharsets.UTF_8.name());
-
-				queryParameterValue = queryParameterValue.replaceAll(
-					"\\+", "%20");
-
-				sb.append(queryParameterValue);
+				sb.append(
+					URLEncoder.encode(
+						matcher.group(2), StandardCharsets.UTF_8.name()));
 			}
 			catch (UnsupportedEncodingException unsupportedEncodingException) {
 				throw new RuntimeException(unsupportedEncodingException);
