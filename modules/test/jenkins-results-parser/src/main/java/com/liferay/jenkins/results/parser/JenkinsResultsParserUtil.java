@@ -3917,9 +3917,7 @@ public class JenkinsResultsParserUtil {
 					}
 					catch (Exception exception) {
 						System.out.println(
-							combine(
-								"Unable to parse GitHub API rate limit headers",
-								"\nURL:\n    ", url));
+							"Unable to parse GitHub API rate limit headers");
 
 						exception.printStackTrace();
 					}
