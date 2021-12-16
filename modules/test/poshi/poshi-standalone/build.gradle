@@ -24,8 +24,27 @@ apply plugin: "com.liferay.poshi.runner"
 apply plugin: "com.liferay.poshi.runner.resources.defaults"
 apply plugin: "com.liferay.source.formatter"
 
+task testrayImport (type: JavaExec)
+
 dependencies {
 	poshiRunnerResources group: "com.liferay", name: "com.liferay.poshi.runner.resources", version: "latest.release"
+}
+
+def getGradleProperties() {
+	Properties gradleProperties = new Properties()
+
+	try {
+		InputStream inputStream = new FileInputStream("gradle.properties")
+
+		gradleProperties.load(inputStream)
+
+		return gradleProperties
+	}
+	catch (Exception e) {
+		e.printStackTrace()
+
+		throw e
+	}
 }
 
 poshiRunner {
@@ -52,6 +71,24 @@ repositories {
 	maven {
 		url "https://repository-cdn.liferay.com/nexus/content/groups/public"
 	}
+}
+
+configurations {
+	testray
+}
+
+dependencies {
+	testray group: "com.liferay", name: "com.liferay.jenkins.results.parser", version: "${jenkinsResultsParserVersion}"
+}
+
+testrayImport {
+	description = 'Import Testray results.'
+	group = 'Testray'
+
+	classpath = configurations.testray
+	main = "com.liferay.jenkins.results.parser.testray.DXPCloudClientTestrayImporter"
+	systemProperties getGradleProperties()
+	workingDir = "${projectDir}"
 }
 
 webdriverBinaries {
