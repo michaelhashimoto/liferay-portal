@@ -34,29 +34,23 @@ public class BuildDatabaseUtil {
 	}
 
 	public static BuildDatabase getBuildDatabase(Build build) {
-		TopLevelBuild topLevelBuild = build.getTopLevelBuild();
+		File buildDir = _getBuildDir(build);
 
-		if ((build instanceof TopLevelBuild) || (topLevelBuild == null)) {
-			File buildDir = _getBuildDir(build);
+		synchronized (_buildDatabases) {
+			BuildDatabase buildDatabase = _buildDatabases.get(buildDir);
 
-			synchronized (_buildDatabases) {
-				BuildDatabase buildDatabase = _buildDatabases.get(buildDir);
-
-				if (buildDatabase != null) {
-					return buildDatabase;
-				}
-
-				_downloadBuildDatabaseFile(buildDir, build);
-
-				buildDatabase = new DefaultBuildDatabase(buildDir);
-
-				_buildDatabases.put(buildDir, buildDatabase);
-
+			if (buildDatabase != null) {
 				return buildDatabase;
 			}
-		}
 
-		return getBuildDatabase(topLevelBuild);
+			_downloadBuildDatabaseFile(buildDir, build);
+
+			buildDatabase = new DefaultBuildDatabase(buildDir);
+
+			_buildDatabases.put(buildDir, buildDatabase);
+
+			return buildDatabase;
+		}
 	}
 
 	private static void _downloadBuildDatabaseFile(File buildDir, Build build) {
