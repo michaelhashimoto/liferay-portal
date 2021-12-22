@@ -15,7 +15,7 @@
 package com.liferay.jenkins.results.parser;
 
 /**
- * @author Michael Hashimoto
+ * @author Michael Hashimotos
  */
 public interface AnalyticsCloudBranchInformationBuild extends Build {
 
