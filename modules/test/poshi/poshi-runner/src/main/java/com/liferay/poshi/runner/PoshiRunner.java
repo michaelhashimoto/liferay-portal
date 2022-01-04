@@ -58,6 +58,7 @@ import org.openqa.selenium.remote.UnreachableBrowserException;
 
 /**
  * @author Brian Wing Shun Chan
+ * @author Calum Ragan
  * @author Michael Hashimoto
  * @author Karen Dang
  * @author Leslie Wong
