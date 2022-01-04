@@ -189,13 +189,7 @@ networks:
 				<![CDATA[
 					import com.liferay.jenkins.results.parser.JenkinsResultsParserUtil;
 
-					String excludedImageNames = project.getProperty("analytics.cloud.image.names.excludes");
-
-					if (excludedImageNames == null) {
-						excludedImageNames = "";
-					}
-
-					JenkinsResultsParserUtil.pullDockerImageDependencies(new File("@{analytics.cloud.repository.dir}"), excludedImageNames.split(","));
+					JenkinsResultsParserUtil.pullDockerImageDependencies(new File("@{analytics.cloud.repository.dir}"), null);
 				]]>
 			</beanshell>
 		</sequential>
@@ -249,6 +243,10 @@ OSB_FARO_FRONTEND_URL=${analytics.cloud.faro.frontend.url}</echo>
 			<if>
 				<equals arg1="${analytics.cloud.faro.build}" arg2="true" />
 				<then>
+					<execute dir="${analytics.cloud.faro.dir}">
+						docker rmi liferay/dxp:7.1.10-dxp-15
+					</execute>
+
 					<pull-docker-image-dependencies analytics.cloud.repository.dir="${analytics.cloud.faro.dir}" />
 
 					<local name="portal.gradlew" />
