@@ -72,6 +72,7 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.dom4j.Element;
 
 /**
+ * @author Calum Ragan
  * @author Karen Dang
  * @author Michael Hashimoto
  */

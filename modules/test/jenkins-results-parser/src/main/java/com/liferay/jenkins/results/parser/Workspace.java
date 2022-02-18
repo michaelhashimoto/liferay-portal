@@ -20,6 +20,7 @@ import org.json.JSONObject;
 
 /**
  * @author Michael Hashimoto
+ * @author Calum Ragan
  */
 public interface Workspace {
 
