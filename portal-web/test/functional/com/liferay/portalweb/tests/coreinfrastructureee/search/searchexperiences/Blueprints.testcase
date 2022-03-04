@@ -7,6 +7,7 @@ definition {
 	property test.run.environment = "EE";
 	property testray.component.names = "Frontend Dataset";
 	property testray.main.component.name = "Search Experiences";
+	property portal.acceptance = "brooke";
 
 	setUp {
 		TestCase.setUpPortalInstance();
@@ -43,7 +44,6 @@ definition {
 
 	test AddElementToQueryBuilder {
 		property environment.acceptance = "true";
-		property portal.acceptance = "true";
 
 		Blueprints.openBlueprintsAdmin();
 
