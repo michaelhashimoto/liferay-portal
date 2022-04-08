@@ -39,8 +39,12 @@ public class BuildFactory {
 		String axisVariable = matcher.group("axisVariable");
 
 		if (axisVariable != null) {
-			String jobVariant = JenkinsResultsParserUtil.getBuildParameter(
-				url, "JOB_VARIANT");
+			String jobVariant = parentBuild.getJobVariant();
+
+			if (JenkinsResultsParserUtil.isNullOrEmpty(jobVariant)) {
+				jobVariant = JenkinsResultsParserUtil.getBuildParameter(
+					url, "JOB_VARIANT");
+			}
 
 			if ((jobVariant != null) && jobVariant.contains("cucumber")) {
 				return new CucumberAxisBuild(url, (BatchBuild)parentBuild);
