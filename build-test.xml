@@ -5039,11 +5039,11 @@ tell application "Safari" to quit
 											<![CDATA[
 											#!/bin/bash
 
-											/opt/ibm/db2/V11.1/bin/db2 disconnect lportal'
+											db2 disconnect lportal
 
-											/opt/ibm/db2/V11.1/bin/db2 drop db lportal'
+											db2 drop db lportal
 
-											/opt/ibm/db2/V11.1/bin/db2 -f/tmp/create.sql -st'
+											db2 -f/tmp/create.sql -st
 										]]>
 										</echo>
 
@@ -5052,7 +5052,7 @@ tell application "Safari" to quit
 											<then>
 												<echo file="${create.sh.file.path}">
 													<![CDATA[
-														/opt/ibm/db2/V11.1/bin/db2 drop db lportal${databases.size}
+														db2 drop db lportal${databases.size}
 													]]>
 												</echo>
 											</then>
@@ -6703,7 +6703,7 @@ org.apache.catalina.startup.ClassLoaderFactory.level=INFO]]>
 				<elseif>
 					<equals arg1="${database.type}" arg2="db2" />
 					<then>
-						<property name="docker.database.wait.condition">[[ "$(/bin/su - db2inst1 -c '/opt/ibm/db2/V11.1/bin/db2 db2start')" =~ "SQL1026N" ]]</property>
+						<property name="docker.database.wait.condition">[[ "$(/bin/su - db2inst1 -c 'db2 db2start')" =~ "SQL1026N" ]]</property>
 					</then>
 				</elseif>
 				<elseif>
@@ -12631,7 +12631,7 @@ database.partition.enabled=true</echo>
 
 									echo "db2 restore database lportal user ${database.username} using ${database.password} from /opt/ibm/db2 replace existing"
 
-									output=$(/opt/ibm/db2/V11.1/bin/db2 restore database lportal user ${database.username} using ${database.password} from /opt/ibm/db2 replace existing)
+									output=$(db2 restore database lportal user ${database.username} using ${database.password} from /opt/ibm/db2 replace existing)
 
 									exit_code=$?
 
