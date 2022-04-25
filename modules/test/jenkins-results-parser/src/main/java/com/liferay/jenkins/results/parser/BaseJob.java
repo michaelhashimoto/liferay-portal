@@ -50,6 +50,22 @@ import org.json.JSONObject;
 public abstract class BaseJob implements Job {
 
 	@Override
+	public boolean downstreamJobsEnabled() {
+		JobProperty jobProperty = getJobProperty(
+			"test.batch.downstream.jobs.enabled");
+
+		String downstreamJobsEnabled = jobProperty.getValue();
+
+		if ((downstreamJobsEnabled != null) &&
+			downstreamJobsEnabled.equals("true")) {
+
+			return true;
+		}
+
+		return false;
+	}
+
+	@Override
 	public int getAxisCount() {
 		List<AxisTestClassGroup> axisTestClassGroups = getAxisTestClassGroups();
 
@@ -479,9 +495,11 @@ public abstract class BaseJob implements Job {
 					String.valueOf(batchTestClassGroup.getAxisCount()));
 			}
 
-			batchProperties.setProperty(
-				"test.downstream.job.name",
-				batchTestClassGroup.getDownstreamJobName());
+			if (downstreamJobsEnabled()) {
+				batchProperties.setProperty(
+					"test.downstream.job.name",
+					batchTestClassGroup.getDownstreamJobName());
+			}
 
 			propertiesMap.put(
 				batchTestClassGroup.getBatchName(), batchProperties);
@@ -526,9 +544,11 @@ public abstract class BaseJob implements Job {
 						"test.case.properties", testCasePropertiesContent);
 				}
 
-				segmentProperties.setProperty(
-					"test.downstream.job.name",
-					segmentTestClassGroup.getDownstreamJobName());
+				if (downstreamJobsEnabled()) {
+					segmentProperties.setProperty(
+						"test.downstream.job.name",
+						segmentTestClassGroup.getDownstreamJobName());
+				}
 
 				if (segmentTestClassGroup instanceof
 						FunctionalSegmentTestClassGroup) {

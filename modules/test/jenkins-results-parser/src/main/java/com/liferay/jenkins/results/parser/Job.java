@@ -32,6 +32,8 @@ import org.json.JSONObject;
  */
 public interface Job {
 
+	public boolean downstreamJobsEnabled();
+
 	public int getAxisCount();
 
 	public List<AxisTestClassGroup> getAxisTestClassGroups();
