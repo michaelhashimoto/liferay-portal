@@ -14,7 +14,6 @@
 
 package com.liferay.jenkins.results.parser.testray;
 
-import com.liferay.jenkins.results.parser.AxisBuild;
 import com.liferay.jenkins.results.parser.Build;
 import com.liferay.jenkins.results.parser.JenkinsMaster;
 import com.liferay.jenkins.results.parser.JenkinsResultsParserUtil;
@@ -66,13 +65,6 @@ public class BatchTestrayCaseResult extends TestrayCaseResult {
 			"testray/" + JenkinsResultsParserUtil.getDistinctTimeStamp());
 	}
 
-	public AxisBuild getAxisBuild() {
-		TopLevelBuild topLevelBuild = getTopLevelBuild();
-
-		return topLevelBuild.getDownstreamAxisBuild(
-			_axisTestClassGroup.getAxisName());
-	}
-
 	public String getAxisName() {
 		return _axisTestClassGroup.getAxisName();
 	}
@@ -82,7 +74,9 @@ public class BatchTestrayCaseResult extends TestrayCaseResult {
 	}
 
 	public Build getBuild() {
-		return getAxisBuild();
+		TopLevelBuild topLevelBuild = getTopLevelBuild();
+
+		return topLevelBuild.getDownstreamBuild(getAxisName());
 	}
 
 	@Override
@@ -262,19 +256,8 @@ public class BatchTestrayCaseResult extends TestrayCaseResult {
 	}
 
 	protected String getAxisBuildURLPath() {
-		AxisBuild axisBuild = getAxisBuild();
-
-		if (axisBuild == null) {
-			return null;
-		}
-
-		StringBuilder sb = new StringBuilder();
-
-		sb.append(_getTopLevelBuildURLPath());
-		sb.append("/");
-		sb.append(axisBuild.getAxisName());
-
-		return sb.toString();
+		return JenkinsResultsParserUtil.combine(
+			_getTopLevelBuildURLPath(), "/", getAxisName());
 	}
 
 	protected AxisTestClassGroup getAxisTestClassGroup() {
@@ -331,15 +314,15 @@ public class BatchTestrayCaseResult extends TestrayCaseResult {
 		String key = getAxisBuildURLPath() + "/jenkins-console.txt.gz";
 
 		TestrayAttachment testrayAttachment = getTestrayAttachment(
-			getAxisBuild(), name, key);
+			getBuild(), name, key);
 
 		if (testrayAttachment != null) {
 			return testrayAttachment;
 		}
 
-		AxisBuild axisBuild = getAxisBuild();
+		Build build = getBuild();
 
-		if (axisBuild == null) {
+		if (build == null) {
 			return null;
 		}
 
@@ -350,7 +333,7 @@ public class BatchTestrayCaseResult extends TestrayCaseResult {
 
 		try {
 			JenkinsResultsParserUtil.write(
-				jenkinsConsoleFile, axisBuild.getConsoleText());
+				jenkinsConsoleFile, build.getConsoleText());
 
 			JenkinsResultsParserUtil.gzip(
 				jenkinsConsoleFile, jenkinsConsoleGzFile);

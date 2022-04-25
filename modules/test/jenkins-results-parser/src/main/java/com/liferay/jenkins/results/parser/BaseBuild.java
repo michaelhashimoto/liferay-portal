@@ -2777,9 +2777,26 @@ public abstract class BaseBuild implements Build {
 		Collections.sort(
 			downstreamBuilds, new BaseBuild.BuildDisplayNameComparator());
 
+		String batchName = null;
+
 		for (Build downstreamBuild : downstreamBuilds) {
 			if (!(downstreamBuild instanceof BaseBuild)) {
 				continue;
+			}
+
+			if (downstreamBuild instanceof DownstreamBuild) {
+				DownstreamBuild downstreamBuildObject =
+					(DownstreamBuild)downstreamBuild;
+
+				if (!Objects.equals(
+						batchName, downstreamBuildObject.getBatchName())) {
+
+					tableRowElements.add(
+						Dom4JUtil.getNewElement(
+							"th", null, downstreamBuildObject.getBatchName()));
+
+					batchName = downstreamBuildObject.getBatchName();
+				}
 			}
 
 			BaseBuild downstreamBaseBuild = (BaseBuild)downstreamBuild;

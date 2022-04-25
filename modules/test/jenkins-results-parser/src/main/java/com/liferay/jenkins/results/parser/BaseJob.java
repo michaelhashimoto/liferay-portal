@@ -479,6 +479,10 @@ public abstract class BaseJob implements Job {
 					String.valueOf(batchTestClassGroup.getAxisCount()));
 			}
 
+			batchProperties.setProperty(
+				"test.downstream.job.name",
+				batchTestClassGroup.getDownstreamJobName());
+
 			propertiesMap.put(
 				batchTestClassGroup.getBatchName(), batchProperties);
 
@@ -521,6 +525,10 @@ public abstract class BaseJob implements Job {
 					segmentProperties.setProperty(
 						"test.case.properties", testCasePropertiesContent);
 				}
+
+				segmentProperties.setProperty(
+					"test.downstream.job.name",
+					segmentTestClassGroup.getDownstreamJobName());
 
 				if (segmentTestClassGroup instanceof
 						FunctionalSegmentTestClassGroup) {

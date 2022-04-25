@@ -430,6 +430,38 @@ public abstract class TopLevelBuild extends BaseBuild {
 		return downstreamBatchBuilds;
 	}
 
+	public DownstreamBuild getDownstreamBuild(String axisName) {
+		for (Build downstreamBuild : getDownstreamBuilds(null)) {
+			String downstreamAxisName = downstreamBuild.getParameterValue(
+				"JOB_VARIANT");
+
+			if (JenkinsResultsParserUtil.isNullOrEmpty(downstreamAxisName)) {
+				continue;
+			}
+
+			String downstreamAxisVariable = downstreamBuild.getParameterValue(
+				"AXIS_VARIABLE");
+
+			if (JenkinsResultsParserUtil.isNullOrEmpty(
+					downstreamAxisVariable)) {
+
+				continue;
+			}
+
+			downstreamAxisName += "/" + downstreamAxisVariable;
+
+			if (!axisName.equals(downstreamAxisName) ||
+				!(downstreamBuild instanceof DownstreamBuild)) {
+
+				continue;
+			}
+
+			return (DownstreamBuild)downstreamBuild;
+		}
+
+		return null;
+	}
+
 	@Override
 	public Element getGitHubMessageElement() {
 		Collections.sort(
@@ -610,12 +642,7 @@ public abstract class TopLevelBuild extends BaseBuild {
 
 	@Override
 	public synchronized void update() {
-		long start = JenkinsResultsParserUtil.getCurrentTimeMillis();
-
 		super.update();
-
-		_updateDuration =
-			JenkinsResultsParserUtil.getCurrentTimeMillis() - start;
 
 		if (_sendBuildMetrics && !fromArchive && (getParentBuild() == null)) {
 			if (!fromCompletedBuild) {
@@ -2074,6 +2101,5 @@ public abstract class TopLevelBuild extends BaseBuild {
 	private String _metricsHostName;
 	private int _metricsHostPort;
 	private final boolean _sendBuildMetrics;
-	private long _updateDuration;
 
 }
