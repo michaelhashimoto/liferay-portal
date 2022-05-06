@@ -270,6 +270,6 @@ public class SampleSQLBuilderTest {
 	}
 
 	private static final String _SAMPLE_FTL_END =
-		"<#include \"counters.ftl\">\n\nCOMMIT_TRANSACTION";
+		"FAILURE<#include \"counters.ftl\">\n\nCOMMIT_TRANSACTION";
 
 }

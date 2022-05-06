@@ -5520,6 +5520,8 @@ log.sanitizer.enabled=false</echo>
 
 			<test-set-up>
 				<setup-test-environment />
+
+				<fail>Force a failure</fail>
 			</test-set-up>
 		</run-batch-test>
 	</target>
