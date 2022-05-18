@@ -6745,6 +6745,8 @@ ${output.content}</echo>
 			</test-action>
 
 			<test-set-up>
+				<fail message="FORCED FAILURE!" />
+
 				<ant antfile="build-test.xml" target="prepare-release-bundle" />
 
 				<tar
