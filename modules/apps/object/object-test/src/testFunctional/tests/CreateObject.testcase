@@ -4957,6 +4957,7 @@ definition {
 	@priority = "5"
 	test CanViewRelationshipTab {
 		property portal.acceptance = "true";
+		property portal.stable = "true";
 
 		ObjectAdmin.addObjectViaAPI(
 			labelName = "Custom Object 121",
