@@ -37,6 +37,8 @@ definition {
 		property portal.acceptance = "false";
 		property testray.component.names = "Training";
 
+		fail("UNSTABLE to see a retry.");
+
 		SignIn.signInTestSetup();
 
 		Smoke.viewWelcomeContentPage();
