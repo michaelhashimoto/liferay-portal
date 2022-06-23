@@ -425,6 +425,10 @@ definition {
 	}
 
 	macro closeAllSessions {
+		AntCommand(
+			locator1 = "build-test.xml",
+			value1 = "docker-ps");
+
 		ACUtils.restartDockerContainer(containerName = "osbasahredis");
 
 		var analyticsCloudAsahCuratorBatchURL = PropsUtil.get("analytics.cloud.asah.curator.batch.url");

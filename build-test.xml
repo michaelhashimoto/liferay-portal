@@ -9760,6 +9760,12 @@ virtualHostname="localhost"
 		</if>
 	</target>
 
+	<target name="docker-ps">
+		<execute>
+			docker ps -a
+		</execute>
+	</target>
+
 	<target name="execute-mysql">
 		<get-test-app-server-lib-portal-dir />
 

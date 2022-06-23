@@ -10,6 +10,10 @@ definition {
 	property testray.main.component.name = "Analytics Cloud";
 
 	setUp {
+		AntCommand(
+			locator1 = "build-test.xml",
+			value1 = "docker-ps");
+
 		task ("Copy the token from AC") {
 			ACUtils.launchAC();
 
@@ -61,6 +65,10 @@ definition {
 	}
 
 	tearDown {
+		AntCommand(
+			locator1 = "build-test.xml",
+			value1 = "docker-ps");
+
 		var testPortalInstance = PropsUtil.get("test.portal.instance");
 
 		ACUtils.tearDownDXP();
@@ -294,6 +302,8 @@ definition {
 	@description = "Feature ID: LRAC-6280 | Automation ID: LRAC-10558 | Test Summary: Viewing newly created analysis report"
 	@priority = "5"
 	test CanCreateAnalysisReport {
+		property portal.acceptance = "one";
+
 		var attributeName = "category";
 		var filterName = "like";
 
