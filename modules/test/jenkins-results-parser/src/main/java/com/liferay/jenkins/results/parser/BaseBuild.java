@@ -3762,11 +3762,34 @@ public abstract class BaseBuild implements Build {
 	}
 
 	private void _archive(String content, boolean required, String urlSuffix) {
-		String status = getStatus();
+		boolean archive = true;
+
+		if (this instanceof TopLevelBuild) {
+			String status = getStatus();
+
+			if (!status.equals("completed")) {
+				archive = false;
+			}
+		}
+		else {
+			JSONObject buildJSONObject = JenkinsAPIUtil.getAPIJSONObject(
+				getBuildURL(), "duration");
+
+			if (buildJSONObject != null) {
+				long duration = buildJSONObject.optLong("duration", 0L);
+
+				if (duration == 0) {
+					archive = false;
+				}
+			}
+			else {
+				archive = false;
+			}
+		}
 
 		File archiveFile = getArchiveFile(urlSuffix);
 
-		if (!status.equals("completed")) {
+		if (!archive) {
 			if (archiveFile.exists()) {
 				JenkinsResultsParserUtil.delete(archiveFile);
 			}
