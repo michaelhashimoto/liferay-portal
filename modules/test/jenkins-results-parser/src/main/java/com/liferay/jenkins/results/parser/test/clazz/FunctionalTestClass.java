@@ -14,6 +14,7 @@
 
 package com.liferay.jenkins.results.parser.test.clazz;
 
+import com.liferay.jenkins.results.parser.AverageDurationUtil;
 import com.liferay.jenkins.results.parser.JenkinsResultsParserUtil;
 import com.liferay.jenkins.results.parser.test.clazz.group.BatchTestClassGroup;
 import com.liferay.poshi.core.PoshiContext;
@@ -47,6 +48,20 @@ public class FunctionalTestClass extends BaseTestClass {
 
 		return _testClassMethodName.compareTo(
 			functionalTestClass.getTestClassMethodName());
+	}
+
+	@Override
+	public long getAverageDuration() {
+		BatchTestClassGroup batchTestClassGroup = getBatchTestClassGroup();
+
+		Long averageDuration = AverageDurationUtil.getAverageDuration(
+			batchTestClassGroup.getBatchName(), getTestClassMethodName());
+
+		if (averageDuration == null) {
+			return 0L;
+		}
+
+		return averageDuration;
 	}
 
 	@Override

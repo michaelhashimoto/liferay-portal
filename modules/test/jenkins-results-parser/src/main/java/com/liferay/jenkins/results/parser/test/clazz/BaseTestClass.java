@@ -14,6 +14,7 @@
 
 package com.liferay.jenkins.results.parser.test.clazz;
 
+import com.liferay.jenkins.results.parser.AverageDurationUtil;
 import com.liferay.jenkins.results.parser.JenkinsResultsParserUtil;
 import com.liferay.jenkins.results.parser.PortalGitWorkingDirectory;
 import com.liferay.jenkins.results.parser.test.clazz.group.BatchTestClassGroup;
@@ -56,6 +57,20 @@ public abstract class BaseTestClass implements TestClass {
 		}
 
 		return false;
+	}
+
+	@Override
+	public long getAverageDuration() {
+		BatchTestClassGroup batchTestClassGroup = getBatchTestClassGroup();
+
+		Long averageDuration = AverageDurationUtil.getAverageDuration(
+			batchTestClassGroup.getBatchName(), getName());
+
+		if (averageDuration == null) {
+			return 0L;
+		}
+
+		return averageDuration;
 	}
 
 	@Override
