@@ -94,8 +94,8 @@ public class ClientExtensionServicePreActionTest {
 	}
 
 	@Test
-	public void testProcessServicePreActionLayout() throws Exception {
-		_addClientExtensionEntry();
+	public void testProcessServicePreActionLayoutFavicon() throws Exception {
+		_addFaviconClientExtensionEntry();
 
 		_clientExtensionEntryRelLocalService.addClientExtensionEntryRel(
 			_user.getUserId(), _portal.getClassNameId(Layout.class),
@@ -106,8 +106,8 @@ public class ClientExtensionServicePreActionTest {
 	}
 
 	@Test
-	public void testProcessServicePreActionLayoutSet() throws Exception {
-		_addClientExtensionEntry();
+	public void testProcessServicePreActionLayoutSetFavicon() throws Exception {
+		_addFaviconClientExtensionEntry();
 
 		LayoutSet layoutSet = _group.getPublicLayoutSet();
 
@@ -121,8 +121,39 @@ public class ClientExtensionServicePreActionTest {
 	}
 
 	@Test
-	public void testProcessServicePreActionMasterLayout() throws Exception {
-		_addClientExtensionEntry();
+	public void testProcessServicePreActionLayoutSetThemeCSS()
+		throws Exception {
+
+		_addThemeCSSClientExtensionEntry();
+
+		LayoutSet layoutSet = _group.getPublicLayoutSet();
+
+		_clientExtensionEntryRelLocalService.addClientExtensionEntryRel(
+			_user.getUserId(), _portal.getClassNameId(LayoutSet.class),
+			layoutSet.getLayoutSetId(),
+			_clientExtensionEntry.getExternalReferenceCode(),
+			ClientExtensionEntryConstants.TYPE_THEME_CSS, StringPool.BLANK);
+
+		_assertThemeCSSURLs();
+	}
+
+	@Test
+	public void testProcessServicePreActionLayoutThemeCSS() throws Exception {
+		_addThemeCSSClientExtensionEntry();
+
+		_clientExtensionEntryRelLocalService.addClientExtensionEntryRel(
+			_user.getUserId(), _portal.getClassNameId(Layout.class),
+			_layout.getPlid(), _clientExtensionEntry.getExternalReferenceCode(),
+			ClientExtensionEntryConstants.TYPE_THEME_CSS, StringPool.BLANK);
+
+		_assertThemeCSSURLs();
+	}
+
+	@Test
+	public void testProcessServicePreActionMasterLayoutFavicon()
+		throws Exception {
+
+		_addFaviconClientExtensionEntry();
 
 		LayoutPageTemplateEntry masterLayoutPageTemplateEntry =
 			_layoutPageTemplateEntryLocalService.addLayoutPageTemplateEntry(
@@ -145,7 +176,34 @@ public class ClientExtensionServicePreActionTest {
 		_assertFaviconURL();
 	}
 
-	private void _addClientExtensionEntry() throws Exception {
+	@Test
+	public void testProcessServicePreActionMasterLayoutThemeCSS()
+		throws Exception {
+
+		_addThemeCSSClientExtensionEntry();
+
+		LayoutPageTemplateEntry masterLayoutPageTemplateEntry =
+			_layoutPageTemplateEntryLocalService.addLayoutPageTemplateEntry(
+				_user.getUserId(), _group.getGroupId(), 0,
+				RandomTestUtil.randomString(),
+				LayoutPageTemplateEntryTypeConstants.TYPE_MASTER_LAYOUT, 0,
+				WorkflowConstants.STATUS_APPROVED,
+				ServiceContextTestUtil.getServiceContext(_group.getGroupId()));
+
+		_clientExtensionEntryRelLocalService.addClientExtensionEntryRel(
+			_user.getUserId(), _portal.getClassNameId(Layout.class),
+			masterLayoutPageTemplateEntry.getPlid(),
+			_clientExtensionEntry.getExternalReferenceCode(),
+			ClientExtensionEntryConstants.TYPE_THEME_CSS, StringPool.BLANK);
+
+		_layout.setMasterLayoutPlid(masterLayoutPageTemplateEntry.getPlid());
+
+		_layoutLocalService.updateLayout(_layout);
+
+		_assertThemeCSSURLs();
+	}
+
+	private void _addFaviconClientExtensionEntry() throws Exception {
 		_clientExtensionEntry =
 			_clientExtensionEntryLocalService.addClientExtensionEntry(
 				RandomTestUtil.randomString(), _user.getUserId(),
@@ -157,7 +215,25 @@ public class ClientExtensionServicePreActionTest {
 				UnicodePropertiesBuilder.create(
 					true
 				).put(
-					"url", _FAVICON_URL
+					"url", _URL_FAVICON
+				).buildString());
+	}
+
+	private void _addThemeCSSClientExtensionEntry() throws Exception {
+		_clientExtensionEntry =
+			_clientExtensionEntryLocalService.addClientExtensionEntry(
+				RandomTestUtil.randomString(), _user.getUserId(),
+				StringPool.BLANK,
+				Collections.singletonMap(
+					LocaleUtil.getDefault(), RandomTestUtil.randomString()),
+				StringPool.BLANK, StringPool.BLANK,
+				ClientExtensionEntryConstants.TYPE_THEME_CSS,
+				UnicodePropertiesBuilder.create(
+					true
+				).put(
+					"clayURL", _URL_CLAY_CSS
+				).put(
+					"mainURL", _URL_MAIN_CSS
 				).buildString());
 	}
 
@@ -171,7 +247,21 @@ public class ClientExtensionServicePreActionTest {
 			(ThemeDisplay)mockHttpServletRequest.getAttribute(
 				WebKeys.THEME_DISPLAY);
 
-		Assert.assertEquals(_FAVICON_URL, themeDisplay.getFaviconURL());
+		Assert.assertEquals(_URL_FAVICON, themeDisplay.getFaviconURL());
+	}
+
+	private void _assertThemeCSSURLs() throws Exception {
+		MockHttpServletRequest mockHttpServletRequest =
+			_getMockHttpServletRequest();
+
+		_processServicePreAction(mockHttpServletRequest);
+
+		ThemeDisplay themeDisplay =
+			(ThemeDisplay)mockHttpServletRequest.getAttribute(
+				WebKeys.THEME_DISPLAY);
+
+		Assert.assertEquals(_URL_CLAY_CSS, themeDisplay.getClayCSSURL());
+		Assert.assertEquals(_URL_MAIN_CSS, themeDisplay.getMainCSSURL());
 	}
 
 	private LifecycleAction _getLifecycleAction() {
@@ -233,8 +323,14 @@ public class ClientExtensionServicePreActionTest {
 				mockHttpServletRequest, new MockHttpServletResponse()));
 	}
 
-	private static final String _FAVICON_URL =
+	private static final String _URL_CLAY_CSS =
+		"http://" + RandomTestUtil.randomString() + ".com/styles.css";
+
+	private static final String _URL_FAVICON =
 		"http://" + RandomTestUtil.randomString() + ".com";
+
+	private static final String _URL_MAIN_CSS =
+		"http://" + RandomTestUtil.randomString() + ".com/main.css";
 
 	private ClientExtensionEntry _clientExtensionEntry;
 
