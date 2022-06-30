@@ -16,6 +16,7 @@ package com.liferay.jenkins.results.parser.test.clazz.group;
 
 import com.google.common.collect.Lists;
 
+import com.liferay.jenkins.results.parser.AverageDurationUtil;
 import com.liferay.jenkins.results.parser.JenkinsMaster;
 import com.liferay.jenkins.results.parser.JenkinsResultsParserUtil;
 import com.liferay.jenkins.results.parser.Job;
@@ -53,6 +54,28 @@ public abstract class BatchTestClassGroup extends BaseTestClassGroup {
 
 	public void addAxisTestClassGroup(AxisTestClassGroup axisTestClassGroup) {
 		axisTestClassGroups.add(axisTestClassGroup);
+	}
+
+	public long getAverageDuration() {
+		Long averageDuration = AverageDurationUtil.getBatchAverageDuration(
+			getBatchName());
+
+		if (averageDuration == null) {
+			return 0L;
+		}
+
+		return averageDuration;
+	}
+
+	public long getAverageOverheadDuration() {
+		Long averageOverheadDuration =
+			AverageDurationUtil.getBatchAverageOverheadDuration(getBatchName());
+
+		if (averageOverheadDuration == null) {
+			return 0L;
+		}
+
+		return averageOverheadDuration;
 	}
 
 	public int getAxisCount() {
