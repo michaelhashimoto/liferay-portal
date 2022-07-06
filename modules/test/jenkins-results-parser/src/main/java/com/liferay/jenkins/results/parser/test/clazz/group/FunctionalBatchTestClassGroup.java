@@ -76,6 +76,7 @@ public class FunctionalBatchTestClassGroup extends BatchTestClassGroup {
 
 		jsonObject.put("pql_query", sb.toString());
 
+		jsonObject.put("target_duration", getTargetAxisDuration());
 		jsonObject.put(
 			"test_batch_run_property_queries", _testBatchRunPropertyQueries);
 

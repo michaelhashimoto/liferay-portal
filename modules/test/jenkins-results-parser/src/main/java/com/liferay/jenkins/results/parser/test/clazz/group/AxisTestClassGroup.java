@@ -86,6 +86,7 @@ public class AxisTestClassGroup extends BaseTestClassGroup {
 		JSONObject jsonObject = new JSONObject();
 
 		jsonObject.put("axis_name", getAxisName());
+		jsonObject.put("average_duration", getAverageDuration());
 
 		JSONArray testClassesJSONArray = new JSONArray();
 
