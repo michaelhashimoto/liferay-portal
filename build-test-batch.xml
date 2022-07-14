@@ -6257,6 +6257,35 @@ log.sanitizer.enabled=false</echo>
 				<lstopwatch action="start" name="test.execution.duration" />
 
 				<if>
+					<isset property="MODULE_COMPILE_TASK_GROUP_${axis.variable}" />
+					<then>
+						<local name="module.compile.task.group" />
+
+						<propertycopy from="MODULE_COMPILE_TASK_GROUP_${axis.variable}" name="module.compile.task.group" />
+
+						<for keepgoing="true" param="module.compile.task" list="${module.compile.task.group}">
+							<sequential>
+								<local name="module.compile.task.name" />
+
+								<propertyregex
+									input="@{module.compile.task}"
+									override="true"
+									property="module.compile.task.name"
+									regexp=":"
+									replace="."
+								/>
+
+								<lstopwatch action="start" name="${module.compile.task.name}" />
+
+								<gradle-execute dir="modules" task="@{module.compile.task}" />
+
+								<lstopwatch action="total" name="${module.compile.task.name}" />
+							</sequential>
+						</for>
+					</then>
+				</if>
+
+				<if>
 					<equals arg1="${project.templates.test}" arg2="true" />
 					<then>
 						<gradle-execute dir="modules/sdk/project-templates" task="install">
