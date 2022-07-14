@@ -2512,6 +2512,25 @@ log.sanitizer.enabled=false</echo>
 							</antcall>
 						</else>
 					</if>
+
+					<if>
+						<isset property="MODULE_COMPILE_TASK_GROUP_${axis.variable}" />
+						<then>
+							<local name="module.compile.task.group" />
+
+							<propertycopy from="MODULE_COMPILE_TASK_GROUP_${axis.variable}" name="module.compile.task.group" />
+
+							<for delimiter="," param="module.compile.task" list="${module.compile.task.group}">
+								<sequential>
+									<lstopwatch action="start" name="@{module.compile.task}" />
+
+									<gradle-execute dir="modules" task="@{module.compile.task}" />
+
+									<lstopwatch action="total" name="@{module.compile.task}" />
+								</sequential>
+							</for>
+						</then>
+					</if>
 				</test-set-up>
 
 				<test-tear-down>
