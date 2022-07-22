@@ -2522,11 +2522,21 @@ log.sanitizer.enabled=false</echo>
 
 							<for delimiter="," param="module.compile.task" list="${module.compile.task.group}">
 								<sequential>
-									<lstopwatch action="start" name="@{module.compile.task}" />
+									<local name="module.compile.task.name" />
+
+									<propertyregex
+										input="@{module.compile.task}"
+										override="true"
+										property="module.compile.task.name"
+										regexp=":"
+										replace="."
+									/>
+
+									<lstopwatch action="start" name="${module.compile.task.name}" />
 
 									<gradle-execute dir="modules" task="@{module.compile.task}" />
 
-									<lstopwatch action="total" name="@{module.compile.task}" />
+									<lstopwatch action="total" name="${module.compile.task.name}" />
 								</sequential>
 							</for>
 						</then>
