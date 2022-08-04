@@ -73,6 +73,7 @@ definition {
 		property databases.size = "1";
 		property minimum.slave.ram = "24";
 		property portal.acceptance = "true";
+		property portal.smoke = "true";
 		property test.name.skip.portal.instance = "StagingActivation#CheckPublicationSummaryRemote";
 
 		task ("Given: Enable remote staging and add a new page on site") {
