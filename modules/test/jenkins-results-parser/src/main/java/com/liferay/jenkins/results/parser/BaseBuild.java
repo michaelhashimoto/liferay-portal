@@ -61,12 +61,14 @@ import org.json.JSONObject;
 public abstract class BaseBuild implements Build {
 
 	@Override
-	public void addDownstreamBuilds(String... urls) {
+	public void addDownstreamBuilds(Map<String, String> urlMap) {
 		final Build thisBuild = this;
 
-		List<Callable<Build>> callables = new ArrayList<>(urls.length);
+		List<Callable<Build>> callables = new ArrayList<>(urlMap.size());
 
-		for (String url : urls) {
+		for (final Map.Entry<String, String> entry : urlMap.entrySet()) {
+			String url = entry.getKey();
+
 			try {
 				url = JenkinsResultsParserUtil.getLocalURL(
 					JenkinsResultsParserUtil.decode(url));
@@ -84,7 +86,8 @@ public abstract class BaseBuild implements Build {
 					@Override
 					public Build call() {
 						try {
-							return BuildFactory.newBuild(buildURL, thisBuild);
+							return BuildFactory.newBuild(
+								buildURL, thisBuild, entry.getValue());
 						}
 						catch (RuntimeException runtimeException) {
 							if (!isFromArchive()) {
@@ -108,6 +111,17 @@ public abstract class BaseBuild implements Build {
 			callables, true, getExecutorService());
 
 		downstreamBuilds.addAll(parallelExecutor.execute());
+	}
+
+	@Override
+	public void addDownstreamBuilds(String... urls) {
+		Map<String, String> urlMap = new HashMap<>();
+
+		for (String url : urls) {
+			urlMap.put(url, null);
+		}
+
+		addDownstreamBuilds(urlMap);
 	}
 
 	public abstract void addTimelineData(BaseBuild.TimelineData timelineData);
@@ -2542,7 +2556,7 @@ public abstract class BaseBuild implements Build {
 	}
 
 	protected void findDownstreamBuilds() {
-		List<String> foundDownstreamBuildURLs = new ArrayList<>(
+		Map<String, String> foundDownstreamBuildURLs = new HashMap<>(
 			findDownstreamBuildsInConsoleText());
 
 		JSONObject buildJSONObject = getBuildJSONObject("runs[number,url]");
@@ -2558,20 +2572,20 @@ public abstract class BaseBuild implements Build {
 						String url = runJSONObject.getString("url");
 
 						if (!hasBuildURL(url) &&
-							!foundDownstreamBuildURLs.contains(url)) {
+							!foundDownstreamBuildURLs.containsKey(url)) {
 
-							foundDownstreamBuildURLs.add(url);
+							foundDownstreamBuildURLs.put(url, null);
 						}
 					}
 				}
 			}
 		}
 
-		addDownstreamBuilds(foundDownstreamBuildURLs.toArray(new String[0]));
+		addDownstreamBuilds(foundDownstreamBuildURLs);
 	}
 
-	protected List<String> findDownstreamBuildsInConsoleText() {
-		return Collections.emptyList();
+	protected Map<String, String> findDownstreamBuildsInConsoleText() {
+		return Collections.emptyMap();
 	}
 
 	protected Pattern getArchiveBuildURLPattern() {
@@ -2657,6 +2671,14 @@ public abstract class BaseBuild implements Build {
 
 			sb.append("Build \"");
 			sb.append(jobName);
+
+			if (this instanceof DownstreamBuild) {
+				DownstreamBuild downstreamBuild = (DownstreamBuild)this;
+
+				sb.append("/");
+				sb.append(downstreamBuild.getAxisName());
+			}
+
 			sb.append("\"");
 
 			if (status.equals("completed")) {
@@ -3724,7 +3746,8 @@ public abstract class BaseBuild implements Build {
 		"http://cloud-10-0-0-31.lax.liferay.com/osb-jenkins-web/map/";
 
 	protected static final Pattern downstreamBuildURLPattern = Pattern.compile(
-		"[\\'\\\"].*[\\'\\\"] started at (?<url>.+)\\.");
+		"[\\'\\\"][^/\\'\\\"]+(?<axisName>/[^\\'\\\"]+)?[\\'\\\"] started at " +
+			"(?<url>.+)\\.");
 	protected static final Pattern invocationURLPattern = Pattern.compile(
 		JenkinsResultsParserUtil.combine(
 			"\\w+://(?<master>[^/]+)/+job/+(?<jobName>[^/]+).*/",

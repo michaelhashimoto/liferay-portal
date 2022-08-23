@@ -44,12 +44,10 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Properties;
-import java.util.Set;
 import java.util.TreeMap;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentHashMap;
@@ -861,26 +859,34 @@ public abstract class TopLevelBuild extends BaseBuild {
 	}
 
 	@Override
-	protected List<String> findDownstreamBuildsInConsoleText() {
+	protected Map<String, String> findDownstreamBuildsInConsoleText() {
 		if (getParentBuild() != null) {
-			return Collections.emptyList();
+			return Collections.emptyMap();
 		}
 
 		String consoleText = getConsoleText();
 
-		List<String> foundDownstreamBuildURLs = new ArrayList<>();
+		Map<String, String> foundDownstreamBuildURLs = new HashMap<>();
 
 		if ((consoleText == null) || consoleText.isEmpty()) {
 			return foundDownstreamBuildURLs;
 		}
 
-		Set<String> downstreamBuildURLs = new HashSet<>();
+		Map<String, String> downstreamBuildURLs = new HashMap<>();
 
-		for (Build downstreamBuild : getDownstreamBuilds(null)) {
-			String downstreamBuildURL = downstreamBuild.getBuildURL();
+		for (Build build : getDownstreamBuilds(null)) {
+			String buildURL = build.getBuildURL();
 
-			if (downstreamBuildURL != null) {
-				downstreamBuildURLs.add(downstreamBuildURL);
+			if (buildURL != null) {
+				String axisName = null;
+
+				if (build instanceof DownstreamBuild) {
+					DownstreamBuild downstreamBuild = (DownstreamBuild)build;
+
+					axisName = downstreamBuild.getAxisName();
+				}
+
+				downstreamBuildURLs.put(buildURL, axisName);
 			}
 		}
 
@@ -899,6 +905,7 @@ public abstract class TopLevelBuild extends BaseBuild {
 
 			while (downstreamBuildURLMatcher.find()) {
 				String url = downstreamBuildURLMatcher.group("url");
+				String axisName = downstreamBuildURLMatcher.group("axisName");
 
 				Pattern reinvocationPattern = Pattern.compile(
 					Pattern.quote(url) + " restarted at (?<url>[^\\s]*)\\.");
@@ -910,10 +917,10 @@ public abstract class TopLevelBuild extends BaseBuild {
 					url = reinvocationMatcher.group("url");
 				}
 
-				if (!foundDownstreamBuildURLs.contains(url) &&
-					!downstreamBuildURLs.contains(url)) {
+				if (!foundDownstreamBuildURLs.containsKey(url) &&
+					!downstreamBuildURLs.containsKey(url)) {
 
-					foundDownstreamBuildURLs.add(url);
+					foundDownstreamBuildURLs.put(url, axisName);
 				}
 			}
 		}

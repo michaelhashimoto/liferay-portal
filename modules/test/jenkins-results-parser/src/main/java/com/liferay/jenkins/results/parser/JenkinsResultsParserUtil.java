@@ -1259,6 +1259,11 @@ public class JenkinsResultsParserUtil {
 	public static String getBuildParameter(
 		String buildURL, String key, Build parentBuild) {
 
+		System.out.println(
+			combine(
+				"getBuildParamater(", buildURL, ",", key, ",",
+				parentBuild.toString(), ");"));
+
 		Map<String, String> buildParameters = getBuildParameters(
 			buildURL, parentBuild);
 
