@@ -25,6 +25,8 @@ function updateAuthUser(url, authuser) {
 		url += "?authuser=" + authuser;
 	}
 
+	console.log("A " + url);
+
 	return url;
 }
 
@@ -54,11 +56,17 @@ function updateImages() {
 					continue;
 				}
 
+				console.log("0 " + images[i]);
+				console.log("1 " + this.authuser);
+				console.log("2 " + this);
+				console.log("3 " + url);
+				console.log("4 " + images[i].src);
+
 				images[i].src = updateAuthUser(url, this.authuser);
+
+				console.log("5 " + images[i].src);
 			}
 		}
-
-		image.src = updateAuthUser(firstImageURL, image.authuser);
 	}
 }
 
