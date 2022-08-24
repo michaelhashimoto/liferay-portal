@@ -68,7 +68,13 @@ function updateImages() {
 			}
 		}
 
+		console.log("i=" + i);
+		console.log("firstImageURL=" + firstImageURL);
+		console.log("image.src=" + image.src);
+
 		image.src = updateAuthUser(firstImageURL, i);
+
+		console.log("image.src=" + image.src);
 	}
 }
 
