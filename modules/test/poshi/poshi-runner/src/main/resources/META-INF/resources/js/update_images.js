@@ -67,6 +67,8 @@ function updateImages() {
 				console.log("5 " + images[i].src);
 			}
 		}
+
+		image.src = updateAuthUser(firstImageURL, i);
 	}
 }
 
