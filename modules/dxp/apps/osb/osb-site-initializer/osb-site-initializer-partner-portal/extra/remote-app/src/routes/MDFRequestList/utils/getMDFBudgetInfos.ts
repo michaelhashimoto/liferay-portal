@@ -9,17 +9,21 @@
  * distribution rights of the Software.
  */
 
-import useSWR from 'swr';
+import {MDFColumnKey} from '../../../common/enums/mdfColumnKey';
+import getIntlNumberFormat from '../../../common/utils/getIntlNumberFormat';
 
-import {Liferay} from '../..';
-import MDFRequest from '../../../../interfaces/mdfRequest';
-import {LiferayAPIs} from '../../common/enums/apis';
-import LiferayItems from '../../common/interfaces/liferayItems';
-import liferayFetcher from '../../common/utils/fetcher';
-
-export default function useGetMDFRequest() {
-	return useSWR(
-		[`/o/${LiferayAPIs.OBJECT}/mdfrequests`, Liferay.authToken],
-		(url, token) => liferayFetcher<LiferayItems<MDFRequest[]>>(url, token)
-	);
+export default function getMDFBudgetInfos(
+	totalCostOfExpense?: number,
+	totalRequested?: number
+) {
+	if (totalCostOfExpense && totalRequested) {
+		return {
+			[MDFColumnKey.TOTAL_COST]: getIntlNumberFormat().format(
+				totalCostOfExpense
+			),
+			[MDFColumnKey.REQUESTED]: getIntlNumberFormat().format(
+				totalRequested
+			),
+		};
+	}
 }
