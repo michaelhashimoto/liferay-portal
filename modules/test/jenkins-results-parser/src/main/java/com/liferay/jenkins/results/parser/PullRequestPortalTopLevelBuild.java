@@ -191,7 +191,8 @@ public class PullRequestPortalTopLevelBuild
 		int stableJobDownstreamBuildsSize = stableJobDownstreamBuilds.size();
 
 		if (stableJobDownstreamBuildsSize == 0) {
-			System.out.println("CI_DEBUG: non zero stable downstream build size");
+			System.out.println(
+				"CI_DEBUG: non zero stable downstream build size");
 
 			return null;
 		}
@@ -206,21 +207,34 @@ public class PullRequestPortalTopLevelBuild
 		if (stableJobDownstreamBuildsCompletedCount !=
 				stableJobDownstreamBuildsSize) {
 
-			System.out.println("CI_DEBUG: stable completed count & downstream build size mismatch");
+			System.out.println(
+				"CI_DEBUG: stable completed count & downstream build size " +
+					"mismatch");
 
+			System.out.println("---------------------------------------------");
 			System.out.println("stable downstream builds");
+
 			for (Build build : stableJobDownstreamBuilds) {
-				System.out.println(build.getJobVariant());
+				System.out.println(
+					"* " + build.getJobVariant() + " " + build.getStatus());
 			}
 
+			System.out.println("---------------------------------------------");
 			System.out.println("stable completed downstream builds");
-			for (Build build : getJobVariantsDownstreamBuilds(stableJobBatchNames, null, "completed")) {
-				System.out.println(build.getJobVariant());
+
+			for (Build build :
+					getJobVariantsDownstreamBuilds(
+						stableJobBatchNames, null, "completed")) {
+
+				System.out.println(
+					"* " + build.getJobVariant() + " " + build.getStatus());
 			}
 
+			System.out.println("---------------------------------------------");
 			System.out.println("stable batch names");
+
 			for (String batchName : stableJobBatchNames) {
-				System.out.println(batchName);
+				System.out.println("* " + batchName);
 			}
 
 			return null;
@@ -241,7 +255,8 @@ public class PullRequestPortalTopLevelBuild
 			_stableJobResult = "FAILURE";
 		}
 
-		System.out.println("CI_DEBUG: returning _stableJobResult: " + _stableJobResult);
+		System.out.println(
+			"CI_DEBUG: returning _stableJobResult: " + _stableJobResult);
 
 		return _stableJobResult;
 	}
