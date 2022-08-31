@@ -10309,10 +10309,6 @@ virtualHostname="localhost"
 	<target name="merge-test-results">
 		<mkdir dir="test-results" />
 
-		<execute>
-			find portal-web/test-results
-		</execute>
-
 		<path id="junit.reports.paths">
 			<multirootfileset erroronmissingdir="false">
 				<basedir file="modules" />
