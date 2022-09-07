@@ -279,8 +279,6 @@ networks:
 		<sequential>
 			<fail message="Please set the property ${env.DOCKER_ENABLED}." unless="env.DOCKER_ENABLED" />
 
-			<check-docker-containers-periodically />
-
 			<create-analytics-cloud-docker-compose />
 
 			<property location="${analytics.cloud.asah.dir}/docker-compose.test.yml" name="analytics.cloud.docker.test.yaml" />
@@ -443,15 +441,22 @@ OSB_FARO_FRONTEND_URL=${analytics.cloud.faro.frontend.url}</echo>
 				docker image prune -f
 				docker volume prune -f
 			</execute>
-
-			<var name="check.docker.containers.stop" value="true" />
 		</sequential>
 	</macrodef>
 
 	<target name="start-analytics-cloud">
-		<stop-analytics-cloud />
+		<parallel failonany="true" threadCount="2">
+			<sequential>
+				<check-docker-containers-periodically />
+			</sequential>
+			<sequential>
+				<stop-analytics-cloud />
 
-		<start-analytics-cloud />
+				<start-analytics-cloud />
+
+				<var name="check.docker.containers.stop" value="true" />
+			</sequential>
+		</parallel>
 	</target>
 
 	<target name="stop-analytics-cloud">
