@@ -3,6 +3,79 @@
 <project basedir="." name="portal-test-analytics-cloud" xmlns:antelope="antlib:ise.antelope.tasks">
 	<import file="build-test.xml" />
 
+	<macrodef name="check-docker-containers">
+		<attribute default="5000" name="period" />
+
+		<sequential>
+			<execute>
+				docker ps -a --format "table {{.Names}}\t{{.Status}}\t{{.CreatedAt}}"
+			</execute>
+		</sequential>
+	</macrodef>
+
+	<macrodef name="check-docker-containers-periodically">
+		<attribute default="5000" name="period" />
+
+		<sequential>
+			<trycatch property="error">
+				<try>
+					<var name="check.docker.containers.stop" value="false" />
+
+					<local name="period" />
+
+					<property name="period" value="@{period}" />
+
+					<beanshell mapId="invoke.job">
+						<![CDATA[
+							import com.liferay.jenkins.results.parser.AntUtil;
+
+							public static final String PROPERTY_KEY_STOP = "check.docker.containers.stop";
+
+							public void sleep() {
+								long period = Long.parseLong(project.getProperty("period"));
+
+								long targetTimestamp = System.currentTimeMillis() + period;
+
+								String stop = project.getProperty(PROPERTY_KEY_STOP);
+
+								while(System.currentTimeMillis() < targetTimestamp && (stop == null || stop.equals("false"))) {
+									Thread.sleep(1000);
+
+									stop = project.getProperty(PROPERTY_KEY_STOP);
+								}
+							}
+
+							while(true) {
+								try {
+									String stop = project.getProperty(PROPERTY_KEY_STOP);
+
+									if (stop.equals("true")) {
+										System.out.println("Background check-docker-containers has stopped.");
+
+										break;
+									}
+
+									AntUtil.callMacrodef(project, "check-docker-containers", new HashMap());
+
+									sleep();
+								}
+								catch (Exception e) {
+									e.printStackTrace();
+								}
+							}
+						]]>
+					</beanshell>
+				</try>
+				<catch>
+					<echo>Background check-docker-containers has failed. ${error}</echo>
+				</catch>
+				<finally>
+					<var name="check.docker.containers.stop" unset="true" />
+				</finally>
+			</trycatch>
+		</sequential>
+	</macrodef>
+
 	<macrodef name="create-analytics-cloud-docker-compose">
 		<sequential>
 			<fail message="Please set the property ${env.DOCKER_ENABLED}." unless="env.DOCKER_ENABLED" />
@@ -206,6 +279,8 @@ networks:
 		<sequential>
 			<fail message="Please set the property ${env.DOCKER_ENABLED}." unless="env.DOCKER_ENABLED" />
 
+			<check-docker-containers-periodically />
+
 			<create-analytics-cloud-docker-compose />
 
 			<property location="${analytics.cloud.asah.dir}/docker-compose.test.yml" name="analytics.cloud.docker.test.yaml" />
@@ -368,6 +443,8 @@ OSB_FARO_FRONTEND_URL=${analytics.cloud.faro.frontend.url}</echo>
 				docker image prune -f
 				docker volume prune -f
 			</execute>
+
+			<var name="check.docker.containers.stop" value="true" />
 		</sequential>
 	</macrodef>
 
