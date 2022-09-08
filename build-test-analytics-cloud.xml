@@ -14,7 +14,7 @@
 	</macrodef>
 
 	<macrodef name="check-docker-containers-periodically">
-		<attribute default="5000" name="period" />
+		<attribute default="60000" name="period" />
 
 		<sequential>
 			<trycatch property="error">
