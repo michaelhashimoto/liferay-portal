@@ -191,6 +191,7 @@ public class JenkinsResultsParserUtilTest
 		properties.setProperty("base1[opt1][opt2]", "");
 
 		_testGetProperty("0", properties, "base");
+		_testGetProperty("0", properties, "bases");
 		_testGetProperty(null, properties, "invalid");
 		_testGetProperty("1", properties, "base", "opt0", "invalid");
 		_testGetProperty("2", properties, "base[opt0]", "opt2");
