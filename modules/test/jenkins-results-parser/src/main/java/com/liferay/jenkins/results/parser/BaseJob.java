@@ -620,6 +620,11 @@ public abstract class BaseJob implements Job {
 	}
 
 	@Override
+	public TopLevelBuild getTopLevelBuild() {
+		return _topLevelBuild;
+	}
+
+	@Override
 	public boolean isDownstreamEnabled() {
 		JobProperty jobProperty = getJobProperty(
 			"test.batch.downstream.enabled");
@@ -649,6 +654,11 @@ public abstract class BaseJob implements Job {
 	@Override
 	public boolean isValidationRequired() {
 		return false;
+	}
+
+	@Override
+	public void setTopLevelBuild(TopLevelBuild topLevelBuild) {
+		_topLevelBuild = topLevelBuild;
 	}
 
 	@Override
@@ -999,5 +1009,6 @@ public abstract class BaseJob implements Job {
 	private JobHistory _jobHistory;
 	private final String _jobName;
 	private final List<JobProperty> _jobProperties = new ArrayList<>();
+	private TopLevelBuild _topLevelBuild;
 
 }

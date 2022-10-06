@@ -84,11 +84,15 @@ public interface Job {
 
 	public String getTestPropertiesContent();
 
+	public TopLevelBuild getTopLevelBuild();
+
 	public boolean isDownstreamEnabled();
 
 	public boolean isSegmentEnabled();
 
 	public boolean isValidationRequired();
+
+	public void setTopLevelBuild(TopLevelBuild topLevelBuild);
 
 	public boolean testReleaseBundle();
 

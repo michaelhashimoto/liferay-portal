@@ -518,6 +518,15 @@ public abstract class TopLevelBuild extends BaseBuild {
 			String.valueOf(getBuildNumber()), "/jenkins-report.html");
 	}
 
+	@Override
+	public Job getJob() {
+		Job job = super.getJob();
+
+		job.setTopLevelBuild(this);
+
+		return job;
+	}
+
 	public File getJobSummaryDir() {
 		File jobSummaryDir = new File(getBuildDirPath(), "job-summary");
 
