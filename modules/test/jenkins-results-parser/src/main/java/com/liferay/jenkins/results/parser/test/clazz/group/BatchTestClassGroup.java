@@ -21,6 +21,7 @@ import com.liferay.jenkins.results.parser.HistoryUtil;
 import com.liferay.jenkins.results.parser.JenkinsMaster;
 import com.liferay.jenkins.results.parser.JenkinsResultsParserUtil;
 import com.liferay.jenkins.results.parser.Job;
+import com.liferay.jenkins.results.parser.JobHistory;
 import com.liferay.jenkins.results.parser.PortalGitWorkingDirectory;
 import com.liferay.jenkins.results.parser.PortalTestClassJob;
 import com.liferay.jenkins.results.parser.TestHistory;
@@ -140,6 +141,20 @@ public abstract class BatchTestClassGroup extends BaseTestClassGroup {
 
 	public List<AxisTestClassGroup> getAxisTestClassGroups() {
 		return axisTestClassGroups;
+	}
+
+	public BatchHistory getBatchHistory() {
+		if (_batchHistory != null) {
+			return _batchHistory;
+		}
+
+		Job job = getJob();
+
+		JobHistory jobHistory = job.getJobHistory();
+
+		_batchHistory = jobHistory.getBatchHistory(getBatchName());
+
+		return _batchHistory;
 	}
 
 	public String getBatchJobName() {
@@ -1112,6 +1127,7 @@ public abstract class BatchTestClassGroup extends BaseTestClassGroup {
 	private final Map<String, Long> _averageTestDurations = new HashMap<>();
 	private final Map<String, Long> _averageTestOverheadDurations =
 		new HashMap<>();
+	private BatchHistory _batchHistory;
 	private final List<JobProperty> _jobProperties = new ArrayList<>();
 	private final List<SegmentTestClassGroup> _segmentTestClassGroups =
 		new ArrayList<>();

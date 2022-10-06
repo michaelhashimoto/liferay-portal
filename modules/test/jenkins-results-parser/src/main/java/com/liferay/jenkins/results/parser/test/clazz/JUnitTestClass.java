@@ -136,6 +136,11 @@ public class JUnitTestClass extends BaseTestClass {
 			"testray_main_component_name");
 	}
 
+	@Override
+	protected String getTestName() {
+		return _getPackageName() + "." + _getClassName();
+	}
+
 	private String _getClassName() {
 		File testClassFile = getTestClassFile();
 
