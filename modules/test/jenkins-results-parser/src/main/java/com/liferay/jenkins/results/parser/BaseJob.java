@@ -360,6 +360,17 @@ public abstract class BaseJob implements Job {
 	}
 
 	@Override
+	public JobHistory getJobHistory() {
+		if (_jobHistory != null) {
+			return _jobHistory;
+		}
+
+		_jobHistory = HistoryUtil.getJobHistory(this);
+
+		return _jobHistory;
+	}
+
+	@Override
 	public String getJobName() {
 		return _jobName;
 	}
@@ -985,6 +996,7 @@ public abstract class BaseJob implements Job {
 	private String _companyDefaultLocale;
 	private List<BatchTestClassGroup> _dependentBatchTestClassGroups;
 	private boolean _initializeJobProperties;
+	private JobHistory _jobHistory;
 	private final String _jobName;
 	private final List<JobProperty> _jobProperties = new ArrayList<>();
 
