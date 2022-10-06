@@ -175,6 +175,14 @@ public class TestHistoryMap {
 
 		ciHistoryJSONObject.put("batches", batchesJSONArray);
 
+		TestrayServer testrayServer = _latestTestrayBuild.getTestrayServer();
+
+		ciHistoryJSONObject.put(
+			"testray_url", String.valueOf(testrayServer.getURL()));
+
+		ciHistoryJSONObject.put(
+			"upstream_branch_name", _latestTestrayBuild.getPortalBranch());
+
 		File file = new File(filePath);
 
 		File tempFile = new File(
