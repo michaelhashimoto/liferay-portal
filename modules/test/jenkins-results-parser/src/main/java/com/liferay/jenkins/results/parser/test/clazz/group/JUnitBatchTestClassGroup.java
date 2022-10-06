@@ -20,6 +20,7 @@ import com.liferay.jenkins.results.parser.JenkinsResultsParserUtil;
 import com.liferay.jenkins.results.parser.PortalAcceptancePullRequestJob;
 import com.liferay.jenkins.results.parser.PortalGitWorkingDirectory;
 import com.liferay.jenkins.results.parser.PortalTestClassJob;
+import com.liferay.jenkins.results.parser.TestHistory;
 import com.liferay.jenkins.results.parser.job.property.JobProperty;
 import com.liferay.jenkins.results.parser.test.clazz.JUnitTestClass;
 import com.liferay.jenkins.results.parser.test.clazz.TestClass;
@@ -485,10 +486,12 @@ public class JUnitBatchTestClassGroup extends BatchTestClassGroup {
 						continue;
 					}
 
+					TestHistory testHistory = testClass.getTestHistory();
+
 					long estimatedAxisDuration =
 						axisTestClassGroup.getAverageDuration() +
-							testClass.getAverageDuration() +
-								testClass.getAverageOverheadDuration();
+							testHistory.getAverageDuration() +
+								testHistory.getAverageOverheadDuration();
 
 					if (estimatedAxisDuration < targetAxisDuration) {
 						axisTestClassGroup.addTestClass(testClass);
