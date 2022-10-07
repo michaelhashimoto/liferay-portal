@@ -15,6 +15,7 @@
 package com.liferay.jenkins.results.parser.test.clazz.group;
 
 import com.liferay.jenkins.results.parser.BatchHistory;
+import com.liferay.jenkins.results.parser.DownstreamBuild;
 import com.liferay.jenkins.results.parser.JenkinsResultsParserUtil;
 import com.liferay.jenkins.results.parser.Job;
 import com.liferay.jenkins.results.parser.TestHistory;
@@ -131,6 +132,24 @@ public class AxisTestClassGroup extends BaseTestClassGroup {
 
 	public BatchTestClassGroup getBatchTestClassGroup() {
 		return _batchTestClassGroup;
+	}
+
+	public DownstreamBuild getDownstreamBuild() {
+		if (_downstreamBuild != null) {
+			return _downstreamBuild;
+		}
+
+		Job job = getJob();
+
+		TopLevelBuild topLevelBuild = job.getTopLevelBuild();
+
+		if (topLevelBuild == null) {
+			return null;
+		}
+
+		_downstreamBuild = topLevelBuild.getDownstreamBuild(getAxisName());
+
+		return _downstreamBuild;
 	}
 
 	public String getDownstreamJobName() {
