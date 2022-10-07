@@ -647,7 +647,13 @@ public class DownstreamBuild extends BaseBuild {
 
 			durationValuesDataElement.addAttribute("style", style);
 
-			long averageDuration = testClass.getAverageDuration();
+			TestHistory testHistory = testClass.getTestHistory();
+
+			long averageDuration = 0L;
+
+			if (testHistory != null) {
+				averageDuration = testHistory.getAverageDuration();
+			}
 
 			Dom4JUtil.getNewElement(
 				"td", durationValuesElement,

@@ -18,6 +18,7 @@ import com.liferay.jenkins.results.parser.BatchHistory;
 import com.liferay.jenkins.results.parser.JenkinsResultsParserUtil;
 import com.liferay.jenkins.results.parser.Job;
 import com.liferay.jenkins.results.parser.TestHistory;
+import com.liferay.jenkins.results.parser.TopLevelBuild;
 import com.liferay.jenkins.results.parser.test.clazz.TestClass;
 import com.liferay.jenkins.results.parser.test.clazz.TestClassFactory;
 
@@ -68,6 +69,10 @@ public class AxisTestClassGroup extends BaseTestClassGroup {
 		for (TestClass testClass : testClasses) {
 			TestHistory testHistory = testClass.getTestHistory();
 
+			if (testHistory == null) {
+				continue;
+			}
+
 			totalAverageOverheadDuration +=
 				testHistory.getAverageOverheadDuration();
 		}
@@ -87,6 +92,10 @@ public class AxisTestClassGroup extends BaseTestClassGroup {
 
 		for (TestClass testClass : getTestClasses()) {
 			TestHistory testHistory = testClass.getTestHistory();
+
+			if (testHistory == null) {
+				continue;
+			}
 
 			_averageTotalTestDuration += testHistory.getAverageDuration();
 		}
@@ -238,6 +247,7 @@ public class AxisTestClassGroup extends BaseTestClassGroup {
 	private Long _averageOverheadDuration;
 	private Long _averageTotalTestDuration;
 	private BatchTestClassGroup _batchTestClassGroup;
+	private DownstreamBuild _downstreamBuild;
 	private SegmentTestClassGroup _segmentTestClassGroup;
 
 }
