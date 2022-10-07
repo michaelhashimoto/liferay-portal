@@ -14,27 +14,22 @@
 
 package com.liferay.jenkins.results.parser;
 
+import com.liferay.jenkins.results.parser.test.clazz.TestClass;
+
 import org.json.JSONObject;
 
 /**
  * @author Michael Hashimoto
  */
-public class TestClassResultFactory {
+public class PoshiTestClassResult extends BaseTestClassResult {
 
-	public static TestClassResult newTestClassResult(
-		Build build, JSONObject suiteJSONObject) {
+	@Override
+	public TestClass getTestClass() {
+		return null;
+	}
 
-		if (build instanceof DownstreamBuild) {
-			DownstreamBuild downstreamBuild = (DownstreamBuild)build;
-
-			String axisName = downstreamBuild.getAxisName();
-
-			if (axisName.startsWith("functional-")) {
-				new PoshiTestClassResult(build, suiteJSONObject);
-			}
-		}
-
-		return new DefaultTestClassResult(build, suiteJSONObject);
+	protected PoshiTestClassResult(Build build, JSONObject suiteJSONObject) {
+		super(build, suiteJSONObject);
 	}
 
 }

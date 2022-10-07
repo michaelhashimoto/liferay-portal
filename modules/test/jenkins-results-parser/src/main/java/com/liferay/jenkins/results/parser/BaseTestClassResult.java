@@ -14,9 +14,13 @@
 
 package com.liferay.jenkins.results.parser;
 
+import com.liferay.jenkins.results.parser.test.clazz.TestClass;
+import com.liferay.jenkins.results.parser.test.clazz.group.AxisTestClassGroup;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.TreeMap;
 
 import org.json.JSONArray;
@@ -94,6 +98,51 @@ public abstract class BaseTestClassResult implements TestClassResult {
 	}
 
 	@Override
+	public TestClass getTestClass() {
+		if (_testClass != null) {
+			return _testClass;
+		}
+
+		Build build = getBuild();
+
+		if (!(build instanceof DownstreamBuild)) {
+			return null;
+		}
+
+		DownstreamBuild downstreamBuild = (DownstreamBuild)build;
+
+		AxisTestClassGroup axisTestClassGroup =
+			downstreamBuild.getAxisTestClassGroup();
+
+		if (axisTestClassGroup == null) {
+			return null;
+		}
+
+		String testClassName = getClassName();
+
+		for (TestClass testClass : axisTestClassGroup.getTestClasses()) {
+			if (Objects.equals(testClassName, testClass.getName())) {
+				_testClass = testClass;
+
+				return _testClass;
+			}
+		}
+
+		return null;
+	}
+
+	@Override
+	public TestHistory getTestHistory() {
+		TestClass testClass = getTestClass();
+
+		if (testClass == null) {
+			return null;
+		}
+
+		return testClass.getTestHistory();
+	}
+
+	@Override
 	public TestResult getTestResult(String testName) {
 		return _testResults.get(testName);
 	}
@@ -146,6 +195,7 @@ public abstract class BaseTestClassResult implements TestClassResult {
 	private final long _duration;
 	private Status _status;
 	private final JSONObject _suiteJSONObject;
+	private TestClass _testClass;
 	private final Map<String, TestResult> _testResults = new TreeMap<>();
 
 	private static enum Status {
