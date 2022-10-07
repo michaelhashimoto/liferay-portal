@@ -14,6 +14,14 @@
 
 package com.liferay.jenkins.results.parser;
 
+import com.liferay.jenkins.results.parser.test.clazz.FunctionalTestClass;
+import com.liferay.jenkins.results.parser.test.clazz.TestClass;
+import com.liferay.jenkins.results.parser.test.clazz.group.AxisTestClassGroup;
+
+import java.util.Objects;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import org.dom4j.Element;
 
 import org.json.JSONObject;
@@ -25,13 +33,7 @@ public class PoshiJUnitTestResult extends JUnitTestResult {
 
 	@Override
 	public String getDisplayName() {
-		String testName = getTestName();
-
-		if (testName.startsWith("test[")) {
-			return testName.substring(5, testName.length() - 1);
-		}
-
-		return getSimpleClassName() + "." + testName;
+		return _getPoshiTestName();
 	}
 
 	@Override
@@ -71,6 +73,61 @@ public class PoshiJUnitTestResult extends JUnitTestResult {
 		return downstreamBuildListItemElement;
 	}
 
+	@Override
+	public TestClass getTestClass() {
+		if (_testClass != null) {
+			return _testClass;
+		}
+
+		Build build = getBuild();
+
+		if (!(build instanceof DownstreamBuild)) {
+			return null;
+		}
+
+		DownstreamBuild downstreamBuild = (DownstreamBuild)build;
+
+		AxisTestClassGroup axisTestClassGroup =
+			downstreamBuild.getAxisTestClassGroup();
+
+		if (axisTestClassGroup == null) {
+			return null;
+		}
+
+		String poshiTestName = _getPoshiTestName();
+
+		for (TestClass testClass : axisTestClassGroup.getTestClasses()) {
+			if (!(testClass instanceof FunctionalTestClass)) {
+				continue;
+			}
+
+			FunctionalTestClass functionalTestClass =
+				(FunctionalTestClass)testClass;
+
+			if (Objects.equals(
+					poshiTestName,
+					functionalTestClass.getTestClassMethodName())) {
+
+				_testClass = testClass;
+
+				return _testClass;
+			}
+		}
+
+		return null;
+	}
+
+	@Override
+	public TestHistory getTestHistory() {
+		TestClass testClass = getTestClass();
+
+		if (testClass == null) {
+			return null;
+		}
+
+		return testClass.getTestHistory();
+	}
+
 	protected PoshiJUnitTestResult(Build build, JSONObject caseJSONObject) {
 		super(build, caseJSONObject);
 	}
@@ -100,5 +157,22 @@ public class PoshiJUnitTestResult extends JUnitTestResult {
 
 		return sb.toString();
 	}
+
+	private String _getPoshiTestName() {
+		String testName = getTestName();
+
+		Matcher matcher = _pattern.matcher(testName);
+
+		if (!matcher.find()) {
+			return testName;
+		}
+
+		return matcher.group("poshiTestName");
+	}
+
+	private static final Pattern _pattern = Pattern.compile(
+		"test\\[(?<poshiTestName>[^\\]]+)\\]");
+
+	private TestClass _testClass;
 
 }
