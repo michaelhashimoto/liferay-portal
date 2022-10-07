@@ -41,6 +41,10 @@ public class TestHistory {
 		return _statusChanges;
 	}
 
+	public long getTestCount() {
+		return _testCount;
+	}
+
 	public String getTestName() {
 		return _testName;
 	}
@@ -77,6 +81,7 @@ public class TestHistory {
 		_failureCount = jsonObject.optInt("failureCount");
 		_statusChanges = jsonObject.optInt("statusChanges");
 		_testName = jsonObject.getString("testName");
+		_testCount = jsonObject.optInt("testCount");
 		_testrayCaseResultID = jsonObject.optLong("testrayCaseResultID");
 	}
 
@@ -85,6 +90,7 @@ public class TestHistory {
 	private final BatchHistory _batchHistory;
 	private final int _failureCount;
 	private final int _statusChanges;
+	private final int _testCount;
 	private final String _testName;
 	private final long _testrayCaseResultID;
 

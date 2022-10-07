@@ -148,6 +148,8 @@ public class TestHistoryMap {
 				testJSONObject.put(
 					"statusChanges", testClassHistory.getStatusChanges());
 				testJSONObject.put(
+					"testCount", testClassHistory.getTestCount());
+				testJSONObject.put(
 					"testName", testClassHistory.getTestClassName());
 
 				TestrayCaseResult testrayCaseResult =
@@ -662,6 +664,10 @@ public class TestHistoryMap {
 
 		public String getTestClassName() {
 			return _testClassName;
+		}
+
+		public int getTestCount() {
+			return _testClassReports.size();
 		}
 
 		public List<TestHistory> getTestHistories() {
