@@ -59,8 +59,7 @@ public class PoshiJUnitTestResult extends JUnitTestResult {
 		TestHistory testHistory = getTestHistory();
 
 		if (testHistory != null) {
-			downstreamBuildListItemElement.add(
-				Dom4JUtil.getNewElement("span", null, "-"));
+			downstreamBuildListItemElement.addText(" - ");
 
 			downstreamBuildListItemElement.add(
 				Dom4JUtil.getNewAnchorElement(
