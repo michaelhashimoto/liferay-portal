@@ -7997,6 +7997,31 @@ war.path=${app.server.portal.dir}/</echo>
 					<wait-for-license-activation />
 				</then>
 			</if>
+
+			<for param="log.file">
+				<path>
+					<fileset dir="${liferay.home}/logs">
+						<include name="liferay.*.xml" />
+					</fileset>
+				</path>
+				<sequential>
+					<beanshell>
+						<![CDATA[
+							project.setProperty("tstamp.value", String.valueOf(System.currentTimeMillis()));
+						]]>
+					</beanshell>
+
+					<echo append="true" file="@{log.file}"><![CDATA[<log4j:event logger="com.liferay.portal.internal.servlet.MainServlet" timestamp="${tstamp.value}" level="ERROR" thread="http-nio-8080-exec-2">
+<log4j:message>Simple Error Message</log4j:message>
+<log4j:throwable>Simple Error Throwable</log4j:throwable>
+<log4j:locationInfo class="com.liferay.portal.internal.servlet.MainServlet" method="service" file="MainServlet.java" line="540"/>
+</log4j:event>]]></echo>
+
+					<var name="tstamp.value" unset="true" />
+
+					<print-file file.name="@{log.file}" />
+				</sequential>
+			</for>
 		</sequential>
 	</macrodef>
 
