@@ -9,4 +9,16 @@ definition {
 		echo("Dummy Functional Test");
 	}
 
+	@priority = "5"
+	test Dummy1 {
+		property test.assert.warning.exceptions = "true";
+
+		echo("Dummy Functional Test");
+	}
+
+	@priority = "5"
+	test Dummy2 {
+		echo("Dummy Functional Test");
+	}
+
 }
