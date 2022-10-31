@@ -6,7 +6,19 @@ definition {
 
 	@priority = "5"
 	test Dummy {
-		echo("Dummy Functional Test");
+		Open(locator1 = "https://www.liferay.com/");
+	}
+
+	@priority = "5"
+	test Dummy1 {
+		property test.assert.warning.exceptions = "true";
+
+		Open(locator1 = "https://www.liferay.com/");
+	}
+
+	@priority = "5"
+	test Dummy2 {
+		Open(locator1 = "https://www.liferay.com/");
 	}
 
 }
