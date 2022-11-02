@@ -122,6 +122,8 @@ definition {
 		property test.assert.warning.exceptions = "true";
 		property test.run.environment = "EE";
 
+		fail("BREAK!");
+
 		Upgrade.viewUpgrade();
 	}
 

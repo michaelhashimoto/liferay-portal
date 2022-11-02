@@ -14,6 +14,7 @@
 
 package com.liferay.jenkins.results.parser;
 
+import org.junit.Assert;
 import org.junit.Test;
 
 /**
@@ -23,6 +24,7 @@ public class DummyUnitTest {
 
 	@Test
 	public void testUnit() {
+		Assert.fail();
 	}
 
 }
