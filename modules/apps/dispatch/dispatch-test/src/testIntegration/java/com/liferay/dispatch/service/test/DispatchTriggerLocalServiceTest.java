@@ -228,6 +228,10 @@ public class DispatchTriggerLocalServiceTest {
 
 	@Test
 	public void testGetUserDispatchTriggers() throws Exception {
+		String dummy = null;
+
+		Assert.assertNotNull(dummy);
+
 		int userCount = RandomTestUtil.randomInt(4, 10);
 
 		Map<User, Integer> userDispatchTriggersCounts = new HashMap<>();
