@@ -1,0 +1,11 @@
+{
+	"deletionType": "cascade",
+	"label": {
+		"en-US": "Task to Queues"
+	},
+	"name": "taskToQueues",
+	"objectDefinitionId1": "[$OBJECT_DEFINITION_ID:Task$]",
+	"objectDefinitionId2": "[$OBJECT_DEFINITION_ID:Queue$]",
+	"objectDefinitionName2": "Queue",
+	"type": "oneToMany"
+}

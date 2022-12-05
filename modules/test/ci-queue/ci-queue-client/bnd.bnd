@@ -1,0 +1,3 @@
+Bundle-Name: Liferay CI Queue Client
+Bundle-SymbolicName: com.liferay.ci.queue.client
+Bundle-Version: 1.0.0

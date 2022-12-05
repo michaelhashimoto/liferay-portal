@@ -1,8 +1,8 @@
 {
 	"label": {
-		"en_US": "CI Queue"
+		"en_US": "CI Invocation"
 	},
-	"name": "Queue",
+	"name": "Invocation",
 	"objectFields": [
 		{
 			"DBType": "String",
@@ -17,7 +17,7 @@
 		}
 	],
 	"pluralLabel": {
-		"en_US": "CI Queues"
+		"en_US": "CI Invocations"
 	},
 	"scope": "company"
 }

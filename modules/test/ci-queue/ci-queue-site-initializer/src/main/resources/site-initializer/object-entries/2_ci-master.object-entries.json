@@ -1,0 +1,306 @@
+{
+	"object-entries": [
+		{
+			"name": "test-1-0",
+			"maxSlavesPerHost": 2,
+			"minimumSlaveRAM": 12,
+			"url": "https://test-1-0.liferay.com/",
+			"r_queueToMaster_c_queueId": "[$Queue#CIQUEUE-001$]"
+		},
+		{
+			"name": "test-1-1",
+			"maxSlavesPerHost": 2,
+			"minimumSlaveRAM": 12,
+			"url": "https://test-1-1.liferay.com/",
+			"r_queueToMaster_c_queueId": "[$Queue#CIQUEUE-002$]"
+		},
+		{
+			"name": "test-1-2",
+			"maxSlavesPerHost": 2,
+			"minimumSlaveRAM": 12,
+			"url": "https://test-1-2.liferay.com/",
+			"r_queueToMaster_c_queueId": "[$Queue#CIQUEUE-002$]"
+		},
+		{
+			"name": "test-1-3",
+			"maxSlavesPerHost": 2,
+			"minimumSlaveRAM": 12,
+			"url": "https://test-1-3.liferay.com/",
+			"r_queueToMaster_c_queueId": "[$Queue#CIQUEUE-002$]"
+		},
+		{
+			"name": "test-1-4",
+			"maxSlavesPerHost": 2,
+			"minimumSlaveRAM": 12,
+			"url": "https://test-1-4.liferay.com/",
+			"r_queueToMaster_c_queueId": "[$Queue#CIQUEUE-002$]"
+		},
+		{
+			"name": "test-1-5",
+			"maxSlavesPerHost": 2,
+			"minimumSlaveRAM": 12,
+			"url": "https://test-1-5.liferay.com/",
+			"r_queueToMaster_c_queueId": "[$Queue#CIQUEUE-002$]"
+		},
+		{
+			"name": "test-1-6",
+			"maxSlavesPerHost": 2,
+			"minimumSlaveRAM": 12,
+			"url": "https://test-1-6.liferay.com/",
+			"r_queueToMaster_c_queueId": "[$Queue#CIQUEUE-002$]"
+		},
+		{
+			"name": "test-1-7",
+			"maxSlavesPerHost": 2,
+			"minimumSlaveRAM": 12,
+			"url": "https://test-1-7.liferay.com/",
+			"r_queueToMaster_c_queueId": "[$Queue#CIQUEUE-002$]"
+		},
+		{
+			"name": "test-1-8",
+			"maxSlavesPerHost": 2,
+			"minimumSlaveRAM": 12,
+			"url": "https://test-1-8.liferay.com/",
+			"r_queueToMaster_c_queueId": "[$Queue#CIQUEUE-002$]"
+		},
+		{
+			"name": "test-1-9",
+			"maxSlavesPerHost": 2,
+			"minimumSlaveRAM": 12,
+			"url": "https://test-1-9.liferay.com/",
+			"r_queueToMaster_c_queueId": "[$Queue#CIQUEUE-002$]"
+		},
+		{
+			"name": "test-1-10",
+			"maxSlavesPerHost": 2,
+			"minimumSlaveRAM": 12,
+			"url": "https://test-1-10.liferay.com/",
+			"r_queueToMaster_c_queueId": "[$Queue#CIQUEUE-002$]"
+		},
+		{
+			"name": "test-1-11",
+			"maxSlavesPerHost": 2,
+			"minimumSlaveRAM": 12,
+			"url": "https://test-1-11.liferay.com/",
+			"r_queueToMaster_c_queueId": "[$Queue#CIQUEUE-002$]"
+		},
+		{
+			"name": "test-1-12",
+			"maxSlavesPerHost": 2,
+			"minimumSlaveRAM": 12,
+			"url": "https://test-1-12.liferay.com/",
+			"r_queueToMaster_c_queueId": "[$Queue#CIQUEUE-002$]"
+		},
+		{
+			"name": "test-1-13",
+			"maxSlavesPerHost": 2,
+			"minimumSlaveRAM": 12,
+			"url": "https://test-1-13.liferay.com/",
+			"r_queueToMaster_c_queueId": "[$Queue#CIQUEUE-002$]"
+		},
+		{
+			"name": "test-1-14",
+			"maxSlavesPerHost": 2,
+			"minimumSlaveRAM": 12,
+			"url": "https://test-1-14.liferay.com/",
+			"r_queueToMaster_c_queueId": "[$Queue#CIQUEUE-002$]"
+		},
+		{
+			"name": "test-1-15",
+			"maxSlavesPerHost": 2,
+			"minimumSlaveRAM": 12,
+			"url": "https://test-1-15.liferay.com/",
+			"r_queueToMaster_c_queueId": "[$Queue#CIQUEUE-002$]"
+		},
+		{
+			"name": "test-1-16",
+			"maxSlavesPerHost": 2,
+			"minimumSlaveRAM": 12,
+			"url": "https://test-1-16.liferay.com/",
+			"r_queueToMaster_c_queueId": "[$Queue#CIQUEUE-002$]"
+		},
+		{
+			"name": "test-1-17",
+			"maxSlavesPerHost": 2,
+			"minimumSlaveRAM": 12,
+			"url": "https://test-1-17.liferay.com/",
+			"r_queueToMaster_c_queueId": "[$Queue#CIQUEUE-002$]"
+		},
+		{
+			"name": "test-1-18",
+			"maxSlavesPerHost": 2,
+			"minimumSlaveRAM": 12,
+			"url": "https://test-1-18.liferay.com/",
+			"r_queueToMaster_c_queueId": "[$Queue#CIQUEUE-002$]"
+		},
+		{
+			"name": "test-1-19",
+			"maxSlavesPerHost": 2,
+			"minimumSlaveRAM": 12,
+			"url": "https://test-1-19.liferay.com/",
+			"r_queueToMaster_c_queueId": "[$Queue#CIQUEUE-002$]"
+		},
+		{
+			"name": "test-1-20",
+			"maxSlavesPerHost": 2,
+			"minimumSlaveRAM": 12,
+			"url": "https://test-1-20.liferay.com/",
+			"r_queueToMaster_c_queueId": "[$Queue#CIQUEUE-002$]"
+		},
+		{
+			"name": "test-1-21",
+			"maxSlavesPerHost": 2,
+			"minimumSlaveRAM": 12,
+			"url": "https://test-1-21.liferay.com/",
+			"r_queueToMaster_c_queueId": "[$Queue#CIQUEUE-002$]"
+		},
+		{
+			"name": "test-1-22",
+			"maxSlavesPerHost": 2,
+			"minimumSlaveRAM": 12,
+			"url": "https://test-1-22.liferay.com/",
+			"r_queueToMaster_c_queueId": "[$Queue#CIQUEUE-002$]"
+		},
+		{
+			"name": "test-1-23",
+			"maxSlavesPerHost": 2,
+			"minimumSlaveRAM": 12,
+			"url": "https://test-1-23.liferay.com/",
+			"r_queueToMaster_c_queueId": "[$Queue#CIQUEUE-002$]"
+		},
+		{
+			"name": "test-1-24",
+			"maxSlavesPerHost": 1,
+			"minimumSlaveRAM": 24,
+			"url": "https://test-1-24.liferay.com/",
+			"r_queueToMaster_c_queueId": "[$Queue#CIQUEUE-002$]"
+		},
+		{
+			"name": "test-1-25",
+			"maxSlavesPerHost": 2,
+			"minimumSlaveRAM": 24,
+			"url": "https://test-1-25.liferay.com/",
+			"r_queueToMaster_c_queueId": "[$Queue#CIQUEUE-002$]"
+		},
+		{
+			"name": "test-1-26",
+			"maxSlavesPerHost": 2,
+			"minimumSlaveRAM": 24,
+			"url": "https://test-1-26.liferay.com/",
+			"r_queueToMaster_c_queueId": "[$Queue#CIQUEUE-002$]"
+		},
+		{
+			"name": "test-1-27",
+			"maxSlavesPerHost": 2,
+			"minimumSlaveRAM": 24,
+			"url": "https://test-1-27.liferay.com/",
+			"r_queueToMaster_c_queueId": "[$Queue#CIQUEUE-002$]"
+		},
+		{
+			"name": "test-1-28",
+			"maxSlavesPerHost": 2,
+			"minimumSlaveRAM": 24,
+			"url": "https://test-1-28.liferay.com/",
+			"r_queueToMaster_c_queueId": "[$Queue#CIQUEUE-002$]"
+		},
+		{
+			"name": "test-1-29",
+			"maxSlavesPerHost": 2,
+			"minimumSlaveRAM": 24,
+			"url": "https://test-1-29.liferay.com/",
+			"r_queueToMaster_c_queueId": "[$Queue#CIQUEUE-002$]"
+		},
+		{
+			"name": "test-1-30",
+			"maxSlavesPerHost": 2,
+			"minimumSlaveRAM": 24,
+			"url": "https://test-1-30.liferay.com/",
+			"r_queueToMaster_c_queueId": "[$Queue#CIQUEUE-002$]"
+		},
+		{
+			"name": "test-1-31",
+			"maxSlavesPerHost": 2,
+			"minimumSlaveRAM": 24,
+			"url": "https://test-1-31.liferay.com/",
+			"r_queueToMaster_c_queueId": "[$Queue#CIQUEUE-002$]"
+		},
+		{
+			"name": "test-1-32",
+			"maxSlavesPerHost": 2,
+			"minimumSlaveRAM": 24,
+			"url": "https://test-1-32.liferay.com/",
+			"r_queueToMaster_c_queueId": "[$Queue#CIQUEUE-002$]"
+		},
+		{
+			"name": "test-1-33",
+			"maxSlavesPerHost": 2,
+			"minimumSlaveRAM": 24,
+			"url": "https://test-1-33.liferay.com/",
+			"r_queueToMaster_c_queueId": "[$Queue#CIQUEUE-002$]"
+		},
+		{
+			"name": "test-1-34",
+			"maxSlavesPerHost": 2,
+			"minimumSlaveRAM": 24,
+			"url": "https://test-1-34.liferay.com/",
+			"r_queueToMaster_c_queueId": "[$Queue#CIQUEUE-002$]"
+		},
+		{
+			"name": "test-1-35",
+			"maxSlavesPerHost": 2,
+			"minimumSlaveRAM": 24,
+			"url": "https://test-1-35.liferay.com/",
+			"r_queueToMaster_c_queueId": "[$Queue#CIQUEUE-002$]"
+		},
+		{
+			"name": "test-1-36",
+			"maxSlavesPerHost": 2,
+			"minimumSlaveRAM": 24,
+			"url": "https://test-1-36.liferay.com/",
+			"r_queueToMaster_c_queueId": "[$Queue#CIQUEUE-002$]"
+		},
+		{
+			"name": "test-1-37",
+			"maxSlavesPerHost": 2,
+			"minimumSlaveRAM": 24,
+			"url": "https://test-1-37.liferay.com/",
+			"r_queueToMaster_c_queueId": "[$Queue#CIQUEUE-002$]"
+		},
+		{
+			"name": "test-1-38",
+			"maxSlavesPerHost": 2,
+			"minimumSlaveRAM": 24,
+			"url": "https://test-1-38.liferay.com/",
+			"r_queueToMaster_c_queueId": "[$Queue#CIQUEUE-002$]"
+		},
+		{
+			"name": "test-1-39",
+			"maxSlavesPerHost": 2,
+			"minimumSlaveRAM": 24,
+			"url": "https://test-1-39.liferay.com/",
+			"r_queueToMaster_c_queueId": "[$Queue#CIQUEUE-002$]"
+		},
+		{
+			"name": "test-5-1",
+			"maxSlavesPerHost": 2,
+			"minimumSlaveRAM": 12,
+			"url": "https://test-5-1.liferay.com/",
+			"r_queueToMaster_c_queueId": "[$Queue#CIQUEUE-003$]"
+		},
+		{
+			"name": "test-5-2",
+			"maxSlavesPerHost": 2,
+			"minimumSlaveRAM": 12,
+			"url": "https://test-5-2.liferay.com/",
+			"r_queueToMaster_c_queueId": "[$Queue#CIQUEUE-003$]"
+		},
+		{
+			"name": "test-5-3",
+			"maxSlavesPerHost": 1,
+			"minimumSlaveRAM": 24,
+			"url": "https://test-5-2.liferay.com/",
+			"r_queueToMaster_c_queueId": "[$Queue#CIQUEUE-003$]"
+		}
+	],
+	"objectDefinitionName": "Master"
+}

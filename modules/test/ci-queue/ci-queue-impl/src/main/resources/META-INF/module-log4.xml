@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+
+<Configuration strict="true">
+    <Loggers>
+        <Logger level="ALL" name="com.liferay.ci.queue.internal.jaxrs.application" />
+        <Logger level="ALL" name="com.liferay.ci.queue.internal.resource.v1_0" />
+    </Loggers>
+</Configuration>

@@ -1,0 +1,11 @@
+{
+	"deletionType": "cascade",
+	"label": {
+		"en-US": "Master to Invocations"
+	},
+	"name": "masterToInvocation",
+	"objectDefinitionId1": "[$OBJECT_DEFINITION_ID:Master$]",
+	"objectDefinitionId2": "[$OBJECT_DEFINITION_ID:Invocation$]",
+	"objectDefinitionName2": "Invocation",
+	"type": "oneToMany"
+}

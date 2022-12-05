@@ -1,0 +1,16 @@
+version: "2.4"
+
+services:
+  mariadb:
+    environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+      MYSQL_DATBASE: "lportal"
+    image: mariadb:10.2.25
+    port:
+      - 3306:3306
+    restart: "always"
+  portal:
+    image: liferay-ci-build-queue
+    ports:
+      - 8080:8080
+    restart: "always"

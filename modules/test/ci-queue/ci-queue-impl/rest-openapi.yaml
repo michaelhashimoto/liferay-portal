@@ -15,7 +15,7 @@ paths:
                         text/plain:
                             schema:
                                 type: string
-            tags: ["Build"]
+            tags: [ "Build" ]
         post:
             operationId: build
             requestBody:
@@ -29,4 +29,34 @@ paths:
                         text/plain:
                             schema:
                                 type: string
-            tags: ["Build"]
+            tags: [ "Build" ]
+    "/task":
+        post:
+            operationId: task
+            requestBody:
+                content:
+                    text/plain:
+                        schema:
+                            type: string
+            responses:
+                200:
+                    content:
+                        text/plain:
+                            schema:
+                                type: string
+            tags: ["Task"]
+    "/tasks":
+        post:
+            operationId: tasks
+            requestBody:
+                content:
+                    text/plain:
+                        schema:
+                            type: string
+            responses:
+                200:
+                    content:
+                        text/plain:
+                            schema:
+                                type: string
+            tags: ["Task"]

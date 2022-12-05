@@ -1,0 +1,11 @@
+{
+	"deletionType": "cascade",
+	"label": {
+		"en-US": "Queue to Masters"
+	},
+	"name": "queueToMaster",
+	"objectDefinitionId1": "[$OBJECT_DEFINITION_ID:Queue$]",
+	"objectDefinitionId2": "[$OBJECT_DEFINITION_ID:Master$]",
+	"objectDefinitionName2": "Master",
+	"type": "oneToMany"
+}

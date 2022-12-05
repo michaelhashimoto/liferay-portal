@@ -1,0 +1,17 @@
+{
+	"object-entries": [
+		{
+			"externalReferenceCode": "CIQUEUE-001",
+			"name": "test-1-0"
+		},
+		{
+			"externalReferenceCode": "CIQUEUE-002",
+			"name": "test-1"
+		},
+		{
+			"externalReferenceCode": "CIQUEUE-003",
+			"name": "test-5"
+		}
+	],
+	"objectDefinitionName": "Queue"
+}

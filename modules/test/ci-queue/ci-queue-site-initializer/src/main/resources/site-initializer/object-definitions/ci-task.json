@@ -1,0 +1,67 @@
+{
+	"label": {
+		"en_US": "CI Task"
+	},
+	"name": "Task",
+	"objectFields": [
+		{
+			"DBType": "String",
+			"indexed": true,
+			"indexedAsKeyword": false,
+			"label": {
+				"en_US": "Job Name"
+			},
+			"name": "jobName",
+			"required": true,
+			"type": "String"
+		},
+		{
+			"DBType": "Clob",
+			"indexed": false,
+			"indexedAsKeyword": false,
+			"label": {
+				"en_US": "Job Parameters"
+			},
+			"name": "jobParameters",
+			"required": false,
+			"type": "Clob"
+		},
+		{
+			"DBType": "Integer",
+			"indexed": false,
+			"indexedAsKeyword": false,
+			"label": {
+				"en_US": "Job Priority"
+			},
+			"name": "jobPriority",
+			"required": false,
+			"type": "Integer"
+		},
+		{
+			"DBType": "Integer",
+			"indexed": false,
+			"indexedAsKeyword": false,
+			"label": {
+				"en_US": "Maximum Slaves per Host"
+			},
+			"name": "maxSlavesPerHost",
+			"required": false,
+			"type": "Integer"
+		},
+		{
+			"DBType": "Integer",
+			"indexed": false,
+			"indexedAsKeyword": false,
+			"label": {
+				"en_US": "Minimum Slaves RAM"
+			},
+			"name": "minimumSlaveRAM",
+			"required": false,
+			"type": "Integer"
+		}
+	],
+	"pluralLabel": {
+		"en_US": "CI Tasks"
+	},
+	"scope": "company"
+}

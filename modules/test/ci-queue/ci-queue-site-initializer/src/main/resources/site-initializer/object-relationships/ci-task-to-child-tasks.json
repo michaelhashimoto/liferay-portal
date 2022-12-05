@@ -1,0 +1,11 @@
+{
+	"deletionType": "cascade",
+	"label": {
+		"en-US": "Task to Child Tasks"
+	},
+	"name": "taskToChildTasks",
+	"objectDefinitionId1": "[$OBJECT_DEFINITION_ID:Task$]",
+	"objectDefinitionId2": "[$OBJECT_DEFINITION_ID:Task$]",
+	"objectDefinitionName2": "Child Task",
+	"type": "oneToMany"
+}

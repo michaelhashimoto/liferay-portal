@@ -1,0 +1,11 @@
+{
+	"deletionType": "cascade",
+	"label": {
+		"en-US": "Task to Invocations"
+	},
+	"name": "taskToInvocation",
+	"objectDefinitionId1": "[$OBJECT_DEFINITION_ID:Task$]",
+	"objectDefinitionId2": "[$OBJECT_DEFINITION_ID:Invocation$]",
+	"objectDefinitionName2": "Invocation",
+	"type": "oneToMany"
+}
