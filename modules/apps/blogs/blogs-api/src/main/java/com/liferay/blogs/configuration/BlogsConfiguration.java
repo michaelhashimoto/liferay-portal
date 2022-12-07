@@ -30,7 +30,7 @@ public interface BlogsConfiguration {
 
 	/**
 	 * Set the location of the XML file containing the configuration of the
-	 * default display templates for the Blogs portlet.
+	 * default display templates for the Blogs portlets.
 	 */
 	@Meta.AD(
 		deflt = "com/liferay/blogs/web/portlet/display/template/dependencies/portlet-display-templates.xml",
