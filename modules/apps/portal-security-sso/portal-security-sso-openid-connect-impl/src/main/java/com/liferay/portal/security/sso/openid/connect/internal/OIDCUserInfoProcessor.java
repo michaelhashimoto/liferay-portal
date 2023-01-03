@@ -79,8 +79,8 @@ public class OIDCUserInfoProcessor {
 			_addAddress(serviceContext, user, userInfoJSON, userInfoMapperJSON);
 		}
 		catch (Exception exception) {
-			if (_log.isWarnEnabled()) {
-				_log.warn(exception);
+			if (_log.isInfoEnabled()) {
+				_log.info(exception);
 			}
 		}
 
@@ -88,8 +88,8 @@ public class OIDCUserInfoProcessor {
 			_addPhone(serviceContext, user, userInfoJSON, userInfoMapperJSON);
 		}
 		catch (Exception exception) {
-			if (_log.isWarnEnabled()) {
-				_log.warn(exception);
+			if (_log.isInfoEnabled()) {
+				_log.info(exception);
 			}
 		}
 
