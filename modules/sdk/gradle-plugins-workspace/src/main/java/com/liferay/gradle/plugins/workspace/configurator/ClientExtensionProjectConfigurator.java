@@ -95,6 +95,8 @@ public class ClientExtensionProjectConfigurator
 	public ClientExtensionProjectConfigurator(Settings settings) {
 		super(settings);
 
+		System.out.println("settings=" + settings);
+
 		_clientExtensionConfigurers.put(
 			"configuration",
 			Collections.singletonList(new ConfigurationTypeConfigurer()));
@@ -124,6 +126,9 @@ public class ClientExtensionProjectConfigurator
 		_clientExtensionConfigurers.put(
 			"themeSpritemap",
 			Collections.singletonList(new AssetsFolderConfigurer()));
+
+		System.out.println(
+			"_clientExtensionConfigurers=" + _clientExtensionConfigurers);
 
 		_defaultRepositoryEnabled = GradleUtil.getProperty(
 			settings,

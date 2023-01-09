@@ -48,6 +48,8 @@ public class WorkspacePlugin implements Plugin<Settings> {
 	public void apply(Settings settings) {
 		Gradle gradle = settings.getGradle();
 
+		System.out.println("settings=" + settings);
+
 		final WorkspaceExtension workspaceExtension = _addWorkspaceExtension(
 			settings);
 
@@ -68,6 +70,8 @@ public class WorkspacePlugin implements Plugin<Settings> {
 				}
 			}
 		}
+
+		System.out.println("_projectConfiguratorsMap=" + _projectConfiguratorsMap);
 
 		gradle.beforeProject(
 			new Closure<Void>(settings) {
