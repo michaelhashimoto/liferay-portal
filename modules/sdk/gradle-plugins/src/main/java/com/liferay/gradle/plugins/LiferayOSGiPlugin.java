@@ -1565,6 +1565,10 @@ public class LiferayOSGiPlugin implements Plugin<Project> {
 
 				@Override
 				public void execute(Test test) {
+					System.out.println("test=" + test);
+					System.out.println(
+						"test.getIncludes()=" + test.getIncludes());
+
 					test.jvmArgs(
 						"-Djava.net.preferIPv4Stack=true",
 						"-Duser.timezone=GMT");
