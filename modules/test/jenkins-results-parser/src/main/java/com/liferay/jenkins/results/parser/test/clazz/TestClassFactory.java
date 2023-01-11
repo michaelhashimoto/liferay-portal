@@ -20,6 +20,7 @@ import com.liferay.jenkins.results.parser.test.clazz.group.CompileModulesBatchTe
 import com.liferay.jenkins.results.parser.test.clazz.group.FunctionalBatchTestClassGroup;
 import com.liferay.jenkins.results.parser.test.clazz.group.JSUnitModulesBatchTestClassGroup;
 import com.liferay.jenkins.results.parser.test.clazz.group.JUnitBatchTestClassGroup;
+import com.liferay.jenkins.results.parser.test.clazz.group.ModulesJUnitBatchTestClassGroup;
 import com.liferay.jenkins.results.parser.test.clazz.group.NPMTestBatchTestClassGroup;
 import com.liferay.jenkins.results.parser.test.clazz.group.PluginsBatchTestClassGroup;
 import com.liferay.jenkins.results.parser.test.clazz.group.PluginsGulpBatchTestClassGroup;
@@ -153,13 +154,27 @@ public class TestClassFactory {
 
 			JUnitTestClass jUnitTestClass = null;
 
-			if (jsonObject != null) {
-				jUnitTestClass = new JUnitTestClass(
-					batchTestClassGroup, jsonObject);
+			if (batchTestClassGroup instanceof
+					ModulesJUnitBatchTestClassGroup) {
+
+				if (jsonObject != null) {
+					jUnitTestClass = new ModulesJUnitTestClass(
+						batchTestClassGroup, jsonObject);
+				}
+				else {
+					jUnitTestClass = new ModulesJUnitTestClass(
+						batchTestClassGroup, testClassFile);
+				}
 			}
 			else {
-				jUnitTestClass = new JUnitTestClass(
-					batchTestClassGroup, testClassFile);
+				if (jsonObject != null) {
+					jUnitTestClass = new JUnitTestClass(
+						batchTestClassGroup, jsonObject);
+				}
+				else {
+					jUnitTestClass = new JUnitTestClass(
+						batchTestClassGroup, testClassFile);
+				}
 			}
 
 			_jUnitTestClasses.put(canonicalFile, jUnitTestClass);
