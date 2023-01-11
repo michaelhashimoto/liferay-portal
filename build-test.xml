@@ -1338,9 +1338,9 @@ jdbc.counter.connectionProperties=oracle.jdbc.ReadTimeout=0;oracle.net.CONNECT_T
 			<beanshell mapId="invoke job">
 				<![CDATA[
 					import com.liferay.jenkins.results.parser.Job;
-					import com.liferay.jenkins.results.parser.batch.test.ModulesJUnitTestClass;
-					import com.liferay.jenkins.results.parser.batch.test.TestClass;
-					import com.liferay.jenkins.results.parser.batch.test.clazz.AxisTestClassGroup;
+					import com.liferay.jenkins.results.parser.test.clazz.ModulesJUnitTestClass;
+					import com.liferay.jenkins.results.parser.test.clazz.TestClass;
+					import com.liferay.jenkins.results.parser.test.clazz.group.AxisTestClassGroup;
 
 					Job job = beanShellMap.get("job");
 
