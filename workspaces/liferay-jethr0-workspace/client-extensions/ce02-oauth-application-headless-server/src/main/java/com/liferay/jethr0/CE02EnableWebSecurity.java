@@ -30,8 +30,6 @@ import java.util.Objects;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import org.json.JSONObject;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -50,7 +48,6 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import org.springframework.web.reactive.function.client.WebClient;
 
 /**
  * @author Michael Hashimoto
@@ -93,7 +90,7 @@ public class CE02EnableWebSecurity {
 		NimbusJwtDecoder nimbusJwtDecoder = new NimbusJwtDecoder(
 			defaultJWTProcessor);
 
-		String liferayOAuthClientID = _getLiferayOAuthClientID();
+		String liferayOAuthClientID = _liferayServer.getOAuthClientID();
 
 		if (_log.isInfoEnabled()) {
 			_log.info("Using Liferay OAuth Client ID " + liferayOAuthClientID);
@@ -128,53 +125,8 @@ public class CE02EnableWebSecurity {
 		).build();
 	}
 
-	private String _getLiferayOAuthClientID() throws Exception {
-		if (_liferayOAuthClientID != null) {
-			return _liferayOAuthClientID;
-		}
-
-		while (true) {
-			try {
-				StringBuilder sb = new StringBuilder();
-
-				sb.append(_liferayPortalURL);
-				sb.append("/o/oauth2/application?externalReferenceCode=");
-				sb.append(_liferayOAuthApplicationExternalReferenceCode);
-
-				String response = WebClient.builder(
-				).build(
-				).get(
-				).uri(
-					sb.toString()
-				).retrieve(
-				).bodyToMono(
-					String.class
-				).block();
-
-				JSONObject jsonObject = new JSONObject(response);
-
-				_liferayOAuthClientID = jsonObject.getString("client_id");
-
-				return _liferayOAuthClientID;
-			}
-			catch (Throwable throwable) {
-				if (_log.isWarnEnabled()) {
-					_log.warn(
-						"Unable to get client ID: " + throwable.getMessage());
-				}
-
-				Thread.sleep(1000);
-			}
-		}
-	}
-
 	private static final Log _log = LogFactory.getLog(
 		CE02EnableWebSecurity.class);
-
-	@Value("${liferay.oauth.application.external.reference.code}")
-	private String _liferayOAuthApplicationExternalReferenceCode;
-
-	private String _liferayOAuthClientID;
 
 	@Value("${liferay.portal.url}")
 	private String _liferayPortalURL;
