@@ -25,10 +25,6 @@ import com.nimbusds.jwt.proc.DefaultJWTProcessor;
 import java.net.URL;
 
 import java.util.Arrays;
-import java.util.Objects;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -38,10 +34,6 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.oauth2.server.resource.OAuth2ResourceServerConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.oauth2.core.OAuth2Error;
-import org.springframework.security.oauth2.core.OAuth2TokenValidator;
-import org.springframework.security.oauth2.core.OAuth2TokenValidatorResult;
-import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -90,14 +82,8 @@ public class CE02EnableWebSecurity {
 		NimbusJwtDecoder nimbusJwtDecoder = new NimbusJwtDecoder(
 			defaultJWTProcessor);
 
-		String liferayOAuthClientID = _liferayServer.getOAuthClientID();
-
-		if (_log.isInfoEnabled()) {
-			_log.info("Using Liferay OAuth Client ID " + liferayOAuthClientID);
-		}
-
 		nimbusJwtDecoder.setJwtValidator(
-			new LiferayOAuth2TokenValidator(liferayOAuthClientID));
+			_liferayServer.getJwtOAuth2TokenValidator());
 
 		return nimbusJwtDecoder;
 	}
@@ -125,37 +111,10 @@ public class CE02EnableWebSecurity {
 		).build();
 	}
 
-	private static final Log _log = LogFactory.getLog(
-		CE02EnableWebSecurity.class);
-
 	@Value("${liferay.portal.url}")
 	private String _liferayPortalURL;
 
 	@Autowired
 	private LiferayServer _liferayServer;
-
-	private class LiferayOAuth2TokenValidator
-		implements OAuth2TokenValidator<Jwt> {
-
-		public LiferayOAuth2TokenValidator(String liferayOAuthClientID) {
-			_liferayOAuthClientID = liferayOAuthClientID;
-		}
-
-		@Override
-		public OAuth2TokenValidatorResult validate(Jwt jwt) {
-			if (Objects.equals(
-					jwt.getClaimAsString("client_id"), _liferayOAuthClientID)) {
-
-				return OAuth2TokenValidatorResult.success();
-			}
-
-			return OAuth2TokenValidatorResult.failure(_oAuth2Error);
-		}
-
-		private final String _liferayOAuthClientID;
-		private final OAuth2Error _oAuth2Error = new OAuth2Error(
-			"invalid_token", "The client_id does not match", null);
-
-	}
 
 }

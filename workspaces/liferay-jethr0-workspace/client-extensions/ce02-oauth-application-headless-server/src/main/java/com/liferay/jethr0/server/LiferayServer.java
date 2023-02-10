@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -31,6 +32,10 @@ import org.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.oauth2.core.OAuth2Error;
+import org.springframework.security.oauth2.core.OAuth2TokenValidator;
+import org.springframework.security.oauth2.core.OAuth2TokenValidatorResult;
+import org.springframework.security.oauth2.jwt.Jwt;
 
 /**
  * @author Michael Hashimoto
@@ -49,6 +54,16 @@ public class LiferayServer extends BaseServer {
 		}
 
 		return allowedOrigins;
+	}
+
+	public OAuth2TokenValidator<Jwt> getJwtOAuth2TokenValidator() {
+		if (_liferayOAuth2TokenValidator != null) {
+			return _liferayOAuth2TokenValidator;
+		}
+
+		_liferayOAuth2TokenValidator = new LiferayOAuth2TokenValidator();
+
+		return _liferayOAuth2TokenValidator;
 	}
 
 	public String getOAuthClientID() {
@@ -96,6 +111,8 @@ public class LiferayServer extends BaseServer {
 
 	private static final Log _log = LogFactory.getLog(LiferayServer.class);
 
+	private LiferayOAuth2TokenValidator _liferayOAuth2TokenValidator;
+
 	@Value("${liferay.oauth.application.external.reference.code}")
 	private String _liferayOAuthApplicationExternalReferenceCode;
 
@@ -106,5 +123,24 @@ public class LiferayServer extends BaseServer {
 	private String _liferayPortalURL;
 
 	private String _oAuthClientID;
+
+	private class LiferayOAuth2TokenValidator
+		implements OAuth2TokenValidator<Jwt> {
+
+		@Override
+		public OAuth2TokenValidatorResult validate(Jwt jwt) {
+			if (Objects.equals(
+					jwt.getClaimAsString("client_id"), getOAuthClientID())) {
+
+				return OAuth2TokenValidatorResult.success();
+			}
+
+			return OAuth2TokenValidatorResult.failure(_oAuth2Error);
+		}
+
+		private final OAuth2Error _oAuth2Error = new OAuth2Error(
+			"invalid_token", "The client_id does not match", null);
+
+	}
 
 }
