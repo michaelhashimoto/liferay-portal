@@ -14,6 +14,8 @@
 
 package com.liferay.jethr0;
 
+import com.liferay.jethr0.server.LiferayServer;
+
 import com.nimbusds.jose.JOSEObjectType;
 import com.nimbusds.jose.proc.DefaultJOSEObjectTypeVerifier;
 import com.nimbusds.jose.proc.JWSAlgorithmFamilyJWSKeySelector;
@@ -22,9 +24,7 @@ import com.nimbusds.jwt.proc.DefaultJWTProcessor;
 
 import java.net.URL;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 import java.util.Objects;
 
 import org.apache.commons.logging.Log;
@@ -32,6 +32,7 @@ import org.apache.commons.logging.LogFactory;
 
 import org.json.JSONObject;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -70,7 +71,7 @@ public class CE02EnableWebSecurity {
 		corsConfiguration.setAllowedMethods(
 			Arrays.asList(
 				"DELETE", "GET", "HEAD", "OPTIONS", "PATCH", "POST", "PUT"));
-		corsConfiguration.setAllowedOrigins(_getLiferayAllowedOrigins());
+		corsConfiguration.setAllowedOrigins(_liferayServer.getAllowedOrigins());
 
 		urlBasedCorsConfigurationSource.registerCorsConfiguration(
 			"/**", corsConfiguration);
@@ -127,17 +128,6 @@ public class CE02EnableWebSecurity {
 		).build();
 	}
 
-	private List<String> _getLiferayAllowedOrigins() {
-		List<String> liferayAllowedOrigins = new ArrayList<>();
-
-		for (String dxpDomain : _liferayPortalDomains.split("\\s*[,\n]\\s*")) {
-			liferayAllowedOrigins.add("http://" + dxpDomain);
-			liferayAllowedOrigins.add("https://" + dxpDomain);
-		}
-
-		return liferayAllowedOrigins;
-	}
-
 	private String _getLiferayOAuthClientID() throws Exception {
 		if (_liferayOAuthClientID != null) {
 			return _liferayOAuthClientID;
@@ -186,11 +176,11 @@ public class CE02EnableWebSecurity {
 
 	private String _liferayOAuthClientID;
 
-	@Value("${liferay.portal.domains}")
-	private String _liferayPortalDomains;
-
 	@Value("${liferay.portal.url}")
 	private String _liferayPortalURL;
+
+	@Autowired
+	private LiferayServer _liferayServer;
 
 	private class LiferayOAuth2TokenValidator
 		implements OAuth2TokenValidator<Jwt> {

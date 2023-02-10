@@ -17,6 +17,9 @@ package com.liferay.jethr0.server;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 
@@ -25,6 +28,19 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration
 public class LiferayServer extends BaseServer {
+
+	public List<String> getAllowedOrigins() {
+		List<String> allowedOrigins = new ArrayList<>();
+
+		for (String liferayPortalDomain :
+				_liferayPortalDomains.split("\\s*[,\n]\\s*")) {
+
+			allowedOrigins.add("http://" + liferayPortalDomain);
+			allowedOrigins.add("https://" + liferayPortalDomain);
+		}
+
+		return allowedOrigins;
+	}
 
 	@Override
 	public URL getURL() {
@@ -35,6 +51,9 @@ public class LiferayServer extends BaseServer {
 			throw new RuntimeException(malformedURLException);
 		}
 	}
+
+	@Value("${liferay.portal.domains}")
+	private String _liferayPortalDomains;
 
 	@Value("${liferay.portal.url}")
 	private String _liferayPortalURL;
