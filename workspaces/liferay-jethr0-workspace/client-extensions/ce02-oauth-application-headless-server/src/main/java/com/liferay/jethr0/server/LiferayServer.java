@@ -56,6 +56,15 @@ public class LiferayServer extends BaseServer {
 		return allowedOrigins;
 	}
 
+	public URL getJWKSetURL() {
+		try {
+			return new URL(getURL(), "/o/oauth2/jwks");
+		}
+		catch (MalformedURLException malformedURLException) {
+			throw new RuntimeException(malformedURLException);
+		}
+	}
+
 	public OAuth2TokenValidator<Jwt> getJwtOAuth2TokenValidator() {
 		if (_liferayOAuth2TokenValidator != null) {
 			return _liferayOAuth2TokenValidator;

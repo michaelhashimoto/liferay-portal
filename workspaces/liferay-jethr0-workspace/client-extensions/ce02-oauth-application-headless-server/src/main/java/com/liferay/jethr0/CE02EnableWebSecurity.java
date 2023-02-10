@@ -22,12 +22,9 @@ import com.nimbusds.jose.proc.JWSAlgorithmFamilyJWSKeySelector;
 import com.nimbusds.jose.proc.SecurityContext;
 import com.nimbusds.jwt.proc.DefaultJWTProcessor;
 
-import java.net.URL;
-
 import java.util.Arrays;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -75,7 +72,7 @@ public class CE02EnableWebSecurity {
 
 		defaultJWTProcessor.setJWSKeySelector(
 			JWSAlgorithmFamilyJWSKeySelector.fromJWKSetURL(
-				new URL(_liferayPortalURL + "/o/oauth2/jwks")));
+				_liferayServer.getJWKSetURL()));
 		defaultJWTProcessor.setJWSTypeVerifier(
 			new DefaultJOSEObjectTypeVerifier<>(new JOSEObjectType("at+jwt")));
 
@@ -110,9 +107,6 @@ public class CE02EnableWebSecurity {
 			OAuth2ResourceServerConfigurer::jwt
 		).build();
 	}
-
-	@Value("${liferay.portal.url}")
-	private String _liferayPortalURL;
 
 	@Autowired
 	private LiferayServer _liferayServer;
