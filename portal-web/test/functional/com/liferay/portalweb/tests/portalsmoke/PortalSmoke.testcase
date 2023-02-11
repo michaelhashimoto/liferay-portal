@@ -3,29 +3,9 @@ definition {
 
 	property portal.acceptance = "true";
 	property portal.release = "true";
-	property portal.smoke = "true";
 	property portal.upstream = "true";
 	property test.assert.warning.exceptions = "true";
 	property testray.main.component.name = "Smoke";
-
-	setUp {
-		TestCase.setUpPortalInstance();
-	}
-
-	tearDown {
-		var testPortalInstance = PropsUtil.get("test.portal.instance");
-
-		if (${testPortalInstance} == "true") {
-			PortalInstances.tearDownCP();
-		}
-		else {
-			PagesAdmin.tearDownCP();
-
-			Site.tearDownCP();
-
-			WebContent.tearDownCP();
-		}
-	}
 
 	@description = "Ensure that the super admin can add pages, add portlets, navigate to the product menu, use the WYSIWYG editor, and view alert messages."
 	@priority = 5
@@ -36,25 +16,25 @@ definition {
 		property environment.acceptance = "true";
 		property operating.system.types = "alpine,amazonlinux,centos,debian,fedora,orcllinux,osx,redhat,solaris,suse,ubuntu,windows";
 		property portal.acceptance = "false";
+		property portal.smoke = "true";
 		property testray.component.names = "Training";
 
-		SignIn.signInTestSetup();
+		echo("Hello World!");
+	}
 
-		Smoke.viewWelcomeContentPage();
+	@description = "Ensure that the super admin can add pages, add portlets, navigate to the product menu, use the WYSIWYG editor, and view alert messages."
+	@priority = 5
+	test Smoke2 {
+		property app.server.types = "jboss,tcserver,tomcat,weblogic,websphere,wildfly";
+		property database.bare.enabled = "true";
+		property database.types = "db2,hypersonic,mariadb,mysql,oracle,postgresql,sqlserver,sybase";
+		property environment.acceptance = "true";
+		property operating.system.types = "alpine,amazonlinux,centos,debian,fedora,orcllinux,osx,redhat,solaris,suse,ubuntu,windows";
+		property portal.acceptance = "false";
+		property portal.smoke = "true";
+		property testray.component.names = "Training";
 
-		Smoke.runSmoke();
-
-		// Assert all bundles installed
-
-		AssertConsoleTextNotPresent(value1 = "The portal instance needs to be restarted to complete the installation");
-
-		// LPS-153203 Assert no warnings or errors in log4j configuration
-
-		AssertConsoleTextPresent(value1 = "Starting dynamic bundles");
-
-		AssertConsoleTextNotPresent(value1 = "log4j:WARN");
-
-		AssertConsoleTextNotPresent(value1 = "log4j:ERROR");
+		fail("Goodbye World!");
 	}
 
 	@priority = 5

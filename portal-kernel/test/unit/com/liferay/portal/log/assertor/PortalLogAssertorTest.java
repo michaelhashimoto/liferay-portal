@@ -83,6 +83,8 @@ public class PortalLogAssertorTest {
 
 	@Test
 	public void testScanXMLLog() throws IOException {
+		Assert.assertTrue(false);
+
 		Files.walkFileTree(
 			Paths.get(System.getProperty("liferay.log.dir")),
 			new SimpleFileVisitor<Path>() {
