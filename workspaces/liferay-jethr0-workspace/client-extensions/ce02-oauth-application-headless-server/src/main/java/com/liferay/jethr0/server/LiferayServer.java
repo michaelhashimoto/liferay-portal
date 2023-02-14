@@ -90,8 +90,8 @@ public class LiferayServer extends BaseServer {
 			try {
 				JSONObject jsonObject = new JSONObject(
 					httpRequest(
-						"/o/oauth2/application", null, Method.GET, parameters,
-						null));
+						getURL(), "/o/oauth2/application", null, null,
+						Method.GET, parameters, null));
 
 				_oAuthClientID = jsonObject.getString("client_id");
 
@@ -118,12 +118,52 @@ public class LiferayServer extends BaseServer {
 		}
 	}
 
+	@Override
+	public String httpRequest(
+		String uriPath, Map<String, String> headers, Jwt jwt, Method method,
+		Map<String, String> parameters, String requestData) {
+
+		if (headers == null) {
+			headers = new HashMap<>();
+		}
+
+		if (!headers.containsKey("Authorization")) {
+			headers.put("Authorization", _getOAuthAuthorization());
+		}
+
+		return super.httpRequest(
+			uriPath, headers, jwt, method, parameters, requestData);
+	}
+
+	private String _getOAuthAuthorization() {
+		Map<String, String> headers = new HashMap<>();
+
+		headers.put("Content-Type", "application/x-www-form-urlencoded");
+
+		Map<String, String> parameters = new HashMap<>();
+
+		parameters.put("client_id", getOAuthClientID());
+		parameters.put("client_secret", _liferayOAuthApplicationSecretCode);
+		parameters.put("grant_type", "client_credentials");
+
+		JSONObject responseJSONObject = new JSONObject(
+			httpRequest(
+				getURL(), "/o/oauth2/token", headers, null, Method.POST,
+				parameters, null));
+
+		return responseJSONObject.getString("token_type") + " " +
+			responseJSONObject.getString("access_token");
+	}
+
 	private static final Log _log = LogFactory.getLog(LiferayServer.class);
 
 	private LiferayOAuth2TokenValidator _liferayOAuth2TokenValidator;
 
 	@Value("${liferay.oauth.application.external.reference.code}")
 	private String _liferayOAuthApplicationExternalReferenceCode;
+
+	@Value("${liferay.oauth.application.secret.code}")
+	private String _liferayOAuthApplicationSecretCode;
 
 	@Value("${liferay.portal.domains}")
 	private String _liferayPortalDomains;

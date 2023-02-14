@@ -18,6 +18,8 @@ import java.net.URL;
 
 import java.util.Map;
 
+import org.springframework.security.oauth2.jwt.Jwt;
+
 /**
  * @author Michael Hashimoto
  */
@@ -26,7 +28,7 @@ public interface Server {
 	public URL getURL();
 
 	public String httpRequest(
-		String uriPath, Map<String, String> headers, Method method,
+		String uriPath, Map<String, String> headers, Jwt jwt, Method method,
 		Map<String, String> parameters, String requestData);
 
 	public static enum Method {

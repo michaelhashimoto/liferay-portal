@@ -16,11 +16,14 @@ package com.liferay.jethr0.server;
 
 import java.io.UnsupportedEncodingException;
 
+import java.net.URL;
 import java.net.URLEncoder;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.http.HttpMethod;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
 
@@ -33,21 +36,39 @@ public abstract class BaseServer implements Server {
 
 	@Override
 	public String httpRequest(
-		String uriPath, Map<String, String> headers, Method method,
+		String uriPath, Map<String, String> headers, Jwt jwt, Method method,
 		Map<String, String> parameters, String requestData) {
+
+		return httpRequest(
+			getURL(), uriPath, headers, jwt, method, parameters, requestData);
+	}
+
+	protected String httpRequest(
+		URL url, String uriPath, Map<String, String> headers, Jwt jwt,
+		Method method, Map<String, String> parameters, String requestData) {
 
 		WebClient.Builder webClientBuilder = WebClient.builder();
 
-		if (headers != null) {
-			webClientBuilder.defaultHeaders(
-				httpHeaders -> {
-					for (Map.Entry<String, String> header :
-							headers.entrySet()) {
+		Map<String, String> defaultHeaders = new HashMap<>();
 
-						httpHeaders.add(header.getKey(), header.getValue());
-					}
-				});
+		if (headers != null) {
+			defaultHeaders.putAll(headers);
 		}
+
+		if (!defaultHeaders.containsKey("Authorization") && (jwt != null)) {
+			defaultHeaders.put(
+				"Authorization", "Bearer " + jwt.getTokenValue());
+		}
+
+		webClientBuilder.defaultHeaders(
+			httpHeaders -> {
+				for (Map.Entry<String, String> defaultHeader :
+						defaultHeaders.entrySet()) {
+
+					httpHeaders.add(
+						defaultHeader.getKey(), defaultHeader.getValue());
+				}
+			});
 
 		WebClient webClient = webClientBuilder.build();
 
@@ -56,7 +77,7 @@ public abstract class BaseServer implements Server {
 
 		StringBuilder sb = new StringBuilder();
 
-		sb.append(getURL());
+		sb.append(url);
 
 		if (uriPath != null) {
 			if (!uriPath.startsWith("/")) {
