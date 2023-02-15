@@ -6870,7 +6870,11 @@ org.apache.catalina.startup.ClassLoaderFactory.level=INFO]]>
 											<echo>------------------------------------------2------------------------------------------</echo>
 
 											<docker-execute container="${operating.system.host}">
+												ls -a ${test.app.server.bin.dir}/
+
 												chmod +rx ${test.app.server.bin.dir}/*.sh
+
+												ls -a ${test.app.server.bin.dir}/
 
 												${test.app.server.bin.dir}/${app.server.start.executable} ${app.server.start.executable.arg.line}
 											</docker-execute>
