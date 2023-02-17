@@ -115,10 +115,13 @@ public abstract class BaseServer implements Server {
 		return responseSpec.bodyToMono(String.class);
 	}
 
+	protected BaseServer() {
+	}
+
 	protected BaseServer(URL url) {
 		_url = url;
 	}
 
-	private final URL _url;
+	private URL _url;
 
 }
