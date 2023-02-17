@@ -40,6 +40,15 @@ public class LiferayServer extends BaseServer {
 		return allowedOrigins;
 	}
 
+	public URL getJWKSetURL() {
+		try {
+			return new URL(getURL() + "/o/oauth2/jwks");
+		}
+		catch (MalformedURLException malformedURLException) {
+			throw new RuntimeException(malformedURLException);
+		}
+	}
+
 	@Override
 	public URL getURL() {
 		try {

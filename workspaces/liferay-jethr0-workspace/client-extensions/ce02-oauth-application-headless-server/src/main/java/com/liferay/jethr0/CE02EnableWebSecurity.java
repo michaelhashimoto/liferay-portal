@@ -85,7 +85,7 @@ public class CE02EnableWebSecurity {
 
 		defaultJWTProcessor.setJWSKeySelector(
 			JWSAlgorithmFamilyJWSKeySelector.fromJWKSetURL(
-				new URL(_liferayPortalURL + "/o/oauth2/jwks")));
+				_liferayServer.getJWKSetURL()));
 		defaultJWTProcessor.setJWSTypeVerifier(
 			new DefaultJOSEObjectTypeVerifier<>(new JOSEObjectType("at+jwt")));
 
