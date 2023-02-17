@@ -14,6 +14,8 @@
 
 package com.liferay.jethr0;
 
+import com.liferay.jethr0.server.Server;
+
 import com.nimbusds.jose.JOSEObjectType;
 import com.nimbusds.jose.proc.DefaultJOSEObjectTypeVerifier;
 import com.nimbusds.jose.proc.JWSAlgorithmFamilyJWSKeySelector;
@@ -67,9 +69,7 @@ public class CE02EnableWebSecurity {
 
 		corsConfiguration.setAllowedHeaders(
 			Arrays.asList("Authorization", "Content-Type"));
-		corsConfiguration.setAllowedMethods(
-			Arrays.asList(
-				"DELETE", "GET", "HEAD", "OPTIONS", "PATCH", "POST", "PUT"));
+		corsConfiguration.setAllowedMethods(Server.Method.getMethodNames());
 		corsConfiguration.setAllowedOrigins(_getLiferayAllowedOrigins());
 
 		urlBasedCorsConfigurationSource.registerCorsConfiguration(

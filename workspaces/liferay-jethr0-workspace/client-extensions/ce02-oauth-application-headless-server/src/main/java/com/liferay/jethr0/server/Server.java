@@ -16,7 +16,11 @@ package com.liferay.jethr0.server;
 
 import java.net.URL;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import reactor.core.publisher.Mono;
 
@@ -37,7 +41,17 @@ public interface Server {
 
 	public static enum Method {
 
-		DELETE, GET, PATCH, POST, PUT
+		DELETE, GET, HEAD, OPTIONS, PATCH, POST, PUT;
+
+		public static List<String> getMethodNames() {
+			List<String> methodNames = new ArrayList<>();
+
+			for (Method method : values()) {
+				methodNames.add(method.toString());
+			}
+
+			return methodNames;
+		}
 
 	}
 
