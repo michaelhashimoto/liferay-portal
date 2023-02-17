@@ -16,7 +16,10 @@ package com.liferay.jethr0.server;
 
 import java.net.URL;
 
+import java.util.HashMap;
 import java.util.Map;
+
+import org.springframework.util.Base64Utils;
 
 import reactor.core.publisher.Mono;
 
@@ -34,13 +37,42 @@ public class JenkinsServer extends BaseServer {
 	public Mono<String> invokeMono(
 		String jobName, Map<String, String> buildParameters) {
 
+		Map<String, String> headers = new HashMap<>();
+
+		headers.put("Authorization", _getAuthorizationHeader());
+
+		Map<String, String> parameters = new HashMap<>();
+
+		parameters.put("token", _jenkinsToken);
+
+		if (buildParameters != null) {
+			parameters.putAll(buildParameters);
+		}
+
 		return httpRequestMono(
-			"/job/" + jobName + "/buildWithParameters", null, Method.GET,
-			buildParameters, null);
+			"/job/" + jobName + "/buildWithParameters", headers, Method.GET,
+			parameters, null);
 	}
 
-	protected JenkinsServer(URL url) {
+	protected JenkinsServer(
+		URL url, String jenkinsPassword, String jenkinsToken,
+		String jenkinsUserName) {
+
 		super(url);
+
+		_jenkinsPassword = jenkinsPassword;
+		_jenkinsToken = jenkinsToken;
+		_jenkinsUserName = jenkinsUserName;
 	}
+
+	private String _getAuthorizationHeader() {
+		String authorization = _jenkinsUserName + ":" + _jenkinsPassword;
+
+		return "Basic " + Base64Utils.encode(authorization.getBytes());
+	}
+
+	private final String _jenkinsPassword;
+	private final String _jenkinsToken;
+	private final String _jenkinsUserName;
 
 }

@@ -19,21 +19,36 @@ import java.net.URL;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Configuration;
 
 /**
  * @author Michael Hashimoto
  */
+@Configuration
 public class ServerFactory {
 
-	public static JenkinsServer newJenkinsServer(String jenkinsHostname) {
+	public JenkinsServer newJenkinsServer(String jenkinsHostname) {
 		try {
-			URL url = new URL("https://" + jenkinsHostname);
+			Matcher matcher = _jenkinsHostnamePattern.matcher(jenkinsHostname);
+
+			if (!matcher.find()) {
+				throw new RuntimeException(
+					"Invalid Jenkins hostname " + jenkinsHostname);
+			}
+
+			URL url = new URL(
+				"https://" + matcher.group("localHostname") + ".liferay.com");
 
 			if (_jenkinsServers.containsKey(url)) {
 				return _jenkinsServers.get(url);
 			}
 
-			JenkinsServer jenkinsServer = new JenkinsServer(url);
+			JenkinsServer jenkinsServer = new JenkinsServer(
+				url, _jenkinsPassword, _jenkinsToken, _jenkinsUserName);
 
 			_jenkinsServers.put(url, jenkinsServer);
 
@@ -44,7 +59,18 @@ public class ServerFactory {
 		}
 	}
 
-	private static final Map<URL, JenkinsServer> _jenkinsServers =
-		new HashMap<>();
+	private static final Pattern _jenkinsHostnamePattern = Pattern.compile(
+		"(?<localHostname>test-\\d-\\d)(\\.liferay\\.com)");
+
+	@Value("${jenkins.password}")
+	private String _jenkinsPassword;
+
+	private final Map<URL, JenkinsServer> _jenkinsServers = new HashMap<>();
+
+	@Value("${jenkins.token}")
+	private String _jenkinsToken;
+
+	@Value("${jenkins.user.name}")
+	private String _jenkinsUserName;
 
 }
