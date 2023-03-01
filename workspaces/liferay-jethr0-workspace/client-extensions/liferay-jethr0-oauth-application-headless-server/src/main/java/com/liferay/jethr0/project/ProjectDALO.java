@@ -14,82 +14,32 @@
 
 package com.liferay.jethr0.project;
 
-import com.liferay.jethr0.util.LiferayOAuthConfiguration;
-import com.liferay.jethr0.util.StringUtil;
-import com.liferay.jethr0.util.ThreadUtil;
-import com.liferay.petra.http.invoker.HttpInvoker;
+import com.liferay.jethr0.object.ObjectDALO;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
-import org.json.JSONArray;
 import org.json.JSONObject;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 
 /**
  * @author Michael Hashimoto
  */
 @Configuration
-public class ProjectDALO {
+public class ProjectDALO extends ObjectDALO {
 
 	public Project createProject(
 		String name, int priority, Project.State state, Project.Type type) {
 
-		JSONObject requestJSONObject = new JSONObject();
+		JSONObject jsonObject = new JSONObject();
 
-		requestJSONObject.put("name", name);
-		requestJSONObject.put("priority", priority);
-		requestJSONObject.put("state", state.getJSONObject());
-		requestJSONObject.put("type", type.getJSONObject());
+		jsonObject.put("name", name);
+		jsonObject.put("priority", priority);
+		jsonObject.put("state", state.getJSONObject());
+		jsonObject.put("type", type.getJSONObject());
 
-		HttpInvoker httpInvoker = HttpInvoker.newHttpInvoker();
-
-		httpInvoker.body(requestJSONObject.toString(), "application/json");
-
-		httpInvoker.header("accept", "application/json");
-		httpInvoker.header(
-			"Authorization", _liferayOAuthConfiguration.getAuthorization());
-
-		httpInvoker.httpMethod(HttpInvoker.HttpMethod.POST);
-
-		httpInvoker.path(_liferayPortalURL + "/o/c/projects");
-
-		for (int i = 0; i <= _RETRY_COUNT; i++) {
-			try {
-				HttpInvoker.HttpResponse httpResponse = httpInvoker.invoke();
-
-				Project project = new DefaultProject(
-					new JSONObject(httpResponse.getContent()));
-
-				if (_log.isDebugEnabled()) {
-					_log.debug(
-						StringUtil.combine(
-							"Created Project ", String.valueOf(project.getID()),
-							" on Liferay"));
-				}
-
-				return project;
-			}
-			catch (Exception exception) {
-				if (_log.isWarnEnabled()) {
-					_log.warn(
-						StringUtil.combine(
-							"Failed to create Projects on Liferay retry",
-							" in ", String.valueOf(_RETRY_DELAY_DURATION),
-							"ms ", exception.getMessage()));
-				}
-
-				ThreadUtil.sleep(_RETRY_DELAY_DURATION);
-			}
-		}
-
-		return null;
+		return new DefaultProject(create(jsonObject));
 	}
 
 	public void deleteProject(Project project) {
@@ -97,185 +47,42 @@ public class ProjectDALO {
 			return;
 		}
 
-		HttpInvoker httpInvoker = HttpInvoker.newHttpInvoker();
-
-		httpInvoker.header("accept", "application/json");
-		httpInvoker.header(
-			"Authorization", _liferayOAuthConfiguration.getAuthorization());
-
-		httpInvoker.httpMethod(HttpInvoker.HttpMethod.DELETE);
-
-		httpInvoker.path(
-			_liferayPortalURL + "/o/c/projects/" + project.getID());
-
-		for (int i = 0; i <= _RETRY_COUNT; i++) {
-			try {
-				httpInvoker.invoke();
-
-				if (_log.isDebugEnabled()) {
-					_log.debug(
-						StringUtil.combine(
-							"Deleted Project ", String.valueOf(project.getID()),
-							" from Liferay"));
-				}
-
-				break;
-			}
-			catch (Exception exception) {
-				if (_log.isWarnEnabled()) {
-					_log.warn(
-						StringUtil.combine(
-							"Failed to delete Project ",
-							String.valueOf(project.getID()),
-							" on Liferay retry in ",
-							String.valueOf(_RETRY_DELAY_DURATION), "ms ",
-							exception.getMessage()));
-				}
-
-				ThreadUtil.sleep(_RETRY_DELAY_DURATION);
-			}
-		}
+		delete(project.getID());
 	}
 
 	public List<Project> retrieveProjects() {
 		List<Project> projects = new ArrayList<>();
 
-		int currentPage = 1;
-		int lastPage = -1;
-
-		while (true) {
-			for (int i = 0; i <= _RETRY_COUNT; i++) {
-				HttpInvoker httpInvoker = HttpInvoker.newHttpInvoker();
-
-				httpInvoker.header("accept", "application/json");
-				httpInvoker.header(
-					"Authorization",
-					_liferayOAuthConfiguration.getAuthorization());
-				httpInvoker.header("Content-Type", "application/json");
-
-				httpInvoker.path(_liferayPortalURL + "/o/c/projects");
-
-				httpInvoker.parameter("page", String.valueOf(currentPage));
-
-				try {
-					HttpInvoker.HttpResponse httpResponse =
-						httpInvoker.invoke();
-
-					JSONObject responseJSONObject = new JSONObject(
-						httpResponse.getContent());
-
-					lastPage = responseJSONObject.getInt("lastPage");
-
-					JSONArray itemsJSONArray = responseJSONObject.getJSONArray(
-						"items");
-
-					if (itemsJSONArray.isEmpty()) {
-						break;
-					}
-
-					for (int j = 0; j < itemsJSONArray.length(); j++) {
-						Project project = new DefaultProject(
-							itemsJSONArray.getJSONObject(j));
-
-						projects.add(project);
-					}
-
-					break;
-				}
-				catch (Exception exception) {
-					if (_log.isWarnEnabled()) {
-						_log.warn(
-							StringUtil.combine(
-								"Failed to retrieve Projects on Liferay retry",
-								" in ", String.valueOf(_RETRY_DELAY_DURATION),
-								"ms ", exception.getMessage()));
-					}
-
-					ThreadUtil.sleep(_RETRY_DELAY_DURATION);
-				}
-			}
-
-			if ((currentPage >= lastPage) || (lastPage == -1)) {
-				break;
-			}
-
-			currentPage++;
-		}
-
-		if (_log.isDebugEnabled()) {
-			_log.debug(
-				StringUtil.combine(
-					"Retrieved ", String.valueOf(projects.size()),
-					" Projects on Liferay"));
+		for (JSONObject jsonObject : retrieve()) {
+			projects.add(new DefaultProject(jsonObject));
 		}
 
 		return projects;
 	}
 
 	public Project updateProject(Project project) {
-		JSONObject requestJSONObject = new JSONObject();
+		JSONObject jsonObject = new JSONObject();
 
 		Project.State state = project.getState();
 		Project.Type type = project.getType();
 
-		requestJSONObject.put("name", project.getName());
-		requestJSONObject.put("priority", project.getPriority());
-		requestJSONObject.put("state", state.getJSONObject());
-		requestJSONObject.put("type", type.getJSONObject());
+		jsonObject.put("id", project.getID());
+		jsonObject.put("name", project.getName());
+		jsonObject.put("priority", project.getPriority());
+		jsonObject.put("state", state.getJSONObject());
+		jsonObject.put("type", type.getJSONObject());
 
-		HttpInvoker httpInvoker = HttpInvoker.newHttpInvoker();
-
-		httpInvoker.body(requestJSONObject.toString(), "application/json");
-
-		httpInvoker.header("accept", "application/json");
-		httpInvoker.header(
-			"Authorization", _liferayOAuthConfiguration.getAuthorization());
-
-		httpInvoker.httpMethod(HttpInvoker.HttpMethod.PUT);
-
-		httpInvoker.path(_liferayPortalURL + "/o/c/projects");
-
-		for (int i = 0; i <= _RETRY_COUNT; i++) {
-			try {
-				httpInvoker.invoke();
-
-				if (_log.isDebugEnabled()) {
-					_log.debug(
-						StringUtil.combine(
-							"Updated Project ", String.valueOf(project.getID()),
-							" on Liferay"));
-				}
-
-				return project;
-			}
-			catch (Exception exception) {
-				if (_log.isWarnEnabled()) {
-					_log.warn(
-						StringUtil.combine(
-							"Failed to update Project ",
-							String.valueOf(project.getID()),
-							" on Liferay retry in ",
-							String.valueOf(_RETRY_DELAY_DURATION), "ms ",
-							exception.getMessage()));
-				}
-
-				ThreadUtil.sleep(_RETRY_DELAY_DURATION);
-			}
-		}
-
-		return null;
+		return new DefaultProject(update(jsonObject));
 	}
 
-	private static final long _RETRY_COUNT = 3;
+	@Override
+	protected String getObjectLabel() {
+		return "Project";
+	}
 
-	private static final long _RETRY_DELAY_DURATION = 1000;
-
-	private static final Log _log = LogFactory.getLog(ProjectDALO.class);
-
-	@Autowired
-	private LiferayOAuthConfiguration _liferayOAuthConfiguration;
-
-	@Value("${liferay.portal.url}")
-	private String _liferayPortalURL;
+	@Override
+	protected String getObjectURLPath() {
+		return "/o/c/projects";
+	}
 
 }
