@@ -135,6 +135,10 @@ public class ObjectDALO {
 	}
 
 	protected List<JSONObject> retrieve() {
+		return retrieve(getObjectURLPath());
+	}
+
+	protected List<JSONObject> retrieve(String objectURLPath) {
 		List<JSONObject> jsonObjects = new ArrayList<>();
 
 		int currentPage = 1;
@@ -149,7 +153,7 @@ public class ObjectDALO {
 					_liferayOAuthConfiguration.getAuthorization());
 				httpInvoker.header("Content-Type", "application/json");
 
-				httpInvoker.path(_liferayPortalURL + getObjectURLPath());
+				httpInvoker.path(_liferayPortalURL + objectURLPath);
 
 				httpInvoker.parameter("page", String.valueOf(currentPage));
 
