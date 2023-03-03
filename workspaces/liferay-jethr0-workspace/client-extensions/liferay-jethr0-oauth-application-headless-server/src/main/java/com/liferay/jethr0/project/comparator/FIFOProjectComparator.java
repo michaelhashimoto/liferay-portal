@@ -17,9 +17,9 @@ package com.liferay.jethr0.project.comparator;
 import com.liferay.jethr0.project.Project;
 import com.liferay.jethr0.project.prioritizer.ProjectPrioritizer;
 
-import org.json.JSONObject;
-
 import java.util.Date;
+
+import org.json.JSONObject;
 
 /**
  * @author Michael Hashimoto

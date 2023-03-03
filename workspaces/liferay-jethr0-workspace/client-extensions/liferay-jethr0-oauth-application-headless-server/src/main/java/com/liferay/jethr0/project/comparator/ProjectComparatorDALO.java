@@ -94,6 +94,16 @@ public class ProjectComparatorDALO extends ObjectDALO {
 			projectComparator.getProjectPrioritizer(), update(jsonObject));
 	}
 
+	@Override
+	protected String getObjectLabel() {
+		return "Project Comparator";
+	}
+
+	@Override
+	protected String getObjectURLPath() {
+		return "/o/c/projectcomparators";
+	}
+
 	private ProjectComparator _newProjectComparator(
 		ProjectPrioritizer projectPrioritizer, JSONObject jsonObject) {
 
@@ -109,16 +119,6 @@ public class ProjectComparatorDALO extends ObjectDALO {
 		}
 
 		throw new UnsupportedOperationException();
-	}
-
-	@Override
-	protected String getObjectLabel() {
-		return "Project Comparator";
-	}
-
-	@Override
-	protected String getObjectURLPath() {
-		return "/o/c/projectcomparators";
 	}
 
 }

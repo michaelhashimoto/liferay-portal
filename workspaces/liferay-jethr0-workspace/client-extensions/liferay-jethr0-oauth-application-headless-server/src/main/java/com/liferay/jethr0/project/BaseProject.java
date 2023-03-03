@@ -14,11 +14,12 @@
 
 package com.liferay.jethr0.project;
 
-import org.json.JSONObject;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+
 import java.util.Date;
+
+import org.json.JSONObject;
 
 /**
  * @author Michael Hashimoto
@@ -104,10 +105,9 @@ public abstract class BaseProject implements Project {
 	private final long _id;
 	private String _name;
 	private int _priority;
-	private State _state;
-	private final Type _type;
-
 	private final SimpleDateFormat _simpleDateFormat = new SimpleDateFormat(
 		"yyyy-MM-dd'T'HH:mm:ss'Z'");
+	private State _state;
+	private final Type _type;
 
 }
