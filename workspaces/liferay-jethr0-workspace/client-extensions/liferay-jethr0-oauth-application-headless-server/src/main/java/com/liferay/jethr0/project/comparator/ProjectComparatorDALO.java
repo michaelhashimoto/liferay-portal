@@ -44,8 +44,7 @@ public class ProjectComparatorDALO extends ObjectDALO {
 		jsonObject.put("type", type.getJSONObject());
 		jsonObject.put("value", value);
 
-		return new DefaultProjectComparator(
-			projectPrioritizer, create(jsonObject));
+		return _newProjectComparator(projectPrioritizer, create(jsonObject));
 	}
 
 	public void deleteProjectComparator(ProjectComparator projectComparator) {
@@ -68,7 +67,7 @@ public class ProjectComparatorDALO extends ObjectDALO {
 
 		for (JSONObject jsonObject : retrieve(objectURLPath)) {
 			projectComparators.add(
-				new DefaultProjectComparator(projectPrioritizer, jsonObject));
+				_newProjectComparator(projectPrioritizer, jsonObject));
 		}
 
 		return projectComparators;
@@ -91,8 +90,25 @@ public class ProjectComparatorDALO extends ObjectDALO {
 		jsonObject.put("type", type.getJSONObject());
 		jsonObject.put("value", projectComparator.getValue());
 
-		return new DefaultProjectComparator(
+		return _newProjectComparator(
 			projectComparator.getProjectPrioritizer(), update(jsonObject));
+	}
+
+	private ProjectComparator _newProjectComparator(
+		ProjectPrioritizer projectPrioritizer, JSONObject jsonObject) {
+
+		ProjectComparator.Type type = ProjectComparator.Type.get(
+			jsonObject.getJSONObject("type"));
+
+		if (type == ProjectComparator.Type.FIFO) {
+			return new FIFOProjectComparator(projectPrioritizer, jsonObject);
+		}
+		else if (type == ProjectComparator.Type.PROJECT_PRIORITY) {
+			return new PriorityProjectComparator(
+				projectPrioritizer, jsonObject);
+		}
+
+		throw new UnsupportedOperationException();
 	}
 
 	@Override

@@ -14,8 +14,10 @@
 
 package com.liferay.jethr0.project.comparator;
 
+import com.liferay.jethr0.project.Project;
 import com.liferay.jethr0.project.prioritizer.ProjectPrioritizer;
 
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -24,7 +26,7 @@ import org.json.JSONObject;
 /**
  * @author Michael Hashimoto
  */
-public interface ProjectComparator {
+public interface ProjectComparator extends Comparator<Project> {
 
 	public long getID();
 
