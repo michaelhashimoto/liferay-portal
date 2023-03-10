@@ -39,11 +39,11 @@ definition {
 		property portal.acceptance = "false";
 		property testray.component.names = "Training";
 
-		var oauthURL = PropsUtil.get("oauth.url");
+		var oauth2URL = PropsUtil.get("ouath2.url");
 
-		echo("${oauthURL}");
+		echo("${oauth2URL}");
 
-		Open(locator1 = "${oauthURL}");
+		Open(locator1 = "${oauth2URL}");
 
 		takeScreenshot();
 

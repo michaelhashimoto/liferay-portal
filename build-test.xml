@@ -12477,8 +12477,12 @@ auto.deploy.dest.dir=C:/WINDOWS/system32/config/systemprofile/liferay/websphere-
 		<if>
 			<equals arg1="${oauth2.application.enabled}" arg2="true" />
 			<then>
+				<condition else="http://localhost:3000" property="ouath2.url" value="http://${env.HOSTNAME}:3000">
+					<isset property="env.HOSTNAME" />
+				</condition>
+
 				<echo append="true" file="${test.ext.properties.file}">
-					oauth.url=http://${env.HOSTNAME}:3000
+					ouath2.url=${ouath2.url}
 				</echo>
 			</then>
 		</if>
