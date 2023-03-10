@@ -15020,6 +15020,8 @@ mail.send.blacklist=</echo>
 
 		<antcall target="deploy-osgi-modules" />
 
+		<ant antfile="build-test-oauth2.xml" target="prepare-oauth2-react-application" />
+
 		<get-testcase-property property.name="liferay.data.guard.enabled" />
 
 		<if>
