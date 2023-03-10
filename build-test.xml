@@ -7002,7 +7002,7 @@ org.apache.catalina.startup.ClassLoaderFactory.level=INFO]]>
 				<isset property="env.DOCKER_NETWORK_NAME" />
 			</condition>
 
-			<property name="docker.start.script" value="docker_start.sh" />
+			<property name="docker.start.script" location="docker_start.sh" />
 
 			<echo file="${docker.start.script}">
 				<![CDATA[
