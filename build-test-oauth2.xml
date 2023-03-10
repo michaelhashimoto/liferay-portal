@@ -23,31 +23,44 @@
 		/>
 	</target>
 
-	<target name="prepare-oauth2-react-application">
-		<property location="${project.dir}/workspaces/liferay-oauth2-workspace" name="liferay.oauth2.workspace" />
+	<target name="start-oauth2-react-application">
+		<property location="${project.dir}/workspaces/liferay-oauth2-workspace/client-extensions/liferay-oauth2-etc" name="liferay.oauth2.workspace" />
 
-		<get-host-git-dir />
-
-		<propertyregex
-			input="${project.dir}"
-			property="portal.dir.name"
-			regexp=".*\/(.*)"
-			select="\1"
-		/>
-
-		<start-docker-container image="liferay/liferay-ci:node-19_1.0.0" name="${env.HOSTNAME}_node">\
-			--expose 3000 \
-			--mount type=bind,source=${host.git.dir}/${portal.dir.name}/workspaces/liferay-oauth2-workspace,target=/root/liferay-oauth2-workspace \
-		</start-docker-container>
-
-		<docker-execute container="${env.HOSTNAME}_node">
+		<execute dir="${liferay.oauth2.workspace}">
 			<![CDATA[
-				cd /root/liferay-oauth2-workspace/client-extensions/liferay-oauth2-etc
-
-				yarn install
-
-				(yarn start &)
+				(${project.dir}/gradlew packageRunStart &)
 			]]>
-		</docker-execute>
+		</execute>
+	</target>
+
+	<target name="stop-oauth2-react-application">
+		<if>
+			<os family="unix" />
+			<then>
+				<property location="clean_up_oauth2_workspace_processes.sh" name="oauth2.workspace.clean.bash" />
+
+				<echo file="${oauth2.workspace.clean.bash}">
+					<![CDATA[
+						#!/bin/bash
+
+						for i in `ps -o pid,args -e | grep build/node/bin/node | grep liferay-oauth2-workspace | grep -v grep | cut -c1-5`
+						do
+							echo "Killing $i"
+
+							kill -9 $i
+						done
+					]]>
+				</echo>
+
+				<chmod
+					file="${oauth2.workspace.clean.bash}"
+					perm="a+x"
+				/>
+
+				<exec executable="${oauth2.workspace.clean.bash}" />
+
+				<delete file="${oauth2.workspace.clean.bash}" />
+			</then>
+		</if>
 	</target>
 </project>

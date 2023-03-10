@@ -8793,6 +8793,35 @@ go</echo>
 		<delete failonerror="false" file="${project.dir}/console-shut-down" />
 	</target>
 
+	<target name="clean-up-node-processes">
+		<if>
+			<os family="unix" />
+			<then>
+				<echo file="clean_up_node_processes.sh">
+					<![CDATA[
+						#!/bin/bash
+
+						for i in `ps -o pid,args -e | grep build/node/bin/node | grep -v grep | cut -c1-5`
+						do
+							echo "Killing $i"
+
+							kill -9 $i
+						done
+					]]>
+				</echo>
+
+				<chmod
+					file="clean_up_node_processes.sh"
+					perm="a+x"
+				/>
+
+				<exec executable="${basedir}/clean_up_node_processes.sh" />
+
+				<delete file="clean_up_node_processes.sh" />
+			</then>
+		</if>
+	</target>
+
 	<target name="clean-up-selenium-driver">
 		<if>
 			<equals arg1="${browser.type}" arg2="chrome" />
@@ -12671,6 +12700,7 @@ ANT_OPTS=${env.ANT_OPTS}</echo>
 
 		<antcall if:set="env.JENKINS_HOME" inheritAll="false" target="clean-up-db2-processes" />
 		<antcall if:set="env.JENKINS_HOME" inheritAll="false" target="clean-up-java-processes" />
+		<antcall if:set="env.JENKINS_HOME" inheritAll="false" target="clean-up-node-processes" />
 	</target>
 
 	<target name="prepare-test-build-custom">
@@ -12701,6 +12731,7 @@ ANT_OPTS=${env.ANT_OPTS}</echo>
 
 		<antcall if:set="env.JENKINS_HOME" inheritAll="false" target="clean-up-db2-processes" />
 		<antcall if:set="env.JENKINS_HOME" inheritAll="false" target="clean-up-java-processes" />
+		<antcall if:set="env.JENKINS_HOME" inheritAll="false" target="clean-up-node-processes" />
 	</target>
 
 	<target name="prepare-test-bundle">
@@ -14765,6 +14796,7 @@ mail.send.blacklist=</echo>
 			</not>
 			<then>
 				<antcall inheritAll="false" target="clean-up-java-processes" />
+				<antcall inheritAll="false" target="clean-up-node-processes" />
 			</then>
 		</if>
 
@@ -14918,6 +14950,8 @@ mail.send.blacklist=</echo>
 				<ant antfile="build-test-jsf.xml" target="run-jsf-tests" />
 			</then>
 		</if>
+
+		<ant antfile="build-test-oauth2.xml" target="start-oauth2-react-application" />
 
 		<get-testcase-property property.name="openam.enabled" />
 
@@ -15436,6 +15470,8 @@ mail.send.blacklist=</echo>
 			</then>
 		</if>
 
+		<ant antfile="build-test-oauth2.xml" target="stop-oauth2-react-application" />
+
 		<get-testcase-property property.name="openam.enabled" />
 
 		<if>
@@ -15593,8 +15629,6 @@ mail.send.blacklist=</echo>
 				<start-docker-browser />
 			</then>
 		</if>
-
-		<ant antfile="build-test-oauth2.xml" target="prepare-oauth2-react-application" />
 	</target>
 
 	<target name="start-docker-database">
