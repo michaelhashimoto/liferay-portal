@@ -26,6 +26,8 @@
 	<target name="prepare-oauth2-react-application">
 		<property location="${project.dir}/workspaces/liferay-oauth2-workspace" name="liferay.oauth2.workspace" />
 
+		<echo>liferay.oauth2.workspace=${liferay.oauth2.workspace}</echo>
+
 		<start-docker-container image="liferay/liferay-ci:node-19_1.0.0" name="${env.HOSTNAME}_node">\
 			-p 3000:3000 \
 			-v ${liferay.oauth2.workspace}:/root/liferay-oauth2-workspace \
