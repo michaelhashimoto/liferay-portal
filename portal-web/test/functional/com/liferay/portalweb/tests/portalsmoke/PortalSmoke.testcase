@@ -38,6 +38,14 @@ definition {
 		property portal.acceptance = "false";
 		property testray.component.names = "Training";
 
+		var oauthURL = PropsUtil.get("oauth.url");
+
+		echo("${oauthURL}");
+
+		Open(locator1 = "${oauthURL}");
+
+		takeScreenshot();
+
 		SignIn.signInTestSetup();
 
 		Smoke.viewWelcomeContentPage();
@@ -67,14 +75,6 @@ definition {
 		SignIn.signInTestSetup();
 
 		Smoke.viewWelcomeContentPage();
-
-		var oauthURL = PropsUtil.get("oauth.url");
-
-		echo("${oauthURL}");
-
-		Open(locator1 = "${oauthURL}");
-
-		takeScreenshot();
 
 		Smoke.runSmoke();
 	}
