@@ -7023,7 +7023,7 @@ org.apache.catalina.startup.ClassLoaderFactory.level=INFO]]>
 				]]>
 			</echo>
 
-			<print-file file="${docker.start.script}" />
+			<print-file file.name="${docker.start.script}" />
 
 			<chmod
 				perm="a+x"
