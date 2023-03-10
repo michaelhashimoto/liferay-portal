@@ -35,6 +35,16 @@
 		<waitfor checkevery="5" checkeveryunit="second" maxwait="5" maxwaitunit="minute" timeoutproperty="wait.for.oauth2">
 			<http url="http://localhost:3000" />
 		</waitfor>
+
+		<echo>wait.for.oauth2=${wait.for.oauth2}</echo>
+
+		<execute>
+			<![CDATA[
+				#!/bin/bash
+
+				ps -o pid,args -e | grep build/node/bin/node | grep -v grep
+			]]>
+		</echo>
 	</target>
 
 	<target name="stop-oauth2-react-application">
@@ -46,6 +56,8 @@
 				<echo file="${clean.up.oauth2.workspace.file}">
 					<![CDATA[
 						#!/bin/bash
+
+						ps -o pid,args -e | grep build/node/bin/node | grep liferay-oauth2-workspace | grep -v grep
 
 						for i in `ps -o pid,args -e | grep build/node/bin/node | grep liferay-oauth2-workspace | grep -v grep | cut -c1-5`
 						do
