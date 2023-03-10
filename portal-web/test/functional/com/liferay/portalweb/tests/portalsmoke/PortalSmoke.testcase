@@ -68,6 +68,14 @@ definition {
 
 		Smoke.viewWelcomeContentPage();
 
+		var oauthURL = PropsUtil.get("oauth.url");
+
+		echo("${oauthURL}");
+
+		Open(locator1 = "${oauthURL}");
+
+		takeScreenshot();
+
 		Smoke.runSmoke();
 	}
 
