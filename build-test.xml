@@ -14951,7 +14951,14 @@ mail.send.blacklist=</echo>
 			</then>
 		</if>
 
-		<ant antfile="build-test-oauth2.xml" target="start-oauth2-react-application" />
+		<get-testcase-property property.name="oauth2.application.enabled" />
+
+		<if>
+			<equals arg1="${oauth2.application.enabled}" arg2="true" />
+			<then>
+				<ant antfile="build-test-oauth2.xml" target="start-oauth2-react-application" />
+			</then>
+		</if>
 
 		<get-testcase-property property.name="openam.enabled" />
 
@@ -15470,7 +15477,14 @@ mail.send.blacklist=</echo>
 			</then>
 		</if>
 
-		<ant antfile="build-test-oauth2.xml" target="stop-oauth2-react-application" />
+		<get-testcase-property property.name="oauth2.application.enabled" />
+
+		<if>
+			<equals arg1="${oauth2.application.enabled}" arg2="true" />
+			<then>
+				<ant antfile="build-test-oauth2.xml" target="stop-oauth2-react-application" />
+			</then>
+		</if>
 
 		<get-testcase-property property.name="openam.enabled" />
 

@@ -37,9 +37,9 @@
 		<if>
 			<os family="unix" />
 			<then>
-				<property location="clean_up_oauth2_workspace.sh" name="clean.up.oauth2.workspace.bash" />
+				<property location="clean_up_oauth2_workspace.sh" name="clean.up.oauth2.workspace.file" />
 
-				<echo file="${clean.up.oauth2.workspace.bash}">
+				<echo file="${clean.up.oauth2.workspace.file}">
 					<![CDATA[
 						#!/bin/bash
 
@@ -53,13 +53,13 @@
 				</echo>
 
 				<chmod
-					file="${clean.up.oauth2.workspace.bash}"
+					file="${clean.up.oauth2.workspace.file}"
 					perm="a+x"
 				/>
 
-				<exec executable="${clean.up.oauth2.workspace.bash}" />
+				<exec executable="${clean.up.oauth2.workspace.file}" />
 
-				<delete file="${clean.up.oauth2.workspace.bash}" />
+				<delete file="${clean.up.oauth2.workspace.file}" />
 			</then>
 		</if>
 	</target>
