@@ -26,16 +26,23 @@
 	<target name="prepare-oauth2-react-application">
 		<property location="${project.dir}/workspaces/liferay-oauth2-workspace" name="liferay.oauth2.workspace" />
 
-		<echo>liferay.oauth2.workspace=${liferay.oauth2.workspace}</echo>
+		<get-host-git-dir />
+
+		<propertyregex
+			input="${project.dir}"
+			property="portal.dir.name"
+			regexp=".*\/(.*)"
+			select="\1"
+		/>
 
 		<start-docker-container image="liferay/liferay-ci:node-19_1.0.0" name="${env.HOSTNAME}_node">\
-			-p 3000:3000 \
-			-v ${liferay.oauth2.workspace}:/root/liferay-oauth2-workspace \
+			--expose 3000 \
+			--mount type=bind,source=${host.git.dir}/${portal.dir.name},target=/root/liferay-oauth2-workspace \
 		</start-docker-container>
 
 		<docker-execute container="${env.HOSTNAME}_node">
 			<![CDATA[
-				cd /root/liferay-oauth2-workspace/client-extensions/liferay-oauth2-oauth-application-user-agent
+				cd /root/liferay-oauth2-workspace/client-extensions/liferay-oauth2-etc
 
 				yarn install
 
