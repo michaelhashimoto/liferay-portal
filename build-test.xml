@@ -11912,7 +11912,6 @@ auto.deploy.dest.dir=C:/WINDOWS/system32/config/systemprofile/liferay/websphere-
 			liferay.app.server.shielded.container.lib.portal.dir=${app.server.shielded-container-lib.portal.dir}
 			liferay.app.server.portal.web.dir=${app.server.portal.dir}
 			logger.resources.url=${test.poshi.logger.resources.url}
-			oauth.url=http://${env.HOSTNAME}_node:3000
 			operating.system.type=${operating.system.type}
 			output.dir.name=${selenium.output.dir.name}
 			product.names=${product.names}
@@ -12469,6 +12468,17 @@ auto.deploy.dest.dir=C:/WINDOWS/system32/config/systemprofile/liferay/websphere-
 			<then>
 				<echo append="true" file="${test.ext.properties.file}">
 					marketplace.url=${marketplace.url}
+				</echo>
+			</then>
+		</if>
+
+		<get-testcase-property property.name="oauth2.application.enabled" />
+
+		<if>
+			<equals arg1="${oauth2.application.enabled}" arg2="true" />
+			<then>
+				<echo append="true" file="${test.ext.properties.file}">
+					oauth.url=http://${env.HOSTNAME}:3000
 				</echo>
 			</then>
 		</if>
