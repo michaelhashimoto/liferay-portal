@@ -11881,6 +11881,7 @@ auto.deploy.dest.dir=C:/WINDOWS/system32/config/systemprofile/liferay/websphere-
 			liferay.app.server.shielded.container.lib.portal.dir=${app.server.shielded-container-lib.portal.dir}
 			liferay.app.server.portal.web.dir=${app.server.portal.dir}
 			logger.resources.url=${test.poshi.logger.resources.url}
+			oauth.url=http://${env.HOSTNAME}_node:3000
 			operating.system.type=${operating.system.type}
 			output.dir.name=${selenium.output.dir.name}
 			product.names=${product.names}
@@ -15020,8 +15021,6 @@ mail.send.blacklist=</echo>
 
 		<antcall target="deploy-osgi-modules" />
 
-		<ant antfile="build-test-oauth2.xml" target="prepare-oauth2-react-application" />
-
 		<get-testcase-property property.name="liferay.data.guard.enabled" />
 
 		<if>
@@ -15592,6 +15591,8 @@ mail.send.blacklist=</echo>
 				<start-docker-browser />
 			</then>
 		</if>
+
+		<ant antfile="build-test-oauth2.xml" target="prepare-oauth2-react-application" />
 	</target>
 
 	<target name="start-docker-database">
