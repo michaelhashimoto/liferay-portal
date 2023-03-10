@@ -117,6 +117,124 @@ module.framework.properties.osgi.console=11312</echo>
 		</sequential>
 	</macrodef>
 
+	<macrodef name="cache-job">
+		<sequential>
+			<beanshell mapId="invoke job">
+				<![CDATA[
+					import com.liferay.jenkins.results.parser.GitWorkingDirectory;
+					import com.liferay.jenkins.results.parser.GitWorkingDirectoryFactory;
+					import com.liferay.jenkins.results.parser.JenkinsResultsParserUtil;
+					import com.liferay.jenkins.results.parser.Job;
+					import com.liferay.jenkins.results.parser.JobFactory;
+					import com.liferay.jenkins.results.parser.PortalGitWorkingDirectory;
+					import com.liferay.jenkins.results.parser.test.clazz.group.BatchTestClassGroup;
+					import com.liferay.jenkins.results.parser.test.clazz.group.SegmentTestClassGroup;
+					import com.liferay.jenkins.results.parser.test.clazz.group.TestClassGroupFactory;
+
+					public Job.BuildProfile getBuildProfile() {
+						String buildProfile = project.getProperty("build.profile");
+
+						if ((buildProfile != null) && buildProfile.equals("dxp")) {
+							return Job.BuildProfile.DXP;
+						}
+
+						return Job.BuildProfile.PORTAL;
+					}
+
+					public String getJobName() {
+						String jobName = project.getProperty("job.name");
+
+						if (JenkinsResultsParserUtil.isNullOrEmpty(jobName)) {
+							jobName = project.getProperty("env.TOP_LEVEL_JOB_NAME");
+						}
+
+						if (JenkinsResultsParserUtil.isNullOrEmpty(jobName)) {
+							jobName = project.getProperty("env.JOB_NAME");
+						}
+
+						if (JenkinsResultsParserUtil.isNullOrEmpty(jobName)) {
+							jobName = "test-portal-testsuite-upstream(" + getUpstreamBranchName() + ")";
+						}
+
+						return jobName;
+					}
+
+					public GitWorkingDirectory getPortalGitWorkingDirectory() {
+						File gitWorkingDir = JenkinsResultsParserUtil.getGitWorkingDir(new File(project.getProperty("project.dir")));
+
+						GitWorkingDirectory gitWorkingDirectory = GitWorkingDirectoryFactory.newGitWorkingDirectory(getUpstreamBranchName(), gitWorkingDir, getRepositoryName());
+
+						if (gitWorkingDirectory instanceof PortalGitWorkingDirectory) {
+							return (PortalGitWorkingDirectory)gitWorkingDirectory;
+						}
+
+						return null;
+					}
+
+					public String getRepositoryName() {
+						String repositoryName = project.getProperty("env.REPOSITORY_NAME");
+
+						if ((repositoryName != null) && !repositoryName.isEmpty()) {
+							return repositoryName;
+						}
+
+						String upstreamBranchName = getUpstreamBranchName();
+
+						if (upstreamBranchName.equals("master")) {
+							return "liferay-portal";
+						}
+
+						return "liferay-portal-ee";
+					}
+
+					public int getSegmentID() {
+						String jobVariant = project.getProperty("env.JOB_VARIANT");
+
+						String jobVariantRegex = "[^/]+/(\\d+)";
+
+						if ((jobVariant == null) || (!jobVariant.matches(jobVariantRegex))) {
+							return 0;
+						}
+
+						return Integer.valueOf(jobVariant.replaceAll(jobVariantRegex, "$1"));
+					}
+
+					public String getTestSuiteName() {
+						String testSuiteName = project.getProperty("env.CI_TEST_SUITE");
+
+						if (JenkinsResultsParserUtil.isNullOrEmpty(testSuiteName)) {
+							testSuiteName = "default";
+						}
+
+						return testSuiteName;
+					}
+
+					public String getUpstreamBranchName() {
+						String upstreamBranchName = project.getProperty("env.TEST_PORTAL_BRANCH_NAME");
+
+						if (JenkinsResultsParserUtil.isNullOrEmpty(upstreamBranchName)) {
+							upstreamBranchName = project.getProperty("liferay.portal.branch");
+						}
+
+						if (JenkinsResultsParserUtil.isNullOrEmpty(upstreamBranchName)) {
+							upstreamBranchName = project.getProperty("git.working.branch.name");
+						}
+
+						return upstreamBranchName.replace("-private", "");
+					}
+
+					Job job = beanShellMap.get("job");
+
+					if (job == null) {
+						job = JobFactory.newJob(getBuildProfile(), getJobName(), null, getPortalGitWorkingDirectory(), getUpstreamBranchName(), null, getRepositoryName(), getTestSuiteName(), getUpstreamBranchName());
+
+						beanShellMap.put("job", job);
+					}
+				]]>
+			</beanshell>
+		</sequential>
+	</macrodef>
+
 	<macrodef name="check-config">
 		<sequential>
 			<if>
@@ -1244,6 +1362,75 @@ jdbc.counter.connectionProperties=oracle.jdbc.ReadTimeout=0;oracle.net.CONNECT_T
 			</for>
 
 			<fail message="No module base directory found for '@{subrepository.name}'." unless="module.base.dir" />
+		</sequential>
+	</macrodef>
+
+	<macrodef name="get-module-dirs-test-names">
+		<sequential>
+			<var name="module.dirs.test.names" unset="true" />
+
+			<cache-job />
+
+			<beanshell mapId="invoke job">
+				<![CDATA[
+					import com.liferay.jenkins.results.parser.JenkinsResultsParserUtil;
+					import com.liferay.jenkins.results.parser.Job;
+					import com.liferay.jenkins.results.parser.test.clazz.ModulesJUnitTestClass;
+					import com.liferay.jenkins.results.parser.test.clazz.TestClass;
+					import com.liferay.jenkins.results.parser.test.clazz.group.AxisTestClassGroup;
+
+					Job job = beanShellMap.get("job");
+
+					if (job == null) {
+						return;
+					}
+
+					AxisTestClassGroup axisTestClassGroup = job.getAxisTestClassGroup(project.getProperty("env.JOB_VARIANT") + "/" + project.getProperty("env.AXIS_VARIABLE"));
+
+					if (axisTestClassGroup == null) {
+						return;
+					}
+
+					Map moduleDirTestsMap = new HashMap();
+
+					for (TestClass testClass : axisTestClassGroup.getTestClasses()) {
+						if (!(testClass instanceof ModulesJUnitTestClass)) {
+							continue;
+						}
+
+						ModulesJUnitTestClass modulesJUnitTestClass = (ModulesJUnitTestClass)testClass;
+
+						File moduleDir = modulesJUnitTestClass.getModuleDir();
+
+						List testNames = moduleDirTestsMap.get(moduleDir);
+
+						if (testNames == null) {
+							testNames = new ArrayList();
+
+							moduleDirTestsMap.put(moduleDir, testNames);
+						}
+
+						testNames.add(modulesJUnitTestClass.getTestClassName());
+					}
+
+					if (moduleDirTestsMap.isEmpty()) {
+						return;
+					}
+
+					StringBuilder sb = new StringBuilder();
+
+					for (Map.Entry moduleDirTestsEntry : moduleDirTestsMap.entrySet()) {
+						sb.append(JenkinsResultsParserUtil.getCanonicalPath(moduleDirTestsEntry.getKey()));
+						sb.append(":");
+						sb.append(JenkinsResultsParserUtil.join(",", new ArrayList(moduleDirTestsEntry.getValue())));
+						sb.append(";");
+					}
+
+					sb.setLength(sb.length() - 1);
+
+					project.setProperty("module.dirs.test.names", sb.toString());
+				]]>
+			</beanshell>
 		</sequential>
 	</macrodef>
 

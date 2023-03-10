@@ -2394,11 +2394,77 @@ log.sanitizer.enabled=false</echo>
 
 							<lstopwatch action="start" name="test.execution.duration" />
 
-							<gradle-execute dir="modules" refreshdependencies="@{refreshdependencies}" task="testIntegration">
-								<arg value="--continue" />
-								<arg value="-Dbuild.exclude.ant.plugin=true" />
-								<arg value="-Dtest.class.group.index=${axis.variable}" />
-							</gradle-execute>
+							<if>
+								<isset property="env.JENKINS_HOME" />
+								<then>
+									<get-module-dirs-test-names />
+
+									<if>
+										<isset property="module.dirs.test.names" />
+										<then>
+											<for delimiter=";" list="${module.dirs.test.names}" param="module.dir.test.names" trim="true">
+												<sequential>
+													<local name="module.dir" />
+													<local name="test.names" />
+													<local name="test.names.args" />
+
+													<propertyregex
+														input="@{module.dir.test.names}"
+														property="module.dir"
+														regexp="(.+)\:(.+)"
+														replace="\1"
+													/>
+
+													<propertyregex
+														input="@{module.dir.test.names}"
+														override="true"
+														property="test.names"
+														regexp="(.+)\:(.+)"
+														replace="\2"
+													/>
+
+													<propertyregex
+														global="true"
+														input="${test.names}"
+														override="true"
+														property="test.names.args"
+														regexp="[^,]+"
+														replace="--tests=\0"
+													/>
+
+													<propertyregex
+														global="true"
+														input="${test.names.args}"
+														override="true"
+														property="test.names.args"
+														regexp=","
+														replace=" "
+													/>
+
+													<gradle-execute dir="${module.dir}" refreshdependencies="@{refreshdependencies}" task="testIntegration ${test.names.args}">
+														<arg value="--continue" />
+														<arg value="-Dbuild.exclude.ant.plugin=true" />
+													</gradle-execute>
+												</sequential>
+											</for>
+										</then>
+										<else>
+											<gradle-execute dir="modules" refreshdependencies="@{refreshdependencies}" task="testIntegration">
+												<arg value="--continue" />
+												<arg value="-Dbuild.exclude.ant.plugin=true" />
+												<arg value="-Dtest.class.group.index=${axis.variable}" />
+											</gradle-execute>
+										</else>
+									</if>
+								</then>
+								<else>
+									<gradle-execute dir="modules" refreshdependencies="@{refreshdependencies}" task="testIntegration">
+										<arg value="--continue" />
+										<arg value="-Dbuild.exclude.ant.plugin=true" />
+										<arg value="-Dtest.class.group.index=${axis.variable}" />
+									</gradle-execute>
+								</else>
+							</if>
 
 							<lstopwatch action="total" name="test.execution.duration" />
 
@@ -6521,14 +6587,72 @@ information. Make sure to commit in all format-javadoc results.
 					</then>
 				</if>
 
-				<gradle-execute dir="modules" task="test">
-					<arg value="--continue" />
-					<arg value="-Dbuild.exclude.ant.plugin=true" />
-					<arg if:true="${run.solr.unit.tests}" value="-Dcom.liferay.portal.search.solr8.test.unit.started=true" />
-					<arg value="-Djunit.code.coverage=${test.batch.code.coverage}" />
-					<arg if:set="project.templates.test.builds" value="-Dproject.templates.test.builds=${project.templates.test.builds}" />
-					<arg value="-Dtest.class.group.index=${axis.variable}" />
-				</gradle-execute>
+				<get-module-dirs-test-names />
+
+				<if>
+					<isset property="module.dirs.test.names" />
+					<then>
+						<for delimiter=";" list="${module.dirs.test.names}" param="module.dir.test.names" trim="true">
+							<sequential>
+								<local name="module.dir" />
+								<local name="test.names" />
+								<local name="test.names.args" />
+
+								<propertyregex
+									input="@{module.dir.test.names}"
+									property="module.dir"
+									regexp="(.+)\:(.+)"
+									replace="\1"
+								/>
+
+								<propertyregex
+									input="@{module.dir.test.names}"
+									override="true"
+									property="test.names"
+									regexp="(.+)\:(.+)"
+									replace="\2"
+								/>
+
+								<propertyregex
+									global="true"
+									input="${test.names}"
+									override="true"
+									property="test.names.args"
+									regexp="[^,]+"
+									replace="--tests=\0"
+								/>
+
+								<propertyregex
+									global="true"
+									input="${test.names.args}"
+									override="true"
+									property="test.names.args"
+									regexp=","
+									replace=" "
+								/>
+
+								<gradle-execute dir="${module.dir}" task="test ${test.names.args}">
+									<arg value="--continue" />
+									<arg value="-Dbuild.exclude.ant.plugin=true" />
+									<arg if:true="${run.solr.unit.tests}" value="-Dcom.liferay.portal.search.solr8.test.unit.started=true" />
+									<arg value="-Djunit.code.coverage=${test.batch.code.coverage}" />
+									<arg if:set="project.templates.test.builds" value="-Dproject.templates.test.builds=${project.templates.test.builds}" />
+									<arg value="-Dtest.class.group.index=${axis.variable}" />
+								</gradle-execute>
+							</sequential>
+						</for>
+					</then>
+					<else>
+						<gradle-execute dir="modules" task="test">
+							<arg value="--continue" />
+							<arg value="-Dbuild.exclude.ant.plugin=true" />
+							<arg if:true="${run.solr.unit.tests}" value="-Dcom.liferay.portal.search.solr8.test.unit.started=true" />
+							<arg value="-Djunit.code.coverage=${test.batch.code.coverage}" />
+							<arg if:set="project.templates.test.builds" value="-Dproject.templates.test.builds=${project.templates.test.builds}" />
+							<arg value="-Dtest.class.group.index=${axis.variable}" />
+						</gradle-execute>
+					</else>
+				</if>
 
 				<lstopwatch action="total" name="test.execution.duration" />
 			</test-action>
