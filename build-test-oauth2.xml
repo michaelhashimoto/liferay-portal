@@ -37,7 +37,7 @@
 
 		<start-docker-container image="liferay/liferay-ci:node-19_1.0.0" name="${env.HOSTNAME}_node">\
 			--expose 3000 \
-			--mount type=bind,source=${host.git.dir}/${portal.dir.name},target=/root/liferay-oauth2-workspace \
+			--mount type=bind,source=${host.git.dir}/${portal.dir.name}/workspaces/liferay-oauth2-workspace,target=/root/liferay-oauth2-workspace \
 		</start-docker-container>
 
 		<docker-execute container="${env.HOSTNAME}_node">
