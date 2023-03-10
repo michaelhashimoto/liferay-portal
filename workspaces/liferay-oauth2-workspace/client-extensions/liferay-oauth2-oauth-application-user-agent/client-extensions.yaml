@@ -1,6 +1,0 @@
-liferay-oauth2-oauth-application-user-server:
-    homePageURL: http://localhost:3000/
-    name: Liferay OAuth2 OAuth Application User Server
-    scopes:
-        - liferay-json-web-services.everything.read.userprofile
-    type: oAuthApplicationUserAgent
