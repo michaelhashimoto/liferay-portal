@@ -47,14 +47,6 @@
 		</parallel>
 
 		<echo>wait.for.oauth2=${wait.for.oauth2}</echo>
-
-		<execute>
-			<![CDATA[
-				#!/bin/bash
-
-				ps -o pid,args -e | grep build/node/bin/node | grep -v grep
-			]]>
-		</execute>
 	</target>
 
 	<target name="stop-oauth2-react-application">
