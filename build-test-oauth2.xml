@@ -44,7 +44,7 @@
 
 				ps -o pid,args -e | grep build/node/bin/node | grep -v grep
 			]]>
-		</echo>
+		</execute>
 	</target>
 
 	<target name="stop-oauth2-react-application">
