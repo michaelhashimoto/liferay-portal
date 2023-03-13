@@ -26,15 +26,25 @@
 	<target name="start-oauth2-react-application">
 		<property location="${project.dir}/workspaces/liferay-oauth2-workspace/client-extensions/liferay-oauth2-etc" name="liferay.oauth2.workspace" />
 
-		<execute dir="${liferay.oauth2.workspace}">
-			<![CDATA[
-				(${project.dir}/gradlew packageRunStart &)
-			]]>
-		</execute>
+		<parallel>
+			<daemons>
+				<echo>START!</echo>
 
-		<waitfor checkevery="5" checkeveryunit="second" maxwait="5" maxwaitunit="minute" timeoutproperty="wait.for.oauth2">
-			<http url="http://localhost:3000" />
-		</waitfor>
+				<echo>liferay.oauth2.workspace=${liferay.oauth2.workspace}</echo>
+
+				<execute dir="${liferay.oauth2.workspace}">
+					<![CDATA[
+						../../gradlew packageRunStart
+					]]>
+				</execute>
+
+				<echo>END!</echo>
+			</daemons>
+
+			<waitfor checkevery="5" checkeveryunit="second" maxwait="5" maxwaitunit="minute" timeoutproperty="wait.for.oauth2">
+				<http url="http://localhost:3000" />
+			</waitfor>
+		</parallel>
 
 		<echo>wait.for.oauth2=${wait.for.oauth2}</echo>
 
