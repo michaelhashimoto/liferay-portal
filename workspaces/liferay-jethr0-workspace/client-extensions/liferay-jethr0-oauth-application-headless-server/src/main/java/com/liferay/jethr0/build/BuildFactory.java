@@ -15,8 +15,6 @@
 package com.liferay.jethr0.build;
 
 import com.liferay.jethr0.project.Project;
-import com.liferay.jethr0.testsuite.DefaultTestSuite;
-import com.liferay.jethr0.testsuite.TestSuite;
 import org.json.JSONObject;
 
 import java.util.Collections;
