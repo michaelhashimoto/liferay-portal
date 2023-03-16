@@ -22,4 +22,63 @@
 			todir="${liferay.home}/osgi/configs"
 		/>
 	</target>
+
+	<target name="start-oauth2-react-application">
+		<property location="${project.dir}/workspaces/liferay-oauth2-workspace/client-extensions/liferay-oauth2-etc" name="liferay.oauth2.workspace" />
+
+		<parallel>
+			<daemons>
+				<echo>START!</echo>
+
+				<echo>liferay.oauth2.workspace=${liferay.oauth2.workspace}</echo>
+
+				<execute dir="${liferay.oauth2.workspace}">
+					<![CDATA[
+						../../gradlew packageRunStart
+					]]>
+				</execute>
+
+				<echo>END!</echo>
+			</daemons>
+
+			<waitfor checkevery="5" checkeveryunit="second" maxwait="5" maxwaitunit="minute" timeoutproperty="wait.for.oauth2">
+				<http url="http://localhost:3000" />
+			</waitfor>
+		</parallel>
+
+		<echo>wait.for.oauth2=${wait.for.oauth2}</echo>
+	</target>
+
+	<target name="stop-oauth2-react-application">
+		<if>
+			<os family="unix" />
+			<then>
+				<property location="clean_up_oauth2_workspace.sh" name="clean.up.oauth2.workspace.file" />
+
+				<echo file="${clean.up.oauth2.workspace.file}">
+					<![CDATA[
+						#!/bin/bash
+
+						ps -o pid,args -e | grep build/node/bin/node | grep liferay-oauth2-workspace | grep -v grep
+
+						for i in `ps -o pid,args -e | grep build/node/bin/node | grep liferay-oauth2-workspace | grep -v grep | cut -c1-5`
+						do
+							echo "Killing $i"
+
+							kill -9 $i
+						done
+					]]>
+				</echo>
+
+				<chmod
+					file="${clean.up.oauth2.workspace.file}"
+					perm="a+x"
+				/>
+
+				<exec executable="${clean.up.oauth2.workspace.file}" />
+
+				<delete file="${clean.up.oauth2.workspace.file}" />
+			</then>
+		</if>
+	</target>
 </project>
