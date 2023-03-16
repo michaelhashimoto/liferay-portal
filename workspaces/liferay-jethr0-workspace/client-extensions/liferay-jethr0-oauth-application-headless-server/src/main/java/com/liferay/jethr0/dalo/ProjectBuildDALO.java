@@ -19,6 +19,7 @@ import com.liferay.jethr0.build.BuildFactory;
 import com.liferay.jethr0.project.Project;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.json.JSONObject;
@@ -49,6 +50,24 @@ public class ProjectBuildDALO extends BaseRelationshipDALO {
 		}
 
 		return builds;
+	}
+
+	public void updateRelationships(Project project) {
+		List<Build> remoteBuilds = retrieveBuilds(project);
+
+		for (Build build : project.getBuilds()) {
+			if (remoteBuilds.contains(build)) {
+				remoteBuilds.removeAll(Collections.singletonList(build));
+
+				continue;
+			}
+
+			createRelationship(project, build);
+		}
+
+		for (Build remoteBuild : remoteBuilds) {
+			deleteRelationship(project, remoteBuild);
+		}
 	}
 
 	@Override
