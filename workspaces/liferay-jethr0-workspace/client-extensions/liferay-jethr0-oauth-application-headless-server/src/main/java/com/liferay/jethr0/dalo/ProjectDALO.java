@@ -14,6 +14,7 @@
 
 package com.liferay.jethr0.dalo;
 
+import com.liferay.jethr0.build.Build;
 import com.liferay.jethr0.gitbranch.GitBranch;
 import com.liferay.jethr0.project.Project;
 import com.liferay.jethr0.project.ProjectFactory;
@@ -74,6 +75,7 @@ public class ProjectDALO extends BaseDALO {
 		for (JSONObject jsonObject : retrieve()) {
 			Project project = ProjectFactory.newProject(jsonObject);
 
+			project.addBuilds(_projectBuildDALO.retrieveBuilds(project));
 			project.addGitBranches(
 				_projectGitBranchDALO.retrieveGitBranches(project));
 			project.addTestSuites(
@@ -86,6 +88,22 @@ public class ProjectDALO extends BaseDALO {
 	}
 
 	public Project updateProject(Project project) {
+		List<Build> builds = _projectBuildDALO.retrieveBuilds(project);
+
+		for (Build build : project.getBuilds()) {
+			if (builds.contains(build)) {
+				builds.removeAll(Collections.singletonList(build));
+
+				continue;
+			}
+
+			_projectBuildDALO.createRelationship(project, build);
+		}
+
+		for (Build build : builds) {
+			_projectBuildDALO.deleteRelationship(project, build);
+		}
+
 		List<GitBranch> gitBranches = _projectGitBranchDALO.retrieveGitBranches(
 			project);
 
@@ -132,6 +150,9 @@ public class ProjectDALO extends BaseDALO {
 	protected String getObjectDefinitionLabel() {
 		return "Project";
 	}
+
+	@Autowired
+	private ProjectBuildDALO _projectBuildDALO;
 
 	@Autowired
 	private ProjectGitBranchDALO _projectGitBranchDALO;
