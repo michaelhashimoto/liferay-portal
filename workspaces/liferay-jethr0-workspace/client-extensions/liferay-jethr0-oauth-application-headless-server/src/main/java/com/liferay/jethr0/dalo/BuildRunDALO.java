@@ -15,8 +15,10 @@
 package com.liferay.jethr0.dalo;
 
 import com.liferay.jethr0.builds.Build;
-import com.liferay.jethr0.builds.BuildFactory;
-import com.liferay.jethr0.project.Project;
+import com.liferay.jethr0.builds.run.BuildRun;
+import com.liferay.jethr0.builds.run.BuildRunFactory;
+
+import java.net.URL;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,19 +32,22 @@ import org.springframework.context.annotation.Configuration;
  * @author Michael Hashimoto
  */
 @Configuration
-public class BuildDALO extends BaseDALO {
+public class BuildRunDALO extends BaseDALO {
 
-	public Build createBuild(
-		Project project, String buildName, String jobName, Build.State state) {
+	public BuildRun createBuildRun(
+		Build build, URL buildURL, long duration, BuildRun.Result result,
+		BuildRun.State state) {
 
 		JSONObject requestJSONObject = new JSONObject();
 
 		requestJSONObject.put(
-			"buildName", buildName
+			"buildURL", buildURL.toString()
 		).put(
-			"jobName", jobName
+			"duration", duration
 		).put(
-			"r_projectToBuilds_c_projectId", project.getId()
+			"r_buildToBuildRuns_c_buildId", build.getId()
+		).put(
+			"result", result.getJSONObject()
 		).put(
 			"state", state.getJSONObject()
 		);
@@ -53,55 +58,46 @@ public class BuildDALO extends BaseDALO {
 			throw new RuntimeException("No response");
 		}
 
-		return BuildFactory.newBuild(project, responseJSONObject);
+		return BuildRunFactory.newBuildRun(build, responseJSONObject);
 	}
 
-	public void deleteBuild(Build build) {
-		if (build == null) {
+	public void deleteBuildRun(BuildRun buildRun) {
+		if (buildRun == null) {
 			return;
 		}
 
-		delete(build.getId());
+		delete(buildRun.getId());
 
-		BuildFactory.removeBuild(build);
+		BuildRunFactory.removeBuildRun(buildRun);
 	}
 
-	public List<Build> retrieveBuilds(Project project) {
-		List<Build> builds = new ArrayList<>();
+	public List<BuildRun> retrieveBuildRuns(Build build) {
+		List<BuildRun> buildRuns = new ArrayList<>();
 
-		for (JSONObject jsonObject : retrieve()) {
-			Build build = BuildFactory.newBuild(project, jsonObject);
-
-			build.addBuildParameters(
-				_buildToBuildParametersDALO.retrieveBuildParameters(build));
-			build.addBuildRuns(_buildToBuildRunsDALO.retrieveBuildRuns(build));
-
-			builds.add(build);
+		for (JSONObject responseJSONObject : retrieve()) {
+			buildRuns.add(
+				BuildRunFactory.newBuildRun(build, responseJSONObject));
 		}
 
-		return builds;
+		return buildRuns;
 	}
 
-	public Build updateBuild(Build build) {
-		_buildToBuildParametersDALO.updateRelationships(build);
-		_buildToBuildRunsDALO.updateRelationships(build);
+	public BuildRun updateBuildRun(BuildRun buildRun) {
+		_buildToBuildRunsDALO.updateRelationships(buildRun.getBuild());
 
-		JSONObject responseJSONObject = update(build.getJSONObject());
+		JSONObject responseJSONObject = update(buildRun.getJSONObject());
 
 		if (responseJSONObject == null) {
 			throw new RuntimeException("No response");
 		}
 
-		return build;
+		return buildRun;
 	}
 
 	@Override
 	protected String getObjectDefinitionLabel() {
-		return "Build";
+		return "Build Run";
 	}
-
-	@Autowired
-	private BuildToBuildParametersDALO _buildToBuildParametersDALO;
 
 	@Autowired
 	private BuildToBuildRunsDALO _buildToBuildRunsDALO;
