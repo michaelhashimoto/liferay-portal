@@ -15,6 +15,7 @@
 package com.liferay.jethr0.builds;
 
 import com.liferay.jethr0.builds.parameter.BuildParameter;
+import com.liferay.jethr0.builds.run.BuildRun;
 import com.liferay.jethr0.project.Project;
 
 import java.util.HashMap;
@@ -32,9 +33,15 @@ public interface Build {
 
 	public void addBuildParameters(List<BuildParameter> buildParameters);
 
+	public void addBuildRun(BuildRun buildRun);
+
+	public void addBuildRuns(List<BuildRun> buildRuns);
+
 	public String getBuildName();
 
 	public List<BuildParameter> getBuildParameters();
+
+	public List<BuildRun> getBuildRuns();
 
 	public long getId();
 
@@ -49,6 +56,10 @@ public interface Build {
 	public void removeBuildParameter(BuildParameter buildParameter);
 
 	public void removeBuildParameters(List<BuildParameter> buildParameters);
+
+	public void removeBuildRun(BuildRun buildRun);
+
+	public void removeBuildRuns(List<BuildRun> buildRuns);
 
 	public void setJobName(String jobName);
 
