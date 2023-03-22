@@ -85,13 +85,26 @@ public class FunctionalBatchTestClassGroup extends BatchTestClassGroup {
 	}
 
 	public List<File> getTestBaseDirs() {
-		PortalGitWorkingDirectory portalGitWorkingDirectory =
-			getPortalGitWorkingDirectory();
+		File testBaseDir = null;
 
-		return Arrays.asList(
-			new File(
+		JobProperty jobProperty = getJobProperty(
+			"test.base.dir", testSuiteName, batchName);
+
+		if ((jobProperty != null) &&
+			!JenkinsResultsParserUtil.isNullOrEmpty(jobProperty.getValue())) {
+
+			testBaseDir = new File(jobProperty.getValue());
+		}
+		else {
+			PortalGitWorkingDirectory portalGitWorkingDirectory =
+				getPortalGitWorkingDirectory();
+
+			testBaseDir = new File(
 				portalGitWorkingDirectory.getWorkingDirectory(),
-				"portal-web/test/functional/portalweb"));
+				"portal-web/test/functional/portalweb");
+		}
+
+		return Arrays.asList(testBaseDir);
 	}
 
 	public String getTestBatchRunPropertyQuery() {
