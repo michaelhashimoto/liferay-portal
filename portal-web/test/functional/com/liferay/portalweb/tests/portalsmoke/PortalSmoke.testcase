@@ -37,6 +37,7 @@ definition {
 		property operating.system.types = "alpine,amazonlinux,centos,debian,fedora,orcllinux,osx,redhat,rockylinux,solaris,suse,ubuntu,windows";
 		property portal.acceptance = "false";
 		property testray.component.names = "Training";
+		property workspace.client.extensions.includes = "liferay-sample-batch";
 
 		SignIn.signInTestSetup();
 
