@@ -1624,7 +1624,9 @@ app.server.type=@{app.server.type}]]></echo>
 
 			<delete failonerror="false" file="${project.dir}/test.generated.properties" />
 
-			<antcall target="record-test-generated-properties" />
+			<antcall target="record-test-generated-properties">
+				<param if:set="test.base.dir.name" name="test.base.dir.name" value="${test.base.dir.name}" />
+			</antcall>
 
 			<get-testcase-property property.name="ci.retries.disabled" />
 
