@@ -14268,10 +14268,21 @@ if (ppstate.equals("normal")) {
 
 				<poshi-execute task="writePoshiProperties" />
 
-				<move
-					file="portal-web/test.generated.properties"
-					tofile="test.generated.properties"
-				/>
+				<if>
+					<available file="${test.base.dir.name}/test.generated.properties" />
+					<then>
+						<move
+							file="${test.base.dir.name}/test.generated.properties"
+							tofile="test.generated.properties"
+						/>
+					</then>
+					<else>
+						<move
+							file="portal-web/test.generated.properties"
+							tofile="test.generated.properties"
+						/>
+					</else>
+				</if>
 
 				<if>
 					<isset property="test.class" />
