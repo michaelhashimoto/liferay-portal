@@ -52,8 +52,8 @@
 				todir="${workspace.dir}/poshi"
 			/>
 
-			<execute dir="@{workspace.dir}">
-				../../gradlew runPoshi
+			<execute dir="${workspace.dir}">
+				../../gradlew @{task.name}
 			</execute>
 		</sequential>
 	</macrodef>

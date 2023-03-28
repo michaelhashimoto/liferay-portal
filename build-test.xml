@@ -14150,12 +14150,27 @@ if (ppstate.equals("normal")) {
 			</else>
 		</if>
 
-		<poshi-execute task="writePoshiProperties" />
+		<if>
+			<property isset="workspace.name" />
+			<then>
+				<ant antfile="build-test-${workspace.name}.xml" target="write-poshi-properties">
+					<property name="workspace.name" value="${workspace.name}" />
+				</ant>
 
-		<move
-			file="portal-web/test.case.method.names.properties"
-			tofile="test.case.method.names.properties"
-		/>
+				<move
+					file="${project.dir}/workspaces/${workspace.name}/test.case.method.names.properties"
+					tofile="test.case.method.names.properties"
+				/>
+			</then>
+			<else>
+				<poshi-execute task="writePoshiProperties" />
+
+				<move
+					file="portal-web/test.case.method.names.properties"
+					tofile="test.case.method.names.properties"
+				/>
+			</else>
+		</if>
 
 		<echo></echo>
 		<echo>##</echo>
@@ -14243,16 +14258,21 @@ if (ppstate.equals("normal")) {
 						<ant antfile="build-test-${workspace.name}.xml" target="write-poshi-properties">
 							<property name="workspace.name" value="${workspace.name}" />
 						</ant>
+
+						<move
+							file="${project.dir}/workspaces/${workspace.name}/test.generated.properties"
+							tofile="test.generated.properties"
+						/>
 					</then>
 					<else>
 						<poshi-execute task="writePoshiProperties" />
+
+						<move
+							file="portal-web/test.generated.properties"
+							tofile="test.generated.properties"
+						/>
 					</else>
 				</if>
-
-				<move
-					file="portal-web/test.generated.properties"
-					tofile="test.generated.properties"
-				/>
 
 				<if>
 					<isset property="test.class" />
