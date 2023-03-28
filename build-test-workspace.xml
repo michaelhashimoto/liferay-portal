@@ -45,6 +45,11 @@
 
 	<macrodef name="run-poshi">
 		<sequential>
+			<copy
+				file="${test.ext.properties.file}"
+				todir="${workspace.dir}/poshi"
+			/>
+
 			<execute dir="@{workspace.dir}">
 				../../gradlew runPoshi
 			</execute>
