@@ -14237,7 +14237,17 @@ if (ppstate.equals("normal")) {
 					</else>
 				</if>
 
-				<poshi-execute task="writePoshiProperties" />
+				<if>
+					<property isset="workspace.name" />
+					<then>
+						<ant antfile="build-test-${workspace.name}.xml" target="write-poshi-properties">
+							<property name="workspace.name" value="${workspace.name}" />
+						</ant>
+					</then>
+					<else>
+						<poshi-execute task="writePoshiProperties" />
+					</else>
+				</if>
 
 				<move
 					file="portal-web/test.generated.properties"

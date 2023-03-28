@@ -43,7 +43,9 @@
 		</sequential>
 	</macrodef>
 
-	<macrodef name="run-poshi">
+	<macrodef name="workspace-poshi-execute">
+		<attribute name="task.name" />
+
 		<sequential>
 			<copy
 				file="${test.ext.properties.file}"
@@ -68,7 +70,7 @@
 	</macrodef>
 
 	<target name="run-poshi">
-		<run-poshi />
+		<workspace-poshi-execute task.name="runPoshi" />
 	</target>
 
 	<target name="start-workspace">
@@ -79,5 +81,9 @@
 
 	<target name="stop-workspace">
 		<stop-workspace />
+	</target>
+
+	<target name="write-poshi-properties">
+		<workspace-poshi-execute task.name="writePoshiProperties" />
 	</target>
 </project>
