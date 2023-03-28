@@ -37,6 +37,15 @@
 
 	<propertycopy from="operating.system.${operating.system.type}.version" name="operating.system.version" />
 
+	<condition property="workspace.name" value="${env.TEST_WORKSPACE_NAME}">
+		<and>
+			<isset property="env.TEST_WORKSPACE_NAME" />
+			<not>
+				<equals arg1="${env.TEST_WORKSPACE_NAME}" arg2="" />
+			</not>
+		</and>
+	</condition>
+
 	<macrodef name="apply-portal-ext-properties">
 		<sequential>
 			<if>
@@ -10077,37 +10086,6 @@ org.apache.catalina.tribes.level = FINE]]>
 		</if>
 	</target>
 
-	<target name="deploy-workspace-client-extensions">
-		<for list="${workspace.client.extensions.includes}" param="workspace.client.extension.name">
-			<sequential>
-				<local name="workspace.client.extension.name" />
-
-				<antelope:stringutil property="workspace.client.extension.name" string="@{workspace.client.extension.name}">
-					<antelope:trim />
-				</antelope:stringutil>
-
-				<for param="workspace.client.extension.dir">
-					<path>
-						<dirset
-							dir="${project.dir}/workspaces/"
-							includes="*/client-extensions/${workspace.client.extension.name}"
-						/>
-					</path>
-					<sequential>
-						<execute dir="@{workspace.client.extension.dir}">
-							../../gradlew clean assemble
-						</execute>
-
-						<copy
-							file="@{workspace.client.extension.dir}/dist/${workspace.client.extension.name}.zip"
-							todir="${liferay.home}/deploy"
-						/>
-					</sequential>
-				</for>
-			</sequential>
-		</for>
-	</target>
-
 	<target name="execute-groovy-script-from-gogo-shell">
 		<set-app-server-properties
 			app.server.bundle.index="${bundle.index}"
@@ -14581,7 +14559,17 @@ jdbc.default.password=${database.mysql.password}</echo>
 			</then>
 		</if>
 
-		<poshi-execute task="runPoshi" />
+		<if>
+			<property isset="workspace.name" />
+			<then>
+				<ant antfile="build-test-${workspace.name}.xml" target="run-poshi">
+					<property name="workspace.name" value="${workspace.name}" />
+				</ant>
+			</then>
+			<else>
+				<poshi-execute task="runPoshi" />
+			</else>
+		</if>
 
 		<property name="test.class" value="${test.simple.class.name}#${test.method.name}" />
 
@@ -15082,10 +15070,6 @@ mail.send.blacklist=</echo>
 
 		<antcall target="deploy-osgi-modules" />
 
-		<get-testcase-property property.name="workspace.client.extensions.includes" />
-
-		<antcall if:set="workspace.client.extensions.includes" target="deploy-workspace-client-extensions" />
-
 		<get-testcase-property property.name="liferay.data.guard.enabled" />
 
 		<if>
@@ -15381,12 +15365,30 @@ mail.send.blacklist=</echo>
 			</then>
 		</if>
 
+		<if>
+			<property isset="workspace.name" />
+			<then>
+				<ant antfile="build-test-${workspace.name}.xml" target="start-workspace">
+					<property name="workspace.name" value="${workspace.name}" />
+				</ant>
+			</then>
+		</if>
+
 		<antcall target="run-selenium-test" />
 
 		<if>
 			<equals arg1="${analytics.cloud.enabled}" arg2="true" />
 			<then>
 				<ant antfile="build-test-analytics-cloud.xml" target="stop-analytics-cloud" />
+			</then>
+		</if>
+
+		<if>
+			<property isset="workspace.name" />
+			<then>
+				<ant antfile="build-test-${workspace.name}.xml" target="stop-workspace">
+					<property name="workspace.name" value="${workspace.name}" />
+				</ant>
 			</then>
 		</if>
 
