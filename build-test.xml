@@ -14151,7 +14151,7 @@ if (ppstate.equals("normal")) {
 		</if>
 
 		<if>
-			<property isset="workspace.name" />
+			<isset property="workspace.name" />
 			<then>
 				<ant antfile="build-test-${workspace.name}.xml" target="write-poshi-properties">
 					<property name="workspace.name" value="${workspace.name}" />
@@ -14253,7 +14253,7 @@ if (ppstate.equals("normal")) {
 				</if>
 
 				<if>
-					<property isset="workspace.name" />
+					<isset property="workspace.name" />
 					<then>
 						<ant antfile="build-test-${workspace.name}.xml" target="write-poshi-properties">
 							<property name="workspace.name" value="${workspace.name}" />
@@ -14590,7 +14590,7 @@ jdbc.default.password=${database.mysql.password}</echo>
 		</if>
 
 		<if>
-			<property isset="workspace.name" />
+			<isset property="workspace.name" />
 			<then>
 				<ant antfile="build-test-${workspace.name}.xml" target="run-poshi">
 					<property name="workspace.name" value="${workspace.name}" />
@@ -15396,7 +15396,7 @@ mail.send.blacklist=</echo>
 		</if>
 
 		<if>
-			<property isset="workspace.name" />
+			<isset property="workspace.name" />
 			<then>
 				<ant antfile="build-test-${workspace.name}.xml" target="start-workspace">
 					<property name="workspace.name" value="${workspace.name}" />
@@ -15414,7 +15414,7 @@ mail.send.blacklist=</echo>
 		</if>
 
 		<if>
-			<property isset="workspace.name" />
+			<isset property="workspace.name" />
 			<then>
 				<ant antfile="build-test-${workspace.name}.xml" target="stop-workspace">
 					<property name="workspace.name" value="${workspace.name}" />
