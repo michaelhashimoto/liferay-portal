@@ -1,1 +1,6 @@
 .DS_Store
+poshi/poshi-ext.properties
+**/build/classes/**
+**/build/generated/**
+**/build/resources/**
+**/build/tmp/**
