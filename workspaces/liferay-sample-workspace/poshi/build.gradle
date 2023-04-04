@@ -1,9 +1,48 @@
 apply plugin: "com.liferay.poshi.runner"
 
+task waitForPortal
+
+afterEvaluate {
+	runPoshi {
+		dependsOn ":startDockerContainer", waitForPortal
+		finalizedBy ":stopDockerContainer"
+	}
+}
+
 dependencies {
 	poshiRunnerResources group: "com.liferay", name: "com.liferay.poshi.runner.resources", version: "latest.release"
 }
 
+waitForPortal {
+	doLast {
+		def portalUrl = "http://localhost:8080"
+		def sleep = 5000
+		def responseCode = -1
+
+		while (true) {
+			try {
+				if (portalUrl.toURL().openConnection().responseCode == 200) {
+					println("Portal is up!")
+					break
+				}
+			}
+			catch (Throwable throwable) {
+			}
+			try {
+				Thread.sleep(sleep)
+			}
+			catch (Trowable throwable) {
+			}
+		}
+	}
+}
+
 poshiRunner {
 	poshiPropertiesFile = file("poshi.properties")
+}
+
+repositories {
+	maven {
+		url "https://repository-cdn.liferay.com/nexus/content/groups/public"
+	}
 }
