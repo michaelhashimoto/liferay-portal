@@ -14,6 +14,7 @@
 
 package com.liferay.jethr0.dalo;
 
+import com.liferay.client.extension.util.spring.boot.LiferayOAuth2Util;
 import com.liferay.jethr0.util.StringUtil;
 import com.liferay.jethr0.util.ThreadUtil;
 
@@ -32,9 +33,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.MediaType;
 import org.springframework.security.oauth2.client.AuthorizedClientServiceOAuth2AuthorizedClientManager;
-import org.springframework.security.oauth2.client.OAuth2AuthorizeRequest;
-import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
-import org.springframework.security.oauth2.core.OAuth2AccessToken;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
 
@@ -56,7 +54,10 @@ public class BaseDALO {
 				).contentType(
 					MediaType.APPLICATION_JSON
 				).header(
-					"Authorization", _getAuthorization()
+					"Authorization",
+					LiferayOAuth2Util.getBearerToken(
+						_authorizedClientServiceOAuth2AuthorizedClientManager,
+						_liferayOAuthApplicationExternalReferenceCodes)
 				).body(
 					BodyInserters.fromValue(requestJSONObject.toString())
 				).retrieve(
@@ -110,7 +111,10 @@ public class BaseDALO {
 				).accept(
 					MediaType.APPLICATION_JSON
 				).header(
-					"Authorization", _getAuthorization()
+					"Authorization",
+					LiferayOAuth2Util.getBearerToken(
+						_authorizedClientServiceOAuth2AuthorizedClientManager,
+						_liferayOAuthApplicationExternalReferenceCodes)
 				).retrieve(
 				).bodyToMono(
 					Void.class
@@ -186,7 +190,10 @@ public class BaseDALO {
 					).accept(
 						MediaType.APPLICATION_JSON
 					).header(
-						"Authorization", _getAuthorization()
+						"Authorization",
+						LiferayOAuth2Util.getBearerToken(
+							_authorizedClientServiceOAuth2AuthorizedClientManager,
+							_liferayOAuthApplicationExternalReferenceCodes)
 					).retrieve(
 					).bodyToMono(
 						String.class
@@ -259,7 +266,10 @@ public class BaseDALO {
 				).contentType(
 					MediaType.APPLICATION_JSON
 				).header(
-					"Authorization", _getAuthorization()
+					"Authorization",
+					LiferayOAuth2Util.getBearerToken(
+						_authorizedClientServiceOAuth2AuthorizedClientManager,
+						_liferayOAuthApplicationExternalReferenceCodes)
 				).body(
 					BodyInserters.fromValue(requestJSONObject.toString())
 				).retrieve(
@@ -308,38 +318,6 @@ public class BaseDALO {
 		}
 
 		return null;
-	}
-
-	private String _getAuthorization() {
-		Class<?> clazz = getClass();
-
-		OAuth2AuthorizeRequest.Builder oAuth2AuthorizeRequestBuilder =
-			OAuth2AuthorizeRequest.withClientRegistrationId(
-				_liferayOAuthApplicationExternalReferenceCodes
-			).principal(
-				clazz.getName()
-			);
-
-		OAuth2AuthorizedClient oAuth2AuthorizedClient =
-			_authorizedClientServiceOAuth2AuthorizedClientManager.authorize(
-				oAuth2AuthorizeRequestBuilder.build());
-
-		if (oAuth2AuthorizedClient == null) {
-			_log.error("Unable to get OAuth 2 authorized client");
-
-			return null;
-		}
-
-		OAuth2AccessToken oAuth2AccessToken =
-			oAuth2AuthorizedClient.getAccessToken();
-
-		if (oAuth2AccessToken == null) {
-			_log.error("Unable to get OAuth 2 access token");
-
-			return null;
-		}
-
-		return "Bearer " + oAuth2AccessToken.getTokenValue();
 	}
 
 	private static final long _RETRY_COUNT = 3;
