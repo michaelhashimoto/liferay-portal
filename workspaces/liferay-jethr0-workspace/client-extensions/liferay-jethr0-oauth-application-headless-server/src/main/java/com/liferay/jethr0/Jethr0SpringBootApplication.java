@@ -26,13 +26,23 @@ import com.liferay.jethr0.project.prioritizer.ProjectPrioritizer;
 import com.liferay.jethr0.project.prioritizer.ProjectPrioritizerRepository;
 import com.liferay.jethr0.project.queue.ProjectQueue;
 
+import com.liferay.jethr0.util.StringUtil;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
+import org.springframework.http.MediaType;
 import org.springframework.security.oauth2.client.AuthorizedClientServiceOAuth2AuthorizedClientManager;
 import org.springframework.security.oauth2.core.OAuth2AccessToken;
+import org.springframework.web.reactive.function.BodyInserters;
+import org.springframework.web.reactive.function.client.WebClient;
+
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author Michael Hashimoto
@@ -42,7 +52,11 @@ import org.springframework.security.oauth2.core.OAuth2AccessToken;
 public class Jethr0SpringBootApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(Jethr0SpringBootApplication.class, args);
+		ConfigurableApplicationContext context = SpringApplication.run(
+			Jethr0SpringBootApplication.class, args);
+
+		//printBeans(context);
+		//makeRequest(context);
 	}
 
 	@Bean
@@ -50,6 +64,10 @@ public class Jethr0SpringBootApplication {
 		BuildQueue buildQueue = new BuildQueue();
 
 		buildQueue.setProjectQueue(projectQueue);
+
+		for (Build build : buildQueue.getBuilds()) {
+			System.out.println(build);
+		}
 
 		return buildQueue;
 	}
@@ -112,6 +130,46 @@ public class Jethr0SpringBootApplication {
 			projectPrioritizer, 2, ProjectComparator.Type.FIFO, null);
 
 		return projectPrioritizer;
+	}
+
+	public static void printBeans(ConfigurableApplicationContext context) {
+		String[] beans = context.getBeanDefinitionNames();
+
+		Arrays.sort(beans);
+
+		for (String bean : beans) {
+			System.out.println(bean);
+		}
+	}
+
+	public static void makeRequest(ConfigurableApplicationContext context) {
+		OAuth2AccessToken oAuth2AccessToken = context.getBean(
+				OAuth2AccessToken.class);
+
+		JSONObject requestJSONObject = new JSONObject();
+
+		requestJSONObject.put("name", "Test Project");
+		requestJSONObject.put("priority", 1);
+		requestJSONObject.put("type", Project.Type.DEFAULT_JOB.getJSONObject());
+
+		JSONObject responseJSONObject = new JSONObject(WebClient.create(
+			"http://localhost:58081/createProject"
+		).post(
+		).accept(
+			MediaType.APPLICATION_JSON
+		).contentType(
+			MediaType.APPLICATION_JSON
+		).header(
+			"Authorization",
+			"Bearer " + oAuth2AccessToken.getTokenValue()
+		).body(
+			BodyInserters.fromValue(requestJSONObject.toString())
+		).retrieve(
+		).bodyToMono(
+			String.class
+		).block());
+
+		System.out.println(responseJSONObject.toString(2));
 	}
 
 	@Value("${liferay.oauth.application.external.reference.codes}")
