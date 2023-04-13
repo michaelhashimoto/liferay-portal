@@ -356,11 +356,11 @@
 			}
 		},
 		{
-			"externalReferenceCode": "JenkinsMaster",
+			"externalReferenceCode": "JenkinsNode",
 			"label": {
-				"en_US": "Jenkins Master"
+				"en_US": "Jenkins Node"
 			},
-			"name": "JenkinsMaster",
+			"name": "JenkinsNode",
 			"objectFields": [
 				{
 					"DBType": "Boolean",
@@ -384,9 +384,9 @@
 					"DBType": "Integer",
 					"businessType": "Integer",
 					"label": {
-						"en_US": "Slaves Per Node"
+						"en_US": "Nodes Count"
 					},
-					"name": "slavesPerNode",
+					"name": "nodesCount",
 					"required": true,
 					"type": "Integer"
 				},
@@ -394,16 +394,25 @@
 					"DBType": "Integer",
 					"businessType": "Integer",
 					"label": {
-						"en_US": "Slave RAM"
+						"en_US": "Node RAM"
 					},
-					"name": "slaveRAM",
+					"name": "nodeRAM",
 					"required": true,
 					"type": "Integer"
+				},
+				{
+					"DBType": "String",
+					"businessType": "Text",
+					"label": {
+						"en_US": "URL"
+					},
+					"name": "url",
+					"type": "String"
 				}
 			],
 			"panelCategoryKey": "",
 			"pluralLabel": {
-				"en_US": "Jenkins Masters"
+				"en_US": "Jenkins Nodes"
 			},
 			"portlet": false,
 			"scope": "company",
@@ -595,6 +604,56 @@
 			"panelCategoryKey": "",
 			"pluralLabel": {
 				"en_US": "Test Suites"
+			},
+			"portlet": false,
+			"scope": "company",
+			"status": {
+				"code": 0,
+				"label": "approved",
+				"label_i18n": "Approved"
+			}
+		},
+		{
+			"externalReferenceCode": "JenkinsMaster",
+			"label": {
+				"en_US": "Jenkins Master"
+			},
+			"name": "JenkinsMaster",
+			"objectFields": [
+				{
+					"DBType": "String",
+					"businessType": "Text",
+					"label": {
+						"en_US": "Name"
+					},
+					"name": "name",
+					"type": "String"
+				},
+				{
+					"DBType": "String",
+					"businessType": "Text",
+					"label": {
+						"en_US": "URL"
+					},
+					"name": "url",
+					"type": "String"
+				}
+			],
+			"objectRelationships": [
+				{
+					"deletionType": "cascade",
+					"label": {
+						"en_US": "Jenkins Master to Jenkins Nodes"
+					},
+					"name": "jenkinsMasterToJenkinsNodes",
+					"objectDefinitionExternalReferenceCode1": "JenkinsMaster",
+					"objectDefinitionExternalReferenceCode2": "JenkinsNode",
+					"type": "oneToMany"
+				}
+			],
+			"panelCategoryKey": "",
+			"pluralLabel": {
+				"en_US": "Jenkins Masters"
 			},
 			"portlet": false,
 			"scope": "company",
