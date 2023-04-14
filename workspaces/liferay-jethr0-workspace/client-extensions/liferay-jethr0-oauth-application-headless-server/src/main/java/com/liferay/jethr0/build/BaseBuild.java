@@ -132,7 +132,7 @@ public abstract class BaseBuild extends BaseEntity implements Build {
 	}
 
 	@Override
-	public int getMaxSlaveCount() {
+	public int getMaxNodeCount() {
 		BuildParameter buildParameter = getBuildParameter("MAX_SLAVE_COUNT");
 
 		if (buildParameter == null) {
@@ -149,7 +149,7 @@ public abstract class BaseBuild extends BaseEntity implements Build {
 	}
 
 	@Override
-	public int getMinSlaveRAM() {
+	public int getMinNodeRAM() {
 		BuildParameter buildParameter = getBuildParameter("MIN_SLAVE_RAM");
 
 		if (buildParameter == null) {

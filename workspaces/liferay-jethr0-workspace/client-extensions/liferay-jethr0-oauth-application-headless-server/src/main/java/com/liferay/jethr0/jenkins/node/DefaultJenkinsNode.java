@@ -12,24 +12,17 @@
  * details.
  */
 
-package com.liferay.jethr0.jenkins.master;
+package com.liferay.jethr0.jenkins.node;
 
-import com.liferay.jethr0.build.Build;
-import com.liferay.jethr0.entity.Entity;
-
-import java.net.URL;
+import org.json.JSONObject;
 
 /**
  * @author Michael Hashimoto
  */
-public interface JenkinsMaster extends Entity {
+public class DefaultJenkinsNode extends BaseJenkinsNode {
 
-	public String getName();
-
-	public URL getURL();
-
-	public void setName(String name);
-
-	public void setURL(URL url);
+	protected DefaultJenkinsNode(JSONObject jsonObject) {
+		super(jsonObject);
+	}
 
 }

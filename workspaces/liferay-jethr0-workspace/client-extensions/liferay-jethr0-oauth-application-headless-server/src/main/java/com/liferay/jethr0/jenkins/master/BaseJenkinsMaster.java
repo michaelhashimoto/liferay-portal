@@ -16,6 +16,9 @@ package com.liferay.jethr0.jenkins.master;
 
 import com.liferay.jethr0.build.Build;
 import com.liferay.jethr0.entity.BaseEntity;
+import com.liferay.jethr0.util.StringUtil;
+
+import java.net.URL;
 
 import org.json.JSONObject;
 
@@ -26,22 +29,13 @@ public abstract class BaseJenkinsMaster
 	extends BaseEntity implements JenkinsMaster {
 
 	@Override
-	public boolean getGoodBattery() {
-		return _goodBattery;
-	}
-
-	@Override
 	public JSONObject getJSONObject() {
 		JSONObject jsonObject = super.getJSONObject();
 
 		jsonObject.put(
-			"goodBattery", getGoodBattery()
-		).put(
 			"name", getName()
 		).put(
-			"slaveCount", getSlaveCount()
-		).put(
-			"slaveRAM", getSlaveRAM()
+			"url", getURL()
 		);
 
 		return jsonObject;
@@ -53,29 +47,8 @@ public abstract class BaseJenkinsMaster
 	}
 
 	@Override
-	public int getSlaveCount() {
-		return _slaveCount;
-	}
-
-	@Override
-	public int getSlaveRAM() {
-		return _slaveRAM;
-	}
-
-	@Override
-	public boolean isCompatible(Build build) {
-		if (!_hasCompatibleBattery(build) || !_hasCompatibleSlaveCount(build) ||
-			!_hasCompatibleSlaveRAM(build)) {
-
-			return false;
-		}
-
-		return true;
-	}
-
-	@Override
-	public void setGoodBattery(boolean goodBattery) {
-		_goodBattery = goodBattery;
+	public URL getURL() {
+		return _url;
 	}
 
 	@Override
@@ -84,51 +57,18 @@ public abstract class BaseJenkinsMaster
 	}
 
 	@Override
-	public void setSlaveCount(int slaveCount) {
-		_slaveCount = slaveCount;
-	}
-
-	@Override
-	public void setSlaveRAM(int slaveRAM) {
-		_slaveRAM = slaveRAM;
+	public void setURL(URL url) {
+		_url = url;
 	}
 
 	protected BaseJenkinsMaster(JSONObject jsonObject) {
 		super(jsonObject);
 
-		_goodBattery = jsonObject.getBoolean("goodBattery");
 		_name = jsonObject.getString("name");
-		_slaveCount = jsonObject.getInt("slaveCount");
-		_slaveRAM = jsonObject.getInt("slaveRAM");
+		_url = StringUtil.toURL(jsonObject.getString("url"));
 	}
 
-	private boolean _hasCompatibleBattery(Build build) {
-		if (!build.requiresGoodBattery() || getGoodBattery()) {
-			return true;
-		}
-
-		return false;
-	}
-
-	private boolean _hasCompatibleSlaveCount(Build build) {
-		if (getSlaveCount() <= build.getMaxSlaveCount()) {
-			return true;
-		}
-
-		return false;
-	}
-
-	private boolean _hasCompatibleSlaveRAM(Build build) {
-		if (getSlaveRAM() >= build.getMinSlaveRAM()) {
-			return true;
-		}
-
-		return false;
-	}
-
-	private boolean _goodBattery;
 	private String _name;
-	private int _slaveCount;
-	private int _slaveRAM;
+	private URL _url;
 
 }

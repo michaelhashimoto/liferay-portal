@@ -12,11 +12,11 @@
  * details.
  */
 
-package com.liferay.jethr0.jenkins.master.repository;
+package com.liferay.jethr0.jenkins.repository;
 
 import com.liferay.jethr0.entity.repository.BaseEntityRepository;
+import com.liferay.jethr0.jenkins.dalo.JenkinsMasterDALO;
 import com.liferay.jethr0.jenkins.master.JenkinsMaster;
-import com.liferay.jethr0.jenkins.master.dalo.JenkinsMasterDALO;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;

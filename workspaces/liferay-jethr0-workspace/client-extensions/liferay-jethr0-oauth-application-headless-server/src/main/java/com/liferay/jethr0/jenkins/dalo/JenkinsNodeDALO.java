@@ -12,24 +12,28 @@
  * details.
  */
 
-package com.liferay.jethr0.jenkins.master;
+package com.liferay.jethr0.jenkins.dalo;
 
-import com.liferay.jethr0.build.Build;
-import com.liferay.jethr0.entity.Entity;
+import com.liferay.jethr0.entity.dalo.BaseEntityDALO;
+import com.liferay.jethr0.entity.factory.EntityFactory;
+import com.liferay.jethr0.jenkins.node.JenkinsNode;
+import com.liferay.jethr0.jenkins.node.JenkinsNodeFactory;
 
-import java.net.URL;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Configuration;
 
 /**
  * @author Michael Hashimoto
  */
-public interface JenkinsMaster extends Entity {
+@Configuration
+public class JenkinsNodeDALO extends BaseEntityDALO<JenkinsNode> {
 
-	public String getName();
+	@Override
+	protected EntityFactory<JenkinsNode> getEntityFactory() {
+		return _jenkinsNodeFactory;
+	}
 
-	public URL getURL();
-
-	public void setName(String name);
-
-	public void setURL(URL url);
+	@Autowired
+	private JenkinsNodeFactory _jenkinsNodeFactory;
 
 }
