@@ -21,12 +21,40 @@ import com.liferay.jethr0.util.StringUtil;
 
 import java.net.URL;
 
+import org.apache.tomcat.util.codec.binary.Base64;
+
 import org.json.JSONObject;
+
+import org.springframework.http.MediaType;
+import org.springframework.web.reactive.function.client.WebClient;
 
 /**
  * @author Michael Hashimoto
  */
 public class BaseJenkinsNode extends BaseEntity implements JenkinsNode {
+
+	public JSONObject _getComputerJSONObject() {
+		JenkinsServer jenkinsServer = getJenkinsServer();
+
+		String basicAuthorization = StringUtil.combine(
+			jenkinsServer.getJenkinsUserName(), ":",
+			jenkinsServer.getJenkinsUserPassword());
+
+		String response = WebClient.create(
+			StringUtil.combine(getURL(), "/api/json")
+		).get(
+		).accept(
+			MediaType.APPLICATION_JSON
+		).header(
+			"Authorization",
+			"Basic " + Base64.encodeBase64String(basicAuthorization.getBytes())
+		).retrieve(
+		).bodyToMono(
+			String.class
+		).block();
+
+		return new JSONObject(response);
+	}
 
 	@Override
 	public boolean getGoodBattery() {
@@ -97,6 +125,15 @@ public class BaseJenkinsNode extends BaseEntity implements JenkinsNode {
 	}
 
 	@Override
+	public boolean isAvailable() {
+		if (!isOffline() && isIdle()) {
+			return true;
+		}
+
+		return false;
+	}
+
+	@Override
 	public boolean isCompatible(Build build) {
 		if (!_hasCompatibleBattery(build) || !_hasCompatibleNodeCount(build) ||
 			!_hasCompatibleNodeRAM(build) || !_hasCompatibleNodeType(build)) {
@@ -105,6 +142,16 @@ public class BaseJenkinsNode extends BaseEntity implements JenkinsNode {
 		}
 
 		return true;
+	}
+
+	@Override
+	public boolean isIdle() {
+		return _idle;
+	}
+
+	@Override
+	public boolean isOffline() {
+		return _offline;
 	}
 
 	@Override
@@ -135,6 +182,17 @@ public class BaseJenkinsNode extends BaseEntity implements JenkinsNode {
 	@Override
 	public void setURL(URL url) {
 		_url = url;
+	}
+
+	@Override
+	public void update() {
+		update(_getComputerJSONObject());
+	}
+
+	@Override
+	public void update(JSONObject computerJSONObject) {
+		_idle = computerJSONObject.getBoolean("idle");
+		_offline = computerJSONObject.getBoolean("offline");
 	}
 
 	protected BaseJenkinsNode(JSONObject jsonObject) {
@@ -181,10 +239,12 @@ public class BaseJenkinsNode extends BaseEntity implements JenkinsNode {
 	}
 
 	private boolean _goodBattery;
+	private boolean _idle;
 	private JenkinsServer _jenkinsServer;
 	private String _name;
 	private int _nodeCount;
 	private int _nodeRAM;
+	private boolean _offline;
 	private final Type _type;
 	private URL _url;
 
