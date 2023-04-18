@@ -27,6 +27,7 @@ definition {
 	@priority = 4
 	test ApplicationCanBeAuthorizedWithoutUserSession {
 		property oauth2.local.enabled = "true";
+		property portal.upstream = "debug";
 		property test.name.skip.portal.instance = "OAuth2#ApplicationCanBeAuthorizedWithoutUserSession";
 
 		task ("Add and edit 2 external applications") {
