@@ -192,7 +192,9 @@ definition {
 			Open.openInTheNewTab(locator1 = "https://localhost:8443/oauth2-tester/");
 		}
 		else {
-			Navigator.openSpecificURL(url = "http://localhost:3000/grant-type-authorization-code");
+			var oauth2URL = PropsUtil.get("oauth2.url");
+
+			Navigator.openSpecificURL(url = "${oauth2URL}/grant-type-authorization-code");
 		}
 
 		if (isSet(portalURL)) {

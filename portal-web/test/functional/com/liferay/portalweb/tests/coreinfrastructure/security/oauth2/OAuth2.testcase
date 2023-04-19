@@ -6,6 +6,8 @@ definition {
 	property portal.upstream = "true";
 	property testray.main.component.name = "OAuth 2";
 
+	var oauth2URL = PropsUtil.get("oauth2.url");
+
 	setUp {
 		TestCase.setUpPortalInstance();
 
@@ -35,12 +37,12 @@ definition {
 				OAuth2.addAndEditExternalApplication(
 					applicationName = "My Application${count}",
 					baseURL = "http://localhost:8080",
-					callbackUri = '''http://localhost:3000/liferay-oauth2''',
+					callbackUri = '''${oauth2URL}/grant-type-authorization-code''',
 					checkboxCheckList = "Remember Device",
 					clientId = "default${count}",
 					clientProfile = "Web Application",
 					clientSecret = "defaultsecret${count}",
-					websiteURL = "http://localhost:3000/liferay-oauth2");
+					websiteURL = "${oauth2URL}/liferay-oauth2");
 			}
 		}
 
@@ -95,12 +97,12 @@ definition {
 			OAuth2.addAndEditExternalApplication(
 				applicationName = "Third-party Application",
 				baseURL = "http://localhost:8080",
-				callbackUri = '''http://localhost:3000/liferay-oauth2''',
+				callbackUri = '''${oauth2URL}/grant-type-authorization-code''',
 				checkboxCheckList = "Remember Device",
 				clientId = "abc123",
 				clientProfile = "Web Application",
 				clientSecret = "abc123",
-				websiteURL = "http://localhost:3000/liferay-oauth2");
+				websiteURL = "${oauth2URL}/liferay-oauth2");
 		}
 
 		task ("Authorize my application with remember device option checked") {
@@ -132,12 +134,12 @@ definition {
 			OAuth2.addAndEditExternalApplication(
 				applicationName = "My Application",
 				baseURL = "http://localhost:8080",
-				callbackUri = '''http://localhost:3000/liferay-oauth2''',
+				callbackUri = '''${oauth2URL}/grant-type-authorization-code''',
 				clientAuthenticationMethod = "Client Secret JWT",
 				clientId = "abc123",
 				clientProfile = "Web Application",
 				clientSecret = "abc123",
-				websiteURL = "http://localhost:3000/liferay-oauth2");
+				websiteURL = "${oauth2URL}/liferay-oauth2");
 		}
 
 		task ("Authorize application") {
@@ -242,12 +244,12 @@ definition {
 			OAuth2.addAndEditExternalApplication(
 				applicationName = "My Application",
 				baseURL = "http://localhost:8080",
-				callbackUri = '''http://localhost:3000/liferay-oauth2''',
+				callbackUri = '''${oauth2URL}/grant-type-authorization-code''',
 				clientAuthenticationMethod = "Private Key JWT",
 				clientId = "abc123",
 				clientProfile = "Web Application",
 				clientSecret = "abc123",
-				websiteURL = "http://localhost:3000/liferay-oauth2");
+				websiteURL = "${oauth2URL}/liferay-oauth2");
 		}
 
 		task ("Check the content of JSON Web Key Set doesn't disappear") {
@@ -433,11 +435,11 @@ definition {
 			OAuth2.addAndEditExternalApplication(
 				applicationName = "My Application",
 				baseURL = "http://localhost:8080",
-				callbackUri = '''http://localhost:3000/liferay-oauth2''',
+				callbackUri = '''${oauth2URL}/grant-type-authorization-code''',
 				clientId = "default",
 				clientProfile = "Web Application",
 				clientSecret = "defaultsecret",
-				websiteURL = "http://localhost:3000/liferay-oauth2");
+				websiteURL = "${oauth2URL}/liferay-oauth2");
 		}
 
 		task ("Verify that the created application is in the first row and the Revoke button is not present") {
@@ -485,12 +487,12 @@ definition {
 			OAuth2.addAndEditExternalApplication(
 				applicationName = "My Application",
 				baseURL = "http://localhost:8080",
-				callbackUri = '''http://localhost:3000/liferay-oauth2''',
+				callbackUri = '''${oauth2URL}/grant-type-authorization-code''',
 				checkboxCheckList = "Trusted Application",
 				clientId = "default",
 				clientProfile = "Web Application",
 				clientSecret = "defaultsecret",
-				websiteURL = "http://localhost:3000/liferay-oauth2");
+				websiteURL = "${oauth2URL}/liferay-oauth2");
 		}
 
 		task ("Verify that the application has 0 authorizations at OAuth 2 admin and the Revoke button is not present") {
@@ -872,10 +874,10 @@ definition {
 
 			OAuth2.addApplication(
 				applicationName = "Test Expired Application",
-				callbackUri = '''http://localhost:3000/liferay-oauth2''',
+				callbackUri = '''${oauth2URL}/grant-type-authorization-code''',
 				clientId = "abc123",
 				clientSecret = "abc123",
-				websiteURL = "http://localhost:3000/liferay-oauth2");
+				websiteURL = "${oauth2URL}/liferay-oauth2");
 		}
 
 		task ("Edit scopes") {
@@ -1059,11 +1061,11 @@ definition {
 			OAuth2.addAndEditExternalApplication(
 				applicationName = "Third-party Application",
 				baseURL = "http://localhost:8080",
-				callbackUri = '''http://localhost:3000/liferay-oauth2''',
+				callbackUri = '''${oauth2URL}/grant-type-authorization-code''',
 				clientId = "abc123",
 				clientProfile = "Web Application",
 				clientSecret = "abc123",
-				websiteURL = "http://localhost:3000/liferay-oauth2");
+				websiteURL = "${oauth2URL}/liferay-oauth2");
 		}
 
 		task ("Authorize the new external application") {
@@ -1088,12 +1090,12 @@ definition {
 			OAuth2.addAndEditExternalApplication(
 				applicationName = "Third-party Application",
 				baseURL = "http://localhost:8080",
-				callbackUri = '''http://localhost:3000/liferay-oauth2''',
+				callbackUri = '''${oauth2URL}/grant-type-authorization-code''',
 				checkboxCheckList = "Trusted Application",
 				clientId = "abc123",
 				clientProfile = "Web Application",
 				clientSecret = "abc123",
-				websiteURL = "http://localhost:3000/liferay-oauth2");
+				websiteURL = "${oauth2URL}/liferay-oauth2");
 		}
 
 		task ("Authorize the new external application") {
@@ -1789,11 +1791,11 @@ definition {
 			OAuth2.addAndEditExternalApplication(
 				applicationName = "Third-party Application",
 				baseURL = "http://localhost:8080",
-				callbackUri = '''http://localhost:3000/liferay-oauth2''',
+				callbackUri = '''${oauth2URL}/grant-type-authorization-code''',
 				clientId = "abc123",
 				clientProfile = "Web Application",
 				clientSecret = "abc123",
-				websiteURL = "http://localhost:3000/liferay-oauth2");
+				websiteURL = "${oauth2URL}/liferay-oauth2");
 		}
 
 		task ("Authorize application") {
@@ -1826,10 +1828,10 @@ definition {
 
 			OAuth2.addApplication(
 				applicationName = "Remember Device Application",
-				callbackUri = '''http://localhost:3000/liferay-oauth2''',
+				callbackUri = '''${oauth2URL}/grant-type-authorization-code''',
 				checkboxCheckList = "Remember Device",
 				clientProfile = "Web Application",
-				websiteURL = "http://localhost:3000/liferay-oauth2");
+				websiteURL = "${oauth2URL}/liferay-oauth2");
 		}
 
 		task ("Verify application was added and has the 'Remember Device' external option") {
@@ -1857,7 +1859,7 @@ definition {
 					clientId = "default${count}",
 					clientProfile = "Web Application",
 					clientSecret = "defaultsecret${count}",
-					websiteURL = "http://localhost:3000/liferay-oauth2");
+					websiteURL = "${oauth2URL}/liferay-oauth2");
 			}
 		}
 
@@ -1909,12 +1911,12 @@ definition {
 			OAuth2.addAndEditExternalApplication(
 				applicationName = "My Application",
 				baseURL = "http://localhost:8080",
-				callbackUri = '''http://localhost:3000/liferay-oauth2''',
+				callbackUri = '''${oauth2URL}/grant-type-authorization-code''',
 				checkboxCheckList = "Remember Device",
 				clientId = "default",
 				clientProfile = "Web Application",
 				clientSecret = "defaultsecret",
-				websiteURL = "http://localhost:3000/liferay-oauth2");
+				websiteURL = "${oauth2URL}/liferay-oauth2");
 		}
 
 		task ("Verify My Application has 0 authorizations at OAuth 2 admin") {
@@ -2156,10 +2158,10 @@ definition {
 
 			OAuth2.addApplication(
 				applicationName = "Trusted Application",
-				callbackUri = '''http://localhost:3000/liferay-oauth2''',
+				callbackUri = '''${oauth2URL}/grant-type-authorization-code''',
 				checkboxCheckList = "Trusted Application",
 				clientProfile = "Web Application",
-				websiteURL = "http://localhost:3000/liferay-oauth2");
+				websiteURL = "${oauth2URL}/liferay-oauth2");
 		}
 
 		task ("Verify application was added") {
