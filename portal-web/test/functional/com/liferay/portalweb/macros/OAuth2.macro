@@ -192,7 +192,7 @@ definition {
 			Open.openInTheNewTab(locator1 = "https://localhost:8443/oauth2-tester/");
 		}
 		else {
-			Navigator.openSpecificURL(url = "http://localhost:3000/liferay-oauth2");
+			Navigator.openSpecificURL(url = "http://localhost:3000/grant-type-authorization-code");
 		}
 
 		if (isSet(portalURL)) {
