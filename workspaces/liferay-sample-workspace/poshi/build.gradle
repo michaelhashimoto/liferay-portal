@@ -1,9 +1,80 @@
 apply plugin: "com.liferay.poshi.runner"
 
+task waitForPortal
+task runAllPoshiTests
+task runPoshiTestOne(type: PoshiTest)
+task runPoshiTestTwo(type: PoshiTest)
+task startClientExtensionOne(type: Exec)
+task startClientExtensionTwo(type: Exec)
+
+startClientExtensionOne {
+	commandLine "sh", "-c", "cd client-extension-one && npm install && npm start"
+}
+
+startClientExtensionOne {
+	commandLine "sh", "-c", "cd client-extension-two && gradle bootRun"
+}
+
+runPoshiTestOne {
+	dependsOn startClientExtensionOne
+	testName "SmokeTest#One"
+}
+
+runPoshiTestTwo {
+	dependsOn startClientExtensionTwo
+	testName "SmokeTest#Two"
+}
+
+runPoshiTestThree {
+	dependsOn startClientExtensioOne, startClientExtensionTwo
+	testName "SmokeTest#Two"
+}
+
 dependencies {
 	poshiRunnerResources group: "com.liferay", name: "com.liferay.poshi.runner.resources", version: "latest.release"
 }
 
 poshiRunner {
 	poshiPropertiesFile = file("poshi.properties")
+}
+
+repositories {
+	mavenLocal()
+
+	maven {
+		url "https://repository-cdn.liferay.com/nexus/content/groups/public"
+	}
+}
+
+waitForPortal {
+	dependsOn ":startDockerContainer"
+	doLast {
+		def url = "http://localhost:8080"
+		def sleep = 5000
+		def responseCode = -1
+
+		while (true) {
+			try {
+				if (url.toURL().openConnection().responseCode == 200) {
+					println("Portal is up!")
+					break
+				}
+			}
+			catch (Throwable throwable) {
+			}
+			try {
+				Thread.sleep(sleep)
+			}
+			catch (Throwable throwable) {
+			}
+		}
+	}
+}
+
+
+afterEvaluate {
+	runAllPoshiTests {
+		dependsOn waitForPortal, runPoshiTestOne, runPoshiTestTwo
+		finalizedBy ":stopDockerContainer"
+	}
 }
