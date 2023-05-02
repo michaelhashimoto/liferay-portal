@@ -20,7 +20,7 @@ definition {
 		}
 
 		task ("Create test page") {
-			Portal.JSONLayout.addPublicLayout(
+			JSONLayout.addPublicLayout(
 				groupName = "Guest",
 				layoutName = ${staticLayoutName});
 		}
