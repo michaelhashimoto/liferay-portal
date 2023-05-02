@@ -2,6 +2,7 @@ apply plugin: "com.liferay.poshi.runner"
 
 dependencies {
 	poshiRunnerResources group: "com.liferay", name: "com.liferay.poshi.runner.resources", version: "latest.release"
+	poshiRunnerResources group: "com.liferay.poshi.runner.resources", name: "portal-master", version: "20230405-b774dca"
 }
 
 poshiRunner {
