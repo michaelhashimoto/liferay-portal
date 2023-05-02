@@ -37,19 +37,6 @@
 
 	<propertycopy from="operating.system.${operating.system.type}.version" name="operating.system.version" />
 
-	<condition property="workspace.name" value="${env.TEST_WORKSPACE_NAME}">
-		<and>
-			<isset property="env.TEST_WORKSPACE_NAME" />
-			<not>
-				<equals arg1="${env.TEST_WORKSPACE_NAME}" arg2="" />
-			</not>
-		</and>
-	</condition>
-
-	<condition property="workspace.dir" value="${project.dir}/workspaces/${workspace.name}">
-		<isset property="workspace.name" />
-	</condition>
-
 	<macrodef name="apply-portal-ext-properties">
 		<sequential>
 			<if>
@@ -10711,7 +10698,6 @@ send_user $expect_out(buffer)]]></echo>
 				<basedir file="${liferay.faces.bridge.impl.dir}/tck/bridge-tck-main-portlet" />
 				<basedir file="${liferay.faces.bridge.impl.dir}/test/integration" />
 				<basedir file="${liferay.faces.portal.dir}/test/integration" />
-				<basedir file="${workspace.dir}" />
 				<exclude name="**/node_modules/**/TEST-*.xml" />
 				<include name="**/TEST-*.xml" />
 			</multirootfileset>
@@ -12831,16 +12817,6 @@ auto.deploy.dest.dir=C:/WINDOWS/system32/config/systemprofile/liferay/websphere-
 					</echo>
 				</then>
 			</elseif>
-		</if>
-
-		<if>
-			<isset property="workspace.dir" />
-			<then>
-				<copy
-					file="${test.ext.properties.file}"
-					todir="${workspace.dir}/poshi"
-				/>
-			</then>
 		</if>
 	</target>
 
@@ -15618,12 +15594,18 @@ mail.send.blacklist=</echo>
 			</then>
 		</if>
 
+		<get-testcase-property property.name="workspaces.names" />
+
 		<if>
-			<isset property="workspace.name" />
+			<isset property="workspaces.names" />
 			<then>
-				<ant antfile="build-test-${workspace.name}.xml" target="start-workspace">
-					<property name="workspace.name" value="${workspace.name}" />
-				</ant>
+				<for list="${workspaces.names}" param="workspace.name">
+					<sequential>
+						<ant antfile="build-test-@{workspace.name}.xml" inheritAll="false" target="start-workspace">
+							<property name="workspace.name" value="@{workspace.name}" />
+						</ant>
+					</sequential>
+				</for>
 			</then>
 		</if>
 
@@ -15645,12 +15627,18 @@ mail.send.blacklist=</echo>
 			</then>
 		</if>
 
+		<get-testcase-property property.name="workspaces.names" />
+
 		<if>
-			<isset property="workspace.name" />
+			<isset property="workspaces.names" />
 			<then>
-				<ant antfile="build-test-${workspace.name}.xml" target="stop-workspace">
-					<property name="workspace.name" value="${workspace.name}" />
-				</ant>
+				<for list="${workspaces.names}" param="workspace.name">
+					<sequential>
+						<ant antfile="build-test-@{workspace.name}.xml" inheritAll="false" target="stop-workspace">
+							<property name="workspace.name" value="@{workspace.name}" />
+						</ant>
+					</sequential>
+				</for>
 			</then>
 		</if>
 

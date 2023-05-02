@@ -2,6 +2,7 @@
 definition {
 
 	property testray.main.component.name = "Liferay Sample Workspace";
+	property workspaces.names = "liferay-sample-workspace"
 
 	static var staticLayoutName = "";
 	static var staticDeletePageList = ListUtil.newList();
