@@ -35,6 +35,8 @@ definition {
 			Default.Open(locator1 = ${portalURL});
 
 			Login.signIn();
+
+			Portal.JSONUser.agreeToTermsAndAnswerReminderQuery(userEmailAddress = "test@liferay.com");
 		}
 
 		task ("Navigate to Edit page") {
