@@ -53,6 +53,8 @@ definition {
 	@description = "Test Liferay Sample Custom Element 1"
 	@priority = 4
 	test LiferaySampleCustomElement1 {
+		property test.name.skip.portal.instance = "ClientExtensions#LiferaySampleCustomElement1";
+
 		task ("When: User adds the Liferay Sample Custom Element 1 widget") {
 			Widget.addWidget(key_widgetName = "Liferay Sample Custom Element 1");
 		}
