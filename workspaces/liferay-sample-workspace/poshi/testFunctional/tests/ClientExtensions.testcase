@@ -20,12 +20,9 @@ definition {
 		}
 
 		task ("Create test page") {
-			LiferayPortalAPI.createPage(
-				friendlyURL = "",
-				layoutName = ${staticLayoutName},
-				parentLayoutId = 0,
-				privateLayout = "false",
-				type = "portlet");
+			Portal.JSONLayout.addPublicLayout(
+				groupName = "Guest",
+				layoutName = ${staticLayoutName});
 		}
 
 		task ("Update layout to 1 column") {
@@ -41,7 +38,9 @@ definition {
 		}
 
 		task ("Navigate to Edit page") {
-			Default.Open(locator1 = "${portalURL}/${staticLayoutName}");
+			var friendlyURL = StringUtil.toLowerCase(${staticLayoutName});
+
+			Default.Open(locator1 = "${portalURL}/web/guest/${friendlyURL}");
 		}
 	}
 
