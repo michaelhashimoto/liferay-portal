@@ -1,7 +1,7 @@
 @component-name = "samples-workspace-client-extensions"
 definition {
 
-	property testray.main.component.name = "samples-workspace-client-extensions";
+	property testray.main.component.name = "Liferay Sample Workspace";
 
 	static var staticLayoutName = "";
 	static var staticDeletePageList = ListUtil.newList();
