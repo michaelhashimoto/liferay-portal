@@ -14845,13 +14845,21 @@ jdbc.default.password=${database.mysql.password}</echo>
 				<get-poshi-class-name />
 				<get-poshi-method-name />
 
-				<property name="poshi.runner.results.dir" value="${poshi.class.name}_${poshi.method.name}" />
+				<local name="poshi.runner.results.dir" />
+
+				<condition
+					else="portal-web/test-results/${poshi.class.name}_${poshi.method.name}"
+					property="poshi.runner.results.dir"
+					value="${workspace.dir}/poshi/test-results/${poshi.class.name}_${poshi.method.name}"
+				>
+					<isset property="workspace.dir" />
+				</condition>
 
 				<if>
-					<available file="portal-web/test-results/${poshi.runner.results.dir}/index.html" />
+					<available file="${poshi.runner.results.dir}/index.html" />
 					<then>
 						<copy
-							file="portal-web/test-results/${poshi.runner.results.dir}/index.html"
+							file="${poshi.runner.results.dir}/index.html"
 							tofile="${jenkins.shared.results.dir}/${job.name}/builds/${env.BUILD_NUMBER}/report.html"
 						/>
 
@@ -14859,7 +14867,7 @@ jdbc.default.password=${database.mysql.password}</echo>
 							todir="${jenkins.shared.results.dir}/${job.name}/builds/${env.BUILD_NUMBER}/screenshots"
 						>
 							<fileset
-								dir="portal-web/test-results/${poshi.runner.results.dir}/screenshots"
+								dir="${poshi.runner.results.dir}/screenshots"
 								erroronmissingdir="false"
 							/>
 						</copy>
