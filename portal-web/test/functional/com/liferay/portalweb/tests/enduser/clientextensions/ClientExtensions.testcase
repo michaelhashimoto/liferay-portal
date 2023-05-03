@@ -4,7 +4,6 @@ definition {
 	property portal.release = "true";
 	property portal.upstream = "true";
 	property testray.main.component.name = "Liferay Sample Workspace";
-	property workspace.name = "liferay-sample-workspace";
 
 	setUp {
 		TestCase.setUpPortalInstance();
@@ -23,6 +22,8 @@ definition {
 	@description = "Smoke test Liferay Sample Custom Element 1"
 	@priority = 4
 	test LiferaySampleCustomElement1Smoke {
+		property workspaces.client.extension.names = "liferay-sample-custom-element-1";
+
 		JSONLayout.addPublicLayout(
 			groupName = "Guest",
 			layoutName = "Test Page");
