@@ -79,6 +79,8 @@ public class PortalLogAssertorTest {
 		}
 
 		Assert.assertTrue(sb.toString(), sb.index() == 0);
+
+		Assert.assertFalse(sb.toString(), sb.index() == 0);
 	}
 
 	@Test
