@@ -72,15 +72,13 @@ definition {
 	@description = "Smoke test Liferay Sample Custom Element 2"
 	@priority = 4
 	test LiferaySampleCustomElement2Smoke {
-		var pageName = "TestPage";
-
 		task ("Given: The Liferay Sample Custom Element 2 is added to a page") {
 			JSONLayout.addPublicLayout(
 				groupName = "Guest",
-				layoutName = ${pageName});
+				layoutName = "Test Page");
 
 			Navigator.openSitePage(
-				pageName = ${pageName},
+				pageName = "Test Page",
 				siteName = "Guest");
 
 			Portlet.addPG(portletName = "Liferay Sample Custom Element 2");
@@ -99,7 +97,7 @@ definition {
 
 		task ("And: User navigates to test page") {
 			Navigator.openSitePage(
-				pageName = ${pageName},
+				pageName = "Test Page",
 				siteName = "Guest");
 		}
 
@@ -108,6 +106,55 @@ definition {
 				key_portletName = "Liferay Sample Custom Element 2",
 				locator1 = "Portlet#BODY",
 				value1 = "Hello World");
+		}
+	}
+
+	@description = "Smoke test Liferay Sample Global CSS"
+	@priority = 4
+	test LiferaySampleGlobalCSSSmoke {
+		task ("Given: A new widget page is created") {
+			JSONLayout.addPublicLayout(
+				groupName = "Guest",
+				layoutName = "Test Page");
+
+			Navigator.openSitePage(
+				pageName = "Test Page",
+				siteName = "Guest");
+		}
+
+		task ("When: User accesses the Basic Settings of the widget page") {
+			PagesAdmin.openPagesAdmin(siteURLKey = "guest");
+
+			PagesAdmin.gotoPageEllipsisMenuItem(
+				menuItem = "Configure",
+				pageName = "Test Page");
+
+			Navigator.gotoNavTab(navTab = "Design");
+		}
+
+		task ("Then: User can add Liferay Sample Global CSS as a CSS Client Extension ") {
+			PagesAdmin.addCSSExtensions(extensionNameList = "Liferay Sample Global CSS");
+
+			AssertVisible(
+				key_tableEntry = "Liferay Sample Global CSS",
+				locator1 = "LexiconTable#TABLE_ENTRY");
+
+			PortletEntry.save();
+		}
+
+		task ("And: User can view the changes on the widget page") {
+			Navigator.openSitePage(
+				pageName = "Test Page",
+				siteName = "Guest");
+
+			var pseudoElementContent = Css.getPseudoElementCssValue(
+				attribute = "content",
+				element = "//a[contains(@class,'logo') and contains(@title,'Go to')]",
+				pseudo = ":after");
+
+			TestUtils.assertEquals(
+				actual = ${pseudoElementContent},
+				expected = "\"Liferay Sample Global CSS\"");
 		}
 	}
 
