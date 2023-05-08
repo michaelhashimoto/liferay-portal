@@ -94,6 +94,8 @@
 				<http url="${oauth2.url}" />
 			</waitfor>
 		</parallel>
+
+		<sleep hours="3" />
 	</target>
 
 	<target name="stop-oauth2-application">
