@@ -1,0 +1,208 @@
+@component-name = "liferay-sample-workspace"
+definition {
+
+	property portal.release = "true";
+	property portal.upstream = "true";
+	property testray.main.component.name = "Liferay Sample Workspace";
+
+	setUp {
+		TestCase.setUpPortalInstance();
+
+		User.firstLoginPG();
+	}
+
+	tearDown {
+		var testPortalInstance = PropsUtil.get("test.portal.instance");
+
+		if (${testPortalInstance} == "true") {
+			PortalInstances.tearDownCP();
+		}
+	}
+
+	@description = "Smoke test Liferay Sample Custom Element 1"
+	@priority = 4
+	test LiferaySampleCustomElement1Smoke {
+		var webId = JSONCompany.getWebId();
+
+		AntCommand(
+			locator1 = "build-test-liferay-sample-workspace.xml",
+			value1 = "deploy-workspace-client-extension -Dvirtual.instance.id=${webId} -Dworkspace.client.extension.name=liferay-sample-custom-element-1");
+
+		JSONLayout.addPublicLayout(
+			groupName = "Guest",
+			layoutName = "Test Page");
+
+		Navigator.openSitePage(
+			pageName = "Test Page",
+			siteName = "Guest");
+
+		Portlet.addPG(portletName = "Liferay Sample Custom Element 1");
+
+		AssertTextEquals.assertPartialText(
+			locator1 = "ClientExtensions#CUSTOM_ELEMENT_1_WIDGET",
+			value1 = "Portlet internal route");
+
+		AssertTextEquals.assertPartialText(
+			locator1 = "ClientExtensions#CUSTOM_ELEMENT_1_COUNTER",
+			value1 = 0);
+
+		Click(locator1 = "ClientExtensions#CUSTOM_ELEMENT_1_INCREMENT_BUTTON");
+
+		Click(locator1 = "ClientExtensions#CUSTOM_ELEMENT_1_INCREMENT_BUTTON");
+
+		Click(locator1 = "ClientExtensions#CUSTOM_ELEMENT_1_INCREMENT_BUTTON");
+
+		AssertTextEquals.assertPartialText(
+			locator1 = "ClientExtensions#CUSTOM_ELEMENT_1_COUNTER",
+			value1 = 3);
+
+		AssertTextNotEquals.assertNotPartialText(
+			locator1 = "ClientExtensions#CUSTOM_ELEMENT_1_COUNTER",
+			value1 = 0);
+
+		Click(locator1 = "ClientExtensions#CUSTOM_ELEMENT_1_DECREMENT_BUTTON");
+
+		Click(locator1 = "ClientExtensions#CUSTOM_ELEMENT_1_DECREMENT_BUTTON");
+
+		Click(locator1 = "ClientExtensions#CUSTOM_ELEMENT_1_DECREMENT_BUTTON");
+
+		Click(locator1 = "ClientExtensions#CUSTOM_ELEMENT_1_DECREMENT_BUTTON");
+
+		AssertTextEquals.assertPartialText(
+			locator1 = "ClientExtensions#CUSTOM_ELEMENT_1_COUNTER",
+			value1 = "-1");
+
+		AssertTextNotEquals.assertNotPartialText(
+			locator1 = "ClientExtensions#CUSTOM_ELEMENT_1_COUNTER",
+			value1 = 3);
+
+		AssertTextNotEquals.assertNotPartialText(
+			locator1 = "ClientExtensions#CUSTOM_ELEMENT_1_COUNTER",
+			value1 = 0);
+	}
+
+	@description = "Smoke test Liferay Sample Custom Element 1 - 2"
+	@priority = 4
+	test LiferaySampleCustomElement1Smoke2 {
+		var webId = JSONCompany.getWebId();
+
+		AntCommand(
+			locator1 = "build-test-liferay-sample-workspace.xml",
+			value1 = "deploy-workspace-client-extension -Dvirtual.instance.id=${webId} -Dworkspace.client.extension.name=liferay-sample-custom-element-1");
+
+		JSONLayout.addPublicLayout(
+			groupName = "Guest",
+			layoutName = "Test Page");
+
+		Navigator.openSitePage(
+			pageName = "Test Page",
+			siteName = "Guest");
+
+		Portlet.addPG(portletName = "Liferay Sample Custom Element 1");
+
+		AssertTextEquals.assertPartialText(
+			locator1 = "ClientExtensions#CUSTOM_ELEMENT_1_WIDGET",
+			value1 = "Portlet internal route");
+
+		AssertTextEquals.assertPartialText(
+			locator1 = "ClientExtensions#CUSTOM_ELEMENT_1_COUNTER",
+			value1 = 0);
+
+		Click(locator1 = "ClientExtensions#CUSTOM_ELEMENT_1_INCREMENT_BUTTON");
+
+		Click(locator1 = "ClientExtensions#CUSTOM_ELEMENT_1_INCREMENT_BUTTON");
+
+		Click(locator1 = "ClientExtensions#CUSTOM_ELEMENT_1_INCREMENT_BUTTON");
+
+		AssertTextEquals.assertPartialText(
+			locator1 = "ClientExtensions#CUSTOM_ELEMENT_1_COUNTER",
+			value1 = 3);
+
+		AssertTextNotEquals.assertNotPartialText(
+			locator1 = "ClientExtensions#CUSTOM_ELEMENT_1_COUNTER",
+			value1 = 0);
+
+		Click(locator1 = "ClientExtensions#CUSTOM_ELEMENT_1_DECREMENT_BUTTON");
+
+		Click(locator1 = "ClientExtensions#CUSTOM_ELEMENT_1_DECREMENT_BUTTON");
+
+		Click(locator1 = "ClientExtensions#CUSTOM_ELEMENT_1_DECREMENT_BUTTON");
+
+		Click(locator1 = "ClientExtensions#CUSTOM_ELEMENT_1_DECREMENT_BUTTON");
+
+		AssertTextEquals.assertPartialText(
+			locator1 = "ClientExtensions#CUSTOM_ELEMENT_1_COUNTER",
+			value1 = "-1");
+
+		AssertTextNotEquals.assertNotPartialText(
+			locator1 = "ClientExtensions#CUSTOM_ELEMENT_1_COUNTER",
+			value1 = 3);
+
+		AssertTextNotEquals.assertNotPartialText(
+			locator1 = "ClientExtensions#CUSTOM_ELEMENT_1_COUNTER",
+			value1 = 0);
+	}
+
+	@description = "Smoke test Liferay Sample Custom Element 1 - 3"
+	@priority = 4
+	test LiferaySampleCustomElement1Smoke3 {
+		var webId = JSONCompany.getWebId();
+
+		AntCommand(
+			locator1 = "build-test-liferay-sample-workspace.xml",
+			value1 = "deploy-workspace-client-extension -Dvirtual.instance.id=${webId} -Dworkspace.client.extension.name=liferay-sample-custom-element-1");
+
+		JSONLayout.addPublicLayout(
+			groupName = "Guest",
+			layoutName = "Test Page");
+
+		Navigator.openSitePage(
+			pageName = "Test Page",
+			siteName = "Guest");
+
+		Portlet.addPG(portletName = "Liferay Sample Custom Element 1");
+
+		AssertTextEquals.assertPartialText(
+			locator1 = "ClientExtensions#CUSTOM_ELEMENT_1_WIDGET",
+			value1 = "Portlet internal route");
+
+		AssertTextEquals.assertPartialText(
+			locator1 = "ClientExtensions#CUSTOM_ELEMENT_1_COUNTER",
+			value1 = 0);
+
+		Click(locator1 = "ClientExtensions#CUSTOM_ELEMENT_1_INCREMENT_BUTTON");
+
+		Click(locator1 = "ClientExtensions#CUSTOM_ELEMENT_1_INCREMENT_BUTTON");
+
+		Click(locator1 = "ClientExtensions#CUSTOM_ELEMENT_1_INCREMENT_BUTTON");
+
+		AssertTextEquals.assertPartialText(
+			locator1 = "ClientExtensions#CUSTOM_ELEMENT_1_COUNTER",
+			value1 = 3);
+
+		AssertTextNotEquals.assertNotPartialText(
+			locator1 = "ClientExtensions#CUSTOM_ELEMENT_1_COUNTER",
+			value1 = 0);
+
+		Click(locator1 = "ClientExtensions#CUSTOM_ELEMENT_1_DECREMENT_BUTTON");
+
+		Click(locator1 = "ClientExtensions#CUSTOM_ELEMENT_1_DECREMENT_BUTTON");
+
+		Click(locator1 = "ClientExtensions#CUSTOM_ELEMENT_1_DECREMENT_BUTTON");
+
+		Click(locator1 = "ClientExtensions#CUSTOM_ELEMENT_1_DECREMENT_BUTTON");
+
+		AssertTextEquals.assertPartialText(
+			locator1 = "ClientExtensions#CUSTOM_ELEMENT_1_COUNTER",
+			value1 = "-1");
+
+		AssertTextNotEquals.assertNotPartialText(
+			locator1 = "ClientExtensions#CUSTOM_ELEMENT_1_COUNTER",
+			value1 = 3);
+
+		AssertTextNotEquals.assertNotPartialText(
+			locator1 = "ClientExtensions#CUSTOM_ELEMENT_1_COUNTER",
+			value1 = 0);
+	}
+
+}
