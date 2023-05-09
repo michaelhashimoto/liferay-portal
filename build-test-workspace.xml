@@ -197,7 +197,7 @@
 			<isset property="virtual.instance.id" />
 		</condition>
 
-		<undeploy-workspace-client-extension workspace.client.extension.name="${workspace.client.extension.name}" />
+		<undeploy-workspace-client-extension virtual.instance.id="${virtual.instance.id}" workspace.client.extension.name="${workspace.client.extension.name}" />
 
 		<deploy-workspace-client-extension virtual.instance.id="${virtual.instance.id}" workspace.client.extension.name="${workspace.client.extension.name}" />
 	</target>
@@ -214,5 +214,15 @@
 		<fail message="Please set the property ${workspace.name}." unless="workspace.name" />
 
 		<stop-workspace />
+	</target>
+
+	<target name="undeploy-workspace-client-extension">
+		<fail message="Please set the property ${workspace.client.extension.name}." unless="workspace.client.extension.name" />
+
+		<condition else="" property="virtual.instance.id" value="${virtual.instance.id}">
+			<isset property="virtual.instance.id" />
+		</condition>
+
+		<undeploy-workspace-client-extension virtual.instance.id="${virtual.instance.id}" workspace.client.extension.name="${workspace.client.extension.name}" />
 	</target>
 </project>
