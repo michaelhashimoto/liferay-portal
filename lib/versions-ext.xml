@@ -905,6 +905,20 @@
 				</licenses>
 			</library>
 			<library>
+				<file-name>lib/development/snakeyaml.jar</file-name>
+				<version>2.0</version>
+				<project-name>SnakeYAML</project-name>
+				<project-url>https://bitbucket.org/snakeyaml/snakeyaml</project-url>
+				<licenses>
+					<license>
+						<license-name>Apache License, Version 2.0</license-name>
+						<license-url>http://www.apache.org/licenses/LICENSE-2.0.txt</license-url>
+					</license>
+				</licenses>
+				<current-version-publish-date>2023-02-26 11:07:37</current-version-publish-date>
+				<latest-version-publish-date>2023-02-26 11:07:37</latest-version-publish-date>
+			</library>
+			<library>
 				<file-name>lib/development/spring-instrument.jar</file-name>
 				<version>5.2.24</version>
 				<project-name>Spring</project-name>
