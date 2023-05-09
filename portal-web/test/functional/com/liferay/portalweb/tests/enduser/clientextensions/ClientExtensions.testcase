@@ -12,17 +12,17 @@ definition {
 	}
 
 	tearDown {
-		var testPortalInstance = PropsUtil.get("test.portal.instance");
-
-		if (${testPortalInstance} == "true") {
-			PortalInstances.tearDownCP();
-		}
-
 		var webId = JSONCompany.getWebId();
 
 		AntCommand(
 			locator1 = "build-test-liferay-sample-workspace.xml",
 			value1 = "undeploy-workspace-client-extension -Dvirtual.instance.id=${webId} -Dworkspace.client.extension.name=liferay-sample-custom-element-1");
+
+		var testPortalInstance = PropsUtil.get("test.portal.instance");
+
+		if (${testPortalInstance} == "true") {
+			PortalInstances.tearDownCP();
+		}
 	}
 
 	@description = "Smoke test Liferay Sample Custom Element 1"
