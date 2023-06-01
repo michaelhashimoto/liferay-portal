@@ -28,6 +28,8 @@ public class BlogsGroupServiceConfigurationOverrideImpl
 		TypedSettings typedSettings) {
 
 		_typedSettings = typedSettings;
+
+		System.out.println("_typedSettings=" + _typedSettings);
 	}
 
 	@Override
