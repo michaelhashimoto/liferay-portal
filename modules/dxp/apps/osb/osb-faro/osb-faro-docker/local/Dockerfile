@@ -1,4 +1,4 @@
-FROM liferay/dxp:7.4.13-u83
+FROM liferay/dxp:7.4.13-u78
 
 USER root
 
