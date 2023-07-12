@@ -1,0 +1,17 @@
+assemble:
+    - from: batch
+      into: batch
+liferay-sample-batch-0:
+    name: Liferay Sample Batch 0
+    oAuthApplicationHeadlessServer: liferay-sample-batch-0-oauth-application-headless-server
+    type: batch
+liferay-sample-batch-0-oauth-application-headless-server:
+    .serverAddress: localhost:58081
+    .serviceScheme: http
+    homePageURL: http://localhost:58081
+    name: Liferay Sample Batch 0 OAuth Application Headless Server
+    scopes:
+        - C_Able.everything
+        - C_Baker.everything
+    type: oAuthApplicationHeadlessServer
+    userAccountEmailAddress: test@liferay.com
