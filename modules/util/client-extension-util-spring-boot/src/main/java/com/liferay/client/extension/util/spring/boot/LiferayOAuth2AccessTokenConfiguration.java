@@ -92,6 +92,14 @@ public class LiferayOAuth2AccessTokenConfiguration {
 		return oAuth2AccessToken.getTokenValue();
 	}
 
+	public void refresh() {
+		synchronized (_log) {
+			_oAuth2AccessToken = null;
+
+			_oAuth2AccessToken = getOAuth2AccessToken();
+		}
+	}
+
 	private OAuth2AccessToken _getOAuth2AccessToken() {
 		String liferayOauthApplicationExternalReferenceCodes =
 			_environment.getProperty(
