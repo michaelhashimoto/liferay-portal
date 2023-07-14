@@ -147,7 +147,8 @@ public class LiferayOAuth2AccessTokenConfiguration {
 		return oAuth2AccessToken;
 	}
 
-	private static final Log _log = LogFactory.getLog(LiferayOAuth2Util.class);
+	private static final Log _log = LogFactory.getLog(
+		LiferayOAuth2AccessTokenConfiguration.class);
 
 	@Autowired
 	private AuthorizedClientServiceOAuth2AuthorizedClientManager
