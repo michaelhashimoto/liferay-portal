@@ -159,7 +159,7 @@
 
 							Map serviceMap = (Map)serviceObject;
 
-							String dockerComposeImageName = "com-liferay-osb-asah-private-" + serviceName;
+							String dockerComposeImageName = "com-liferay-osb-asah-private_" + serviceName;
 
 							if (!Objects.equals("@{docker.compose.build}", "true")) {
 								serviceMap.remove("build");
