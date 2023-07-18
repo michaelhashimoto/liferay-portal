@@ -54,6 +54,10 @@
 						${portal.gradlew} buildAppDockerImage
 					</execute>
 
+					<execute>
+						docker images
+					</execute>
+
 					<for list="${docker.compose.image.names}" param="docker.compose.image.name">
 						<sequential>
 							<execute dir="${project.dir}">
