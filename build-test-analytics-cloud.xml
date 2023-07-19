@@ -163,7 +163,11 @@
 
 							Map serviceMap = (Map)serviceObject;
 
-							String dockerComposeImageName = "com-liferay-osb-asah-private_" + serviceName;
+							String dockerComposeImageName = "com-liferay-osb-asah-private-" + serviceName;
+
+							if (serviceMap.containsKey("build")) {
+								dockerComposeImageNames.add(dockerComposeImageName);
+							}
 
 							if (!Objects.equals("@{docker.compose.build}", "true")) {
 								serviceMap.remove("build");
@@ -172,8 +176,6 @@
 									serviceMap.put("image", dockerComposeImageName + ":latest");
 								}
 							}
-
-							dockerComposeImageNames.add(dockerComposeImageName);
 
 							List ports = new ArrayList();
 
