@@ -61,6 +61,8 @@
 					<for list="${docker.compose.image.names}" param="docker.compose.image.name">
 						<sequential>
 							<execute dir="${project.dir}">
+								mkdir -p $(dirname @{docker.compose.image.name}.tar)
+
 								docker save -o @{docker.compose.image.name}.tar @{docker.compose.image.name}:latest
 							</execute>
 						</sequential>
