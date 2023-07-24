@@ -170,6 +170,8 @@
 	<arg value="-PvirtualInstanceId=@{virtual.instance.id}" />
 </gradle-execute>]]></echo>
 
+			<sleep seconds="60" />
+
 			<parallel>
 				<daemons>
 					<gradle-execute dir="${workspace.client.extension.dir}" task="bootRun">
