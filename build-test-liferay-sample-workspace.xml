@@ -10,6 +10,10 @@
 			<isset property="virtual.instance.id" />
 		</condition>
 
+		<echo message="Sleep for 2 hours" />
+
+		<sleep seconds="7200" />
+
 		<start-spring-boot-client-extension
 			spring.boot.application.name="SampleSpringBootApplication"
 			virtual.instance.id="${virtual.instance.id}"
