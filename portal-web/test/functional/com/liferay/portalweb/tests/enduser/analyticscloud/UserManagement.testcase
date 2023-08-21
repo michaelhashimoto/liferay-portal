@@ -33,6 +33,8 @@ definition {
 	@description = "Automation ID: LRAC-9093 | Test Summary: Admin can add data sources"
 	@priority = 4
 	test AdminCanAddDataSources {
+		property test.liferay.virtual.instance = "false";
+
 		task ("Logout AC and login as an admin user") {
 			ACWorkspace.signOut();
 
