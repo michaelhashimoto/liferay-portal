@@ -171,7 +171,7 @@ definition {
 			ACWorkspace.signOut();
 
 			ACLogin.loginAs(
-				emailAddress = "bryan.cheung@faro.io",
+				emailAddress = "test@liferay.com",
 				password = "test");
 		}
 

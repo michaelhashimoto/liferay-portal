@@ -470,7 +470,7 @@ definition {
 	@description = "Automation ID: LRAC-9083 | Test Summary: [AC] Only admin or owner users are able to add properties on AC"
 	@priority = 3
 	test OnlyAdminOrOwnerUsersCanAddPropertiesOnAC {
-		var userList = "michelle.hoshi@faro.io,bryan.cheung@faro.io";
+		var userList = "michelle.hoshi@faro.io,test@liferay.com";
 
 		for (var userEmail : list ${userList}) {
 			task ("Logout AC and login as an admin/owner user") {
@@ -529,7 +529,7 @@ definition {
 			ACWorkspace.signOut();
 
 			ACLogin.loginAs(
-				emailAddress = "bryan.cheung@faro.io",
+				emailAddress = "test@liferay.com",
 				password = "test");
 		}
 
@@ -552,7 +552,7 @@ definition {
 		}
 
 		task ("Login in AC, go to settings then go to data sources") {
-			ACUtils.launchAC(emailAddress = "bryan.cheung@faro.io");
+			ACUtils.launchAC(emailAddress = "test@liferay.com");
 
 			ACNavigation.goToSettings();
 
@@ -579,7 +579,7 @@ definition {
 			ACWorkspace.signOut();
 
 			ACLogin.loginAs(
-				emailAddress = "bryan.cheung@faro.io",
+				emailAddress = "test@liferay.com",
 				password = "test");
 
 			ACWorkspace.openWorkspace();
@@ -636,7 +636,7 @@ definition {
 		}
 
 		task ("Go to AC and login with another Owner User") {
-			ACUtils.launchAC(emailAddress = "bryan.cheung@faro.io");
+			ACUtils.launchAC(emailAddress = "test@liferay.com");
 		}
 
 		task ("Delete the data source and check if it has been deleted") {
@@ -921,7 +921,7 @@ definition {
 		}
 
 		task ("View only 4 users are shown in page 1") {
-			for (var emailList : list "bryan.cheung@faro.io,corbin.murakami@faro.io,michelle.hoshi@faro.io,ac@liferay.com") {
+			for (var emailList : list "test@liferay.com,corbin.murakami@faro.io,michelle.hoshi@faro.io,ac@liferay.com") {
 				ACSettings.assertUsersListByEmail(userEmail = ${emailList});
 			}
 
@@ -961,7 +961,7 @@ definition {
 		ACWorkspace.signOut();
 
 		ACLogin.loginAs(
-			emailAddress = "bryan.cheung@faro.io",
+			emailAddress = "test@liferay.com",
 			password = "test");
 
 		ACWorkspace.openWorkspace();

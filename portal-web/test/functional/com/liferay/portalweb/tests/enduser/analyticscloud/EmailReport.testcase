@@ -170,7 +170,7 @@ definition {
 	@description = "Story: LRAC-11663 | Automation ID: LRAC-11835 | Test Summary: Check that the Email Reports widget appears on the property settings page for all users"
 	@priority = 2
 	test CheckEmailReportsAppearsForAllUsers {
-		var emailAddressList = "bryan.cheung@faro.io,michelle.hoshi@faro.io,corbin.murakami@faro.io";
+		var emailAddressList = "test@liferay.com,michelle.hoshi@faro.io,corbin.murakami@faro.io";
 
 		task ("Sign in AC as Test Test user") {
 			ACUtils.launchAC();
@@ -369,7 +369,7 @@ definition {
 		}
 
 		task ("Go to user data page") {
-			UserNavigator.gotoUser(userScreenName = "bryan.cheung");
+			UserNavigator.gotoUser(userScreenName = "test");
 		}
 
 		task ("Get the user ID") {

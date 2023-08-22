@@ -291,7 +291,7 @@ definition {
 
 			ACProperties.assertNewCreatedProperty(propertyName = "Property Name 1");
 
-			ACProperties.addUserProperty(emailAddress = "bryan.cheung@faro.io");
+			ACProperties.addUserProperty(emailAddress = "test@liferay.com");
 		}
 
 		task ("Go back to the properties menu, create property 2, check if it was created and add an admin user") {

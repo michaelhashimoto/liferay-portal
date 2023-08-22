@@ -203,7 +203,7 @@ definition {
 		}
 
 		task ("search for owner user") {
-			ACUtils.searchBar(searchItem = "bryan.cheung@faro.io");
+			ACUtils.searchBar(searchItem = "test@liferay.com");
 		}
 
 		task ("view owner cannot be edited") {
@@ -225,11 +225,11 @@ definition {
 		}
 
 		task ("search for owner user") {
-			ACUtils.searchBar(searchItem = "bryan.cheung@faro.io");
+			ACUtils.searchBar(searchItem = "test@liferay.com");
 		}
 
 		task ("view owner cannot be selected") {
-			ACSettings.viewUserNotSelectable(email = "bryan.cheung@faro.io");
+			ACSettings.viewUserNotSelectable(email = "test@liferay.com");
 		}
 	}
 
