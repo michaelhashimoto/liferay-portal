@@ -2497,6 +2497,8 @@ log.sanitizer.enabled=false</echo>
 
 							<ant dir="portal-test" inheritAll="false" target="deploy" />
 
+							<ant dir="portal-test" inheritAll="false" target="install-portal-snapshot" />
+
 							<setup-test-batch-testable-tomcat test.portal.bundle.version="@{test.portal.bundle.version}" />
 
 							<get-test-batch-app-server-start-executable-arg-line />
