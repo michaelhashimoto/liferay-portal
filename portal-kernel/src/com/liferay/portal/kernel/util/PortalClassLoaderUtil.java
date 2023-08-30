@@ -23,6 +23,12 @@ public class PortalClassLoaderUtil {
 	}
 
 	public static void setClassLoader(ClassLoader classLoader) {
+		System.out.println("PortalClassLoaderUtil#setClassLoader");
+		System.out.println("classLoader=" + classLoader);
+		System.out.println("-------------------------------------------------");
+		Thread.dumpStack();
+		System.out.println("-------------------------------------------------");
+
 		_classLoader = classLoader;
 	}
 

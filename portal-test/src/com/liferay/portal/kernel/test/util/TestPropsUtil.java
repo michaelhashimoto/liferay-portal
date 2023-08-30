@@ -52,6 +52,12 @@ public class TestPropsUtil {
 
 		ClassLoader classLoader = PortalClassLoaderUtil.getClassLoader();
 
+		System.out.println("TestPropsUtil()");
+		System.out.println("classLoader=" + classLoader);
+		System.out.println("-------------------------------------------------");
+		Thread.dumpStack();
+		System.out.println("-------------------------------------------------");
+
 		try (InputStream inputStream = classLoader.getResourceAsStream(
 				"/test-portal-impl-ext.properties")) {
 
@@ -60,6 +66,8 @@ public class TestPropsUtil {
 			}
 		}
 		catch (IOException ioException) {
+			ioException.printStackTrace();
+
 			ReflectionUtil.throwException(ioException);
 		}
 
