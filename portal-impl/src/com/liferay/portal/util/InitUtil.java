@@ -113,6 +113,10 @@ public class InitUtil {
 
 		ClassLoader classLoader = currentThread.getContextClassLoader();
 
+		System.out.println("-------------------------------------------------");
+		System.out.println("InitUtil#init");
+		System.out.println("classLoader=" + classLoader);
+
 		try {
 			PortalClassLoaderUtil.setClassLoader(classLoader);
 		}
