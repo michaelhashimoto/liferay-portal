@@ -1,0 +1,24 @@
+{
+  "kind": "StatefulSet",
+  "id": "artemis",
+  "loadBalancer": {
+    "targetPort": 8161
+  },
+  "readinessProbe": {
+    "httpGet": {
+      "path": "/",
+      "port": 8161
+    }
+  },
+  "livenessProbe": {
+    "httpGet": {
+      "path": "/",
+      "port": 8161
+    }
+  },
+  "memory": 1024,
+  "cpu": 1,
+  "volumes": {
+    "storage1": "/opt/storage/artemis"
+  }
+}
