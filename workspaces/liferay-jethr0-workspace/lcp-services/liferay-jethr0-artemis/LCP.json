@@ -1,24 +1,43 @@
 {
-  "kind": "StatefulSet",
+  "kind": "Deployment",
   "id": "artemis",
+  "image": "apache/activemq-artemis:2.30.0-alpine",
   "loadBalancer": {
     "targetPort": 8161
   },
-  "readinessProbe": {
-    "httpGet": {
-      "path": "/",
-      "port": 8161
+  "ports": [
+    {
+      "port": 61616,
+      "targetPort": 61616,
+      "protocol": "TCP"
+    },
+    {
+      "port": 8161,
+      "targetPort": 8161,
+      "protocol": "TCP",
+      "external": false
     }
-  },
+  ],
   "livenessProbe": {
-    "httpGet": {
-      "path": "/",
-      "port": 8161
-    }
+    "exec": {
+      "command": [
+        "ls"
+      ]
+    },
+    "initialDelaySeconds": 60,
+    "timeoutSeconds": 10,
+    "failureThreshold": 12
   },
-  "memory": 1024,
-  "cpu": 1,
-  "volumes": {
-    "storage1": "/opt/storage/artemis"
-  }
+  "readinessProbe": {
+    "exec": {
+      "command": [
+        "ls"
+      ]
+    },
+    "initialDelaySeconds": 60,
+    "timeoutSeconds": 10,
+    "failureThreshold": 12
+  },
+  "memory": 512,
+  "cpu": 0.5
 }
