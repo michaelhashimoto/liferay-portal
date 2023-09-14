@@ -13425,6 +13425,10 @@ ANT_OPTS=${env.ANT_OPTS}</echo>
 					/>
 				</move>
 
+				<execute>
+					mv ${app.server.parent.dir}/tomcat ${app.server.parent.dir}/tomcat-9.0.75
+				</execute>
+
 				<delete dir="${java.io.tmpdir}/bundle" />
 
 				<delete file="${java.io.tmpdir}/${bundle.file.name}" />
