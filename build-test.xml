@@ -10369,6 +10369,20 @@ org.apache.catalina.tribes.level = FINE]]>
 						type="regexp"
 					/>
 				</unzip>
+
+				<unzip
+					dest="sql/"
+					src="sql/release-sql.zip"
+				>
+					<patternset
+						includes="**"
+					/>
+					<mapper
+						from="(create.*)"
+						to="\1"
+						type="regexp"
+					/>
+				</unzip>
 			</then>
 		</if>
 
