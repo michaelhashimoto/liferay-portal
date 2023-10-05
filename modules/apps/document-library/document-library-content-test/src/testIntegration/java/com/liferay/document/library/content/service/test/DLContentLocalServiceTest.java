@@ -53,6 +53,8 @@ public class DLContentLocalServiceTest {
 	public void setUp() throws Exception {
 		_companyId = RandomTestUtil.nextLong();
 		_repositoryId = RandomTestUtil.nextLong();
+
+		System.out.println("_companyId=" + _companyId);
 	}
 
 	@After
