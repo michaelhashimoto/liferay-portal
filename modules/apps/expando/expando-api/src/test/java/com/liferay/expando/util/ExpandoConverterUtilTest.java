@@ -28,6 +28,9 @@ public class ExpandoConverterUtilTest {
 
 	@Test
 	public void testGetDateArrayAttributeFromString() {
+		System.out.println(
+			"ExpandoConverterUtilTest#testGetDateArrayAttributeFromString");
+
 		long[] expectedTimes = {0, 10, 100};
 
 		Date[] dates = (Date[])ExpandoConverterUtil.getAttributeFromString(
