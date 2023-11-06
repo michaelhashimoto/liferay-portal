@@ -57,7 +57,7 @@ public abstract class BaseParentBuild extends BaseBuild implements ParentBuild {
 							if (!isFromArchive()) {
 								NotificationUtil.sendSlackNotification(
 									runtimeException.getMessage() +
-										"\nBuild URL: " + buildURL,
+										"\nBuild URL: " + thisBuild.getBuildURL(),
 									"ci-notifications", "Build Object Failure");
 							}
 
