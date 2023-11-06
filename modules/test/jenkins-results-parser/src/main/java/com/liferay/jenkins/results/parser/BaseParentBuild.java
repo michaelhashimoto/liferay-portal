@@ -16,6 +16,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.Callable;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.dom4j.Element;
 
@@ -24,57 +26,94 @@ import org.dom4j.Element;
  */
 public abstract class BaseParentBuild extends BaseBuild implements ParentBuild {
 
-	public void addDownstreamBuilds(Map<String, String> urlAxisNames) {
+	public void addDownstreamBuilds(final Map<String, String> urlAxisNames) {
 		final Build thisBuild = this;
 
-		List<Callable<Build>> callables = new ArrayList<>(urlAxisNames.size());
+		Map<String, List<String>> hostnameBuildURLsMap = new HashMap<>();
 
-		for (Map.Entry<String, String> urlEntry : urlAxisNames.entrySet()) {
-			String url = urlEntry.getKey();
+		for (String buildURL : urlAxisNames.keySet()) {
+			Matcher matcher = _buildURLPattern.matcher(buildURL);
 
-			try {
-				url = JenkinsResultsParserUtil.getLocalURL(
-					JenkinsResultsParserUtil.decode(url));
-			}
-			catch (UnsupportedEncodingException unsupportedEncodingException) {
-				throw new IllegalArgumentException(
-					"Unable to decode " + url, unsupportedEncodingException);
-			}
+			if (matcher.matches()) {
+				String hostname = matcher.group("hostname");
 
-			if (!hasBuildURL(url)) {
-				final String axisName = urlEntry.getValue();
-				final String buildURL = url;
+				if (!hostnameBuildURLsMap.containsKey(hostname)) {
+					hostnameBuildURLsMap.put(hostname, new ArrayList<String>());
+				}
 
-				Callable<Build> callable = new Callable<Build>() {
+				List<String> hostnameBuildURLs = hostnameBuildURLsMap.get(
+					hostname);
 
-					@Override
-					public Build call() {
-						try {
-							return BuildFactory.newBuild(
-								buildURL, thisBuild, axisName);
-						}
-						catch (RuntimeException runtimeException) {
-							if (!isFromArchive()) {
-								NotificationUtil.sendSlackNotification(
-									runtimeException.getMessage() +
-										"\nBuild URL: " + thisBuild.getBuildURL(),
-									"ci-notifications", "Build Object Failure");
-							}
+				hostnameBuildURLs.add(buildURL);
 
-							return null;
-						}
-					}
-
-				};
-
-				callables.add(callable);
+				hostnameBuildURLsMap.put(hostname, hostnameBuildURLs);
 			}
 		}
 
-		ParallelExecutor<Build> parallelExecutor = new ParallelExecutor<>(
+		List<Callable<List<Build>>> callables = new ArrayList<>(
+			urlAxisNames.size());
+
+		for (final Map.Entry<String, List<String>> hostnameBuildsURLsEntry :
+				hostnameBuildURLsMap.entrySet()) {
+
+			Callable<List<Build>> callable = new Callable<List<Build>>() {
+
+				@Override
+				public List<Build> call() {
+					List<String> buildURLs = hostnameBuildsURLsEntry.getValue();
+
+					List<Build> builds = new ArrayList<>(buildURLs.size());
+
+					for (String buildURL : buildURLs) {
+						if (!hasBuildURL(buildURL)) {
+							String axisName = urlAxisNames.get(buildURL);
+
+							try {
+								buildURL = JenkinsResultsParserUtil.getLocalURL(
+									JenkinsResultsParserUtil.decode(buildURL));
+							}
+							catch (UnsupportedEncodingException
+										unsupportedEncodingException) {
+
+								throw new IllegalArgumentException(
+									"Unable to decode " + buildURL,
+									unsupportedEncodingException);
+							}
+
+							try {
+								builds.add(
+									BuildFactory.newBuild(
+										buildURL, thisBuild, axisName));
+							}
+							catch (RuntimeException runtimeException) {
+								if (!isFromArchive()) {
+									NotificationUtil.sendSlackNotification(
+										runtimeException.getMessage() +
+											"\nBuild URL: " +
+												thisBuild.getBuildURL(),
+										"ci-notifications",
+										"Build Object Failure");
+								}
+							}
+						}
+					}
+
+					return builds;
+				}
+
+			};
+
+			callables.add(callable);
+		}
+
+		ParallelExecutor<List<Build>> parallelExecutor = new ParallelExecutor<>(
 			callables, true, getExecutorService());
 
-		addDownstreamBuilds(parallelExecutor.execute(1000L * 60L * 60L * 3L));
+		for (List<Build> builds :
+				parallelExecutor.execute(1000L * 60L * 60L * 3L)) {
+
+			addDownstreamBuilds(builds);
+		}
 	}
 
 	@Override
@@ -643,6 +682,9 @@ public abstract class BaseParentBuild extends BaseBuild implements ParentBuild {
 		Collections.sort(
 			_downstreamBuilds, new BaseBuild.BuildDisplayNameComparator());
 	}
+
+	private static final Pattern _buildURLPattern = Pattern.compile(
+		"http[s]?\\:\\/\\/(?<hostname>[^\\/]+)\\/.*");
 
 	private List<Build> _downstreamBuilds;
 
