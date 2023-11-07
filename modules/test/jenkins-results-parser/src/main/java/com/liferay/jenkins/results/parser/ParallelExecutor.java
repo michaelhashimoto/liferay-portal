@@ -200,7 +200,7 @@ public class ParallelExecutor<T> {
 	}
 
 	private Callable<Collection<T>> _createTopLevelCallable(
-		Collection<Callable<T>> nestedCallables) {
+		final Collection<Callable<T>> nestedCallables) {
 
 		return new Callable<Collection<T>>() {
 
@@ -211,8 +211,15 @@ public class ParallelExecutor<T> {
 				ExecutorService executorService =
 					Executors.newSingleThreadExecutor();
 
+				String groupName = null;
+
 				try {
+					//boolean first = true;
+
+					List<Long> durations = new ArrayList<>();
+
 					for (Callable<T> callable : nestedCallables) {
+						long start = System.currentTimeMillis();
 						Future<T> future = executorService.submit(callable);
 
 						long timeoutSeconds = _DEFAULT_CALL_TIMEOUT_SECONDS;
@@ -223,7 +230,23 @@ public class ParallelExecutor<T> {
 
 							timeoutSeconds =
 								groupedCallable.getTimeoutSeconds();
+
+							groupName = groupedCallable.getGroupName();
 						}
+
+						/*
+
+						if (first &&
+							!JenkinsResultsParserUtil.isNullOrEmpty(
+								groupName) &&
+							(nestedCallables.size() > 1)) {
+
+							System.out.println(
+								"Processing thread group " + groupName +
+									" size: " + nestedCallables.size());
+							first = false;
+						}
+						*/
 
 						try {
 							results.add(
@@ -240,11 +263,44 @@ public class ParallelExecutor<T> {
 
 							future.cancel(true);
 						}
+						finally {
+							durations.add(System.currentTimeMillis() - start);
+						}
+					}
+
+					if (!JenkinsResultsParserUtil.isNullOrEmpty(groupName) &&
+						(durations.size() > 1)) {
+
+						long totalDuration = 0;
+
+						for (long duration : durations) {
+							totalDuration += duration;
+						}
+
+						long averageDuration = totalDuration / durations.size();
+
+						String durationString =
+							JenkinsResultsParserUtil.toDurationString(
+								averageDuration);
+
+						System.out.println(
+							"Thread group " + groupName + " average duration " +
+								durationString);
 					}
 
 					return results;
 				}
 				finally {
+					/*
+
+					if (!JenkinsResultsParserUtil.isNullOrEmpty(groupName) &&
+						(nestedCallables.size() > 1)) {
+
+						System.out.println(
+							"Finished processing thread group " + groupName);
+					}
+					*/
+
 					executorService.shutdown();
 				}
 			}
