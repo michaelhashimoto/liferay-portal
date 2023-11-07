@@ -16,6 +16,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.Callable;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.dom4j.Element;
 
@@ -43,29 +45,41 @@ public abstract class BaseParentBuild extends BaseBuild implements ParentBuild {
 
 			if (!hasBuildURL(url)) {
 				final String axisName = urlEntry.getValue();
+
 				final String buildURL = url;
 
-				Callable<Build> callable = new Callable<Build>() {
+				Matcher matcher = _buildURLPattern.matcher(buildURL);
 
-					@Override
-					public Build call() {
-						try {
-							return BuildFactory.newBuild(
-								buildURL, thisBuild, axisName);
-						}
-						catch (RuntimeException runtimeException) {
-							if (!isFromArchive()) {
-								NotificationUtil.sendSlackNotification(
-									runtimeException.getMessage() +
-										"\nBuild URL: " + thisBuild.getBuildURL(),
-									"ci-notifications", "Build Object Failure");
+				String hostname = null;
+
+				if (matcher.matches()) {
+					hostname = matcher.group("hostname");
+				}
+
+				ParallelExecutor.GroupedCallable<Build> callable =
+					new ParallelExecutor.GroupedCallable<Build>(hostname, 30) {
+
+						@Override
+						public Build call() {
+							try {
+								return BuildFactory.newBuild(
+									buildURL, thisBuild, axisName);
 							}
+							catch (RuntimeException runtimeException) {
+								if (!isFromArchive()) {
+									NotificationUtil.sendSlackNotification(
+										runtimeException.getMessage() +
+											"\nBuild URL: " +
+												thisBuild.getBuildURL(),
+										"ci-notifications",
+										"Build Object Failure");
+								}
 
-							return null;
+								return null;
+							}
 						}
-					}
 
-				};
+					};
 
 				callables.add(callable);
 			}
@@ -452,16 +466,20 @@ public abstract class BaseParentBuild extends BaseBuild implements ParentBuild {
 		List<Callable<Object>> callables = new ArrayList<>();
 
 		for (final Build downstreamBuild : downstreamBuilds) {
-			Callable<Object> callable = new Callable<Object>() {
+			JenkinsMaster jenkinsMaster = downstreamBuild.getJenkinsMaster();
 
-				@Override
-				public Object call() {
-					downstreamBuild.update();
+			ParallelExecutor.GroupedCallable<Object> callable =
+				new ParallelExecutor.GroupedCallable<Object>(
+					jenkinsMaster.getName(), 30) {
 
-					return null;
-				}
+					@Override
+					public Object call() {
+						downstreamBuild.update();
 
-			};
+						return null;
+					}
+
+				};
 
 			callables.add(callable);
 		}
@@ -552,13 +570,17 @@ public abstract class BaseParentBuild extends BaseBuild implements ParentBuild {
 		List<Callable<Element>> callables = new ArrayList<>();
 
 		for (final Build downstreamBuild : downstreamBuilds) {
-			Callable<Element> callable = new Callable<Element>() {
+			JenkinsMaster jenkinsMaster = downstreamBuild.getJenkinsMaster();
 
-				public Element call() {
-					return downstreamBuild.getGitHubMessageElement();
-				}
+			ParallelExecutor.GroupedCallable<Element> callable =
+				new ParallelExecutor.GroupedCallable<Element>(
+					jenkinsMaster.getName(), 30) {
 
-			};
+					public Element call() {
+						return downstreamBuild.getGitHubMessageElement();
+					}
+
+				};
 
 			callables.add(callable);
 		}
@@ -643,6 +665,9 @@ public abstract class BaseParentBuild extends BaseBuild implements ParentBuild {
 		Collections.sort(
 			_downstreamBuilds, new BaseBuild.BuildDisplayNameComparator());
 	}
+
+	private static final Pattern _buildURLPattern = Pattern.compile(
+		"http[s]?\\:\\/\\/(?<hostname>[^\\/]+)\\/.*");
 
 	private List<Build> _downstreamBuilds;
 
