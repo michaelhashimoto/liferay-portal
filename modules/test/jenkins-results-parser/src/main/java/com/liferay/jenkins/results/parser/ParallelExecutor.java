@@ -201,40 +201,42 @@ public class ParallelExecutor<T> {
 				ExecutorService executorService =
 					Executors.newSingleThreadExecutor();
 
-				for (Callable<T> callable : nestedCallables) {
-					Future<T> future = executorService.submit(callable);
+				try {
+					for (Callable<T> callable : nestedCallables) {
+						Future<T> future = executorService.submit(callable);
 
-					long timeoutSeconds = _DEFAULT_CALL_TIMEOUT_SECONDS;
+						long timeoutSeconds = _DEFAULT_CALL_TIMEOUT_SECONDS;
 
-					if (callable instanceof GroupedCallable) {
-						GroupedCallable<T> groupedCallable =
-							(GroupedCallable<T>)callable;
+						if (callable instanceof GroupedCallable) {
+							GroupedCallable<T> groupedCallable =
+								(GroupedCallable<T>)callable;
 
-						timeoutSeconds = groupedCallable.getTimeoutSeconds();
+							timeoutSeconds =
+								groupedCallable.getTimeoutSeconds();
+						}
+
+						try {
+							results.add(
+								future.get(timeoutSeconds, TimeUnit.SECONDS));
+						}
+						catch (TimeoutException timeoutException) {
+							System.out.println(
+								JenkinsResultsParserUtil.combine(
+									"Parallel executor thread timed ",
+									"out after ",
+									JenkinsResultsParserUtil.toDurationString(
+										timeoutSeconds * 1000),
+									"\n", timeoutException.getMessage()));
+
+							future.cancel(true);
+						}
 					}
 
-					try {
-						results.add(
-							future.get(timeoutSeconds, TimeUnit.SECONDS));
-					}
-					catch (TimeoutException timeoutException) {
-						System.out.println(
-							JenkinsResultsParserUtil.combine(
-								"Parallel executor thread timed ", "out after ",
-								JenkinsResultsParserUtil.toDurationString(
-									timeoutSeconds * 1000),
-								"\n", timeoutException.getMessage()));
-
-						future.cancel(true);
-					}
-					finally {
-						executorService.shutdown();
-					}
+					return results;
 				}
-
-				executorService.shutdown();
-
-				return results;
+				finally {
+					executorService.shutdown();
+				}
 			}
 
 		};
