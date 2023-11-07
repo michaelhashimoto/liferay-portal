@@ -88,7 +88,7 @@ public abstract class BaseParentBuild extends BaseBuild implements ParentBuild {
 		ParallelExecutor<Build> parallelExecutor = new ParallelExecutor<>(
 			callables, true, getExecutorService());
 
-		addDownstreamBuilds(parallelExecutor.execute(1000L * 60L * 60L * 3L));
+		addDownstreamBuilds(parallelExecutor.execute(60L * 60L * 3L));
 	}
 
 	@Override
