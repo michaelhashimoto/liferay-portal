@@ -6,8 +6,12 @@
 package com.liferay.jenkins.results.parser;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
@@ -25,7 +29,8 @@ public class ParallelExecutor<T> {
 		Collection<Callable<T>> callables, boolean excludeNulls,
 		ExecutorService executorService) {
 
-		_callables = callables;
+		_callablesMap = _toCallablesMap(callables);
+
 		_excludeNulls = excludeNulls;
 
 		_executorService = executorService;
@@ -60,13 +65,121 @@ public class ParallelExecutor<T> {
 	}
 
 	public synchronized void start() {
+		Set<Map.Entry<String, Collection<Callable<T>>>> entries =
+			_callablesMap.entrySet();
+
+		List<Callable<Collection<T>>> topLevelCallables = new ArrayList<>(
+			entries.size());
+
+		for (final Map.Entry<String, Collection<Callable<T>>>
+				callablesMapEntry : entries) {
+
+			String key = callablesMapEntry.getKey();
+
+			if (key.equals(_DEFAULT_GROUP_NAME)) {
+				for (final Callable<T> callable :
+						callablesMapEntry.getValue()) {
+
+					topLevelCallables.add(
+						new Callable<Collection<T>>() {
+
+							@Override
+							public List<T> call() throws Exception {
+								ExecutorService executorService =
+									Executors.newSingleThreadExecutor();
+
+								Future<T> future = executorService.submit(
+									callable);
+
+								long timeoutSeconds =
+									_DEFAULT_CALL_TIMEOUT_SECONDS;
+
+								if (callable instanceof GroupedCallable) {
+									GroupedCallable<T> groupedCallable =
+										(GroupedCallable<T>)callable;
+
+									timeoutSeconds =
+										groupedCallable.getTimeoutSeconds();
+								}
+
+								try {
+									return Arrays.asList(
+										future.get(
+											timeoutSeconds, TimeUnit.SECONDS));
+								}
+								finally {
+									executorService.shutdown();
+								}
+							}
+
+						});
+				}
+
+				continue;
+			}
+
+			topLevelCallables.add(
+				new Callable<Collection<T>>() {
+
+					@Override
+					public List<T> call() throws Exception {
+						List<T> results = new ArrayList<>();
+
+						ExecutorService executorService =
+							Executors.newSingleThreadExecutor();
+
+						for (Callable<T> callable :
+								callablesMapEntry.getValue()) {
+
+							Future<T> future = executorService.submit(callable);
+
+							long timeoutSeconds = _DEFAULT_CALL_TIMEOUT_SECONDS;
+
+							if (callable instanceof GroupedCallable) {
+								GroupedCallable<T> groupedCallable =
+									(GroupedCallable<T>)callable;
+
+								timeoutSeconds =
+									groupedCallable.getTimeoutSeconds();
+							}
+
+							try {
+								results.add(
+									future.get(
+										timeoutSeconds, TimeUnit.SECONDS));
+							}
+							catch (TimeoutException timeoutException) {
+								System.out.println(
+									JenkinsResultsParserUtil.combine(
+										"Parallel executor thread timed out ",
+										"after ",
+										JenkinsResultsParserUtil.
+											toDurationString(
+												timeoutSeconds * 1000),
+										"\n", timeoutException.getMessage()));
+
+								future.cancel(true);
+							}
+							finally {
+								executorService.shutdown();
+							}
+						}
+
+						executorService.shutdown();
+
+						return results;
+					}
+
+				});
+		}
+
 		if (_futures != null) {
 			return;
 		}
 
-		_futures = new ArrayList<>(_callables.size());
+		_futures = new ArrayList<>(topLevelCallables.size());
 
-		for (Callable<T> callable : _callables) {
+		for (Callable<Collection<T>> callable : topLevelCallables) {
 			_futures.add(_executorService.submit(callable));
 		}
 	}
@@ -85,14 +198,15 @@ public class ParallelExecutor<T> {
 		}
 
 		try {
-			List<T> results = new ArrayList<>(_callables.size());
+			List<T> results = new ArrayList<>();
 
-			for (Future<T> future : _futures) {
+			for (Future<Collection<T>> future : _futures) {
 				try {
-					T result = null;
+					Collection<T> futureResults = null;
 
 					try {
-						result = future.get(timeoutSeconds, TimeUnit.SECONDS);
+						futureResults = future.get(
+							timeoutSeconds, TimeUnit.SECONDS);
 					}
 					catch (TimeoutException timeoutException) {
 						System.out.println(
@@ -103,15 +217,13 @@ public class ParallelExecutor<T> {
 								"\n", timeoutException.getMessage()));
 
 						future.cancel(true);
-
-						result = null;
 					}
 
-					if ((result == null) && _excludeNulls) {
+					if ((futureResults == null) && _excludeNulls) {
 						continue;
 					}
 
-					results.add(result);
+					results.addAll(futureResults);
 				}
 				catch (ExecutionException | InterruptedException exception) {
 					throw new RuntimeException(exception);
@@ -133,10 +245,75 @@ public class ParallelExecutor<T> {
 		}
 	}
 
-	private final Collection<Callable<T>> _callables;
+	public abstract static class GroupedCallable<T> implements Callable<T> {
+
+		public GroupedCallable(String groupName) {
+			this(groupName, _DEFAULT_CALL_TIMEOUT_SECONDS);
+		}
+
+		public GroupedCallable(String groupName, long timeoutSeconds) {
+			_groupName = groupName;
+			_timeoutSeconds = timeoutSeconds;
+		}
+
+		public abstract T call() throws Exception;
+
+		public String getGroupName() {
+			return _groupName;
+		}
+
+		public long getTimeoutSeconds() {
+			return _timeoutSeconds;
+		}
+
+		private String _groupName;
+		private long _timeoutSeconds = _DEFAULT_CALL_TIMEOUT_SECONDS;
+
+	}
+
+	private Map<String, Collection<Callable<T>>> _toCallablesMap(
+		Collection<Callable<T>> callables) {
+
+		Map<String, Collection<Callable<T>>> callablesMap = new HashMap<>();
+
+		for (Callable<T> callable : callables) {
+			String groupName = null;
+
+			if (callable instanceof GroupedCallable) {
+				GroupedCallable<T> groupedCallable =
+					(GroupedCallable<T>)callable;
+
+				groupName = groupedCallable.getGroupName();
+			}
+
+			if (JenkinsResultsParserUtil.isNullOrEmpty(groupName)) {
+				groupName = _DEFAULT_GROUP_NAME;
+			}
+
+			if (!callablesMap.containsKey(groupName)) {
+				callablesMap.put(groupName, new ArrayList<Callable<T>>());
+			}
+
+			Collection<Callable<T>> callablesCollection = callablesMap.get(
+				groupName);
+
+			callablesCollection.add(callable);
+
+			callablesMap.put(groupName, callablesCollection);
+		}
+
+		return callablesMap;
+	}
+
+	private static final long _DEFAULT_CALL_TIMEOUT_SECONDS = 30L;
+
+	private static final String _DEFAULT_GROUP_NAME =
+		"PARALLEL_EXECUTOR_DEFAULT_CALLABLE_GROUP_NAME";
+
+	private final Map<String, Collection<Callable<T>>> _callablesMap;
 	private final boolean _disposeExecutor;
 	private boolean _excludeNulls;
 	private ExecutorService _executorService;
-	private ArrayList<Future<T>> _futures;
+	private ArrayList<Future<Collection<T>>> _futures;
 
 }
