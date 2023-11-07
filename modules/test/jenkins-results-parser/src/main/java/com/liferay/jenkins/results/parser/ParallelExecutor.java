@@ -81,96 +81,14 @@ public class ParallelExecutor<T> {
 						callablesMapEntry.getValue()) {
 
 					topLevelCallables.add(
-						new Callable<Collection<T>>() {
-
-							@Override
-							public List<T> call() throws Exception {
-								ExecutorService executorService =
-									Executors.newSingleThreadExecutor();
-
-								Future<T> future = executorService.submit(
-									callable);
-
-								long timeoutSeconds =
-									_DEFAULT_CALL_TIMEOUT_SECONDS;
-
-								if (callable instanceof GroupedCallable) {
-									GroupedCallable<T> groupedCallable =
-										(GroupedCallable<T>)callable;
-
-									timeoutSeconds =
-										groupedCallable.getTimeoutSeconds();
-								}
-
-								try {
-									return Arrays.asList(
-										future.get(
-											timeoutSeconds, TimeUnit.SECONDS));
-								}
-								finally {
-									executorService.shutdown();
-								}
-							}
-
-						});
+						_createTopLevelCallable(Arrays.asList(callable)));
 				}
 
 				continue;
 			}
 
 			topLevelCallables.add(
-				new Callable<Collection<T>>() {
-
-					@Override
-					public List<T> call() throws Exception {
-						List<T> results = new ArrayList<>();
-
-						ExecutorService executorService =
-							Executors.newSingleThreadExecutor();
-
-						for (Callable<T> callable :
-								callablesMapEntry.getValue()) {
-
-							Future<T> future = executorService.submit(callable);
-
-							long timeoutSeconds = _DEFAULT_CALL_TIMEOUT_SECONDS;
-
-							if (callable instanceof GroupedCallable) {
-								GroupedCallable<T> groupedCallable =
-									(GroupedCallable<T>)callable;
-
-								timeoutSeconds =
-									groupedCallable.getTimeoutSeconds();
-							}
-
-							try {
-								results.add(
-									future.get(
-										timeoutSeconds, TimeUnit.SECONDS));
-							}
-							catch (TimeoutException timeoutException) {
-								System.out.println(
-									JenkinsResultsParserUtil.combine(
-										"Parallel executor thread timed out ",
-										"after ",
-										JenkinsResultsParserUtil.
-											toDurationString(
-												timeoutSeconds * 1000),
-										"\n", timeoutException.getMessage()));
-
-								future.cancel(true);
-							}
-							finally {
-								executorService.shutdown();
-							}
-						}
-
-						executorService.shutdown();
-
-						return results;
-					}
-
-				});
+				_createTopLevelCallable(callablesMapEntry.getValue()));
 		}
 
 		if (_futures != null) {
@@ -269,6 +187,57 @@ public class ParallelExecutor<T> {
 		private String _groupName;
 		private long _timeoutSeconds = _DEFAULT_CALL_TIMEOUT_SECONDS;
 
+	}
+
+	private Callable<Collection<T>> _createTopLevelCallable(
+		Collection<Callable<T>> nestedCallables) {
+
+		return new Callable<Collection<T>>() {
+
+			@Override
+			public List<T> call() throws Exception {
+				List<T> results = new ArrayList<>();
+
+				ExecutorService executorService =
+					Executors.newSingleThreadExecutor();
+
+				for (Callable<T> callable : nestedCallables) {
+					Future<T> future = executorService.submit(callable);
+
+					long timeoutSeconds = _DEFAULT_CALL_TIMEOUT_SECONDS;
+
+					if (callable instanceof GroupedCallable) {
+						GroupedCallable<T> groupedCallable =
+							(GroupedCallable<T>)callable;
+
+						timeoutSeconds = groupedCallable.getTimeoutSeconds();
+					}
+
+					try {
+						results.add(
+							future.get(timeoutSeconds, TimeUnit.SECONDS));
+					}
+					catch (TimeoutException timeoutException) {
+						System.out.println(
+							JenkinsResultsParserUtil.combine(
+								"Parallel executor thread timed ", "out after ",
+								JenkinsResultsParserUtil.toDurationString(
+									timeoutSeconds * 1000),
+								"\n", timeoutException.getMessage()));
+
+						future.cancel(true);
+					}
+					finally {
+						executorService.shutdown();
+					}
+				}
+
+				executorService.shutdown();
+
+				return results;
+			}
+
+		};
 	}
 
 	private Map<String, Collection<Callable<T>>> _toCallablesMap(
