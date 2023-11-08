@@ -13,7 +13,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
@@ -29,11 +28,18 @@ public class ParallelExecutor<T> {
 		Collection<Callable<T>> callables, boolean excludeNulls,
 		ExecutorService executorService) {
 
+		this(callables, excludeNulls, executorService, false);
+	}
+
+	public ParallelExecutor(
+		Collection<Callable<T>> callables, boolean excludeNulls,
+		ExecutorService executorService, boolean failOnError) {
+
 		_callablesMap = _toCallablesMap(callables);
 
 		_excludeNulls = excludeNulls;
-
 		_executorService = executorService;
+		_failOnError = failOnError;
 
 		if (executorService == null) {
 			_disposeExecutor = true;
@@ -119,33 +125,37 @@ public class ParallelExecutor<T> {
 			List<T> results = new ArrayList<>();
 
 			for (Future<Collection<T>> future : _futures) {
+				Collection<T> futureResults = null;
+
 				try {
-					Collection<T> futureResults = null;
-
-					try {
-						futureResults = future.get(
-							timeoutSeconds, TimeUnit.SECONDS);
-					}
-					catch (TimeoutException timeoutException) {
-						System.out.println(
-							JenkinsResultsParserUtil.combine(
-								"Parallel executor thread timed out after ",
-								JenkinsResultsParserUtil.toDurationString(
-									timeoutSeconds * 1000),
-								"\n", timeoutException.getMessage()));
-
-						future.cancel(true);
-					}
-
-					if ((futureResults == null) && _excludeNulls) {
-						continue;
-					}
-
-					results.addAll(futureResults);
+					futureResults = future.get(
+						timeoutSeconds, TimeUnit.SECONDS);
 				}
-				catch (ExecutionException | InterruptedException exception) {
-					throw new RuntimeException(exception);
+				catch (Exception exception) {
+					future.cancel(true);
+
+					String errorMessage = exception.getMessage();
+
+					if (exception instanceof TimeoutException) {
+						errorMessage = JenkinsResultsParserUtil.combine(
+							"Parallel executor thread timed out after ",
+							JenkinsResultsParserUtil.toDurationString(
+								timeoutSeconds * 1000),
+							"\n", exception.getMessage());
+					}
+
+					if (_failOnError) {
+						throw new RuntimeException(errorMessage, exception);
+					}
+
+					System.out.println(errorMessage);
 				}
+
+				if ((futureResults == null) && _excludeNulls) {
+					continue;
+				}
+
+				results.addAll(futureResults);
 			}
 
 			return results;
@@ -285,6 +295,7 @@ public class ParallelExecutor<T> {
 	private final boolean _disposeExecutor;
 	private boolean _excludeNulls;
 	private ExecutorService _executorService;
+	private boolean _failOnError;
 	private ArrayList<Future<Collection<T>>> _futures;
 
 }
