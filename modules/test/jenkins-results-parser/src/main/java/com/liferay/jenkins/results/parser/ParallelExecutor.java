@@ -276,7 +276,7 @@ public class ParallelExecutor<T> {
 		return callablesMap;
 	}
 
-	private static final long _DEFAULT_CALL_TIMEOUT_SECONDS = 30L;
+	private static final long _DEFAULT_CALL_TIMEOUT_SECONDS = 60 * 60 * 2;
 
 	private static final String _DEFAULT_GROUP_NAME =
 		"PARALLEL_EXECUTOR_DEFAULT_CALLABLE_GROUP_NAME";
