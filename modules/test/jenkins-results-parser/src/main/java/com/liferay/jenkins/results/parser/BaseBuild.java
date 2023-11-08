@@ -2029,8 +2029,11 @@ public abstract class BaseBuild implements Build {
 	protected List<Callable<Object>> getArchiveCallables() {
 		List<Callable<Object>> archiveCallables = new ArrayList<>();
 
+		JenkinsMaster jenkinsMaster = getJenkinsMaster();
+
 		archiveCallables.add(
-			new Callable<Object>() {
+			new ParallelExecutor.GroupedCallable<Object>(
+				jenkinsMaster.getName(), 30) {
 
 				@Override
 				public Object call() {
@@ -2041,7 +2044,8 @@ public abstract class BaseBuild implements Build {
 
 			});
 		archiveCallables.add(
-			new Callable<Object>() {
+			new ParallelExecutor.GroupedCallable<Object>(
+				jenkinsMaster.getName(), 30) {
 
 				@Override
 				public Object call() {
@@ -2052,7 +2056,8 @@ public abstract class BaseBuild implements Build {
 
 			});
 		archiveCallables.add(
-			new Callable<Object>() {
+			new ParallelExecutor.GroupedCallable<Object>(
+				jenkinsMaster.getName(), 30) {
 
 				@Override
 				public Object call() {
@@ -2063,7 +2068,8 @@ public abstract class BaseBuild implements Build {
 
 			});
 		archiveCallables.add(
-			new Callable<Object>() {
+			new ParallelExecutor.GroupedCallable<Object>(
+				jenkinsMaster.getName(), 30) {
 
 				@Override
 				public Object call() {
