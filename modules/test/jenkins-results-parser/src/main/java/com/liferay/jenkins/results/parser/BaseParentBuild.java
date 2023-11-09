@@ -57,7 +57,7 @@ public abstract class BaseParentBuild extends BaseBuild implements ParentBuild {
 				}
 
 				ParallelExecutor.GroupedCallable<Build> callable =
-					new ParallelExecutor.GroupedCallable<Build>(hostname, 30) {
+					new ParallelExecutor.GroupedCallable<Build>(hostname, 300) {
 
 						@Override
 						public Build call() {
@@ -470,7 +470,7 @@ public abstract class BaseParentBuild extends BaseBuild implements ParentBuild {
 
 			ParallelExecutor.GroupedCallable<Object> callable =
 				new ParallelExecutor.GroupedCallable<Object>(
-					jenkinsMaster.getName(), 30) {
+					jenkinsMaster.getName(), 300) {
 
 					@Override
 					public Object call() {
@@ -574,7 +574,7 @@ public abstract class BaseParentBuild extends BaseBuild implements ParentBuild {
 
 			ParallelExecutor.GroupedCallable<Element> callable =
 				new ParallelExecutor.GroupedCallable<Element>(
-					jenkinsMaster.getName(), 30) {
+					jenkinsMaster.getName(), 300) {
 
 					public Element call() {
 						return downstreamBuild.getGitHubMessageElement();
