@@ -213,6 +213,8 @@ public class ParallelExecutor<T> {
 
 				String groupName = null;
 
+				int failures = 0;
+
 				try {
 					//boolean first = true;
 
@@ -253,6 +255,8 @@ public class ParallelExecutor<T> {
 								future.get(timeoutSeconds, TimeUnit.SECONDS));
 						}
 						catch (TimeoutException timeoutException) {
+							failures++;
+
 							System.out.println(
 								JenkinsResultsParserUtil.combine(
 									"Parallel executor thread timed ",
@@ -285,7 +289,8 @@ public class ParallelExecutor<T> {
 
 						System.out.println(
 							"Thread group " + groupName + " average duration " +
-								durationString);
+								durationString + " failure count " + failures +
+								" out of " + nestedCallables.size());
 					}
 
 					return results;
