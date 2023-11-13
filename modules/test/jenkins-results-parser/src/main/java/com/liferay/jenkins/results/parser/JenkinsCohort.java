@@ -194,7 +194,8 @@ public class JenkinsCohort {
 						_jenkinsMastersMap.size(), true);
 
 				ParallelExecutor<Void> parallelExecutor =
-					new ParallelExecutor<>(callables, threadPoolExecutor);
+					new ParallelExecutor<>(
+						callables, threadPoolExecutor, "JenkinsCohort.update");
 
 				parallelExecutor.execute();
 			}

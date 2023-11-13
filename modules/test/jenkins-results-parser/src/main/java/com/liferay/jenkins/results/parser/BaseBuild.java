@@ -75,7 +75,7 @@ public abstract class BaseBuild implements Build {
 		}
 
 		ParallelExecutor<Object> parallelExecutor = new ParallelExecutor<>(
-			getArchiveCallables(), getExecutorService());
+			getArchiveCallables(), getExecutorService(), "archive");
 
 		parallelExecutor.execute();
 	}

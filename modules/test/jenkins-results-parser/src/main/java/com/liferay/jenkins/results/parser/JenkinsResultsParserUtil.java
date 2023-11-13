@@ -3122,7 +3122,8 @@ public class JenkinsResultsParserUtil {
 			jenkinsMasters.size(), true);
 
 		ParallelExecutor<List<JenkinsSlave>> parallelExecutor =
-			new ParallelExecutor<>(callables, threadPoolExecutor);
+			new ParallelExecutor<>(
+				callables, threadPoolExecutor, "getReachableJenkinsSlaves");
 
 		List<JenkinsSlave> onlineJenkinsSlaves = concatenate(
 			parallelExecutor.execute(), false);

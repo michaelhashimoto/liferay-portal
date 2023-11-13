@@ -150,7 +150,7 @@ public class CISystemHistoryReportUtil {
 		}
 
 		ParallelExecutor<File> parallelExecutor = new ParallelExecutor<>(
-			callables, _executorService);
+			callables, _executorService, "WriteDateDurationsJavaScript");
 
 		List<File> completedJenkinsConsoleGzFiles = parallelExecutor.execute();
 

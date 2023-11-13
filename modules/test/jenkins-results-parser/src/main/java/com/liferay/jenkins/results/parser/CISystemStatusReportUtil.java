@@ -119,7 +119,7 @@ public class CISystemStatusReportUtil {
 		}
 
 		ParallelExecutor<File> parallelExecutor = new ParallelExecutor<>(
-			callables, _executorService);
+			callables, _executorService, "writeTestrayDataJavaScriptFile");
 
 		parallelExecutor.execute();
 

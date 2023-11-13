@@ -68,7 +68,9 @@ public abstract class BaseWorkspace implements Workspace {
 		}
 
 		ParallelExecutor<WorkspaceGitRepository> parallelExecutor =
-			new ParallelExecutor<>(callables, false, threadPoolExecutor, true);
+			new ParallelExecutor<>(
+				callables, false, threadPoolExecutor, true,
+				"getWorkspaceGitRepositories");
 
 		List<WorkspaceGitRepository> workspaceGitRepositories =
 			parallelExecutor.execute();
@@ -117,7 +119,7 @@ public abstract class BaseWorkspace implements Workspace {
 		}
 
 		ParallelExecutor<Object> parallelExecutor = new ParallelExecutor<>(
-			callables, false, threadPoolExecutor, true);
+			callables, false, threadPoolExecutor, true, "BaseWorkspace.setup");
 
 		parallelExecutor.execute();
 
@@ -150,7 +152,7 @@ public abstract class BaseWorkspace implements Workspace {
 		}
 
 		_parallelExecutor = new ParallelExecutor<>(
-			callables, threadPoolExecutor);
+			callables, threadPoolExecutor, "startSynchronizeToGitHubDev");
 
 		_parallelExecutor.start();
 	}
@@ -189,7 +191,7 @@ public abstract class BaseWorkspace implements Workspace {
 		}
 
 		ParallelExecutor<Object> parallelExecutor = new ParallelExecutor<>(
-			callables, threadPoolExecutor);
+			callables, threadPoolExecutor, "BaseWorkspace.tearDown");
 
 		parallelExecutor.execute();
 	}

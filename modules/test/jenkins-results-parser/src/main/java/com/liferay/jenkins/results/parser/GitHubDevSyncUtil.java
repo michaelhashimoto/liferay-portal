@@ -150,7 +150,8 @@ public class GitHubDevSyncUtil {
 		}
 
 		ParallelExecutor<GitRemote> parallelExecutor = new ParallelExecutor<>(
-			callables, true, _threadPoolExecutor);
+			callables, true, _threadPoolExecutor,
+			"GitHubDevSyncUtil.getGitRemotesWithBranch");
 
 		return parallelExecutor.execute();
 	}
@@ -250,7 +251,7 @@ public class GitHubDevSyncUtil {
 		}
 
 		ParallelExecutor<Object> parallelExecutor = new ParallelExecutor<>(
-			callables, _threadPoolExecutor);
+			callables, _threadPoolExecutor, "GitHubDevSyncUtil.cacheBranches");
 
 		parallelExecutor.execute();
 
@@ -435,7 +436,8 @@ public class GitHubDevSyncUtil {
 		}
 
 		ParallelExecutor<Object> parallelExecutor = new ParallelExecutor<>(
-			callables, _threadPoolExecutor);
+			callables, _threadPoolExecutor,
+			"GitHubDevSyncUtil.deleteExpiredRemoteGitBranches");
 
 		parallelExecutor.execute();
 
@@ -520,7 +522,8 @@ public class GitHubDevSyncUtil {
 		}
 
 		ParallelExecutor<Object> parallelExecutor = new ParallelExecutor<>(
-			callables, _threadPoolExecutor);
+			callables, _threadPoolExecutor,
+			"GitHubDevSyncUtil.deleteExtraTimestampBranches");
 
 		parallelExecutor.execute();
 
@@ -558,7 +561,8 @@ public class GitHubDevSyncUtil {
 		}
 
 		ParallelExecutor<Boolean> parallelExecutor = new ParallelExecutor<>(
-			callables, _threadPoolExecutor);
+			callables, _threadPoolExecutor,
+			"GitHubDevSyncUtil.deleteFromAllRemotes");
 
 		parallelExecutor.execute();
 
@@ -699,7 +703,8 @@ public class GitHubDevSyncUtil {
 		}
 
 		ParallelExecutor<Object> parallelExecutor = new ParallelExecutor<>(
-			callables, _threadPoolExecutor);
+			callables, _threadPoolExecutor,
+			"GitHubDevSyncUtil.deleteOrphanedCacheBranches");
 
 		parallelExecutor.execute();
 	}
@@ -938,7 +943,8 @@ public class GitHubDevSyncUtil {
 		}
 
 		ParallelExecutor<Boolean> parallelExecutor = new ParallelExecutor<>(
-			callables, _threadPoolExecutor);
+			callables, _threadPoolExecutor,
+			"GitHubDevSyncUtil.pushToAllRemotes");
 
 		parallelExecutor.execute();
 
@@ -981,7 +987,8 @@ public class GitHubDevSyncUtil {
 		}
 
 		ParallelExecutor<Boolean> parallelExecutor = new ParallelExecutor<>(
-			callables, _threadPoolExecutor);
+			callables, _threadPoolExecutor,
+			"GitHubDevSyncUtil.remoteGitBranch");
 
 		for (Boolean bool : parallelExecutor.execute()) {
 			if ((bool == null) || !bool) {

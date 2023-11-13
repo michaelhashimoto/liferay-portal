@@ -185,7 +185,7 @@ public class BuildArchiverUtil {
 		}
 
 		ParallelExecutor<Boolean> parallelExecutor = new ParallelExecutor<>(
-			callables, _executorService);
+			callables, _executorService, "recordGroovyScriptResponses");
 
 		parallelExecutor.execute();
 	}

@@ -911,7 +911,8 @@ public abstract class BaseJob implements Job {
 		}
 
 		ParallelExecutor<BatchTestClassGroup> parallelExecutor =
-			new ParallelExecutor<>(callables, _executorService);
+			new ParallelExecutor<>(
+				callables, _executorService, "getBatchTestClassGroups");
 
 		List<BatchTestClassGroup> batchTestClassGroups =
 			parallelExecutor.execute();
@@ -920,7 +921,8 @@ public abstract class BaseJob implements Job {
 				testBaseDirCallablesMap.values()) {
 
 			parallelExecutor = new ParallelExecutor<>(
-				testBaseDirCallables, _executorService);
+				testBaseDirCallables, _executorService,
+				"getBatchTestClassGroups2");
 
 			batchTestClassGroups.addAll(parallelExecutor.execute());
 		}

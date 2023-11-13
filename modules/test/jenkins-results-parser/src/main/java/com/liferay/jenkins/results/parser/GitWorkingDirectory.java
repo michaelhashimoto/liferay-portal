@@ -606,7 +606,8 @@ public class GitWorkingDirectory {
 		ParallelExecutor<Boolean> parallelExecutor = new ParallelExecutor<>(
 			callables, true,
 			JenkinsResultsParserUtil.getNewThreadPoolExecutor(
-				callables.size(), true));
+				callables.size(), true),
+			"GitWorkingDirectory.deleteRemoteGitBranches");
 
 		parallelExecutor.execute();
 	}

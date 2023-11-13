@@ -86,7 +86,7 @@ public abstract class BaseParentBuild extends BaseBuild implements ParentBuild {
 		}
 
 		ParallelExecutor<Build> parallelExecutor = new ParallelExecutor<>(
-			callables, true, getExecutorService());
+			callables, true, getExecutorService(), "addDownstreamBuilds");
 
 		addDownstreamBuilds(parallelExecutor.execute(60L * 60L * 3L));
 	}
@@ -485,7 +485,7 @@ public abstract class BaseParentBuild extends BaseBuild implements ParentBuild {
 		}
 
 		ParallelExecutor<Object> parallelExecutor = new ParallelExecutor<>(
-			callables, getExecutorService());
+			callables, getExecutorService(), "BaseParentBuild.update");
 
 		parallelExecutor.execute();
 
@@ -586,7 +586,7 @@ public abstract class BaseParentBuild extends BaseBuild implements ParentBuild {
 		}
 
 		ParallelExecutor<Element> parallelExecutor = new ParallelExecutor<>(
-			callables, getExecutorService());
+			callables, getExecutorService(), "getDownstreamBuildMessages");
 
 		List<Element> elements = parallelExecutor.execute();
 

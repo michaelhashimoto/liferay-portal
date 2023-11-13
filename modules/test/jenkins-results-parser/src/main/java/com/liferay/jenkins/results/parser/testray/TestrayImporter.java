@@ -1196,7 +1196,7 @@ public class TestrayImporter {
 		}
 
 		ParallelExecutor<Void> parallelExecutor = new ParallelExecutor<>(
-			callables, _executorService);
+			callables, _executorService, "recordTestrayCaseResults");
 
 		parallelExecutor.execute();
 
