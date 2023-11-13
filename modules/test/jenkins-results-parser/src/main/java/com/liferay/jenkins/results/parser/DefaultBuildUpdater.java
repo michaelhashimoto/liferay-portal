@@ -147,6 +147,9 @@ public class DefaultBuildUpdater extends BaseBuildUpdater {
 
 			Build build = getBuild();
 
+			System.out.println(
+				"PDY running isBuildQueued " + build.getBuildName());
+
 			Build.Invocation buildInvocation = build.getCurrentInvocation();
 
 			buildInvocation.setQueueId(queueItemJSONObject.getLong("id"));
@@ -277,6 +280,13 @@ public class DefaultBuildUpdater extends BaseBuildUpdater {
 				return null;
 			}
 
+			System.out.println(
+				"PDY running getQueueItemJSONObject " + jenkinsMaster.getURL() +
+					"/job/" + build.getJobName() + " build name: " +
+						build.getBuildName() + " queue id: " +
+							build.getCurrentInvocation(
+							).getQueueId());
+
 			List<JSONObject> queueItemJSONObjects = new ArrayList<>(
 				jenkinsMaster.getQueueItemJSONObjects());
 
@@ -353,7 +363,9 @@ public class DefaultBuildUpdater extends BaseBuildUpdater {
 				sb.append(buildParameter.getValue());
 			}
 
-			JenkinsResultsParserUtil.toString(sb.toString());
+			System.out.println(
+				"invocation result " + sb.toString() + "\n" +
+					JenkinsResultsParserUtil.toString(sb.toString()));
 
 			return new Build.Invocation(build, jenkinsMaster);
 		}

@@ -462,6 +462,9 @@ public abstract class BaseParentBuild extends BaseBuild implements ParentBuild {
 	@Override
 	public void update() {
 		if (skipUpdate()) {
+			System.out.println(
+				"Skipping parent build update status: " + getStatus());
+
 			return;
 		}
 
@@ -469,7 +472,20 @@ public abstract class BaseParentBuild extends BaseBuild implements ParentBuild {
 
 		List<Callable<Object>> callables = new ArrayList<>();
 
+		Map<String, Integer> statusCountMap = new HashMap<>(
+			downstreamBuilds.size());
+
 		for (final Build downstreamBuild : downstreamBuilds) {
+			String status = downstreamBuild.getStatus();
+
+			if (!statusCountMap.containsKey(status)) {
+				statusCountMap.put(status, 0);
+			}
+
+			int count = statusCountMap.get(status);
+
+			statusCountMap.put(status, count + 1);
+
 			JenkinsMaster jenkinsMaster = downstreamBuild.getJenkinsMaster();
 
 			ParallelExecutor.GroupedCallable<Object> callable =
@@ -487,6 +503,23 @@ public abstract class BaseParentBuild extends BaseBuild implements ParentBuild {
 
 			callables.add(callable);
 		}
+
+		StringBuilder sb = new StringBuilder("PDY created ");
+
+		sb.append(callables.size());
+		sb.append(" build update callables \n");
+
+		for (Map.Entry<String, Integer> statusCountMapEntry :
+				statusCountMap.entrySet()) {
+
+			sb.append("     ");
+			sb.append(statusCountMapEntry.getKey());
+			sb.append(":");
+			sb.append(statusCountMapEntry.getValue());
+			sb.append("\n");
+		}
+
+		System.out.println(sb.toString());
 
 		ParallelExecutor<Object> parallelExecutor = new ParallelExecutor<>(
 			callables, getExecutorService(), "BaseParentBuild.update");
@@ -656,11 +689,20 @@ public abstract class BaseParentBuild extends BaseBuild implements ParentBuild {
 
 	@Override
 	protected boolean skipUpdate() {
-		if (isBuildModified() || hasModifiedDownstreamBuilds() ||
-			!Objects.equals(getStatus(), "completed")) {
+		boolean skipUpdate = super.skipUpdate();
+
+		System.out.println(
+			"super.skipUpdate= " + skipUpdate +
+				" BaseParentBuild.skipUpdate - hasModifiedDownstreamBuilds: " +
+					hasModifiedDownstreamBuilds());
+
+		if (!skipUpdate || hasModifiedDownstreamBuilds()) {
+			System.out.println("BaseParentBuild.skipUpdate - returning FALSE");
 
 			return false;
 		}
+
+		System.out.println("BaseParentBuild.skipUpdate - returning TRUE");
 
 		return true;
 	}

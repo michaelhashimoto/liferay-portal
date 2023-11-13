@@ -688,6 +688,8 @@ public abstract class BaseTopLevelBuild
 	@Override
 	public synchronized void update() {
 		if (skipUpdate()) {
+			System.out.println("TopLevelBuild skipUpdate=TRUE");
+
 			return;
 		}
 

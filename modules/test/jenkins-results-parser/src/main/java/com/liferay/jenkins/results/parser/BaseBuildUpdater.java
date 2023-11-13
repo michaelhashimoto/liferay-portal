@@ -26,6 +26,8 @@ public abstract class BaseBuildUpdater implements BuildUpdater {
 	public void update() {
 		String status = _build.getStatus();
 
+		System.out.println("PDY STATUS: " + status);
+
 		if (status.equals("completed")) {
 			runCompleted();
 		}
@@ -42,6 +44,7 @@ public abstract class BaseBuildUpdater implements BuildUpdater {
 			runRunning();
 		}
 		else if (status.equals("starting")) {
+			System.out.println("PDY runStarting()");
 			runStarting();
 		}
 	}
@@ -59,6 +62,7 @@ public abstract class BaseBuildUpdater implements BuildUpdater {
 	protected abstract boolean isBuildRunning();
 
 	protected void runCompleted() {
+		System.out.println("PDY runCompleted");
 		_build.setStatus("completed");
 	}
 
@@ -134,9 +138,13 @@ public abstract class BaseBuildUpdater implements BuildUpdater {
 		Build.Invocation previousInvocation = _build.getPreviousInvocation();
 
 		if (previousInvocation != null) {
+			System.out.println(
+				"runStarting " + _build.getInvocationURL() + " reinvoke");
 			reinvoke();
 		}
 		else {
+			System.out.println(
+				"runStarting " + _build.getInvocationURL() + " invoke");
 			invoke();
 		}
 
