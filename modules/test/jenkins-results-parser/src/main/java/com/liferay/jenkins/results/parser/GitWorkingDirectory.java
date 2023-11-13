@@ -573,32 +573,34 @@ public class GitWorkingDirectory {
 		for (final Map.Entry<String, Set<String>> remoteURLBranchNamesEntry :
 				remoteURLGitBranchNameMap.entrySet()) {
 
-			Callable<Boolean> callable = new Callable<Boolean>() {
+			ParallelExecutor.GroupedCallable<Boolean> callable =
+				new ParallelExecutor.GroupedCallable<Boolean>(
+					remoteURLBranchNamesEntry.getKey()) {
 
-				@Override
-				public Boolean call() throws Exception {
-					Set<String> allBranchNames =
-						remoteURLBranchNamesEntry.getValue();
+					@Override
+					public Boolean call() throws Exception {
+						Set<String> allBranchNames =
+							remoteURLBranchNamesEntry.getValue();
 
-					if (allBranchNames.isEmpty()) {
+						if (allBranchNames.isEmpty()) {
+							return true;
+						}
+
+						String remoteURL = remoteURLBranchNamesEntry.getKey();
+
+						for (List<String> branchNames :
+								Lists.partition(
+									new ArrayList<String>(allBranchNames),
+									_BRANCHES_DELETE_BATCH_SIZE)) {
+
+							_deleteRemoteGitBranches(
+								remoteURL, branchNames.toArray(new String[0]));
+						}
+
 						return true;
 					}
 
-					String remoteURL = remoteURLBranchNamesEntry.getKey();
-
-					for (List<String> branchNames :
-							Lists.partition(
-								new ArrayList<String>(allBranchNames),
-								_BRANCHES_DELETE_BATCH_SIZE)) {
-
-						_deleteRemoteGitBranches(
-							remoteURL, branchNames.toArray(new String[0]));
-					}
-
-					return true;
-				}
-
-			};
+				};
 
 			callables.add(callable);
 		}

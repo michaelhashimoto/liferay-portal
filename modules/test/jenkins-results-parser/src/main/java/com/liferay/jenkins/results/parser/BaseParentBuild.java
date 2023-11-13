@@ -470,7 +470,7 @@ public abstract class BaseParentBuild extends BaseBuild implements ParentBuild {
 
 			ParallelExecutor.GroupedCallable<Object> callable =
 				new ParallelExecutor.GroupedCallable<Object>(
-					jenkinsMaster.getName(), 300) {
+					jenkinsMaster.getName()) {
 
 					@Override
 					public Object call() {

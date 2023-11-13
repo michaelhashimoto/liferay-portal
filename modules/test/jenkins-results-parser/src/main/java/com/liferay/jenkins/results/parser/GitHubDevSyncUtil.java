@@ -127,9 +127,10 @@ public class GitHubDevSyncUtil {
 			gitRemotes.size());
 
 		for (final GitRemote gitRemote : gitRemotes) {
-			Callable<GitRemote> callable = new Callable<GitRemote>() {
+			SafeCallable<GitRemote> callable = new SafeCallable<GitRemote>(
+				gitRemote.getHostname()) {
 
-				public GitRemote call() {
+				public GitRemote safeCall() {
 					try {
 						if (gitWorkingDirectory.remoteGitBranchExists(
 								branchName, gitRemote.getRemoteURL())) {
@@ -223,7 +224,8 @@ public class GitHubDevSyncUtil {
 		List<Callable<Object>> callables = new ArrayList<>();
 
 		for (final GitRemote gitHubDevGitRemote : gitHubDevGitRemotes) {
-			Callable<Object> callable = new SafeCallable<Object>() {
+			Callable<Object> callable = new SafeCallable<Object>(
+				gitHubDevGitRemote.getHostname()) {
 
 				@Override
 				public Object safeCall() {
@@ -421,7 +423,8 @@ public class GitHubDevSyncUtil {
 		List<Callable<Object>> callables = new ArrayList<>();
 
 		for (final GitRemote gitHubDevGitRemote : gitHubDevGitRemotes) {
-			Callable<Object> callable = new SafeCallable<Object>() {
+			Callable<Object> callable = new SafeCallable<Object>(
+				gitHubDevGitRemote.getHostname()) {
 
 				@Override
 				public Object safeCall() {
@@ -507,7 +510,8 @@ public class GitHubDevSyncUtil {
 		List<Callable<Object>> callables = new ArrayList<>();
 
 		for (final GitRemote gitHubDevGitRemote : gitHubDevGitRemotes) {
-			Callable<Object> callable = new SafeCallable<Object>() {
+			Callable<Object> callable = new SafeCallable<Object>(
+				gitHubDevGitRemote.getHostname()) {
 
 				@Override
 				public Object safeCall() {
@@ -542,7 +546,8 @@ public class GitHubDevSyncUtil {
 		List<Callable<Boolean>> callables = new ArrayList<>();
 
 		for (final GitRemote gitRemote : gitRemotes) {
-			Callable<Boolean> callable = new SafeCallable<Boolean>() {
+			Callable<Boolean> callable = new SafeCallable<Boolean>(
+				gitRemote.getHostname()) {
 
 				@Override
 				public Boolean safeCall() {
@@ -688,7 +693,8 @@ public class GitHubDevSyncUtil {
 		List<Callable<Object>> callables = new ArrayList<>(gitRemotes.size());
 
 		for (final GitRemote gitRemote : gitRemotes) {
-			Callable<Object> callable = new SafeCallable<Object>() {
+			Callable<Object> callable = new SafeCallable<Object>(
+				gitRemote.getHostname()) {
 
 				@Override
 				public Object safeCall() {
@@ -910,7 +916,8 @@ public class GitHubDevSyncUtil {
 		List<Callable<Boolean>> callables = new ArrayList<>();
 
 		for (final GitRemote gitRemote : gitRemotes) {
-			Callable<Boolean> callable = new SafeCallable<Boolean>() {
+			Callable<Boolean> callable = new SafeCallable<Boolean>(
+				gitRemote.getHostname()) {
 
 				@Override
 				public Boolean safeCall() {
@@ -966,7 +973,8 @@ public class GitHubDevSyncUtil {
 		List<Callable<Boolean>> callables = new ArrayList<>(gitRemotes.size());
 
 		for (final GitRemote gitRemote : gitRemotes) {
-			Callable<Boolean> callable = new SafeCallable<Boolean>() {
+			Callable<Boolean> callable = new SafeCallable<Boolean>(
+				gitRemote.getHostname()) {
 
 				@Override
 				public Boolean safeCall() {
@@ -1608,7 +1616,20 @@ public class GitHubDevSyncUtil {
 	private static final ThreadPoolExecutor _threadPoolExecutor =
 		JenkinsResultsParserUtil.getNewThreadPoolExecutor(8, true);
 
-	private abstract static class SafeCallable<T> implements Callable<T> {
+	private abstract static class SafeCallable<T>
+		extends ParallelExecutor.GroupedCallable<T> {
+
+		public SafeCallable() {
+			this(null);
+		}
+
+		public SafeCallable(String groupName) {
+			super(groupName);
+		}
+
+		public SafeCallable(String groupName, long timeoutSeconds) {
+			super(groupName, timeoutSeconds);
+		}
 
 		@Override
 		public final T call() {

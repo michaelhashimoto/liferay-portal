@@ -137,16 +137,28 @@ public abstract class BaseWorkspace implements Workspace {
 		for (final WorkspaceGitRepository workspaceGitRepository :
 				getWorkspaceGitRepositories()) {
 
-			Callable<Object> callable = new Callable<Object>() {
+			Callable<Object> callable =
+				new ParallelExecutor.GroupedCallable<Object>(
+					workspaceGitRepository.getName()) {
 
-				@Override
-				public Object call() {
-					workspaceGitRepository.synchronizeToGitHubDev();
+					@Override
+					public Object call() {
+						System.out.println(
+							"Starting synchronizeToGitHubDev for workspace " +
+								"git repository " +
+									workspaceGitRepository.getName());
 
-					return null;
-				}
+						workspaceGitRepository.synchronizeToGitHubDev();
 
-			};
+						System.out.println(
+							"Finished synchronizeToGitHubDev for workspace " +
+								"git repository " +
+									workspaceGitRepository.getName());
+
+						return null;
+					}
+
+				};
 
 			callables.add(callable);
 		}
