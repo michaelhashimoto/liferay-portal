@@ -17,11 +17,11 @@ import java.util.regex.Matcher;
  */
 public class BuildFactory {
 
-	public static Build newBuild(String url, Build parentBuild) {
+	public static synchronized Build newBuild(String url, Build parentBuild) {
 		return newBuild(url, parentBuild, null);
 	}
 
-	public static Build newBuild(
+	public static synchronized Build newBuild(
 		String url, Build parentBuild, String jobVariant) {
 
 		url = JenkinsResultsParserUtil.getLocalURL(url);
