@@ -27,6 +27,10 @@ import org.dom4j.Element;
 public abstract class BaseParentBuild extends BaseBuild implements ParentBuild {
 
 	public void addDownstreamBuilds(Map<String, String> urlAxisNames) {
+		if (urlAxisNames.isEmpty()) {
+			return;
+		}
+
 		final Build thisBuild = this;
 
 		List<Callable<Build>> callables = new ArrayList<>(urlAxisNames.size());
