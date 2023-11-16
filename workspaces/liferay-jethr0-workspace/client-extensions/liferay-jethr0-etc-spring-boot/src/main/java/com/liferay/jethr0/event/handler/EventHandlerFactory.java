@@ -56,6 +56,10 @@ public class EventHandlerFactory {
 			eventHandler = new CreateJobEventHandler(
 				_eventHandlerContext, messageJSONObject);
 		}
+		else if (eventType == EventHandler.EventType.GITHUB_ACTION_CREATED) {
+			eventHandler = new GitHubEventHandler(
+				_eventHandlerContext, messageJSONObject);
+		}
 		else if (eventType == EventHandler.EventType.QUEUE_JOB) {
 			eventHandler = new QueueJobEventHandler(
 				_eventHandlerContext, messageJSONObject);
