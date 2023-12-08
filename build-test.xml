@@ -12520,6 +12520,10 @@ auto.deploy.dest.dir=C:/WINDOWS/system32/config/systemprofile/liferay/websphere-
 		<if>
 			<isset property="object.storage.salesforce.consumer.key" />
 			<then>
+				<echo append="true" file="${project.dir}/portal-impl/src/test-portal-impl-ext.properties">
+					object.storage.salesforce.consumer.key=${object.storage.salesforce.consumer.key}
+				</echo>
+
 				<echo append="true" file="${project.dir}/portal-test/src/test-portal-impl-ext.properties">
 					object.storage.salesforce.consumer.key=${object.storage.salesforce.consumer.key}
 				</echo>
@@ -12529,6 +12533,10 @@ auto.deploy.dest.dir=C:/WINDOWS/system32/config/systemprofile/liferay/websphere-
 		<if>
 			<isset property="object.storage.salesforce.consumer.secret" />
 			<then>
+				<echo append="true" file="${project.dir}/portal-impl/src/test-portal-impl-ext.properties">
+					object.storage.salesforce.consumer.secret=${object.storage.salesforce.consumer.secret}
+				</echo>
+
 				<echo append="true" file="${project.dir}/portal-test/src/test-portal-impl-ext.properties">
 					object.storage.salesforce.consumer.secret=${object.storage.salesforce.consumer.secret}
 				</echo>
@@ -12538,6 +12546,10 @@ auto.deploy.dest.dir=C:/WINDOWS/system32/config/systemprofile/liferay/websphere-
 		<if>
 			<isset property="object.storage.salesforce.login.url" />
 			<then>
+				<echo append="true" file="${project.dir}/portal-impl/src/test-portal-impl-ext.properties">
+					object.storage.salesforce.login.url=${object.storage.salesforce.login.url}
+				</echo>
+
 				<echo append="true" file="${project.dir}/portal-test/src/test-portal-impl-ext.properties">
 					object.storage.salesforce.login.url=${object.storage.salesforce.login.url}
 				</echo>
@@ -12547,6 +12559,10 @@ auto.deploy.dest.dir=C:/WINDOWS/system32/config/systemprofile/liferay/websphere-
 		<if>
 			<isset property="object.storage.salesforce.password" />
 			<then>
+				<echo append="true" file="${project.dir}/portal-impl/src/test-portal-impl-ext.properties">
+					object.storage.salesforce.password=${object.storage.salesforce.password}
+				</echo>
+
 				<echo append="true" file="${project.dir}/portal-test/src/test-portal-impl-ext.properties">
 					object.storage.salesforce.password=${object.storage.salesforce.password}
 				</echo>
@@ -12556,6 +12572,10 @@ auto.deploy.dest.dir=C:/WINDOWS/system32/config/systemprofile/liferay/websphere-
 		<if>
 			<isset property="object.storage.salesforce.username" />
 			<then>
+				<echo append="true" file="${project.dir}/portal-impl/src/test-portal-impl-ext.properties">
+					object.storage.salesforce.username=${object.storage.salesforce.username}
+				</echo>
+
 				<echo append="true" file="${project.dir}/portal-test/src/test-portal-impl-ext.properties">
 					object.storage.salesforce.username=${object.storage.salesforce.username}
 				</echo>
