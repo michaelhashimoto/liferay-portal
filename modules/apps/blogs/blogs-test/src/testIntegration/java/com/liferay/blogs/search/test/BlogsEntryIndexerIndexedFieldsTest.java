@@ -85,6 +85,10 @@ public class BlogsEntryIndexerIndexedFieldsTest {
 
 	@Test
 	public void testIndexedFields() throws Exception {
+		if (true) {
+			throw new RuntimeException("FAIL the test");
+		}
+
 		Locale locale = LocaleUtil.JAPAN;
 
 		String searchTerm = "新規";
