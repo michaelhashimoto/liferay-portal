@@ -16622,6 +16622,8 @@ CATALINA_OPTS="$CATALINA_OPTS -Dcom.sun.management.jmxremote -Dcom.sun.managemen
 	</target>
 
 	<target name="upgrade-legacy-database">
+		<lstopwatch action="start" name="upgrade-legacy-database" />
+
 		<prepare-database-upgrade-properties />
 
 		<get-java-jdk-bundle-version test.batch.name="${test.batch.name}" />
@@ -16692,6 +16694,15 @@ CATALINA_OPTS="$CATALINA_OPTS -Dcom.sun.management.jmxremote -Dcom.sun.managemen
 					</else>
 				</if>
 			</catch>
+			<finally>
+				<execute>
+					<![CDATA[
+						docker stats --no-stream
+					]]>
+				</execute>
+
+				<lstopwatch action="total" name="upgrade-legacy-database" />
+			</finally>
 		</trycatch>
 	</target>
 
