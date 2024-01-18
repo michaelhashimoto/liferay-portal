@@ -8,6 +8,7 @@ import {devices} from '@playwright/test';
 export const config = {
 	dependencies: ['setup'],
 	name: 'object',
+	teardown: 'defaultTeardown',
 	testDir: 'tests/object-web',
 	use: {
 		...devices['Desktop Chrome'],

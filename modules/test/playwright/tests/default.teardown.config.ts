@@ -4,7 +4,7 @@
  */
 
 export const config = {
-	name: 'teardown',
+	name: 'defaultTeardown',
 	testMatch: 'tests/global.teardown.ts',
 	timeout: 1000,
 };

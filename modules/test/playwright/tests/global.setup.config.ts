@@ -4,6 +4,7 @@
  */
 
 export const config = {
+	dependencies: ['defaultSetup'],
 	name: 'setup',
 	testMatch: 'tests/global.setup.ts',
 	timeout: 60 * 1000,

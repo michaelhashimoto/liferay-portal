@@ -10,6 +10,7 @@ import {devices} from '@playwright/test';
 export const config = {
 	dependencies: ['setup'],
 	name: 'export-import-web',
+	teardown: 'defaultTeardown',
 	testDir: 'tests/export-import-web',
 	use: {
 		...devices['Desktop Chrome'],
