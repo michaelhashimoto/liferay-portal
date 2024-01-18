@@ -24,7 +24,7 @@ export function getAppServerProperties() {
 
 export function getBasePortalDir() {
 	let gitRepositoryPath = executeBashScript(`
-		function git_repository_path() {
+		function git_repository_path {
 			if [[ -e ./.git ]]
 			then
 				echo $(pwd);

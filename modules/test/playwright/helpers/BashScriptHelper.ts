@@ -6,9 +6,9 @@
 export function executeBashScript(bashScript: string) {
 	let childProcess = require('child_process');
 
-	const result = childProcess.execSync(bashScript);
+	const results = childProcess.execSync(bashScript);
 
-	return result.toString('utf8');
+	return results.toString('utf8');
 }
 
 export function executeBashScriptPrint(bashScript: string) {
