@@ -7248,14 +7248,12 @@ ${output.content}</echo>
 
 						<apply-portal-ext-properties />
 
-						<antcall inheritall="false" target="start-app-server" />
-
-						<waitfor maxwait="${timeout.app.server.wait}" maxwaitunit="second">
-							<http url="http://localhost:8080/web/guest" />
-						</waitfor>
-
 						<trycatch>
 							<try>
+								<ant antfile="build-test-playwright.xml" target="setup-playwright-environment">
+									<property name="playwright.project.name" value="portal" />
+								</ant>
+
 								<start-docker-playwright />
 
 								<gradle-execute dir="${playwright.dir}" task="npmInstall" />
@@ -7296,7 +7294,9 @@ ${output.content}</echo>
 							<finally>
 								<stop-docker-playwright />
 
-								<antcall target="stop-app-server" />
+								<ant antfile="build-test-playwright.xml" target="teardown-playwright-environment">
+									<property name="playwright.project.name" value="portal" />
+								</ant>
 
 								<split-testsuites-junit-report test.suites.report.filepath="${playwright.dir}/test-results/TEST-playwright.xml" />
 							</finally>
