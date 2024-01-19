@@ -22,7 +22,7 @@ deploy_osgi_modules \
 deploy_client_extensions \
 	workspaces/liferay-jethr0-workspace/client-extensions/liferay-jethr0-batch-0 \
 	workspaces/liferay-jethr0-workspace/client-extensions/liferay-jethr0-batch-1 \
-	workspaces/liferay-jethr0-workspace/client-extensions/liferay-jethr0-etc-spring-boot-application \
+	workspaces/liferay-jethr0-workspace/client-extensions/liferay-jethr0-etc-spring-boot \
 	workspaces/liferay-jethr0-workspace/client-extensions/liferay-jethr0-custom-element
 
 start_app_server

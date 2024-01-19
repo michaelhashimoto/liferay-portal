@@ -57,26 +57,36 @@
 	<target name="setup-playwright-environment">
 		<get-playwright-bash-script bash.script.name="setup.sh" />
 
-		<execute>
+		<echo file="playwright_setup.sh">
 			<![CDATA[
+				#!/bin/bash
+
 				export LIFERAY_HOME=${liferay.home}
 				export PORTAL_REPOSITORY_DIR=${project.dir}
 
 				/bin/bash ${playwright.bash.script}
 			]]>
-		</execute>
+		</echo>
+
+		<exec executable="/bin/bash">
+			<arg value="playwright_setup.sh" />
+		</exec>
 	</target>
 
 	<target name="teardown-playwright-environment">
 		<get-playwright-bash-script bash.script.name="teardown.sh" />
 
-		<execute>
+		<echo file="playwright_teardown.sh">
 			<![CDATA[
 				export LIFERAY_HOME=${liferay.home}
 				export PORTAL_REPOSITORY_DIR=${project.dir}
 
 				/bin/bash ${playwright.bash.script}
 			]]>
-		</execute>
+		</echo>
+
+		<exec executable="/bin/bash">
+			<arg value="playwright_teardown.sh" />
+		</exec>
 	</target>
 </project>
