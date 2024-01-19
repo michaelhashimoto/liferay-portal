@@ -6,7 +6,16 @@
 import {executeBashScriptPrint} from './BashScriptHelper'
 
 export function callTarget(baseDir: string, antFileName: string, targetName: string, parameters?: Map<string, string>) {
-	let antCommand = '#!/bin/bash\n';
+	let antCommand = '#!/bin/bash\n\n';
+
+	antCommand += 'ANT_OPTS=' + process.env.ANT_OPTS + '\n';
+	antCommand += 'HOSTNAME=' + process.env.HOSTNAME + '\n';
+	antCommand += 'JAVA_HOME=' + process.env.JAVA_HOME + '\n';
+	antCommand += 'MASTER_HOSTNAME=' + process.env.MASTER_HOSTNAME + '\n';
+	antCommand += 'ORACLE_HOME=' + process.env.ORACLE_HOME + '\n';
+	antCommand += 'ORACLE_SID=' + process.env.ORACLE_SID + '\n';
+	antCommand += 'PATH=' + process.env.PATH + '\n';
+	antCommand += 'SYBASE_ASE=' + process.env.SYBASE_ASE + '\n';
 
 	if ((baseDir != null) && (baseDir != undefined)) {
 		antCommand += 'cd ' + baseDir + '\n';
