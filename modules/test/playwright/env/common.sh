@@ -16,6 +16,12 @@ then
     exit 1
 fi
 
+function copy_to_deploy_folder() {
+	mkdir -p ${LIFERAY_HOME}/deploy
+
+	cp -r $1/ ${LIFERAY_HOME}/deploy
+}
+
 function deploy_client_extensions() {
 	mkdir -p ${LIFERAY_HOME}/deploy
 
@@ -25,12 +31,6 @@ function deploy_client_extensions() {
 
 		${PORTAL_REPOSITORY_DIR}/gradlew clean deploy
 	done
-}
-
-function deploy_folder() {
-	mkdir -p ${LIFERAY_HOME}/deploy
-
-	cp -r ${PORTAL_REPOSITORY_DIR}/$1/ ${LIFERAY_HOME}/deploy
 }
 
 function deploy_osgi_modules() {
