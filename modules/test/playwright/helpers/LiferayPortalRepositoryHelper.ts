@@ -3,6 +3,9 @@
  * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
  */
 
+import {error} from 'node:console';
+import {existsSync} from 'node:fs'
+
 import {executeBashScript} from './BashScriptHelper'
 import {getPropertiesFromFiles, mergeProperties} from './PropertiesHelper';
 
@@ -23,24 +26,7 @@ export function getAppServerProperties() {
 }
 
 export function getBasePortalDir() {
-	let gitRepositoryPath = executeBashScript(`
-		function git_repository_path {
-			if [[ -e ./.git ]]
-			then
-				echo $(pwd);
-			elif [[ $(pwd) == / ]]
-			then
-				echo "Could not find a base git dir"
-				exit 1;
-			else
-				echo $(cd .. ; git_repository_path);
-			fi
-		}
-
-		git_repository_path
-	`);
-
-	return gitRepositoryPath.trim();
+	return _getBasePortalDir(process.cwd());
 }
 
 export function getBuildProperties() {
@@ -60,6 +46,24 @@ export function getTestProperties() {
 	return _getGitRepositoryProperties('test.properties');
 }
 
+export function _getBasePortalDir(dir: string) {
+	let gitDir = dir + "/.git";
+
+	if (existsSync(gitDir)) {
+		return dir;
+	}
+
+	const regex = /(\/.+)\/[^\/]+/;
+
+	let results = regex.exec(dir);
+
+	if (results === null) {
+		error('Could not find a base git dir');
+	}
+
+	return _getBasePortalDir(results[1]);
+}
+
 function _getGitRepositoryProperties(propertiesFileName: string) {
 	let propertiesFiles = [];
 
@@ -72,10 +76,12 @@ function _getGitRepositoryProperties(propertiesFileName: string) {
 	let results = regex.exec(propertiesFileName);
 
 	if (results !== null) {
-		propertiesFiles.push(gitRepositoryPath + '/' + results[1] + '.' + process.env.HOSTNAME + '.properties');
-		propertiesFiles.push(gitRepositoryPath + '/' + results[1] + '.' + process.env.HOST + '.properties');
-		propertiesFiles.push(gitRepositoryPath + '/' + results[1] + '.' + process.env.COMPUTERNAME + '.properties');
-		propertiesFiles.push(gitRepositoryPath + '/' + results[1] + '.' + _getUserName() + '.properties');
+		const fileNamePrefix = results[1];
+
+		propertiesFiles.push(gitRepositoryPath + '/' + fileNamePrefix + '.' + process.env.HOSTNAME + '.properties');
+		propertiesFiles.push(gitRepositoryPath + '/' + fileNamePrefix + '.' + process.env.HOST + '.properties');
+		propertiesFiles.push(gitRepositoryPath + '/' + fileNamePrefix + '.' + process.env.COMPUTERNAME + '.properties');
+		propertiesFiles.push(gitRepositoryPath + '/' + fileNamePrefix + '.' + _getUserName() + '.properties');
 	}
 
 	return getPropertiesFromFiles(propertiesFiles);
