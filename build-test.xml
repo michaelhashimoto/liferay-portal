@@ -17025,4 +17025,10 @@ CATALINA_OPTS="$CATALINA_OPTS -Dcom.sun.management.jmxremote -Dcom.sun.managemen
 			</then>
 		</if>
 	</target>
+
+	<target name="wait-for-server-startup">
+		<property name="test.app.server.leading.port.number" value="8" />
+
+		<wait-for-app-server app.server.bin.dir="${app.server.bin.dir}" />
+	</target>
 </project>
