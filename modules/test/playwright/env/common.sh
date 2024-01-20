@@ -9,9 +9,9 @@ then
     exit 1
 fi
 
-if [[ "${PORTAL_REPOSITORY_DIR}" == "" ]]
+if [[ "${PROJECT_DIR}" == "" ]]
 then
-	echo "Please set 'PORTAL_REPOSITORY_DIR'"
+	echo "Please set 'PROJECT_DIR'"
 
     exit 1
 fi
@@ -27,16 +27,16 @@ function deploy_client_extensions() {
 
 	for client_extension_dir in $@
 	do
-		if [[ ! -d ${PORTAL_REPOSITORY_DIR}/${client_extension_dir} ]]
+		if [[ ! -d ${PROJECT_DIR}/${client_extension_dir} ]]
 		then
-			echo "${PORTAL_REPOSITORY_DIR}/${client_extension_dir} does not exist."
+			echo "${PROJECT_DIR}/${client_extension_dir} does not exist."
 
 			exit 1
 		fi
 
-		cd ${PORTAL_REPOSITORY_DIR}/${client_extension_dir}
+		cd ${PROJECT_DIR}/${client_extension_dir}
 
-		${PORTAL_REPOSITORY_DIR}/gradlew clean deploy
+		${PROJECT_DIR}/gradlew clean deploy
 	done
 }
 
@@ -45,21 +45,21 @@ function deploy_osgi_modules() {
 
 	for osgi_module_dir in $@
 	do
-		if [[ ! -d ${PORTAL_REPOSITORY_DIR}/${osgi_module_dir} ]]
+		if [[ ! -d ${PROJECT_DIR}/${osgi_module_dir} ]]
 		then
-			echo "${PORTAL_REPOSITORY_DIR}/${osgi_module_dir} does not exist."
+			echo "${PROJECT_DIR}/${osgi_module_dir} does not exist."
 
 			exit 1
 		fi
 
-		cd ${PORTAL_REPOSITORY_DIR}/${osgi_module_dir}
+		cd ${PROJECT_DIR}/${osgi_module_dir}
 
-		${PORTAL_REPOSITORY_DIR}/gradlew clean deploy
+		${PROJECT_DIR}/gradlew clean deploy
 	done
 }
 
 function start_app_server() {
-	cd ${PORTAL_REPOSITORY_DIR}
+	cd ${PROJECT_DIR}
 
 	ant -f build-test.xml start-app-server
 
@@ -67,7 +67,7 @@ function start_app_server() {
 }
 
 function stop_app_server() {
-	cd ${PORTAL_REPOSITORY_DIR}
+	cd ${PROJECT_DIR}
 
 	ant -f build-test.xml stop-app-server
 

@@ -62,7 +62,7 @@
 				#!/bin/bash
 
 				export LIFERAY_HOME=${liferay.home}
-				export PORTAL_REPOSITORY_DIR=${project.dir}
+				export PROJECT_DIR=${project.dir}
 
 				/bin/bash ${playwright.bash.script}
 			]]>
@@ -79,7 +79,7 @@
 		<echo file="playwright_teardown.sh">
 			<![CDATA[
 				export LIFERAY_HOME=${liferay.home}
-				export PORTAL_REPOSITORY_DIR=${project.dir}
+				export PROJECT_DIR=${project.dir}
 
 				/bin/bash ${playwright.bash.script}
 			]]>
