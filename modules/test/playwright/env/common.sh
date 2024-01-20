@@ -36,7 +36,12 @@ function deploy_client_extensions() {
 
 		cd ${PROJECT_DIR}/${client_extension_dir}
 
-		${PROJECT_DIR}/gradlew clean deploy
+		if [[ -e ${PROJECT_DIR}/${client_extension_dir}/client-extension.poshi.yaml ]]
+		then
+			${PROJECT_DIR}/gradlew clean deployPoshi -Pliferay.workspace.home.dir=${LIFERAY_HOME}
+		else
+			${PROJECT_DIR}/gradlew clean deploy -Pliferay.workspace.home.dir=${LIFERAY_HOME}
+		fi
 	done
 }
 
