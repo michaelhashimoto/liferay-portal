@@ -7248,12 +7248,6 @@ ${output.content}</echo>
 
 						<apply-portal-ext-properties />
 
-						<antcall inheritall="false" target="start-app-server" />
-
-						<waitfor maxwait="${timeout.app.server.wait}" maxwaitunit="second">
-							<http url="http://localhost:8080/web/guest" />
-						</waitfor>
-
 						<trycatch>
 							<try>
 								<start-docker-playwright />

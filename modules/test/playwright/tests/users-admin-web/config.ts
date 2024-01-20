@@ -10,6 +10,7 @@ import {devices} from '@playwright/test';
 export const config = {
 	dependencies: ['setup'],
 	name: 'users-admin-web',
+	teardown: 'defaultTeardown',
 	testDir: 'tests/users-admin-web',
 	use: {
 		...devices['Desktop Chrome'],
