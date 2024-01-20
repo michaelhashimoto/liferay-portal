@@ -13,4 +13,6 @@ CURRENT_DIR_NAME=$(dirname ${CURRENT_FILE_NAME})
 
 source ${CURRENT_DIR_NAME}/common.sh
 
+update_portal_ext_properties ${CURRENT_DIR_NAME}/portal-ext.properties
+
 start_app_server

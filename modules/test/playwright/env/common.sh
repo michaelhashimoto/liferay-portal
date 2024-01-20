@@ -78,3 +78,9 @@ function stop_app_server() {
 
 	ant -f build-test.xml wait-for-server-shutdown -Dapp.server.port.number=8080
 }
+
+function update_portal_ext_properties() {
+	cd ${PROJECT_DIR}
+
+	ant -f build-test.xml update-portal-ext-properties -Dupdated.portal.ext.properties=${1}
+}
