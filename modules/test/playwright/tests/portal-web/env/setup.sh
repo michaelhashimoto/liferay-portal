@@ -21,8 +21,6 @@ copy_to_deploy_folder ${CURRENT_DIR_NAME}/deploy
 
 start_app_server
 
-deploy_osgi_modules modules/test/jenkins-results-parser
-
 deploy_project_osgi_modules
 
 deploy_project_client_extensions
