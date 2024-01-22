@@ -34,10 +34,10 @@
 								continue;
 							}
 
-							return configTSFile.getParentFile();
+							return JenkinsResultsParserUtil.getCanonicalPath(configTSFile.getParentFile());
 						}
 
-						return JenkinsResultsParserUtil.getCanonicalPath(new File(playwrightBaseDir));
+						return JenkinsResultsParserUtil.getCanonicalPath(playwrightBaseDir);
 					}
 
 					project.setProperty("playwright.project.dir", getPlaywrightProjectDirPath());
