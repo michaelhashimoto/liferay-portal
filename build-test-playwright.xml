@@ -190,6 +190,8 @@
 
 				<beanshell>
 					<![CDATA[
+						import com.liferay.jenkins.results.parser.JenkinsResultsParserUtil;
+
 						public String getClientExtensionName() {
 							File clientExtensionDir = new File(project.getProperty("client.extension.dir.path"));
 
@@ -255,6 +257,8 @@
 
 				<beanshell>
 					<![CDATA[
+						import com.liferay.jenkins.results.parser.JenkinsResultsParserUtil;
+
 						public String getOSGiModuleName() {
 							File osgiModuleDir = new File(project.getProperty("osgi.module.dir.path"));
 
