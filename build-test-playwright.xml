@@ -3,6 +3,10 @@
 <project basedir="." name="portal-test-playwright" xmlns:antelope="antlib:ise.antelope.tasks" xmlns:if="ant:if" xmlns:unless="ant:unless">
 	<import file="build-test.xml" />
 
+	<condition property="playwright.project.name" value="${env.PLAYWRIGHT_PROJECT_NAME}">
+		<isset property="env.PLAYWRIGHT_PROJECT_NAME" />
+	</condition>
+
 	<fail message="Please set the property ${playwright.project.name}." unless="playwright.project.name" />
 
 	<macrodef name="get-playwright-project-dir">
