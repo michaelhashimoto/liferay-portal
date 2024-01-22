@@ -143,7 +143,7 @@
 					return portalExtPropertiesFiles.get(0);
 				}
 
-				public Properties getUpdatedPortalExtPropertiesFile() {
+				public File getUpdatedPortalExtPropertiesFile() {
 					File updatedPortalExtPropertiesFile = new File(project.getProperty("updated.portal.ext.properties"));
 
 					if (!updatedPortalExtPropertiesFile.exists()) {
