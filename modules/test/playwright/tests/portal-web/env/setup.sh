@@ -19,14 +19,10 @@ update_portal_ext_properties ${CURRENT_DIR_NAME}/portal-ext.properties
 
 copy_to_deploy_folder ${CURRENT_DIR_NAME}/deploy
 
-deploy_osgi_modules \
-	modules/test/poshi/poshi-core \
-	modules/test/poshi/poshi-runner
+deploy_osgi_modules modules/test/jenkins-results-parser
 
-deploy_client_extensions \
-	workspaces/liferay-jethr0-workspace/client-extensions/liferay-jethr0-batch-0 \
-	workspaces/liferay-jethr0-workspace/client-extensions/liferay-jethr0-batch-1 \
-	workspaces/liferay-jethr0-workspace/client-extensions/liferay-jethr0-etc-spring-boot \
-	workspaces/liferay-jethr0-workspace/client-extensions/liferay-jethr0-custom-element
+deploy_project_osgi_modules
+
+deploy_project_client_extensions
 
 start_app_server

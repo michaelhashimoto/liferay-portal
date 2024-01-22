@@ -5,11 +5,9 @@
 
 	<fail message="Please set the property ${playwright.project.name}." unless="playwright.project.name" />
 
-	<macrodef name="get-playwright-bash-script">
-		<attribute name="bash.script.name" />
-
+	<macrodef name="get-playwright-project-dir">
 		<sequential>
-			<var name="playwright.bash.script" unset="true" />
+			<var name="playwright.project.dir" unset="true" />
 
 			<beanshell>
 				<![CDATA[
@@ -24,7 +22,7 @@
 
 					File playwrightBaseDir = new File(project.getProperty("project.dir"), "modules/test/playwright");
 
-					public String getPlaywrightBashScript() {
+					public String getPlaywrightProjectDirPath() {
 						for (File configTSFile : JenkinsResultsParserUtil.findFiles(playwrightBaseDir, ".*config.ts")) {
 							Matcher matcher = pattern.matcher(JenkinsResultsParserUtil.read(configTSFile));
 
@@ -36,12 +34,38 @@
 								continue;
 							}
 
-							File bashScriptFile = new File(configTSFile.getParentFile(), "env/@{bash.script.name}");
+							return configTSFile.getParentFile();
+						}
 
-							if (!bashScriptFile.exists()) {
-								continue;
-							}
+						return JenkinsResultsParserUtil.getCanonicalPath(new File(playwrightBaseDir));
+					}
 
+					project.setProperty("playwright.project.dir", getPlaywrightProjectDirPath());
+				]]>
+			</beanshell>
+		</sequential>
+	</macrodef>
+
+	<macrodef name="get-playwright-bash-script">
+		<attribute name="bash.script.name" />
+
+		<sequential>
+			<var name="playwright.bash.script" unset="true" />
+
+			<get-playwright-project-dir />
+
+			<beanshell>
+				<![CDATA[
+					import com.liferay.jenkins.results.parser.JenkinsResultsParserUtil;
+
+					String playwrightProjectDir = new File(project.getProperty("playwright.project.dir"));
+
+					File playwrightBaseDir = new File(project.getProperty("project.dir"), "modules/test/playwright");
+
+					public String getPlaywrightBashScript() {
+						File bashScriptFile = new File(playwrightProjectDir, "env/@{bash.script.name}");
+
+						if (bashScriptFile.exists()) {
 							return JenkinsResultsParserUtil.getCanonicalPath(bashScriptFile);
 						}
 
@@ -57,11 +81,15 @@
 	<target name="setup-playwright-environment">
 		<get-playwright-bash-script bash.script.name="setup.sh" />
 
+		<get-playwright-project-dir />
+
 		<echo file="playwright_setup.sh">
 			<![CDATA[
 				#!/bin/bash
 
 				export LIFERAY_HOME=${liferay.home}
+				export PLAYWRIGHT_PROJECT_DIR=${playwright.project.dir}
+				export PLAYWRIGHT_PROJECT_NAME=${playwright.project.name}
 				export PROJECT_DIR=${project.dir}
 
 				/bin/bash ${playwright.bash.script}
@@ -76,9 +104,13 @@
 	<target name="teardown-playwright-environment">
 		<get-playwright-bash-script bash.script.name="teardown.sh" />
 
+		<get-playwright-project-dir />
+
 		<echo file="playwright_teardown.sh">
 			<![CDATA[
 				export LIFERAY_HOME=${liferay.home}
+				export PLAYWRIGHT_PROJECT_DIR=${playwright.project.dir}
+				export PLAYWRIGHT_PROJECT_NAME=${playwright.project.name}
 				export PROJECT_DIR=${project.dir}
 
 				/bin/bash ${playwright.bash.script}

@@ -6,14 +6,28 @@ if [[ "${LIFERAY_HOME}" == "" ]]
 then
 	echo "Please set 'LIFERAY_HOME'"
 
-    exit 1
+	exit 1
+fi
+
+if [[ "${PLAYWRIGHT_PROJECT_DIR}" == "" ]]
+then
+	echo "Please set 'PLAYWRIGHT_PROJECT_DIR'"
+
+	exit 1
+fi
+
+if [[ "${PLAYWRIGHT_PROJECT_NAME}" == "" ]]
+then
+	echo "Please set 'PLAYWRIGHT_PROJECT_NAME'"
+
+	exit 1
 fi
 
 if [[ "${PROJECT_DIR}" == "" ]]
 then
 	echo "Please set 'PROJECT_DIR'"
 
-    exit 1
+	exit 1
 fi
 
 function copy_to_deploy_folder() {
@@ -61,6 +75,20 @@ function deploy_osgi_modules() {
 
 		${PROJECT_DIR}/gradlew clean deploy
 	done
+}
+
+function deploy_project_client_extensions() {
+	if [[ -e ${PLAYWRIGHT_PROJECT_DIR}/env/client-extensions.list ]]
+	then
+		deploy_client_extensions $(cat ${PLAYWRIGHT_PROJECT_DIR}/env/client-extensions.list)
+	fi
+}
+
+function deploy_project_osgi_modules() {
+	if [[ -e ${PLAYWRIGHT_PROJECT_DIR}/env/osgi-modules.list ]]
+	then
+		deploy_client_extensions $(cat ${PLAYWRIGHT_PROJECT_DIR}/env/osgi-modules.list)
+	fi
 }
 
 function start_app_server() {
