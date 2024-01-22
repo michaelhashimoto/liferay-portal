@@ -58,7 +58,7 @@
 				<![CDATA[
 					import com.liferay.jenkins.results.parser.JenkinsResultsParserUtil;
 
-					String playwrightProjectDir = new File(project.getProperty("playwright.project.dir"));
+					fILE playwrightProjectDir = new File(project.getProperty("playwright.project.dir"));
 
 					File playwrightBaseDir = new File(project.getProperty("project.dir"), "modules/test/playwright");
 
