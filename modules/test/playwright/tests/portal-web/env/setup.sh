@@ -19,10 +19,10 @@ update_portal_ext_properties ${CURRENT_DIR_NAME}/portal-ext.properties
 
 copy_to_deploy_folder ${CURRENT_DIR_NAME}/deploy
 
+start_app_server
+
 deploy_osgi_modules modules/test/jenkins-results-parser
 
 deploy_project_osgi_modules
-
-start_app_server
 
 deploy_project_client_extensions
