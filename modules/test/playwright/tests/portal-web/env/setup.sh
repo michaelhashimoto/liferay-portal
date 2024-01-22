@@ -23,6 +23,6 @@ deploy_osgi_modules modules/test/jenkins-results-parser
 
 deploy_project_osgi_modules
 
-deploy_project_client_extensions
-
 start_app_server
+
+deploy_project_client_extensions

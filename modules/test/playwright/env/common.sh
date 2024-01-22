@@ -78,16 +78,16 @@ function deploy_osgi_modules() {
 }
 
 function deploy_project_client_extensions() {
-	if [[ -e ${PLAYWRIGHT_PROJECT_DIR}/env/client-extensions.list ]]
+	if [[ -f ${PLAYWRIGHT_PROJECT_DIR}/env/client-extensions.list ]]
 	then
 		deploy_client_extensions $(cat ${PLAYWRIGHT_PROJECT_DIR}/env/client-extensions.list)
 	fi
 }
 
 function deploy_project_osgi_modules() {
-	if [[ -e ${PLAYWRIGHT_PROJECT_DIR}/env/osgi-modules.list ]]
+	if [[ -f ${PLAYWRIGHT_PROJECT_DIR}/env/osgi-modules.list ]]
 	then
-		deploy_client_extensions $(cat ${PLAYWRIGHT_PROJECT_DIR}/env/osgi-modules.list)
+		deploy_osgi_modules $(cat ${PLAYWRIGHT_PROJECT_DIR}/env/osgi-modules.list)
 	fi
 }
 

@@ -15,8 +15,8 @@ source ${CURRENT_DIR_NAME}/common.sh
 
 deploy_project_osgi_modules
 
-deploy_project_client_extensions
-
 update_portal_ext_properties ${CURRENT_DIR_NAME}/portal-ext.properties
 
 start_app_server
+
+deploy_project_client_extensions
