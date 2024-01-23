@@ -43,9 +43,9 @@ function deploy_client_extensions() {
 
 		cd ${PROJECT_DIR}
 
-		for client.extension.dir in ${@}
+		for client_extension_dir in ${@}
 		do
-			ant -f build-test-playwright.xml deploy-client-extension -Dclient.extension.dir=${client.extension.dir}
+			ant -f build-test-playwright.xml deploy-client-extension -Dclient.extension.dir=${client_extension_dir}
 		done
 	fi
 }
@@ -57,9 +57,9 @@ function deploy_osgi_modules() {
 
 		cd ${PROJECT_DIR}
 
-		for osgi.module.dir in ${@}
+		for osgi_module_dir in ${@}
 		do
-			ant -f build-test-playwright.xml deploy-osgi-module -Dosgi.module.dir=${osgi.module.dir}
+			ant -f build-test-playwright.xml deploy-osgi-module -Dosgi.module.dir=${osgi_module_dir}
 		done
 	fi
 }
