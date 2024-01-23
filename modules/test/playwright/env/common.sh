@@ -37,19 +37,31 @@ function copy_to_deploy_folder() {
 }
 
 function deploy_client_extensions() {
-	mkdir -p ${LIFERAY_HOME}/deploy
+	if [[ -n "${1}" ]]
+	then
+		mkdir -p ${LIFERAY_HOME}/deploy
 
-	cd ${PROJECT_DIR}
+		cd ${PROJECT_DIR}
 
-	ant -f build-test-playwright.xml deploy-client-extensions -Dclient.extension.dirs="${@}"
+		for client.extension.dir in ${@}
+		do
+			ant -f build-test-playwright.xml deploy-client-extension -Dclient.extension.dir=${client.extension.dir}
+		done
+	fi
 }
 
 function deploy_osgi_modules() {
-	mkdir -p ${LIFERAY_HOME}/deploy
+	if [[ -n "${1}" ]]
+	then
+		mkdir -p ${LIFERAY_HOME}/deploy
 
-	cd ${PROJECT_DIR}
+		cd ${PROJECT_DIR}
 
-	ant -f build-test-playwright.xml deploy-osgi-modules -Dosgi.module.dirs="${@}"
+		for osgi.module.dir in ${@}
+		do
+			ant -f build-test-playwright.xml deploy-osgi-module -Dosgi.module.dir=${osgi.module.dir}
+		done
+	fi
 }
 
 function deploy_project_client_extensions() {
