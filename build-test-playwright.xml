@@ -210,6 +210,8 @@
 							String logFileContent = JenkinsResultsParserUtil.read(logFile);
 
 							if (logFileContent.contains("STARTED " + clientExtensionName)) {
+								System.out.println(clientExtensionName + " was started");
+
 								return;
 							}
 						}
@@ -276,6 +278,8 @@
 							String logFileContent = JenkinsResultsParserUtil.read(logFile);
 
 							if (logFileContent.contains("STARTED " + osgiModuleName)) {
+								System.out.println(osgiModuleName + " was started");
+
 								return;
 							}
 						}
