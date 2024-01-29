@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+
+<project basedir="." name="portal-test-liferay-jethr0-workspace" xmlns:antelope="antlib:ise.antelope.tasks">
+	<property name="workspace.name" value="liferay-jethr0-workspace" />
+
+	<import file="build-test-workspace.xml" />
+
+	<target name="start-liferay-jethr0-etc-spring-boot">
+		<condition else="default" property="virtual.instance.id" value="${virtual.instance.id}">
+			<isset property="virtual.instance.id" />
+		</condition>
+
+		<start-spring-boot-client-extension
+			spring.boot.application.name="Jethr0SpringBootApplication"
+			virtual.instance.id="${virtual.instance.id}"
+			wait.for.ready="true"
+			workspace.client.extension.name="liferay-jethr0-etc-spring-boot"
+		/>
+	</target>
+
+	<target name="start-workspace">
+		<deploy-workspace-client-extensions />
+
+		<antcall target="start-liferay-jethr0-etc-spring-boot" />
+	</target>
+
+	<target name="stop-liferay-jethr0-etc-spring-boot">
+		<stop-spring-boot-client-extension spring.boot.application.name="Jethr0SpringBootApplication" />
+	</target>
+
+	<target name="stop-workspace">
+		<antcall target="stop-liferay-jethr0-etc-spring-boot" />
+
+		<undeploy-workspace-client-extensions />
+	</target>
+</project>
