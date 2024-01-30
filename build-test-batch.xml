@@ -7232,7 +7232,7 @@ ${output.content}</echo>
 
 						<apply-portal-ext-properties />
 
-						<condition else="portal" property="playwright.project.name" value="${env.PLAYWRIGHT_PROJECT_NAME}">
+						<condition else="jethr0" property="playwright.project.name" value="${env.PLAYWRIGHT_PROJECT_NAME}">
 							<isset property="env.PLAYWRIGHT_PROJECT_NAME" />
 						</condition>
 
