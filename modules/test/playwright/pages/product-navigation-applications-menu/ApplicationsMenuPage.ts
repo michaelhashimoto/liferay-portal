@@ -16,6 +16,7 @@ export class ApplicationsMenuPage {
 	private readonly instanceSettingsLink: Locator;
 	private readonly objectsMenuItem: Locator;
 	readonly page: Page;
+	private readonly picklistMenuItem: Locator;
 	private readonly usersAndOrganizationsItem: Locator;
 
 	constructor(page: Page) {
@@ -36,11 +37,15 @@ export class ApplicationsMenuPage {
 			exact: true,
 			name: 'Data Migration Center',
 		});
-		this.objectsMenuItem = page.getByRole('menuitem', {
+		this.objectsMenuItem = page.getByRole('link', {
 			exact: true,
 			name: 'Objects',
 		});
 		this.page = page;
+		this.picklistMenuItem = page.getByRole('link', {
+			exact: true,
+			name: 'Picklists',
+		});
 		this.usersAndOrganizationsItem = page.getByRole('menuitem', {
 			exact: true,
 			name: 'Users and Organizations',
@@ -72,6 +77,11 @@ export class ApplicationsMenuPage {
 	async goToObjects() {
 		await this.goToControlPanel();
 		await this.objectsMenuItem.click();
+	}
+
+	async goToPicklists() {
+		await this.goToControlPanel();
+		await this.picklistMenuItem.click();
 	}
 
 	async goToInstanceSettings() {
