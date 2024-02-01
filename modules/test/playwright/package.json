@@ -1,6 +1,7 @@
 {
 	"author": "",
 	"dependencies": {
+		"properties-file": "^3.3.18",
 		"uuid": "9.0.0"
 	},
 	"description": "",
@@ -9,6 +10,7 @@
 		"@liferay/npm-scripts": "49.2.0",
 		"@playwright/test": "1.39.0",
 		"@types/node": "^20.9.0",
+		"ts-node": "^10.9.2",
 		"zip-a-folder": "^3.1.6"
 	},
 	"keywords": [
@@ -24,6 +26,8 @@
 		"checkFormat": "tsc && liferay-npm-scripts lint && liferay-npm-scripts format:check",
 		"format": "tsc && liferay-npm-scripts lint:fix && liferay-npm-scripts format",
 		"playwright": "playwright",
+		"setUpCI": "ts-node env/setUp.env.ts",
+		"tearDownCI": "ts-node env/tearDown.env.ts",
 		"test": "playwright test"
 	},
 	"version": "1.0.0"
