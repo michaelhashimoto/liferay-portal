@@ -1,6 +1,7 @@
 {
 	"author": "",
 	"dependencies": {
+		"axios": "^1.6.7",
 		"properties-file": "^3.3.18",
 		"uuid": "9.0.0"
 	},
@@ -13,8 +14,7 @@
 		"ts-node": "^10.9.2",
 		"zip-a-folder": "^3.1.6"
 	},
-	"keywords": [
-	],
+	"keywords": [],
 	"license": "ISC",
 	"main": "index.js",
 	"name": "@liferay/playwright",
@@ -24,10 +24,10 @@
 	},
 	"scripts": {
 		"checkFormat": "tsc && liferay-npm-scripts lint && liferay-npm-scripts format:check",
+		"ci:setup": "ts-node env/setUp.env.ts",
+		"ci:teardown": "ts-node env/tearDown.env.ts",
 		"format": "tsc && liferay-npm-scripts lint:fix && liferay-npm-scripts format",
 		"playwright": "playwright",
-		"setUpCI": "ts-node env/setUp.env.ts",
-		"tearDownCI": "ts-node env/tearDown.env.ts",
 		"test": "playwright test"
 	},
 	"version": "1.0.0"

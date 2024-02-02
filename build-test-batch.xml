@@ -7247,9 +7247,15 @@ ${output.content}</echo>
 
 								<print-file file.name="modules/test/playwright/playwright.${env.HOSTNAME}.properties" />
 
-								<execute dir="modules/test/playwright">
-									${npm.exec} run setUpCI
-								</execute>
+								<echo file="${project.dir}/modules/test/playwright/setup.sh">
+									#!/bin/bash
+
+									${npm.exec} run ci:setup
+								</echo>
+
+								<exec dir="${project.dir}/modules/test/playwright" executable="/bin/bash">
+									<arg value="setup.sh" />
+								</exec>
 
 								<start-docker-playwright />
 
@@ -7300,9 +7306,15 @@ ${output.content}</echo>
 							<finally>
 								<stop-docker-playwright />
 
-								<execute dir="modules/test/playwright">
-									${npm.exec} run tearDownCI
-								</execute>
+								<echo file="${project.dir}/modules/test/playwright/teardown.sh">
+									#!/bin/bash
+
+									${npm.exec} run ci:teardown
+								</echo>
+
+								<exec dir="${project.dir}/modules/test/playwright" executable="/bin/bash">
+									<arg value="teardown.sh" />
+								</exec>
 
 								<split-testsuites-junit-report test.suites.report.filepath="${playwright.dir}/test-results/TEST-playwright.xml" />
 							</finally>
