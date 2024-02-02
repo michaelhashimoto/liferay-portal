@@ -6,14 +6,16 @@
 import {startAppServer, waitForStartedAppServer} from './appServerUtil.env';
 import {deployProjectClientExtensions, deployProjectDeployDir, deployProjectOSGiModules, updatePortalExtProperties} from './common.env';
 
-updatePortalExtProperties();
+async function main() {
+	updatePortalExtProperties();
+	
+	deployProjectOSGiModules();
+	
+	deployProjectClientExtensions();
+	
+	deployProjectDeployDir();
+	
+	startAppServer();
+}
 
-deployProjectOSGiModules();
-
-deployProjectClientExtensions();
-
-deployProjectDeployDir();
-
-startAppServer();
-
-waitForStartedAppServer();
+main();

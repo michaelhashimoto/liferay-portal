@@ -24,8 +24,8 @@
 	},
 	"scripts": {
 		"checkFormat": "tsc && liferay-npm-scripts lint && liferay-npm-scripts format:check",
-		"ci:setup": "ts-node env/setUp.env.ts",
-		"ci:teardown": "ts-node env/tearDown.env.ts",
+		"ci:setup": "ts-node env/scripts/setUp.env.ts",
+		"ci:teardown": "ts-node env/scripts/tearDown.env.ts",
 		"format": "tsc && liferay-npm-scripts lint:fix && liferay-npm-scripts format",
 		"playwright": "playwright",
 		"test": "playwright test"

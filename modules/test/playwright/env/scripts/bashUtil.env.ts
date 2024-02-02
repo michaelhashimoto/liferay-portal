@@ -18,9 +18,28 @@ export function executeBashScriptPrint(bashScript: string) {
 	execSync(bashScript, {stdio: 'inherit'});
 }
 
-export function executeBashScriptSpawn(bashScript: string): ChildProcess {
+export function executeBashScriptSpawn(bashScript: string) {
 	console.log('Executing Bash Script:');
 	console.log(bashScript);
-  
-	return spawn('bash', ['-c', bashScript], {stdio: 'inherit'});
-  }
+
+	let child = spawn('/bin/bash', ['-c', bashScript]);
+
+	child.stdout.setEncoding('utf8');
+
+    child.stdout.on('data', function(data) {
+        console.log(data.trim());
+    });
+
+    child.stderr.setEncoding('utf8');
+
+    child.stderr.on('data', function(data) {
+        console.log(data.trim());
+    });
+}
+
+// export function executeBashScriptSpawn(bashScript: string): ChildProcess {
+// 	console.log('Executing Bash Script:');
+// 	console.log(bashScript);
+
+// 	return spawn('/bin/bash', ['-c', bashScript], {stdio: 'inherit'});
+// }

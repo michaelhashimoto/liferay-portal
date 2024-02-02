@@ -3,11 +3,12 @@
  * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
  */
 
-import {setDefaultResultOrder} from "dns";
 import {glob} from 'glob';
+import {createServer, request} from 'node:http';
+import {setDefaultResultOrder} from "dns";
 
-import {executeBashScript, executeBashScriptPrint, executeBashScriptSpawn} from './bashUtil.env';
 import {getLiferayHome} from './common.env';
+import {executeBashScript, executeBashScriptPrint, executeBashScriptSpawn} from './bashUtil.env';
 
 setDefaultResultOrder("ipv4first");
 
@@ -23,23 +24,23 @@ export function stopAppServer() {
 	executeBashScriptPrint(script);
 }
 
-export function waitForStartedAppServer() {
+export async function waitForStartedAppServer() {
 	console.log('Wating for app server to start up');
 
-	waitForURLAvailable('http://localhost:8080/web/guest');
+	await _waitForURL('http://localhost:8080/web/guest');
 }
 
 function _getTomcatDir() {
 	const tomcatBinDirs = glob.sync(getLiferayHome() + '/tomcat*/bin');
 
-	if (!tomcatBinDirs.length) {
+	if (tomcatBinDirs.length === 0) {
 		throw new Error('Could not find tomcat bin dir');
 	}
 
 	return tomcatBinDirs[0];
 }
 
-function waitForURLAvailable(url, maxRetries = 30, retryInterval = 5000) {
+function _waitForURL(url, maxRetries = 30, retryInterval = 5000) {
 	const retries = 0;
 
 	while (true) {
@@ -60,4 +61,23 @@ function waitForURLAvailable(url, maxRetries = 30, retryInterval = 5000) {
 	}
 
 	console.log(`${url} is now available.`);
+}
+
+async function _waitForURLAvailable(url, maxRetries = 30, retryInterval = 5000) {
+	const axios = require('axios');
+
+	while (true) {
+		try {
+			let response = await axios.get(url);
+
+			break;
+		}
+		catch (error) {
+			console.log("Retrying in 5 seconds");
+
+			executeBashScriptPrint('sleep ' + (retryInterval / 1000));
+			
+			continue;
+		}
+	}
 }

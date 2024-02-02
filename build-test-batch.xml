@@ -7248,10 +7248,10 @@ ${output.content}</echo>
 								<print-file file.name="modules/test/playwright/playwright.${env.HOSTNAME}.properties" />
 
 								<echo file="${project.dir}/modules/test/playwright/setup.sh">
-									#!/bin/bash
-
 									${npm.exec} run ci:setup
 								</echo>
+
+								<print-file file.name="${project.dir}/modules/test/playwright/setup.sh" />
 
 								<exec dir="${project.dir}/modules/test/playwright" executable="/bin/bash">
 									<arg value="setup.sh" />
@@ -7307,10 +7307,10 @@ ${output.content}</echo>
 								<stop-docker-playwright />
 
 								<echo file="${project.dir}/modules/test/playwright/teardown.sh">
-									#!/bin/bash
-
 									${npm.exec} run ci:teardown
 								</echo>
+
+								<print-file file.name="${project.dir}/modules/test/playwright/teardown.sh" />
 
 								<exec dir="${project.dir}/modules/test/playwright" executable="/bin/bash">
 									<arg value="teardown.sh" />
