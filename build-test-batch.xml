@@ -7248,7 +7248,7 @@ ${output.content}</echo>
 								<print-file file.name="modules/test/playwright/playwright.${env.HOSTNAME}.properties" />
 
 								<execute dir="${project.dir}/modules/test/playwright">
-									export PATH=${PATH}:${node.home}/bin
+									export PATH=${env.PATH}:${node.home}/bin
 
 									${npm.exec} run ci:setup
 								</execute>
@@ -7303,7 +7303,7 @@ ${output.content}</echo>
 								<stop-docker-playwright />
 
 								<execute dir="${project.dir}/modules/test/playwright">
-									export PATH=${PATH}:${node.home}/bin
+									export PATH=${env.PATH}:${node.home}/bin
 
 									${npm.exec} run ci:teardown
 								</execute>
