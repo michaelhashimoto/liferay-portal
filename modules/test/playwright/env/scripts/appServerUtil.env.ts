@@ -4,16 +4,13 @@
  */
 
 import {glob} from 'glob';
-import {createServer, request} from 'node:http';
-import {setDefaultResultOrder} from "dns";
+import axios from 'axios';
 
 import {getLiferayHome} from './common.env';
 import {executeBashScript, executeBashScriptPrint, executeBashScriptSpawn} from './bashUtil.env';
 
-setDefaultResultOrder("ipv4first");
-
 export function startAppServer() {
-	const script = 'cd ' + _getTomcatDir() + ' && /bin/bash catalina.sh run';
+	const script = 'cd ' + _getTomcatDir() + ' && /bin/bash startup.sh';
 
 	return executeBashScriptSpawn(script);
 }
@@ -27,7 +24,7 @@ export function stopAppServer() {
 export async function waitForStartedAppServer() {
 	console.log('Wating for app server to start up');
 
-	await _waitForURL('http://localhost:8080/web/guest');
+	return _waitForURLAvailable('http://localhost:8080/web/guest');
 }
 
 function _getTomcatDir() {
@@ -64,20 +61,5 @@ function _waitForURL(url, maxRetries = 30, retryInterval = 5000) {
 }
 
 async function _waitForURLAvailable(url, maxRetries = 30, retryInterval = 5000) {
-	const axios = require('axios');
-
-	while (true) {
-		try {
-			let response = await axios.get(url);
-
-			break;
-		}
-		catch (error) {
-			console.log("Retrying in 5 seconds");
-
-			executeBashScriptPrint('sleep ' + (retryInterval / 1000));
-			
-			continue;
-		}
-	}
+	return axios.get(url);
 }
