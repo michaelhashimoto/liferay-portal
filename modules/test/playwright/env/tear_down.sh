@@ -14,3 +14,5 @@ then
 else
 	stop_app_server
 fi
+
+stop_ac
