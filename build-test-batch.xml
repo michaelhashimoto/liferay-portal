@@ -7238,6 +7238,12 @@ ${output.content}</echo>
 
 						<trycatch>
 							<try>
+								<parallel>
+									<daemons>
+										<target name="print-bundle-logs" />
+									</daemons>
+								</parallel>
+
 								<echo file="modules/test/playwright/playwright.${env.HOSTNAME}.properties">
 									liferay.home=${liferay.home}
 									liferay.portal.dir=${project.dir}
