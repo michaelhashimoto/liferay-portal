@@ -7254,6 +7254,8 @@ ${output.content}</echo>
 
 									node -v
 
+									${npm.exec} install
+
 									${npm.exec} run ci:setup
 								</echo>
 
@@ -7316,6 +7318,8 @@ ${output.content}</echo>
 									which node
 
 									node -v
+
+									${npm.exec} install
 
 									${npm.exec} run ci:teardown
 								</echo>
