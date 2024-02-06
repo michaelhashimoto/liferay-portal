@@ -7253,7 +7253,7 @@ ${output.content}</echo>
 
 								<print-file file.name="modules/test/playwright/playwright.${env.HOSTNAME}.properties" />
 
-								<node-execute>
+								<node-execute dir="${project.dir}/test/playwright">
 									npm install
 
 									npm run ci:setup
@@ -7308,7 +7308,7 @@ ${output.content}</echo>
 							<finally>
 								<stop-docker-playwright />
 
-								<node-execute>
+								<node-execute dir="${project.dir}/test/playwright">
 									npm install
 
 									npm run ci:setup
