@@ -14,11 +14,14 @@ import {getPropertiesFromFiles, getPropertyValue, writePropertiesFile} from './p
 
 export function deployProjectClientExtensions() {
 	const clientExtensionsListFile = getPlaywrightProjectDir() + '/env/client-extensions.list';
+	console.log('clientExtensionsListFile=' + clientExtensionsListFile);
 
 	if (existsSync(clientExtensionsListFile)) {
 		const clientExtensionsListFileContent = readFileSync(clientExtensionsListFile).toString();
 
 		for (const clientExtension of clientExtensionsListFileContent.split("\n")) {
+			console.log('clientExtension=' + clientExtension);
+
 			_deployClientExtension(clientExtension);
 		}
 	}
@@ -26,6 +29,8 @@ export function deployProjectClientExtensions() {
 
 export function deployProjectDeployDir() {
 	const projectDeployDir = getPlaywrightProjectDir() + '/env/deploy/';
+
+	console.log('projectDeployDir=' + projectDeployDir);
 
 	if (existsSync(projectDeployDir)) {
 		const deployDir = getLiferayHome() + '/deploy';
@@ -37,6 +42,8 @@ export function deployProjectDeployDir() {
 		const deployFiles = glob.sync(projectDeployDir + '/*');
 
 		for (const deployFile of deployFiles) {
+			console.log('deployFile=' + deployFile);
+
 			const deployFileName = deployFile.replace(/.+\/([^\/]+)/, '\$1');
 
 			copyFile(deployFile, deployDir + '/' + deployFileName, (error) => {
@@ -51,10 +58,14 @@ export function deployProjectDeployDir() {
 export function deployProjectOSGiModules() {
 	const osgiModulesListFile = getPlaywrightProjectDir() + '/env/osgi-modules.list';
 
+	console.log('osgiModulesListFile=' + osgiModulesListFile);
+
 	if (existsSync(osgiModulesListFile)) {
 		const osgiModulesListFileContent = readFileSync(osgiModulesListFile).toString();
 
 		for (const osgiModule of osgiModulesListFileContent.split("\n")) {
+			console.log("osgiModule=" + osgiModule);
+
 			_deployOSGiModule(osgiModule);
 		}
 	}
@@ -122,6 +133,10 @@ export function updatePortalExtProperties() {
 	]);
 	
 	const portalProperties = getPropertiesFromFiles(portalExtPropertiesFiles);
+
+	console.log('portalExtPropertiesFile=' + portalExtPropertiesFile);
+	console.log(portalProperties);
+	console.log('--------------------------------------------------');
 
 	writePropertiesFile(portalExtPropertiesFile, portalProperties);
 }

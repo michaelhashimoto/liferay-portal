@@ -42,6 +42,8 @@ export function writePropertiesFile(propertiesFilePath: PathOrFileDescriptor, pr
 			throw error;
 		}
 	});
+
+	console.log(propertiesFileContent);
 }
 
 function _getPropertyValue(properties: KeyValuePairObject, propertyName: string, previousNames: string[]) {
