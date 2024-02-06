@@ -258,7 +258,7 @@
 			<![CDATA[
 				import com.liferay.jenkins.results.parser.JenkinsResultsParserUtil;
 
-				String filePath = project.getProperty("liferay.home") + "/tomcat/logs/catalina.out";
+				String filePath = project.getProperty("app.server.tomcat.dir") + "/logs/catalina.out";
 
 				File file = new File(filePath);
 
