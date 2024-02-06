@@ -7,12 +7,15 @@ import {glob} from 'glob';
 import axios from 'axios';
 
 import {getLiferayHome} from './common.env';
-import {executeBashScript, executeBashScriptPrint, executeBashScriptSpawn} from './bashUtil.env';
+import {executeBashScriptPrint} from './bashUtil.env';
+import {setDefaultResultOrder} from 'dns';
+
+setDefaultResultOrder("ipv4first");
 
 export function startAppServer() {
 	const script = 'cd ' + _getTomcatDir() + ' && /bin/bash startup.sh';
 
-	return executeBashScriptSpawn(script);
+	return executeBashScriptPrint(script);
 }
 
 export function stopAppServer() {
@@ -37,29 +40,31 @@ function _getTomcatDir() {
 	return tomcatBinDirs[0];
 }
 
-function _waitForURL(url, maxRetries = 30, retryInterval = 5000) {
-	const retries = 0;
+async function _isURLAvailable(url: string) {
+	try {
+		const response = await axios.head(url);
 
-	while (true) {
-		try {
-			executeBashScript('curl ' + url);
-
-			break;
-		}
-		catch {
-			console.log(`Waiting for ${url} to be available, will retry in ${retryInterval / 1000} seconds.`);
-
-			executeBashScript('sleep ' + (retryInterval / 1000));
-
-			if (retries >= maxRetries) {
-				throw new Error(url + ` was uavailable.`)
-			}
-		}
+		return response.status === 200;
 	}
-
-	console.log(`${url} is now available.`);
+	catch (error) {
+		return false;
+	}
 }
 
-async function _waitForURLAvailable(url, maxRetries = 30, retryInterval = 5000) {
-	return axios.get(url);
+async function _waitForURLAvailable(url: string, timeoutMinutes: number = 5) {
+	const startTime = Date.now();
+
+	while (!(await _isURLAvailable(url))) {
+		if (Date.now() - startTime > timeoutMinutes * 60 * 1000) {
+			console.log(url + ' is unavailable in ' + timeoutMinutes + ' minutes');
+
+			return false;
+		}
+
+		await new Promise(resolve => setTimeout(resolve, 5000));
+	}
+
+	console.log(url + ' is available');
+
+	return true;
 }

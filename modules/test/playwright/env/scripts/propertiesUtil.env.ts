@@ -5,7 +5,6 @@
 
 import {error} from 'node:console';
 import {PathOrFileDescriptor, existsSync, readFileSync, writeFile} from 'node:fs'
-
 import {KeyValuePairObject, getProperties} from 'properties-file'
 
 export function getPropertiesFromFile(propertiesFilePath: PathOrFileDescriptor) {

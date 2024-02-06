@@ -5,70 +5,40 @@
 
 import {glob} from 'glob';
 import {copyFile, existsSync, mkdirSync, readFileSync} from 'node:fs'
-
 import {resolve} from 'path'
 
 import {executeBashScript} from './bashUtil.env';
 import {executeGradleTask} from './gradleUtil.env';
 import {getPropertiesFromFiles, getPropertyValue, writePropertiesFile} from './propertiesUtil.env';
 
-export function deployProjectClientExtensions() {
-	const clientExtensionsListFile = getPlaywrightProjectDir() + '/env/client-extensions.list';
-	console.log('clientExtensionsListFile=' + clientExtensionsListFile);
-
-	if (existsSync(clientExtensionsListFile)) {
-		const clientExtensionsListFileContent = readFileSync(clientExtensionsListFile).toString();
-
-		for (const clientExtension of clientExtensionsListFileContent.split("\n")) {
-			console.log('clientExtension=' + clientExtension);
-
-			_deployClientExtension(clientExtension);
-		}
+export function deployParentProjectClientExtensions() {
+	for (const playwrightParentDir of _getPlaywrightParentDirs()) {
+		_deployClientExtensionsListFile(playwrightParentDir);
 	}
+}
+
+export function deployParentProjectDeployDir() {
+	for (const playwrightParentDir of _getPlaywrightParentDirs()) {
+		_deployProjectDeployDir(playwrightParentDir);
+	}
+}
+
+export function deployParentProjectOSGiModules() {
+	for (const playwrightParentDir of _getPlaywrightParentDirs()) {
+		_deployOSGiModulesListFile(playwrightParentDir);
+	}
+}
+
+export function deployProjectClientExtensions() {
+	_deployClientExtensionsListFile(getPlaywrightProjectDir());
 }
 
 export function deployProjectDeployDir() {
-	const projectDeployDir = getPlaywrightProjectDir() + '/env/deploy/';
-
-	console.log('projectDeployDir=' + projectDeployDir);
-
-	if (existsSync(projectDeployDir)) {
-		const deployDir = getLiferayHome() + '/deploy';
-
-		if (!existsSync(deployDir)){
-			mkdirSync(deployDir, { recursive: true });
-		}
-
-		const deployFiles = glob.sync(projectDeployDir + '/*');
-
-		for (const deployFile of deployFiles) {
-			console.log('deployFile=' + deployFile);
-
-			const deployFileName = deployFile.replace(/.+\/([^\/]+)/, '\$1');
-
-			copyFile(deployFile, deployDir + '/' + deployFileName, (error) => {
-				if (error) {
-					throw error;
-				}
-			});
-		}
-	}
+	_deployProjectDeployDir(getPlaywrightProjectDir());
 }
 
 export function deployProjectOSGiModules() {
-	const osgiModulesListFile = getPlaywrightProjectDir() + '/env/osgi-modules.list';
-
-	console.log('osgiModulesListFile=' + osgiModulesListFile);
-
-	if (existsSync(osgiModulesListFile)) {
-		const osgiModulesListFileContent = readFileSync(osgiModulesListFile).toString();
-
-		for (const osgiModule of osgiModulesListFileContent.split("\n")) {
-			console.log("osgiModule=" + osgiModule);
-
-			_deployOSGiModule(osgiModule);
-		}
-	}
+	_deployOSGiModulesListFile(getPlaywrightProjectDir())
 }
 
 export function getLiferayHome() {
@@ -134,10 +104,6 @@ export function updatePortalExtProperties() {
 	
 	const portalProperties = getPropertiesFromFiles(portalExtPropertiesFiles);
 
-	console.log('portalExtPropertiesFile=' + portalExtPropertiesFile);
-	console.log(portalProperties);
-	console.log('--------------------------------------------------');
-
 	writePropertiesFile(portalExtPropertiesFile, portalProperties);
 }
 
@@ -159,8 +125,20 @@ function _deployClientExtension(clientExtension: string) {
 	executeGradleTask(workspaceDir, ':client-extensions:' + clientExtension + ':deploy', gradleParameters);
 }
 
+function _deployClientExtensionsListFile(playwrightProjectDir: string) {
+	const clientExtensionsListFile = playwrightProjectDir + '/env/client-extensions.list';
+
+	if (existsSync(clientExtensionsListFile)) {
+		const clientExtensionsListFileContent = readFileSync(clientExtensionsListFile).toString();
+
+		for (const clientExtension of clientExtensionsListFileContent.split("\n")) {
+			_deployClientExtension(clientExtension);
+		}
+	}
+}
+
 function _deployOSGiModule(osgiModule: string) {
-	const script = 'find ' + getLiferayPortalDir() + '/modules | grep -v .releng | grep ' + osgiModule + '$';
+	const script = 'find ' + getLiferayPortalDir() + '/modules | grep -v .releng | grep -v node_modules | grep -v \.npmscripts | grep /' + osgiModule + '$';
 
 	let osgiModuleDir = executeBashScript(script);
 
@@ -175,6 +153,71 @@ function _deployOSGiModule(osgiModule: string) {
 	const modulesDir = getLiferayPortalDir() + '/modules';
 
 	executeGradleTask(modulesDir, osgiModuleDir.replace(/\//g, ':') + ':deploy', []);
+}
+
+function _deployOSGiModulesListFile(playwrightProjectDir: string) {
+	const osgiModulesListFile = playwrightProjectDir + '/env/osgi-modules.list';
+
+	if (existsSync(osgiModulesListFile)) {
+		const osgiModulesListFileContent = readFileSync(osgiModulesListFile).toString();
+
+		for (const osgiModule of osgiModulesListFileContent.split("\n")) {
+			_deployOSGiModule(osgiModule);
+		}
+	}
+}
+
+function _deployProjectDeployDir(playwrightProjectDir: string) {
+	const projectDeployDir = playwrightProjectDir + '/env/deploy/';
+
+	if (existsSync(projectDeployDir)) {
+		const deployDir = getLiferayHome() + '/deploy';
+
+		if (!existsSync(deployDir)){
+			mkdirSync(deployDir, { recursive: true });
+		}
+
+		const deployFiles = glob.sync(projectDeployDir + '/*');
+
+		for (const deployFile of deployFiles) {
+			const deployFileName = deployFile.replace(/.+\/([^\/]+)/, '\$1');
+
+			copyFile(deployFile, deployDir + '/' + deployFileName, (error) => {
+				if (error) {
+					throw error;
+				}
+			});
+		}
+	}
+}
+
+function _getPlaywrightParentDirs() {
+	const playwrightProjectDir = getPlaywrightProjectDir();
+	const playwrightBaseDir = getPlaywrightBaseDir();
+	
+	let playwrightParentDirs = [];
+
+	const regex = /(.+)\/[^\/]+/;
+
+	let playwrightParentDir = playwrightProjectDir;
+
+	while (true) {
+		const regexResults = regex.exec(playwrightParentDir);
+
+		if (regexResults === null) {
+			break;
+		}
+
+		playwrightParentDir = regexResults[1];
+
+		playwrightParentDirs.push(playwrightParentDir);
+
+		if (playwrightParentDir === playwrightBaseDir) {
+			break;
+		}
+	}
+
+	return playwrightParentDirs;
 }
 
 function _getUserName() {
