@@ -7236,14 +7236,14 @@ ${output.content}</echo>
 							<isset property="env.PLAYWRIGHT_PROJECT_NAME" />
 						</condition>
 
-						<parallel>
-							<daemons>
-								<ant antfile="build-test-playwright.xml" target="print-bundle-logs" />
-							</daemons>
-						</parallel>
-
 						<trycatch>
 							<try>
+								<parallel>
+									<daemons>
+										<ant antfile="build-test-playwright.xml" target="print-bundle-logs" />
+									</daemons>
+								</parallel>
+
 								<echo file="modules/test/playwright/playwright.${env.HOSTNAME}.properties">
 									liferay.home=${liferay.home}
 									liferay.portal.dir=${project.dir}
