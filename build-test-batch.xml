@@ -7240,7 +7240,7 @@ ${output.content}</echo>
 							<try>
 								<parallel>
 									<daemons>
-										<target name="print-bundle-logs" />
+										<ant antfile="build-test-playwright.xml" target="print-bundle-logs" />
 									</daemons>
 								</parallel>
 
