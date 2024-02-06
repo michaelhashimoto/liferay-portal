@@ -2138,12 +2138,7 @@ war.path=${app.server.portal.dir}/</echo>
 			<echo file="${script.sh.file}">
 				set -e -x
 
-				export PATH=${node.home}/bin:${npm.home}/bin:${env.PATH}
-
-				npm -v
-				npx -v
-				node -v
-				yarn -v
+				export PATH=${node.home}/bin:${npm.home}:${env.PATH}
 
 				@{script}
 			</echo>
