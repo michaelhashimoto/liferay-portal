@@ -5,20 +5,20 @@
 
 import {startAppServer, waitForStartedAppServer} from './appServerUtil.env';
 import {deployParentProjectClientExtensions, deployParentProjectDeployDir, deployParentProjectOSGiModules, deployProjectClientExtensions, deployProjectDeployDir, deployProjectOSGiModules, updatePortalExtProperties} from './common.env';
-	
-updatePortalExtProperties();
-
-deployParentProjectOSGiModules();
-
-deployProjectOSGiModules();
 
 deployParentProjectClientExtensions();
 
-deployProjectClientExtensions();
-
 deployParentProjectDeployDir()
 
+deployParentProjectOSGiModules();
+
+deployProjectClientExtensions();
+
 deployProjectDeployDir();
+
+deployProjectOSGiModules();
+
+updatePortalExtProperties();
 
 startAppServer();
 
