@@ -4,8 +4,6 @@ CURRENT_DIR_NAME=$(dirname ${BASH_SOURCE[0]})
 
 source ${CURRENT_DIR_NAME}/common.sh
 
-export FARO_URL=http://localhost:8081
-
 export PORTAL_URL=http://"$(hostname  -I | cut -f1 -d' ')":8080
 
 playwright_project_dir=$(get_playwright_project_dir)
