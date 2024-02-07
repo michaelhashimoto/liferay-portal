@@ -7247,13 +7247,13 @@ ${output.content}</echo>
 								<echo file="modules/test/playwright/playwright.${env.HOSTNAME}.properties">
 									liferay.home=${liferay.home}
 									liferay.portal.dir=${project.dir}
-									playwright.base.dir=${project.dir}/test/playwright
+									playwright.base.dir=${project.dir}/modules/test/playwright
 									playwright.project.name=${playwright.project.name}
 								</echo>
 
 								<print-file file.name="modules/test/playwright/playwright.${env.HOSTNAME}.properties" />
 
-								<node-execute dir="${project.dir}/test/playwright">
+								<node-execute dir="${project.dir}/modules/test/playwright">
 									npm install
 
 									npm run ci:setup
@@ -7308,7 +7308,7 @@ ${output.content}</echo>
 							<finally>
 								<stop-docker-playwright />
 
-								<node-execute dir="${project.dir}/test/playwright">
+								<node-execute dir="${project.dir}/modules/test/playwright">
 									npm install
 
 									npm run ci:setup
