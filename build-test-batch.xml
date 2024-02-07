@@ -7311,7 +7311,7 @@ ${output.content}</echo>
 								<node-execute dir="${project.dir}/modules/test/playwright">
 									npm install
 
-									npm run ci:setup
+									npm run ci:teardown
 								</node-execute>
 
 								<split-testsuites-junit-report test.suites.report.filepath="${playwright.dir}/test-results/TEST-playwright.xml" />
