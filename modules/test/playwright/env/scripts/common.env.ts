@@ -56,9 +56,7 @@ export function getPlaywrightProjectDir(): string {
 		getPlaywrightBaseDir() + '/tests/**/config.ts'
 	);
 
-	const playwrightProjectName = getPlaywrightProperty(
-		'playwright.project.name'
-	);
+	const playwrightProjectName = getPlaywrightProjectName();
 
 	for (const playwrightProjectConfigFile of playwrightProjectConfigFiles) {
 		const regex = /.*name: '([^']+)'.*/;
@@ -75,6 +73,10 @@ export function getPlaywrightProjectDir(): string {
 	}
 
 	return null;
+}
+
+export function getPlaywrightProjectName(): string {
+	return getPlaywrightProperty('playwright.project.name');
 }
 
 export function getPlaywrightProperties(): KeyValuePairObject {

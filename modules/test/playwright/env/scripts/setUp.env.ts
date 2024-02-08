@@ -3,6 +3,7 @@
  * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
  */
 
+import {portalSetUp} from '../../tests/portal-web/env/scripts/portalSetUp.env';
 import {
 	deployParentProjectClientExtensions,
 	deployParentProjectDeployDir,
@@ -14,21 +15,33 @@ import {
 	updatePortalExtProperties,
 	waitForStartedAppServer,
 } from './appServerUtil.env';
+import {getPlaywrightProjectName} from './common.env';
 
-deployParentProjectClientExtensions();
+export function setUp() {
+	deployParentProjectClientExtensions();
 
-deployParentProjectDeployDir();
+	deployParentProjectDeployDir();
 
-deployParentProjectOSGiModules();
+	deployParentProjectOSGiModules();
 
-deployProjectClientExtensions();
+	deployProjectClientExtensions();
 
-deployProjectDeployDir();
+	deployProjectDeployDir();
 
-deployProjectOSGiModules();
+	deployProjectOSGiModules();
 
-updatePortalExtProperties();
+	updatePortalExtProperties();
 
-startAppServer();
+	startAppServer();
 
-waitForStartedAppServer();
+	waitForStartedAppServer();
+}
+
+const playwrightProjectName = getPlaywrightProjectName();
+
+if (playwrightProjectName === 'portal') {
+	portalSetUp();
+}
+else {
+	setUp();
+}
