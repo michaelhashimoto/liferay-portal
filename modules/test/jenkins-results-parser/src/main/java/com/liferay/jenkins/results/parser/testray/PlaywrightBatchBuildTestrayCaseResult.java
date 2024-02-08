@@ -5,7 +5,10 @@
 
 package com.liferay.jenkins.results.parser.testray;
 
+import com.liferay.jenkins.results.parser.JenkinsResultsParserUtil;
 import com.liferay.jenkins.results.parser.TopLevelBuild;
+import com.liferay.jenkins.results.parser.test.clazz.PlaywrightTestClass;
+import com.liferay.jenkins.results.parser.test.clazz.TestClass;
 import com.liferay.jenkins.results.parser.test.clazz.group.AxisTestClassGroup;
 
 import java.util.Collections;
@@ -19,9 +22,25 @@ public class PlaywrightBatchBuildTestrayCaseResult
 
 	public PlaywrightBatchBuildTestrayCaseResult(
 		TestrayBuild testrayBuild, TopLevelBuild topLevelBuild,
-		AxisTestClassGroup axisTestClassGroup) {
+		AxisTestClassGroup axisTestClassGroup, TestClass testClass) {
 
 		super(testrayBuild, topLevelBuild, axisTestClassGroup);
+
+		_testClass = testClass;
+	}
+
+	@Override
+	public String getName() {
+		if (!(_testClass instanceof PlaywrightTestClass)) {
+			return super.getName();
+		}
+
+		PlaywrightTestClass playwrightTestClass =
+			(PlaywrightTestClass)_testClass;
+
+		return JenkinsResultsParserUtil.combine(
+			playwrightTestClass.getSpecFilePath(), " > ",
+			playwrightTestClass.getSpecTitle());
 	}
 
 	@Override
@@ -41,5 +60,7 @@ public class PlaywrightBatchBuildTestrayCaseResult
 			getBuild(), "Playwright Report",
 			getAxisBuildURLPath() + "/playwright-report/index.html");
 	}
+
+	private final TestClass _testClass;
 
 }
