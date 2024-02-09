@@ -7319,6 +7319,8 @@ ${output.content}</echo>
 
 			<test-set-up>
 				<setup-test-environment />
+
+				<antcall target="setup-yarn" />
 			</test-set-up>
 		</run-batch-test>
 	</target>
