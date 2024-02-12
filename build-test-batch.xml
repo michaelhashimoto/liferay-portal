@@ -7322,6 +7322,10 @@ ${output.content}</echo>
 
 				<antcall target="setup-yarn" />
 			</test-set-up>
+
+			<test-tear-down>
+				<print-docker-database-logs />
+			</test-tear-down>
 		</run-batch-test>
 	</target>
 
