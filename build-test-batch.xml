@@ -3515,7 +3515,7 @@ information. Make sure to commit in all build-lib-versions results.
 	</target>
 
 	<target name="dist-jdk7">
-		<parallel threadCount="1" timeout="7200000">
+		<parallel threadCount="1" timeout="14400000">
 			<prepare-test-build-dist
 				app.server.type="${axis.variable}"
 				dist.type="${dist.type}"
