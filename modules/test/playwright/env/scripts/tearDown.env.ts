@@ -11,8 +11,6 @@ export function tearDown() {
 	stopAppServer();
 }
 
-tearDown();
-
 const playwrightProjectName = getPlaywrightProjectName();
 
 if (playwrightProjectName === 'portal') {
