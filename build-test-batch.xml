@@ -7310,6 +7310,8 @@ ${output.content}</echo>
 									npm run ci:tearDown
 								</node-execute>
 
+								<print-docker-database-logs />
+
 								<split-testsuites-junit-report test.suites.report.filepath="${playwright.dir}/test-results/TEST-playwright.xml" />
 							</finally>
 						</trycatch>
@@ -7322,10 +7324,6 @@ ${output.content}</echo>
 
 				<antcall target="setup-yarn" />
 			</test-set-up>
-
-			<test-tear-down>
-				<print-docker-database-logs />
-			</test-tear-down>
 		</run-batch-test>
 	</target>
 
