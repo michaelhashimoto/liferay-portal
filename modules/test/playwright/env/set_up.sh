@@ -2,14 +2,23 @@
 
 set -e -x
 
-source ${PLAYWRIGHT_BASE_DIR}/env/common.sh
+CURRENT_DIR_NAME=$(dirname ${BASH_SOURCE[0]})
 
-update_portal_ext_properties
+source ${CURRENT_DIR_NAME}/common.sh
 
-start_app_server
+playwright_project_dir=$(get_playwright_project_dir)
 
-deploy_project_osgi_modules
+if [[ -f ${playwright_project_dir}/env/set_up.sh ]]
+then
+	/bin/bash ${playwright_project_dir}/env/set_up.sh
+else
+	update_portal_ext_properties
 
-deploy_project_env_deploy_folder
+	start_app_server
 
-deploy_project_client_extensions
+	deploy_project_osgi_modules
+
+	deploy_project_env_deploy_folder
+
+	deploy_project_client_extensions
+fi

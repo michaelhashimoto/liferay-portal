@@ -2,6 +2,15 @@
 
 set -e -x
 
-source ${PLAYWRIGHT_BASE_DIR}/env/common.sh
+CURRENT_DIR_NAME=$(dirname ${BASH_SOURCE[0]})
 
-stop_app_server
+source ${CURRENT_DIR_NAME}/common.sh
+
+playwright_project_dir=$(get_playwright_project_dir)
+
+if [[ -f ${playwright_project_dir}/env/tear_down.sh ]]
+then
+	/bin/bash ${playwright_project_dir}/env/tear_down.sh
+else
+	stop_app_server
+fi
