@@ -253,6 +253,40 @@
 		</beanshell>
 	</target>
 
+	<target name="print-bundle-logs">
+		<beanshell>
+			<![CDATA[
+				import com.liferay.jenkins.results.parser.JenkinsResultsParserUtil;
+
+				String filePath = project.getProperty("app.server.tomcat.dir") + "/logs/catalina.out";
+
+				File file = new File(filePath);
+
+				JenkinsResultsParserUtil.delete(file);
+
+				while (!file.exists()) {
+					System.out.println("Waiting for " + file);
+
+					JenkinsResultsParserUtil.sleep(5000);
+				}
+
+				BufferedReader bufferedReader = new BufferedReader(new FileReader(filePath));
+
+				while (true) {
+					String line = bufferedReader.readLine();
+
+					if (line == null) {
+						JenkinsResultsParserUtil.sleep(3000);
+
+						continue;
+					}
+
+					System.out.println(line);
+				}
+			]]>
+		</beanshell>
+	</target>
+
 	<target name="set-up-playwright-environment">
 		<run-playwright-bash-script bash.script.name="set_up.sh" />
 	</target>

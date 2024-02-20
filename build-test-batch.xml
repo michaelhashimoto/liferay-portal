@@ -7280,9 +7280,26 @@ ${output.content}</echo>
 
 						<trycatch>
 							<try>
-								<ant antfile="build-test-playwright.xml" target="set-up-playwright-environment">
-									<property name="playwright.project.name" value="${playwright.project.name}" />
-								</ant>
+								<parallel>
+									<daemons>
+										<ant antfile="build-test-playwright.xml" target="print-bundle-logs" />
+									</daemons>
+								</parallel>
+
+								<echo file="modules/test/playwright/playwright.${env.HOSTNAME}.properties">
+									liferay.home=${liferay.home}
+									liferay.portal.dir=${project.dir}
+									playwright.base.dir=${project.dir}/modules/test/playwright
+									playwright.project.name=${playwright.project.name}
+								</echo>
+
+								<print-file file.name="modules/test/playwright/playwright.${env.HOSTNAME}.properties" />
+
+								<node-execute dir="${project.dir}/modules/test/playwright">
+									npm install
+
+									npm run ci:setup
+								</node-execute>
 
 								<start-docker-playwright />
 
@@ -7333,9 +7350,11 @@ ${output.content}</echo>
 							<finally>
 								<stop-docker-playwright />
 
-								<ant antfile="build-test-playwright.xml" target="tear-down-playwright-environment">
-									<property name="playwright.project.name" value="${playwright.project.name}" />
-								</ant>
+								<node-execute dir="${project.dir}/modules/test/playwright">
+									npm install
+
+									npm run ci:teardown
+								</node-execute>
 
 								<split-testsuites-junit-report test.suites.report.filepath="${playwright.dir}/test-results/TEST-playwright.xml" />
 
@@ -7348,6 +7367,8 @@ ${output.content}</echo>
 
 			<test-set-up>
 				<setup-test-environment />
+
+				<setup-yarn />
 			</test-set-up>
 		</run-batch-test>
 	</target>
