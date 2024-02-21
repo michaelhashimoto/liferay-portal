@@ -83,6 +83,10 @@ OSB_FARO_FRONTEND_URL=${analytics.cloud.faro.frontend.url}</echo>
 
 								serviceName = serviceName.substring(0, serviceName.length() - 1);
 
+								if (serviceName.equals("osbfarofrontend")) {
+									continue;
+								}
+
 								serviceImageMap.put(serviceName, "com-liferay-osb-asah-private-" + serviceName);
 
 								continue;
