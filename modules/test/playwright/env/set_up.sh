@@ -4,29 +4,17 @@ CURRENT_DIR_NAME=$(dirname ${BASH_SOURCE[0]})
 
 source ${CURRENT_DIR_NAME}/common.sh
 
-export PORTAL_URL=http://"$(hostname  -I | cut -f1 -d' ')":8080
+function main {
+	export PORTAL_URL=http://"$(hostname)":8080
 
-playwright_project_dir=$(get_playwright_project_dir)
+	playwright_project_dir=$(get_playwright_project_dir)
 
-if [[ -f ${playwright_project_dir}/env/set_up.sh ]]
-then
-	/bin/bash ${playwright_project_dir}/env/set_up.sh
-else
-	update_portal_ext_properties
+	if [[ -f ${playwright_project_dir}/env/set_up.sh ]]
+	then
+		/bin/bash ${playwright_project_dir}/env/set_up.sh
+	else
+		default_set_up
+	fi
+}
 
-	start_app_server
-
-	deploy_parent_project_osgi_modules
-
-	deploy_project_osgi_modules
-
-	deploy_parent_project_deploy_folder
-
-	deploy_project_deploy_folder
-
-	deploy_parent_project_client_extensions
-
-	deploy_project_client_extensions
-fi
-
-start_ac
+main "${@}"
