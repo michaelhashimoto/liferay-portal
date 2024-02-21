@@ -211,7 +211,7 @@ OSB_FARO_FRONTEND_URL=${analytics.cloud.faro.frontend.url}</echo>
 									</if>
 
 									<execute dir="${project.dir}">
-										docker save --output ${project.dir}/${analytics.cloud.service.name}.tar ${analytics.cloud.image.name}
+										docker save --output ${project.dir}/dist/liferay-docker-${analytics.cloud.service.name}.tar ${analytics.cloud.image.name}
 									</execute>							
 								</sequential>
 							</for>
@@ -230,7 +230,7 @@ OSB_FARO_FRONTEND_URL=${analytics.cloud.faro.frontend.url}</echo>
 									/>
 
 									<execute dir="${project.dir}">
-										docker load --input ${analytics.cloud.service.name}.tar
+										docker load --input dist/liferay-docker-${analytics.cloud.service.name}.tar
 									</execute>
 								</sequential>
 							</for>
@@ -241,24 +241,17 @@ OSB_FARO_FRONTEND_URL=${analytics.cloud.faro.frontend.url}</echo>
 		</sequential>
 	</macrodef>
 
-	<macrodef name="build-analytics-cloud-faro-image">
+	<macrodef name="build-analytics-cloud-faro-images">
 		<sequential>
 			<create-analytics-cloud-docker-compose />
 
-			<propertyregex
-				global="true"
-				input="${analytics.cloud.faro.image.name}"
-				override="true"
-				property="analytics.cloud.faro.image.zip"
-				regexp="[\/:]"
-				replace="_"
-			/>
+			<property name="analytics.cloud.faro.service.name" value="osbfaroprivate" />
 
 			<if>
-				<available file="${project.dir}/${analytics.cloud.faro.image.zip}.tar" />
+				<available file="${project.dir}/${analytics.cloud.faro.service.name}.tar" />
 				<then>
 					<execute dir="${project.dir}">
-						docker load --input ${analytics.cloud.faro.image.zip}.tar
+						docker load --input dist/liferay-docker-${analytics.cloud.faro.service.name}.tar
 					</execute>
 				</then>
 				<elseif>
@@ -293,7 +286,7 @@ OSB_FARO_FRONTEND_URL=${analytics.cloud.faro.frontend.url}</echo>
 
 							docker rm ${analytics.cloud.faro.container.name}
 
-							docker save --output ${project.dir}/${analytics.cloud.faro.image.zip}.tar ${analytics.cloud.faro.image.name}
+							docker save --output ${project.dir}/dist/liferay-docker-${analytics.cloud.faro.service.name}.tar ${analytics.cloud.faro.image.name}
 						</execute>
 					</then>
 				</elseif>
@@ -589,7 +582,7 @@ OSB_FARO_FRONTEND_URL=${analytics.cloud.faro.frontend.url}</echo>
 
 			<build-analytics-cloud-asah-images />
 
-			<build-analytics-cloud-faro-image />
+			<build-analytics-cloud-faro-images />
 
 			<property location="${analytics.cloud.asah.dir}/start_analytics_cloud.sh" name="analytics.cloud.start.sh" />
 
@@ -786,6 +779,14 @@ if (Os.isFamily(Os.FAMILY_WINDOWS)) {
 			</execute>
 		</sequential>
 	</macrodef>
+
+	<target name="build-analytics-cloud-asah-images">
+		<build-analytics-cloud-asah-images />
+	</target>
+
+	<target name="build-analytics-cloud-faro-images">
+		<build-analytics-cloud-faro-images />
+	</target>
 
 	<target name="start-analytics-cloud">
 		<stop-analytics-cloud />
