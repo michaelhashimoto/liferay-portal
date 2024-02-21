@@ -216,9 +216,16 @@ OSB_FARO_FRONTEND_URL=${analytics.cloud.faro.frontend.url}</echo>
 										</then>
 									</if>
 
-									<execute dir="${project.dir}">
-										docker save --output ${project.dir}/dist/liferay-docker-${analytics.cloud.service.name}.tar ${analytics.cloud.image.name}
-									</execute>							
+									<if>
+										<not>
+											<contains string="${analytics.cloud.service.name}" substring="osbfaro" />
+										</not>
+										<then>
+											<execute dir="${project.dir}">
+												docker save --output ${project.dir}/dist/liferay-docker-${analytics.cloud.service.name}.tar ${analytics.cloud.image.name}
+											</execute>
+										</then>
+									</if>							
 								</sequential>
 							</for>
 						</then>
