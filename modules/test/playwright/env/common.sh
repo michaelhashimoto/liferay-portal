@@ -233,13 +233,13 @@ function main {
 }
 
 function start_ac() {
-	cd ${PROJECT_DIR}
+	cd ${_PORTAL_PROJECT_DIR}
 
 	ant -f build-test-analytics-cloud.xml start-analytics-cloud
 }
 
 function stop_ac() {
-	cd ${PROJECT_DIR}
+	cd ${_PORTAL_PROJECT_DIR}
 
 	ant -f build-test-analytics-cloud.xml stop-analytics-cloud
 }
