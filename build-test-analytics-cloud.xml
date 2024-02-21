@@ -7,49 +7,6 @@
 		<sequential>
 			<create-analytics-cloud-docker-compose />
 
-			<property location="${analytics.cloud.asah.dir}/docker-compose.test.yml" name="analytics.cloud.docker.test.yaml" />
-
-			<local name="analytics.cloud.faro.build.gradle" />
-
-			<condition else="${analytics.cloud.faro.dir}/build.gradle" property="analytics.cloud.faro.build.gradle" value="${analytics.cloud.faro.dir}/build-ext.gradle">
-				<available file="${analytics.cloud.faro.dir}/build-ext.gradle" />
-			</condition>
-
-			<replaceregexp
-				file="${analytics.cloud.faro.build.gradle}"
-				match="def dockerContainerId = \&quot;([^\&quot;]+)\&quot;"
-				replace="def dockerContainerId = \&quot;${analytics.cloud.faro.container.name}\&quot;"
-			/>
-
-			<replaceregexp
-				file="${analytics.cloud.faro.build.gradle}"
-				match="network \&quot;([^\&quot;]+)\&quot;"
-				replace="network \&quot;${analytics.cloud.project.name}_default\&quot;"
-			/>
-
-			<replaceregexp
-				file="${analytics.cloud.faro.dir}/osb-faro-docker/local/Dockerfile"
-				match="FARO_URL=http://localhost:8080"
-				replace="FARO_URL=${analytics.cloud.faro.frontend.url}"
-			/>
-
-			<echo file="${analytics.cloud.asah.dir}/local.env">OSB_ASAH_BACKEND_URL=${analytics.cloud.asah.backend.url}
-OSB_ASAH_POSTGRESQL_ENABLED=false
-OSB_ASAH_PUBLISHER_URL=${analytics.cloud.asah.publisher.url}
-OSB_FARO_FRONTEND_URL=${analytics.cloud.faro.frontend.url}</echo>
-
-			<if>
-				<isset property="test.portal.license.url" />
-				<then>
-					<mkdir dir="${analytics.cloud.faro.dir}/osb-faro-docker/common/license/" />
-
-					<mirrors-get
-						dest="${analytics.cloud.faro.dir}/osb-faro-docker/common/license/"
-						src="${test.portal.license.url}"
-					/>
-				</then>
-			</if>
-
 			<beanshell>
 				<![CDATA[
 					import com.liferay.jenkins.results.parser.JenkinsResultsParserUtil;
@@ -95,7 +52,7 @@ OSB_FARO_FRONTEND_URL=${analytics.cloud.faro.frontend.url}</echo>
 
 								serviceName = serviceName.substring(0, serviceName.length() - 1);
 
-								if (serviceName.equals("osbfaro")) {
+								if (serviceName.contains("osbfaro")) {
 									serviceName = null;
 
 									continue;
@@ -127,7 +84,9 @@ OSB_FARO_FRONTEND_URL=${analytics.cloud.faro.frontend.url}</echo>
 						Map serviceImageMap = getServiceImageMap();
 
 						for (String serviceName : serviceImageMap.keySet()) {
-							File imageTarFile = new File(project.getProperty("project.dir"), serviceName + ".tar");
+							File imageTarFile = new File(project.getProperty("project.dir") + "/dist", "liferay-docker-" + serviceName + ".tar");
+
+							System.out.println(imageTarFile);
 
 							if (!imageTarFile.exists()) {
 								return false;
@@ -173,6 +132,8 @@ OSB_FARO_FRONTEND_URL=${analytics.cloud.faro.frontend.url}</echo>
 				]]>
 			</beanshell>
 
+			<echo>analytics.cloud.service.images.available=${analytics.cloud.service.images.available}</echo>
+
 			<download-gradle-wrapper-binary />
 
 			<if>
@@ -193,13 +154,15 @@ OSB_FARO_FRONTEND_URL=${analytics.cloud.faro.frontend.url}</echo>
 
 								./gradlew clean assemble -Dliferay.ci=true
 
-								docker-compose --file=${analytics.cloud.docker.test.yaml} --project-name=${analytics.cloud.project.name} build
+								docker compose --file=${analytics.cloud.docker.test.yaml} --project-name=${analytics.cloud.project.name} build
 
 								docker images
 							</execute>
 
 							<for list="${analytics.cloud.service.image.names}" param="analytics.cloud.service.image.name">
 								<sequential>
+									<echo>analytics.cloud.service.image.name=@{analytics.cloud.service.image.name}</echo>
+
 									<local name="analytics.cloud.image.name" />
 									<local name="analytics.cloud.service.name" />
 
@@ -221,7 +184,7 @@ OSB_FARO_FRONTEND_URL=${analytics.cloud.faro.frontend.url}</echo>
 
 									<if>
 										<not>
-											<matches pattern=".*com-liferay-osb-asah.*" string="${analytics.cloud.image.name}" />
+											<matches pattern=".*com-liferay-osb-.*" string="${analytics.cloud.image.name}" />
 										</not>
 										<then>
 											<execute dir="${project.dir}">
@@ -370,6 +333,12 @@ OSB_FARO_FRONTEND_URL=${analytics.cloud.faro.frontend.url}</echo>
 				replace="&quot;${analytics.cloud.asah.elasticsearch.port}:9200&quot;"
 			/>
 
+			<replaceregexp
+				file="${analytics.cloud.docker.test.yaml}"
+				match="([\S\s]*image: )liferay\/com-liferay-osb-faro\:[^\s]+([\S\s]*)"
+				replace="\1${analytics.cloud.faro.image.name}\2"
+			/>
+
 			<local name="short.hostname" />
 
 			<propertyregex
@@ -390,6 +359,37 @@ networks:
             name: ${short.hostname}]]></echo>
 				</then>
 			</if>
+
+			<property location="${analytics.cloud.asah.dir}/docker-compose.test.yml" name="analytics.cloud.docker.test.yaml" />
+
+			<local name="analytics.cloud.faro.build.gradle" />
+
+			<condition else="${analytics.cloud.faro.dir}/build.gradle" property="analytics.cloud.faro.build.gradle" value="${analytics.cloud.faro.dir}/build-ext.gradle">
+				<available file="${analytics.cloud.faro.dir}/build-ext.gradle" />
+			</condition>
+
+			<replaceregexp
+				file="${analytics.cloud.faro.build.gradle}"
+				match="def dockerContainerId = \&quot;([^\&quot;]+)\&quot;"
+				replace="def dockerContainerId = \&quot;${analytics.cloud.faro.container.name}\&quot;"
+			/>
+
+			<replaceregexp
+				file="${analytics.cloud.faro.build.gradle}"
+				match="network \&quot;([^\&quot;]+)\&quot;"
+				replace="network \&quot;${analytics.cloud.project.name}_default\&quot;"
+			/>
+
+			<replaceregexp
+				file="${analytics.cloud.faro.dir}/osb-faro-docker/local/Dockerfile"
+				match="FARO_URL=http://localhost:8080"
+				replace="FARO_URL=${analytics.cloud.faro.frontend.url}"
+			/>
+
+			<echo file="${analytics.cloud.asah.dir}/local.env">OSB_ASAH_BACKEND_URL=${analytics.cloud.asah.backend.url}
+OSB_ASAH_POSTGRESQL_ENABLED=false
+OSB_ASAH_PUBLISHER_URL=${analytics.cloud.asah.publisher.url}
+OSB_FARO_FRONTEND_URL=${analytics.cloud.faro.frontend.url}</echo>
 		</sequential>
 	</macrodef>
 
@@ -573,38 +573,9 @@ networks:
 		<sequential>
 			<fail message="Please set the property ${env.DOCKER_ENABLED}." unless="env.DOCKER_ENABLED" />
 
-			<create-analytics-cloud-docker-compose />
+			<build-analytics-cloud-faro-images />
 
-			<property location="${analytics.cloud.asah.dir}/docker-compose.test.yml" name="analytics.cloud.docker.test.yaml" />
-
-			<local name="analytics.cloud.faro.build.gradle" />
-
-			<condition else="${analytics.cloud.faro.dir}/build.gradle" property="analytics.cloud.faro.build.gradle" value="${analytics.cloud.faro.dir}/build-ext.gradle">
-				<available file="${analytics.cloud.faro.dir}/build-ext.gradle" />
-			</condition>
-
-			<replaceregexp
-				file="${analytics.cloud.faro.build.gradle}"
-				match="def dockerContainerId = \&quot;([^\&quot;]+)\&quot;"
-				replace="def dockerContainerId = \&quot;${analytics.cloud.faro.container.name}\&quot;"
-			/>
-
-			<replaceregexp
-				file="${analytics.cloud.faro.build.gradle}"
-				match="network \&quot;([^\&quot;]+)\&quot;"
-				replace="network \&quot;${analytics.cloud.project.name}_default\&quot;"
-			/>
-
-			<replaceregexp
-				file="${analytics.cloud.faro.dir}/osb-faro-docker/local/Dockerfile"
-				match="FARO_URL=http://localhost:8080"
-				replace="FARO_URL=${analytics.cloud.faro.frontend.url}"
-			/>
-
-			<echo file="${analytics.cloud.asah.dir}/local.env">OSB_ASAH_BACKEND_URL=${analytics.cloud.asah.backend.url}
-OSB_ASAH_POSTGRESQL_ENABLED=false
-OSB_ASAH_PUBLISHER_URL=${analytics.cloud.asah.publisher.url}
-OSB_FARO_FRONTEND_URL=${analytics.cloud.faro.frontend.url}</echo>
+			<build-analytics-cloud-asah-images />
 
 			<if>
 				<isset property="test.portal.license.url" />
@@ -617,10 +588,6 @@ OSB_FARO_FRONTEND_URL=${analytics.cloud.faro.frontend.url}</echo>
 					/>
 				</then>
 			</if>
-
-			<build-analytics-cloud-faro-images />
-
-			<build-analytics-cloud-asah-images />
 
 			<property location="${analytics.cloud.asah.dir}/start_analytics_cloud.sh" name="analytics.cloud.start.sh" />
 
