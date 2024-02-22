@@ -5,29 +5,24 @@
 
 import {expect, test} from '@playwright/test';
 
-import {liferayConfig} from '../liferay.config';
 import createTempFile, {readTempFile} from '../utils/createTempFile';
-
-export interface Login {
-	password: string;
-	sessionId: string;
-	user: string;
-}
+import {faroConfig} from '../tests/osb-faro-web/faro.config';
+import { Login } from './loginTest';
 
 let loggedIn = false;
 
-const loginTest = test.extend<{
-	login: Login;
+const loginAnalyticsCloudTest = test.extend<{
+	loginAnalyticsCloud: Login;
 }>({
-	login: [
+	loginAnalyticsCloud: [
 		async ({page}, use) => {
-			const user = liferayConfig.user.login;
-			const password = liferayConfig.user.password;
+			const user = faroConfig.user.login;
+			const password = faroConfig.user.password;
 
 			if (!loggedIn) {
-				const storageStatePath = createTempFile('storageState.json');
+				const storageStatePath = createTempFile('analyticsCloudStorageState.json');
 
-				await page.goto(liferayConfig.environment.baseUrl);
+				await page.goto(faroConfig.environment.baseUrl);
 
 				await page.getByRole('button', {name: 'Sign In'}).click();
 
@@ -36,14 +31,11 @@ const loginTest = test.extend<{
 				await page.getByLabel('Remember Me').check();
 
 				await page
-					.getByLabel('Sign In- Loading')
 					.getByRole('button', {name: 'Sign In'})
 					.click();
 
-				await expect(
-					page.getByLabel('Open Applications MenuCtrl+')
-				).toBeVisible({
-					timeout: 30 * 1000,
+				await expect(page.getByText('Your Workspaces')).toBeVisible({
+					timeout: 100 * 1000,
 				});
 
 				await page.context().storageState({path: storageStatePath});
@@ -51,7 +43,7 @@ const loginTest = test.extend<{
 				loggedIn = true;
 			}
 			else {
-				const {cookies} = JSON.parse(readTempFile('storageState.json'));
+				const {cookies} = JSON.parse(readTempFile('analyticsCloudStorageState.json'));
 
 				page.context().addCookies(cookies);
 			}
@@ -70,4 +62,4 @@ const loginTest = test.extend<{
 	],
 });
 
-export {loginTest};
+export {loginAnalyticsCloudTest};
