@@ -159,6 +159,8 @@
 								docker images
 							</execute>
 
+							<mkdir dir="${project.dir}/dist" />
+
 							<for list="${analytics.cloud.service.image.names}" param="analytics.cloud.service.image.name">
 								<sequential>
 									<echo>analytics.cloud.service.image.name=@{analytics.cloud.service.image.name}</echo>
