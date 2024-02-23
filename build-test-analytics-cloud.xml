@@ -88,7 +88,7 @@
 					public String getRandomDistNode() {
 						String distNodes = project.getProperty("env.DIST_NODES");
 
-						return getRandomString(Arrays.asList(distNodes.split(",")));
+						return JenkinsResultsParserUtil.getRandomString(Arrays.asList(distNodes.split(",")));
 					}
 
 					public Map getServiceImageMap() {
