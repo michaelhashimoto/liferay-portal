@@ -5,6 +5,8 @@
 
 	<macrodef name="build-analytics-cloud-asah-images">
 		<sequential>
+			<mkdir dir="${project.dir}/dist" />
+
 			<create-analytics-cloud-docker-compose />
 
 			<beanshell>
@@ -226,8 +228,6 @@
 								docker images
 							</execute>
 
-							<mkdir dir="${project.dir}/dist" />
-
 							<for list="${analytics.cloud.service.image.names}" param="analytics.cloud.service.image.name">
 								<sequential>
 									<echo>analytics.cloud.service.image.name=@{analytics.cloud.service.image.name}</echo>
@@ -302,6 +302,8 @@
 
 	<macrodef name="build-analytics-cloud-faro-images">
 		<sequential>
+			<mkdir dir="${project.dir}/dist" />
+
 			<create-analytics-cloud-docker-compose />
 
 			<property name="analytics.cloud.faro.service.name" value="osbfaroprivate" />
