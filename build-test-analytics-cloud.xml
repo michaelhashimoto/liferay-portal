@@ -37,6 +37,12 @@
 					}
 
 					public void cacheImage(String serviceName) {
+						String distPath = project.getProperty("env.DIST_PATH");
+
+						if (JenkinsResultsParserUtil.isNullOrEmpty(distPath)) {
+							return;
+						}
+
 						File imageTarFile = new File(project.getProperty("project.dir") + "/dist", "liferay-docker-" + serviceName + ".tar");
 
 						StringBuilder sb = new StringBuilder();
@@ -44,8 +50,6 @@
 						sb.append("time timeout 1200 rsync -qs ");
 						sb.append(getRandomDistNode());
 						sb.append(":");
-
-						String distPath = project.getProperty("env.DIST_PATH");
 
 						distPath = distPath.replaceAll("\\(", "\\\\(");
 						distPath = distPath.replaceAll("\\)", "\\\\)");
@@ -71,6 +75,10 @@
 
 					public boolean containsDistFileName(String distFileName) {
 						String distFiles = project.getProperty("env.DIST_FILES");
+
+						if (JenkinsResultsParserUtil.isNullOrEmpty(distFiles)) {
+							return false;
+						}
 
 						List distFilesList = Arrays.asList(distFiles.split(","));
 
