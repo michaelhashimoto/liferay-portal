@@ -16,6 +16,71 @@
 
 					Pattern imageNamePattern = Pattern.compile("\\s+image: ([^\\s]+)");
 
+					public void cacheImages() {
+						Map serviceImageMap = getServiceImageMap();
+
+						for (String serviceName : serviceImageMap.keySet()) {
+							File imageTarFile = new File(project.getProperty("project.dir") + "/dist", "liferay-docker-" + serviceName + ".tar");
+
+							if (!containsDistFileName(imageTarFile.getName())) {
+								System.out.println("SKIPPED: " + imageTarFile + " not found in dist files");
+
+								continue;
+							}
+
+							if (!imageTarFile.exists()) {
+								cacheImage(serviceName);
+							}
+						}
+					}
+
+					public void cacheImage(String serviceName) {
+						File imageTarFile = new File(project.getProperty("project.dir") + "/dist", "liferay-docker-" + serviceName + ".tar");
+
+						StringBuilder sb = new StringBuilder();
+						
+						sb.append("time timeout 1200 rsync -qs ");
+						sb.append(getRandomDistNode());
+						sb.append(":");
+
+						String distPath = project.getProperty("env.DIST_PATH");
+
+						distPath = distPath.replaceAll("\\(", "\\\\(");
+						distPath = distPath.replaceAll("\\)", "\\\\)");
+
+						sb.append(distPath);
+
+						sb.append("/liferay-docker-");
+						sb.append(serviceName);
+						sb.append(".tar ");
+						sb.append(project.getProperty("project.dir"));
+						sb.append("/dist/");
+
+						System.out.println(sb.toString());
+
+						Process process = JenkinsResultsParserUtil.executeBashCommands(false, new File("."), 20 * 60 * 1000, sb.toString());
+
+						if (process.exitValue() != 0) {
+							return;
+						}
+
+						System.out.println(JenkinsResultsParserUtil.readInputStream(process.getInputStream()));
+					}
+
+					public boolean containsDistFileName(String distFileName) {
+						String distFiles = project.getProperty("env.DIST_FILES");
+
+						List distFilesList = Arrays.asList(distFiles.split(","));
+
+						return distFilesList.contains(distFileName);
+					}
+
+					public String getRandomDistNode() {
+						String distNodes = project.getProperty("env.DIST_NODES");
+
+						return getRandomString(Arrays.asList(distNodes.split(",")));
+					}
+
 					public Map getServiceImageMap() {
 						File dockerComposeFile = new File(project.getProperty("analytics.cloud.docker.test.yaml"));
 
@@ -113,6 +178,8 @@
 
 						return count / 4;
 					}
+
+					cacheImages();
 
 					Map serviceImageMap = getServiceImageMap();
 
