@@ -64,7 +64,7 @@
 
 						System.out.println(sb.toString());
 
-						Process process = JenkinsResultsParserUtil.executeBashCommands(false, new File("."), 20 * 60 * 1000, sb.toString());
+						Process process = JenkinsResultsParserUtil.executeBashCommands(false, new File("."), 20 * 60 * 1000, new String[] {sb.toString()});
 
 						if (process.exitValue() != 0) {
 							return;
@@ -75,6 +75,8 @@
 
 					public boolean containsDistFileName(String distFileName) {
 						String distFiles = project.getProperty("env.DIST_FILES");
+
+						System.out.println("distFiles=" + distFiles);
 
 						if (JenkinsResultsParserUtil.isNullOrEmpty(distFiles)) {
 							return false;
@@ -315,6 +317,34 @@
 			<create-analytics-cloud-docker-compose />
 
 			<property name="analytics.cloud.faro.service.name" value="osbfaroprivate" />
+
+			<if>
+				<contains string="${env.DIST_FILES}" substring="liferay-docker-${analytics.cloud.faro.service.name}.tar" />
+				<then>
+					<beanshell>
+						<![CDATA[
+							import com.liferay.jenkins.results.parser.JenkinsResultsParserUtil;
+
+							public String getRandomDistNode() {
+								String distNodes = project.getProperty("env.DIST_NODES");
+
+								return JenkinsResultsParserUtil.getRandomString(Arrays.asList(distNodes.split(",")));
+							}
+
+							project.setProperty("random.dist.node", getRandomDistNode());
+						]]>
+					</beanshell>
+
+					<antelope:stringutil property="dist.path" string="${env.DIST_PATH}">
+						<antelope:replace regex="\(" replacement="\\(" />
+						<antelope:replace regex="\)" replacement="\\)" />
+					</antelope:stringutil>
+
+					<execute>
+						time timeout 1200 rsync -qs ${random.dist.node}:${dist.path}/liferay-docker-${analytics.cloud.faro.service.name}.tar ${project.dir}/dist/liferay-docker-${analytics.cloud.faro.service.name}.tar
+					</execute>
+				</then>
+			</if>
 
 			<if>
 				<available file="${project.dir}/${analytics.cloud.faro.service.name}.tar" />
