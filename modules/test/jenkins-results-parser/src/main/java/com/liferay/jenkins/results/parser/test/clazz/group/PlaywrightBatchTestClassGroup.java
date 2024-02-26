@@ -75,7 +75,14 @@ public class PlaywrightBatchTestClassGroup extends BatchTestClassGroup {
 		addDefaultProjectJobProperty(batchName);
 
 		for (String projectName : _projectNames) {
+			System.out.println("projectName=" + projectName);
+
 			List<TestClass> testClasses = _getTestClasses(projectName);
+
+			for (TestClass testClass : testClasses) {
+				System.out.println(
+					"testClass.getName()=" + testClass.getName());
+			}
 
 			if (testClasses.isEmpty()) {
 				continue;
