@@ -209,101 +209,94 @@
 				]]>
 			</beanshell>
 
-			<echo>analytics.cloud.service.images.available=${analytics.cloud.service.images.available}</echo>
-
 			<download-gradle-wrapper-binary />
 
 			<if>
-				<equals arg1="${analytics.cloud.asah.build}" arg2="true" />
+				<not>
+					<equals arg1="${analytics.cloud.service.images.available}" arg2="true" />
+				</not>
 				<then>
-					<if>
-						<not>
-							<equals arg1="${analytics.cloud.service.images.available}" arg2="true" />
-						</not>
-						<then>
-							<pull-docker-image-dependencies
-								analytics.cloud.image.names.excludes="${analytics.cloud.asah.image.names.excludes}"
-								analytics.cloud.repository.dir="${analytics.cloud.asah.dir}"
+					<pull-docker-image-dependencies
+						analytics.cloud.image.names.excludes="${analytics.cloud.asah.image.names.excludes}"
+						analytics.cloud.repository.dir="${analytics.cloud.asah.dir}"
+					/>
+
+					<execute dir="${analytics.cloud.asah.dir}">
+						./gradlew jar -Dliferay.ci=true
+
+						./gradlew clean assemble -Dliferay.ci=true
+
+						docker compose --file=${analytics.cloud.docker.test.yaml} --project-name=${analytics.cloud.project.name} build
+
+						docker images
+					</execute>
+
+					<for list="${analytics.cloud.service.image.names}" param="analytics.cloud.service.image.name">
+						<sequential>
+							<echo>analytics.cloud.service.image.name=@{analytics.cloud.service.image.name}</echo>
+
+							<local name="analytics.cloud.image.name" />
+							<local name="analytics.cloud.service.name" />
+
+							<propertyregex
+								input="@{analytics.cloud.service.image.name}"
+								override="true"
+								property="analytics.cloud.image.name"
+								regexp="([^=]+)=([^=]+)"
+								replace="\2"
 							/>
 
-							<execute dir="${analytics.cloud.asah.dir}">
-								./gradlew jar -Dliferay.ci=true
+							<propertyregex
+								input="@{analytics.cloud.service.image.name}"
+								override="true"
+								property="analytics.cloud.service.name"
+								regexp="([^=]+)=([^=]+)"
+								replace="\1"
+							/>
 
-								./gradlew clean assemble -Dliferay.ci=true
-
-								docker compose --file=${analytics.cloud.docker.test.yaml} --project-name=${analytics.cloud.project.name} build
-
-								docker images
-							</execute>
-
-							<for list="${analytics.cloud.service.image.names}" param="analytics.cloud.service.image.name">
-								<sequential>
-									<echo>analytics.cloud.service.image.name=@{analytics.cloud.service.image.name}</echo>
-
-									<local name="analytics.cloud.image.name" />
-									<local name="analytics.cloud.service.name" />
-
-									<propertyregex
-										input="@{analytics.cloud.service.image.name}"
-										override="true"
-										property="analytics.cloud.image.name"
-										regexp="([^=]+)=([^=]+)"
-										replace="\2"
-									/>
-
-									<propertyregex
-										input="@{analytics.cloud.service.image.name}"
-										override="true"
-										property="analytics.cloud.service.name"
-										regexp="([^=]+)=([^=]+)"
-										replace="\1"
-									/>
-
-									<if>
-										<not>
-											<matches pattern=".*com-liferay-osb-.*" string="${analytics.cloud.image.name}" />
-										</not>
-										<then>
-											<execute dir="${project.dir}">
-												docker pull ${analytics.cloud.image.name}
-											</execute>
-										</then>
-									</if>
-
-									<if>
-										<not>
-											<contains string="${analytics.cloud.service.name}" substring="osbfaro" />
-										</not>
-										<then>
-											<execute dir="${project.dir}">
-												docker save --output ${project.dir}/dist/liferay-docker-${analytics.cloud.service.name}.tar ${analytics.cloud.image.name}
-											</execute>
-										</then>
-									</if>
-								</sequential>
-							</for>
-						</then>
-						<else>
-							<for list="${analytics.cloud.service.image.names}" param="analytics.cloud.service.image.name">
-								<sequential>
-									<local name="analytics.cloud.service.name" />
-
-									<propertyregex
-										input="@{analytics.cloud.service.image.name}"
-										override="true"
-										property="analytics.cloud.service.name"
-										regexp="([^=]+)=([^=]+)"
-										replace="\1"
-									/>
-
+							<if>
+								<not>
+									<matches pattern=".*com-liferay-osb-.*" string="${analytics.cloud.image.name}" />
+								</not>
+								<then>
 									<execute dir="${project.dir}">
-										docker load --input dist/liferay-docker-${analytics.cloud.service.name}.tar
+										docker pull ${analytics.cloud.image.name}
 									</execute>
-								</sequential>
-							</for>
-						</else>
-					</if>
+								</then>
+							</if>
+
+							<if>
+								<not>
+									<contains string="${analytics.cloud.service.name}" substring="osbfaro" />
+								</not>
+								<then>
+									<execute dir="${project.dir}">
+										docker save --output ${project.dir}/dist/liferay-docker-${analytics.cloud.service.name}.tar ${analytics.cloud.image.name}
+									</execute>
+								</then>
+							</if>
+						</sequential>
+					</for>
 				</then>
+				<else>
+					<for list="${analytics.cloud.service.image.names}" param="analytics.cloud.service.image.name">
+						<sequential>
+							<local name="analytics.cloud.service.name" />
+
+							<propertyregex
+								input="@{analytics.cloud.service.image.name}"
+								override="true"
+								property="analytics.cloud.service.name"
+								regexp="([^=]+)=([^=]+)"
+								replace="\1"
+							/>
+
+							<execute dir="${project.dir}">
+								docker load --input dist/liferay-docker-${analytics.cloud.service.name}.tar
+							</execute>
+						</sequential>
+					</for>
+				</else>
 			</if>
 		</sequential>
 	</macrodef>
@@ -352,41 +345,38 @@
 					</execute>
 				</then>
 				<elseif>
-					<equals arg1="${analytics.cloud.faro.build}" arg2="true" />
-					<then>
-						<pull-docker-image-dependencies
-							analytics.cloud.image.names.excludes="${analytics.cloud.faro.image.names.excludes}"
-							analytics.cloud.repository.dir="${analytics.cloud.faro.dir}"
-						/>
+					<pull-docker-image-dependencies
+						analytics.cloud.image.names.excludes="${analytics.cloud.faro.image.names.excludes}"
+						analytics.cloud.repository.dir="${analytics.cloud.faro.dir}"
+					/>
 
-						<local name="portal.gradlew" />
+					<local name="portal.gradlew" />
 
-						<property location="${project.dir}/gradlew" name="portal.gradlew" />
+					<property location="${project.dir}/gradlew" name="portal.gradlew" />
 
-						<loadfile
-							property="analytics.cloud.docker.test.yaml.content"
-							srcfile="${analytics.cloud.docker.test.yaml}"
-						/>
+					<loadfile
+						property="analytics.cloud.docker.test.yaml.content"
+						srcfile="${analytics.cloud.docker.test.yaml}"
+					/>
 
-						<propertyregex
-							input="${analytics.cloud.docker.test.yaml.content}"
-							override="true"
-							property="analytics.cloud.faro.tag.name"
-							regexp="[\S\s]*image: (liferay\/com-liferay-osb-faro\:[^\s]+)[\S\s]*"
-							replace="\1"
-						/>
+					<propertyregex
+						input="${analytics.cloud.docker.test.yaml.content}"
+						override="true"
+						property="analytics.cloud.faro.tag.name"
+						regexp="[\S\s]*image: (liferay\/com-liferay-osb-faro\:[^\s]+)[\S\s]*"
+						replace="\1"
+					/>
 
-						<execute dir="${analytics.cloud.faro.dir}">
-							${portal.gradlew} createDocker -Pcom.liferay.osb.faro.environment.name=local -Dliferay.ci=true
+					<execute dir="${analytics.cloud.faro.dir}">
+						${portal.gradlew} createDocker -Pcom.liferay.osb.faro.environment.name=local -Dliferay.ci=true
 
-							docker tag ${analytics.cloud.faro.image.name} ${analytics.cloud.faro.tag.name}
+						docker tag ${analytics.cloud.faro.image.name} ${analytics.cloud.faro.tag.name}
 
-							docker rm ${analytics.cloud.faro.container.name}
+						docker rm ${analytics.cloud.faro.container.name}
 
-							docker save --output ${project.dir}/dist/liferay-docker-${analytics.cloud.faro.service.name}.tar ${analytics.cloud.faro.image.name}
-						</execute>
-					</then>
-				</elseif>
+						docker save --output ${project.dir}/dist/liferay-docker-${analytics.cloud.faro.service.name}.tar ${analytics.cloud.faro.image.name}
+					</execute>
+				</else>
 			</if>
 		</sequential>
 	</macrodef>
