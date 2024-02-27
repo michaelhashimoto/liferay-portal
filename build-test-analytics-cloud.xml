@@ -76,8 +76,6 @@
 					public boolean containsDistFileName(String distFileName) {
 						String distFiles = project.getProperty("env.DIST_FILES");
 
-						System.out.println("distFiles=" + distFiles);
-
 						if (JenkinsResultsParserUtil.isNullOrEmpty(distFiles)) {
 							return false;
 						}
@@ -499,6 +497,18 @@ networks:
 OSB_ASAH_POSTGRESQL_ENABLED=false
 OSB_ASAH_PUBLISHER_URL=${analytics.cloud.asah.publisher.url}
 OSB_FARO_FRONTEND_URL=${analytics.cloud.faro.frontend.url}</echo>
+
+			<if>
+				<isset property="test.portal.license.url" />
+				<then>
+					<mkdir dir="${analytics.cloud.faro.dir}/osb-faro-docker/common/license/" />
+
+					<mirrors-get
+						dest="${analytics.cloud.faro.dir}/osb-faro-docker/common/license/"
+						src="${test.portal.license.url}"
+					/>
+				</then>
+			</if>
 		</sequential>
 	</macrodef>
 
@@ -686,19 +696,9 @@ OSB_FARO_FRONTEND_URL=${analytics.cloud.faro.frontend.url}</echo>
 
 			<build-analytics-cloud-asah-images />
 
-			<if>
-				<isset property="test.portal.license.url" />
-				<then>
-					<mkdir dir="${analytics.cloud.faro.dir}/osb-faro-docker/common/license/" />
-
-					<mirrors-get
-						dest="${analytics.cloud.faro.dir}/osb-faro-docker/common/license/"
-						src="${test.portal.license.url}"
-					/>
-				</then>
-			</if>
-
 			<property location="${analytics.cloud.asah.dir}/start_analytics_cloud.sh" name="analytics.cloud.start.sh" />
+
+			<print-file file.name="${analytics.cloud.docker.test.yaml}" />
 
 			<echo file="${analytics.cloud.start.sh}">
 				#!/bin/bash
