@@ -347,7 +347,7 @@
 			</if>
 
 			<if>
-				<available file="${project.dir}/dist/${analytics.cloud.faro.service.name}.tar" />
+				<available file="${project.dir}/dist/liferay-docker-${analytics.cloud.faro.service.name}.tar" />
 				<then>
 					<execute dir="${project.dir}">
 						docker load --input dist/liferay-docker-${analytics.cloud.faro.service.name}.tar
