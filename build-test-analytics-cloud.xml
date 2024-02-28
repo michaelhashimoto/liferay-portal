@@ -186,6 +186,7 @@
 							sb.append(getDistNode());
 							sb.append(":");
 							sb.append(distPath);
+							sb.append("/");
 							sb.append(serviceImageTarFile.getName());
 							sb.append(" ");
 							sb.append(serviceImageTarFile);
@@ -317,8 +318,12 @@
 							File serviceImageTarFile = new File(project.getProperty("project.dir") + "/dist/liferay-docker-" + serviceName + ".tar");
 
 							if (!serviceImageTarFile.exists()) {
+								System.out.println("Could not find " + serviceImageTarFile);
+
 								return false;
 							}
+
+							System.out.println("Found " + serviceImageTarFile);
 						}
 
 						return true;
