@@ -159,6 +159,10 @@
 
 						List distFileNames = getDistFileNames();
 
+						if (distFileNames == null) {
+							return;
+						}
+
 						Map serviceMap = dockerComposeMap.get("services");
 
 						for (String serviceName : serviceMap.keySet()) {
@@ -247,7 +251,7 @@
 						String distFiles = project.getProperty("env.DIST_FILES");
 
 						if (JenkinsResultsParserUtil.isNullOrEmpty(distFiles)) {
-							return false;
+							return null;
 						}
 
 						return Arrays.asList(distFiles.split(","));
