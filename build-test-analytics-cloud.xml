@@ -342,9 +342,7 @@
 
 						defaultMap.put("external", externalMap);
 
-						externalMap.put("external", nameMap);
-
-						nameMap.put("name", shortHostname);
+						externalMap.put("name", shortHostname);
 					}
 
 					public void updateOSBFaroFrontendService(Map dockerComposeMap) {
