@@ -578,7 +578,7 @@ OSB_FARO_FRONTEND_URL=${analytics.cloud.faro.frontend.url}</echo>
 					</execute>
 
 					<if>
-						<contains string="@{container.name}" substring="osbfaro" />
+						<contains string="@{container.name}" substring="faro" />
 						<then>
 							<execute>
 								<![CDATA[
