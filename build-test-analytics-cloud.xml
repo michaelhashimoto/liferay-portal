@@ -169,8 +169,6 @@
 							File serviceImageTarFile = new File(project.getProperty("project.dir") + "/dist/liferay-docker-" + serviceName + ".tar");
 
 							if (serviceImageTarFile.exists()) {
-								System.out.println(serviceImageTarFile + " already available");
-
 								continue;
 							}
 
@@ -322,8 +320,6 @@
 
 								return false;
 							}
-
-							System.out.println("Found " + serviceImageTarFile);
 						}
 
 						return true;
@@ -367,6 +363,8 @@
 						ports.add(project.getProperty("analytics.cloud.faro.osgi.console.port") + ":11311");
 
 						osbFaroFrontendServiceMap.put("ports", ports);
+
+						osbFaroFrontendServiceMap.put("tty", "true");
 					}
 
 					public void updateServiceImages(Map dockerComposeMap) {
