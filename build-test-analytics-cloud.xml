@@ -552,6 +552,17 @@ OSB_FARO_FRONTEND_URL=${analytics.cloud.faro.frontend.url}</echo>
 					</execute>
 
 					<if>
+						<contains string="@{container.name}" substring="faro" />
+						<then>
+							<execute failonerror="false">
+								<![CDATA[
+									docker exec -it @{container.name} /bin/bash -c 'jstack -l Bootstrap' > ${docker.logs.dir}/@{container.name}.jstack.log
+								]]>
+							</execute>
+						</then>
+					</if>
+
+					<if>
 						<isset property="env.BUILD_USER_CONTENT_URL" />
 						<then>
 							<echo>${env.BUILD_USER_CONTENT_URL}/docker-logs/${container.file.name}</echo>
