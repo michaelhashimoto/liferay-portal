@@ -562,15 +562,15 @@ OSB_FARO_FRONTEND_URL=${analytics.cloud.faro.frontend.url}</echo>
 
 									echo "----------------------------"
 
-									docker exec -it @{container.name} /bin/bash -c "jstack -l Bootstrap"
+									docker exec @{container.name} ps aux
 
 									echo "----------------------------"
 
-									docker exec -it @{container.name} /bin/bash -c 'jstack -l Bootstrap'
+									docker exec @{container.name} jstack -l Bootstrap
 
 									echo "----------------------------"
 
-									docker exec -it @{container.name} /bin/bash -c 'ps aux' > ${docker.logs.dir}/@{container.name}.jstack.log
+									docker exec @{container.name} jstack -l Bootstrap > ${docker.logs.dir}/@{container.name}.jstack.log
 
 									echo "----------------------------"
 								]]>
