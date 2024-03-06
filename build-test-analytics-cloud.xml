@@ -556,7 +556,23 @@ OSB_FARO_FRONTEND_URL=${analytics.cloud.faro.frontend.url}</echo>
 						<then>
 							<execute failonerror="false">
 								<![CDATA[
+									echo "----------------------------"
+
+									docker ps -a
+
+									echo "----------------------------"
+
+									docker exec -it @{container.name} /bin/bash -c "jstack -l Bootstrap"
+
+									echo "----------------------------"
+
+									docker exec -it @{container.name} /bin/bash -c 'jstack -l Bootstrap'
+
+									echo "----------------------------"
+
 									docker exec -it @{container.name} /bin/bash -c 'ps aux' > ${docker.logs.dir}/@{container.name}.jstack.log
+
+									echo "----------------------------"
 								]]>
 							</execute>
 						</then>
