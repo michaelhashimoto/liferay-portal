@@ -151,6 +151,8 @@ public class BuildDatabaseUtil {
 		List<String> distNodesList = new ArrayList<>(
 			Arrays.asList(distNodes.split(",")));
 
+		String currentNetworkName = _getCurrentNetworkName();
+
 		while (!distNodesList.isEmpty()) {
 			try {
 				String distNode = JenkinsResultsParserUtil.getRandomString(
