@@ -1,0 +1,20 @@
+assemble:
+    - fromTask: bootJar
+liferay-object-actions-etc-spring-boot-oauth-application-headless-server:
+    .serviceAddress: localhost:58081
+    .serviceScheme: http
+    name: Liferay object-actions Etc Spring Boot OAuth Application Headless Server
+    scopes:
+        - C_ChildEntity.everything
+        - C_ParentEntity.everything
+    type: oAuthApplicationHeadlessServer
+liferay-object-actions-etc-spring-boot-oauth-application-user-agent:
+    .serviceAddress: localhost:58081
+    .serviceScheme: http
+    name: Liferay Object Actions Etc Spring Boot OAuth Application User Agent
+    type: oAuthApplicationUserAgent
+liferay-object-actions-etc-spring-boot-object-actions:
+    name: Liferay Object Actions Etc Spring Boot Object Actions
+    oAuth2ApplicationExternalReferenceCode: liferay-object-actions-etc-spring-boot-oauth-application-user-agent
+    resourcePath: /object-actions
+    type: objectAction

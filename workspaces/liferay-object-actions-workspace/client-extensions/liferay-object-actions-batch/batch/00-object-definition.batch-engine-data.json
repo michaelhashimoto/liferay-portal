@@ -1,0 +1,105 @@
+{
+	"configuration": {
+		"className": "com.liferay.object.admin.rest.dto.v1_0.ObjectDefinition",
+		"multiCompany": false,
+		"parameters": {
+			"containsHeaders": "false",
+			"createStrategy": "UPSERT",
+			"importStrategy": "ON_ERROR_FAIL",
+			"updateStrategy": "UPDATE"
+		},
+		"taskItemDelegateName": "DEFAULT"
+	},
+	"items": [
+		{
+			"externalReferenceCode": "ChildEntity",
+			"label": {
+				"en_US": "Child Entity"
+			},
+			"name": "ChildEntity",
+			"objectFields": [
+				{
+					"DBType": "String",
+					"businessType": "Text",
+					"label": {
+						"en_US": "Field"
+					},
+					"name": "field",
+					"required": true,
+					"type": "String"
+				}
+			],
+			"panelCategoryKey": "control_panel.object",
+			"pluralLabel": {
+				"en_US": "Child Entities"
+			},
+			"portlet": true,
+			"scope": "company",
+			"status": {
+				"code": 0,
+				"label": "approved",
+				"label_i18n": "Approved"
+			}
+		},
+		{
+			"externalReferenceCode": "ParentEntity",
+			"label": {
+				"en_US": "Parent Entity"
+			},
+			"name": "ParentEntity",
+			"objectActions": [
+				{
+					"active": true,
+					"conditionExpression": "",
+					"description": "",
+					"errorMessage": {
+						"en_US": "Unable to trigger ObjectActionsEtcSpringBootAddJob"
+					},
+					"label": {
+						"en_US": "Object Actions Etc Spring Boot Add Job"
+					},
+					"name": "ObjectActionsEtcSpringBootAddJob",
+					"objectActionExecutorKey": "function#liferay-object-actions-etc-spring-boot-object-actions",
+					"objectActionTriggerKey": "onAfterAdd",
+					"parameters": {
+					}
+				}
+			],
+			"objectFields": [
+				{
+					"DBType": "String",
+					"businessType": "Text",
+					"label": {
+						"en_US": "Field"
+					},
+					"name": "field",
+					"required": true,
+					"type": "String"
+				}
+			],
+			"objectRelationships": [
+				{
+					"deletionType": "cascade",
+					"label": {
+						"en_US": "Parent to Children"
+					},
+					"name": "parentToChildren",
+					"objectDefinitionExternalReferenceCode1": "ParentEntity",
+					"objectDefinitionExternalReferenceCode2": "ChildEntity",
+					"type": "oneToMany"
+				}
+			],
+			"panelCategoryKey": "control_panel.object",
+			"pluralLabel": {
+				"en_US": "Parent Entities"
+			},
+			"portlet": true,
+			"scope": "company",
+			"status": {
+				"code": 0,
+				"label": "approved",
+				"label_i18n": "Approved"
+			}
+		}
+	]
+}
