@@ -8,3 +8,20 @@ liferay-testray-etc-cron-oauth-application-headless-server:
         - c_build.everything
     type: oAuthApplicationHeadlessServer
     userAccountScreenName: default-service-account
+liferay-testray-etc-jenkins-oauth-application-headless-server:
+    .serviceAddress: localhost:8080
+    .serviceScheme: http
+    name: Liferay Testray Etc Jenkins Oauth Application Headless Server
+    scopes:
+        - c_build.everything
+        - c_caseresult.everything
+        - c_casetype.everything
+        - c_component.everything
+        - c_factorcategory.everything
+        - c_factoroption.everything
+        - c_productversion.everything
+        - c_project.everything
+        - c_routine.everything
+        - c_team.everything
+    type: oAuthApplicationHeadlessServer
+    userAccountScreenName: default-service-account
