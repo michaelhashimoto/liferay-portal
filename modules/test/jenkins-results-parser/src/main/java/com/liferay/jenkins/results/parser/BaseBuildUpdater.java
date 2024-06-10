@@ -7,6 +7,7 @@ package com.liferay.jenkins.results.parser;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 
 /**
  * @author Michael Hashimoto
@@ -155,6 +156,38 @@ public abstract class BaseBuildUpdater implements BuildUpdater {
 		}
 
 		_build.setStatus("queued");
+	}
+
+	protected void saveBuildData(Build build) {
+		BuildDatabase buildDatabase = BuildDatabaseUtil.getBuildDatabase();
+
+		Properties properties = buildDatabase.getProperties(
+			"build-url.properties");
+
+		if (build instanceof AxisBuild) {
+			AxisBuild axisBuild = (AxisBuild)build;
+
+			properties.put(axisBuild.getAxisName(), axisBuild.getBuildURL());
+		}
+		else if (build instanceof BatchBuild) {
+			BatchBuild batchBuild = (BatchBuild)build;
+
+			properties.put(batchBuild.getBatchName(), batchBuild.getBuildURL());
+		}
+		else if (build instanceof DownstreamBuild) {
+			DownstreamBuild downstreamBuild = (DownstreamBuild)build;
+
+			properties.put(
+				downstreamBuild.getAxisName(), downstreamBuild.getBuildURL());
+		}
+		else if (build instanceof ValidationBuild) {
+			ValidationBuild validationBuild = (ValidationBuild)build;
+
+			properties.put(
+				validationBuild.getJobVariant(), validationBuild.getBuildURL());
+		}
+
+		buildDatabase.putProperties("build-url.properties", properties);
 	}
 
 	private boolean _isApplyReinvokeRules() {

@@ -78,6 +78,8 @@ public class DefaultBuildUpdater extends BaseBuildUpdater {
 
 		Build build = getBuild();
 
+		saveBuildData(build);
+
 		JSONObject buildJSONObject = build.getBuildJSONObject(
 			"duration,result");
 
@@ -126,6 +128,8 @@ public class DefaultBuildUpdater extends BaseBuildUpdater {
 
 			result = buildJSONObject.optString("result");
 		}
+
+		saveBuildData(build);
 
 		if (!Objects.equals(result, "SUCCESS")) {
 			return true;
@@ -180,6 +184,8 @@ public class DefaultBuildUpdater extends BaseBuildUpdater {
 			Build.Invocation buildInvocation = build.getCurrentInvocation();
 
 			buildInvocation.setQueueId(buildJSONObject.getLong("queueId"));
+
+			saveBuildData(build);
 
 			return true;
 		}

@@ -871,7 +871,19 @@ public abstract class BaseTopLevelBuild
 			return;
 		}
 
-		_findDownstreamBuildsInConsoleText();
+		BuildDatabase buildDatabase = BuildDatabaseUtil.getBuildDatabase();
+
+		Properties buildURLProperties = buildDatabase.getProperties(
+			"build-url.properties");
+
+		Map<String, String> urlAxisNames = new HashMap<>();
+
+		for (String propertyName : buildURLProperties.stringPropertyNames()) {
+			urlAxisNames.put(
+				propertyName, buildURLProperties.getProperty(propertyName));
+		}
+
+		addDownstreamBuilds(urlAxisNames);
 	}
 
 	@Override
