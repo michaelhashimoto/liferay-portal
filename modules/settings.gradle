@@ -32,6 +32,7 @@ if (Boolean.getBoolean("gradle.develocity.enabled")) {
 				tag System.getProperty("gradle.develocity.tag")
 			}
 
+			tag "portal-worker8"
 			termsOfUseAgree = "yes"
 			termsOfUseUrl = "https://gradle.com/terms-of-service"
 
