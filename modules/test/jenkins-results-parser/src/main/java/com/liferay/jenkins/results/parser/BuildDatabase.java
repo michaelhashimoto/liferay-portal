@@ -52,6 +52,8 @@ public interface BuildDatabase {
 
 	public boolean hasWorkspaceGitRepository(String key);
 
+	public void printReadWriteCounts();
+
 	public void putBuildData(String key, BuildData buildData);
 
 	public void putJob(String key, Job job);

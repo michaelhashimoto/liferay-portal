@@ -214,6 +214,14 @@ public abstract class BaseBuildDatabase implements BuildDatabase {
 	}
 
 	@Override
+	public void printReadWriteCounts() {
+		System.out.println(
+			JenkinsResultsParserUtil.combine(
+				"BuildDatabase completed ", String.valueOf(_readCount),
+				" reads & ", String.valueOf(_writeCount), " writes"));
+	}
+
+	@Override
 	public void putBuildData(String key, BuildData buildData) {
 		synchronized (_buildDatabaseFile) {
 			JSONObject buildsJSONObject = _jsonObject.getJSONObject("builds");
@@ -314,6 +322,8 @@ public abstract class BaseBuildDatabase implements BuildDatabase {
 	@Override
 	public void readBuildDatabaseFile() {
 		synchronized (_buildDatabaseFile) {
+			_readCount++;
+
 			if (_buildDatabaseFile.exists()) {
 				try {
 					_jsonObject = new JSONObject(
@@ -474,6 +484,8 @@ public abstract class BaseBuildDatabase implements BuildDatabase {
 
 	private synchronized void _writeJSONObjectFile() {
 		synchronized (_buildDatabaseFile) {
+			_writeCount++;
+
 			try {
 				JenkinsResultsParserUtil.write(
 					_buildDatabaseFile, _jsonObject.toString());
@@ -486,5 +498,7 @@ public abstract class BaseBuildDatabase implements BuildDatabase {
 
 	private final File _buildDatabaseFile;
 	private JSONObject _jsonObject;
+	private long _readCount;
+	private long _writeCount;
 
 }
