@@ -2125,6 +2125,8 @@ public abstract class BaseTopLevelBuild
 		BuildDatabase buildDatabase = getBuildDatabase();
 
 		try {
+			buildDatabase.printReadWriteCounts();
+
 			writeArchiveFile(
 				String.valueOf(buildDatabase.getJSONObject()),
 				getArchivePath() + "/" + urlSuffix);
