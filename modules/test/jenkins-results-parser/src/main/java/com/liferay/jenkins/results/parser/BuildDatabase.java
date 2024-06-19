@@ -74,8 +74,6 @@ public interface BuildDatabase {
 	public void putWorkspaceGitRepository(
 		String key, WorkspaceGitRepository workspaceGitRepository);
 
-	public void readBuildDatabaseFile();
-
 	public void writeFilteredPropertiesToFile(
 		String destFilePath, Pattern pattern, String key);
 
