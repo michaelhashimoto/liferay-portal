@@ -78,6 +78,10 @@ public class DefaultBuildUpdater extends BaseBuildUpdater {
 			return _buildCompleted;
 		}
 
+		if (isBuildQueued()) {
+			return false;
+		}
+
 		Build build = getBuild();
 
 		JSONObject buildJSONObject = build.getBuildJSONObject(
@@ -226,12 +230,6 @@ public class DefaultBuildUpdater extends BaseBuildUpdater {
 			if (_matchesBuildParameters(_getBuildParameters(buildJSONObject))) {
 				Build.Invocation previousInvocation =
 					build.getPreviousInvocation();
-
-				if (previousInvocation != null) {
-					System.out.println("-------------------------------------");
-					System.out.println("0=" + previousInvocation.getBuildURL());
-					System.out.println("1=" + buildJSONObject.optString("url"));
-				}
 
 				if ((previousInvocation != null) &&
 					Objects.equals(
