@@ -30,6 +30,8 @@ public interface BuildDatabase {
 
 	public Job getJob(String key);
 
+	public JSONObject getJSONObject();
+
 	public Properties getProperties(String key);
 
 	public Properties getProperties(String key, Pattern pattern);
@@ -52,6 +54,8 @@ public interface BuildDatabase {
 
 	public boolean hasWorkspaceGitRepository(String key);
 
+	public void printReadWriteCounts();
+
 	public void putBuildData(String key, BuildData buildData);
 
 	public void putJob(String key, Job job);
@@ -69,8 +73,6 @@ public interface BuildDatabase {
 
 	public void putWorkspaceGitRepository(
 		String key, WorkspaceGitRepository workspaceGitRepository);
-
-	public void readBuildDatabaseFile();
 
 	public void writeFilteredPropertiesToFile(
 		String destFilePath, Pattern pattern, String key);

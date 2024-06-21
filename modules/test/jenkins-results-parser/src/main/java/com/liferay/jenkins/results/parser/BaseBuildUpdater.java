@@ -107,15 +107,17 @@ public abstract class BaseBuildUpdater implements BuildUpdater {
 			return;
 		}
 
+		if (isBuildQueued()) {
+			return;
+		}
+
 		if (isBuildCompleted()) {
 			_build.setStatus("completed");
 
 			return;
 		}
 
-		if (!isBuildQueued()) {
-			_build.setStatus("missing");
-		}
+		_build.setStatus("missing");
 	}
 
 	protected void runReporting() {

@@ -78,6 +78,10 @@ public class DefaultBuildUpdater extends BaseBuildUpdater {
 			return _buildCompleted;
 		}
 
+		if (isBuildQueued()) {
+			return false;
+		}
+
 		Build build = getBuild();
 
 		JSONObject buildJSONObject = build.getBuildJSONObject(
@@ -224,6 +228,17 @@ public class DefaultBuildUpdater extends BaseBuildUpdater {
 			}
 
 			if (_matchesBuildParameters(_getBuildParameters(buildJSONObject))) {
+				Build.Invocation previousInvocation =
+					build.getPreviousInvocation();
+
+				if ((previousInvocation != null) &&
+					Objects.equals(
+						previousInvocation.getBuildURL(),
+						buildJSONObject.optString("url"))) {
+
+					continue;
+				}
+
 				return buildJSONObject;
 			}
 		}
