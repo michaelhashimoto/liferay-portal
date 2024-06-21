@@ -3012,17 +3012,22 @@ public abstract class BaseBuild implements Build {
 			readyToArchive = false;
 		}
 		else if (!(this instanceof TopLevelBuild)) {
-			JSONObject buildJSONObject = JenkinsAPIUtil.getAPIJSONObject(
-				getBuildURL(), "duration");
+			try {
+				JSONObject buildJSONObject = JenkinsAPIUtil.getAPIJSONObject(
+					getBuildURL(), "duration");
 
-			if (buildJSONObject != null) {
-				long duration = buildJSONObject.optLong("duration", 0L);
+				if (buildJSONObject != null) {
+					long duration = buildJSONObject.optLong("duration", 0L);
 
-				if (duration == 0) {
+					if (duration == 0) {
+						readyToArchive = false;
+					}
+				}
+				else {
 					readyToArchive = false;
 				}
 			}
-			else {
+			catch (Exception exception) {
 				readyToArchive = false;
 			}
 		}
