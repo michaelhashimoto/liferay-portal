@@ -20,6 +20,7 @@ import java.util.Map;
 
 /**
  * @author Adolfo Pérez
+ * @author Michael Hashimoto
  */
 public abstract class BaseReplacePortletId extends BasePortletIdUpgradeProcess {
 
