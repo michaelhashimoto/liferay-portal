@@ -41,7 +41,7 @@ definition {
 
 		SignIn.signInTestSetup();
 
-		Smoke.viewWelcomeContentPage();
+		Smokes.viewWelcomeContentPage();
 
 		Smoke.runSmoke();
 
