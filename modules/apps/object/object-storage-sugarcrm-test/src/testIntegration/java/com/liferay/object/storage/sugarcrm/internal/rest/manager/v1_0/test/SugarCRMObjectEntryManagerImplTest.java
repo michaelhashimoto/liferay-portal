@@ -54,7 +54,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 /**
- * @author Maurice Sepe
+ * @author Maurice Sepes
  */
 @FeatureFlags("LPS-135430")
 @RunWith(Arquillian.class)
