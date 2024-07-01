@@ -686,7 +686,7 @@ describe('Detail', () => {
 			});
 
 			expect(getByText('Social')).toBeInTheDocument();
-			expect(getByText('90%')).toBeInTheDocument();
+			expect(getByText('80%')).toBeInTheDocument();
 			expect(getByText(enFormatter.format(278256))).toBeInTheDocument();
 
 			expect(getByText('top-referring-social-media')).toBeInTheDocument();
