@@ -12,6 +12,7 @@ import com.liferay.jenkins.results.parser.TopLevelBuild;
 import com.liferay.jenkins.results.parser.test.clazz.TestClass;
 import com.liferay.jenkins.results.parser.test.clazz.group.AxisTestClassGroup;
 import com.liferay.jenkins.results.parser.test.clazz.group.FunctionalAxisTestClassGroup;
+import com.liferay.jenkins.results.parser.test.clazz.group.JSUnitAxisTestClassGroup;
 import com.liferay.jenkins.results.parser.test.clazz.group.JUnitAxisTestClassGroup;
 import com.liferay.jenkins.results.parser.test.clazz.group.PlaywrightAxisTestClassGroup;
 
@@ -168,6 +169,10 @@ public class TestrayFactory {
 		if (testClass != null) {
 			if (axisTestClassGroup instanceof FunctionalAxisTestClassGroup) {
 				return new FunctionalBatchBuildTestrayCaseResult(
+					testrayBuild, topLevelBuild, axisTestClassGroup, testClass);
+			}
+			else if (axisTestClassGroup instanceof JSUnitAxisTestClassGroup) {
+				return new JSUnitBatchBuildTestrayCaseResult(
 					testrayBuild, topLevelBuild, axisTestClassGroup, testClass);
 			}
 			else if (axisTestClassGroup instanceof JUnitAxisTestClassGroup) {

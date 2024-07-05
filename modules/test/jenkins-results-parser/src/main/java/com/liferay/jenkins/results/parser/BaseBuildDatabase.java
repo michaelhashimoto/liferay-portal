@@ -72,7 +72,7 @@ public abstract class BaseBuildDatabase implements BuildDatabase {
 
 	@Override
 	public JSONObject getJSONObject() {
-		return new JSONObject(_jsonObject);
+		return new JSONObject(_jsonObject.toString());
 	}
 
 	@Override

@@ -43,6 +43,7 @@ import com.liferay.jenkins.results.parser.job.property.JobPropertyFactory;
 import com.liferay.jenkins.results.parser.test.clazz.TestClass;
 import com.liferay.jenkins.results.parser.test.clazz.group.AxisTestClassGroup;
 import com.liferay.jenkins.results.parser.test.clazz.group.FunctionalAxisTestClassGroup;
+import com.liferay.jenkins.results.parser.test.clazz.group.JSUnitAxisTestClassGroup;
 import com.liferay.jenkins.results.parser.test.clazz.group.JUnitAxisTestClassGroup;
 import com.liferay.jenkins.results.parser.test.clazz.group.PlaywrightAxisTestClassGroup;
 
@@ -1034,6 +1035,8 @@ public class TestrayImporter {
 
 						if (axisTestClassGroup instanceof
 								FunctionalAxisTestClassGroup ||
+							axisTestClassGroup instanceof
+								JSUnitAxisTestClassGroup ||
 							axisTestClassGroup instanceof
 								JUnitAxisTestClassGroup ||
 							axisTestClassGroup instanceof

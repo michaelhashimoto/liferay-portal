@@ -118,6 +118,10 @@ public abstract class BaseTestResult implements TestResult {
 				UpstreamFailureUtil.getUpstreamJobFailures(
 					"test", topLevelBuild)) {
 
+			if (upstreamFailure.contains("js-unit")) {
+				System.out.println("upstreamFailure=" + upstreamFailure);
+			}
+
 			String testFailure = JenkinsResultsParserUtil.combine(
 				getDisplayName(), ",", batchName);
 
