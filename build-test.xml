@@ -7422,6 +7422,10 @@ org.apache.catalina.startup.ClassLoaderFactory.level=INFO]]>
 									</then>
 								</elseif>
 								<else>
+									<echo>--------------------PAUSE--------------------</echo>
+
+									<sleep seconds="6000" />
+
 									<beanshell>
 										<![CDATA[
 											import com.liferay.jenkins.results.parser.AppServer;
