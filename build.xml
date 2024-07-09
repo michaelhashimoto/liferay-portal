@@ -1217,6 +1217,36 @@ This target has been renamed to "snapshot-bundle". Please call "snapshot-bundle"
 				</execute>
 
 				<echo>-----END | quick.sh-----</echo>
+				<echo>-----START | writes-----</echo>
+
+				<print-file file.name="${app.server.websphere.dir}/bin/startServer.sh" />
+				<print-file file.name="${app.server.websphere.dir}/bin/setupCmdLine.sh" />
+				<print-file file.name="${app.server.websphere.dir}/bin/wsadmin.sh" />
+
+				<echo append="true" file="${app.server.websphere.dir}/bin/startServer.sh">
+					echo "LIBPATH=${LIBPATH}"
+					echo "LD_LIBRARY_PATH=${LD_LIBRARY_PATH}"
+					echo "C_PATH=${C_PATH}"
+				</echo>
+
+				<echo append="true" file="${app.server.websphere.dir}/bin/setupCmdLine.sh">
+					echo "LIBPATH=${LIBPATH}"
+					echo "LD_LIBRARY_PATH=${LD_LIBRARY_PATH}"
+					echo "C_PATH=${C_PATH}"
+				</echo>
+
+
+				<echo append="true" file="${app.server.websphere.dir}/bin/wsadmin.sh">
+					echo "LIBPATH=${LIBPATH}"
+					echo "LD_LIBRARY_PATH=${LD_LIBRARY_PATH}"
+					echo "C_PATH=${C_PATH}"
+				</echo>
+
+				<print-file file.name="${app.server.websphere.dir}/bin/startServer.sh" />
+				<print-file file.name="${app.server.websphere.dir}/bin/setupCmdLine.sh" />
+				<print-file file.name="${app.server.websphere.dir}/bin/wsadmin.sh" />
+
+				<echo>-----END | writes-----</echo>
 
 				<retry retrycount="3">
 					<trycatch property="shutdown.error">
@@ -1242,10 +1272,9 @@ This target has been renamed to "snapshot-bundle". Please call "snapshot-bundle"
 										perm="a+x"
 									/>
 
-									<exec dir="${app.server.websphere.bin.dir}" executable="/bin/sh">
-										<arg value="-c" />
-										<arg value="./startServer.sh server1" />
-									</exec>
+									<execute dir="${app.server.websphere.bin.dir}">
+										/bin/sh ./startServer.sh server1
+									</execute>
 								</then>
 								<elseif>
 									<os family="windows" />
@@ -1295,15 +1324,11 @@ print AdminControl.invoke(appManager, 'startApplication', 'liferay-portal')
 							<if>
 								<os family="unix" />
 								<then>
-									<exec dir="${app.server.websphere.bin.dir}" executable="/bin/sh">
-										<arg value="-c" />
-										<arg value="./wsadmin.sh -f ${basedir}/wsadmin.py" />
-									</exec>
+									<execute dir="${app.server.websphere.bin.dir}">
+										/bin/sh ./wsadmin.sh -f ${basedir}/wsadmin.py
 
-									<exec dir="${app.server.websphere.bin.dir}" executable="/bin/sh">
-										<arg value="-c" />
-										<arg value="./stopServer.sh server1" />
-									</exec>
+										/bin/sh ./stopServer.sh server1
+									</execute>
 								</then>
 								<elseif>
 									<os family="windows" />
