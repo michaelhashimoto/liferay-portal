@@ -1206,6 +1206,18 @@ This target has been renamed to "snapshot-bundle". Please call "snapshot-bundle"
 		<if>
 			<equals arg1="${app.server.type}" arg2="websphere" />
 			<then>
+				<echo file="/tmp/quick.sh">
+					find ${app.server.websphere.dir} | grep Ws60ProcessManagement
+				</echo>
+
+				<echo>-----START | quick.sh-----</echo>
+
+				<execute>
+					/bin/bash /tmp/quick.sh
+				</execute>
+
+				<echo>-----END | quick.sh-----</echo>
+
 				<retry retrycount="3">
 					<trycatch property="shutdown.error">
 						<try>
