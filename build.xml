@@ -1206,44 +1206,49 @@ This target has been renamed to "snapshot-bundle". Please call "snapshot-bundle"
 		<if>
 			<equals arg1="${app.server.type}" arg2="websphere" />
 			<then>
-				<echo>--- START | update-app-server-scripts ---</echo>
+				<retry retrycount="3">
+					<trycatch property="shutdown.error">
+						<try>
+							<echo>--- START | update-app-server-scripts ---</echo>
 
-				<record action="start" name="${project.dir}/update-app-server-scripts" />
+							<delete file="${project.dir}/update-app-server-scripts" />
 
-				<replace
-					file="${app.server.websphere.dir}/configuration/config.ini"
-				>
-					<replacetoken>com.ibm.CORBA,com.ibm</replacetoken>
-					<replacevalue>com.ibm.CORBA,javax.portlet,javax.portlet.filter,javax.portlet.annotations,com.ibm</replacevalue>
-				</replace>
+							<record action="start" name="${project.dir}/update-app-server-scripts" />
 
-				<if>
-					<os family="unix" />
-					<then>
-						<chmod
-							file="${app.server.websphere.bin.dir}/startServer.sh"
-							perm="a+x"
-						/>
+							<replace
+								file="${app.server.websphere.dir}/configuration/config.ini"
+							>
+								<replacetoken>com.ibm.CORBA,com.ibm</replacetoken>
+								<replacevalue>com.ibm.CORBA,javax.portlet,javax.portlet.filter,javax.portlet.annotations,com.ibm</replacevalue>
+							</replace>
 
-						<exec dir="${app.server.websphere.bin.dir}" executable="/bin/sh">
-							<arg value="-c" />
-							<arg value="./startServer.sh server1" />
-						</exec>
-					</then>
-					<elseif>
-						<os family="windows" />
-						<then>
-							<exec dir="${app.server.websphere.bin.dir}" executable="cmd.exe">
-								<arg value="/c" />
-								<arg value="startServer.bat server1" />
-							</exec>
-						</then>
-					</elseif>
-				</if>
+							<if>
+								<os family="unix" />
+								<then>
+									<chmod
+										file="${app.server.websphere.bin.dir}/startServer.sh"
+										perm="a+x"
+									/>
 
-				<echo>Installing liferay-portal.war.</echo>
+									<exec dir="${app.server.websphere.bin.dir}" executable="/bin/sh">
+										<arg value="-c" />
+										<arg value="./startServer.sh server1" />
+									</exec>
+								</then>
+								<elseif>
+									<os family="windows" />
+									<then>
+										<exec dir="${app.server.websphere.bin.dir}" executable="cmd.exe">
+											<arg value="/c" />
+											<arg value="startServer.bat server1" />
+										</exec>
+									</then>
+								</elseif>
+							</if>
 
-				<echo file="wsadmin.py">
+							<echo>Installing liferay-portal.war.</echo>
+
+							<echo file="wsadmin.py">
 def isAppInstalled(appName):
 	appNames = AdminApp.list()
 
@@ -1273,52 +1278,61 @@ else:
 print AdminConfig.save()
 
 print AdminControl.invoke(appManager, 'startApplication', 'liferay-portal')
-				</echo>
+							</echo>
 
-				<if>
-					<os family="unix" />
-					<then>
-						<exec dir="${app.server.websphere.bin.dir}" executable="/bin/sh">
-							<arg value="-c" />
-							<arg value="./wsadmin.sh -f ${basedir}/wsadmin.py" />
-						</exec>
+							<if>
+								<os family="unix" />
+								<then>
+									<exec dir="${app.server.websphere.bin.dir}" executable="/bin/sh">
+										<arg value="-c" />
+										<arg value="./wsadmin.sh -f ${basedir}/wsadmin.py" />
+									</exec>
 
-						<exec dir="${app.server.websphere.bin.dir}" executable="/bin/sh">
-							<arg value="-c" />
-							<arg value="./stopServer.sh server1" />
-						</exec>
-					</then>
-					<elseif>
-						<os family="windows" />
-						<then>
-							<exec dir="${app.server.websphere.bin.dir}" executable="cmd.exe">
-								<arg value="/c" />
-								<arg value="wsadmin.bat -f ${basedir}\wsadmin.py" />
-							</exec>
+									<exec dir="${app.server.websphere.bin.dir}" executable="/bin/sh">
+										<arg value="-c" />
+										<arg value="./stopServer.sh server1" />
+									</exec>
+								</then>
+								<elseif>
+									<os family="windows" />
+									<then>
+										<exec dir="${app.server.websphere.bin.dir}" executable="cmd.exe">
+											<arg value="/c" />
+											<arg value="wsadmin.bat -f ${basedir}\wsadmin.py" />
+										</exec>
 
-							<exec dir="${app.server.websphere.bin.dir}" executable="cmd.exe">
-								<arg value="/c" />
-								<arg value="stopServer.bat server1" />
-							</exec>
-						</then>
-					</elseif>
-				</if>
+										<exec dir="${app.server.websphere.bin.dir}" executable="cmd.exe">
+											<arg value="/c" />
+											<arg value="stopServer.bat server1" />
+										</exec>
+									</then>
+								</elseif>
+							</if>
 
-				<delete file="wsadmin.py" />
+							<delete file="wsadmin.py" />
+						</try>
+						<catch>
+							<sleep seconds="5" />
 
-				<record action="stop" name="${project.dir}/update-app-server-scripts" />
+							<echo append="true" file="${test.poshi.warnings.file.name}"><![CDATA[${line.separator}<value>SHUT_DOWN_WARNING: Server failed to fully shut down.</value>]]></echo>
+						</catch>
+						<finally>
+							<echo>--- STOP | update-app-server-scripts ---</echo>
 
-				<if>
-					<resourcecontains
-						resource="${project.dir}/update-app-server-scripts"
-						substring="Ws60ProcessManagement"
-					/>
-					<then>
-						<echo>--- CONTAINS | Ws60ProcessManagement ---</echo>
-					</then>
-				</if>
+							<record action="stop" name="${project.dir}/update-app-server-scripts" />
 
-				<echo>--- STOP | update-app-server-scripts ---</echo>
+							<if>
+								<resourcecontains
+									resource="${project.dir}/update-app-server-scripts"
+									substring="Ws60ProcessManagement (Not found in java.library.path)"
+								/>
+								<then>
+									<fail message="Unsuccessfully installed liferay-portal.war." />
+								</then>
+							</if>
+						</finally>
+					</trycatch>
+				</retry>
 			</then>
 		</if>
 	</target>
