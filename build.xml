@@ -1219,20 +1219,23 @@ This target has been renamed to "snapshot-bundle". Please call "snapshot-bundle"
 				<echo>-----END | quick.sh-----</echo>
 				<echo>-----START | writes-----</echo>
 
-				<replace file="${app.server.websphere.dir}/bin/startServer.sh">
-					<replacetoken>$LD_LIBRARY_PATH</replacetoken>
-					<replacevalue>$LD_LIBRARY_PATH:${app.server.websphere.dir}/lib/native/linux/x86_64</replacevalue>
-				</replace>
+				<replace
+					file="${app.server.websphere.dir}/bin/startServer.sh"
+					token="$LD_LIBRARY_PATH"
+					value="$LD_LIBRARY_PATH:${app.server.websphere.dir}/lib/native/linux/x86_64"
+				/>
 
-				<replace file="${app.server.websphere.dir}/bin/setupCmdLine.sh">
-					<replacetoken>nulldllsdir</replacetoken>
-					<replacevalue>nulldllsdir:${app.server.websphere.dir}/lib/native/linux/x86_64</replacevalue>
-				</replace>
+				<replace
+					file="${app.server.websphere.dir}/bin/setupCmdLine.sh"
+					token="nulldllsdir"
+					value="nulldllsdir:${app.server.websphere.dir}/lib/native/linux/x86_64"
+				/>
 
-				<replace file="${app.server.websphere.dir}/bin/wsadmin.sh">
-					<replacetoken>$LD_LIBRARY_PATH</replacetoken>
-					<replacevalue>$LD_LIBRARY_PATH:${app.server.websphere.dir}/lib/native/linux/x86_64</replacevalue>
-				</replace>
+				<replace
+					file="${app.server.websphere.dir}/bin/wsadmin.sh"
+					token="$LD_LIBRARY_PATH"
+					value="$LD_LIBRARY_PATH:${app.server.websphere.dir}/lib/native/linux/x86_64"
+				/>
 
 				<print-file file.name="${app.server.websphere.dir}/bin/startServer.sh" />
 				<print-file file.name="${app.server.websphere.dir}/bin/setupCmdLine.sh" />
