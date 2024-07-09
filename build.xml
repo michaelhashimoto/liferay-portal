@@ -1206,6 +1206,10 @@ This target has been renamed to "snapshot-bundle". Please call "snapshot-bundle"
 		<if>
 			<equals arg1="${app.server.type}" arg2="websphere" />
 			<then>
+				<echo>--- START | update-app-server-scripts ---</echo>
+
+				<record action="start" name="${project.dir}/update-app-server-scripts" />
+
 				<replace
 					file="${app.server.websphere.dir}/configuration/config.ini"
 				>
@@ -1301,6 +1305,20 @@ print AdminControl.invoke(appManager, 'startApplication', 'liferay-portal')
 				</if>
 
 				<delete file="wsadmin.py" />
+
+				<record action="stop" name="${project.dir}/update-app-server-scripts" />
+
+				<if>
+					<resourcecontains
+						resource="${project.dir}/update-app-server-scripts"
+						substring="Ws60ProcessManagement"
+					/>
+					<then>
+						<echo>--- CONTAINS | Ws60ProcessManagement ---</echo>
+					</then>
+				</if>
+
+				<echo>--- STOP | update-app-server-scripts ---</echo>
 			</then>
 		</if>
 	</target>
