@@ -1219,28 +1219,20 @@ This target has been renamed to "snapshot-bundle". Please call "snapshot-bundle"
 				<echo>-----END | quick.sh-----</echo>
 				<echo>-----START | writes-----</echo>
 
-				<print-file file.name="${app.server.websphere.dir}/bin/startServer.sh" />
-				<print-file file.name="${app.server.websphere.dir}/bin/setupCmdLine.sh" />
-				<print-file file.name="${app.server.websphere.dir}/bin/wsadmin.sh" />
+				<replace file="${app.server.websphere.dir}/bin/startServer.sh">
+					<replacetoken>$LD_LIBRARY_PATH</replacetoken>
+					<replacevalue>$LD_LIBRARY_PATH:${app.server.websphere.dir}/lib/native/linux/x86_64</replacevalue>
+				</replace>
 
-				<echo append="true" file="${app.server.websphere.dir}/bin/startServer.sh">
-					echo "LIBPATH=${LIBPATH}"
-					echo "LD_LIBRARY_PATH=${LD_LIBRARY_PATH}"
-					echo "C_PATH=${C_PATH}"
-				</echo>
+				<replace file="${app.server.websphere.dir}/bin/setupCmdLine.sh">
+					<replacetoken>nulldllsdir</replacetoken>
+					<replacevalue>nulldllsdir:${app.server.websphere.dir}/lib/native/linux/x86_64</replacevalue>
+				</replace>
 
-				<echo append="true" file="${app.server.websphere.dir}/bin/setupCmdLine.sh">
-					echo "LIBPATH=${LIBPATH}"
-					echo "LD_LIBRARY_PATH=${LD_LIBRARY_PATH}"
-					echo "C_PATH=${C_PATH}"
-				</echo>
-
-
-				<echo append="true" file="${app.server.websphere.dir}/bin/wsadmin.sh">
-					echo "LIBPATH=${LIBPATH}"
-					echo "LD_LIBRARY_PATH=${LD_LIBRARY_PATH}"
-					echo "C_PATH=${C_PATH}"
-				</echo>
+				<replace file="${app.server.websphere.dir}/bin/wsadmin.sh">
+					<replacetoken>$LD_LIBRARY_PATH</replacetoken>
+					<replacevalue>$LD_LIBRARY_PATH:${app.server.websphere.dir}/lib/native/linux/x86_64</replacevalue>
+				</replace>
 
 				<print-file file.name="${app.server.websphere.dir}/bin/startServer.sh" />
 				<print-file file.name="${app.server.websphere.dir}/bin/setupCmdLine.sh" />
