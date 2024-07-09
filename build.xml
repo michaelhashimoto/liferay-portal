@@ -1267,11 +1267,10 @@ This target has been renamed to "snapshot-bundle". Please call "snapshot-bundle"
 										perm="a+x"
 									/>
 
-									<execute dir="${app.server.websphere.bin.dir}">
-										export LIBPATH=${app.server.websphere.dir}/lib/native/linux/x86_64
-
-										/bin/bash startServer.sh server1
-									</execute>
+									<exec dir="${app.server.websphere.bin.dir}" executable="/bin/sh">
+										<arg value="-c" />
+										<arg value="./startServer.sh server1" />
+									</exec>
 								</then>
 								<elseif>
 									<os family="windows" />
@@ -1321,13 +1320,15 @@ print AdminControl.invoke(appManager, 'startApplication', 'liferay-portal')
 							<if>
 								<os family="unix" />
 								<then>
-									<execute dir="${app.server.websphere.bin.dir}">
-										export LIBPATH=${app.server.websphere.dir}/lib/native/linux/x86_64
+									<exec dir="${app.server.websphere.bin.dir}" executable="/bin/sh">
+										<arg value="-c" />
+										<arg value="./wsadmin.sh -f ${basedir}/wsadmin.py" />
+									</exec>
 
-										/bin/bash wsadmin.sh -f ${basedir}/wsadmin.py
-
-										/bin/bash stopServer.sh server1
-									</execute>
+									<exec dir="${app.server.websphere.bin.dir}" executable="/bin/sh">
+										<arg value="-c" />
+										<arg value="./stopServer.sh server1" />
+									</exec>
 								</then>
 								<elseif>
 									<os family="windows" />
