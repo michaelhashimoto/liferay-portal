@@ -1227,8 +1227,8 @@ This target has been renamed to "snapshot-bundle". Please call "snapshot-bundle"
 
 				<replace
 					file="${app.server.websphere.dir}/bin/setupCmdLine.sh"
-					token="nulldllsdir"
-					value="nulldllsdir:${app.server.websphere.dir}/lib/native/linux/x86_64"
+					token="esac"
+					value="esac${line.separator}echo &quot;WAS_LIBPATH=$WAS_LIBPATH&quot;${line.separator}echo &quot;WAS_EXT_DIRS=$WAS_EXT_DIRS&quot;"
 				/>
 
 				<replace
