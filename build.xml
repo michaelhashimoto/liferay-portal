@@ -1232,6 +1232,12 @@ This target has been renamed to "snapshot-bundle". Please call "snapshot-bundle"
 				/>
 
 				<replace
+					file="${app.server.websphere.dir}/bin/setupCmdLine.sh"
+					token="WAS_LIBPATH="
+					value="WAS_LIBPATH=${app.server.websphere.dir}/lib/native/linux/x86_64:"
+				/>
+
+				<replace
 					file="${app.server.websphere.dir}/bin/wsadmin.sh"
 					token="$LD_LIBRARY_PATH"
 					value="$LD_LIBRARY_PATH:${app.server.websphere.dir}/lib/native/linux/x86_64"
