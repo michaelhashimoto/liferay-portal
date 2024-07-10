@@ -1226,6 +1226,12 @@ This target has been renamed to "snapshot-bundle". Please call "snapshot-bundle"
 				/>
 
 				<replace
+					file="${app.server.websphere.dir}/bin/startServer.sh"
+					token="Configuration Based Server Launcher"
+					value="Configuration Based Server Launcher${line.separator}unset LD_LIBRARY_PATH_64"
+				/>
+
+				<replace
 					file="${app.server.websphere.dir}/bin/setupCmdLine.sh"
 					token="esac"
 					value="esac${line.separator}echo &quot;WAS_LIBPATH=$WAS_LIBPATH&quot;${line.separator}echo &quot;WAS_EXT_DIRS=$WAS_EXT_DIRS&quot;"
