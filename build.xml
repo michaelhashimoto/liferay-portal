@@ -1241,6 +1241,16 @@ This target has been renamed to "snapshot-bundle". Please call "snapshot-bundle"
 				<print-file file.name="${app.server.websphere.dir}/bin/setupCmdLine.sh" />
 				<print-file file.name="${app.server.websphere.dir}/bin/wsadmin.sh" />
 
+				<chmod
+					file="${app.server.websphere.dir}/bin/*.sh"
+					perm="a+x"
+				/>
+
+				<chmod
+					file="${app.server.websphere.bin.dir}/*.sh"
+					perm="a+x"
+				/>
+
 				<echo>-----END | writes-----</echo>
 
 				<retry retrycount="3">
@@ -1262,16 +1272,6 @@ This target has been renamed to "snapshot-bundle". Please call "snapshot-bundle"
 							<if>
 								<os family="unix" />
 								<then>
-									<chmod
-										file="${app.server.websphere.dir}/bin/startServer.sh"
-										perm="a+x"
-									/>
-
-									<chmod
-										file="${app.server.websphere.bin.dir}/startServer.sh"
-										perm="a+x"
-									/>
-
 									<exec dir="${app.server.websphere.bin.dir}" executable="/bin/sh">
 										<arg value="-c" />
 										<arg value="./startServer.sh server1" />
@@ -1325,30 +1325,10 @@ print AdminControl.invoke(appManager, 'startApplication', 'liferay-portal')
 							<if>
 								<os family="unix" />
 								<then>
-									<chmod
-										file="${app.server.websphere.dir}/bin/wsadmin.sh"
-										perm="a+x"
-									/>
-
-									<chmod
-										file="${app.server.websphere.bin.dir}/wsadmin.sh"
-										perm="a+x"
-									/>
-
 									<exec dir="${app.server.websphere.bin.dir}" executable="/bin/sh">
 										<arg value="-c" />
 										<arg value="./wsadmin.sh -f ${basedir}/wsadmin.py" />
 									</exec>
-
-									<chmod
-										file="${app.server.websphere.dir}/bin/stopServer.sh"
-										perm="a+x"
-									/>
-
-									<chmod
-										file="${app.server.websphere.bin.dir}/stopServer.sh"
-										perm="a+x"
-									/>
 
 									<exec dir="${app.server.websphere.bin.dir}" executable="/bin/sh">
 										<arg value="-c" />
