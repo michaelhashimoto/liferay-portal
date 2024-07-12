@@ -115,7 +115,7 @@ describe('BlogMetricCard', () => {
 		).toBeInTheDocument();
 
 		const linkToTheDocumentation = getByText(
-			'Learn more about visitor behavior.'
+			'Learn more about visitor behaviors.'
 		);
 
 		expect(linkToTheDocumentation).toBeInTheDocument();
