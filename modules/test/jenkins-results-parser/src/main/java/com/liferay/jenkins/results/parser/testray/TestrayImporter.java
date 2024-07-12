@@ -41,6 +41,7 @@ import com.liferay.jenkins.results.parser.WorkspaceGitRepository;
 import com.liferay.jenkins.results.parser.job.property.JobProperty;
 import com.liferay.jenkins.results.parser.job.property.JobPropertyFactory;
 import com.liferay.jenkins.results.parser.test.clazz.TestClass;
+import com.liferay.jenkins.results.parser.test.clazz.TestClassMethod;
 import com.liferay.jenkins.results.parser.test.clazz.group.AxisTestClassGroup;
 import com.liferay.jenkins.results.parser.test.clazz.group.FunctionalAxisTestClassGroup;
 import com.liferay.jenkins.results.parser.test.clazz.group.JSUnitAxisTestClassGroup;
@@ -957,6 +958,12 @@ public class TestrayImporter {
 		for (final AxisTestClassGroup axisTestClassGroup :
 				axisTestClassGroups) {
 
+			String axisName = axisTestClassGroup.getAxisName();
+
+			if (!axisName.contains("js-unit")) {
+				continue;
+			}
+
 			callables.add(
 				new Callable<Void>() {
 
@@ -1036,8 +1043,6 @@ public class TestrayImporter {
 						if (axisTestClassGroup instanceof
 								FunctionalAxisTestClassGroup ||
 							axisTestClassGroup instanceof
-								JSUnitAxisTestClassGroup ||
-							axisTestClassGroup instanceof
 								JUnitAxisTestClassGroup ||
 							axisTestClassGroup instanceof
 								PlaywrightAxisTestClassGroup) {
@@ -1060,10 +1065,37 @@ public class TestrayImporter {
 							for (TestClass testClass :
 									axisTestClassGroup.getTestClasses()) {
 
-								testrayCaseResults.add(
+								TestrayCaseResult testrayCaseResult =
 									TestrayFactory.newTestrayCaseResult(
 										testrayBuild, getTopLevelBuild(),
-										axisTestClassGroup, testClass));
+										axisTestClassGroup, testClass);
+
+								System.out.println(
+									"> " + testrayCaseResult.getName());
+
+								testrayCaseResults.add(testrayCaseResult);
+							}
+						}
+						else if (axisTestClassGroup instanceof
+									JSUnitAxisTestClassGroup) {
+
+							for (TestClass testClass :
+									axisTestClassGroup.getTestClasses()) {
+
+								for (TestClassMethod testClassMethod :
+										testClass.getTestClassMethods()) {
+
+									TestrayCaseResult testrayCaseResult =
+										TestrayFactory.newTestrayCaseResult(
+											testrayBuild, getTopLevelBuild(),
+											axisTestClassGroup, testClass,
+											testClassMethod);
+
+									System.out.println(
+										"> " + testrayCaseResult.getName());
+
+									testrayCaseResults.add(testrayCaseResult);
+								}
 							}
 						}
 						else {

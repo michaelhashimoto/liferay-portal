@@ -19,54 +19,54 @@ import org.json.JSONObject;
  */
 public class JSUnitAxisTestClassGroup extends AxisTestClassGroup {
 
-    @Override
-    public JSONObject getJSONObject() {
-        JSONObject jsonObject = super.getJSONObject();
+	@Override
+	public JSONObject getJSONObject() {
+		JSONObject jsonObject = super.getJSONObject();
 
-        jsonObject.put(
-            "test_base_dir",
-            JenkinsResultsParserUtil.getCanonicalPath(getTestBaseDir()));
+		jsonObject.put(
+			"test_base_dir",
+			JenkinsResultsParserUtil.getCanonicalPath(getTestBaseDir()));
 
-        return jsonObject;
-    }
+		return jsonObject;
+	}
 
-    @Override
-    public File getTestBaseDir() {
-        if (_testBaseDir != null) {
-            return _testBaseDir;
-        }
+	@Override
+	public File getTestBaseDir() {
+		if (_testBaseDir != null) {
+			return _testBaseDir;
+		}
 
-        List<TestClass> testClasses = getTestClasses();
+		List<TestClass> testClasses = getTestClasses();
 
-        if (testClasses.isEmpty()) {
-            return null;
-        }
+		if (testClasses.isEmpty()) {
+			return null;
+		}
 
-        TestClass testClass = testClasses.get(0);
+		TestClass testClass = testClasses.get(0);
 
-        _testBaseDir = testClass.getTestClassFile();
+		_testBaseDir = testClass.getTestClassFile();
 
-        return _testBaseDir;
-    }
+		return _testBaseDir;
+	}
 
-    protected JSUnitAxisTestClassGroup(
-        JSONObject jsonObject, SegmentTestClassGroup segmentTestClassGroup) {
+	protected JSUnitAxisTestClassGroup(
+		JSONObject jsonObject, SegmentTestClassGroup segmentTestClassGroup) {
 
-        super(jsonObject, segmentTestClassGroup);
+		super(jsonObject, segmentTestClassGroup);
 
-        String testBaseDirPath = jsonObject.optString("test_base_dir");
+		String testBaseDirPath = jsonObject.optString("test_base_dir");
 
-        if (!JenkinsResultsParserUtil.isNullOrEmpty(testBaseDirPath)) {
-            _testBaseDir = new File(testBaseDirPath);
-        }
-    }
+		if (!JenkinsResultsParserUtil.isNullOrEmpty(testBaseDirPath)) {
+			_testBaseDir = new File(testBaseDirPath);
+		}
+	}
 
-    protected JSUnitAxisTestClassGroup(
-        JSUnitModulesBatchTestClassGroup jsUnitModulesBatchTestClassGroup) {
+	protected JSUnitAxisTestClassGroup(
+		JSUnitModulesBatchTestClassGroup jsUnitModulesBatchTestClassGroup) {
 
-        super(jsUnitModulesBatchTestClassGroup);
-    }
+		super(jsUnitModulesBatchTestClassGroup);
+	}
 
-    private File _testBaseDir;
+	private File _testBaseDir;
 
 }
