@@ -65,6 +65,8 @@
 				<else>
 					<download-gradle-wrapper-binary />
 
+					<echo>analytics.cloud.faro.dir=${analytics.cloud.faro.dir}</echo>
+
 					<pull-docker-image-dependencies
 						analytics.cloud.image.names.excludes="${analytics.cloud.faro.image.names.excludes}"
 						analytics.cloud.repository.dir="${analytics.cloud.faro.dir}"
