@@ -72,7 +72,7 @@
 						analytics.cloud.repository.dir="${analytics.cloud.faro.dir}"
 					/>
 
-					<local name="portal.gradlew" />
+					<local name="portal.faro.base.dir" />
 
 					<beanshell>
 						<![CDATA[
@@ -99,13 +99,23 @@
 							}
 
 							if (gradleWrapperFile.exists()) {
-								project.setProperty("portal.gradlew", JenkinsResultsParserUtil.getCanonicalPath(gradleWrapperFile));
-							}
-							else {
-								project.setProperty("portal.gradlew", "gradlew");
+								project.setProperty("portal.faro.base.dir", gradleWrapperFile.getParent());
 							}
 						]]>
 					</beanshell>
+
+					<if>
+						<available file="${portal.faro.base.dir}" />
+						<then>
+							<ant antfile="build.xml" dir="${portal.faro.base.dir}" target="setup-sdk" />
+
+							<ant antfile="build.xml" dir="${portal.faro.base.dir}" target="setup-profile-dxp" />
+
+							<ant antfile="build.xml" dir="${portal.faro.base.dir}" target="compile" />
+
+							<ant antfile="build.xml" dir="${portal.faro.base.dir}" target="install-portal-snapshots" />
+						</then>
+					</if>
 
 					<loadfile
 						property="analytics.cloud.docker.test.yaml.content"
