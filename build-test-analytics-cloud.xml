@@ -107,13 +107,19 @@
 					<if>
 						<available file="${portal.faro.base.dir}" />
 						<then>
-							<ant antfile="build.xml" dir="${portal.faro.base.dir}" target="setup-sdk" />
+							<echo>portal.faro.base.dir=${portal.faro.base.dir}</echo>
 
-							<ant antfile="build.xml" dir="${portal.faro.base.dir}" target="setup-profile-dxp" />
+							<execute dir="${portal.faro.base.dir}">
+								ant setup-profile-dxp
 
-							<ant antfile="build.xml" dir="${portal.faro.base.dir}" target="compile" />
+								ant setup-sdk
 
-							<ant antfile="build.xml" dir="${portal.faro.base.dir}" target="install-portal-snapshots" />
+								ant setup-libs
+
+								ant compile
+
+								ant install-portal-snapshots
+							</execute>
 						</then>
 					</if>
 
