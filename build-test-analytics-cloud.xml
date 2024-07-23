@@ -99,7 +99,7 @@
 							}
 
 							if (gradleWrapperFile.exists()) {
-								project.setProperty("portal.faro.base.dir", JenkinsResultsParserUtil.getCanonicalPath(gradleWrapperFile.getParent()));
+								project.setProperty("portal.faro.base.dir", JenkinsResultsParserUtil.getCanonicalPath(gradleWrapperFile.getParentFile()));
 								project.setProperty("portal.gradlew", JenkinsResultsParserUtil.getCanonicalPath(gradleWrapperFile));
 							}
 							else {
