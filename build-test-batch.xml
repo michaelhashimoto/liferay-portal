@@ -2669,11 +2669,11 @@ ${poshi.runner.testsuite.testcase.name}</echo>
 						}
 
 						public static void generateJunitReport(File baseDir, String testClassName){
-							Map parameters = new HashMap();
+							Map attributes = new HashMap();
 
-							parameters.put("test.class.name", testClassName);
+							attributes.put("test.class.name", testClassName);
 
-							AntUtil.callTarget(baseDir, "build-common.xml", "generate-backend-batch-junit-report-modules", parameters);
+							AntUtil.callMacrodef(project, "generate-backend-batch-junit-report-modules", attributes);
 						}
 
 						public static String getTestClassNameForTestResults(String testClass){

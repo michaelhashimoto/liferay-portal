@@ -692,6 +692,20 @@ information.
 		</sequential>
 	</macrodef>
 
+	<macrodef name="generate-backend-batch-junit-report-modules">
+		<attribute name="test.class.name" />
+
+		<sequential>
+			<generate-backend-batch-junit-report
+				junit.failure.count="1"
+				junit.failure.message.element="&lt;failure message=&quot;Failed to run test on CI&quot; /&gt;"
+				test.class.name="@{test.class.name}"
+				test.command.name="testRun"
+				test.results.dir="modules/test-results"
+			/>
+		</sequential>
+	</macrodef>
+
 	<macrodef name="generate-pom-info">
 		<sequential>
 			<property name="artifact.name" value="${ant.project.name}" />
@@ -2223,16 +2237,6 @@ rerun your task.
 		</java>
 	</target>
 
-	<target name="generate-backend-batch-junit-report-modules">
-		<generate-backend-batch-junit-report
-			junit.failure.count="1"
-			junit.failure.message.element="&lt;failure message=&quot;Failed to run test on CI&quot; /&gt;"
-			test.class.name="${test.class.name}"
-			test.command.name="testRun"
-			test.results.dir="modules/test-results"
-		/>
-	</target>
-
 	<target name="generate-code-coverage-report">
 		<delete dir="${jacoco.report.folder}" />
 		<mkdir dir="${jacoco.report.folder}" />
@@ -2326,11 +2330,17 @@ rerun your task.
 	</target>
 
 	<target name="gradle-execute-modules">
-		<lstopwatch action="start" name="gradle.execution[${test.task}]" />
+		<local name="test.task.name" />
+
+		<antelope:stringutil property="test.task.name" string="${test.task}">
+			<antelope:replace regex="\:" replacement="." />
+		</antelope:stringutil>
+
+		<lstopwatch action="start" name="gradle.execution${test.task.name}" />
 
 		<gradle-execute dir="${dir}" gradlejvmargs="${gradle.jvm.args}" task="${test.task}" test.name="${test.name}" />
 
-		<lstopwatch action="total" name="gradle.execution[${test.task}]" />
+		<lstopwatch action="total" name="gradle.execution${test.task.name}" />
 	</target>
 
 	<target name="print-properties">
