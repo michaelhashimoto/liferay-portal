@@ -2326,7 +2326,11 @@ rerun your task.
 	</target>
 
 	<target name="gradle-execute-modules">
+		<lstopwatch action="start" name="${test.task}" />
+
 		<gradle-execute dir="${dir}" gradlejvmargs="${gradle.jvm.args}" task="${test.task}" test.name="${test.name}" />
+
+		<lstopwatch action="total" name="${test.task}" />
 	</target>
 
 	<target name="print-properties">
