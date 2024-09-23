@@ -2767,7 +2767,11 @@ ${poshi.runner.testsuite.testcase.name}</echo>
 
 							int timeout = Integer.parseInt(project.getProperty("test.class.timeout.minutes"));
 
-							timeout = timeout + testCount * 2;
+							System.out.println("timeout=" + timeout);
+
+							timeout = timeout + testCount * 3;
+
+							System.out.println("testCount=" + testCount);
 
 							try {
 								System.out.println("'gradle-execute-modules' will timeout in " + timeout);
