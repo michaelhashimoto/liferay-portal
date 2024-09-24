@@ -2751,6 +2751,7 @@ ${poshi.runner.testsuite.testcase.name}</echo>
 							parameters.put("gradle.jvm.args", "@{test.junit.args}");
 
 							StringBuilder sb = new StringBuilder();
+
 							int testCount = 1;
 
 							for (String test : projectTestEntry.getValue()) {
@@ -2767,7 +2768,7 @@ ${poshi.runner.testsuite.testcase.name}</echo>
 
 							int timeout = Integer.parseInt(project.getProperty("test.class.timeout.minutes"));
 
-							timeout = timeout + testCount;
+							timeout = timeout + testCount * 4;
 
 							try {
 								AntUtil.callTargetWithTimeout(projectDir, "build-common.xml", "gradle-execute-modules", parameters, timeout, true);
