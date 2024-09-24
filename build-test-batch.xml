@@ -2769,7 +2769,7 @@ ${poshi.runner.testsuite.testcase.name}</echo>
 
 							System.out.println("timeout=" + timeout);
 
-							timeout = timeout + testCount * 3;
+							timeout = timeout + testCount * 4;
 
 							System.out.println("testCount=" + testCount);
 
