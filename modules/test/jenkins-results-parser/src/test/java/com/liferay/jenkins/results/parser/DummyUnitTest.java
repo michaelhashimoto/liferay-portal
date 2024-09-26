@@ -14,6 +14,9 @@ public class DummyUnitTest {
 
 	@Test
 	public void testUnit() {
+		if (true) {
+			throw new RuntimeException("FAIL!");
+		}
 	}
 
 }

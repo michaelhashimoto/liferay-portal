@@ -59,6 +59,10 @@ public class ComboServletTest {
 	public static void setUpClass() throws Exception {
 		ToolDependencies.wireCaches();
 
+		if (true) {
+			throw new RuntimeException("BREAK!");
+		}
+
 		ReflectionTestUtil.setFieldValue(
 			PropsValues.class, "COMBO_CHECK_TIMESTAMP", true);
 	}
