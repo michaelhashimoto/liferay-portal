@@ -390,6 +390,14 @@ public class LoadBalancerUtil {
 	private static void _updateJenkinsMasters(
 		List<JenkinsMaster> jenkinsMasters) {
 
+		if ((jenkinsMasters == null) || jenkinsMasters.isEmpty()) {
+			System.out.println("jenkinsMasters" + jenkinsMasters);
+
+			return;
+		}
+
+		System.out.println("jenkinsMasters.size()=" + jenkinsMasters.size());
+
 		ExecutorService executorService = Executors.newFixedThreadPool(
 			jenkinsMasters.size());
 
