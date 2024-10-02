@@ -92,6 +92,10 @@ public class LoadBalancerUtilTest
 				JenkinsResultsParserUtil.combine(
 					"jenkins.local.url[", jenkinsMasterName, "]"),
 				"http://" + jenkinsMasterName);
+			properties.put(
+				JenkinsResultsParserUtil.combine(
+					"jenkins.remote.url[", jenkinsMasterName, "]"),
+				"https://" + jenkinsMasterName + ".liferay.com");
 
 			_copyProperties(
 				buildProperties, properties,
@@ -102,6 +106,9 @@ public class LoadBalancerUtilTest
 		properties.put(
 			JenkinsResultsParserUtil.combine("jenkins.local.url[test-2-1]"),
 			"http://test-2-1");
+		properties.put(
+			JenkinsResultsParserUtil.combine("jenkins.remote.url[test-2-1]"),
+			"https://test-2-1.liferay.com");
 
 		_copyProperties(
 			buildProperties, properties, "jenkins.local.url[test-2-1]",
