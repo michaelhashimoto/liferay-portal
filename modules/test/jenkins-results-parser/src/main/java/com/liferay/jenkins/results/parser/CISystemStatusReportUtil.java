@@ -112,9 +112,9 @@ public class CISystemStatusReportUtil {
 
 		List<Callable<File>> callables = new ArrayList<>();
 
-		List<File> buildReportJSONGzFiles = _getBuildReportJSONGzFiles(jobName);
+		List<File> buildReportJSONFiles = _getBuildReportJSONFiles(jobName);
 
-		for (final File buildReportJSONGzFile : buildReportJSONGzFiles) {
+		for (final File buildReportJSONFile : buildReportJSONFiles) {
 			callables.add(
 				new Callable<File>() {
 
@@ -122,14 +122,6 @@ public class CISystemStatusReportUtil {
 					public File call() throws Exception {
 						long start =
 							JenkinsResultsParserUtil.getCurrentTimeMillis();
-
-						File parentFile = buildReportJSONGzFile.getParentFile();
-
-						File buildReportJSONFile = new File(
-							parentFile, "build-report.json");
-
-						JenkinsResultsParserUtil.unGzip(
-							buildReportJSONGzFile, buildReportJSONFile);
 
 						JSONObject buildReportJSONObject =
 							JenkinsResultsParserUtil.toJSONObject(
@@ -160,13 +152,13 @@ public class CISystemStatusReportUtil {
 
 							results.add(new Result(topLevelBuildReport));
 
-							return buildReportJSONGzFile;
+							return buildReportJSONFile;
 						}
 						catch (Exception exception) {
 							RuntimeException runtimeException =
 								new RuntimeException(
 									JenkinsResultsParserUtil.getCanonicalPath(
-										buildReportJSONGzFile),
+										buildReportJSONFile),
 									exception);
 
 							runtimeException.printStackTrace();
@@ -180,7 +172,7 @@ public class CISystemStatusReportUtil {
 							System.out.println(
 								JenkinsResultsParserUtil.combine(
 									JenkinsResultsParserUtil.getCanonicalPath(
-										buildReportJSONGzFile),
+										buildReportJSONFile),
 									" processed in ",
 									JenkinsResultsParserUtil.toDurationString(
 										end - start)));
@@ -237,8 +229,8 @@ public class CISystemStatusReportUtil {
 		return decimalFormat.format(quotient);
 	}
 
-	private static List<File> _getBuildReportJSONGzFiles(String jobName) {
-		List<File> buildReportJSONGzFiles = new ArrayList<>();
+	private static List<File> _getBuildReportJSONFiles(String jobName) {
+		List<File> buildReportJSONFiles = new ArrayList<>();
 
 		for (String dateString : _dateStrings) {
 			File testrayLogsDateDir = new File(_TESTRAY_LOGS_DIR, dateString);
@@ -255,7 +247,7 @@ public class CISystemStatusReportUtil {
 					JenkinsResultsParserUtil.combine(
 						"find ", dateString, "/*/",
 						JenkinsResultsParserUtil.escapeForBash(jobName),
-						"/*/build-report.json.gz -mtime -15"));
+						"/*/build-report.json -mtime -15"));
 			}
 			catch (IOException | TimeoutException exception) {
 				continue;
@@ -286,13 +278,13 @@ public class CISystemStatusReportUtil {
 				continue;
 			}
 
-			for (String buildReportJSONGzFilePath : output.split("\n")) {
-				buildReportJSONGzFiles.add(
-					new File(_TESTRAY_LOGS_DIR, buildReportJSONGzFilePath));
+			for (String buildReportJSONFilePath : output.split("\n")) {
+				buildReportJSONFiles.add(
+					new File(_TESTRAY_LOGS_DIR, buildReportJSONFilePath));
 			}
 		}
 
-		return buildReportJSONGzFiles;
+		return buildReportJSONFiles;
 	}
 
 	private static JSONObject _getDownstreamBuildDurationJSONObject() {
@@ -723,8 +715,8 @@ public class CISystemStatusReportUtil {
 		_CI_SYSTEM_STATUS_REPORT_DIR = new File(
 			_buildProperties.getProperty("ci.system.status.report.dir"));
 		_TESTRAY_LOGS_DIR = new File(
-			_buildProperties.getProperty("jenkins.testray.results.dir"),
-			"production/logs");
+			_buildProperties.getProperty(
+				"google.cloud.bucket.local.dir[testray]"));
 		_TMP_BASE_DIR = new File(
 			_buildProperties.getProperty("archive.ci.build.data.tmp.dir"),
 			"nodes");

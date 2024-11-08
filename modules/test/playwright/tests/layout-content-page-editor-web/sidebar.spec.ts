@@ -37,6 +37,7 @@ const test = mergeTests(
 	collectionsPagesTest,
 	featureFlagsTest({
 		'LPD-15596': true,
+		'LPD-18221': true,
 		'LPS-169837': true,
 		'LPS-178052': true,
 	}),
@@ -197,6 +198,68 @@ test('Checks sidebar accessibility', async ({
 	await checkAccessibility({
 		page,
 		selectors: ['.page-editor__sidebar'],
+	});
+});
+
+test.describe('Browser Panel', () => {
+	test('Deleting a fragment while its editable is selected', async ({
+		apiHelpers,
+		page,
+		pageEditorPage,
+		site,
+	}) => {
+
+		// Create a page with a Dropdown and a Heading fragment
+
+		const dropdownDefinition = getFragmentDefinition({
+			id: getRandomString(),
+			key: 'BASIC_COMPONENT-dropdown',
+		});
+
+		const headingId = getRandomString();
+		const headingDefinition = getFragmentDefinition({
+			id: headingId,
+			key: 'BASIC_COMPONENT-heading',
+		});
+
+		const layout = await apiHelpers.headlessDelivery.createSitePage({
+			pageDefinition: getPageDefinition([
+				dropdownDefinition,
+				headingDefinition,
+			]),
+			siteId: site.id,
+			title: getRandomString(),
+		});
+
+		// Go to edit mode of page
+
+		await pageEditorPage.goto(layout, site.friendlyUrlPath);
+
+		// Select editable
+
+		await pageEditorPage.selectEditable(headingId, 'element-text');
+
+		// Go to Browser an delete the fragment
+
+		await pageEditorPage.goToSidebarTab('Browser');
+
+		await hoverAndExpectToBeVisible({
+			autoClick: true,
+			target: page
+				.locator('.treeview-item', {hasText: 'Heading'})
+				.getByLabel('Options'),
+			trigger: page.getByLabel('Select Heading'),
+		});
+
+		await clickAndExpectToBeVisible({
+			autoClick: true,
+			target: page.getByRole('menuitem', {name: 'Delete'}),
+			trigger: page
+				.locator('.treeview-item', {hasText: 'Heading'})
+				.getByLabel('Options'),
+		});
+
+		await pageEditorPage.waitForChangesSaved();
 	});
 });
 

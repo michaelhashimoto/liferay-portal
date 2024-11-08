@@ -50,6 +50,7 @@ export class ApplicationsMenuPage {
 	private readonly systemSettingsItem: Locator;
 	private readonly serverAdministrationItem: Locator;
 	private readonly siteTemplatesButton: Locator;
+	private readonly userGroupsItem: Locator;
 	private readonly usersAndOrganizationsItem: Locator;
 	private readonly virtualInstancesItem: Locator;
 
@@ -211,6 +212,10 @@ export class ApplicationsMenuPage {
 		this.systemSettingsItem = page.getByRole('menuitem', {
 			exact: true,
 			name: 'System Settings',
+		});
+		this.userGroupsItem = page.getByRole('menuitem', {
+			exact: true,
+			name: 'User Groups',
 		});
 		this.usersAndOrganizationsItem = page.getByRole('menuitem', {
 			exact: true,
@@ -469,6 +474,19 @@ export class ApplicationsMenuPage {
 		await this.goto();
 		await this.controlPanelButton.click();
 		await this.serviceAccountsItem.click();
+	}
+
+	async goToUserGroups(forceReload = true) {
+		if (forceReload) {
+			await this.goto();
+		}
+		else {
+			await this.homePage.openApplicationMenu();
+
+			await expect(this.applicationsMenuTabButton).toBeVisible();
+		}
+		await this.controlPanelButton.click();
+		await this.userGroupsItem.click();
 	}
 
 	async goToUsersAndOrganizations(forceReload = true) {

@@ -10,6 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import com.liferay.data.engine.rest.dto.v2_0.DataDefinitionField;
+import com.liferay.data.engine.rest.dto.v2_0.DataLayout;
 import com.liferay.petra.function.UnsafeSupplier;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.util.StringUtil;
@@ -34,6 +35,8 @@ import java.util.function.Supplier;
 import javax.annotation.Generated;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -47,6 +50,12 @@ import javax.xml.bind.annotation.XmlRootElement;
 	value = "DocumentMetadataSet"
 )
 @JsonFilter("Liferay.Vulcan")
+@Schema(
+	description = "Represents a Document Metadata Set.",
+	requiredProperties = {
+		"availableLanguages", "dataDefinitionFields", "dataLayout", "name"
+	}
+)
 @XmlRootElement(name = "DocumentMetadataSet")
 public class DocumentMetadataSet implements Serializable {
 
@@ -190,7 +199,8 @@ public class DocumentMetadataSet implements Serializable {
 	@GraphQLField(
 		description = "The list of languages the navigation menu item has a translation for."
 	)
-	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
+	@JsonProperty(access = JsonProperty.Access.READ_WRITE)
+	@NotNull
 	protected String[] availableLanguages;
 
 	@JsonIgnore
@@ -239,11 +249,59 @@ public class DocumentMetadataSet implements Serializable {
 	@GraphQLField(
 		description = "The list of fields that store the structured content's information."
 	)
-	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
+	@JsonProperty(access = JsonProperty.Access.READ_WRITE)
+	@NotNull
 	protected DataDefinitionField[] dataDefinitionFields;
 
 	@JsonIgnore
 	private Supplier<DataDefinitionField[]> _dataDefinitionFieldsSupplier;
+
+	@Schema(
+		description = "The layout of the document data definition type fields."
+	)
+	@Valid
+	public DataLayout getDataLayout() {
+		if (_dataLayoutSupplier != null) {
+			dataLayout = _dataLayoutSupplier.get();
+
+			_dataLayoutSupplier = null;
+		}
+
+		return dataLayout;
+	}
+
+	public void setDataLayout(DataLayout dataLayout) {
+		this.dataLayout = dataLayout;
+
+		_dataLayoutSupplier = null;
+	}
+
+	@JsonIgnore
+	public void setDataLayout(
+		UnsafeSupplier<DataLayout, Exception> dataLayoutUnsafeSupplier) {
+
+		_dataLayoutSupplier = () -> {
+			try {
+				return dataLayoutUnsafeSupplier.get();
+			}
+			catch (RuntimeException runtimeException) {
+				throw runtimeException;
+			}
+			catch (Exception exception) {
+				throw new RuntimeException(exception);
+			}
+		};
+	}
+
+	@GraphQLField(
+		description = "The layout of the document data definition type fields."
+	)
+	@JsonProperty(access = JsonProperty.Access.READ_WRITE)
+	@NotNull
+	protected DataLayout dataLayout;
+
+	@JsonIgnore
+	private Supplier<DataLayout> _dataLayoutSupplier;
 
 	@Schema(description = "The Document Metadata Set's creation date.")
 	public Date getDateCreated() {
@@ -490,6 +548,7 @@ public class DocumentMetadataSet implements Serializable {
 
 	@GraphQLField(description = "The Document Metadata Set's name.")
 	@JsonProperty(access = JsonProperty.Access.READ_WRITE)
+	@NotEmpty
 	protected String name;
 
 	@JsonIgnore
@@ -687,6 +746,18 @@ public class DocumentMetadataSet implements Serializable {
 			}
 
 			sb.append("]");
+		}
+
+		DataLayout dataLayout = getDataLayout();
+
+		if (dataLayout != null) {
+			if (sb.length() > 1) {
+				sb.append(", ");
+			}
+
+			sb.append("\"dataLayout\": ");
+
+			sb.append(dataLayout);
 		}
 
 		Date dateCreated = getDateCreated();

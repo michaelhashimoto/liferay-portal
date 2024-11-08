@@ -499,7 +499,7 @@ public class LayoutPageTemplateCollectionLocalServiceImpl
 
 		if (Validator.isNull(name)) {
 			throw new LayoutPageTemplateCollectionNameException(
-				"Name must not be null for group " + groupId);
+				"Name must not be null");
 		}
 
 		int nameMaxLength = ModelHintsUtil.getMaxLength(
@@ -507,7 +507,7 @@ public class LayoutPageTemplateCollectionLocalServiceImpl
 
 		if (name.length() > nameMaxLength) {
 			throw new LayoutPageTemplateCollectionNameException(
-				"Maximum length of name exceeded");
+				"Maximum length of name exceeded " + nameMaxLength);
 		}
 
 		LayoutPageTemplateCollection layoutPageTemplateCollection =

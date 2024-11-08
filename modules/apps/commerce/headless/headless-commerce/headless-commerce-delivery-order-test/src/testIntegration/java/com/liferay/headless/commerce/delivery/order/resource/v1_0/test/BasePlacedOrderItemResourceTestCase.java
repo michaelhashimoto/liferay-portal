@@ -30,6 +30,7 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.service.CompanyLocalServiceUtil;
 import com.liferay.portal.kernel.test.util.GroupTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
+import com.liferay.portal.kernel.test.util.UserTestUtil;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.DateFormatFactoryUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
@@ -98,11 +99,17 @@ public abstract class BasePlacedOrderItemResourceTestCase {
 
 		_placedOrderItemResource.setContextCompany(testCompany);
 
+		com.liferay.portal.kernel.model.User testCompanyAdminUser =
+			UserTestUtil.getAdminUser(testCompany.getCompanyId());
+
 		PlacedOrderItemResource.Builder builder =
 			PlacedOrderItemResource.builder();
 
 		placedOrderItemResource = builder.authentication(
-			"test@liferay.com", PropsValues.DEFAULT_ADMIN_PASSWORD
+			testCompanyAdminUser.getEmailAddress(),
+			PropsValues.DEFAULT_ADMIN_PASSWORD
+		).endpoint(
+			testCompany.getVirtualHostname(), 8080, "http"
 		).locale(
 			LocaleUtil.getDefault()
 		).build();
@@ -166,6 +173,7 @@ public abstract class BasePlacedOrderItemResourceTestCase {
 
 		placedOrderItem.setAdaptiveMediaImageHTMLTag(regex);
 		placedOrderItem.setDeliveryGroup(regex);
+		placedOrderItem.setDeliveryGroupName(regex);
 		placedOrderItem.setExternalReferenceCode(regex);
 		placedOrderItem.setName(regex);
 		placedOrderItem.setOptions(regex);
@@ -185,6 +193,7 @@ public abstract class BasePlacedOrderItemResourceTestCase {
 		Assert.assertEquals(
 			regex, placedOrderItem.getAdaptiveMediaImageHTMLTag());
 		Assert.assertEquals(regex, placedOrderItem.getDeliveryGroup());
+		Assert.assertEquals(regex, placedOrderItem.getDeliveryGroupName());
 		Assert.assertEquals(regex, placedOrderItem.getExternalReferenceCode());
 		Assert.assertEquals(regex, placedOrderItem.getName());
 		Assert.assertEquals(regex, placedOrderItem.getOptions());
@@ -1294,6 +1303,16 @@ public abstract class BasePlacedOrderItemResourceTestCase {
 				continue;
 			}
 
+			if (Objects.equals(
+					"deliveryGroupName", additionalAssertFieldName)) {
+
+				if (placedOrderItem.getDeliveryGroupName() == null) {
+					valid = false;
+				}
+
+				continue;
+			}
+
 			if (Objects.equals("errorMessages", additionalAssertFieldName)) {
 				if (placedOrderItem.getErrorMessages() == null) {
 					valid = false;
@@ -1657,6 +1676,19 @@ public abstract class BasePlacedOrderItemResourceTestCase {
 				if (!Objects.deepEquals(
 						placedOrderItem1.getDeliveryGroup(),
 						placedOrderItem2.getDeliveryGroup())) {
+
+					return false;
+				}
+
+				continue;
+			}
+
+			if (Objects.equals(
+					"deliveryGroupName", additionalAssertFieldName)) {
+
+				if (!Objects.deepEquals(
+						placedOrderItem1.getDeliveryGroupName(),
+						placedOrderItem2.getDeliveryGroupName())) {
 
 					return false;
 				}
@@ -2124,6 +2156,52 @@ public abstract class BasePlacedOrderItemResourceTestCase {
 
 		if (entityFieldName.equals("deliveryGroup")) {
 			Object object = placedOrderItem.getDeliveryGroup();
+
+			String value = String.valueOf(object);
+
+			if (operator.equals("contains")) {
+				sb = new StringBundler();
+
+				sb.append("contains(");
+				sb.append(entityFieldName);
+				sb.append(",'");
+
+				if ((object != null) && (value.length() > 2)) {
+					sb.append(value.substring(1, value.length() - 1));
+				}
+				else {
+					sb.append(value);
+				}
+
+				sb.append("')");
+			}
+			else if (operator.equals("startswith")) {
+				sb = new StringBundler();
+
+				sb.append("startswith(");
+				sb.append(entityFieldName);
+				sb.append(",'");
+
+				if ((object != null) && (value.length() > 1)) {
+					sb.append(value.substring(0, value.length() - 1));
+				}
+				else {
+					sb.append(value);
+				}
+
+				sb.append("')");
+			}
+			else {
+				sb.append("'");
+				sb.append(value);
+				sb.append("'");
+			}
+
+			return sb.toString();
+		}
+
+		if (entityFieldName.equals("deliveryGroupName")) {
+			Object object = placedOrderItem.getDeliveryGroupName();
 
 			String value = String.valueOf(object);
 
@@ -2744,6 +2822,8 @@ public abstract class BasePlacedOrderItemResourceTestCase {
 				adaptiveMediaImageHTMLTag = StringUtil.toLowerCase(
 					RandomTestUtil.randomString());
 				deliveryGroup = StringUtil.toLowerCase(
+					RandomTestUtil.randomString());
+				deliveryGroupName = StringUtil.toLowerCase(
 					RandomTestUtil.randomString());
 				externalReferenceCode = StringUtil.toLowerCase(
 					RandomTestUtil.randomString());

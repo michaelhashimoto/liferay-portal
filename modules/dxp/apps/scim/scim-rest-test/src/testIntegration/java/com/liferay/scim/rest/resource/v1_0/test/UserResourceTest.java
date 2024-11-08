@@ -47,8 +47,9 @@ import java.util.Date;
 
 import org.apache.commons.lang.time.DateUtils;
 
-import org.junit.AfterClass;
+import org.junit.After;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.ClassRule;
 import org.junit.Ignore;
@@ -72,6 +73,12 @@ public class UserResourceTest extends BaseUserResourceTestCase {
 	@BeforeClass
 	public static void setUpClass() throws Exception {
 		BaseUserResourceTestCase.setUpClass();
+	}
+
+	@Before
+	@Override
+	public void setUp() throws Exception {
+		super.setUp();
 
 		_pid = ConfigurationTestUtil.createFactoryConfiguration(
 			"com.liferay.scim.rest.internal.configuration." +
@@ -87,8 +94,8 @@ public class UserResourceTest extends BaseUserResourceTestCase {
 			).build());
 	}
 
-	@AfterClass
-	public static void tearDownClass() throws Exception {
+	@After
+	public void tearDown() throws Exception {
 		ConfigurationTestUtil.deleteConfiguration(_pid);
 	}
 
@@ -128,6 +135,11 @@ public class UserResourceTest extends BaseUserResourceTestCase {
 			409,
 			userResource.deleteV2UserHttpResponse(
 				String.valueOf(portalUser.getUserId())));
+
+		ConfigurationTestUtil.deleteConfiguration(_pid);
+
+		assertHttpResponseStatusCode(
+			404, userResource.deleteV2UserHttpResponse("12345"));
 	}
 
 	@Override
@@ -143,6 +155,11 @@ public class UserResourceTest extends BaseUserResourceTestCase {
 
 		assertHttpResponseStatusCode(200, httpResponse);
 		assertValid(User.toDTO(httpResponse.getContent()));
+
+		ConfigurationTestUtil.deleteConfiguration(_pid);
+
+		assertHttpResponseStatusCode(
+			404, userResource.getV2UserByIdHttpResponse(user.getId()));
 	}
 
 	@Override
@@ -161,6 +178,11 @@ public class UserResourceTest extends BaseUserResourceTestCase {
 
 		_assertListResponse(
 			userResource.getV2Users(5, 3), 3, 1, user1, user2, user3);
+
+		ConfigurationTestUtil.deleteConfiguration(_pid);
+
+		assertHttpResponseStatusCode(
+			404, userResource.getV2UsersHttpResponse(5, 0));
 	}
 
 	@Override
@@ -241,6 +263,11 @@ public class UserResourceTest extends BaseUserResourceTestCase {
 
 		assertHttpResponseStatusCode(
 			409, userResource.postV2UserHttpResponse(postUser3));
+
+		ConfigurationTestUtil.deleteConfiguration(_pid);
+
+		assertHttpResponseStatusCode(
+			404, userResource.postV2UserHttpResponse(randomUser()));
 	}
 
 	@Ignore
@@ -273,6 +300,11 @@ public class UserResourceTest extends BaseUserResourceTestCase {
 			userResource.putV2UserHttpResponse(user2.getId(), user2);
 
 		assertEquals(user2, User.toDTO(httpResponse.getContent()));
+
+		ConfigurationTestUtil.deleteConfiguration(_pid);
+
+		assertHttpResponseStatusCode(
+			404, userResource.putV2UserHttpResponse(user2.getId(), user2));
 	}
 
 	@Override

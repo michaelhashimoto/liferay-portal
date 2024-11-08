@@ -5,6 +5,8 @@
 
 package com.liferay.headless.delivery.internal.resource.v1_0;
 
+import com.liferay.data.engine.field.type.util.LocalizedValueUtil;
+import com.liferay.data.engine.rest.dto.v2_0.DataDefinition;
 import com.liferay.data.engine.rest.resource.v2_0.DataDefinitionResource;
 import com.liferay.document.library.kernel.model.DLFileEntryMetadata;
 import com.liferay.dynamic.data.mapping.model.DDMStructure;
@@ -23,6 +25,7 @@ import com.liferay.portal.vulcan.dto.converter.DTOConverterRegistry;
 import com.liferay.portal.vulcan.dto.converter.DefaultDTOConverterContext;
 import com.liferay.portal.vulcan.pagination.Page;
 import com.liferay.portal.vulcan.pagination.Pagination;
+import com.liferay.portal.vulcan.util.LocalizedMapUtil;
 import com.liferay.portlet.documentlibrary.constants.DLConstants;
 
 import java.util.Map;
@@ -70,6 +73,17 @@ public class DocumentMetadataSetResourceImpl
 
 		return _getPage(
 			HashMapBuilder.put(
+				"create",
+				addAction(
+					ActionKeys.UPDATE, "postAssetLibraryDocumentMetadataSet",
+					DLConstants.RESOURCE_NAME, assetLibraryId)
+			).put(
+				"createBatch",
+				addAction(
+					ActionKeys.UPDATE,
+					"postAssetLibraryDocumentMetadataSetBatch",
+					DLConstants.RESOURCE_NAME, assetLibraryId)
+			).put(
 				"get",
 				addAction(
 					ActionKeys.VIEW, "getAssetLibraryDocumentMetadataSetsPage",
@@ -102,12 +116,83 @@ public class DocumentMetadataSetResourceImpl
 
 		return _getPage(
 			HashMapBuilder.put(
+				"create",
+				addAction(
+					ActionKeys.UPDATE, "postSiteDocumentMetadataSet",
+					DLConstants.RESOURCE_NAME, siteId)
+			).put(
+				"createBatch",
+				addAction(
+					ActionKeys.UPDATE, "postSiteDocumentMetadataSetBatch",
+					DLConstants.RESOURCE_NAME, siteId)
+			).put(
 				"get",
 				addAction(
 					ActionKeys.VIEW, "getSiteDocumentMetadataSetsPage",
 					DLConstants.RESOURCE_NAME, siteId)
 			).build(),
 			siteId, pagination);
+	}
+
+	@Override
+	public DocumentMetadataSet postAssetLibraryDocumentMetadataSet(
+			Long assetLibraryId, DocumentMetadataSet documentMetadataSet)
+		throws Exception {
+
+		if (!FeatureFlagManagerUtil.isEnabled("LPD-32247")) {
+			throw new UnsupportedOperationException();
+		}
+
+		return postSiteDocumentMetadataSet(assetLibraryId, documentMetadataSet);
+	}
+
+	@Override
+	public DocumentMetadataSet postSiteDocumentMetadataSet(
+			Long siteId, DocumentMetadataSet documentMetadataSet)
+		throws Exception {
+
+		if (!FeatureFlagManagerUtil.isEnabled("LPD-32247")) {
+			throw new UnsupportedOperationException();
+		}
+
+		DataDefinitionResource.Builder builder =
+			_dataDefinitionResourceFactory.create();
+
+		DataDefinitionResource dataDefinitionResource = builder.user(
+			contextUser
+		).build();
+
+		DataDefinition dataDefinition =
+			dataDefinitionResource.postSiteDataDefinitionByContentType(
+				siteId, "document-library",
+				new DataDefinition() {
+					{
+						setAvailableLanguageIds(
+							documentMetadataSet::getAvailableLanguages);
+						setDataDefinitionFields(
+							documentMetadataSet::getDataDefinitionFields);
+						setDefaultDataLayout(
+							documentMetadataSet::getDataLayout);
+						setDescription(
+							() -> LocalizedValueUtil.toStringObjectMap(
+								LocalizedMapUtil.getLocalizedMap(
+									contextAcceptLanguage.getPreferredLocale(),
+									documentMetadataSet.getDescription(),
+									documentMetadataSet.
+										getDescription_i18n())));
+						setName(
+							() -> LocalizedValueUtil.toStringObjectMap(
+								LocalizedMapUtil.getLocalizedMap(
+									contextAcceptLanguage.getPreferredLocale(),
+									documentMetadataSet.getName(),
+									documentMetadataSet.getName_i18n())));
+						setSiteId(() -> siteId);
+						setUserId(contextUser::getUserId);
+					}
+				});
+
+		return _toDocumentMetadataSet(
+			_ddmStructureService.getStructure(dataDefinition.getId()));
 	}
 
 	private Page<DocumentMetadataSet> _getPage(

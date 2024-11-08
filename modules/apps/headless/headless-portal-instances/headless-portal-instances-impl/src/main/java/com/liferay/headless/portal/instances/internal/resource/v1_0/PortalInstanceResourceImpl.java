@@ -8,9 +8,9 @@ package com.liferay.headless.portal.instances.internal.resource.v1_0;
 import com.liferay.headless.portal.instances.dto.v1_0.Admin;
 import com.liferay.headless.portal.instances.dto.v1_0.PortalInstance;
 import com.liferay.headless.portal.instances.resource.v1_0.PortalInstanceResource;
-import com.liferay.portal.instances.service.PortalInstancesLocalService;
 import com.liferay.portal.kernel.exception.UserEmailAddressException;
 import com.liferay.portal.kernel.exception.UserScreenNameException;
+import com.liferay.portal.kernel.instance.PortalInstancePool;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.Contact;
 import com.liferay.portal.kernel.model.User;
@@ -47,8 +47,6 @@ public class PortalInstanceResourceImpl extends BasePortalInstanceResourceImpl {
 		Company company = _companyService.getCompanyByWebId(portalInstanceId);
 
 		_companyService.deleteCompany(company.getCompanyId());
-
-		_portalInstancesLocalService.synchronizePortalInstances();
 	}
 
 	@Override
@@ -70,7 +68,7 @@ public class PortalInstanceResourceImpl extends BasePortalInstanceResourceImpl {
 		_companyService.forEachCompany(
 			company -> {
 				if (!finalSkipDefault ||
-					(_portalInstancesLocalService.getDefaultCompanyId() !=
+					(PortalInstancePool.getDefaultCompanyId() !=
 						company.getCompanyId())) {
 
 					portalInstances.add(_toPortalInstance(company));
@@ -154,8 +152,6 @@ public class PortalInstanceResourceImpl extends BasePortalInstanceResourceImpl {
 				contact.getJobTitle(), null, null, null, null, null, null);
 		}
 
-		_portalInstancesLocalService.synchronizePortalInstances();
-
 		return _toPortalInstance(company);
 	}
 
@@ -212,9 +208,6 @@ public class PortalInstanceResourceImpl extends BasePortalInstanceResourceImpl {
 
 	@Reference
 	private CompanyService _companyService;
-
-	@Reference
-	private PortalInstancesLocalService _portalInstancesLocalService;
 
 	@Reference
 	private UserLocalService _userLocalService;

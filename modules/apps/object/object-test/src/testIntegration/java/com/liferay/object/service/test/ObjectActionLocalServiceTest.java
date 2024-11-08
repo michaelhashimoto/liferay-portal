@@ -886,21 +886,15 @@ public class ObjectActionLocalServiceTest {
 				Arrays.asList(
 					objectRelationshipAA_AAA, objectRelationshipA_AA));
 
-			_objectActionLocalService.addObjectAction(
-				RandomTestUtil.randomString(), TestPropsValues.getUserId(),
-				objectDefinitionA.getObjectDefinitionId(), true,
-				StringPool.BLANK, RandomTestUtil.randomString(),
-				LocalizedMapUtil.getLocalizedMap(RandomTestUtil.randomString()),
-				LocalizedMapUtil.getLocalizedMap(RandomTestUtil.randomString()),
-				RandomTestUtil.randomString(),
+			_addObjectAction(
+				objectDefinitionA.getObjectDefinitionId(),
 				ObjectActionExecutorConstants.KEY_WEBHOOK,
 				ObjectActionTriggerConstants.KEY_ON_AFTER_ROOT_UPDATE,
 				UnicodePropertiesBuilder.put(
 					"secret", "onafterrootupdate"
 				).put(
 					"url", "https://onafterrootupdate.com"
-				).build(),
-				false);
+				).build());
 
 			ObjectEntry rootObjectEntry =
 				_objectEntryLocalService.addObjectEntry(
@@ -1230,193 +1224,6 @@ public class ObjectActionLocalServiceTest {
 	}
 
 	@Test
-	public void testAddObjectActionWithMoreThanOneObjectEntry()
-		throws Exception {
-
-		// On after add
-
-		_publishCustomObjectDefinition();
-
-		ObjectAction objectAction1 = _objectActionLocalService.addObjectAction(
-			RandomTestUtil.randomString(), TestPropsValues.getUserId(),
-			_objectDefinition.getObjectDefinitionId(), true, StringPool.BLANK,
-			RandomTestUtil.randomString(),
-			LocalizedMapUtil.getLocalizedMap(RandomTestUtil.randomString()),
-			LocalizedMapUtil.getLocalizedMap(RandomTestUtil.randomString()),
-			RandomTestUtil.randomString(),
-			ObjectActionExecutorConstants.KEY_WEBHOOK,
-			ObjectActionTriggerConstants.KEY_ON_AFTER_ADD,
-			UnicodePropertiesBuilder.put(
-				"secret", "onafteradd"
-			).put(
-				"url", "https://onafteradd.com"
-			).build(),
-			false);
-
-		Assert.assertEquals(0, _argumentsList.size());
-
-		ObjectEntry objectEntry1 = _objectEntryLocalService.addObjectEntry(
-			TestPropsValues.getUserId(), 0,
-			_objectDefinition.getObjectDefinitionId(),
-			HashMapBuilder.<String, Serializable>put(
-				"firstName", "John"
-			).put(
-				"lastName", "Smith"
-			).build(),
-			ServiceContextTestUtil.getServiceContext());
-
-		_assertWebhookObjectAction(
-			null, "John", "Smith",
-			ObjectActionTriggerConstants.KEY_ON_AFTER_ADD, _objectDefinition,
-			null, null, WorkflowConstants.STATUS_APPROVED);
-
-		ObjectEntry objectEntry2 = _objectEntryLocalService.addObjectEntry(
-			TestPropsValues.getUserId(), 0,
-			_objectDefinition.getObjectDefinitionId(),
-			HashMapBuilder.<String, Serializable>put(
-				"firstName", "Peter"
-			).put(
-				"lastName", "White"
-			).build(),
-			ServiceContextTestUtil.getServiceContext());
-
-		_assertWebhookObjectAction(
-			null, "Peter", "White",
-			ObjectActionTriggerConstants.KEY_ON_AFTER_ADD, _objectDefinition,
-			null, null, WorkflowConstants.STATUS_APPROVED);
-
-		_objectEntryLocalService.deleteObjectEntry(objectEntry1);
-		_objectEntryLocalService.deleteObjectEntry(objectEntry2);
-
-		_objectActionLocalService.deleteObjectAction(objectAction1);
-
-		// On after delete
-
-		ObjectAction objectAction2 = _objectActionLocalService.addObjectAction(
-			RandomTestUtil.randomString(), TestPropsValues.getUserId(),
-			_objectDefinition.getObjectDefinitionId(), true, StringPool.BLANK,
-			RandomTestUtil.randomString(),
-			LocalizedMapUtil.getLocalizedMap(RandomTestUtil.randomString()),
-			LocalizedMapUtil.getLocalizedMap(RandomTestUtil.randomString()),
-			RandomTestUtil.randomString(),
-			ObjectActionExecutorConstants.KEY_WEBHOOK,
-			ObjectActionTriggerConstants.KEY_ON_AFTER_DELETE,
-			UnicodePropertiesBuilder.put(
-				"secret", "onafterdelete"
-			).put(
-				"url", "https://onafterdelete.com"
-			).build(),
-			false);
-
-		Assert.assertEquals(0, _argumentsList.size());
-
-		ObjectEntry objectEntry3 = _objectEntryLocalService.addObjectEntry(
-			TestPropsValues.getUserId(), 0,
-			_objectDefinition.getObjectDefinitionId(),
-			HashMapBuilder.<String, Serializable>put(
-				"firstName", "John"
-			).put(
-				"lastName", "Smith"
-			).build(),
-			ServiceContextTestUtil.getServiceContext());
-		ObjectEntry objectEntry4 = _objectEntryLocalService.addObjectEntry(
-			TestPropsValues.getUserId(), 0,
-			_objectDefinition.getObjectDefinitionId(),
-			HashMapBuilder.<String, Serializable>put(
-				"firstName", "Peter"
-			).put(
-				"lastName", "White"
-			).build(),
-			ServiceContextTestUtil.getServiceContext());
-
-		_objectEntryLocalService.deleteObjectEntry(objectEntry3);
-
-		_assertWebhookObjectAction(
-			null, "John", "Smith",
-			ObjectActionTriggerConstants.KEY_ON_AFTER_DELETE, _objectDefinition,
-			"John", "Smith", WorkflowConstants.STATUS_APPROVED);
-
-		_objectEntryLocalService.deleteObjectEntry(objectEntry4);
-
-		_assertWebhookObjectAction(
-			null, "Peter", "White",
-			ObjectActionTriggerConstants.KEY_ON_AFTER_DELETE, _objectDefinition,
-			"Peter", "White", WorkflowConstants.STATUS_APPROVED);
-
-		_objectActionLocalService.deleteObjectAction(objectAction2);
-
-		// On after update
-
-		ObjectAction objectAction3 = _objectActionLocalService.addObjectAction(
-			RandomTestUtil.randomString(), TestPropsValues.getUserId(),
-			_objectDefinition.getObjectDefinitionId(), true, StringPool.BLANK,
-			RandomTestUtil.randomString(),
-			LocalizedMapUtil.getLocalizedMap(RandomTestUtil.randomString()),
-			LocalizedMapUtil.getLocalizedMap(RandomTestUtil.randomString()),
-			RandomTestUtil.randomString(),
-			ObjectActionExecutorConstants.KEY_WEBHOOK,
-			ObjectActionTriggerConstants.KEY_ON_AFTER_UPDATE,
-			UnicodePropertiesBuilder.put(
-				"secret", "onafterupdate"
-			).put(
-				"url", "https://onafterupdate.com"
-			).build(),
-			false);
-
-		ObjectEntry objectEntry5 = _objectEntryLocalService.addObjectEntry(
-			TestPropsValues.getUserId(), 0,
-			_objectDefinition.getObjectDefinitionId(),
-			HashMapBuilder.<String, Serializable>put(
-				"firstName", "Peter"
-			).put(
-				"lastName", "White"
-			).build(),
-			ServiceContextTestUtil.getServiceContext());
-		ObjectEntry objectEntry6 = _objectEntryLocalService.addObjectEntry(
-			TestPropsValues.getUserId(), 0,
-			_objectDefinition.getObjectDefinitionId(),
-			HashMapBuilder.<String, Serializable>put(
-				"firstName", "Peter"
-			).put(
-				"lastName", "White"
-			).build(),
-			ServiceContextTestUtil.getServiceContext());
-
-		objectEntry5 = _objectEntryLocalService.updateObjectEntry(
-			TestPropsValues.getUserId(), objectEntry5.getObjectEntryId(),
-			HashMapBuilder.<String, Serializable>put(
-				"firstName", "John"
-			).put(
-				"lastName", "Smith"
-			).build(),
-			ServiceContextTestUtil.getServiceContext());
-
-		_assertWebhookObjectAction(
-			null, "John", "Smith",
-			ObjectActionTriggerConstants.KEY_ON_AFTER_UPDATE, _objectDefinition,
-			"Peter", "White", WorkflowConstants.STATUS_APPROVED);
-
-		objectEntry6 = _objectEntryLocalService.updateObjectEntry(
-			TestPropsValues.getUserId(), objectEntry6.getObjectEntryId(),
-			HashMapBuilder.<String, Serializable>put(
-				"firstName", "João"
-			).put(
-				"lastName", "o Discípulo Amado"
-			).build(),
-			ServiceContextTestUtil.getServiceContext());
-
-		_assertWebhookObjectAction(
-			null, "João", "o Discípulo Amado",
-			ObjectActionTriggerConstants.KEY_ON_AFTER_UPDATE, _objectDefinition,
-			"Peter", "White", WorkflowConstants.STATUS_APPROVED);
-
-		_objectEntryLocalService.deleteObjectEntry(objectEntry5);
-		_objectEntryLocalService.deleteObjectEntry(objectEntry6);
-
-		_objectActionLocalService.deleteObjectAction(objectAction3);
-	}
-
-	@Test
 	public void testAddObjectActionWithSystemObjectDefinition()
 		throws Exception {
 
@@ -1610,13 +1417,8 @@ public class ObjectActionLocalServiceTest {
 				organizationObjectDefinition.getObjectDefinitionId()
 			).build());
 
-		ObjectAction objectAction3 = _objectActionLocalService.addObjectAction(
-			RandomTestUtil.randomString(), TestPropsValues.getUserId(),
-			organizationObjectDefinition.getObjectDefinitionId(), true,
-			StringPool.BLANK, RandomTestUtil.randomString(),
-			LocalizedMapUtil.getLocalizedMap(RandomTestUtil.randomString()),
-			LocalizedMapUtil.getLocalizedMap(RandomTestUtil.randomString()),
-			RandomTestUtil.randomString(),
+		ObjectAction objectAction3 = _addObjectAction(
+			organizationObjectDefinition.getObjectDefinitionId(),
 			ObjectActionExecutorConstants.KEY_ADD_OBJECT_ENTRY,
 			ObjectActionTriggerConstants.KEY_ON_AFTER_ADD,
 			UnicodePropertiesBuilder.put(
@@ -1647,8 +1449,7 @@ public class ObjectActionLocalServiceTest {
 						"value", "Organization1"
 					)
 				).toString()
-			).build(),
-			false);
+			).build());
 
 		ObjectAction objectAction4 = _addObjectAction(
 			RandomTestUtil.randomString(),
@@ -1800,13 +1601,8 @@ public class ObjectActionLocalServiceTest {
 
 		// Add object action to update user after adding a user
 
-		ObjectAction objectAction6 = _objectActionLocalService.addObjectAction(
-			RandomTestUtil.randomString(), TestPropsValues.getUserId(),
-			userObjectDefinition.getObjectDefinitionId(), true,
-			StringPool.BLANK, RandomTestUtil.randomString(),
-			LocalizedMapUtil.getLocalizedMap(RandomTestUtil.randomString()),
-			LocalizedMapUtil.getLocalizedMap(RandomTestUtil.randomString()),
-			RandomTestUtil.randomString(),
+		ObjectAction objectAction6 = _addObjectAction(
+			userObjectDefinition.getObjectDefinitionId(),
 			ObjectActionExecutorConstants.KEY_UPDATE_OBJECT_ENTRY,
 			ObjectActionTriggerConstants.KEY_ON_AFTER_ADD,
 			UnicodePropertiesBuilder.put(
@@ -1830,8 +1626,7 @@ public class ObjectActionLocalServiceTest {
 						"value", "MiddleName"
 					)
 				).toString()
-			).build(),
-			false);
+			).build());
 
 		_objectEntryLocalService.addObjectEntry(
 			TestPropsValues.getUserId(), 0,
@@ -1861,38 +1656,28 @@ public class ObjectActionLocalServiceTest {
 
 		_objectActionLocalService.deleteObjectAction(objectAction3);
 		_objectActionLocalService.deleteObjectAction(objectAction4);
+		_objectActionLocalService.deleteObjectAction(objectAction5);
+		_objectActionLocalService.deleteObjectAction(objectAction6);
 
 		// Add object action to execute Groovy after adding a user
 
-		objectAction3 = _objectActionLocalService.addObjectAction(
-			RandomTestUtil.randomString(), TestPropsValues.getUserId(),
-			userObjectDefinition.getObjectDefinitionId(), true,
-			StringPool.BLANK, RandomTestUtil.randomString(),
-			LocalizedMapUtil.getLocalizedMap(RandomTestUtil.randomString()),
-			LocalizedMapUtil.getLocalizedMap(RandomTestUtil.randomString()),
-			RandomTestUtil.randomString(),
+		objectAction3 = _addObjectAction(
+			userObjectDefinition.getObjectDefinitionId(),
 			ObjectActionExecutorConstants.KEY_GROOVY,
 			ObjectActionTriggerConstants.KEY_ON_AFTER_ADD,
 			UnicodePropertiesBuilder.put(
 				"script", "println \"Hello World 1\""
-			).build(),
-			false);
+			).build());
 
 		// Add object action to execute Groovy after updating a user
 
-		objectAction4 = _objectActionLocalService.addObjectAction(
-			RandomTestUtil.randomString(), TestPropsValues.getUserId(),
-			userObjectDefinition.getObjectDefinitionId(), true,
-			StringPool.BLANK, RandomTestUtil.randomString(),
-			LocalizedMapUtil.getLocalizedMap(RandomTestUtil.randomString()),
-			LocalizedMapUtil.getLocalizedMap(RandomTestUtil.randomString()),
-			RandomTestUtil.randomString(),
+		objectAction4 = _addObjectAction(
+			userObjectDefinition.getObjectDefinitionId(),
 			ObjectActionExecutorConstants.KEY_GROOVY,
 			ObjectActionTriggerConstants.KEY_ON_AFTER_UPDATE,
 			UnicodePropertiesBuilder.put(
 				"script", "println \"Hello World 2\""
-			).build(),
-			false);
+			).build());
 
 		// While adding a user, the user is updated and it must not trigger
 		// object actions
@@ -1915,8 +1700,6 @@ public class ObjectActionLocalServiceTest {
 		_objectActionLocalService.deleteObjectAction(objectAction2);
 		_objectActionLocalService.deleteObjectAction(objectAction3);
 		_objectActionLocalService.deleteObjectAction(objectAction4);
-		_objectActionLocalService.deleteObjectAction(objectAction5);
-		_objectActionLocalService.deleteObjectAction(objectAction6);
 		_objectFieldLocalService.deleteObjectField(objectField1);
 		_objectFieldLocalService.deleteObjectField(objectField2);
 		_objectFieldLocalService.deleteObjectField(objectField3);
@@ -2160,6 +1943,14 @@ public class ObjectActionLocalServiceTest {
 	}
 
 	@Test
+	public void testExecuteObjectActionMultipleTimesInTheSameThread()
+		throws Exception {
+
+		_testExecuteObjectActionMultipleTimesInTheSameThreadWithACustomObjectDefinition();
+		_testExecuteObjectActionMultipleTimesInTheSameThreadWithASystemObjectDefinition();
+	}
+
+	@Test
 	public void testExecuteObjectActionWithUsePreferredLanguageForGuestsParameter()
 		throws Exception {
 
@@ -2215,16 +2006,10 @@ public class ObjectActionLocalServiceTest {
 			"usePreferredLanguageForGuests", "false"
 		).build();
 
-		ObjectAction objectAction = _objectActionLocalService.addObjectAction(
-			RandomTestUtil.randomString(), TestPropsValues.getUserId(),
-			objectDefinition.getObjectDefinitionId(), true, StringPool.BLANK,
-			RandomTestUtil.randomString(),
-			LocalizedMapUtil.getLocalizedMap(RandomTestUtil.randomString()),
-			LocalizedMapUtil.getLocalizedMap(RandomTestUtil.randomString()),
-			RandomTestUtil.randomString(),
+		ObjectAction objectAction = _addObjectAction(
+			objectDefinition.getObjectDefinitionId(),
 			ObjectActionExecutorConstants.KEY_NOTIFICATION,
-			ObjectActionTriggerConstants.KEY_ON_AFTER_ADD, unicodeProperties,
-			false);
+			ObjectActionTriggerConstants.KEY_ON_AFTER_ADD, unicodeProperties);
 
 		ServiceContext serviceContext =
 			ServiceContextTestUtil.getServiceContext();
@@ -2349,13 +2134,8 @@ public class ObjectActionLocalServiceTest {
 			TestPropsValues.getUserId(),
 			objectDefinition.getObjectDefinitionId());
 
-		_objectActionLocalService.addObjectAction(
-			RandomTestUtil.randomString(), TestPropsValues.getUserId(),
-			objectDefinition.getObjectDefinitionId(), true, StringPool.BLANK,
-			RandomTestUtil.randomString(),
-			LocalizedMapUtil.getLocalizedMap(RandomTestUtil.randomString()),
-			LocalizedMapUtil.getLocalizedMap(RandomTestUtil.randomString()),
-			RandomTestUtil.randomString(),
+		_addObjectAction(
+			objectDefinition.getObjectDefinitionId(),
 			ObjectActionExecutorConstants.KEY_UPDATE_OBJECT_ENTRY,
 			ObjectActionTriggerConstants.KEY_ON_AFTER_UPDATE,
 			UnicodePropertiesBuilder.put(
@@ -2371,8 +2151,7 @@ public class ObjectActionLocalServiceTest {
 						"value", "1"
 					)
 				).toString()
-			).build(),
-			false);
+			).build());
 
 		ObjectEntry objectEntry = _objectEntryLocalService.addObjectEntry(
 			TestPropsValues.getUserId(), 0,
@@ -2708,20 +2487,30 @@ public class ObjectActionLocalServiceTest {
 			_notificationTemplateLocalService.addNotificationTemplate(
 				notificationContext);
 
-		return _objectActionLocalService.addObjectAction(
-			RandomTestUtil.randomString(), TestPropsValues.getUserId(),
-			objectDefinition.getObjectDefinitionId(), true, StringPool.BLANK,
-			RandomTestUtil.randomString(),
-			LocalizedMapUtil.getLocalizedMap(RandomTestUtil.randomString()),
-			LocalizedMapUtil.getLocalizedMap(RandomTestUtil.randomString()),
-			RandomTestUtil.randomString(),
+		return _addObjectAction(
+			objectDefinition.getObjectDefinitionId(),
 			ObjectActionExecutorConstants.KEY_NOTIFICATION,
 			objectActionTriggerKey,
 			UnicodePropertiesBuilder.put(
 				"notificationTemplateId",
 				notificationTemplate.getNotificationTemplateId()
-			).build(),
-			false);
+			).build());
+	}
+
+	private ObjectAction _addObjectAction(
+			long objectDefinitionId, String objectActionExecutorKey,
+			String objectActionTriggerKey,
+			UnicodeProperties parametersUnicodeProperties)
+		throws PortalException {
+
+		return _objectActionLocalService.addObjectAction(
+			RandomTestUtil.randomString(), TestPropsValues.getUserId(),
+			objectDefinitionId, true, StringPool.BLANK,
+			RandomTestUtil.randomString(),
+			LocalizedMapUtil.getLocalizedMap(RandomTestUtil.randomString()),
+			LocalizedMapUtil.getLocalizedMap(RandomTestUtil.randomString()),
+			RandomTestUtil.randomString(), objectActionExecutorKey,
+			objectActionTriggerKey, parametersUnicodeProperties, false);
 	}
 
 	private void _addObjectAction(
@@ -2784,6 +2573,19 @@ public class ObjectActionLocalServiceTest {
 
 		Assert.assertEquals(Collections.emptySet(), arguments[1]);
 		Assert.assertEquals("println \"Hello World\"", arguments[2]);
+	}
+
+	private void _assertGroovyObjectActionExecutorArguments(
+		String expectedObjectFieldValue, String objectFieldName) {
+
+		Assert.assertEquals(1, _argumentsList.size());
+
+		Object[] arguments = _argumentsList.poll();
+
+		Map<String, Object> inputObjects = (Map<String, Object>)arguments[0];
+
+		Assert.assertEquals(
+			expectedObjectFieldValue, inputObjects.get(objectFieldName));
 	}
 
 	private void _assertNotificationQueueEntrySubject(String expectedSubject)
@@ -3051,6 +2853,254 @@ public class ObjectActionLocalServiceTest {
 				originalPermissionChecker);
 			PrincipalThreadLocal.setName(originalName);
 		}
+	}
+
+	private void _testExecuteObjectActionMultipleTimesInTheSameThreadWithACustomObjectDefinition()
+		throws Exception {
+
+		// On after add
+
+		_publishCustomObjectDefinition();
+
+		ObjectAction objectAction1 = _addObjectAction(
+			_objectDefinition.getObjectDefinitionId(),
+			ObjectActionExecutorConstants.KEY_WEBHOOK,
+			ObjectActionTriggerConstants.KEY_ON_AFTER_ADD,
+			UnicodePropertiesBuilder.put(
+				"secret", "onafteradd"
+			).put(
+				"url", "https://onafteradd.com"
+			).build());
+
+		Assert.assertEquals(0, _argumentsList.size());
+
+		ObjectEntry objectEntry1 = _objectEntryLocalService.addObjectEntry(
+			TestPropsValues.getUserId(), 0,
+			_objectDefinition.getObjectDefinitionId(),
+			HashMapBuilder.<String, Serializable>put(
+				"firstName", "John"
+			).put(
+				"lastName", "Smith"
+			).build(),
+			ServiceContextTestUtil.getServiceContext());
+
+		_assertWebhookObjectAction(
+			null, "John", "Smith",
+			ObjectActionTriggerConstants.KEY_ON_AFTER_ADD, _objectDefinition,
+			null, null, WorkflowConstants.STATUS_APPROVED);
+
+		ObjectEntry objectEntry2 = _objectEntryLocalService.addObjectEntry(
+			TestPropsValues.getUserId(), 0,
+			_objectDefinition.getObjectDefinitionId(),
+			HashMapBuilder.<String, Serializable>put(
+				"firstName", "Peter"
+			).put(
+				"lastName", "White"
+			).build(),
+			ServiceContextTestUtil.getServiceContext());
+
+		_assertWebhookObjectAction(
+			null, "Peter", "White",
+			ObjectActionTriggerConstants.KEY_ON_AFTER_ADD, _objectDefinition,
+			null, null, WorkflowConstants.STATUS_APPROVED);
+
+		_objectEntryLocalService.deleteObjectEntry(objectEntry1);
+		_objectEntryLocalService.deleteObjectEntry(objectEntry2);
+
+		_objectActionLocalService.deleteObjectAction(objectAction1);
+
+		// On after delete
+
+		ObjectAction objectAction2 = _addObjectAction(
+			_objectDefinition.getObjectDefinitionId(),
+			ObjectActionExecutorConstants.KEY_WEBHOOK,
+			ObjectActionTriggerConstants.KEY_ON_AFTER_DELETE,
+			UnicodePropertiesBuilder.put(
+				"secret", "onafterdelete"
+			).put(
+				"url", "https://onafterdelete.com"
+			).build());
+
+		Assert.assertEquals(0, _argumentsList.size());
+
+		ObjectEntry objectEntry3 = _objectEntryLocalService.addObjectEntry(
+			TestPropsValues.getUserId(), 0,
+			_objectDefinition.getObjectDefinitionId(),
+			HashMapBuilder.<String, Serializable>put(
+				"firstName", "John"
+			).put(
+				"lastName", "Smith"
+			).build(),
+			ServiceContextTestUtil.getServiceContext());
+		ObjectEntry objectEntry4 = _objectEntryLocalService.addObjectEntry(
+			TestPropsValues.getUserId(), 0,
+			_objectDefinition.getObjectDefinitionId(),
+			HashMapBuilder.<String, Serializable>put(
+				"firstName", "Peter"
+			).put(
+				"lastName", "White"
+			).build(),
+			ServiceContextTestUtil.getServiceContext());
+
+		_objectEntryLocalService.deleteObjectEntry(objectEntry3);
+
+		_assertWebhookObjectAction(
+			null, "John", "Smith",
+			ObjectActionTriggerConstants.KEY_ON_AFTER_DELETE, _objectDefinition,
+			"John", "Smith", WorkflowConstants.STATUS_APPROVED);
+
+		_objectEntryLocalService.deleteObjectEntry(objectEntry4);
+
+		_assertWebhookObjectAction(
+			null, "Peter", "White",
+			ObjectActionTriggerConstants.KEY_ON_AFTER_DELETE, _objectDefinition,
+			"Peter", "White", WorkflowConstants.STATUS_APPROVED);
+
+		_objectActionLocalService.deleteObjectAction(objectAction2);
+
+		// On after update
+
+		ObjectAction objectAction3 = _addObjectAction(
+			_objectDefinition.getObjectDefinitionId(),
+			ObjectActionExecutorConstants.KEY_WEBHOOK,
+			ObjectActionTriggerConstants.KEY_ON_AFTER_UPDATE,
+			UnicodePropertiesBuilder.put(
+				"secret", "onafterupdate"
+			).put(
+				"url", "https://onafterupdate.com"
+			).build());
+
+		ObjectEntry objectEntry5 = _objectEntryLocalService.addObjectEntry(
+			TestPropsValues.getUserId(), 0,
+			_objectDefinition.getObjectDefinitionId(),
+			HashMapBuilder.<String, Serializable>put(
+				"firstName", "Peter"
+			).put(
+				"lastName", "White"
+			).build(),
+			ServiceContextTestUtil.getServiceContext());
+		ObjectEntry objectEntry6 = _objectEntryLocalService.addObjectEntry(
+			TestPropsValues.getUserId(), 0,
+			_objectDefinition.getObjectDefinitionId(),
+			HashMapBuilder.<String, Serializable>put(
+				"firstName", "Peter"
+			).put(
+				"lastName", "White"
+			).build(),
+			ServiceContextTestUtil.getServiceContext());
+
+		objectEntry5 = _objectEntryLocalService.updateObjectEntry(
+			TestPropsValues.getUserId(), objectEntry5.getObjectEntryId(),
+			HashMapBuilder.<String, Serializable>put(
+				"firstName", "John"
+			).put(
+				"lastName", "Smith"
+			).build(),
+			ServiceContextTestUtil.getServiceContext());
+
+		_assertWebhookObjectAction(
+			null, "John", "Smith",
+			ObjectActionTriggerConstants.KEY_ON_AFTER_UPDATE, _objectDefinition,
+			"Peter", "White", WorkflowConstants.STATUS_APPROVED);
+
+		objectEntry6 = _objectEntryLocalService.updateObjectEntry(
+			TestPropsValues.getUserId(), objectEntry6.getObjectEntryId(),
+			HashMapBuilder.<String, Serializable>put(
+				"firstName", "João"
+			).put(
+				"lastName", "o Discípulo Amado"
+			).build(),
+			ServiceContextTestUtil.getServiceContext());
+
+		_assertWebhookObjectAction(
+			null, "João", "o Discípulo Amado",
+			ObjectActionTriggerConstants.KEY_ON_AFTER_UPDATE, _objectDefinition,
+			"Peter", "White", WorkflowConstants.STATUS_APPROVED);
+
+		_objectEntryLocalService.deleteObjectEntry(objectEntry5);
+		_objectEntryLocalService.deleteObjectEntry(objectEntry6);
+
+		_objectActionLocalService.deleteObjectAction(objectAction3);
+	}
+
+	private void _testExecuteObjectActionMultipleTimesInTheSameThreadWithASystemObjectDefinition()
+		throws Exception {
+
+		// On after add
+
+		ObjectDefinition organizationObjectDefinition =
+			_objectDefinitionLocalService.fetchObjectDefinitionByClassName(
+				TestPropsValues.getCompanyId(), Organization.class.getName());
+
+		ObjectAction objectAction = _addObjectAction(
+			organizationObjectDefinition.getObjectDefinitionId(),
+			ObjectActionExecutorConstants.KEY_GROOVY,
+			ObjectActionTriggerConstants.KEY_ON_AFTER_ADD,
+			new UnicodeProperties());
+
+		Organization organization1 = OrganizationTestUtil.addOrganization(
+			OrganizationConstants.DEFAULT_PARENT_ORGANIZATION_ID,
+			RandomTestUtil.randomString(), false);
+
+		_assertGroovyObjectActionExecutorArguments(
+			organization1.getName(), "name");
+
+		Organization organization2 = OrganizationTestUtil.addOrganization(
+			OrganizationConstants.DEFAULT_PARENT_ORGANIZATION_ID,
+			RandomTestUtil.randomString(), false);
+
+		_assertGroovyObjectActionExecutorArguments(
+			organization2.getName(), "name");
+
+		_objectActionLocalService.deleteObjectAction(objectAction);
+
+		// On after delete
+
+		objectAction = _addObjectAction(
+			organizationObjectDefinition.getObjectDefinitionId(),
+			ObjectActionExecutorConstants.KEY_GROOVY,
+			ObjectActionTriggerConstants.KEY_ON_AFTER_DELETE,
+			new UnicodeProperties());
+
+		_organizationLocalService.deleteOrganization(
+			organization1.getOrganizationId());
+
+		_assertGroovyObjectActionExecutorArguments(
+			organization1.getName(), "name");
+
+		_organizationLocalService.deleteOrganization(
+			organization2.getOrganizationId());
+
+		_assertGroovyObjectActionExecutorArguments(
+			organization2.getName(), "name");
+
+		_objectActionLocalService.deleteObjectAction(objectAction);
+
+		// On after update
+
+		objectAction = _addObjectAction(
+			organizationObjectDefinition.getObjectDefinitionId(),
+			ObjectActionExecutorConstants.KEY_GROOVY,
+			ObjectActionTriggerConstants.KEY_ON_AFTER_UPDATE,
+			new UnicodeProperties());
+
+		organization1.setName(RandomTestUtil.randomString());
+
+		organization1 = _organizationLocalService.updateOrganization(
+			organization1);
+
+		_assertGroovyObjectActionExecutorArguments(
+			organization1.getName(), "name");
+
+		organization2.setName(RandomTestUtil.randomString());
+
+		organization2 = _organizationLocalService.updateOrganization(
+			organization2);
+
+		_assertGroovyObjectActionExecutorArguments(
+			organization2.getName(), "name");
+
+		_objectActionLocalService.deleteObjectAction(objectAction);
 	}
 
 	private AccountEntry _accountEntry;

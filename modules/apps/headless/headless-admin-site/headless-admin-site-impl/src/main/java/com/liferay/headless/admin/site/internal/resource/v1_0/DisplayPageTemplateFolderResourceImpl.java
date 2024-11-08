@@ -15,9 +15,11 @@ import com.liferay.layout.page.template.service.LayoutPageTemplateCollectionServ
 import com.liferay.portal.kernel.feature.flag.FeatureFlagManagerUtil;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.service.GroupLocalService;
+import com.liferay.portal.kernel.service.ServiceContext;
+import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.vulcan.dto.converter.DTOConverter;
-import com.liferay.portal.vulcan.dto.converter.DTOConverterRegistry;
-import com.liferay.portal.vulcan.dto.converter.DefaultDTOConverterContext;
+
+import java.util.Objects;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -66,13 +68,11 @@ public class DisplayPageTemplateFolderResourceImpl
 		Group group = _groupLocalService.getGroupByExternalReferenceCode(
 			siteExternalReferenceCode, contextCompany.getCompanyId());
 
-		LayoutPageTemplateCollection layoutPageTemplateCollection =
+		return _toDisplayPageTemplateFolder(
 			_layoutPageTemplateCollectionService.
-				fetchLayoutPageTemplateCollection(
+				getLayoutPageTemplateCollection(
 					displayPageTemplateFolderExternalReferenceCode,
-					group.getGroupId());
-
-		return _toDisplayPageTemplateFolder(layoutPageTemplateCollection);
+					group.getGroupId()));
 	}
 
 	@Override
@@ -89,9 +89,95 @@ public class DisplayPageTemplateFolderResourceImpl
 		Group group = _groupLocalService.getGroupByExternalReferenceCode(
 			siteExternalReferenceCode, contextCompany.getCompanyId());
 
-		long parentDisplayPageTemplateFolderId =
+		return _addDisplayPageTemplateFolder(displayPageTemplateFolder, group);
+	}
+
+	@Override
+	public DisplayPageTemplateFolder
+			putSiteSiteByExternalReferenceCodeDisplayPageTemplateFolder(
+				String siteExternalReferenceCode,
+				String displayPageTemplateFolderExternalReferenceCode,
+				DisplayPageTemplateFolder displayPageTemplateFolder)
+		throws Exception {
+
+		if (!FeatureFlagManagerUtil.isEnabled("LPD-35443")) {
+			throw new UnsupportedOperationException();
+		}
+
+		Group group = _groupLocalService.getGroupByExternalReferenceCode(
+			siteExternalReferenceCode, contextCompany.getCompanyId());
+
+		LayoutPageTemplateCollection layoutPageTemplateCollection =
+			_layoutPageTemplateCollectionService.
+				fetchLayoutPageTemplateCollection(
+					displayPageTemplateFolderExternalReferenceCode,
+					group.getGroupId());
+
+		if (layoutPageTemplateCollection == null) {
+			return _addDisplayPageTemplateFolder(
+				displayPageTemplateFolder, group);
+		}
+
+		long parentLayoutPageTemplateCollectionId =
+			_getParentLayoutPageTemplateCollectionId(
+				displayPageTemplateFolder, group);
+
+		if (Validator.isNotNull(
+				displayPageTemplateFolder.
+					getParentDisplayPageTemplateFolderExternalReferenceCode()) &&
+			!Objects.equals(
+				layoutPageTemplateCollection.
+					getParentLayoutPageTemplateCollectionId(),
+				parentLayoutPageTemplateCollectionId)) {
+
+			layoutPageTemplateCollection =
+				_layoutPageTemplateCollectionService.
+					moveLayoutPageTemplateCollection(
+						layoutPageTemplateCollection.
+							getLayoutPageTemplateCollectionId(),
+						parentLayoutPageTemplateCollectionId);
+		}
+
+		return _toDisplayPageTemplateFolder(
+			_layoutPageTemplateCollectionService.
+				updateLayoutPageTemplateCollection(
+					layoutPageTemplateCollection.
+						getLayoutPageTemplateCollectionId(),
+					displayPageTemplateFolder.getName(),
+					displayPageTemplateFolder.getDescription()));
+	}
+
+	private DisplayPageTemplateFolder _addDisplayPageTemplateFolder(
+			DisplayPageTemplateFolder displayPageTemplateFolder, Group group)
+		throws Exception {
+
+		return _toDisplayPageTemplateFolder(
+			_layoutPageTemplateCollectionService.
+				addLayoutPageTemplateCollection(
+					displayPageTemplateFolder.getExternalReferenceCode(),
+					group.getGroupId(),
+					_getParentLayoutPageTemplateCollectionId(
+						displayPageTemplateFolder, group),
+					displayPageTemplateFolder.getName(),
+					displayPageTemplateFolder.getDescription(),
+					LayoutPageTemplateCollectionTypeConstants.DISPLAY_PAGE,
+					_getServiceContext(displayPageTemplateFolder, group)));
+	}
+
+	private long _getParentLayoutPageTemplateCollectionId(
+			DisplayPageTemplateFolder displayPageTemplateFolder, Group group)
+		throws Exception {
+
+		long parentLayoutPageTemplateCollectionId =
 			LayoutPageTemplateConstants.
 				PARENT_LAYOUT_PAGE_TEMPLATE_COLLECTION_ID_DEFAULT;
+
+		if (Validator.isNull(
+				displayPageTemplateFolder.
+					getParentDisplayPageTemplateFolderExternalReferenceCode())) {
+
+			return parentLayoutPageTemplateCollectionId;
+		}
 
 		LayoutPageTemplateCollection parentLayoutPageTemplateCollection =
 			_layoutPageTemplateCollectionService.
@@ -101,22 +187,28 @@ public class DisplayPageTemplateFolderResourceImpl
 					group.getGroupId());
 
 		if (parentLayoutPageTemplateCollection != null) {
-			parentDisplayPageTemplateFolderId =
+			parentLayoutPageTemplateCollectionId =
 				parentLayoutPageTemplateCollection.
 					getLayoutPageTemplateCollectionId();
 		}
 
-		return _toDisplayPageTemplateFolder(
-			_layoutPageTemplateCollectionService.
-				addLayoutPageTemplateCollection(
-					displayPageTemplateFolder.getExternalReferenceCode(),
-					group.getGroupId(), parentDisplayPageTemplateFolderId,
-					displayPageTemplateFolder.getName(),
-					displayPageTemplateFolder.getDescription(),
-					LayoutPageTemplateCollectionTypeConstants.DISPLAY_PAGE,
-					ServiceContextBuilder.create(
-						group.getGroupId(), contextHttpServletRequest, null
-					).build()));
+		return parentLayoutPageTemplateCollectionId;
+	}
+
+	private ServiceContext _getServiceContext(
+		DisplayPageTemplateFolder displayPageTemplateFolder, Group group) {
+
+		ServiceContext serviceContext = ServiceContextBuilder.create(
+			group.getGroupId(), contextHttpServletRequest, null
+		).build();
+
+		serviceContext.setCreateDate(
+			displayPageTemplateFolder.getDateCreated());
+		serviceContext.setModifiedDate(
+			displayPageTemplateFolder.getDateModified());
+		serviceContext.setUuid(displayPageTemplateFolder.getUuid());
+
+		return serviceContext;
 	}
 
 	private DisplayPageTemplateFolder _toDisplayPageTemplateFolder(
@@ -124,13 +216,6 @@ public class DisplayPageTemplateFolderResourceImpl
 		throws Exception {
 
 		return _displayPageTemplateFolderDTOConverter.toDTO(
-			new DefaultDTOConverterContext(
-				contextAcceptLanguage.isAcceptAllLanguages(), null,
-				_dtoConverterRegistry, contextHttpServletRequest,
-				layoutPageTemplateCollection.
-					getLayoutPageTemplateCollectionId(),
-				contextAcceptLanguage.getPreferredLocale(), contextUriInfo,
-				contextUser),
 			layoutPageTemplateCollection);
 	}
 
@@ -140,9 +225,6 @@ public class DisplayPageTemplateFolderResourceImpl
 	private DTOConverter
 		<LayoutPageTemplateCollection, DisplayPageTemplateFolder>
 			_displayPageTemplateFolderDTOConverter;
-
-	@Reference
-	private DTOConverterRegistry _dtoConverterRegistry;
 
 	@Reference
 	private GroupLocalService _groupLocalService;

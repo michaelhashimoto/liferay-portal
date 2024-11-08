@@ -75,50 +75,29 @@ function default_tear_down {
 }
 
 function deploy_client_extensions {
+	echo "Deploying client extensions."
+
 	local client_extensions_list_file=${1}
 
-	if [[ -n $(cat ${client_extensions_list_file}) ]]
-	then
-		echo "Deploying client extensions in ${client_extensions_list_file}."
+	local client_extension_dir
 
-		local client_extension_name
+	for client_extension_dir in $(get_client_extension_dirs ${client_extensions_list_file})
+	do
+		if [[ -d ${client_extension_dir} ]]
+		then
+			echo "Deploying ${client_extension_dir}."
 
-		for client_extension_name in $(cat ${client_extensions_list_file})
-		do
-			local client_extension_dir=$(find ${_PORTAL_PROJECT_DIR}/workspaces -type d -name "${client_extension_name}" | grep -v .releng | grep -v .npmscripts | grep -v node_modules)
+			cd ${client_extension_dir}
 
-			if [[ $(echo ${client_extension_dir} | wc -w | grep -o -E '[0-9]+') > 1 ]]
-			then
-				echo "Duplicate client extensions found for ${client_extension_name}:"
+			local gradlew=$(get_gradlew)
 
-				printf "%s\n" ${client_extension_dir}
+			${gradlew} deploy -Pliferay.workspace.home.dir=${LIFERAY_HOME}
 
-				echo "Replace \"${client_extension_name}\" in ${client_extensions_list_file} with one of the following:"
-
-				for dir in ${client_extension_dir}
-				do
-					echo "${dir/${_PORTAL_PROJECT_DIR}\/workspaces\/}"
-				done
-
-				client_extension_dir=$(echo ${client_extension_dir} | awk '{print $1}')
-			fi
-
-			if [[ -d ${client_extension_dir} ]]
-			then
-				echo "Deploying ${client_extension_dir}."
-
-				cd ${client_extension_dir}
-
-				local gradlew=$(get_gradlew)
-
-				${gradlew} deploy -Pliferay.workspace.home.dir=${LIFERAY_HOME}
-
-				wait_for_portal_log_inactivity
-			else
-				echo "Unable to find client extension in ${client_extension_dir}."
-			fi
-		done
-	fi
+			wait_for_portal_log_inactivity
+		else
+			echo "Unable to find client extension in ${client_extension_dir}."
+		fi
+	done
 }
 
 function deploy_deploy_folder {
@@ -258,6 +237,64 @@ function get_absolute_dir {
 	echo $(cd -- $(dirname -- $1) &> /dev/null && pwd)
 }
 
+function get_client_extension_dir {
+	local clients_extension_name=${1}
+
+	local client_extension_dir=$(find ${_PORTAL_PROJECT_DIR}/workspaces -type d | grep "${client_extension_name}$" | grep -v .releng | grep -v .npmscripts | grep -v dist | grep -v node_modules)
+
+	if [[ $(echo ${client_extension_dir} | wc -w | grep -o -E '[0-9]+') > 1 ]]
+	then
+		echo "Duplicate client extensions found for ${client_extension_name}:" >&2
+		echo "%s\n" ${client_extension_dir} >&2
+		echo "Replace \"${client_extension_name}\" in ${client_extensions_list_file} with one of the following:" >&2
+
+		for dir in ${client_extension_dir}
+		do
+			echo "${dir/${_PORTAL_PROJECT_DIR}\/workspaces\/}" >&2
+		done
+
+		client_extension_dir=$(echo ${client_extension_dir} | awk '{print $1}')
+	fi
+
+	echo ${client_extension_dir}
+}
+
+function get_client_extension_dirs {
+	local client_extensions_list_file=${1}
+
+	local client_extension_dirs=()
+
+	if [[ -f ${client_extensions_list_file} && -n $(cat ${client_extensions_list_file}) ]]
+	then
+		for client_extension_name in $(cat ${client_extensions_list_file})
+		do
+			client_extension_dirs+=($(get_client_extension_dir))
+		done
+	fi
+
+	echo ${client_extension_dirs[@]}
+}
+
+function get_client_extension_workspace_portal_ext_properties_files {
+	local client_extensions_list_file=${1}
+
+	local workspace_dirs=()
+
+	if [[ -f ${client_extensions_list_file} ]]
+	then
+		local workspace_dir
+
+		for workspace_dir in $(get_workspace_dirs ${client_extensions_list_file})
+		do
+			local portal_ext_properties_file="${workspace_dir}configs/local/portal-ext.properties"
+
+			workspace_dirs+=(${portal_ext_properties_file})
+		done
+	fi
+
+	echo ${workspace_dirs[@]}
+}
+
 function get_gradlew {
 	if [[ -e ./gradlew ]]
 	then
@@ -270,6 +307,16 @@ function get_gradlew {
 	else
 		echo $(cd .. ; get_gradlew)
 	fi
+}
+
+function get_parent_client_extension_workspace_portal_ext_properties_files {
+	for parent_playwright_project_dir in $(get_parent_playwright_project_dirs)
+	do
+		if [[ -f ${parent_playwright_project_dir}/env/client-extensions.list ]]
+		then
+			get_client_extension_workspace_portal_ext_properties_files ${parent_playwright_project_dir}/env/client-extensions.list
+		fi
+	done
 }
 
 function get_parent_playwright_project_dirs {
@@ -300,12 +347,29 @@ function get_parent_portal_ext_properties_files {
 	done
 }
 
+function get_playwright_base_dir {
+	echo ${_PLAYWRIGHT_BASE_DIR}
+}
+
 function get_playwright_project_dir {
 	find ${_PLAYWRIGHT_BASE_DIR} -name config.ts -type f -print | xargs grep "name: '${PLAYWRIGHT_PROJECT_NAME}'" | sed -n 's/\(.*\)\/config.ts.*/\1/p'
 }
 
 function get_portal_log_file_size {
 	wc --lines --total=always ${LIFERAY_HOME}/logs/liferay.*.log | grep total | awk '{print $1}'
+}
+
+function get_portal_project_dir {
+	echo ${_PORTAL_PROJECT_DIR}
+}
+
+function get_project_client_extension_workspace_portal_ext_properties_files {
+	local playwright_project_dir=$(get_playwright_project_dir)
+
+	if [[ -f ${playwright_project_dir}/env/client-extensions.list ]]
+	then
+		get_client_extension_workspace_portal_ext_properties_files ${playwright_project_dir}/env/client-extensions.list
+	fi
 }
 
 function get_tomcat_dir {
@@ -316,32 +380,32 @@ function get_tomcat_portal_ext_properties_file {
 	find ${LIFERAY_HOME} -type f -name "portal-ext.properties"
 }
 
+function get_workspace_dirs {
+	local client_extensions_list_file=${1}
+
+	local workspace_dirs=()
+
+	local client_extension_dir
+
+	if [[ -f ${client_extensions_list_file} ]]
+	then
+		for client_extension_dir in $(get_client_extension_dirs ${client_extensions_list_file})
+		do
+			local workspace_dir=$(echo ${client_extension_dir} | sed 's/\(.*-workspace\/\).*$/\1/')
+
+			if ! [[ "${workspace_dirs[@]}" =~ "${workspace_dir}" ]]; then
+				workspace_dirs+=(${workspace_dir})
+			fi
+		done
+	fi
+
+	echo ${workspace_dirs[@]}
+}
+
 function main {
-	local playwright_env_dir=$(dirname ${BASH_SOURCE[0]})
+	validate_environment_variables
 
-	_PLAYWRIGHT_BASE_DIR=$(get_absolute_dir ${playwright_env_dir}/../..)
-	_PORTAL_PROJECT_DIR=$(get_absolute_dir ${playwright_env_dir}/../../../../..)
-
-	if [[ "${LIFERAY_HOME}" == "" ]]
-	then
-		echo "Set the environment variable LIFERAY_HOME."
-
-		exit 1
-	fi
-
-	if [[ "${LIFERAY_PORTAL_URL}" == "" ]]
-	then
-		echo "Set the environment variable LIFERAY_PORTAL_URL."
-
-		exit 1
-	fi
-
-	if [[ "${PLAYWRIGHT_PROJECT_NAME}" == "" ]]
-	then
-		echo "Set the environment variable PLAYWRIGHT_PROJECT_NAME."
-
-		exit 1
-	fi
+	set_variables
 }
 
 function reverse {
@@ -351,6 +415,13 @@ function reverse {
 	do
 	  echo "${array[$i]}"
 	done
+}
+
+function set_variables {
+	local playwright_env_dir=$(dirname ${BASH_SOURCE[0]})
+
+	_PLAYWRIGHT_BASE_DIR=$(get_absolute_dir ${playwright_env_dir}/../..)
+	_PORTAL_PROJECT_DIR=$(get_absolute_dir ${playwright_env_dir}/../../../../..)
 }
 
 function start_analytics_cloud {
@@ -481,9 +552,36 @@ function update_portal_ext_properties {
 	combine_properties_files \
 		$(get_tomcat_portal_ext_properties_file) \
 		\
+		$(get_parent_client_extension_workspace_portal_ext_properties_files) \
+		\
+		$(get_project_client_extension_workspace_portal_ext_properties_files) \
+		\
 		$(get_parent_portal_ext_properties_files) \
 		\
 		$(get_playwright_project_dir)/env/portal-ext.properties
+}
+
+function validate_environment_variables {
+	if [[ "${LIFERAY_HOME}" == "" ]]
+	then
+		echo "Set the environment variable LIFERAY_HOME."
+
+		exit 1
+	fi
+
+	if [[ "${LIFERAY_PORTAL_URL}" == "" ]]
+	then
+		echo "Set the environment variable LIFERAY_PORTAL_URL."
+
+		exit 1
+	fi
+
+	if [[ "${PLAYWRIGHT_PROJECT_NAME}" == "" ]]
+	then
+		echo "Set the environment variable PLAYWRIGHT_PROJECT_NAME."
+
+		exit 1
+	fi
 }
 
 function wait_for_portal_log_inactivity {

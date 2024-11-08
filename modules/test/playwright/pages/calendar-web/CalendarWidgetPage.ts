@@ -8,13 +8,18 @@ import {Locator, Page} from '@playwright/test';
 import {waitForAlert} from '../../utils/waitForAlert';
 import {ModalRecurrencePage} from './ModalRecurrencePage';
 
+type RecurrenceOption = 'Entire Series' | 'Following Events' | 'Single Event';
+
 export class CalendarWidgetPage {
 	readonly addEventButton: Locator;
 	readonly allDayCheckbox: Locator;
 	readonly calendarWidget: Locator;
 	readonly closeConfigurationButton: Locator;
 	readonly configurationMenuItem: Locator;
+	readonly endDate: Locator;
 	readonly endTime: Locator;
+	readonly invitations: Locator;
+	readonly inviteResource: Locator;
 	readonly modalRecurrencePage: ModalRecurrencePage;
 	readonly miniCalendarBase: Locator;
 	readonly miniCalendarGrid: Locator;
@@ -24,7 +29,9 @@ export class CalendarWidgetPage {
 	readonly publishEventButton: Locator;
 	readonly repeatCheckbox: Locator;
 	readonly saveConfigurationButton: Locator;
+	readonly startDate: Locator;
 	readonly startTime: Locator;
+	readonly successAlert: Locator;
 	readonly timeZoneDropdown: Locator;
 	readonly title: Locator;
 	readonly useGlobalTimeZoneCheckBox: Locator;
@@ -48,9 +55,19 @@ export class CalendarWidgetPage {
 			exact: true,
 			name: 'Configuration',
 		});
+		this.endDate = page
+			.frameLocator('iframe')
+			.getByLabel('Ends Required', {exact: true});
 		this.endTime = page
 			.frameLocator('iframe')
-			.getByLabel('Ends', {exact: true});
+			.locator('input[type="time"]')
+			.last();
+		this.invitations = page
+			.frameLocator('iframe')
+			.getByText('Invitations', {exact: true});
+		this.inviteResource = page
+			.frameLocator('iframe')
+			.getByTitle('Invite Resource', {exact: true});
 		this.modalRecurrencePage = new ModalRecurrencePage(page);
 		this.miniCalendarBase = page.locator('.yui3-calendarbase');
 		this.miniCalendarGrid = page.locator('.yui3-calendar-grid');
@@ -73,9 +90,18 @@ export class CalendarWidgetPage {
 		this.saveConfigurationButton = page
 			.frameLocator('iframe')
 			.getByRole('button', {exact: true, name: 'Save'});
+		this.startDate = page
+			.frameLocator('iframe')
+			.getByLabel('Starts Required', {exact: true});
 		this.startTime = page
 			.frameLocator('iframe')
-			.getByLabel('Starts', {exact: true});
+			.locator('input[type="time"]')
+			.first();
+		this.successAlert = page
+			.frameLocator('iframe')
+			.locator('.alert-success', {
+				hasText: 'Success:Your request completed successfully.',
+			});
 		this.timeZoneDropdown = page
 			.frameLocator('iframe')
 			.getByLabel('Time Zone', {exact: true});
@@ -90,34 +116,84 @@ export class CalendarWidgetPage {
 			});
 	}
 
-	async addEvent(allDay: boolean, dateEnd: string, title: string) {
-		await this.addEventButton.click();
+	async addEvent({
+		allDay,
+		dateEnd,
+		publishEvent,
+		title,
+	}: {
+		allDay: boolean;
+		dateEnd?: string;
+		publishEvent?: boolean;
+		title?: string;
+	}) {
+		await this.clickAddEventButton();
 
 		await this.allDayCheckbox.hover();
 		await this.allDayCheckbox.setChecked(allDay);
 
 		if (dateEnd) {
-			await this.endTime.fill(dateEnd);
+			await this.endDate.fill(dateEnd);
 		}
 
 		if (title) {
 			await this.title.fill(title);
 		}
 
-		await this.publishEvent();
+		if (publishEvent) {
+			await this.publishEvent({waitForSuccessAlert: true});
+		}
 	}
 
-	async publishEvent() {
+	async addInvitation(userName: string) {
+		await this.openInvitations();
+
+		await this.inviteResource.fill(userName);
+
+		await this.page
+			.frameLocator('iframe')
+			.getByRole('option', {name: userName})
+			.click();
+	}
+
+	async openInvitations() {
+		await this.invitations.click();
+	}
+
+	async publishEvent({
+		recurrenceOption,
+		waitForSuccessAlert,
+	}: {
+		recurrenceOption?: RecurrenceOption;
+		waitForSuccessAlert?: boolean;
+	} = {}) {
 		await this.publishEventButton.click();
-		await waitForAlert(
-			this.page.frameLocator('iframe'),
-			`Success:Your request completed successfully.`
-		);
+
+		if (recurrenceOption) {
+			await this.page
+				.frameLocator('iframe')
+				.getByRole('button', {name: recurrenceOption})
+				.click();
+		}
+
+		if (waitForSuccessAlert) {
+			await waitForAlert(
+				this.page.frameLocator('iframe'),
+				`Success:Your request completed successfully.`
+			);
+		}
 	}
 
 	async closeModalEvent() {
 		await this.page.getByRole('button', {name: 'Close'}).click();
 	}
+
+	async clickAddEventButton() {
+		await this.addEventButton.click();
+
+		await this.page.waitForLoadState('networkidle');
+	}
+
 	async clickEvent(title: string) {
 		await this.page.getByText(title).click();
 	}
@@ -126,7 +202,7 @@ export class CalendarWidgetPage {
 		allDay: boolean,
 		recurrence: Recurrence
 	) {
-		await this.addEventButton.click();
+		await this.clickAddEventButton();
 
 		await this.allDayCheckbox.hover();
 		await this.allDayCheckbox.setChecked(allDay);
@@ -141,7 +217,7 @@ export class CalendarWidgetPage {
 	}: {
 		daysFromNow: number;
 	}) {
-		await this.addEventButton.click();
+		await this.clickAddEventButton();
 
 		await this.repeatCheckbox.setChecked(true);
 

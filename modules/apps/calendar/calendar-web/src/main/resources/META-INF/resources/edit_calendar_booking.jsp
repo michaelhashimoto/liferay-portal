@@ -145,6 +145,10 @@ else if (calendar != null) {
 	}
 	else {
 		pendingCalendarsJSONArray.put(calendarJSONObject);
+
+		if (defaultCalendar.getUserId() == themeDisplay.getUserId()) {
+			acceptedCalendarsJSONArray.put(CalendarUtil.toCalendarJSONObject(themeDisplay, defaultCalendar));
+		}
 	}
 
 	hasWorkflowDefinitionLink = WorkflowDefinitionLinkLocalServiceUtil.hasWorkflowDefinitionLink(themeDisplay.getCompanyId(), calendarResource.getGroupId(), CalendarBooking.class.getName());
@@ -272,11 +276,11 @@ while (manageableCalendarsIterator.hasNext()) {
 				<aui:input defaultLanguageId="<%= LocaleUtil.toLanguageId(themeDisplay.getSiteDefaultLocale()) %>" name="title" />
 
 				<div class="<%= allDay ? "allday-class-active" : "" %>" id="<portlet:namespace />startDateContainer">
-					<aui:input ignoreRequestValue="<%= true %>" label="starts" name="startTime" timeFormat="<%= timeFormat %>" value="<%= startTimeJCalendar %>" />
+					<aui:input ignoreRequestValue="<%= true %>" label="starts" name="startTime" required="<%= true %>" timeFormat="<%= timeFormat %>" value="<%= startTimeJCalendar %>" />
 				</div>
 
 				<div class="<%= allDay ? "allday-class-active" : "" %>" id="<portlet:namespace />endDateContainer">
-					<aui:input ignoreRequestValue="<%= true %>" label="ends" name="endTime" timeFormat="<%= timeFormat %>" value="<%= endTimeJCalendar %>" />
+					<aui:input ignoreRequestValue="<%= true %>" label="ends" name="endTime" required="<%= true %>" timeFormat="<%= timeFormat %>" value="<%= endTimeJCalendar %>" />
 				</div>
 
 				<aui:input checked="<%= allDay %>" name="allDay" />
@@ -501,6 +505,15 @@ while (manageableCalendarsIterator.hasNext()) {
 	</aui:button-row>
 </aui:form>
 
+<liferay-frontend:component
+	context='<%=
+		HashMapBuilder.<String, Object>put(
+			"namespace", "<portlet:namespace />"
+		).build()
+	%>'
+	module="{schedulerEventValidator} from calendar-web"
+/>
+
 <aui:script>
 	function <portlet:namespace />filterCalendarBookings(calendarBooking) {
 		return calendarBooking.calendarBookingId !== '<%= calendarBookingId %>';
@@ -550,9 +563,11 @@ while (manageableCalendarsIterator.hasNext()) {
 					return;
 				}
 
-				const calendarId = calendarIdNode.value;
+				const index = childCalendarIds.indexOf(calendarIdNode.value);
 
-				childCalendarIds.splice(childCalendarIds.indexOf(calendarId), 1);
+				if (index > -1) {
+					childCalendarIds.splice(index, 1);
+				}
 
 				const childCalendarIdsNode = document.getElementById(
 					'<portlet:namespace />childCalendarIds'

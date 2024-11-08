@@ -38,8 +38,9 @@ import com.liferay.scim.rest.resource.v1_0.test.util.ScimTestUtil;
 
 import java.util.Arrays;
 
-import org.junit.AfterClass;
+import org.junit.After;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.ClassRule;
 import org.junit.Ignore;
@@ -64,6 +65,20 @@ public class GroupResourceTest extends BaseGroupResourceTestCase {
 	public static void setUpClass() throws Exception {
 		BaseUserResourceTestCase.setUpClass();
 
+		UserResource.Builder builder = UserResource.builder();
+
+		_userResource = builder.authentication(
+			"test@liferay.com", PropsValues.DEFAULT_ADMIN_PASSWORD
+		).locale(
+			LocaleUtil.getDefault()
+		).build();
+	}
+
+	@Before
+	@Override
+	public void setUp() throws Exception {
+		super.setUp();
+
 		_pid = ConfigurationTestUtil.createFactoryConfiguration(
 			"com.liferay.scim.rest.internal.configuration." +
 				"ScimClientOAuth2ApplicationConfiguration",
@@ -76,18 +91,10 @@ public class GroupResourceTest extends BaseGroupResourceTestCase {
 			).put(
 				"userId", TestPropsValues.getUserId()
 			).build());
-
-		UserResource.Builder builder = UserResource.builder();
-
-		_userResource = builder.authentication(
-			"test@liferay.com", PropsValues.DEFAULT_ADMIN_PASSWORD
-		).locale(
-			LocaleUtil.getDefault()
-		).build();
 	}
 
-	@AfterClass
-	public static void tearDownClass() throws Exception {
+	@After
+	public void tearDown() throws Exception {
 		ConfigurationTestUtil.deleteConfiguration(_pid);
 	}
 
@@ -127,6 +134,11 @@ public class GroupResourceTest extends BaseGroupResourceTestCase {
 			409,
 			groupResource.deleteV2GroupHttpResponse(
 				String.valueOf(userGroup.getUserGroupId())));
+
+		ConfigurationTestUtil.deleteConfiguration(_pid);
+
+		assertHttpResponseStatusCode(
+			404, groupResource.deleteV2GroupHttpResponse("12345"));
 	}
 
 	@Override
@@ -142,6 +154,11 @@ public class GroupResourceTest extends BaseGroupResourceTestCase {
 
 		assertHttpResponseStatusCode(200, httpResponse);
 		assertValid(Group.toDTO(httpResponse.getContent()));
+
+		ConfigurationTestUtil.deleteConfiguration(_pid);
+
+		assertHttpResponseStatusCode(
+			404, groupResource.getV2GroupByIdHttpResponse(group.getId()));
 	}
 
 	@Override
@@ -162,6 +179,11 @@ public class GroupResourceTest extends BaseGroupResourceTestCase {
 		Group group3 = testDeleteV2Group_addGroup();
 
 		_assertListResponse(groupResource.getV2Groups(5, 3), 3, 1, group3);
+
+		ConfigurationTestUtil.deleteConfiguration(_pid);
+
+		assertHttpResponseStatusCode(
+			404, groupResource.getV2GroupsHttpResponse(5, 0));
 	}
 
 	@Override
@@ -227,6 +249,11 @@ public class GroupResourceTest extends BaseGroupResourceTestCase {
 
 		Assert.assertEquals(
 			postGroup2.getExternalId(), userGroup2.getExternalReferenceCode());
+
+		ConfigurationTestUtil.deleteConfiguration(_pid);
+
+		assertHttpResponseStatusCode(
+			404, groupResource.postV2GroupHttpResponse(randomGroup()));
 	}
 
 	@Ignore
@@ -276,6 +303,11 @@ public class GroupResourceTest extends BaseGroupResourceTestCase {
 			group.getId(), group);
 
 		assertEquals(group, Group.toDTO(httpResponse.getContent()));
+
+		ConfigurationTestUtil.deleteConfiguration(_pid);
+
+		assertHttpResponseStatusCode(
+			404, groupResource.putV2GroupHttpResponse("12345", randomGroup()));
 	}
 
 	@Override

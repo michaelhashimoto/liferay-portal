@@ -78,6 +78,7 @@
 				"enabled": {
 					"default": false,
 					"description": "Enable postprocessing of all legacy markup in fragments, web content, and blogs so that Adaptive Media is able to work with it. Enabling this option may impact the performance of your sites.",
+					"title": "Enabled",
 					"type": "boolean"
 				},
 				"pid": {
@@ -546,6 +547,23 @@
 				"pid"
 			],
 			"title": "Publications Email Notifications"
+		},
+		{
+			"properties": {
+				"modificationDeletionConflictCheckEnabled": {
+					"default": true,
+					"title": "Modification Deletion Conflict Check Enabled",
+					"type": "boolean"
+				},
+				"pid": {
+					"const": "com.liferay.change.tracking.configuration.CTConflictConfiguration",
+					"title": "Publications Conflicts"
+				}
+			},
+			"required": [
+				"pid"
+			],
+			"title": "Publications Conflicts"
 		},
 		{
 			"properties": {
@@ -3998,6 +4016,7 @@
 				"com.liferay.asset.categories.configuration.AssetCategoriesCompanyConfiguration",
 				"com.liferay.batch.engine.configuration.BatchEngineTaskCompanyConfiguration",
 				"com.liferay.change.tracking.configuration.CTCollectionEmailConfiguration",
+				"com.liferay.change.tracking.configuration.CTConflictConfiguration",
 				"com.liferay.change.tracking.configuration.CTSettingsConfiguration",
 				"com.liferay.change.tracking.web.internal.configuration.CTConfiguration",
 				"com.liferay.click.to.chat.web.internal.configuration.ClickToChatConfiguration",

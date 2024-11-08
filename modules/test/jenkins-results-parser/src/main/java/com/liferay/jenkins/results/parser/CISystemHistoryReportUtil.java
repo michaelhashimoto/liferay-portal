@@ -87,15 +87,15 @@ public class CISystemHistoryReportUtil {
 
 		final List<DurationReport> durationReports = _getDurationReports();
 
-		List<File> buildReportJSONGzFiles = _getBuildReportJSONGzFiles(
+		List<File> buildReportJSONFiles = _getBuildReportJSONFiles(
 			jobName, dateString);
 
 		List<Callable<File>> callables = new ArrayList<>();
 
 		System.out.println(
-			"Processing " + buildReportJSONGzFiles.size() + " files");
+			"Processing " + buildReportJSONFiles.size() + " files");
 
-		for (final File buildReportJSONGzFile : buildReportJSONGzFiles) {
+		for (final File buildReportJSONFile : buildReportJSONFiles) {
 			callables.add(
 				new Callable<File>() {
 
@@ -103,14 +103,6 @@ public class CISystemHistoryReportUtil {
 					public File call() throws Exception {
 						long start =
 							JenkinsResultsParserUtil.getCurrentTimeMillis();
-
-						File parentFile = buildReportJSONGzFile.getParentFile();
-
-						File buildReportJSONFile = new File(
-							parentFile, "build-report.json");
-
-						JenkinsResultsParserUtil.unGzip(
-							buildReportJSONGzFile, buildReportJSONFile);
 
 						JSONObject buildReportJSONObject =
 							JenkinsResultsParserUtil.toJSONObject(
@@ -136,13 +128,13 @@ public class CISystemHistoryReportUtil {
 									topLevelBuildReport);
 							}
 
-							return buildReportJSONGzFile;
+							return buildReportJSONFile;
 						}
 						catch (Exception exception) {
 							RuntimeException runtimeException =
 								new RuntimeException(
 									JenkinsResultsParserUtil.getCanonicalPath(
-										buildReportJSONGzFile),
+										buildReportJSONFile),
 									exception);
 
 							runtimeException.printStackTrace();
@@ -156,7 +148,7 @@ public class CISystemHistoryReportUtil {
 							System.out.println(
 								JenkinsResultsParserUtil.combine(
 									JenkinsResultsParserUtil.getCanonicalPath(
-										buildReportJSONGzFile),
+										buildReportJSONFile),
 									" processed in ",
 									JenkinsResultsParserUtil.toDurationString(
 										end - start)));
@@ -170,15 +162,12 @@ public class CISystemHistoryReportUtil {
 			callables, _executorService, "WriteDateDurationsJavaScript");
 
 		try {
-			List<File> completedJenkinsConsoleGzFiles =
-				parallelExecutor.execute();
+			List<File> completedBuildReportFiles = parallelExecutor.execute();
 
-			completedJenkinsConsoleGzFiles.removeAll(
-				Collections.singleton(null));
+			completedBuildReportFiles.removeAll(Collections.singleton(null));
 
 			System.out.println(
-				"Processed " + completedJenkinsConsoleGzFiles.size() +
-					" files");
+				"Processed " + completedBuildReportFiles.size() + " files");
 		}
 		catch (TimeoutException timeoutException) {
 			throw new RuntimeException(timeoutException);
@@ -251,15 +240,15 @@ public class CISystemHistoryReportUtil {
 		}
 	}
 
-	private static List<File> _getBuildReportJSONGzFiles(
+	private static List<File> _getBuildReportJSONFiles(
 		String jobName, String dateString) {
 
-		List<File> buildReportJSONGzFiles = new ArrayList<>();
+		List<File> buildReportJSONFiles = new ArrayList<>();
 
 		File testrayLogsDateDir = new File(_TESTRAY_LOGS_DIR, dateString);
 
 		if (!testrayLogsDateDir.exists()) {
-			return buildReportJSONGzFiles;
+			return buildReportJSONFiles;
 		}
 
 		Process process;
@@ -270,16 +259,16 @@ public class CISystemHistoryReportUtil {
 				JenkinsResultsParserUtil.combine(
 					"find ", dateString, "/*/",
 					JenkinsResultsParserUtil.escapeForBash(jobName),
-					"/*/build-report.json.gz"));
+					"/*/build-report.json"));
 		}
 		catch (IOException | TimeoutException exception) {
-			return buildReportJSONGzFiles;
+			return buildReportJSONFiles;
 		}
 
 		int exitValue = process.exitValue();
 
 		if (exitValue != 0) {
-			return buildReportJSONGzFiles;
+			return buildReportJSONFiles;
 		}
 
 		String output = null;
@@ -293,19 +282,19 @@ public class CISystemHistoryReportUtil {
 			output = output.trim();
 		}
 		catch (IOException ioException) {
-			return buildReportJSONGzFiles;
+			return buildReportJSONFiles;
 		}
 
 		if (JenkinsResultsParserUtil.isNullOrEmpty(output)) {
-			return buildReportJSONGzFiles;
+			return buildReportJSONFiles;
 		}
 
-		for (String buildReportJSONGzFilePath : output.split("\n")) {
-			buildReportJSONGzFiles.add(
-				new File(_TESTRAY_LOGS_DIR, buildReportJSONGzFilePath));
+		for (String buildReportJSONFilePath : output.split("\n")) {
+			buildReportJSONFiles.add(
+				new File(_TESTRAY_LOGS_DIR, buildReportJSONFilePath));
 		}
 
-		return buildReportJSONGzFiles;
+		return buildReportJSONFiles;
 	}
 
 	private static List<DurationReport> _getDurationReports() {
@@ -384,8 +373,8 @@ public class CISystemHistoryReportUtil {
 		};
 
 		_TESTRAY_LOGS_DIR = new File(
-			_buildProperties.getProperty("jenkins.testray.results.dir"),
-			"production/logs");
+			_buildProperties.getProperty(
+				"google.cloud.bucket.local.dir[testray]"));
 	}
 
 	private static class DurationReport implements Comparable<DurationReport> {

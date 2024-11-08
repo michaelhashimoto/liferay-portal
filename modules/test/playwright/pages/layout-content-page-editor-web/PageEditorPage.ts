@@ -172,6 +172,27 @@ export class PageEditorPage {
 			.press('Enter');
 	}
 
+	async addWidgetToWidgetPageTemplate(category: string, name: string) {
+		await this.goToSidebarTab('Widgets');
+
+		await this.page
+			.getByRole('tab', {exact: true, name: 'Widgets'})
+			.click();
+
+		const header = this.page.getByRole('button', {
+			exact: true,
+			name: category,
+		});
+
+		await expandSection(header);
+
+		await this.page
+			.locator('li', {hasText: name})
+			.getByLabel('Add Content')
+			.first()
+			.click();
+	}
+
 	async addWidget(category: string, name: string, dropTarget?: Locator) {
 		await this.goToSidebarTab('Fragments and Widgets');
 
@@ -676,7 +697,7 @@ export class PageEditorPage {
 
 		// Clear current content and fill with new one
 
-		await this.page.keyboard.press('Control+KeyA');
+		await this.page.keyboard.press('ControlOrMeta+KeyA');
 		await this.page.keyboard.press('Backspace');
 
 		await this.page.keyboard.type(value);

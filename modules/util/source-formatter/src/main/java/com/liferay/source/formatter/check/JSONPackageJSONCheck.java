@@ -7,19 +7,16 @@ package com.liferay.source.formatter.check;
 
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
-import com.liferay.portal.json.JSONArrayImpl;
 import com.liferay.portal.json.JSONObjectImpl;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONException;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
-import com.liferay.portal.kernel.util.Validator;
 import com.liferay.source.formatter.check.comparator.PropertyValueComparator;
+import com.liferay.source.formatter.check.util.JsonSourceUtil;
 import com.liferay.source.formatter.util.FileUtil;
 
-import java.util.Collections;
 import java.util.Comparator;
-import java.util.List;
 import java.util.Objects;
 
 /**
@@ -115,10 +112,13 @@ public class JSONPackageJSONCheck extends BaseFileCheck {
 			return content;
 		}
 
-		String testMatch = jestJSONObject.getString("testMatch");
+		JSONArray testMatchJSONArray = jestJSONObject.getJSONArray("testMatch");
 
-		if (Validator.isNotNull(testMatch)) {
-			jestJSONObject.put("testMatch", _sortTestMatch(testMatch));
+		if (testMatchJSONArray != null) {
+			jestJSONObject.put(
+				"testMatch",
+				JsonSourceUtil.sortJSONArray(
+					testMatchJSONArray, new TestMatchComparator()));
 		}
 
 		jsonObject.put("jest", jestJSONObject);
@@ -179,22 +179,6 @@ public class JSONPackageJSONCheck extends BaseFileCheck {
 		}
 
 		addMessage(fileName, sb.toString());
-	}
-
-	private JSONArray _sortTestMatch(String testMatch) throws JSONException {
-		JSONArray testMatchJSONArray = new JSONArrayImpl(testMatch);
-
-		List<Object> objects = JSONUtil.toObjectList(testMatchJSONArray);
-
-		Collections.sort(objects, new TestMatchComparator());
-
-		testMatchJSONArray = new JSONArrayImpl();
-
-		for (Object object : objects) {
-			testMatchJSONArray.put(object);
-		}
-
-		return testMatchJSONArray;
 	}
 
 	private class TestMatchComparator implements Comparator<Object> {

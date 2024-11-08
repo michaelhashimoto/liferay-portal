@@ -9,6 +9,8 @@ import {applicationsMenuPageTest} from '../../fixtures/applicationsMenuPageTest'
 import {featureFlagsTest} from '../../fixtures/featureFlagsTest';
 import {loginTest} from '../../fixtures/loginTest';
 import {serverAdministrationPageTest} from '../../fixtures/serverAdministrationPageTest';
+import {userGroupsPageTest} from '../../fixtures/userGroupsPageTest';
+import {usersAndOrganizationsPagesTest} from '../../fixtures/usersAndOrganizationsPagesTest';
 import {ApiHelpers} from '../../helpers/ApiHelpers';
 import {liferayConfig} from '../../liferay.config';
 import {VirtualInstancesPage} from '../../pages/portal-instances-web/VirtualInstancesPage';
@@ -23,7 +25,9 @@ export const test = mergeTests(
 	}),
 	loginTest(),
 	applicationsMenuPageTest,
-	serverAdministrationPageTest
+	serverAdministrationPageTest,
+	userGroupsPageTest,
+	usersAndOrganizationsPagesTest
 );
 
 const DEFAULT_VIRTUAL_INSTANCE_NAME = 'www.able.com';
@@ -408,5 +412,86 @@ test('LPD-34644: Check if the token expiration warning message appears in the SC
 
 	await expect(scimConfigurationPage.alertMessage).toBeVisible();
 
+	await scimConfigurationPage.resetClientData();
+});
+
+test('LPD-37452 verify expando field is not visible for user added to SCIM', async ({
+	editUserPage,
+	page,
+	usersAndOrganizationsPage,
+}) => {
+	const scimConfigurationPage = new SCIMConfigurationPage(page);
+
+	await scimConfigurationPage.goTo();
+
+	await scimConfigurationPage.configureSCIM('email', 'Test SCIM Client');
+
+	const randomNumber = getRandomInt();
+
+	const newUser = {
+		active: true,
+		emails: [
+			{
+				primary: true,
+				type: 'default',
+				value: `able${randomNumber}@liferay.com`,
+			},
+		],
+		name: {
+			familyName: `Baker ${randomNumber}`,
+			givenName: `Able ${randomNumber}`,
+		},
+		userName: `able${randomNumber}.baker`,
+	};
+
+	const apiHelper = new ApiHelpers(page);
+
+	await apiHelper.scim.postUser(newUser);
+
+	await usersAndOrganizationsPage.goToUsers(true);
+
+	await (
+		await usersAndOrganizationsPage.usersTableRowLink(newUser.userName)
+	).click();
+
+	await expect(
+		await editUserPage.customField('scimClientId')
+	).not.toBeVisible();
+
+	await scimConfigurationPage.goTo();
+	await scimConfigurationPage.resetClientData();
+});
+
+test('LPD-37452 verify expando field is not visible for group added to SCIM', async ({
+	page,
+	userGroupsPage,
+}) => {
+	const scimConfigurationPage = new SCIMConfigurationPage(page);
+
+	await scimConfigurationPage.goTo();
+
+	await scimConfigurationPage.configureSCIM('email', 'Test SCIM Client');
+
+	const randomNumber = getRandomInt();
+
+	const newGroup = {
+		displayName: `Foo${randomNumber}`,
+	};
+
+	const apiHelper = new ApiHelpers(page);
+
+	await apiHelper.scim.postGroup(newGroup);
+
+	await userGroupsPage.goto(true);
+
+	await (
+		await userGroupsPage.userGroupsTableRowActions(newGroup.displayName)
+	).click();
+
+	await userGroupsPage.editUserGroupMenuItem.click();
+
+	await expect(await page.getByLabel('Scimclientid')).not.toBeVisible();
+
+	await scimConfigurationPage.goTo();
 	await scimConfigurationPage.resetClientData();
 });

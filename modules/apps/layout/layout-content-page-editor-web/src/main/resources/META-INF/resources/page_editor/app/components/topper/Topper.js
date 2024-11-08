@@ -23,6 +23,7 @@ import {
 	useHoverItem,
 	useIsActive,
 	useIsHovered,
+	useMultiSelectType,
 	useSelectItem,
 } from '../../contexts/ControlsContext';
 import {useEditableProcessorUniqueId} from '../../contexts/EditableProcessorContext';
@@ -64,6 +65,7 @@ export default function Topper({children, item, itemElement, ...props}) {
 	);
 	const isHovered = useIsHovered();
 	const isActive = useIsActive();
+	const multiSelectType = useMultiSelectType();
 
 	if (canUpdatePageStructure || canUpdateItemConfiguration) {
 		return (
@@ -78,6 +80,7 @@ export default function Topper({children, item, itemElement, ...props}) {
 					isHovered={isHovered(item.itemId)}
 					item={item}
 					itemElement={itemElement}
+					multiSelectType={multiSelectType}
 					{...props}
 				>
 					{children}
@@ -96,6 +99,7 @@ function TopperContent({
 	isHovered,
 	item,
 	itemElement,
+	multiSelectType,
 }) {
 	const activeItemIds = useActiveItemIds();
 	const canUpdatePageStructure = useSelector(selectCanUpdatePageStructure);
@@ -125,7 +129,13 @@ function TopperContent({
 			? item.children.includes(dropContainerId)
 			: isDropContainer) && isDroppable;
 
+	const selectable =
+		!multiSelectType ||
+		!activeItemIds.some((activeItemId) => item.itemId === activeItemId) ||
+		isActive;
+
 	const canBeDragged =
+		selectable &&
 		canUpdatePageStructure &&
 		!editableProcessorUniqueId &&
 		item.type !== LAYOUT_DATA_ITEM_TYPES.formStepContainer;
@@ -212,12 +222,17 @@ function TopperContent({
 				'drop-container': isDropContainer,
 				'highlighted': isHighlighted,
 				'hovered': isHovered,
+				'not-allowed': !selectable,
 			})}
 			data-name={name}
 			onClick={(event) => {
 				event.stopPropagation();
 
 				if (isDraggingSource) {
+					return;
+				}
+
+				if (!selectable) {
 					return;
 				}
 

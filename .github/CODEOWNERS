@@ -22,7 +22,9 @@ modules/apps/asset/asset-display-page-service    @liferay-page-management
 modules/apps/asset/asset-display-page-test    @liferay-page-management
 modules/apps/asset/asset-display-web    @liferay-page-management
 modules/apps/asset/asset-entry-query-processor-custom-user-attributes    @liferay-page-management
-modules/apps/asset/asset-entry-rel-test    @liferay-content-management
+modules/apps/asset/asset-entry-rel-api    @liferay-search
+modules/apps/asset/asset-entry-rel-service    @liferay-search
+modules/apps/asset/asset-entry-rel-test    @liferay-search
 modules/apps/asset/asset-info-display-api    @liferay-page-management
 modules/apps/asset/asset-info-display-impl    @liferay-page-management
 modules/apps/asset/asset-link-test    @liferay-content-management
@@ -46,11 +48,11 @@ modules/apps/bean-portlet/    @liferay-core-infra
 modules/apps/blogs/    @liferay-content-management
 modules/apps/bookmarks/    @liferay-content-management
 modules/apps/bulk/    @liferay-content-management
-modules/apps/calendar/
-modules/apps/captcha/
-modules/apps/change-tracking/
-modules/apps/changeset/
-modules/apps/click-to-chat/
+modules/apps/calendar/    @liferay-bpm
+modules/apps/captcha/    @liferay-appsec
+modules/apps/change-tracking/    @liferay-site-management
+modules/apps/change-set/
+modules/apps/click-to-chat/    @liferay-site-management
 modules/apps/client-extension/
 modules/apps/comment/    @liferay-content-management
 modules/apps/commerce/    @liferay-commerce
@@ -59,7 +61,7 @@ modules/apps/configuration-admin/    @liferay-platform-experience
 modules/apps/connected-app/    @liferay-content-management
 modules/apps/contacts/    @liferay-commerce
 modules/apps/content-dashboard/    @liferay-content-management
-modules/apps/cookies/
+modules/apps/cookies/    @liferay-appsec
 modules/apps/cookies/cookies-banner-web/    @liferay-frontend
 modules/apps/counter/
 modules/apps/counter/counter-test/    @liferay-core-infra
@@ -67,7 +69,7 @@ modules/apps/data-cleanup/    @liferay-database-infra
 modules/apps/data-engine/    @liferay-bpm
 modules/apps/depot/    @liferay-content-management
 modules/apps/diff/
-modules/apps/digital-signature/
+modules/apps/digital-signature/    @liferay-bpm
 modules/apps/dispatch/    @liferay-headless
 modules/apps/document-library-google-docs/    @liferay-content-management
 modules/apps/document-library-opener/    @liferay-content-management
@@ -80,7 +82,7 @@ modules/apps/external-reference/
 modules/apps/feature-flag/    @liferay-platform-experience
 modules/apps/flags/    @liferay-content-management
 modules/apps/fragment/    @liferay-page-management
-modules/apps/friendly-url/
+modules/apps/friendly-url/    @liferay-site-management
 modules/apps/frontend-css/    @liferay-platform-experience
 modules/apps/frontend-css/frontend-css-rtl-servlet/    @liferay-frontend
 modules/apps/frontend-data-set/    @liferay-frontend
@@ -96,19 +98,19 @@ modules/apps/gogo-shell/    @liferay-core-infra
 modules/apps/google-places/
 modules/apps/headless/headless-admin-address/    @liferay-commerce
 modules/apps/headless/headless-admin-content/    @liferay-content-management
-modules/apps/headless/headless-admin-list-type/
+modules/apps/headless/headless-admin-list-type/    @liferay-bpm
 modules/apps/headless/headless-admin-site/    @liferay-page-management
 modules/apps/headless/headless-admin-taxonomy/    @liferay-content-management
 modules/apps/headless/headless-admin-user/    @liferay-commerce
-modules/apps/headless/headless-admin-workflow/
+modules/apps/headless/headless-admin-workflow/    @liferay-bpm
 modules/apps/headless/headless-batch-engine/    @liferay-headless
 modules/apps/headless/headless-builder/    @liferay-headless
 modules/apps/headless/headless-common-spi/
 modules/apps/headless/headless-delivery/    @liferay-page-management
 modules/apps/headless/headless-discovery/    @liferay-headless
-modules/apps/headless/headless-form/
+modules/apps/headless/headless-form/    @liferay-bpm
 modules/apps/headless/headless-portal-instances/    @liferay-database-infra
-modules/apps/headless/headless-site/
+modules/apps/headless/headless-site/    @liferay-site-management
 modules/apps/headless/headless-user-notification/    @liferay-commerce
 modules/apps/iframe/    @liferay-page-management
 modules/apps/image-uploader/
@@ -155,7 +157,7 @@ modules/apps/learn/
 modules/apps/license-manager/
 modules/apps/list-type/
 modules/apps/locked-items/    @liferay-content-management
-modules/apps/login/
+modules/apps/login/    @liferay-appsec
 modules/apps/mail/
 modules/apps/map/
 modules/apps/map/map-google-maps    @liferay-page-management
@@ -169,10 +171,10 @@ modules/apps/monitoring/
 modules/apps/my-subscriptions/    @liferay-content-management
 modules/apps/nested-portlets/    @liferay-page-management
 modules/apps/normalizer/
-modules/apps/notification/
+modules/apps/notification/    @liferay-bpm
 modules/apps/notifications/    @liferay-content-management
 modules/apps/oauth-client/
-modules/apps/oauth2-provider/
+modules/apps/oauth2-provider/    @liferay-appsec
 modules/apps/object/    @liferay-bpm
 modules/apps/object/object-rest-impl    @liferay-headless
 modules/apps/object/object-rest-test    @liferay-headless
@@ -199,7 +201,7 @@ modules/apps/portal-portlet-bridge/
 modules/apps/portal-portlet-bridge/portal-portlet-bridge-mvc-test/    @liferay-core-infra
 modules/apps/portal-relationship/
 modules/apps/portal-remote/
-modules/apps/portal-reports-engine/
+modules/apps/portal-reports-engine/    @liferay-bpm
 modules/apps/portal-rules-engine/
 modules/apps/portal-scheduler/    @liferay-core-infra
 modules/apps/portal-scripting/
@@ -207,16 +209,16 @@ modules/apps/portal-search-elasticsearch7/    @liferay-search
 modules/apps/portal-search-opensearch2/    @liferay-search
 modules/apps/portal-search-solr8/    @liferay-search
 modules/apps/portal-search/    @liferay-search
-modules/apps/portal-security-audit/
-modules/apps/portal-security-sso/
-modules/apps/portal-security/
+modules/apps/portal-security-audit/    @liferay-appsec
+modules/apps/portal-security-sso/    @liferay-appsec
+modules/apps/portal-security/    @liferay-appsec
 modules/apps/portal-settings/    @liferay-appsec
 modules/apps/portal-settings/portal-settings-api/    @liferay-platform-experience
 modules/apps/portal-settings/portal-settings-web/    @liferay-platform-experience
 modules/apps/portal-store/    @liferay-core-infra
 modules/apps/portal-template/    @liferay-core-infra
 modules/apps/portal-transaction/    @liferay-core-infra
-modules/apps/portal-url-builder/
+modules/apps/portal-url-builder/    @liferay-site-management
 modules/apps/portal-validation/
 modules/apps/portal-vulcan/    @liferay-headless
 modules/apps/portal-workflow/    @liferay-bpm
@@ -296,7 +298,7 @@ modules/apps/push-notifications/
 modules/apps/questions/    @liferay-content-management
 modules/apps/ratings/    @liferay-content-management
 modules/apps/reading-time/    @liferay-content-management
-modules/apps/redirect/
+modules/apps/redirect/    @liferay-site-management
 modules/apps/release-feature-flag/    @liferay-platform-experience
 modules/apps/repository/    @liferay-content-management
 modules/apps/roles/    @liferay-commerce
@@ -308,15 +310,20 @@ modules/apps/service-component/
 modules/apps/shared-dependencies/
 modules/apps/sharing/    @liferay-content-management
 modules/apps/site-initializer/
-modules/apps/site-navigation/
+modules/apps/site-initializer/site-initializer-extender/    @liferay-site-management
+modules/apps/site-navigation/    @liferay-site-management
 modules/apps/site-navigation/site-navigation-language-web    @liferay-page-management
-modules/apps/site/
+modules/apps/site/    @liferay-site-management
+modules/apps/site/site-cms-site-initializer/
+modules/apps/site/site-demo-data-creator-api/
+modules/apps/site/site-demo-data-creator-impl/
 modules/apps/site/site-teams-item-selector-api/    @liferay-commerce
 modules/apps/site/site-teams-item-selector-web/    @liferay-commerce
 modules/apps/site/site-teams-test/    @liferay-commerce
 modules/apps/site/site-teams-uad-test/    @liferay-commerce
 modules/apps/site/site-teams-uad/    @liferay-commerce
 modules/apps/site/site-teams-web/    @liferay-commerce
+modules/apps/site/site-welcome-site-initializer/
 modules/apps/social/    @liferay-content-management
 modules/apps/staging/    @liferay-headless
 modules/apps/static/
@@ -365,7 +372,7 @@ modules/core/shielded-container-api/    @liferay-core-infra
 modules/core/shielded-container-impl/    @liferay-core-infra
 modules/dxp/apps/akismet/
 modules/dxp/apps/analytics/    @liferay-ac
-modules/dxp/apps/antivirus/
+modules/dxp/apps/antivirus/    @liferay-appsec
 modules/dxp/apps/commerce-avalara/    @liferay-commerce
 modules/dxp/apps/commerce-demo-pack/    @liferay-commerce
 modules/dxp/apps/commerce-punchout/    @liferay-commerce
@@ -378,26 +385,74 @@ modules/dxp/apps/osb/osb-faro/    @liferay-ac
 modules/dxp/apps/osb/osb-site-initializer/
 modules/dxp/apps/osb/osb-spring-boot/
 modules/dxp/apps/osb/osb-testray/
-modules/dxp/apps/portal-reports-engine-console/
-modules/dxp/apps/portal-rules-engine-drools/
+modules/dxp/apps/portal-reports-engine-console/    @liferay-bpm
+modules/dxp/apps/portal-rules-engine-drools/    @liferay-bpm
 modules/dxp/apps/portal-search-elasticsearch-cross-cluster-replication/    @liferay-search
 modules/dxp/apps/portal-search-elasticsearch-monitoring/    @liferay-search
 modules/dxp/apps/portal-search-learning-to-rank/    @liferay-search
 modules/dxp/apps/portal-search-similar-results/    @liferay-search
 modules/dxp/apps/portal-search-tuning/    @liferay-search
-modules/dxp/apps/portal-security-audit/
+modules/dxp/apps/portal-security-audit/    @liferay-appsec
 modules/dxp/apps/portal-workflow-kaleo-forms/    @liferay-bpm
 modules/dxp/apps/portal-workflow/    @liferay-bpm
 modules/dxp/apps/portal/
 modules/dxp/apps/portal/portal-dao-db    @liferay-database-infra
 modules/dxp/apps/portal/portal-properties-swapper/    @liferay-core-infra
 modules/dxp/apps/salesforce-connector/
-modules/dxp/apps/saml/
-modules/dxp/apps/scim/
+modules/dxp/apps/saml/    @liferay-appsec
+modules/dxp/apps/scim/    @liferay-appsec
 modules/dxp/apps/search-experiences/    @liferay-search
 modules/dxp/apps/segments/    @liferay-ac
 modules/dxp/apps/sharepoint-rest/    @liferay-content-management
 modules/dxp/apps/sharepoint-soap/    @liferay-content-management
+modules/sdk/gradle-plugins-alloy-taglib/    @liferay-devtools
+modules/sdk/gradle-plugins-app-docker/    @liferay-devtools
+modules/sdk/gradle-plugins-app-javadoc-builder/    @liferay-devtools
+modules/sdk/gradle-plugins-baseline/    @liferay-devtools
+modules/sdk/gradle-plugins-cache/    @liferay-devtools
+modules/sdk/gradle-plugins-change-log-builder/    @liferay-devtools
+modules/sdk/gradle-plugins-css-builder/    @liferay-devtools
+modules/sdk/gradle-plugins-db-support/    @liferay-devtools
+modules/sdk/gradle-plugins-defaults/    @liferay-devtools
+modules/sdk/gradle-plugins-dependency-checker/    @liferay-devtools
+modules/sdk/gradle-plugins-dependency-local-copy/    @liferay-devtools
+modules/sdk/gradle-plugins-deployment-helper/    @liferay-devtools
+modules/sdk/gradle-plugins-go/    @liferay-devtools
+modules/sdk/gradle-plugins-jasper-jspc/    @liferay-devtools
+modules/sdk/gradle-plugins-javadoc-formatter/    @liferay-devtools
+modules/sdk/gradle-plugins-jsdoc/    @liferay-devtools
+modules/sdk/gradle-plugins-lang-builder/    @liferay-devtools
+modules/sdk/gradle-plugins-maven-plugin-builder/    @liferay-devtools
+modules/sdk/gradle-plugins-node/    @liferay-devtools
+modules/sdk/gradle-plugins-patcher/    @liferay-devtools
+modules/sdk/gradle-plugins-poshi-runner/    @liferay-devtools
+modules/sdk/gradle-plugins-rest-builder/    @liferay-devtools
+modules/sdk/gradle-plugins-service-builder/    @liferay-devtools
+modules/sdk/gradle-plugins-source-formatter/    @liferay-devtools
+modules/sdk/gradle-plugins-target-platform/    @liferay-devtools
+modules/sdk/gradle-plugins-test-integration/    @liferay-devtools
+modules/sdk/gradle-plugins-testray/    @liferay-devtools
+modules/sdk/gradle-plugins-theme-builder/    @liferay-devtools
+modules/sdk/gradle-plugins-tld-formatter/    @liferay-devtools
+modules/sdk/gradle-plugins-tlddoc-builder/    @liferay-devtools
+modules/sdk/gradle-plugins-upgrade-table-builder/    @liferay-devtools
+modules/sdk/gradle-plugins-wedeploy/    @liferay-devtools
+modules/sdk/gradle-plugins-whip/    @liferay-devtools
+modules/sdk/gradle-plugins-workspace/    @liferay-devtools
+modules/sdk/gradle-plugins-wsdd-builder/    @liferay-devtools
+modules/sdk/gradle-plugins-wsdl-builder/    @liferay-devtools
+modules/sdk/gradle-plugins-xsd-builder/    @liferay-devtools
+modules/sdk/gradle-plugins/    @liferay-devtools
+modules/sdk/gradle-util/    @liferay-devtools
+modules/sdk/project-templates/    @liferay-devtools
+modules/test/playwright/tests/batch-planner    @liferay-headless
+modules/test/playwright/tests/dispatch-web    @liferay-headless
+modules/test/playwright/tests/export-import-web    @liferay-headless
+modules/test/playwright/tests/headless-builder-impl    @liferay-headless
+modules/test/playwright/tests/headless-builder-web    @liferay-headless
+modules/test/playwright/tests/layout-set-prototype-web    @liferay-headless
+modules/test/playwright/tests/portal-tools-rest-builder-test-impl    @liferay-headless
+modules/test/playwright/tests/staging-configuration-web    @liferay-headless
 modules/third-party/
 modules/util/pmd/    @liferay-core-infra
 modules/util/portal-tools-benchmarks/    @liferay-core-infra
@@ -422,4 +477,6 @@ modules/util/portal-tools-service-builder-test-service/    @liferay-core-infra
 modules/util/portal-tools-service-builder-test-test/    @liferay-core-infra
 modules/util/portal-tools-service-builder-test-uad/    @liferay-core-infra
 modules/util/portal-tools-service-builder/    @liferay-core-infra
+modules/util/release-util/    @liferay-devtools
+modules/util/source-formatter/    @liferay-devtools
 workspaces/liferay-marketplace-workspace/    @liferay-commerce

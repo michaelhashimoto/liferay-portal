@@ -728,7 +728,8 @@ public class UserManagerImpl implements UserManager {
 						companyId, "))"));
 
 			if (ArrayUtil.isEmpty(configurations)) {
-				return null;
+				throw new NotFoundException(
+					"SCIM is not configured for company " + companyId);
 			}
 
 			Configuration configuration = configurations[0];
@@ -881,6 +882,9 @@ public class UserManagerImpl implements UserManager {
 			unicodeProperties.setProperty(
 				ExpandoColumnConstants.INDEX_TYPE,
 				String.valueOf(ExpandoColumnConstants.INDEX_TYPE_KEYWORD));
+			unicodeProperties.setProperty(
+				ExpandoColumnConstants.PROPERTY_HIDDEN,
+				Boolean.TRUE.toString());
 
 			expandoColumn.setTypeSettingsProperties(unicodeProperties);
 

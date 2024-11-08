@@ -32,24 +32,32 @@ export default function MultiSelectManager() {
 	const selectItem = useSelectItem();
 
 	keymapRef.current = {
-		rangeMuliSelect: {
+		rangeMultiSelect: {
 			action: () => {
 				activateMultiSelect(MULTI_SELECT_TYPES.range);
 			},
 			disableKeyCombination: (event) => event.key === SHIFT_KEY_CODE,
 			keyCombination: (event) => event.shiftKey && !isCtrlOrMeta(event),
 			keyboardActivation: (event) =>
-				[ARROW_DOWN_KEY_CODE, ARROW_UP_KEY_CODE].includes(event.key),
+				[
+					ARROW_DOWN_KEY_CODE,
+					ARROW_UP_KEY_CODE,
+					SHIFT_KEY_CODE,
+				].includes(event.key),
 		},
 		simpleMultiSelect: {
 			action: () => {
 				activateMultiSelect(MULTI_SELECT_TYPES.simple);
 			},
 			disableKeyCombination: (event) =>
-				event.key === CONTROL_KEY_CODE || event.key === META_KEY_CODE,
+				event.key === CONTROL_KEY_CODE ||
+				event.key === META_KEY_CODE ||
+				isCtrlOrMeta(event),
 			keyCombination: (event) => isCtrlOrMeta(event),
 			keyboardActivation: (event) =>
-				event.key === ENTER_KEY_CODE || event.key === SPACE_KEY_CODE,
+				event.key === ENTER_KEY_CODE ||
+				event.key === SPACE_KEY_CODE ||
+				isCtrlOrMeta(event),
 		},
 	};
 

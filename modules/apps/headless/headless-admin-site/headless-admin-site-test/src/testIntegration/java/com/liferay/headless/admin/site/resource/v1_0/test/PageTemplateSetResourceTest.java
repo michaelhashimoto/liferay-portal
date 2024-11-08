@@ -78,15 +78,6 @@ public class PageTemplateSetResourceTest
 	@Ignore
 	@Override
 	@Test
-	public void testGetSiteSiteByExternalReferenceCodePageTemplateSetsPage()
-		throws Exception {
-
-		super.testGetSiteSiteByExternalReferenceCodePageTemplateSetsPage();
-	}
-
-	@Ignore
-	@Override
-	@Test
 	public void testGetSiteSiteByExternalReferenceCodePageTemplateSetsPageWithPagination()
 		throws Exception {
 
@@ -141,15 +132,6 @@ public class PageTemplateSetResourceTest
 		assertValid(patchPageTemplateSet);
 	}
 
-	@Ignore
-	@Override
-	@Test
-	public void testPostSiteSiteByExternalReferenceCodePageTemplateSet()
-		throws Exception {
-
-		super.testPostSiteSiteByExternalReferenceCodePageTemplateSet();
-	}
-
 	@Override
 	@Test
 	public void testPutSiteSiteByExternalReferenceCodePageTemplateSet()
@@ -190,7 +172,7 @@ public class PageTemplateSetResourceTest
 
 	@Override
 	protected String[] getAdditionalAssertFieldNames() {
-		return new String[] {"externalReferenceCode", "description", "name"};
+		return new String[] {"description", "externalReferenceCode", "name"};
 	}
 
 	@Override
@@ -204,6 +186,14 @@ public class PageTemplateSetResourceTest
 			putSiteSiteByExternalReferenceCodePageTemplateSet(
 				siteExternalReferenceCode,
 				pageTemplateSet.getExternalReferenceCode(), pageTemplateSet);
+	}
+
+	@Override
+	protected String
+			testGetSiteSiteByExternalReferenceCodePageTemplateSetsPage_getSiteExternalReferenceCode()
+		throws Exception {
+
+		return testGroup.getExternalReferenceCode();
 	}
 
 	@Override

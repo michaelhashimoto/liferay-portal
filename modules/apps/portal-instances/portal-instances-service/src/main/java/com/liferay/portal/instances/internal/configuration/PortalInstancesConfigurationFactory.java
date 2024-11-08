@@ -6,10 +6,10 @@
 package com.liferay.portal.instances.internal.configuration;
 
 import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
-import com.liferay.portal.instances.service.PortalInstancesLocalService;
 import com.liferay.portal.kernel.dependency.manager.DependencyManagerSyncUtil;
 import com.liferay.portal.kernel.exception.NoSuchCompanyException;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.instance.PortalInstancePool;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Company;
@@ -79,8 +79,7 @@ public class PortalInstancesConfigurationFactory {
 				}
 				else {
 					if (company.getCompanyId() ==
-							_portalInstancesLocalService.
-								getDefaultCompanyId()) {
+							PortalInstancePool.getDefaultCompanyId()) {
 
 						active = true;
 					}
@@ -89,8 +88,6 @@ public class PortalInstancesConfigurationFactory {
 						company.getCompanyId(), virtualHostname, mx, maxUsers,
 						active);
 				}
-
-				_portalInstancesLocalService.synchronizePortalInstances();
 
 				return null;
 			});
@@ -117,8 +114,5 @@ public class PortalInstancesConfigurationFactory {
 
 	@Reference(target = ModuleServiceLifecycle.PORTLETS_INITIALIZED)
 	private ModuleServiceLifecycle _moduleServiceLifecycle;
-
-	@Reference
-	private PortalInstancesLocalService _portalInstancesLocalService;
 
 }

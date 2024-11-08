@@ -4,15 +4,17 @@
  */
 
 import classNames from 'classnames';
-import {useEffect, useMemo, useRef, useState} from 'react';
-import {useAppPropertiesContext} from '~/common/contexts/AppPropertiesContext';
+import { useEffect, useMemo, useRef, useState } from 'react';
+import { useAppPropertiesContext } from '~/common/contexts/AppPropertiesContext';
 import i18n from '../../../../common/I18n';
-import {Button} from '../../../../common/components';
+import { Button } from '../../../../common/components';
 import getKebabCase from '../../../../common/utils/getKebabCase';
-import {useCustomerPortal} from '../../context';
-import {MENU_TYPES, PRODUCT_TYPES} from '../../utils/constants';
+import { useCustomerPortal } from '../../context';
+import { MENU_TYPES, PRODUCT_TYPES } from '../../utils/constants';
 import SideMenuSkeleton from './Skeleton';
 import MenuItem from './components/MenuItem';
+import useCurrentKoroneikiAccount from '~/common/hooks/useCurrentKoroneikiAccount';
+import useMyUserAccountByAccountExternalReferenceCode from '../../pages/Project/TeamMembers/components/TeamMembersTable/hooks/useMyUserAccountByAccountExternalReferenceCode';
 
 const ACTIVATION_PATH = 'activation';
 
@@ -22,6 +24,16 @@ const SideMenu = () => {
 	const [menuItemActiveStatus, setMenuItemActiveStatus] = useState([]);
 	const [hasLiferayPaasActivation, setHasLiferayPaasActivation] = useState(false);
 	const {featureFlags} = useAppPropertiesContext();
+
+	const {data: koroneikiData, loading: koroneikiAccountLoading} = useCurrentKoroneikiAccount();
+	const koroneikiAccount = koroneikiData?.koroneikiAccountByExternalReferenceCode;
+
+	const {data: myUserAccountData} =
+		useMyUserAccountByAccountExternalReferenceCode(
+			koroneikiAccountLoading,
+			koroneikiAccount?.accountKey
+		);
+	const loggedUserAccount = myUserAccountData?.myUserAccount;
 
 	const productActivationMenuRef = useRef();
 
@@ -68,7 +80,7 @@ const SideMenu = () => {
 
 	const accountSubscriptionGroupsMenuItem = useMemo(
 		() =>
-			activationSubscriptionGroups?.map(({activationProductName, name}, index) => {
+			activationSubscriptionGroups?.map(({ activationProductName, name }, index) => {
 				if (name !== PRODUCT_TYPES.liferayExperienceCloud) {
 					const displayName = activationProductName ? activationProductName : name;
 
@@ -207,6 +219,20 @@ const SideMenu = () => {
 						{i18n.translate(getKebabCase(MENU_TYPES.teamMembers))}
 					</MenuItem>
 				</div>
+
+				{featureFlags.includes('LRSD-6322') &&
+					loggedUserAccount?.isLiferayStaff && (
+						<div className="d-flex">
+							<MenuItem
+								iconKey="projectUsage"
+								to={getKebabCase(MENU_TYPES.projectUsage)}
+							>
+								{i18n.translate(
+									getKebabCase(MENU_TYPES.projectUsage)
+								)}
+							</MenuItem>
+						</div>
+					)}
 			</ul>
 		</div>
 	);

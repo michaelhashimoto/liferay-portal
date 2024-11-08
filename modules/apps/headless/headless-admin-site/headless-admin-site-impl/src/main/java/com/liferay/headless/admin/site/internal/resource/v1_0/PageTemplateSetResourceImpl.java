@@ -10,15 +10,18 @@ import com.liferay.headless.admin.site.resource.v1_0.PageTemplateSetResource;
 import com.liferay.headless.common.spi.service.context.ServiceContextBuilder;
 import com.liferay.layout.page.template.constants.LayoutPageTemplateCollectionTypeConstants;
 import com.liferay.layout.page.template.constants.LayoutPageTemplateConstants;
-import com.liferay.layout.page.template.exception.NoSuchPageTemplateCollectionException;
 import com.liferay.layout.page.template.model.LayoutPageTemplateCollection;
 import com.liferay.layout.page.template.service.LayoutPageTemplateCollectionService;
 import com.liferay.portal.kernel.feature.flag.FeatureFlagManagerUtil;
 import com.liferay.portal.kernel.model.Group;
+import com.liferay.portal.kernel.search.Sort;
+import com.liferay.portal.kernel.search.filter.Filter;
 import com.liferay.portal.kernel.service.GroupLocalService;
 import com.liferay.portal.kernel.service.ServiceContext;
-import com.liferay.portal.kernel.util.Validator;
+import com.liferay.portal.vulcan.aggregation.Aggregation;
 import com.liferay.portal.vulcan.dto.converter.DTOConverter;
+import com.liferay.portal.vulcan.pagination.Page;
+import com.liferay.portal.vulcan.pagination.Pagination;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -64,23 +67,18 @@ public class PageTemplateSetResourceImpl
 		Group group = _groupLocalService.getGroupByExternalReferenceCode(
 			siteExternalReferenceCode, contextCompany.getCompanyId());
 
-		LayoutPageTemplateCollection layoutPageTemplateCollection =
+		return _toPageTemplateSet(
 			_layoutPageTemplateCollectionService.
-				fetchLayoutPageTemplateCollection(
-					pageTemplateSetExternalReferenceCode, group.getGroupId());
-
-		if (layoutPageTemplateCollection == null) {
-			throw new NoSuchPageTemplateCollectionException();
-		}
-
-		return _toPageTemplateSet(layoutPageTemplateCollection);
+				getLayoutPageTemplateCollection(
+					pageTemplateSetExternalReferenceCode, group.getGroupId()));
 	}
 
 	@Override
-	public PageTemplateSet patchSiteSiteByExternalReferenceCodePageTemplateSet(
-			String siteExternalReferenceCode,
-			String pageTemplateSetExternalReferenceCode,
-			PageTemplateSet pageTemplateSet)
+	public Page<PageTemplateSet>
+			getSiteSiteByExternalReferenceCodePageTemplateSetsPage(
+				String siteExternalReferenceCode, String search,
+				Aggregation aggregation, Filter filter, Pagination pagination,
+				Sort[] sorts)
 		throws Exception {
 
 		if (!FeatureFlagManagerUtil.isEnabled("LPD-35443")) {
@@ -90,27 +88,36 @@ public class PageTemplateSetResourceImpl
 		Group group = _groupLocalService.getGroupByExternalReferenceCode(
 			siteExternalReferenceCode, contextCompany.getCompanyId());
 
-		LayoutPageTemplateCollection layoutPageTemplateCollection =
+		return Page.of(
+			transform(
+				_layoutPageTemplateCollectionService.
+					getLayoutPageTemplateCollections(
+						group.getGroupId(),
+						LayoutPageTemplateCollectionTypeConstants.BASIC,
+						pagination.getStartPosition(),
+						pagination.getEndPosition()),
+				this::_toPageTemplateSet),
+			pagination,
 			_layoutPageTemplateCollectionService.
-				fetchLayoutPageTemplateCollection(
-					pageTemplateSetExternalReferenceCode, group.getGroupId());
+				getLayoutPageTemplateCollectionsCount(
+					group.getGroupId(),
+					LayoutPageTemplateCollectionTypeConstants.BASIC));
+	}
 
-		if (layoutPageTemplateCollection == null) {
-			throw new NoSuchPageTemplateCollectionException();
+	@Override
+	public PageTemplateSet postSiteSiteByExternalReferenceCodePageTemplateSet(
+			String siteExternalReferenceCode, PageTemplateSet pageTemplateSet)
+		throws Exception {
+
+		if (!FeatureFlagManagerUtil.isEnabled("LPD-35443")) {
+			throw new UnsupportedOperationException();
 		}
 
-		PageTemplateSet existingPageTemplateSet = _toPageTemplateSet(
-			layoutPageTemplateCollection);
-
-		preparePatch(pageTemplateSet, existingPageTemplateSet);
+		Group group = _groupLocalService.getGroupByExternalReferenceCode(
+			siteExternalReferenceCode, contextCompany.getCompanyId());
 
 		return _toPageTemplateSet(
-			_layoutPageTemplateCollectionService.
-				updateLayoutPageTemplateCollection(
-					layoutPageTemplateCollection.
-						getLayoutPageTemplateCollectionId(),
-					existingPageTemplateSet.getName(),
-					existingPageTemplateSet.getDescription()));
+			_addLayoutPageTemplateCollection(group, pageTemplateSet));
 	}
 
 	@Override
@@ -133,25 +140,8 @@ public class PageTemplateSetResourceImpl
 					pageTemplateSetExternalReferenceCode, group.getGroupId());
 
 		if (layoutPageTemplateCollection == null) {
-			ServiceContext serviceContext = ServiceContextBuilder.create(
-				group.getGroupId(), contextHttpServletRequest, null
-			).build();
-
-			serviceContext.setCreateDate(pageTemplateSet.getDateCreated());
-			serviceContext.setModifiedDate(pageTemplateSet.getDateModified());
-			serviceContext.setUuid(pageTemplateSet.getUuid());
-
 			return _toPageTemplateSet(
-				_layoutPageTemplateCollectionService.
-					addLayoutPageTemplateCollection(
-						pageTemplateSet.getExternalReferenceCode(),
-						group.getGroupId(),
-						LayoutPageTemplateConstants.
-							PARENT_LAYOUT_PAGE_TEMPLATE_COLLECTION_ID_DEFAULT,
-						pageTemplateSet.getName(),
-						pageTemplateSet.getDescription(),
-						LayoutPageTemplateCollectionTypeConstants.BASIC,
-						serviceContext));
+				_addLayoutPageTemplateCollection(group, pageTemplateSet));
 		}
 
 		return _toPageTemplateSet(
@@ -163,34 +153,32 @@ public class PageTemplateSetResourceImpl
 					pageTemplateSet.getDescription()));
 	}
 
-	@Override
-	protected void preparePatch(
-		PageTemplateSet pageTemplateSet,
-		PageTemplateSet existingPageTemplateSet) {
+	private LayoutPageTemplateCollection _addLayoutPageTemplateCollection(
+			Group group, PageTemplateSet pageTemplateSet)
+		throws Exception {
 
-		if (pageTemplateSet.getDateCreated() != null) {
-			existingPageTemplateSet.setDateCreated(
-				pageTemplateSet::getDateCreated);
-		}
+		return _layoutPageTemplateCollectionService.
+			addLayoutPageTemplateCollection(
+				pageTemplateSet.getExternalReferenceCode(), group.getGroupId(),
+				LayoutPageTemplateConstants.
+					PARENT_LAYOUT_PAGE_TEMPLATE_COLLECTION_ID_DEFAULT,
+				pageTemplateSet.getName(), pageTemplateSet.getDescription(),
+				LayoutPageTemplateCollectionTypeConstants.BASIC,
+				_getServiceContext(group, pageTemplateSet));
+	}
 
-		if (pageTemplateSet.getDateModified() != null) {
-			existingPageTemplateSet.setDateModified(
-				pageTemplateSet::getDateModified);
-		}
+	private ServiceContext _getServiceContext(
+		Group group, PageTemplateSet pageTemplateSet) {
 
-		if (Validator.isNotNull(pageTemplateSet.getDescription())) {
-			existingPageTemplateSet.setDescription(
-				pageTemplateSet::getDescription);
-		}
+		ServiceContext serviceContext = ServiceContextBuilder.create(
+			group.getGroupId(), contextHttpServletRequest, null
+		).build();
 
-		if (Validator.isNotNull(pageTemplateSet.getExternalReferenceCode())) {
-			existingPageTemplateSet.setExternalReferenceCode(
-				pageTemplateSet::getExternalReferenceCode);
-		}
+		serviceContext.setCreateDate(pageTemplateSet.getDateCreated());
+		serviceContext.setModifiedDate(pageTemplateSet.getDateModified());
+		serviceContext.setUuid(pageTemplateSet.getUuid());
 
-		if (Validator.isNotNull(pageTemplateSet.getName())) {
-			existingPageTemplateSet.setName(pageTemplateSet::getName);
-		}
+		return serviceContext;
 	}
 
 	private PageTemplateSet _toPageTemplateSet(

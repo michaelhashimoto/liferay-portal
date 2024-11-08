@@ -1736,15 +1736,17 @@ components:
                         The list of languages the navigation menu item has a translation for.
                     items:
                         type: string
-                    readOnly: true
                     type: array
                 dataDefinitionFields:
                     description:
                         The list of fields that store the structured content's information.
                     items:
                         $ref: "../../../data-engine/data-engine-rest-impl/rest-openapi.yaml#DataDefinitionField"
-                    readOnly: true
                     type: array
+                dataLayout:
+                    $ref: "../../../data-engine/data-engine-rest-impl/rest-openapi.yaml#DataLayout"
+                    description:
+                        The layout of the document data definition type fields.
                 dateCreated:
                     description:
                         The Document Metadata Set's creation date.
@@ -1792,6 +1794,11 @@ components:
                     format: int64
                     readOnly: true
                     type: integer
+            required:
+                - availableLanguages
+                - dataDefinitionFields
+                - dataLayout
+                - name
             type: object
         DocumentShortcut:
             description:
@@ -6777,6 +6784,33 @@ paths:
                                 items:
                                     $ref: "#/components/schemas/DocumentMetadataSet"
                                 type: array
+            tags: ["DocumentMetadataSet"]
+        post:
+            operationId: postAssetLibraryDocumentMetadataSet
+            parameters:
+                - in: path
+                  name: assetLibraryId
+                  required: true
+                  schema:
+                      format: int64
+                      type: integer
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: "#/components/schemas/DocumentMetadataSet"
+                    application/xml:
+                        schema:
+                            $ref: "#/components/schemas/DocumentMetadataSet"
+            responses:
+                200:
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/DocumentMetadataSet"
+                        application/xml:
+                            schema:
+                                $ref: "#/components/schemas/DocumentMetadataSet"
             tags: ["DocumentMetadataSet"]
     "/asset-libraries/{assetLibraryId}/document-shortcuts":
         get:
@@ -13413,6 +13447,33 @@ paths:
                                 items:
                                     $ref: "#/components/schemas/DocumentMetadataSet"
                                 type: array
+            tags: ["DocumentMetadataSet"]
+        post:
+            operationId: postSiteDocumentMetadataSet
+            parameters:
+                - in: path
+                  name: siteId
+                  required: true
+                  schema:
+                      format: int64
+                      type: integer
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: "#/components/schemas/DocumentMetadataSet"
+                    application/xml:
+                        schema:
+                            $ref: "#/components/schemas/DocumentMetadataSet"
+            responses:
+                200:
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/DocumentMetadataSet"
+                        application/xml:
+                            schema:
+                                $ref: "#/components/schemas/DocumentMetadataSet"
             tags: ["DocumentMetadataSet"]
     "/sites/{siteId}/document-shortcuts":
         get:
