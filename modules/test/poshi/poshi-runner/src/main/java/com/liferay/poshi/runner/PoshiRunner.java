@@ -161,7 +161,7 @@ public class PoshiRunner {
 	public void setUp() throws Exception {
 		System.out.println();
 		System.out.println("###");
-		System.out.println("### " + _testNamespacedClassCommandName);
+		System.out.println("### > " + _testNamespacedClassCommandName);
 		System.out.println("###");
 		System.out.println();
 
