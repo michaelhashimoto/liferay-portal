@@ -2808,9 +2808,9 @@ ${poshi.runner.testsuite.testcase.name}</echo>
 									<local name="playwright.test.shard" />
 
 									<if>
-										<isset property="PLAYWRIGHT_ARGS_${axis.variable}" />
+										<isset property="env.PLAYWRIGHT_ARGS_${axis.variable}" />
 										<then>
-											<propertycopy from="PLAYWRIGHT_ARGS_${axis.variable}" name="playwright.test.shard" />
+											<propertycopy from="env.PLAYWRIGHT_ARGS_${axis.variable}" name="playwright.test.shard" />
 										</then>
 										<else>
 											<property name="playwright.test.shard" value="" />
@@ -2818,9 +2818,9 @@ ${poshi.runner.testsuite.testcase.name}</echo>
 									</if>
 
 									<if>
-										<isset property="PLAYWRIGHT_PROJECT_NAME" />
+										<isset property="env.PLAYWRIGHT_PROJECT_NAME" />
 										<then>
-											<propertycopy from="PLAYWRIGHT_PROJECT_NAME" name="playwright.project.name" />
+											<propertycopy from="env.PLAYWRIGHT_PROJECT_NAME" name="playwright.project.name" />
 										</then>
 										<else>
 											<property name="playwright.project.name" value="" />
