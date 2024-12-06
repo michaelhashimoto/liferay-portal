@@ -30,6 +30,8 @@ import java.util.Properties;
 import java.util.Set;
 import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.commons.lang3.StringEscapeUtils;
 
@@ -53,7 +55,15 @@ public class PlaywrightBatchTestClassGroup extends BatchTestClassGroup {
 					"PORTAL_BATCH_TEST_SELECTOR");
 			}
 
-			_addProjectNames(portalBatchTestSelector);
+			Matcher matcher = _playwrightFileNamePattern.matcher(
+				portalBatchTestSelector);
+
+			if (matcher.matches()) {
+				_addProjectNames(matcher.group("projectName"));
+			}
+			else {
+				_addProjectNames(portalBatchTestSelector);
+			}
 
 			return;
 		}
@@ -679,6 +689,8 @@ public class PlaywrightBatchTestClassGroup extends BatchTestClassGroup {
 		}
 	}
 
+	private static final Pattern _playwrightFileNamePattern = Pattern.compile(
+		"tests/(?<projectName>[^/]+)/.*.ts");
 	private static JSONObject _playwrightJSONObject;
 	private static final AtomicBoolean _playwrightJSONObjectsLoaded =
 		new AtomicBoolean();
