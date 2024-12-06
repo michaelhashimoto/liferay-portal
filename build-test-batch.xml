@@ -2827,6 +2827,10 @@ ${poshi.runner.testsuite.testcase.name}</echo>
 										</else>
 									</if>
 
+									<echo>axis.variable=${axis.variable}</echo>
+									<echo>playwright.test.shard=${playwright.test.shard}</echo>
+									<echo>playwright.project.name=${playwright.project.name}</echo>
+
 									<local name="playwright.command" />
 
 									<if>
