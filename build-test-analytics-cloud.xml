@@ -43,7 +43,7 @@
 						<![CDATA[
 							String path = project.getProperty("env.PATH");
 
-							project.setProperty("path", path.replaceAll("/opt/java/jdk[^:]+", project.getProperty("java.jdk.home") + "/bin"));
+							project.setProperty("path", path.replaceAll("/opt/java/[^/]+/bin", project.getProperty("java.jdk.home") + "/bin"));
 						]]>
 					</beanshell>
 
