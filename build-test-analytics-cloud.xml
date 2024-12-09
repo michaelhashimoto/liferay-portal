@@ -21,10 +21,6 @@
 					/>
 
 					<echo file="${analytics.cloud.asah.dir}/build_analytics_cloud_image.sh">
-						echo "JAVA_HOME=${JAVA_HOME}"
-						echo "JAVA_OPTS=${JAVA_OPTS}"
-						echo "PATH=${PATH}"
-
 						./gradlew jar -Dliferay.ci=true
 
 						./gradlew clean assemble -Dliferay.ci=true
@@ -33,6 +29,8 @@
 
 						docker images
 					</echo>
+
+					<print-file file="${analytics.cloud.asah.dir}/build_analytics_cloud_image.sh" />
 
 					<local name="java.jdk.home" />
 					<local name="java.jdk.opts" />
@@ -48,6 +46,12 @@
 							project.setProperty("path", path.replaceAll("/opt/java/jdk[^:]+", project.getProperty("java.jdk.home") + "/bin"));
 						]]>
 					</beanshell>
+
+					<echo><![CDATA[<exec dir="${analytics.cloud.asah.dir}" executable="${analytics.cloud.asah.dir}/build_analytics_cloud_image.sh" failonerror="true" timeout="600000">
+	<env key="JAVA_HOME" value="${java.jdk.home}" />
+	<env key="JAVA_OPTS" value="${java.jdk.opts}" />
+	<env key="PATH" value="${path}" />
+</exec>]]></echo>
 
 					<exec dir="${analytics.cloud.asah.dir}" executable="${analytics.cloud.asah.dir}/build_analytics_cloud_image.sh" failonerror="true" timeout="600000">
 						<env key="JAVA_HOME" value="${java.jdk.home}" />
