@@ -21,6 +21,10 @@
 					/>
 
 					<execute dir="${analytics.cloud.asah.dir}">
+						echo "JAVA_HOME=${JAVA_HOME}"
+						echo "JAVA_OPTS=${JAVA_OPTS}"
+						echo "PATH=${PATH}"
+
 						./gradlew jar -Dliferay.ci=true
 
 						./gradlew clean assemble -Dliferay.ci=true
