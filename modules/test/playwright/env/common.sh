@@ -475,6 +475,12 @@ function start_additional_bundles {
 function start_analytics_cloud {
 	cd ${_PORTAL_PROJECT_DIR}
 
+	echo "ANT_HOME=${ANT_HOME}"
+	echo "ANT_OPTS=${ANT_OPTS}"
+	echo "JAVA_HOME=${JAVA_HOME}"
+	echo "JAVA_OPTS=${JAVA_OPTS}"
+	echo "PATH=${PATH}"
+
 	ant -f build-test-analytics-cloud.xml start-analytics-cloud
 }
 
