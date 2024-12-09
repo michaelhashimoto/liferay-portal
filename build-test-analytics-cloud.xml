@@ -30,7 +30,7 @@
 						docker images
 					</echo>
 
-					<print-file file="${analytics.cloud.asah.dir}/build_analytics_cloud_image.sh" />
+					<print-file file.name="${analytics.cloud.asah.dir}/build_analytics_cloud_image.sh" />
 
 					<local name="java.jdk.home" />
 					<local name="java.jdk.opts" />
