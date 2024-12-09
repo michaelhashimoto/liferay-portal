@@ -53,10 +53,11 @@
 	<env key="PATH" value="${path}" />
 </exec>]]></echo>
 
-					<exec dir="${analytics.cloud.asah.dir}" executable="${analytics.cloud.asah.dir}/build_analytics_cloud_image.sh" failonerror="true" timeout="600000">
+					<exec dir="${analytics.cloud.asah.dir}" executable="/bin/bash" failonerror="true" timeout="600000">
 						<env key="JAVA_HOME" value="${java.jdk.home}" />
 						<env key="JAVA_OPTS" value="${java.jdk.opts}" />
 						<env key="PATH" value="${path}" />
+						<arg value="${analytics.cloud.asah.dir}/build_analytics_cloud_image.sh" />
 					</exec>
 
 					<delete file="${analytics.cloud.asah.dir}/build_analytics_cloud_image.sh" />
