@@ -2762,6 +2762,7 @@ ${poshi.runner.testsuite.testcase.name}</echo>
 			<get-java-jdk-bundle-version test.batch.name="${test.batch.name}" />
 
 			<get-java-jdk-home type="${java.jdk.bundle.type}" version="${java.jdk.bundle.version}" />
+			<get-java-jdk-opts type="${java.jdk.bundle.type}" version="${java.jdk.bundle.version}" />
 
 			<run-batch-test>
 				<test-action>
@@ -2784,6 +2785,7 @@ ${poshi.runner.testsuite.testcase.name}</echo>
 									<exec executable="/bin/bash">
 										<arg value="modules/test/playwright/env/set_up.sh" />
 										<env key="JAVA_HOME" value="${java.jdk.home}" />
+										<env key="JAVA_OPTS" value="${java.jdk.opts}" />
 										<env key="LIFERAY_HOME" value="${liferay.home}" />
 										<env key="LIFERAY_PORTAL_URL" value="http://${env.NODE_NAME}:8080" />
 										<env key="PLAYWRIGHT_PROJECT_NAME" value="${playwright.project.name}" />
@@ -2796,9 +2798,9 @@ ${poshi.runner.testsuite.testcase.name}</echo>
 									<local name="playwright.test.shard" />
 
 									<if>
-										<isset property="PLAYWRIGHT_ARGS_${axis.variable}" />
+										<isset property="env.PLAYWRIGHT_ARGS_${axis.variable}" />
 										<then>
-											<propertycopy from="PLAYWRIGHT_ARGS_${axis.variable}" name="playwright.test.shard" />
+											<propertycopy from="env.PLAYWRIGHT_ARGS_${axis.variable}" name="playwright.test.shard" />
 										</then>
 										<else>
 											<property name="playwright.test.shard" value="" />
@@ -2806,9 +2808,9 @@ ${poshi.runner.testsuite.testcase.name}</echo>
 									</if>
 
 									<if>
-										<isset property="PLAYWRIGHT_PROJECT_NAME" />
+										<isset property="env.PLAYWRIGHT_PROJECT_NAME" />
 										<then>
-											<propertycopy from="PLAYWRIGHT_PROJECT_NAME" name="playwright.project.name" />
+											<propertycopy from="env.PLAYWRIGHT_PROJECT_NAME" name="playwright.project.name" />
 										</then>
 										<else>
 											<property name="playwright.project.name" value="" />
@@ -2823,7 +2825,7 @@ ${poshi.runner.testsuite.testcase.name}</echo>
 											<property name="playwright.command" value="npx playwright test ${playwright.test.shard}" />
 										</then>
 										<else>
-											<property name="playwright.command" value="npx playwright test --project ${playwright.project.name} ${playwright.test.shard}" />
+											<property name="playwright.command" value="npx playwright test --project=${playwright.project.name} ${playwright.test.shard}" />
 										</else>
 									</if>
 
