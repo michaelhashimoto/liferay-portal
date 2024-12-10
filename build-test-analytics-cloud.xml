@@ -20,7 +20,7 @@
 						analytics.cloud.repository.dir="${analytics.cloud.asah.dir}"
 					/>
 
-					<execute dir="${analytics.cloud.asah.dir}">
+					<echo file="${analytics.cloud.asah.dir}/build_analytics_cloud_image.sh">
 						./gradlew jar -Dliferay.ci=true
 
 						./gradlew clean assemble -Dliferay.ci=true
@@ -28,7 +28,32 @@
 						docker compose --file=${analytics.cloud.docker.test.yaml} --project-name=${analytics.cloud.project.name} build
 
 						docker images
-					</execute>
+					</echo>
+
+					<local name="java.jdk.home" />
+					<local name="java.jdk.opts" />
+					<local name="path" />
+
+					<get-java-jdk-home architecture="x64" type="oracle" version="8" />
+					<get-java-jdk-opts architecture="x64" type="oracle" version="8" />
+
+					<propertyregex
+						input="${env.PATH}"
+						override="true"
+						property="path"
+						regexp="/opt/java/jdk[^/]+/bin"
+						replace="${java.jdk.home}/bin"
+					/>
+
+					<exec dir="${analytics.cloud.asah.dir}" executable="/bin/bash" failonerror="true" timeout="600000">
+						<env key="ANT_OPTS" value="${java.jdk.opts}" />
+						<env key="JAVA_HOME" value="${java.jdk.home}" />
+						<env key="JAVA_OPTS" value="${java.jdk.opts}" />
+						<env key="PATH" value="${path}" />
+						<arg value="${analytics.cloud.asah.dir}/build_analytics_cloud_image.sh" />
+					</exec>
+
+					<delete file="${analytics.cloud.asah.dir}/build_analytics_cloud_image.sh" />
 
 					<for list="${analytics.cloud.asah.image.names}" param="analytics.cloud.asah.image.name">
 						<sequential>
