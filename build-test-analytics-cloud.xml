@@ -21,6 +21,9 @@
 					/>
 
 					<echo file="${analytics.cloud.asah.dir}/build_analytics_cloud_image.sh">
+						java -version
+						ant -version
+
 						./gradlew jar -Dliferay.ci=true
 
 						./gradlew clean assemble -Dliferay.ci=true
