@@ -45,6 +45,10 @@
 						replace="${java.jdk.home}/bin"
 					/>
 
+					<echo>java.jdk.home=${java.jdk.home}</echo>
+					<echo>java.jdk.opts=${java.jdk.opts}</echo>
+					<echo>path=${path}</echo>
+
 					<exec dir="${analytics.cloud.asah.dir}" executable="/bin/bash" failonerror="true" timeout="600000">
 						<env key="JAVA_HOME" value="${java.jdk.home}" />
 						<env key="JAVA_OPTS" value="${java.jdk.opts}" />
