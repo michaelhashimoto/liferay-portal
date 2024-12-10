@@ -37,8 +37,10 @@
 					<local name="java.jdk.opts" />
 					<local name="path" />
 
-					<get-java-jdk-home architecture="x64" type="oracle" version="8" />
-					<get-java-jdk-opts architecture="x64" type="oracle" version="8" />
+					<!-- <get-java-jdk-home architecture="x64" type="oracle" version="8" /> -->
+					<!-- <get-java-jdk-opts architecture="x64" type="oracle" version="8" /> -->
+					<get-java-jdk-home architecture="x64" type="zulu" version="21" />
+					<get-java-jdk-opts architecture="x64" type="zulu" version="21" />
 
 					<propertyregex
 						input="${env.PATH}"
