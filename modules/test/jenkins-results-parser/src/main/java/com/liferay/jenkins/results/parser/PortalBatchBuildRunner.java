@@ -57,6 +57,13 @@ public abstract class PortalBatchBuildRunner<T extends PortalBatchBuildData>
 		primaryWorkspaceGitRepository.setSenderBranchSHA(
 			portalBatchBuildData.getPortalBranchSHA());
 
+		if (_workspace instanceof PortalWorkspace) {
+			PortalWorkspace portalWorkspace = (PortalWorkspace)_workspace;
+
+			portalWorkspace.setOSBAsahGitHubURL(
+				"https://github.com/lesliewong92/com-liferay-osb-asah-private/tree/LPD-43057-1");
+		}
+
 		return _workspace;
 	}
 
