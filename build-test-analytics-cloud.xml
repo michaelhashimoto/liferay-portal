@@ -46,11 +46,11 @@
 					/>
 
 					<exec dir="${analytics.cloud.asah.dir}" executable="/bin/bash" failonerror="true" timeout="600000">
+						<arg value="${analytics.cloud.asah.dir}/build_analytics_cloud_image.sh" />
 						<env key="ANT_OPTS" value="${java.jdk.opts}" />
 						<env key="JAVA_HOME" value="${java.jdk.home}" />
 						<env key="JAVA_OPTS" value="${java.jdk.opts}" />
 						<env key="PATH" value="${path}" />
-						<arg value="${analytics.cloud.asah.dir}/build_analytics_cloud_image.sh" />
 					</exec>
 
 					<delete file="${analytics.cloud.asah.dir}/build_analytics_cloud_image.sh" />
@@ -740,9 +740,28 @@ OSB_FARO_FRONTEND_URL=${analytics.cloud.faro.frontend.url}</echo>
 					<trycatch property="analytics.cloud.error">
 						<try>
 							<local name="analytics.cloud.start.result" />
+							
+							<local name="java.jdk.home" />
+							<local name="java.jdk.opts" />
+							<local name="path" />
+
+							<get-java-jdk-home architecture="x64" type="oracle" version="8" />
+							<get-java-jdk-opts architecture="x64" type="oracle" version="8" />
+
+							<propertyregex
+								input="${env.PATH}"
+								override="true"
+								property="path"
+								regexp="/opt/java/jdk[^/]+/bin"
+								replace="${java.jdk.home}/bin"
+							/>
 
 							<exec dir="${analytics.cloud.asah.dir}" executable="/bin/bash" resultproperty="analytics.cloud.start.result" timeout="${analytics.cloud.start.timeout}">
 								<arg value="${analytics.cloud.start.sh}" />
+								<env key="ANT_OPTS" value="${java.jdk.opts}" />
+								<env key="JAVA_HOME" value="${java.jdk.home}" />
+								<env key="JAVA_OPTS" value="${java.jdk.opts}" />
+								<env key="PATH" value="${path}" />
 							</exec>
 
 							<if>
