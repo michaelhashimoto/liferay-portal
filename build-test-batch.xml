@@ -2784,6 +2784,14 @@ ${poshi.runner.testsuite.testcase.name}</echo>
 									<!-- <get-java-jdk-home architecture="x64" type="oracle" version="8" />
 									<get-java-jdk-opts architecture="x64" type="oracle" version="8" /> -->
 
+									<propertyregex
+										input="${env.PATH}"
+										override="true"
+										property="path"
+										regexp="/opt/java/jdk[^/]+/bin"
+										replace="${java.jdk.home}/bin"
+									/>
+
 									<echo><![CDATA[<exec executable="/bin/bash">
 	<arg value="modules/test/playwright/env/set_up.sh" />
 	<env key="ANT_OPTS" value="${java.jdk.opts}" />
@@ -2791,6 +2799,7 @@ ${poshi.runner.testsuite.testcase.name}</echo>
 	<env key="JAVA_OPTS" value="${java.jdk.opts}" />
 	<env key="LIFERAY_HOME" value="${liferay.home}" />
 	<env key="LIFERAY_PORTAL_URL" value="http://${env.NODE_NAME}:8080" />
+	<env key="PATH" value="${path}" />
 	<env key="PLAYWRIGHT_PROJECT_NAME" value="${playwright.project.name}" />
 </exec>]]></echo>
 
@@ -2801,6 +2810,7 @@ ${poshi.runner.testsuite.testcase.name}</echo>
 										<env key="JAVA_OPTS" value="${java.jdk.opts}" />
 										<env key="LIFERAY_HOME" value="${liferay.home}" />
 										<env key="LIFERAY_PORTAL_URL" value="http://${env.NODE_NAME}:8080" />
+										<env key="PATH" value="${path}" />
 										<env key="PLAYWRIGHT_PROJECT_NAME" value="${playwright.project.name}" />
 									</exec>
 
