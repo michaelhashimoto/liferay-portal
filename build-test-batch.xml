@@ -2779,8 +2779,10 @@ ${poshi.runner.testsuite.testcase.name}</echo>
 
 							<trycatch property="exception.message">
 								<try>
-									<get-java-jdk-home architecture="x64" type="oracle" version="8" />
-									<get-java-jdk-opts architecture="x64" type="oracle" version="8" />
+									<get-java-jdk-home type="${java.jdk.bundle.type}" version="${java.jdk.bundle.version}" />
+									<get-java-jdk-opts type="${java.jdk.bundle.type}" version="${java.jdk.bundle.version}" />
+									<!-- <get-java-jdk-home architecture="x64" type="oracle" version="8" />
+									<get-java-jdk-opts architecture="x64" type="oracle" version="8" /> -->
 
 									<echo><![CDATA[<exec executable="/bin/bash">
 	<arg value="modules/test/playwright/env/set_up.sh" />
