@@ -482,6 +482,14 @@ function start_analytics_cloud {
 	echo "JAVA_OPTS=${JAVA_OPTS}"
 	echo "PATH=${PATH}"
 	echo "----------------------"
+	which java
+	echo "----------------------"
+	java -version
+	echo "----------------------"
+	which ant
+	echo "----------------------"
+	ant -version
+	echo "----------------------"
 
 	ant -f build-test-analytics-cloud.xml start-analytics-cloud
 }
