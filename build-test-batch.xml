@@ -2779,8 +2779,21 @@ ${poshi.runner.testsuite.testcase.name}</echo>
 
 							<trycatch property="exception.message">
 								<try>
+									<local name="execute.path" />
+
+									<local name="java.jdk.home" />
+									<local name="java.jdk.opts" />
+
 									<get-java-jdk-home type="${java.jdk.bundle.type}" version="${java.jdk.bundle.version}" />
 									<get-java-jdk-opts type="${java.jdk.bundle.type}" version="${java.jdk.bundle.version}" />
+
+									<propertyregex
+										input="${env.PATH}"
+										override="true"
+										property="execute.path"
+										regexp="/opt/java/(jdk|openjdk|zulu(-x64)?)[^/]+/bin"
+										replace="${java.jdk.home}/bin"
+									/>
 
 									<exec executable="/bin/bash">
 										<arg value="modules/test/playwright/env/set_up.sh" />
@@ -2788,6 +2801,7 @@ ${poshi.runner.testsuite.testcase.name}</echo>
 										<env key="JAVA_OPTS" value="${java.jdk.opts}" />
 										<env key="LIFERAY_HOME" value="${liferay.home}" />
 										<env key="LIFERAY_PORTAL_URL" value="http://${env.NODE_NAME}:8080" />
+										<env key="PATH" value="${execute.path}" />
 										<env key="PLAYWRIGHT_PROJECT_NAME" value="${playwright.project.name}" />
 									</exec>
 
