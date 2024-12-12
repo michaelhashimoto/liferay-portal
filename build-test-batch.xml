@@ -2777,6 +2777,16 @@ ${poshi.runner.testsuite.testcase.name}</echo>
 								<isset property="env.PLAYWRIGHT_PROJECT_NAME" />
 							</condition>
 
+							<local name="ant.jdk.opts" />
+
+							<propertyregex
+								input="${env.ANT_OPTS}"
+								override="true"
+								property="ant.jdk.opts"
+								regexp="-XX:SurvivorRatio=\d+"
+								replace="-XX:SurvivorRatio=2048"
+							/>
+
 							<trycatch property="exception.message">
 								<try>
 									<local name="execute.path" />
@@ -2797,6 +2807,7 @@ ${poshi.runner.testsuite.testcase.name}</echo>
 
 									<exec executable="/bin/bash">
 										<arg value="modules/test/playwright/env/set_up.sh" />
+										<env key="ANT_OPTS" value="${ant.jdk.opts}" />
 										<env key="JAVA_HOME" value="${java.jdk.home}" />
 										<env key="JAVA_OPTS" value="${java.jdk.opts}" />
 										<env key="LIFERAY_HOME" value="${liferay.home}" />
