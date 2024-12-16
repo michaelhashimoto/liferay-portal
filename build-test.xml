@@ -1143,6 +1143,10 @@ jdbc.default.connectionProperties=oracle.jdbc.ReadTimeout=0;oracle.net.CONNECT_T
 
 			<var name="java.jdk.home" unset="true" />
 
+			<echo>type=@{type}</echo>
+			<echo>version=@{version}</echo>
+			<echo>architecture=@{architecture}</echo>
+
 			<if>
 				<isset property="local.java.jdk.home" />
 				<then>
@@ -1165,7 +1169,11 @@ jdbc.default.connectionProperties=oracle.jdbc.ReadTimeout=0;oracle.net.CONNECT_T
 							<then>
 								<propertycopy from="java.jdk[@{version}]" property="java.jdk.home.property.name" silent="true" />
 
+								<echo>java.jdk.home.property.name=${java.jdk.home.property.name}</echo>
+
 								<propertycopy from="${java.jdk.home.property.name}" property="java.jdk.home" silent="true" />
+
+								<echo>java.jdk.home=${java.jdk.home}</echo>
 							</then>
 						</elseif>
 						<elseif>
