@@ -4264,7 +4264,7 @@ public class JenkinsResultsParserUtil {
 			try {
 				Process process;
 
-				if (isNullOrEmpty(ecrRegistryName)) {
+				if (!isNullOrEmpty(ecrRegistryName)) {
 					Matcher dockerImageNameMatcher =
 						_dockerImageNamePattern.matcher(dockerImageName);
 
