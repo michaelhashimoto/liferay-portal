@@ -51,7 +51,7 @@
 												sb.append("/");
 
 												if (!analyticsCloudAsahImageName.matches("([^/\\s]+)/([^:\\s]+)(:([^:\\s]+))?")) {
-													project.setProperty("library/");
+													sb.append("library/");
 												}
 
 												sb.append(analyticsCloudAsahImageName);
