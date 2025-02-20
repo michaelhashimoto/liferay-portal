@@ -115,6 +115,8 @@ public class ResourceUtilTest extends ResourceUtil {
 			exception -> {
 				String message = exception.getMessage();
 
+				System.out.println("message=" + message);
+
 				Assert.assertTrue(
 					message.startsWith(
 						String.format(
