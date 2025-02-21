@@ -30,9 +30,13 @@ definition {
 
 		Click(locator1 = "Button#YOUTUBE_PLAY");
 
+		takeScreenshot();
+
 		MouseOver(
 			key_value = ${videoDuration},
 			locator1 = "YoutubePortlet#VIDEO_PROGRESS_BAR");
+
+		takeScreenshot();
 
 		WaitForElementPresent(
 			key_value = ${videoPlayNode},

@@ -98,6 +98,8 @@ definition {
 
 			Click(locator1 = "AlloyEditor#CONTENT_ADD_MENUBAR_VIDEO");
 
+			takeScreenshot();
+
 			if (${navTab} == "Documents and Media") {
 				ItemSelector.addVideoFromDM(
 					depotName = ${depotName},
@@ -120,9 +122,13 @@ definition {
 					videoURL = ${videoURL});
 			}
 			else {
+				takeScreenshot();
+
 				ItemSelector.addVideoFromURL(
 					navTab = ${navTab},
 					videoSourceURL = ${embedVideo});
+
+				takeScreenshot();
 			}
 		}
 	}
