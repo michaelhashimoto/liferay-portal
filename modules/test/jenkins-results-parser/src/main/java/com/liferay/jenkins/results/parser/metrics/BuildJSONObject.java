@@ -143,7 +143,7 @@ public class BuildJSONObject extends JSONObject {
 	private static final Pattern _buildURLPattern = Pattern.compile(
 		JenkinsResultsParserUtil.combine(
 			"(?<jobURL>https?://(?<masterHostname>",
-			"(?<cohortName>test-\\d+)-\\d+)(\\.liferay\\.com)?/job/",
+			"(?<cohortName>test-\\d+)-\\d+(-aws)?)(\\.liferay\\.com)?/job/",
 			"(?<jobName>[^/]+)/(.*/)?)(?<buildNumber>\\d+)/?"));
 	private static final Pattern _distPathPattern = Pattern.compile(
 		JenkinsResultsParserUtil.combine(

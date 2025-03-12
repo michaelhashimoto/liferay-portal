@@ -279,7 +279,7 @@ public class Jethr0BuildUpdater extends BaseBuildUpdater {
 	}
 
 	private static final Pattern _jenkinsBuildURLPattern = Pattern.compile(
-		"https?://(?<masterHostname>test-\\d+-\\d+)(.liferay.com)?/.+");
+		"https?://(?<masterHostname>test-\\d+-\\d+(-aws)?)(.liferay.com)?/.+");
 
 	private final String _jenkinsBuildId;
 	private long _jethr0BuildId;

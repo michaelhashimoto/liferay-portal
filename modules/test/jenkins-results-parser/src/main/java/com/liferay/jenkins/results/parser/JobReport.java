@@ -144,8 +144,8 @@ public class JobReport {
 
 	private static final Map<String, JobReport> _jobReports = new HashMap<>();
 	private static final Pattern _jobURLPattern = Pattern.compile(
-		"https?://(?<masterHostname>test-\\d+-\\d+)(\\.liferay\\.com)?/job/" +
-			"(?<jobName>[^/]+)/?");
+		"https?://(?<masterHostname>test-\\d+-\\d+(-aws)?)(\\.liferay\\.com)?" +
+			"/job/(?<jobName>[^/]+)/?");
 
 	private JenkinsMaster _jenkinsMaster;
 	private final URL _jobURL;

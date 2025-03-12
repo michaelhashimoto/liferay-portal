@@ -163,7 +163,7 @@ public class FileTopLevelBuildReport extends BaseTopLevelBuildReport {
 		JenkinsResultsParserUtil.combine(
 			"/mnt/mfs-hdd1-10.0.10/jenkins/testray-results/production/logs/",
 			"(?<startYearMonth>\\d{4}-\\d{2})/",
-			"(?<masterHostname>test-\\d+-\\d+)/(?<jobName>[^/]+)/",
+			"(?<masterHostname>test-\\d+-\\d+(-aws)?)/(?<jobName>[^/]+)/",
 			"(?<buildNumber>\\d+)/jenkins-console.txt.gz"));
 
 	private File _jenkinsConsoleFile;

@@ -496,11 +496,11 @@ public class PortalTestSuiteUpstreamControllerSingleSuiteBuildRunner
 		1000 * 60 * 60 * 24;
 
 	private static final Pattern _buildURLPattern = Pattern.compile(
-		"https://(?<masterHostname>test-\\d+-\\d+)\\.liferay\\.com/job/" +
-			"(?<jobName>[^/]+)/(?<buildNumber>\\d+)/?");
+		"https://(?<masterHostname>test-\\d+-\\d+(-aws)?)\\.liferay\\.com/" +
+			"job/(?<jobName>[^/]+)/(?<buildNumber>\\d+)/?");
 	private static final Pattern _jobURLPattern = Pattern.compile(
-		"https://(?<masterHostname>test-\\d+-\\d+)\\.liferay\\.com/job/" +
-			"(?<jobName>[^/\"]+)/?");
+		"https://(?<masterHostname>test-\\d+-\\d+(-aws)?)\\.liferay\\.com/" +
+			"job/(?<jobName>[^/\"]+)/?");
 	private static final Pattern _portalBranchSHAPattern = Pattern.compile(
 		"<strong>Git ID:</strong> <a href=\"https://github.com/[^/]+/[^/]+/" +
 			"commit/(?<branchSHA>[0-9a-f]{40})\">[0-9a-f]{7}</a>");

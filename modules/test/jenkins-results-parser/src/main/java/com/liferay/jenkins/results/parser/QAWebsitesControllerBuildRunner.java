@@ -399,7 +399,7 @@ public class QAWebsitesControllerBuildRunner
 	private static final Pattern _buildDescriptionPattern = Pattern.compile(
 		"<a href=\"(?<buildURL>[^\"]+)\">Build URL</a>");
 	private static final Pattern _buildURLPattern = Pattern.compile(
-		"https://(?<masterHostname>test-\\d+-\\d+)\\.?.*/job/" +
+		"https://(?<masterHostname>test-\\d+-\\d+(-aws)?)\\.?.*/job/" +
 			"(?<jobName>[^/]+)/(?<buildNumber>\\d+)/?");
 	private static final Pattern _gitHubURLPattern = Pattern.compile(
 		"https://github.com/(?<username>[^/]+)/(?<repository>[^/]+)/" +
