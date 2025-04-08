@@ -229,6 +229,10 @@ public abstract class BaseBuildUpdater implements BuildUpdater {
 	private void _reinvoke(ReinvokeRule reinvokeRule) {
 		Build build = getBuild();
 
+		Build.Invocation previousInvocation = build.getPreviousInvocation();
+
+		previousInvocation.setReinvokeRule(reinvokeRule);
+
 		if (build instanceof AxisBuild || build instanceof ParentBuild ||
 			build.hasMaximumInvocationCount()) {
 

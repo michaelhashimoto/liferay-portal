@@ -3824,6 +3824,8 @@ information. Make sure to commit in all build-lib-versions results.
 
 		<run-batch-test>
 			<test-action>
+				<fail message="Failed to start Analytics Cloud" />
+
 				<propertyfile file="${project.dir}/test.class.file.names.properties">
 					<entry key="TEST_CLASS_GROUP_0" value="${central.requirements.tests}" />
 				</propertyfile>
