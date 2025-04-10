@@ -1198,6 +1198,18 @@ app.server.type=@{app.server.type}]]></echo>
 			
 			<echo>-------------------------------------</echo>
 
+			<execute>
+				mkdir blah
+
+				cp liferay-portal-bundle-@{app.server.type}.tar.gz blah/liferay-portal-bundle-@{app.server.type}.tar.gz
+
+				cd blah
+
+				tar xvf liferay-portal-bundle-@{app.server.type}.tar.gz
+
+				stat **/webapps/ROOT/init.jsp
+			</execute>
+
 			<echo>!!!!SLEEP!!!!</echo>
 
 			<sleep seconds="100000000" />
