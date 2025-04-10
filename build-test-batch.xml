@@ -1173,7 +1173,7 @@ app.server.type=@{app.server.type}]]></echo>
 			<execute>
 				stat bundles/*/webapps/ROOT/init.jsp
 			</execute>
-			
+
 			<echo>-------------------------------------</echo>
 
 			<tar
@@ -1200,7 +1200,7 @@ app.server.type=@{app.server.type}]]></echo>
 
 			<echo>!!!!SLEEP!!!!</echo>
 
-			<sleep second="100000000" />
+			<sleep seconds="100000000" />
 
 			<lstopwatch action="total" name="prepare-test-build-dist.bundles.@{app.server.type}.compress" />
 
