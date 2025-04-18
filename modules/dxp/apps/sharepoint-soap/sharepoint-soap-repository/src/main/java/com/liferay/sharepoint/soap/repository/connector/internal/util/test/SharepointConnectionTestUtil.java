@@ -142,11 +142,11 @@ public class SharepointConnectionTestUtil {
 
 	private static final String _VM_ALLOCATION_URL = StringBundler.concat(
 		"http://it.liferay.com/osb-ici-controller-web/vm/allocation/borrow?",
-		"leaseTime=", _LEASE_TIME, "&resourceType=qa.sharepoint2010");
+		"leaseTime=", _LEASE_TIME, "&resourceType=qa.sharepoint2013");
 
 	private static final String _VM_RELEASE_URL =
 		"http://it.liferay.com/osb-ici-controller-web/vm/allocation/release?" +
-			"hostname=%s&amp;resourceType=qa.sharepoint2010";
+			"hostname=%s&amp;resourceType=qa.sharepoint2013";
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		SharepointConnectionTestUtil.class);
