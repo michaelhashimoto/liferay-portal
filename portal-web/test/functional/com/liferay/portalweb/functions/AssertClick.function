@@ -20,11 +20,7 @@ definition {
 
 		selenium.mouseOver(${locator1});
 
-		selenium.pause(1000);
-
 		selenium.clickAt(${locator1}, ${value1});
-
-		selenium.pause(1000);
 
 		selenium.assertJavaScriptErrors("true");
 
@@ -159,6 +155,22 @@ definition {
 		selenium.pause(1500);
 
 		AssertClick.assertTextClickAt();
+
+		selenium.assertJavaScriptErrors("true");
+
+		selenium.assertLiferayErrors();
+	}
+
+	function assertTextMouseDownMouseUpAt(locator1, value1) {
+		WaitForSPARefresh();
+
+		AssertTextEquals.assertPartialText();
+
+		selenium.mouseOver(${locator1});
+
+		selenium.mouseDownAt(${locator1}, "0,0");
+
+		selenium.mouseUpAt(${locator1}, "0,0");
 
 		selenium.assertJavaScriptErrors("true");
 
