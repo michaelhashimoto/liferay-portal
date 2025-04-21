@@ -46,7 +46,7 @@ definition {
 
 		selenium.mouseOver(${locator1});
 
-		selenium.clickAt(${locator1}, ${value1});
+		selenium.clickAt(${locator1}, "0,0");
 
 		selenium.assertJavaScriptErrors("true");
 

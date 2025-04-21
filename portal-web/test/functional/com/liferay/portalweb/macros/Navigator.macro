@@ -115,7 +115,7 @@ definition {
 	macro gotoNavNested(navNested = null) {
 		var key_navNested = ${navNested};
 
-		AssertClick.assertTextMouseDownMouseUpAt(
+		AssertClick.assertTextClickAt(
 			locator1 = "NavNested#NAV_NESTED_LINK",
 			value1 = ${navNested});
 
