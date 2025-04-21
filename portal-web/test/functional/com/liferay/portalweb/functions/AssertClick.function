@@ -168,9 +168,15 @@ definition {
 
 		selenium.mouseOver(${locator1});
 
+		selenium.pause(500);
+
 		selenium.mouseDownAt(${locator1}, "0,0");
 
+		selenium.pause(500);
+
 		selenium.mouseUpAt(${locator1}, "0,0");
+
+		selenium.pause(500);
 
 		selenium.assertJavaScriptErrors("true");
 
