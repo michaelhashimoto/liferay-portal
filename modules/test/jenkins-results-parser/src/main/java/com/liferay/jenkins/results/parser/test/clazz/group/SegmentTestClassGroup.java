@@ -222,6 +222,12 @@ public class SegmentTestClassGroup extends BaseTestClassGroup {
 	}
 
 	private String _getSlaveLabel() {
+		if (!_axisTestClassGroups.isEmpty()) {
+			AxisTestClassGroup axisTestClassGroup = _axisTestClassGroups.get(0);
+
+			return axisTestClassGroup.getSlaveLabel();
+		}
+
 		BatchTestClassGroup batchTestClassGroup = getBatchTestClassGroup();
 
 		return batchTestClassGroup.getSlaveLabel();
