@@ -521,11 +521,19 @@ public class AnalyticsCloudClient {
 		String analyticsCloudDomainAllowed = PropsUtil.get(
 			PropsKeys.ANALYTICS_CLOUD_DOMAIN_ALLOWED);
 
+		System.out.println(
+			"analyticsCloudDomainAllowed=" + analyticsCloudDomainAllowed);
+		System.out.println("url=" + url);
+
 		if (StringUtil.equals(analyticsCloudDomainAllowed, StringPool.STAR)) {
 			return;
 		}
 
 		String domain = HttpComponentsUtil.getDomain(url);
+
+		System.out.println("domain=" + domain);
+		System.out.println(
+			"inet_address=" + InetAddressUtil.getInetAddressByName(domain));
 
 		if (InetAddressUtil.isLocalInetAddress(
 				InetAddressUtil.getInetAddressByName(domain)) ||
