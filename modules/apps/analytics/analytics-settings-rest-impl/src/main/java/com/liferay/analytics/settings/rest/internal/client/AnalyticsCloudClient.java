@@ -521,9 +521,11 @@ public class AnalyticsCloudClient {
 		String analyticsCloudDomainAllowed = PropsUtil.get(
 			PropsKeys.ANALYTICS_CLOUD_DOMAIN_ALLOWED);
 
-		System.out.println(
-			"analyticsCloudDomainAllowed=" + analyticsCloudDomainAllowed);
-		System.out.println("url=" + url);
+		if (_log.isErrorEnabled()) {
+			_log.error(
+				"analyticsCloudDomainAllowed=" + analyticsCloudDomainAllowed);
+			_log.error("url=" + url);
+		}
 
 		if (StringUtil.equals(analyticsCloudDomainAllowed, StringPool.STAR)) {
 			return;
@@ -531,9 +533,12 @@ public class AnalyticsCloudClient {
 
 		String domain = HttpComponentsUtil.getDomain(url);
 
-		System.out.println("domain=" + domain);
-		System.out.println(
-			"inet_address=" + InetAddressUtil.getInetAddressByName(domain));
+
+		if (_log.isErrorEnabled()) {
+			_log.error("domain=" + domain);
+			_log.error(
+				"inet_address=" + InetAddressUtil.getInetAddressByName(domain));
+		}
 
 		if (InetAddressUtil.isLocalInetAddress(
 				InetAddressUtil.getInetAddressByName(domain)) ||
