@@ -13,6 +13,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 
+import java.net.MalformedURLException;
 import java.net.URL;
 
 import java.util.ArrayList;
@@ -34,6 +35,46 @@ public abstract class BaseTopLevelBuildReport
 	extends BaseBuildReport implements TopLevelBuildReport {
 
 	@Override
+	public ControllerBuildReport getControllerBuildReport() {
+		JSONObject buildReportJSONObject = getBuildReportJSONObject();
+
+		if (!buildReportJSONObject.has("controller")) {
+			return null;
+		}
+
+		JSONObject controllerJSONObject =
+			buildReportJSONObject.getJSONObject("controller");
+
+		if (!controllerJSONObject.has("buildURL")) {
+			return null;
+		}
+
+		_controllerBuildReport = BuildReportFactory.newControllerBuildReport(
+			controllerJSONObject, this);
+
+		return _controllerBuildReport;
+	}
+
+	private ControllerBuildReport _controllerBuildReport;
+
+	@Override
+	public URL getJenkinsReportURL() {
+		JenkinsMaster jenkinsMaster = getJenkinsMaster();
+
+		try {
+			return new URL(
+				JenkinsResultsParserUtil.combine(
+					"https://", jenkinsMaster.getName(), ".liferay.com/",
+					"userContent/jobs/", getJobName(), "/builds/",
+					String.valueOf(getBuildNumber()), "/jenkins-report.html"));
+		}
+		catch (MalformedURLException malformedURLException) {
+			throw new RuntimeException(
+				"Unable to get Jenkins report URL", malformedURLException);
+		}
+	}
+
+	@Override
 	public Map<String, String> getBuildParameters() {
 		Map<String, String> buildParameters = new HashMap<>();
 
@@ -51,6 +92,23 @@ public abstract class BaseTopLevelBuildReport
 		}
 
 		return buildParameters;
+	}
+
+	@Override
+	public Job.BuildProfile getBuildProfile() {
+		Map<String, String> buildParameters = getBuildParameters();
+
+		String buildProfileString = buildParameters.get(
+			"TEST_PORTAL_BUILD_PROFILE");
+
+		Job.BuildProfile buildProfile = Job.BuildProfile.getByString(
+			buildProfileString);
+
+		if (buildProfile != null) {
+			return buildProfile;
+		}
+
+		return Job.BuildProfile.DXP;
 	}
 
 	@Override
@@ -149,6 +207,12 @@ public abstract class BaseTopLevelBuildReport
 		_downstreamBuildReports.removeAll(Collections.singleton(null));
 
 		return _downstreamBuildReports;
+	}
+
+	@Override
+	public String getTestrayBuildDateString() {
+		return JenkinsResultsParserUtil.toDateString(
+			getStartDate(), "yyyy-MM-dd HH:mm:ss", "America/Los_Angeles");
 	}
 
 	@Override
@@ -268,7 +332,14 @@ public abstract class BaseTopLevelBuildReport
 			"batches", _getBatchesJSONArray(buildResultJSONObject)
 		).put(
 			"buildURL", String.valueOf(getBuildURL())
-		).put(
+		);
+
+		if (buildResultJSONObject.has("controller")) {
+			buildReportJSONObject.put(
+				"controller", buildResultJSONObject.get("controller"));
+		}
+
+		buildReportJSONObject.put(
 			"duration", buildResultJSONObject.get("duration")
 		).put(
 			"result", buildResultJSONObject.get("result")

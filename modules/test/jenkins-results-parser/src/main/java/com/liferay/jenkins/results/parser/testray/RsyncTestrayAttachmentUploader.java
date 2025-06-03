@@ -5,10 +5,8 @@
 
 package com.liferay.jenkins.results.parser.testray;
 
-import com.liferay.jenkins.results.parser.Build;
-import com.liferay.jenkins.results.parser.JenkinsMaster;
-import com.liferay.jenkins.results.parser.JenkinsResultsParserUtil;
-import com.liferay.jenkins.results.parser.RemoteExecutor;
+import com.liferay.jenkins.results.parser.*;
+import org.json.JSONObject;
 
 import java.io.File;
 import java.io.IOException;
@@ -156,13 +154,29 @@ public class RsyncTestrayAttachmentUploader
 			throw new RuntimeException(exception);
 		}
 
+		TopLevelBuildReport topLevelBuildReport = getTopLevelBuildReport();
+
 		for (File preparedFile : getPreparedFiles()) {
-			System.out.println(
-				JenkinsResultsParserUtil.combine(
-					"Uploaded ", String.valueOf(getTestrayServerLogsURL()), "/",
-					JenkinsResultsParserUtil.getPathRelativeTo(
-						preparedFile, getPreparedFilesBaseDir())));
+			try {
+				URL testrayServerURL = new URL(
+					JenkinsResultsParserUtil.combine(
+						String.valueOf(getTestrayServerLogsURL()), "/",
+						JenkinsResultsParserUtil.getPathRelativeTo(
+							preparedFile, getPreparedFilesBaseDir())));
+
+				System.out.println("Uploaded " + testrayServerURL);
+
+				if (topLevelBuildReport != null) {
+					topLevelBuildReport.addTestrayAttachmentURL(
+						testrayServerURL);
+				}
+			}
+			catch (MalformedURLException malformedURLException) {
+				throw new RuntimeException(malformedURLException);
+			}
 		}
+
+		uploadBuildReport();
 	}
 
 	private boolean _uploaded;

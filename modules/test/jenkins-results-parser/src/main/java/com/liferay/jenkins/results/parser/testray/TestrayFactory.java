@@ -9,6 +9,7 @@ import com.liferay.jenkins.results.parser.Build;
 import com.liferay.jenkins.results.parser.JenkinsResultsParserUtil;
 import com.liferay.jenkins.results.parser.SourceFormatBuild;
 import com.liferay.jenkins.results.parser.TopLevelBuild;
+import com.liferay.jenkins.results.parser.TopLevelBuildReport;
 import com.liferay.jenkins.results.parser.test.clazz.TestClass;
 import com.liferay.jenkins.results.parser.test.clazz.TestClassMethod;
 import com.liferay.jenkins.results.parser.test.clazz.group.AxisTestClassGroup;
@@ -127,21 +128,15 @@ public class TestrayFactory {
 		return new TestrayCase(testrayProject, jsonObject);
 	}
 
-	public static TestrayCaseResult newTestrayCaseResult(
-		TestrayBuild testrayBuild, JSONObject jsonObject) {
-
-		return new TestrayCaseResult(testrayBuild, jsonObject);
-	}
-
-	public static TestrayCaseResult newTestrayCaseResult(
+	public static TestrayCaseResult newBuildTestrayCaseResult(
 		TestrayBuild testrayBuild, TopLevelBuild topLevelBuild,
 		AxisTestClassGroup axisTestClassGroup, TestClass testClass) {
 
-		return newTestrayCaseResult(
+		return newBuildTestrayCaseResult(
 			testrayBuild, topLevelBuild, axisTestClassGroup, testClass, null);
 	}
 
-	public static TestrayCaseResult newTestrayCaseResult(
+	public static TestrayCaseResult newBuildTestrayCaseResult(
 		TestrayBuild testrayBuild, TopLevelBuild topLevelBuild,
 		AxisTestClassGroup axisTestClassGroup, TestClass testClass,
 		TestClassMethod testClassMethod) {
@@ -196,10 +191,16 @@ public class TestrayFactory {
 			testrayBuild, topLevelBuild, axisTestClassGroup);
 	}
 
-	public static TestrayCaseResult newTestrayCaseResult(
+	public static TestrayCaseResult newJSONObjectTestrayCaseResult(
+		TestrayBuild testrayBuild, JSONObject jsonObject) {
+
+		return new JSONObjectTestrayCaseResult(testrayBuild, jsonObject);
+	}
+
+	public static TestrayCaseResult newJSONObjectTestrayCaseResult(
 		TestrayServer testrayServer, JSONObject jsonObject) {
 
-		return new TestrayCaseResult(testrayServer, jsonObject);
+		return new JSONObjectTestrayCaseResult(testrayServer, jsonObject);
 	}
 
 	public static TestrayCaseType newTestrayCaseType(
@@ -304,6 +305,15 @@ public class TestrayFactory {
 		TestrayProject testrayProject, JSONObject jsonObject) {
 
 		return new TestrayTeam(testrayProject, jsonObject);
+	}
+
+	public static TopLevelBuildReportTestrayCaseResult
+		newTopLevelBuildReportTestrayCaseResult(
+			TestrayBuild testrayBuild,
+			TopLevelBuildReport topLevelBuildReport) {
+
+		return new TopLevelBuildReportTestrayCaseResult(
+			testrayBuild, topLevelBuildReport);
 	}
 
 	public static TopLevelBuildTestrayCaseResult

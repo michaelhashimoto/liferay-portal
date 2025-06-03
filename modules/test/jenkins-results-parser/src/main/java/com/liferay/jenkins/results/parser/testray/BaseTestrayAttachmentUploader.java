@@ -5,12 +5,13 @@
 
 package com.liferay.jenkins.results.parser.testray;
 
-import com.liferay.jenkins.results.parser.Build;
-import com.liferay.jenkins.results.parser.JenkinsResultsParserUtil;
+import com.liferay.jenkins.results.parser.*;
+import org.json.JSONObject;
 
 import java.io.File;
 import java.io.IOException;
 
+import java.net.MalformedURLException;
 import java.net.URL;
 
 import java.util.List;
@@ -126,6 +127,90 @@ public abstract class BaseTestrayAttachmentUploader
 
 		return gzipFile;
 	}
+
+	protected URL getBuildReportURL() {
+		TestrayS3Bucket testrayS3Bucket = TestrayS3Bucket.getInstance();
+
+		TestrayAttachmentRecorder testrayAttachmentRecorder =
+			getTestrayAttachmentRecorder();
+
+		try {
+			return new URL(
+				JenkinsResultsParserUtil.combine(
+					testrayS3Bucket.getTestrayS3BaseURL(), "/",
+					testrayAttachmentRecorder.getRelativeBuildDirPath(),
+					"build-report.json.gz"));
+		}
+		catch (MalformedURLException malformedURLException) {
+			throw new RuntimeException(malformedURLException);
+		}
+	}
+
+	protected void uploadBuildReport() {
+		TopLevelBuildReport topLevelBuildReport = getTopLevelBuildReport();
+
+		if (topLevelBuildReport == null) {
+			return;
+		}
+
+		topLevelBuildReport.addTestrayS3AttachmentURL(
+			getBuildReportURL());
+
+		JSONObject buildReportJSONObject =
+			topLevelBuildReport.getBuildReportJSONObject();
+
+		TestrayAttachmentRecorder testrayAttachmentRecorder =
+			getTestrayAttachmentRecorder();
+
+		File buildReportJSONObjectFile = new File(
+			getPreparedFilesBaseDir(),
+			testrayAttachmentRecorder.getRelativeBuildDirPath() +
+				"/build-report.json");
+
+		File buildReportJSONObjectGzipFile = new File(
+			getPreparedFilesBaseDir(),
+			testrayAttachmentRecorder.getRelativeBuildDirPath() +
+				"/build-report.json.gz");
+
+		try {
+			JenkinsResultsParserUtil.write(
+				buildReportJSONObjectFile, buildReportJSONObject.toString());
+
+			JenkinsResultsParserUtil.gzip(
+				buildReportJSONObjectFile, buildReportJSONObjectGzipFile);
+
+			JenkinsResultsParserUtil.delete(buildReportJSONObjectFile);
+		}
+		catch (IOException ioException) {
+			throw new RuntimeException(ioException);
+		}
+
+		TestrayS3Bucket testrayS3Bucket = TestrayS3Bucket.getInstance();
+
+		testrayS3Bucket.createTestrayS3Object(
+			JenkinsResultsParserUtil.getPathRelativeTo(
+				buildReportJSONObjectGzipFile, getPreparedFilesBaseDir()),
+			buildReportJSONObjectGzipFile);
+	}
+
+	protected TopLevelBuildReport getTopLevelBuildReport() {
+		if (_topLevelBuildReport != null) {
+			return _topLevelBuildReport;
+		}
+
+		Build build = getBuild();
+
+		if (!(build instanceof TopLevelBuild)) {
+			return null;
+		}
+
+		_topLevelBuildReport = BuildReportFactory.newTopLevelBuildReport(
+			(TopLevelBuild)build);
+
+		return _topLevelBuildReport;
+	}
+
+	private TopLevelBuildReport _topLevelBuildReport;
 
 	private final Build _build;
 	private boolean _prepared;

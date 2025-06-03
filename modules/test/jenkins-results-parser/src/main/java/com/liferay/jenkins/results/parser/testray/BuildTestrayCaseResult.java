@@ -10,6 +10,7 @@ import com.liferay.jenkins.results.parser.JenkinsMaster;
 import com.liferay.jenkins.results.parser.JenkinsResultsParserUtil;
 import com.liferay.jenkins.results.parser.RemoteExecutor;
 import com.liferay.jenkins.results.parser.TopLevelBuild;
+import org.json.JSONObject;
 
 import java.io.File;
 import java.io.IOException;
@@ -28,10 +29,12 @@ import java.util.concurrent.TimeoutException;
  */
 public abstract class BuildTestrayCaseResult extends TestrayCaseResult {
 
-	public BuildTestrayCaseResult(
+	protected BuildTestrayCaseResult(
 		TestrayBuild testrayBuild, TopLevelBuild topLevelBuild) {
 
-		super(testrayBuild, topLevelBuild);
+		super(testrayBuild, new JSONObject());
+
+		_topLevelBuild =  topLevelBuild;
 
 		String workspace = System.getenv("WORKSPACE");
 
@@ -43,6 +46,12 @@ public abstract class BuildTestrayCaseResult extends TestrayCaseResult {
 			workspace,
 			"testray/" + JenkinsResultsParserUtil.getDistinctTimeStamp());
 	}
+
+	public TopLevelBuild getTopLevelBuild() {
+		return _topLevelBuild;
+	}
+
+	private final TopLevelBuild _topLevelBuild;
 
 	@Override
 	public long getDuration() {

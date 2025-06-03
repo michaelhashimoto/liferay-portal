@@ -37,11 +37,25 @@ public class DefaultTopLevelBuildReport extends BaseTopLevelBuildReport {
 		buildReportJSONObject = new JSONObject();
 
 		buildReportJSONObject.put(
-			"buildParameters", _topLevelBuild.getParameters());
-		buildReportJSONObject.put("buildURL", _topLevelBuild.getBuildURL());
-		buildReportJSONObject.put("duration", _topLevelBuild.getDuration());
-		buildReportJSONObject.put("result", _topLevelBuild.getResult());
-		buildReportJSONObject.put("startTime", _topLevelBuild.getStartTime());
+			"buildParameters", _topLevelBuild.getParameters()
+		).put(
+			"buildURL", _topLevelBuild.getBuildURL()
+		);
+
+		Build controllerBuild = _topLevelBuild.getControllerBuild();
+
+		if (controllerBuild != null) {
+			buildReportJSONObject.put(
+				"controller", _getControllerJSONObject(controllerBuild));
+		}
+
+		buildReportJSONObject.put(
+			"duration", _topLevelBuild.getDuration()
+		).put(
+			"result", _topLevelBuild.getResult()
+		).put(
+			"startTime", _topLevelBuild.getStartTime()
+		);
 
 		StopWatchRecordsGroup stopWatchRecordsGroup =
 			_topLevelBuild.getStopWatchRecordsGroup();
@@ -50,6 +64,15 @@ public class DefaultTopLevelBuildReport extends BaseTopLevelBuildReport {
 			buildReportJSONObject.put(
 				"stopWatchRecords", stopWatchRecordsGroup.getJSONArray());
 		}
+
+		buildReportJSONObject.put(
+			"testrayAttachmentURLs", _topLevelBuild.getTestrayAttachmentURLs()
+		).put(
+			"testrayS3AttachmentURLs",
+			_topLevelBuild.getTestrayS3AttachmentURLs()
+		).put(
+			"testSuiteName", _topLevelBuild.getTestSuiteName()
+		);
 
 		List<Callable<JSONObject>> callables = new ArrayList<>();
 
@@ -137,9 +160,6 @@ public class DefaultTopLevelBuildReport extends BaseTopLevelBuildReport {
 
 		buildReportJSONObject.put("batches", batchesJSONArray);
 
-		buildReportJSONObject.put(
-			"testSuiteName", _topLevelBuild.getTestSuiteName());
-
 		return buildReportJSONObject;
 	}
 
@@ -169,6 +189,32 @@ public class DefaultTopLevelBuildReport extends BaseTopLevelBuildReport {
 	@Override
 	protected File getJenkinsConsoleLocalFile() {
 		return _jenkinsConsoleLocalFile;
+	}
+
+	private JSONObject _getControllerJSONObject(Build controllerBuild) {
+		JSONObject controllerBuildJSONObject = new JSONObject();
+
+		controllerBuildJSONObject.put(
+			"buildParameters", controllerBuild.getParameters()
+		).put(
+			"buildURL", controllerBuild.getBuildURL()
+		).put(
+			"duration", controllerBuild.getDuration()
+		).put(
+			"result", controllerBuild.getResult()
+		).put(
+			"startTime", controllerBuild.getStartTime()
+		);
+
+		StopWatchRecordsGroup stopWatchRecordsGroup =
+			controllerBuild.getStopWatchRecordsGroup();
+
+		if (stopWatchRecordsGroup != null) {
+			controllerBuildJSONObject.put(
+				"stopWatchRecords", stopWatchRecordsGroup.getJSONArray());
+		}
+
+		return controllerBuildJSONObject;
 	}
 
 	private JSONObject _getDownstreamBuildJSONObject(Build build) {
@@ -203,6 +249,12 @@ public class DefaultTopLevelBuildReport extends BaseTopLevelBuildReport {
 			downstreamBuildJSONObject.put(
 				"stopWatchRecords", stopWatchRecordsGroup.getJSONArray());
 		}
+
+		downstreamBuildJSONObject.put(
+			"testrayAttachmentURLs", build.getTestrayAttachmentURLs()
+		).put(
+			"testrayS3AttachmentURLs", build.getTestrayS3AttachmentURLs()
+		);
 
 		JSONArray testResultsJSONArray = new JSONArray();
 

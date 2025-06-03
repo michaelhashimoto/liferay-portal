@@ -184,7 +184,7 @@ public class TopLevelBuildTestrayCaseResult extends BuildTestrayCaseResult {
 
 		propertiesMap.put("testray.run.id", testrayRun.getRunIDString());
 
-		_addPropertyElements(
+		addPropertyElements(
 			rootElement.addElement("properties"), propertiesMap);
 
 		List<TestrayCaseResult> testrayCaseResults = new ArrayList<>();
@@ -233,7 +233,7 @@ public class TopLevelBuildTestrayCaseResult extends BuildTestrayCaseResult {
 				Element propertiesElement = testcaseElement.addElement(
 					"properties");
 
-				_addPropertyElements(propertiesElement, testcasePropertiesMap);
+				addPropertyElements(propertiesElement, testcasePropertiesMap);
 
 				String[] warnings = testrayCaseResult.getWarnings();
 
@@ -535,28 +535,6 @@ public class TopLevelBuildTestrayCaseResult extends BuildTestrayCaseResult {
 				}
 
 			});
-	}
-
-	private void _addPropertyElements(
-		Element propertiesElement, Map<String, String> propertiesMap) {
-
-		for (Map.Entry<String, String> propertyEntry :
-				propertiesMap.entrySet()) {
-
-			Element propertyElement = propertiesElement.addElement("property");
-
-			String propertyName = propertyEntry.getKey();
-			String propertyValue = propertyEntry.getValue();
-
-			if (JenkinsResultsParserUtil.isNullOrEmpty(propertyName) ||
-				JenkinsResultsParserUtil.isNullOrEmpty(propertyValue)) {
-
-				continue;
-			}
-
-			propertyElement.addAttribute("name", propertyName);
-			propertyElement.addAttribute("value", propertyValue);
-		}
 	}
 
 }

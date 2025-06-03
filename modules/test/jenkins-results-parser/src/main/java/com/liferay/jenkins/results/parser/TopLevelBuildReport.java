@@ -19,13 +19,21 @@ public interface TopLevelBuildReport extends BuildReport {
 
 	public Map<String, String> getBuildParameters();
 
+	public Job.BuildProfile getBuildProfile();
+
 	public URL getBuildReportJSONTestrayURL();
+
+	public ControllerBuildReport getControllerBuildReport();
+
+	public String getTestrayBuildDateString();
 
 	public URL getBuildReportJSONUserContentURL();
 
 	public TestrayS3Object getBuildReportTestrayS3Object();
 
 	public List<DownstreamBuildReport> getDownstreamBuildReports();
+
+	public URL getJenkinsReportURL();
 
 	public URL getTestResultsJSONUserContentURL();
 
