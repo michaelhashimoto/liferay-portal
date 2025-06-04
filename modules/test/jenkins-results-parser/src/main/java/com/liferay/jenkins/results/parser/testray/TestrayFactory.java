@@ -134,7 +134,8 @@ public class TestrayFactory {
 		AxisTestClassGroup axisTestClassGroup, TestClass testClass) {
 
 		return newBuildTestrayCaseResult(
-			testrayBuild, topLevelBuildReport, axisTestClassGroup, testClass, null);
+			testrayBuild, topLevelBuildReport, axisTestClassGroup, testClass,
+			null);
 	}
 
 	public static TestrayCaseResult newBuildTestrayCaseResult(

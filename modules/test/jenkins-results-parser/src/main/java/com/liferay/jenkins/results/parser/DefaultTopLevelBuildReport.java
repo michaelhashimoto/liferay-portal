@@ -52,6 +52,8 @@ public class DefaultTopLevelBuildReport extends BaseTopLevelBuildReport {
 		buildReportJSONObject.put(
 			"duration", _topLevelBuild.getDuration()
 		).put(
+			"failureMessage", _topLevelBuild.getFailureMessage()
+		).put(
 			"result", _topLevelBuild.getResult()
 		).put(
 			"startTime", _topLevelBuild.getStartTime()
@@ -72,6 +74,8 @@ public class DefaultTopLevelBuildReport extends BaseTopLevelBuildReport {
 			_topLevelBuild.getTestrayS3AttachmentURLs()
 		).put(
 			"testSuiteName", _topLevelBuild.getTestSuiteName()
+		).put(
+			"totalDuration", _topLevelBuild.getTotalDuration()
 		);
 
 		List<Callable<JSONObject>> callables = new ArrayList<>();
@@ -236,6 +240,8 @@ public class DefaultTopLevelBuildReport extends BaseTopLevelBuildReport {
 			"buildURL", build.getBuildURL()
 		).put(
 			"duration", build.getDuration()
+		).put(
+			"failureMessage", build.getFailureMessage()
 		).put(
 			"result", build.getResult()
 		).put(

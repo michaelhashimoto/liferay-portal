@@ -33,6 +33,8 @@ public interface TopLevelBuildReport extends BuildReport {
 
 	public List<DownstreamBuildReport> getDownstreamBuildReports();
 
+	public DownstreamBuildReport getDownstreamBuildReport(String axisName);
+
 	public URL getJenkinsReportURL();
 
 	public URL getTestResultsJSONUserContentURL();
@@ -42,5 +44,7 @@ public interface TopLevelBuildReport extends BuildReport {
 	public long getTopLevelActiveDuration();
 
 	public long getTopLevelPassiveDuration();
+
+	public long getTotalDuration();
 
 }

@@ -47,4 +47,6 @@ public interface BuildReport {
 
 	public boolean isFailing();
 
+	public String getFailureMessage();
+
 }

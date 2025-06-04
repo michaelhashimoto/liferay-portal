@@ -73,6 +73,13 @@ public abstract class BaseBuildReport implements BuildReport {
 	}
 
 	@Override
+	public String getFailureMessage() {
+		JSONObject buildReportJSONObject = getBuildReportJSONObject();
+
+		return buildReportJSONObject.optString("failureMessage");
+	}
+
+	@Override
 	public JenkinsMaster getJenkinsMaster() {
 		if (_jenkinsMaster != null) {
 			return _jenkinsMaster;
@@ -235,8 +242,8 @@ public abstract class BaseBuildReport implements BuildReport {
 	public boolean isFailing() {
 		String result = getResult();
 
-		if (!result.equals("FAILURE") && !result.equals("REGRESSION") &&
-			!result.equals("UNSTABLE")) {
+		if (result.equals("FAILURE") || result.equals("REGRESSION") ||
+			result.equals("UNSTABLE")) {
 
 			return true;
 		}

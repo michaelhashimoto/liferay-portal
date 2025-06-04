@@ -949,10 +949,6 @@ public class TestrayImporter {
 
 			topLevelBuildTestrayCaseResult.recordTestrayCaseResult(job);
 
-			if (true) {
-				continue;
-			}
-
 			for (AxisTestClassGroup axisTestClassGroup : axisTestClassGroups) {
 				TestrayBuild testrayBuild = getTestrayBuild(
 					axisTestClassGroup.getTestBaseDir());
@@ -985,18 +981,16 @@ public class TestrayImporter {
 
 				Map<String, String> propertiesMap = new HashMap<>();
 
-				TopLevelBuild testTopLevelBuild = getTopLevelBuild();
-
 				propertiesMap.put(
 					"testray.build.date",
-					testTopLevelBuild.getTestrayBuildDateString());
+					_topLevelBuildReport.getTestrayBuildDateString());
 
 				propertiesMap.put(
 					"testray.build.name", testrayBuild.getName());
 				propertiesMap.put(
 					"testray.build.time",
 					JenkinsResultsParserUtil.toDurationString(
-						testTopLevelBuild.getDuration()));
+						_topLevelBuildReport.getDuration()));
 
 				TestrayRoutine testrayRoutine =
 					testrayBuild.getTestrayRoutine();
@@ -1025,7 +1019,7 @@ public class TestrayImporter {
 				propertiesMap.put(
 					"testray.total.cpu.use.time",
 					JenkinsResultsParserUtil.toDurationString(
-						testTopLevelBuild.getTotalDuration()));
+						_topLevelBuildReport.getTotalDuration()));
 
 				_addPropertyElements(
 					rootElement.addElement("properties"),
@@ -1035,7 +1029,7 @@ public class TestrayImporter {
 					new ArrayList<>();
 
 				if (axisTestClassGroup instanceof
-					FunctionalAxisTestClassGroup ||
+						FunctionalAxisTestClassGroup ||
 					axisTestClassGroup instanceof
 						JUnitAxisTestClassGroup ||
 					axisTestClassGroup instanceof
@@ -1066,15 +1060,15 @@ public class TestrayImporter {
 					}
 				}
 				else if (axisTestClassGroup instanceof
-					JSUnitAxisTestClassGroup ||
-					axisTestClassGroup instanceof
-						PlaywrightAxisTestClassGroup) {
+							JSUnitAxisTestClassGroup ||
+						 axisTestClassGroup instanceof
+							PlaywrightAxisTestClassGroup) {
 
 					for (TestClass testClass :
-						axisTestClassGroup.getTestClasses()) {
+							axisTestClassGroup.getTestClasses()) {
 
 						for (TestClassMethod testClassMethod :
-							testClass.getTestClassMethods()) {
+								testClass.getTestClassMethods()) {
 
 							testrayCaseResults.add(
 								TestrayFactory.newBuildTestrayCaseResult(
@@ -1201,10 +1195,8 @@ public class TestrayImporter {
 				TestrayServer testrayServer =
 					testrayBuild.getTestrayServer();
 
-				TopLevelBuild topLevelBuild = getTopLevelBuild();
-
 				JenkinsMaster jenkinsMaster =
-					topLevelBuild.getJenkinsMaster();
+					_topLevelBuildReport.getJenkinsMaster();
 
 				try {
 					String axisName = axisTestClassGroup.getAxisName();
@@ -1212,9 +1204,9 @@ public class TestrayImporter {
 					testrayServer.writeCaseResult(
 						JenkinsResultsParserUtil.combine(
 							"TESTS-", jenkinsMaster.getName(), "_",
-							topLevelBuild.getJobName(), "_",
+							_topLevelBuildReport.getJobName(), "_",
 							String.valueOf(
-								topLevelBuild.getBuildNumber()),
+								_topLevelBuildReport.getBuildNumber()),
 							"_", axisName.replace("/", "_"), ".xml"),
 						Dom4JUtil.format(rootElement));
 				}

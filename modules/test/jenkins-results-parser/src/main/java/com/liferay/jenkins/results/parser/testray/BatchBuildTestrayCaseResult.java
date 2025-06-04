@@ -54,15 +54,7 @@ public class BatchBuildTestrayCaseResult extends BuildTestrayCaseResult {
 	public BuildReport getBuildReport() {
 		TopLevelBuildReport topLevelBuildReport = getTopLevelBuildReport();
 
-		DownstreamBuildReport downstreamBuildReport = null;
-			//topLevelBuildReport.getDownstreamBuildReport(getAxisName());
-
-		if (downstreamBuildReport != null) {
-			return downstreamBuildReport;
-		}
-
-		return null;
-		// topLevelBuildReport.getDownstreamAxisBuild(getAxisName());
+		return topLevelBuildReport.getDownstreamBuildReport(getAxisName());
 	}
 
 	@Override
@@ -99,7 +91,7 @@ public class BatchBuildTestrayCaseResult extends BuildTestrayCaseResult {
 			return buildReport.getJobName() + " timed out after 2 hours";
 		}
 
-		String errorMessage = null; // buildReport.getFailureMessage();
+		String errorMessage = buildReport.getFailureMessage();
 
 		if (JenkinsResultsParserUtil.isNullOrEmpty(errorMessage)) {
 			return "Failed for unknown reason";
@@ -389,7 +381,7 @@ public class BatchBuildTestrayCaseResult extends BuildTestrayCaseResult {
 				testResultErrors = "Unable to run test on CI";
 			}
 
-			String failureMessage = null; //buildReport.getFailureMessage();
+			String failureMessage = buildReport.getFailureMessage();
 
 			if (JenkinsResultsParserUtil.isNullOrEmpty(failureMessage)) {
 				return testResultErrors;
@@ -409,7 +401,7 @@ public class BatchBuildTestrayCaseResult extends BuildTestrayCaseResult {
 		testResultErrors = testResult.getErrorDetails();
 
 		if (JenkinsResultsParserUtil.isNullOrEmpty(testResultErrors)) {
-			testResultErrors = null; // buildReport.getFailureMessage();
+			testResultErrors = buildReport.getFailureMessage();
 		}
 
 		if (JenkinsResultsParserUtil.isNullOrEmpty(testResultErrors)) {

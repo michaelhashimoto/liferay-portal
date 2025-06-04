@@ -16,12 +16,7 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -165,6 +160,19 @@ public abstract class BaseTopLevelBuildReport
 	}
 
 	@Override
+	public DownstreamBuildReport getDownstreamBuildReport(String axisName) {
+		for (DownstreamBuildReport downstreamBuildReport :
+				getDownstreamBuildReports()) {
+
+			if (Objects.equals(downstreamBuildReport.getAxisName(), axisName)) {
+				return downstreamBuildReport;
+			}
+		}
+
+		return null;
+	}
+
+	@Override
 	public List<DownstreamBuildReport> getDownstreamBuildReports() {
 		if (_downstreamBuildReports != null) {
 			return _downstreamBuildReports;
@@ -289,6 +297,13 @@ public abstract class BaseTopLevelBuildReport
 		}
 
 		return 0L;
+	}
+
+	@Override
+	public long getTotalDuration() {
+		JSONObject buildReportJSONObject = getBuildReportJSONObject();
+
+		return buildReportJSONObject.optLong("totalDuration");
 	}
 
 	protected BaseTopLevelBuildReport(JSONObject buildReportJSONObject) {
