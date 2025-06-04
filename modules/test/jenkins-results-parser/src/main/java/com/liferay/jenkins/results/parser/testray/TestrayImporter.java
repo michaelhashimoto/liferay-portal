@@ -1037,14 +1037,12 @@ public class TestrayImporter {
 
 					PortalLogBatchBuildTestrayCaseResult
 						portalLogBatchBuildTestrayCaseResult =
-						TestrayFactory.
-							newPortalLogTestrayCaseResult(
+							TestrayFactory.newPortalLogTestrayCaseResult(
 								testrayBuild, _topLevelBuildReport,
 								axisTestClassGroup);
 
 					if (!JenkinsResultsParserUtil.isNullOrEmpty(
-						portalLogBatchBuildTestrayCaseResult.
-							getErrors())) {
+							portalLogBatchBuildTestrayCaseResult.getErrors())) {
 
 						testrayCaseResults.add(
 							portalLogBatchBuildTestrayCaseResult);

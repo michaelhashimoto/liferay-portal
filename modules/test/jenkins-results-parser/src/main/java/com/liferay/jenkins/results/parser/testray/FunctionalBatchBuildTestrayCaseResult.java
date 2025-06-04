@@ -5,10 +5,9 @@
 
 package com.liferay.jenkins.results.parser.testray;
 
-import com.liferay.jenkins.results.parser.BuildReport;
+import com.liferay.jenkins.results.parser.DownstreamBuildReport;
 import com.liferay.jenkins.results.parser.JenkinsResultsParserUtil;
-import com.liferay.jenkins.results.parser.TestClassResult;
-import com.liferay.jenkins.results.parser.TestResult;
+import com.liferay.jenkins.results.parser.TestReport;
 import com.liferay.jenkins.results.parser.TopLevelBuildReport;
 import com.liferay.jenkins.results.parser.test.clazz.FunctionalTestClass;
 import com.liferay.jenkins.results.parser.test.clazz.TestClass;
@@ -17,6 +16,7 @@ import com.liferay.jenkins.results.parser.test.clazz.group.AxisTestClassGroup;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @author Michael Hashimoto
@@ -74,10 +74,10 @@ public class FunctionalBatchBuildTestrayCaseResult
 
 	@Override
 	public Status getStatus() {
-		TestResult testResult = getTestResult();
+		TestReport testReport = getTestReport();
 
-		if (testResult != null) {
-			String errorDetails = testResult.getErrorDetails();
+		if (testReport != null) {
+			String errorDetails = testReport.getErrorDetails();
 
 			if (!JenkinsResultsParserUtil.isNullOrEmpty(errorDetails) &&
 				errorDetails.contains("TEST_SETUP_ERROR:")) {
@@ -114,33 +114,25 @@ public class FunctionalBatchBuildTestrayCaseResult
 	}
 
 	@Override
-	public TestResult getTestResult() {
-		BuildReport buildReport = getBuildReport();
+	public TestReport getTestReport() {
+		DownstreamBuildReport downstreamBuildReport = getDownstreamBuildReport();
 
-		if (buildReport == null) {
+		if (downstreamBuildReport == null) {
 			return null;
 		}
 
-		/*TestClassResult testClassResult = buildReport.getTestClassResult(
-			"com.liferay.poshi.runner.PoshiRunner");
-
-		if (testClassResult == null) {
-			testClassResult = buildReport.getTestClassResult(
-				"com.liferay.poshi.runner.ParallelPoshiRunner");
+		for (TestReport testReport : downstreamBuildReport.getTestReports()) {
+			if (Objects.equals(testReport.getTestName(), getName())) {
+				return testReport;
+			}
 		}
-
-		if (testClassResult == null) {
-			return null;
-		}
-
-		return testClassResult.getTestResult("test[" + getName() + "]");*/
 
 		return null;
 	}
 
 	@Override
 	protected List<TestrayAttachment> getLiferayLogTestrayAttachments() {
-		if (getTestResult() == null) {
+		if (getTestReport() == null) {
 			return new ArrayList<>();
 		}
 
@@ -149,7 +141,7 @@ public class FunctionalBatchBuildTestrayCaseResult
 
 	@Override
 	protected List<TestrayAttachment> getLiferayOSGiLogTestrayAttachments() {
-		if (getTestResult() == null) {
+		if (getTestReport() == null) {
 			return new ArrayList<>();
 		}
 
@@ -157,7 +149,7 @@ public class FunctionalBatchBuildTestrayCaseResult
 	}
 
 	private TestrayAttachment _getPoshiConsoleTestrayAttachment() {
-		if (getTestResult() == null) {
+		if (getTestReport() == null) {
 			return null;
 		}
 
@@ -173,7 +165,7 @@ public class FunctionalBatchBuildTestrayCaseResult
 	}
 
 	private TestrayAttachment _getPoshiReportTestrayAttachment() {
-		if (getTestResult() == null) {
+		if (getTestReport() == null) {
 			return null;
 		}
 
@@ -189,7 +181,7 @@ public class FunctionalBatchBuildTestrayCaseResult
 	}
 
 	private TestrayAttachment _getPoshiSummaryTestrayAttachment() {
-		if (getTestResult() == null) {
+		if (getTestReport() == null) {
 			return null;
 		}
 

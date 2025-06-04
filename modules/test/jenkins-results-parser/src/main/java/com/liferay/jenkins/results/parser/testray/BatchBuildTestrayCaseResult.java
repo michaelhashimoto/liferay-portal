@@ -50,6 +50,16 @@ public class BatchBuildTestrayCaseResult extends BuildTestrayCaseResult {
 		return _axisTestClassGroup.getBatchName();
 	}
 
+	public DownstreamBuildReport getDownstreamBuildReport() {
+		BuildReport buildReport = getBuildReport();
+
+		if (!(buildReport instanceof DownstreamBuildReport)) {
+			return null;
+		}
+
+		return (DownstreamBuildReport)buildReport;
+	}
+
 	@Override
 	public BuildReport getBuildReport() {
 		TopLevelBuildReport topLevelBuildReport = getTopLevelBuildReport();
@@ -338,18 +348,18 @@ public class BatchBuildTestrayCaseResult extends BuildTestrayCaseResult {
 		return testrayAttachments;
 	}
 
-	protected TestResult getTestResult() {
+	protected TestReport getTestReport() {
 		return null;
 	}
 
 	protected long getTestResultDuration() {
-		TestResult testResult = getTestResult();
+		TestReport testReport = getTestReport();
 
-		if (testResult == null) {
+		if (testReport == null) {
 			return 0;
 		}
 
-		return testResult.getDuration();
+		return testReport.getDuration();
 	}
 
 	protected String getTestResultErrors() {
@@ -357,9 +367,9 @@ public class BatchBuildTestrayCaseResult extends BuildTestrayCaseResult {
 
 		BuildReport buildReport = getBuildReport();
 
-		TestResult testResult = getTestResult();
+		TestReport testReport = getTestReport();
 
-		if (testResult == null) {
+		if (testReport == null) {
 			if (buildReport == null) {
 				return "Unable to run build on CI";
 			}
@@ -390,15 +400,15 @@ public class BatchBuildTestrayCaseResult extends BuildTestrayCaseResult {
 			return testResultErrors + ": " + failureMessage;
 		}
 
-		if (testResult.isSkipped()) {
+		if (testReport.isSkipped()) {
 			return "Failed to run test on CI";
 		}
 
-		if (!testResult.isFailing()) {
+		if (!testReport.isFailing()) {
 			return null;
 		}
 
-		testResultErrors = testResult.getErrorDetails();
+		testResultErrors = testReport.getErrorDetails();
 
 		if (JenkinsResultsParserUtil.isNullOrEmpty(testResultErrors)) {
 			testResultErrors = buildReport.getFailureMessage();
@@ -429,9 +439,9 @@ public class BatchBuildTestrayCaseResult extends BuildTestrayCaseResult {
 			return Status.UNTESTED;
 		}
 
-		TestResult testResult = getTestResult();
+		TestReport testReport = getTestReport();
 
-		if (testResult == null) {
+		if (testReport == null) {
 			String result = buildReport.getResult();
 
 			if ((result == null) || result.equals("SUCCESS") ||
@@ -443,10 +453,10 @@ public class BatchBuildTestrayCaseResult extends BuildTestrayCaseResult {
 			return Status.FAILED;
 		}
 
-		if (testResult.isFailing()) {
+		if (testReport.isFailing()) {
 			return Status.FAILED;
 		}
-		else if (testResult.isSkipped()) {
+		else if (testReport.isSkipped()) {
 			return Status.UNTESTED;
 		}
 

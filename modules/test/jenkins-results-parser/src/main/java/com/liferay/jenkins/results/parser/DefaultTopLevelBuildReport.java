@@ -240,7 +240,22 @@ public class DefaultTopLevelBuildReport extends BaseTopLevelBuildReport {
 			"buildURL", build.getBuildURL()
 		).put(
 			"duration", build.getDuration()
-		).put(
+		);
+
+		JSONObject testReportJSONObject = build.getTestReportJSONObject(
+			false);
+
+		if (testReportJSONObject != null) {
+			downstreamBuildJSONObject.put(
+				"failCount", testReportJSONObject.getInt("failCount")
+			).put(
+				"passCount", testReportJSONObject.getInt("passCount")
+			).put(
+				"skipCount", testReportJSONObject.getInt("skipCount")
+			);
+		}
+
+		downstreamBuildJSONObject.put(
 			"failureMessage", build.getFailureMessage()
 		).put(
 			"result", build.getResult()
@@ -295,6 +310,8 @@ public class DefaultTopLevelBuildReport extends BaseTopLevelBuildReport {
 		}
 
 		testResultJSONObject.put(
+			"errorStackTrace", testResult.getErrorStackTrace()
+		).put(
 			"name", testResult.getDisplayName()
 		).put(
 			"status", testResult.getStatus()

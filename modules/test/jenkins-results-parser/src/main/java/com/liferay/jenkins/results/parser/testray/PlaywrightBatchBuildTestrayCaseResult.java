@@ -7,8 +7,7 @@ package com.liferay.jenkins.results.parser.testray;
 
 import com.liferay.jenkins.results.parser.BuildReport;
 import com.liferay.jenkins.results.parser.JenkinsResultsParserUtil;
-import com.liferay.jenkins.results.parser.TestClassResult;
-import com.liferay.jenkins.results.parser.TestResult;
+import com.liferay.jenkins.results.parser.TestReport;
 import com.liferay.jenkins.results.parser.TopLevelBuildReport;
 import com.liferay.jenkins.results.parser.test.clazz.PlaywrightJUnitTestClass;
 import com.liferay.jenkins.results.parser.test.clazz.PlaywrightTestClassMethod;
@@ -59,9 +58,9 @@ public class PlaywrightBatchBuildTestrayCaseResult
 
 		BuildReport buildReport = getBuildReport();
 
-		TestResult testResult = getTestResult();
+		TestReport testReport = getTestReport();
 
-		if (testResult == null) {
+		if (testReport == null) {
 			if (buildReport == null) {
 				return "Unable to run build on CI";
 			}
@@ -82,7 +81,7 @@ public class PlaywrightBatchBuildTestrayCaseResult
 				errors = "Unable to run test on CI";
 			}
 
-			String failureMessage = null; //buildReport.getFailureMessage();
+			String failureMessage = buildReport.getFailureMessage();
 
 			if (JenkinsResultsParserUtil.isNullOrEmpty(failureMessage)) {
 				return errors;
@@ -91,25 +90,25 @@ public class PlaywrightBatchBuildTestrayCaseResult
 			return errors + ": " + failureMessage;
 		}
 
-		if (testResult.isSkipped()) {
+		if (testReport.isSkipped()) {
 			return "Failed to run test on CI";
 		}
 
-		if (!testResult.isFailing()) {
+		if (!testReport.isFailing()) {
 			return null;
 		}
 
-		errors = testResult.getErrorDetails();
+		errors = testReport.getErrorDetails();
 
 		if (JenkinsResultsParserUtil.isNullOrEmpty(errors)) {
-			//errors = buildReport.getFailureMessage();
+			errors = buildReport.getFailureMessage();
 		}
 
 		if (JenkinsResultsParserUtil.isNullOrEmpty(errors)) {
 			return "Failed for unknown reason";
 		}
 
-		String stackTrace = testResult.getErrorStackTrace();
+		String stackTrace = testReport.getErrorStackTrace();
 
 		if (stackTrace.length() > 500) {
 			int index = stackTrace.indexOf("›");
@@ -157,7 +156,7 @@ public class PlaywrightBatchBuildTestrayCaseResult
 	}
 
 	@Override
-	public TestResult getTestResult() {
+	public TestReport getTestReport() {
 		BuildReport buildReport = getBuildReport();
 
 		if (buildReport == null) {
