@@ -22,6 +22,8 @@ public interface TestReport {
 
 	public String getTestName();
 
+	public String getTestClassName();
+
 	public String getTestTaskName();
 
 	public boolean isFailing();

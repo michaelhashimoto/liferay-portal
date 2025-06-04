@@ -6,9 +6,10 @@
 package com.liferay.jenkins.results.parser.testray;
 
 import com.liferay.jenkins.results.parser.BuildReport;
+import com.liferay.jenkins.results.parser.DownstreamBuildReport;
 import com.liferay.jenkins.results.parser.JenkinsResultsParserUtil;
-import com.liferay.jenkins.results.parser.TestClassResult;
-import com.liferay.jenkins.results.parser.TestResult;
+import com.liferay.jenkins.results.parser.TestClassReport;
+import com.liferay.jenkins.results.parser.TestReport;
 import com.liferay.jenkins.results.parser.TopLevelBuildReport;
 import com.liferay.jenkins.results.parser.test.clazz.JUnitTestClass;
 import com.liferay.jenkins.results.parser.test.clazz.TestClass;
@@ -48,16 +49,16 @@ public class JUnitBatchBuildTestrayCaseResult
 
 	@Override
 	public long getDuration() {
-		List<TestClassResult> testClassResults = getTestClassResults();
+		List<TestClassReport> testClassReports = getTestClassReports();
 
-		if (testClassResults == null) {
+		if (testClassReports == null) {
 			return 0;
 		}
 
 		long duration = 0;
 
-		for (TestClassResult testClassResult : testClassResults) {
-			duration += testClassResult.getDuration();
+		for (TestClassReport testClassReport : testClassReports) {
+			duration += testClassReport.getDuration();
 		}
 
 		return duration;
@@ -67,9 +68,9 @@ public class JUnitBatchBuildTestrayCaseResult
 	public String getErrors() {
 		BuildReport buildReport = getBuildReport();
 
-		List<TestClassResult> testClassResults = getTestClassResults();
+		List<TestClassReport> testClassReports = getTestClassReports();
 
-		if ((testClassResults == null) || testClassResults.isEmpty()) {
+		if ((testClassReports == null) || testClassReports.isEmpty()) {
 			if (buildReport == null) {
 				return "Unable to run build on CI";
 			}
@@ -91,21 +92,21 @@ public class JUnitBatchBuildTestrayCaseResult
 			return "Failed prior to running test";
 		}
 
-		if (!_isTestClassResultsFailing() && !_isTestClassResultsSkipped()) {
+		if (!_isTestClassReportsFailing() && !_isTestClassReportsSkipped()) {
 			return null;
 		}
 
 		Map<String, String> errorMessages = new HashMap<>();
 		List<String> skippedTestNames = new ArrayList<>();
 
-		for (TestResult testResult : getTestResults()) {
-			if ((testResult == null) ||
-				(!testResult.isFailing() && !testResult.isSkipped())) {
+		for (TestReport testReport : getTestReports()) {
+			if ((testReport == null) ||
+				(!testReport.isFailing() && !testReport.isSkipped())) {
 
 				continue;
 			}
 
-			String errorMessage = testResult.getErrorDetails();
+			String errorMessage = testReport.getErrorDetails();
 
 			if (JenkinsResultsParserUtil.isNullOrEmpty(errorMessage)) {
 				errorMessage = null; //buildReport.getFailureMessage();
@@ -126,9 +127,9 @@ public class JUnitBatchBuildTestrayCaseResult
 				errorMessage = "Failed for unknown reason";
 			}
 
-			String testName = testResult.getTestName();
+			String testName = testReport.getTestName();
 
-			if (testResult.isSkipped()) {
+			if (testReport.isSkipped()) {
 				skippedTestNames.add(testName);
 			}
 			else {
@@ -197,9 +198,9 @@ public class JUnitBatchBuildTestrayCaseResult
 			return Status.UNTESTED;
 		}
 
-		List<TestClassResult> testClassResults = getTestClassResults();
+		List<TestClassReport> testClassReports = getTestClassReports();
 
-		if ((testClassResults == null) || testClassResults.isEmpty()) {
+		if ((testClassReports == null) || testClassReports.isEmpty()) {
 			String result = buildReport.getResult();
 
 			if ((result == null) || result.equals("ABORTED") ||
@@ -212,15 +213,15 @@ public class JUnitBatchBuildTestrayCaseResult
 			return Status.FAILED;
 		}
 
-		if (_isTestClassResultsSkipped() && _isTestClassResultsFailing()) {
+		if (_isTestClassReportsSkipped() && _isTestClassReportsFailing()) {
 			return Status.INCOMPLETE;
 		}
 
-		if (_isTestClassResultsSkipped()) {
+		if (_isTestClassReportsSkipped()) {
 			return Status.UNTESTED;
 		}
 
-		if (_isTestClassResultsFailing()) {
+		if (_isTestClassReportsFailing()) {
 			return Status.FAILED;
 		}
 
@@ -242,9 +243,9 @@ public class JUnitBatchBuildTestrayCaseResult
 	}
 
 	protected TestrayAttachment getFailureMessagesTestrayAttachment() {
-		List<TestClassResult> testClassResults = getTestClassResults();
+		List<TestClassReport> testClassReports = getTestClassReports();
 
-		if ((testClassResults == null) || testClassResults.isEmpty()) {
+		if ((testClassReports == null) || testClassReports.isEmpty()) {
 			return null;
 		}
 
@@ -261,9 +262,9 @@ public class JUnitBatchBuildTestrayCaseResult
 
 	@Override
 	protected List<TestrayAttachment> getLiferayLogTestrayAttachments() {
-		List<TestClassResult> testClassResults = getTestClassResults();
+		List<TestClassReport> testClassReports = getTestClassReports();
 
-		if ((testClassResults == null) || testClassResults.isEmpty()) {
+		if ((testClassReports == null) || testClassReports.isEmpty()) {
 			return new ArrayList<>();
 		}
 
@@ -272,82 +273,84 @@ public class JUnitBatchBuildTestrayCaseResult
 
 	@Override
 	protected List<TestrayAttachment> getLiferayOSGiLogTestrayAttachments() {
-		List<TestClassResult> testClassResults = getTestClassResults();
+		List<TestClassReport> testClassReports = getTestClassReports();
 
-		if ((testClassResults == null) || testClassResults.isEmpty()) {
+		if ((testClassReports == null) || testClassReports.isEmpty()) {
 			return new ArrayList<>();
 		}
 
 		return super.getLiferayOSGiLogTestrayAttachments();
 	}
 
-	protected List<TestClassResult> getTestClassResults() {
-		if (_testClassResults != null) {
-			return _testClassResults;
+	protected List<TestClassReport> getTestClassReports() {
+		if (_testClassReports != null) {
+			return _testClassReports;
 		}
 
-		BuildReport buildReport = getBuildReport();
+		DownstreamBuildReport downstreamBuildReport = getDownstreamBuildReport();
 
-		if (buildReport == null) {
+		if (downstreamBuildReport == null) {
 			return null;
 		}
 
-		_testClassResults = new ArrayList<>();
+		_testClassReports = new ArrayList<>();
 
-		/*for (TestClassResult testClassResult : buildReport.getTestClassResults()) {
-			String testClassName = testClassResult.getClassName();
+		for (TestClassReport testClassReport :
+				downstreamBuildReport.getTestClassReports()) {
+
+			String testClassName = testClassReport.getTestClassName();
 
 			if (testClassName.equals(getName()) ||
 				testClassName.startsWith(getName() + "$")) {
 
-				_testClassResults.add(testClassResult);
+				_testClassReports.add(testClassReport);
 
 				continue;
 			}
 
 			if (testClassName.equals("junit.framework.TestSuite")) {
-				for (TestResult testResult : testClassResult.getTestResults()) {
-					String testName = testResult.getTestName();
+				for (TestReport testReport : testClassReport.getTestReports()) {
+					String testName = testReport.getTestName();
 
 					if (testName.equals(getName())) {
-						_testClassResults.add(testClassResult);
+						_testClassReports.add(testClassReport);
 
 						break;
 					}
 				}
 			}
-		}*/
+		}
 
-		return _testClassResults;
+		return _testClassReports;
 	}
 
-	protected List<TestResult> getTestResults() {
-		List<TestResult> testResults = new ArrayList<>();
+	protected List<TestReport> getTestReports() {
+		List<TestReport> testReports = new ArrayList<>();
 
-		for (TestClassResult testClassResult : getTestClassResults()) {
-			String testClassName = testClassResult.getClassName();
+		for (TestClassReport testClassReport : getTestClassReports()) {
+			String testClassName = testClassReport.getTestClassName();
 
 			if (!testClassName.equals("junit.framework.TestSuite")) {
-				testResults.addAll(testClassResult.getTestResults());
+				testReports.addAll(testClassReport.getTestReports());
 
 				continue;
 			}
 
-			for (TestResult testResult : testClassResult.getTestResults()) {
-				String testName = testResult.getTestName();
+			for (TestReport testReport : testClassReport.getTestReports()) {
+				String testName = testReport.getTestName();
 
 				if (testName.equals(getName())) {
-					testResults.add(testResult);
+					testReports.add(testReport);
 				}
 			}
 		}
 
-		return testResults;
+		return testReports;
 	}
 
-	private boolean _isTestClassResultsFailing() {
-		for (TestClassResult testClassResult : getTestClassResults()) {
-			if (testClassResult.isFailing()) {
+	private boolean _isTestClassReportsFailing() {
+		for (TestClassReport testClassReport : getTestClassReports()) {
+			if (testClassReport.isFailing()) {
 				return true;
 			}
 		}
@@ -355,9 +358,9 @@ public class JUnitBatchBuildTestrayCaseResult
 		return false;
 	}
 
-	private boolean _isTestClassResultsSkipped() {
-		for (TestClassResult testClassResult : getTestClassResults()) {
-			if (testClassResult.isSkipped()) {
+	private boolean _isTestClassReportsSkipped() {
+		for (TestClassReport testClassReport : getTestClassReports()) {
+			if (testClassReport.isSkipped()) {
 				return true;
 			}
 		}
@@ -366,6 +369,6 @@ public class JUnitBatchBuildTestrayCaseResult
 	}
 
 	private final JUnitTestClass _jUnitTestClass;
-	private List<TestClassResult> _testClassResults;
+	private List<TestClassReport> _testClassReports;
 
 }

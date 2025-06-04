@@ -7,6 +7,8 @@ package com.liferay.jenkins.results.parser;
 
 import org.json.JSONObject;
 
+import java.util.regex.Matcher;
+
 /**
  * @author Michael Hashimoto
  */
@@ -20,6 +22,19 @@ public class TestReportFactory {
 
 	public static TestReport newTestReport(
 		DownstreamBuildReport downstreamBuildReport, JSONObject jsonObject) {
+
+		String batchName = downstreamBuildReport.getBatchName();
+
+		if (batchName.startsWith("integration") ||
+			batchName.startsWith("modules-integration") ||
+			batchName.startsWith("modules-unit") ||
+			batchName.startsWith("unit")) {
+
+			return new JUnitTestReport(downstreamBuildReport, jsonObject);
+		}
+		else if (batchName.startsWith("playwright-js")) {
+			return new PlaywrightTestReport(downstreamBuildReport, jsonObject);
+		}
 
 		return new DefaultTestReport(downstreamBuildReport, jsonObject);
 	}

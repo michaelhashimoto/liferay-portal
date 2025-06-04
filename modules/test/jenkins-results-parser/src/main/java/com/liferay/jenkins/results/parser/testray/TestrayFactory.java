@@ -168,20 +168,22 @@ public class TestrayFactory {
 			}
 			else if (axisTestClassGroup instanceof JUnitAxisTestClassGroup) {
 				return new JUnitBatchBuildTestrayCaseResult(
-					testrayBuild, topLevelBuildReport, axisTestClassGroup, testClass);
+					testrayBuild, topLevelBuildReport, axisTestClassGroup,
+					testClass);
 			}
 			else if (axisTestClassGroup instanceof
 						PlaywrightAxisTestClassGroup) {
 
 				return new PlaywrightBatchBuildTestrayCaseResult(
-					testrayBuild, topLevelBuildReport, axisTestClassGroup, testClass,
-					testClassMethod);
+					testrayBuild, topLevelBuildReport, axisTestClassGroup,
+					testClass, testClassMethod);
 			}
 			else if (axisTestClassGroup instanceof
 						SemVerModulesAxisTestClassGroup) {
 
 				return new SemVerModulesBatchBuildTestrayCaseResult(
-					testrayBuild, topLevelBuildReport, axisTestClassGroup, testClass);
+					testrayBuild, topLevelBuildReport, axisTestClassGroup,
+					testClass);
 			}
 		}
 

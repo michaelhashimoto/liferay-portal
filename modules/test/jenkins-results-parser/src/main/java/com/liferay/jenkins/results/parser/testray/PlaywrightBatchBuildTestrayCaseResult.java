@@ -6,7 +6,9 @@
 package com.liferay.jenkins.results.parser.testray;
 
 import com.liferay.jenkins.results.parser.BuildReport;
+import com.liferay.jenkins.results.parser.DownstreamBuildReport;
 import com.liferay.jenkins.results.parser.JenkinsResultsParserUtil;
+import com.liferay.jenkins.results.parser.TestClassReport;
 import com.liferay.jenkins.results.parser.TestReport;
 import com.liferay.jenkins.results.parser.TopLevelBuildReport;
 import com.liferay.jenkins.results.parser.test.clazz.PlaywrightJUnitTestClass;
@@ -17,6 +19,7 @@ import com.liferay.jenkins.results.parser.test.clazz.group.AxisTestClassGroup;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @author Kenji Heigel
@@ -157,28 +160,40 @@ public class PlaywrightBatchBuildTestrayCaseResult
 
 	@Override
 	public TestReport getTestReport() {
-		BuildReport buildReport = getBuildReport();
+		DownstreamBuildReport downstreamBuildReport =
+			getDownstreamBuildReport();
 
-		if (buildReport == null) {
+		if (downstreamBuildReport == null) {
 			return null;
 		}
 
-		/*TestClassResult testClassResult = buildReport.getTestClassResult(
-			_playwrightJUnitTestClass.getSpecFilePath());
+		TestClassReport playwrightTestClassReport = null;
 
-		if (testClassResult == null) {
+		for (TestClassReport testClassReport :
+				downstreamBuildReport.getTestClassReports()) {
+
+			if (Objects.equals(
+					_playwrightJUnitTestClass.getSpecFilePath(),
+					testClassReport.getTestClassName())) {
+
+				playwrightTestClassReport = testClassReport;
+			}
+		}
+
+		if (playwrightTestClassReport == null) {
 			return null;
 		}
 
-		for (TestResult testResult : testClassResult.getTestResults()) {
+		for (TestReport testReport :
+				playwrightTestClassReport.getTestReports()) {
+
 			String fullTestName = JenkinsResultsParserUtil.combine(
-				testClassResult.getClassName(), " > ",
-				testResult.getTestName());
+				testReport.getTestClassName(), " > ", testReport.getTestName());
 
 			if (fullTestName.equals(getName())) {
-				return testResult;
+				return testReport;
 			}
-		}*/
+		}
 
 		System.out.println("Unable to find test result for: " + getName());
 

@@ -6,6 +6,7 @@
 package com.liferay.jenkins.results.parser;
 
 import java.util.Objects;
+import java.util.regex.Matcher;
 
 import org.json.JSONObject;
 
@@ -42,6 +43,11 @@ public class BaseTestReport implements TestReport {
 	@Override
 	public String getTestName() {
 		return _jsonObject.getString("name");
+	}
+
+	@Override
+	public String getTestClassName() {
+		return getTestName();
 	}
 
 	@Override
