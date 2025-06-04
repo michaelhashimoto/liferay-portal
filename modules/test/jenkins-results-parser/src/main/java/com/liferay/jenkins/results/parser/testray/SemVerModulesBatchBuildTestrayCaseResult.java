@@ -5,11 +5,11 @@
 
 package com.liferay.jenkins.results.parser.testray;
 
-import com.liferay.jenkins.results.parser.Build;
+import com.liferay.jenkins.results.parser.BuildReport;
 import com.liferay.jenkins.results.parser.JenkinsResultsParserUtil;
 import com.liferay.jenkins.results.parser.TestClassResult;
 import com.liferay.jenkins.results.parser.TestResult;
-import com.liferay.jenkins.results.parser.TopLevelBuild;
+import com.liferay.jenkins.results.parser.TopLevelBuildReport;
 import com.liferay.jenkins.results.parser.test.clazz.SemVerModulesTestClass;
 import com.liferay.jenkins.results.parser.test.clazz.TestClass;
 import com.liferay.jenkins.results.parser.test.clazz.group.AxisTestClassGroup;
@@ -26,10 +26,10 @@ public class SemVerModulesBatchBuildTestrayCaseResult
 	extends BatchBuildTestrayCaseResult {
 
 	public SemVerModulesBatchBuildTestrayCaseResult(
-		TestrayBuild testrayBuild, TopLevelBuild topLevelBuild,
+		TestrayBuild testrayBuild, TopLevelBuildReport topLevelBuildReport,
 		AxisTestClassGroup axisTestClassGroup, TestClass testClass) {
 
-		super(testrayBuild, topLevelBuild, axisTestClassGroup);
+		super(testrayBuild, topLevelBuildReport, axisTestClassGroup);
 
 		_semVerModulesTestClass = (SemVerModulesTestClass)testClass;
 	}
@@ -67,21 +67,21 @@ public class SemVerModulesBatchBuildTestrayCaseResult
 	public String getErrors() {
 		List<TestResult> testResults = getTestResults();
 
-		Build build = getBuild();
+		BuildReport buildReport = getBuildReport();
 
 		if (testResults.isEmpty()) {
-			if (build == null) {
+			if (buildReport == null) {
 				return "Unable to run build on CI";
 			}
 
-			String result = build.getResult();
+			String result = buildReport.getResult();
 
 			if (result == null) {
 				return "Unable to finish build on CI";
 			}
 
 			if (result.equals("ABORTED")) {
-				return build.getJobName() + " timed out after 2 hours";
+				return buildReport.getJobName() + " timed out after 2 hours";
 			}
 
 			if (result.equals("SUCCESS") || result.equals("UNSTABLE")) {
@@ -111,7 +111,7 @@ public class SemVerModulesBatchBuildTestrayCaseResult
 		String errorMessage = sb.toString();
 
 		if (JenkinsResultsParserUtil.isNullOrEmpty(errorMessage)) {
-			errorMessage = build.getFailureMessage();
+			errorMessage = null; //buildReport.getFailureMessage();
 		}
 
 		if (JenkinsResultsParserUtil.isNullOrEmpty(errorMessage)) {
@@ -143,16 +143,16 @@ public class SemVerModulesBatchBuildTestrayCaseResult
 
 	@Override
 	public Status getStatus() {
-		Build build = getBuild();
+		BuildReport buildReport = getBuildReport();
 
-		if (build == null) {
+		if (buildReport == null) {
 			return Status.UNTESTED;
 		}
 
 		List<TestResult> testResults = getTestResults();
 
 		if (testResults.isEmpty()) {
-			String result = build.getResult();
+			String result = buildReport.getResult();
 
 			if ((result == null) || result.equals("SUCCESS") ||
 				result.equals("UNSTABLE")) {
@@ -179,14 +179,14 @@ public class SemVerModulesBatchBuildTestrayCaseResult
 
 		_testResults = new ArrayList<>();
 
-		Build build = getBuild();
+		BuildReport buildReport = getBuildReport();
 
-		if (build == null) {
+		if (buildReport == null) {
 			return _testResults;
 		}
 
-		TestClassResult testClassResult = build.getTestClassResult(
-			_TEST_CLASS_NAME);
+		TestClassResult testClassResult = null;
+			//buildReport.getTestClassResult(_TEST_CLASS_NAME);
 
 		if (testClassResult == null) {
 			return _testResults;

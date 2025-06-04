@@ -5,11 +5,11 @@
 
 package com.liferay.jenkins.results.parser.testray;
 
-import com.liferay.jenkins.results.parser.Build;
+import com.liferay.jenkins.results.parser.BuildReport;
 import com.liferay.jenkins.results.parser.JenkinsResultsParserUtil;
 import com.liferay.jenkins.results.parser.TestClassResult;
 import com.liferay.jenkins.results.parser.TestResult;
-import com.liferay.jenkins.results.parser.TopLevelBuild;
+import com.liferay.jenkins.results.parser.TopLevelBuildReport;
 import com.liferay.jenkins.results.parser.test.clazz.FunctionalTestClass;
 import com.liferay.jenkins.results.parser.test.clazz.TestClass;
 import com.liferay.jenkins.results.parser.test.clazz.group.AxisTestClassGroup;
@@ -25,10 +25,10 @@ public class FunctionalBatchBuildTestrayCaseResult
 	extends BatchBuildTestrayCaseResult {
 
 	public FunctionalBatchBuildTestrayCaseResult(
-		TestrayBuild testrayBuild, TopLevelBuild topLevelBuild,
+		TestrayBuild testrayBuild, TopLevelBuildReport topLevelBuildReport,
 		AxisTestClassGroup axisTestClassGroup, TestClass testClass) {
 
-		super(testrayBuild, topLevelBuild, axisTestClassGroup);
+		super(testrayBuild, topLevelBuildReport, axisTestClassGroup);
 
 		if (!(testClass instanceof FunctionalTestClass)) {
 			throw new RuntimeException(
@@ -115,17 +115,17 @@ public class FunctionalBatchBuildTestrayCaseResult
 
 	@Override
 	public TestResult getTestResult() {
-		Build build = getBuild();
+		BuildReport buildReport = getBuildReport();
 
-		if (build == null) {
+		if (buildReport == null) {
 			return null;
 		}
 
-		TestClassResult testClassResult = build.getTestClassResult(
+		/*TestClassResult testClassResult = buildReport.getTestClassResult(
 			"com.liferay.poshi.runner.PoshiRunner");
 
 		if (testClassResult == null) {
-			testClassResult = build.getTestClassResult(
+			testClassResult = buildReport.getTestClassResult(
 				"com.liferay.poshi.runner.ParallelPoshiRunner");
 		}
 
@@ -133,7 +133,9 @@ public class FunctionalBatchBuildTestrayCaseResult
 			return null;
 		}
 
-		return testClassResult.getTestResult("test[" + getName() + "]");
+		return testClassResult.getTestResult("test[" + getName() + "]");*/
+
+		return null;
 	}
 
 	@Override
@@ -164,7 +166,7 @@ public class FunctionalBatchBuildTestrayCaseResult
 		name = name.replace("#", "_");
 
 		return getTestrayAttachment(
-			getBuild(), "Poshi Console",
+			getBuildReport(), "Poshi Console",
 			JenkinsResultsParserUtil.combine(
 				getAxisBuildURLPath(), "/",
 				JenkinsResultsParserUtil.fixURL(name), "/console.txt.gz"));
@@ -180,7 +182,7 @@ public class FunctionalBatchBuildTestrayCaseResult
 		name = name.replace("#", "_");
 
 		return getTestrayAttachment(
-			getBuild(), "Poshi Report",
+			getBuildReport(), "Poshi Report",
 			JenkinsResultsParserUtil.combine(
 				getAxisBuildURLPath(), "/",
 				JenkinsResultsParserUtil.fixURL(name), "/index.html.gz"));
@@ -196,7 +198,7 @@ public class FunctionalBatchBuildTestrayCaseResult
 		name = name.replace("#", "_");
 
 		return getTestrayAttachment(
-			getBuild(), "Poshi Summary",
+			getBuildReport(), "Poshi Summary",
 			JenkinsResultsParserUtil.combine(
 				getAxisBuildURLPath(), "/",
 				JenkinsResultsParserUtil.fixURL(name), "/summary.html.gz"));

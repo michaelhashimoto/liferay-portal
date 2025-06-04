@@ -231,6 +231,19 @@ public abstract class BaseBuildReport implements BuildReport {
 		return testrayS3AttachmentURLs;
 	}
 
+	@Override
+	public boolean isFailing() {
+		String result = getResult();
+
+		if (!result.equals("FAILURE") && !result.equals("REGRESSION") &&
+			!result.equals("UNSTABLE")) {
+
+			return true;
+		}
+
+		return false;
+	}
+
 	protected BaseBuildReport(JSONObject buildReportJSONObject) {
 		this.buildReportJSONObject = buildReportJSONObject;
 

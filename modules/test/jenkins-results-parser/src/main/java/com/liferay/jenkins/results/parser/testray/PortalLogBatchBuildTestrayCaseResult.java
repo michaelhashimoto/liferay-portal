@@ -5,14 +5,15 @@
 
 package com.liferay.jenkins.results.parser.testray;
 
-import com.liferay.jenkins.results.parser.Build;
+import com.liferay.jenkins.results.parser.BuildReport;
 import com.liferay.jenkins.results.parser.JenkinsResultsParserUtil;
 import com.liferay.jenkins.results.parser.TestClassResult;
 import com.liferay.jenkins.results.parser.TestResult;
-import com.liferay.jenkins.results.parser.TopLevelBuild;
+import com.liferay.jenkins.results.parser.TopLevelBuildReport;
 import com.liferay.jenkins.results.parser.test.clazz.group.AxisTestClassGroup;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 /**
  * @author Michael Hashimoto
@@ -21,10 +22,10 @@ public class PortalLogBatchBuildTestrayCaseResult
 	extends BatchBuildTestrayCaseResult {
 
 	public PortalLogBatchBuildTestrayCaseResult(
-		TestrayBuild testrayBuild, TopLevelBuild topLevelBuild,
+		TestrayBuild testrayBuild, TopLevelBuildReport topLevelBuildReport,
 		AxisTestClassGroup axisTestClassGroup) {
 
-		super(testrayBuild, topLevelBuild, axisTestClassGroup);
+		super(testrayBuild, topLevelBuildReport, axisTestClassGroup);
 	}
 
 	@Override
@@ -112,19 +113,19 @@ public class PortalLogBatchBuildTestrayCaseResult
 			return _testClassResult;
 		}
 
-		Build build = getBuild();
+		BuildReport buildReport = getBuildReport();
 
-		if ((build == null) || !build.isFailing()) {
+		if ((buildReport == null) || !buildReport.isFailing()) {
 			return null;
 		}
 
-		String result = build.getResult();
+		String result = buildReport.getResult();
 
 		if (result == null) {
 			return null;
 		}
 
-		for (TestClassResult testClassResult : build.getTestClassResults()) {
+		/*for (TestClassResult testClassResult : buildReport.getTestClassResults()) {
 			String className = testClassResult.getClassName();
 
 			if (!className.equals(
@@ -136,7 +137,7 @@ public class PortalLogBatchBuildTestrayCaseResult
 			_testClassResult = testClassResult;
 
 			return _testClassResult;
-		}
+		}*/
 
 		return null;
 	}

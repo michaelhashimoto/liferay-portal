@@ -45,4 +45,6 @@ public interface BuildReport {
 
 	public List<URL> getTestrayS3AttachmentURLs();
 
+	public boolean isFailing();
+
 }

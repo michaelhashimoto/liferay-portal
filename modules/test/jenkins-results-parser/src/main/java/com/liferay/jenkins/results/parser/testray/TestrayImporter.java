@@ -943,12 +943,11 @@ public class TestrayImporter {
 				testBaseDir = axisTestClassGroup.getTestBaseDir();
 			}
 
-			TopLevelBuildReportTestrayCaseResult
-				topLevelBuildReportTestrayCaseResult =
-					TestrayFactory.newTopLevelBuildReportTestrayCaseResult(
-						getTestrayBuild(testBaseDir), _topLevelBuildReport);
+			TopLevelBuildTestrayCaseResult topLevelBuildTestrayCaseResult =
+				TestrayFactory.newTopLevelBuildTestrayCaseResult(
+					getTestrayBuild(testBaseDir), _topLevelBuildReport);
 
-			topLevelBuildReportTestrayCaseResult.recordTestrayCaseResult(job);
+			topLevelBuildTestrayCaseResult.recordTestrayCaseResult(job);
 
 			if (true) {
 				continue;
@@ -1046,7 +1045,7 @@ public class TestrayImporter {
 						portalLogBatchBuildTestrayCaseResult =
 						TestrayFactory.
 							newPortalLogTestrayCaseResult(
-								testrayBuild, getTopLevelBuild(),
+								testrayBuild, _topLevelBuildReport,
 								axisTestClassGroup);
 
 					if (!JenkinsResultsParserUtil.isNullOrEmpty(
@@ -1062,7 +1061,7 @@ public class TestrayImporter {
 
 						testrayCaseResults.add(
 							TestrayFactory.newBuildTestrayCaseResult(
-								testrayBuild, getTopLevelBuild(),
+								testrayBuild, _topLevelBuildReport,
 								axisTestClassGroup, testClass));
 					}
 				}
@@ -1079,7 +1078,7 @@ public class TestrayImporter {
 
 							testrayCaseResults.add(
 								TestrayFactory.newBuildTestrayCaseResult(
-									testrayBuild, getTopLevelBuild(),
+									testrayBuild, _topLevelBuildReport,
 									axisTestClassGroup, testClass,
 									testClassMethod));
 						}
@@ -1088,7 +1087,7 @@ public class TestrayImporter {
 				else {
 					testrayCaseResults.add(
 						TestrayFactory.newBuildTestrayCaseResult(
-							testrayBuild, getTopLevelBuild(),
+							testrayBuild, _topLevelBuildReport,
 							axisTestClassGroup, null));
 				}
 

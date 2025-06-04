@@ -5,11 +5,11 @@
 
 package com.liferay.jenkins.results.parser.testray;
 
-import com.liferay.jenkins.results.parser.Build;
+import com.liferay.jenkins.results.parser.BuildReport;
 import com.liferay.jenkins.results.parser.JenkinsResultsParserUtil;
 import com.liferay.jenkins.results.parser.TestClassResult;
 import com.liferay.jenkins.results.parser.TestResult;
-import com.liferay.jenkins.results.parser.TopLevelBuild;
+import com.liferay.jenkins.results.parser.TopLevelBuildReport;
 import com.liferay.jenkins.results.parser.test.clazz.PlaywrightJUnitTestClass;
 import com.liferay.jenkins.results.parser.test.clazz.PlaywrightTestClassMethod;
 import com.liferay.jenkins.results.parser.test.clazz.TestClass;
@@ -26,11 +26,11 @@ public class PlaywrightBatchBuildTestrayCaseResult
 	extends BatchBuildTestrayCaseResult {
 
 	public PlaywrightBatchBuildTestrayCaseResult(
-		TestrayBuild testrayBuild, TopLevelBuild topLevelBuild,
+		TestrayBuild testrayBuild, TopLevelBuildReport topLevelBuildReport,
 		AxisTestClassGroup axisTestClassGroup, TestClass testClass,
 		TestClassMethod testClassMethod) {
 
-		super(testrayBuild, topLevelBuild, axisTestClassGroup);
+		super(testrayBuild, topLevelBuildReport, axisTestClassGroup);
 
 		_playwrightJUnitTestClass = (PlaywrightJUnitTestClass)testClass;
 		_playwrightTestClassMethod = (PlaywrightTestClassMethod)testClassMethod;
@@ -57,32 +57,32 @@ public class PlaywrightBatchBuildTestrayCaseResult
 	public String getErrors() {
 		String errors = null;
 
-		Build build = getBuild();
+		BuildReport buildReport = getBuildReport();
 
 		TestResult testResult = getTestResult();
 
 		if (testResult == null) {
-			if (build == null) {
+			if (buildReport == null) {
 				return "Unable to run build on CI";
 			}
 
 			errors = "Failed prior to running test";
 
-			String result = build.getResult();
+			String result = buildReport.getResult();
 
 			if (result == null) {
 				errors = "Unable to finish build on CI";
 			}
 
 			if (result.equals("ABORTED")) {
-				errors = build.getJobName() + " timed out after 2 hours";
+				errors = buildReport.getJobName() + " timed out after 2 hours";
 			}
 
 			if (result.equals("SUCCESS") || result.equals("UNSTABLE")) {
 				errors = "Unable to run test on CI";
 			}
 
-			String failureMessage = build.getFailureMessage();
+			String failureMessage = null; //buildReport.getFailureMessage();
 
 			if (JenkinsResultsParserUtil.isNullOrEmpty(failureMessage)) {
 				return errors;
@@ -102,7 +102,7 @@ public class PlaywrightBatchBuildTestrayCaseResult
 		errors = testResult.getErrorDetails();
 
 		if (JenkinsResultsParserUtil.isNullOrEmpty(errors)) {
-			errors = build.getFailureMessage();
+			//errors = buildReport.getFailureMessage();
 		}
 
 		if (JenkinsResultsParserUtil.isNullOrEmpty(errors)) {
@@ -158,13 +158,13 @@ public class PlaywrightBatchBuildTestrayCaseResult
 
 	@Override
 	public TestResult getTestResult() {
-		Build build = getBuild();
+		BuildReport buildReport = getBuildReport();
 
-		if (build == null) {
+		if (buildReport == null) {
 			return null;
 		}
 
-		TestClassResult testClassResult = build.getTestClassResult(
+		/*TestClassResult testClassResult = buildReport.getTestClassResult(
 			_playwrightJUnitTestClass.getSpecFilePath());
 
 		if (testClassResult == null) {
@@ -179,7 +179,7 @@ public class PlaywrightBatchBuildTestrayCaseResult
 			if (fullTestName.equals(getName())) {
 				return testResult;
 			}
-		}
+		}*/
 
 		System.out.println("Unable to find test result for: " + getName());
 
@@ -188,7 +188,7 @@ public class PlaywrightBatchBuildTestrayCaseResult
 
 	protected TestrayAttachment getPlaywrightReportTestrayAttachment() {
 		return getTestrayAttachment(
-			getBuild(), "Playwright Report",
+			getBuildReport(), "Playwright Report",
 			getAxisBuildURLPath() + "/playwright-report/index.html");
 	}
 

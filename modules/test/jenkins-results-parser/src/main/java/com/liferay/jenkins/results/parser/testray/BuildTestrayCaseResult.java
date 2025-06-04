@@ -5,11 +5,11 @@
 
 package com.liferay.jenkins.results.parser.testray;
 
-import com.liferay.jenkins.results.parser.Build;
+import com.liferay.jenkins.results.parser.BuildReport;
 import com.liferay.jenkins.results.parser.JenkinsMaster;
 import com.liferay.jenkins.results.parser.JenkinsResultsParserUtil;
 import com.liferay.jenkins.results.parser.RemoteExecutor;
-import com.liferay.jenkins.results.parser.TopLevelBuild;
+import com.liferay.jenkins.results.parser.TopLevelBuildReport;
 import org.json.JSONObject;
 
 import java.io.File;
@@ -30,11 +30,11 @@ import java.util.concurrent.TimeoutException;
 public abstract class BuildTestrayCaseResult extends TestrayCaseResult {
 
 	protected BuildTestrayCaseResult(
-		TestrayBuild testrayBuild, TopLevelBuild topLevelBuild) {
+		TestrayBuild testrayBuild, TopLevelBuildReport topLevelBuildReport) {
 
 		super(testrayBuild, new JSONObject());
 
-		_topLevelBuild =  topLevelBuild;
+		_topLevelBuildReport =  topLevelBuildReport;
 
 		String workspace = System.getenv("WORKSPACE");
 
@@ -47,48 +47,49 @@ public abstract class BuildTestrayCaseResult extends TestrayCaseResult {
 			"testray/" + JenkinsResultsParserUtil.getDistinctTimeStamp());
 	}
 
-	public TopLevelBuild getTopLevelBuild() {
-		return _topLevelBuild;
+	public TopLevelBuildReport getTopLevelBuildReport() {
+		return _topLevelBuildReport;
 	}
 
-	private final TopLevelBuild _topLevelBuild;
+	private final TopLevelBuildReport _topLevelBuildReport;
 
 	@Override
 	public long getDuration() {
-		Build build = getBuild();
+		BuildReport buildReport = getBuildReport();
 
-		if (build == null) {
+		if (buildReport == null) {
 			return 0;
 		}
 
-		return build.getDuration();
+		return buildReport.getDuration();
 	}
 
 	@Override
 	public Status getStatus() {
-		Build build = getBuild();
+		BuildReport buildReport = getBuildReport();
 
-		if (build == null) {
+		if (buildReport == null) {
 			return Status.UNTESTED;
 		}
 
-		if (build.isFailing()) {
+		if (buildReport.isFailing()) {
 			return Status.FAILED;
 		}
 
 		return Status.PASSED;
 	}
 
-	protected abstract Build getBuild();
+	protected abstract BuildReport getBuildReport();
 
 	protected TestrayAttachment getTestrayAttachment(
-		Build build, String name, String key) {
+		BuildReport buildReport, String name, String key) {
 
 		if (_testrayAttachments.containsKey(key)) {
 			return _testrayAttachments.get(key);
 		}
 
-		if ((build == null) || JenkinsResultsParserUtil.isNullOrEmpty(key) ||
+		if ((buildReport == null) ||
+			JenkinsResultsParserUtil.isNullOrEmpty(key) ||
 			JenkinsResultsParserUtil.isNullOrEmpty(name)) {
 
 			return null;
@@ -96,7 +97,7 @@ public abstract class BuildTestrayCaseResult extends TestrayCaseResult {
 
 		if (TestrayS3Bucket.hasGoogleApplicationCredentials()) {
 			for (URL testrayS3AttachmentURL :
-					build.getTestrayS3AttachmentURLs()) {
+					buildReport.getTestrayS3AttachmentURLs()) {
 
 				String testrayS3AttachmentURLString = String.valueOf(
 					testrayS3AttachmentURL);
@@ -114,7 +115,9 @@ public abstract class BuildTestrayCaseResult extends TestrayCaseResult {
 			}
 		}
 
-		for (URL testrayAttachmentURL : build.getTestrayAttachmentURLs()) {
+		for (URL testrayAttachmentURL :
+				buildReport.getTestrayAttachmentURLs()) {
+
 			String testrayAttachmentURLString = String.valueOf(
 				testrayAttachmentURL);
 
@@ -147,20 +150,20 @@ public abstract class BuildTestrayCaseResult extends TestrayCaseResult {
 
 	protected TestrayAttachment getTopLevelBuildReportTestrayAttachment() {
 		return getTestrayAttachment(
-			getTopLevelBuild(), getTopLevelBuildReportName(),
+			getTopLevelBuildReport(), getTopLevelBuildReportName(),
 			getTopLevelBuildReportKey());
 	}
 
 	protected String getTopLevelBuildURLPath() {
-		TopLevelBuild topLevelBuild = getTopLevelBuild();
+		TopLevelBuildReport topLevelBuildReport = getTopLevelBuildReport();
 
-		if (topLevelBuild == null) {
+		if (topLevelBuildReport == null) {
 			return null;
 		}
 
 		StringBuilder sb = new StringBuilder();
 
-		Date date = new Date(topLevelBuild.getStartTime());
+		Date date = topLevelBuildReport.getStartDate();
 
 		sb.append(
 			JenkinsResultsParserUtil.toDateString(
@@ -168,14 +171,14 @@ public abstract class BuildTestrayCaseResult extends TestrayCaseResult {
 
 		sb.append("/");
 
-		JenkinsMaster jenkinsMaster = topLevelBuild.getJenkinsMaster();
+		JenkinsMaster jenkinsMaster = topLevelBuildReport.getJenkinsMaster();
 
 		sb.append(jenkinsMaster.getName());
 
 		sb.append("/");
-		sb.append(topLevelBuild.getJobName());
+		sb.append(topLevelBuildReport.getJobName());
 		sb.append("/");
-		sb.append(topLevelBuild.getBuildNumber());
+		sb.append(topLevelBuildReport.getBuildNumber());
 
 		return sb.toString();
 	}
@@ -190,7 +193,7 @@ public abstract class BuildTestrayCaseResult extends TestrayCaseResult {
 
 	protected TestrayAttachment getTopLevelJenkinsConsoleTestrayAttachment() {
 		return getTestrayAttachment(
-			getTopLevelBuild(), getTopLevelJenkinsConsoleName(),
+			getTopLevelBuildReport(), getTopLevelJenkinsConsoleName(),
 			getTopLevelJenkinsConsoleKey());
 	}
 
@@ -204,7 +207,7 @@ public abstract class BuildTestrayCaseResult extends TestrayCaseResult {
 
 	protected TestrayAttachment getTopLevelJenkinsReportTestrayAttachment() {
 		return getTestrayAttachment(
-			getTopLevelBuild(), getTopLevelJenkinsReportName(),
+			getTopLevelBuildReport(), getTopLevelJenkinsReportName(),
 			getTopLevelJenkinsReportKey());
 	}
 
@@ -218,7 +221,7 @@ public abstract class BuildTestrayCaseResult extends TestrayCaseResult {
 
 	protected TestrayAttachment getTopLevelJobSummaryTestrayAttachment() {
 		return getTestrayAttachment(
-			getTopLevelBuild(), getTopLevelJobSummaryName(),
+			getTopLevelBuildReport(), getTopLevelJobSummaryName(),
 			getTopLevelJobSummaryKey());
 	}
 
@@ -271,9 +274,9 @@ public abstract class BuildTestrayCaseResult extends TestrayCaseResult {
 	}
 
 	private String _getMasterHostname() {
-		Build build = getBuild();
+		BuildReport buildReport = getBuildReport();
 
-		JenkinsMaster jenkinsMaster = build.getJenkinsMaster();
+		JenkinsMaster jenkinsMaster = buildReport.getJenkinsMaster();
 
 		return jenkinsMaster.getName();
 	}

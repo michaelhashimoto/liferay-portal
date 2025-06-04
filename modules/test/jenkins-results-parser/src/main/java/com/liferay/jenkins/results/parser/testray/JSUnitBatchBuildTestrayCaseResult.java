@@ -5,11 +5,11 @@
 
 package com.liferay.jenkins.results.parser.testray;
 
-import com.liferay.jenkins.results.parser.Build;
+import com.liferay.jenkins.results.parser.BuildReport;
 import com.liferay.jenkins.results.parser.JenkinsResultsParserUtil;
 import com.liferay.jenkins.results.parser.TestClassResult;
 import com.liferay.jenkins.results.parser.TestResult;
-import com.liferay.jenkins.results.parser.TopLevelBuild;
+import com.liferay.jenkins.results.parser.TopLevelBuildReport;
 import com.liferay.jenkins.results.parser.test.clazz.JSUnitModulesTestClass;
 import com.liferay.jenkins.results.parser.test.clazz.TestClassMethod;
 import com.liferay.jenkins.results.parser.test.clazz.group.AxisTestClassGroup;
@@ -26,11 +26,11 @@ public class JSUnitBatchBuildTestrayCaseResult
 	extends BatchBuildTestrayCaseResult {
 
 	public JSUnitBatchBuildTestrayCaseResult(
-		TestrayBuild testrayBuild, TopLevelBuild topLevelBuild,
+		TestrayBuild testrayBuild, TopLevelBuildReport topLevelBuildReport,
 		AxisTestClassGroup axisTestClassGroup,
 		TestClassMethod testClassMethod) {
 
-		super(testrayBuild, topLevelBuild, axisTestClassGroup);
+		super(testrayBuild, topLevelBuildReport, axisTestClassGroup);
 
 		_testClassMethod = testClassMethod;
 
@@ -69,23 +69,23 @@ public class JSUnitBatchBuildTestrayCaseResult
 
 	@Override
 	public String getErrors() {
-		Build build = getBuild();
+		BuildReport buildReport = getBuildReport();
 
 		List<TestClassResult> testClassResults = _getTestClassResults();
 
 		if ((testClassResults == null) || testClassResults.isEmpty()) {
-			if (build == null) {
+			if (buildReport == null) {
 				return "Unable to run build on CI";
 			}
 
-			String result = build.getResult();
+			String result = buildReport.getResult();
 
 			if (result == null) {
 				return "Unable to finish build on CI";
 			}
 
 			if (result.equals("ABORTED")) {
-				return build.getJobName() + " timed out after 2 hours";
+				return buildReport.getJobName() + " timed out after 2 hours";
 			}
 
 			if (result.equals("SUCCESS") || result.equals("UNSTABLE")) {
@@ -114,7 +114,7 @@ public class JSUnitBatchBuildTestrayCaseResult
 				String errorMessage = testResult.getErrorDetails();
 
 				if (JenkinsResultsParserUtil.isNullOrEmpty(errorMessage)) {
-					errorMessage = build.getFailureMessage();
+					errorMessage = null; // buildReport.getFailureMessage();
 				}
 
 				if (JenkinsResultsParserUtil.isNullOrEmpty(errorMessage)) {
@@ -163,16 +163,16 @@ public class JSUnitBatchBuildTestrayCaseResult
 
 	@Override
 	public Status getStatus() {
-		Build build = getBuild();
+		BuildReport buildReport = getBuildReport();
 
-		if (build == null) {
+		if (buildReport == null) {
 			return Status.UNTESTED;
 		}
 
 		List<TestClassResult> testClassResults = _getTestClassResults();
 
 		if ((testClassResults == null) || testClassResults.isEmpty()) {
-			String result = build.getResult();
+			String result = buildReport.getResult();
 
 			if ((result == null) || result.equals("ABORTED") ||
 				result.equals("FAILURE") || result.equals("SUCCESS") ||
@@ -198,9 +198,9 @@ public class JSUnitBatchBuildTestrayCaseResult
 
 		_testClassResults = new ArrayList<>();
 
-		Build build = getBuild();
+		BuildReport buildReport = getBuildReport();
 
-		if (build == null) {
+		if (buildReport == null) {
 			return _testClassResults;
 		}
 
@@ -208,13 +208,13 @@ public class JSUnitBatchBuildTestrayCaseResult
 
 		taskDirectoryName = taskDirectoryName.replace(":packageRunTest", "");
 
-		for (TestClassResult testClassResult : build.getTestClassResults()) {
+		/*for (TestClassResult testClassResult : buildReport.getTestClassResults()) {
 			String testResultTaskName = _getTestResultTaskName(testClassResult);
 
 			if (testResultTaskName.startsWith(taskDirectoryName)) {
 				_testClassResults.add(testClassResult);
 			}
-		}
+		}*/
 
 		return _testClassResults;
 	}
