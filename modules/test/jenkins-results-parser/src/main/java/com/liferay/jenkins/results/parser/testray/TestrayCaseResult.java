@@ -5,7 +5,7 @@
 
 package com.liferay.jenkins.results.parser.testray;
 
-import com.liferay.jenkins.results.parser.TopLevelBuild;
+import com.liferay.jenkins.results.parser.JenkinsResultsParserUtil;
 
 import java.io.IOException;
 
@@ -22,6 +22,7 @@ import java.util.TreeMap;
 
 import org.apache.commons.lang3.StringUtils;
 
+import org.dom4j.Element;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -36,6 +37,28 @@ public class TestrayCaseResult {
 		"componentToCaseResult", "dateCreated", "dateModified",
 		"dueStatus { key name }", "errors", "id", "startDate"
 	};
+
+	protected void addPropertyElements(
+		Element propertiesElement, Map<String, String> propertiesMap) {
+
+		for (Map.Entry<String, String> propertyEntry :
+			propertiesMap.entrySet()) {
+
+			Element propertyElement = propertiesElement.addElement("property");
+
+			String propertyName = propertyEntry.getKey();
+			String propertyValue = propertyEntry.getValue();
+
+			if (JenkinsResultsParserUtil.isNullOrEmpty(propertyName) ||
+				JenkinsResultsParserUtil.isNullOrEmpty(propertyValue)) {
+
+				continue;
+			}
+
+			propertyElement.addAttribute("name", propertyName);
+			propertyElement.addAttribute("value", propertyValue);
+		}
+	}
 
 	public TestrayAttachment getBuildResultTestrayAttachment() {
 		initTestrayAttachments();
@@ -232,7 +255,7 @@ public class TestrayCaseResult {
 
 			for (JSONObject entityJSONObject : entityJSONObjects) {
 				testrayCaseResults.add(
-					TestrayFactory.newTestrayCaseResult(
+					TestrayFactory.newJSONObjectTestrayCaseResult(
 						testrayServer, entityJSONObject));
 			}
 		}
@@ -271,10 +294,6 @@ public class TestrayCaseResult {
 
 	public TestrayServer getTestrayServer() {
 		return _testrayServer;
-	}
-
-	public TopLevelBuild getTopLevelBuild() {
-		return _topLevelBuild;
 	}
 
 	public String getType() {
@@ -370,17 +389,6 @@ public class TestrayCaseResult {
 	}
 
 	protected TestrayCaseResult(
-		TestrayBuild testrayBuild, TopLevelBuild topLevelBuild) {
-
-		_testrayBuild = testrayBuild;
-		_topLevelBuild = topLevelBuild;
-
-		_testrayServer = testrayBuild.getTestrayServer();
-
-		_jsonObject = new JSONObject();
-	}
-
-	protected TestrayCaseResult(
 		TestrayServer testrayServer, JSONObject jsonObject) {
 
 		_testrayServer = testrayServer;
@@ -465,6 +473,5 @@ public class TestrayCaseResult {
 	private TestrayCase _testrayCase;
 	private TestrayComponent _testrayComponent;
 	private final TestrayServer _testrayServer;
-	private TopLevelBuild _topLevelBuild;
 
 }
