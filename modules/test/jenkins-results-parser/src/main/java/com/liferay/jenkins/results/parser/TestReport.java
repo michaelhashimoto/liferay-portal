@@ -16,10 +16,18 @@ public interface TestReport {
 
 	public String getErrorDetails();
 
+	public String getErrorStackTrace();
+
 	public String getStatus();
 
 	public String getTestName();
 
+	public String getTestClassName();
+
 	public String getTestTaskName();
+
+	public boolean isFailing();
+
+	public boolean isSkipped();
 
 }

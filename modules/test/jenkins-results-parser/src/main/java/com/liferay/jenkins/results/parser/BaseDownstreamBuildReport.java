@@ -34,6 +34,27 @@ public abstract class BaseDownstreamBuildReport
 	}
 
 	@Override
+	public int getFailCount() {
+		JSONObject buildReportJSONObject = getBuildReportJSONObject();
+
+		return buildReportJSONObject.optInt("failCount", 0);
+	}
+
+	@Override
+	public int getPassCount() {
+		JSONObject buildReportJSONObject = getBuildReportJSONObject();
+
+		return buildReportJSONObject.optInt("passCount", 0);
+	}
+
+	@Override
+	public int getSkipCount() {
+		JSONObject buildReportJSONObject = getBuildReportJSONObject();
+
+		return buildReportJSONObject.optInt("skipCount", 0);
+	}
+
+	@Override
 	public List<TestClassReport> getTestClassReports() {
 		if (_testClassReportsMap != null) {
 			return new ArrayList<>(_testClassReportsMap.values());
@@ -41,22 +62,8 @@ public abstract class BaseDownstreamBuildReport
 
 		_testClassReportsMap = new TreeMap<>();
 
-		String batchName = getBatchName();
-
 		for (TestReport testReport : getTestReports()) {
-			String testClassName = testReport.getTestName();
-
-			if (batchName.startsWith("integration") ||
-				batchName.startsWith("modules-integration") ||
-				batchName.startsWith("modules-unit") ||
-				batchName.startsWith("unit")) {
-
-				Matcher matcher = _jUnitTestNamePattern.matcher(testClassName);
-
-				if (matcher.find()) {
-					testClassName = matcher.group("testClassName");
-				}
-			}
+			String testClassName = testReport.getTestClassName();
 
 			TestClassReport testClassReport = _testClassReportsMap.get(
 				testClassName);
@@ -110,9 +117,6 @@ public abstract class BaseDownstreamBuildReport
 		_batchName = batchName;
 		_topLevelBuildReport = topLevelBuildReport;
 	}
-
-	private static final Pattern _jUnitTestNamePattern = Pattern.compile(
-		"(?<testClassName>.*Test)\\.(?<testName>[^\\.]+)");
 
 	private final String _batchName;
 	private Map<String, TestClassReport> _testClassReportsMap;

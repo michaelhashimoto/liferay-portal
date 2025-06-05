@@ -1263,6 +1263,25 @@ public abstract class BaseBuild implements Build {
 			"America/Los_Angeles");
 	}
 
+
+	@Override
+	public void addTestrayAttachmentURL(URL testrayAttachmentURL) {
+		if (_testrayAttachmentURLs == null) {
+			_testrayAttachmentURLs = new ArrayList<>();
+		}
+
+		_testrayAttachmentURLs.add(testrayAttachmentURL);
+	}
+
+	@Override
+	public void addTestrayS3AttachmentURL(URL testrayS3AttachmentURL) {
+		if (_testrayS3AttachmentURLs == null) {
+			_testrayS3AttachmentURLs = new ArrayList<>();
+		}
+
+		_testrayS3AttachmentURLs.add(testrayS3AttachmentURL);
+	}
+
 	@Override
 	public synchronized List<URL> getTestrayS3AttachmentURLs() {
 		if (_testrayS3AttachmentURLs != null) {
