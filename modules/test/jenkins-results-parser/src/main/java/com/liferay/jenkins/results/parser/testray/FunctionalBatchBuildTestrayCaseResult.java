@@ -115,7 +115,8 @@ public class FunctionalBatchBuildTestrayCaseResult
 
 	@Override
 	public TestReport getTestReport() {
-		DownstreamBuildReport downstreamBuildReport = getDownstreamBuildReport();
+		DownstreamBuildReport downstreamBuildReport =
+			getDownstreamBuildReport();
 
 		if (downstreamBuildReport == null) {
 			return null;

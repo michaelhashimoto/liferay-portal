@@ -66,11 +66,11 @@ public class JUnitBatchBuildTestrayCaseResult
 
 	@Override
 	public String getErrors() {
-		BuildReport buildReport = getBuildReport();
-
 		List<TestClassReport> testClassReports = getTestClassReports();
 
 		if ((testClassReports == null) || testClassReports.isEmpty()) {
+			BuildReport buildReport = getBuildReport();
+
 			if (buildReport == null) {
 				return "Unable to run build on CI";
 			}
@@ -287,7 +287,8 @@ public class JUnitBatchBuildTestrayCaseResult
 			return _testClassReports;
 		}
 
-		DownstreamBuildReport downstreamBuildReport = getDownstreamBuildReport();
+		DownstreamBuildReport downstreamBuildReport =
+			getDownstreamBuildReport();
 
 		if (downstreamBuildReport == null) {
 			return null;

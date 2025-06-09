@@ -7,8 +7,6 @@ package com.liferay.jenkins.results.parser.testray;
 
 import com.liferay.jenkins.results.parser.Build;
 import com.liferay.jenkins.results.parser.JenkinsResultsParserUtil;
-import com.liferay.jenkins.results.parser.SourceFormatBuild;
-import com.liferay.jenkins.results.parser.TopLevelBuild;
 import com.liferay.jenkins.results.parser.TopLevelBuildReport;
 import com.liferay.jenkins.results.parser.test.clazz.TestClass;
 import com.liferay.jenkins.results.parser.test.clazz.TestClassMethod;
@@ -37,6 +35,88 @@ import org.json.JSONObject;
  * @author Michael Hashimoto
  */
 public class TestrayFactory {
+
+	public static TestrayCaseResult newBuildTestrayCaseResult(
+		TestrayBuild testrayBuild, TopLevelBuildReport topLevelBuildReport,
+		AxisTestClassGroup axisTestClassGroup, TestClass testClass) {
+
+		return newBuildTestrayCaseResult(
+			testrayBuild, topLevelBuildReport, axisTestClassGroup, testClass,
+			null);
+	}
+
+	public static TestrayCaseResult newBuildTestrayCaseResult(
+		TestrayBuild testrayBuild, TopLevelBuildReport topLevelBuildReport,
+		AxisTestClassGroup axisTestClassGroup, TestClass testClass,
+		TestClassMethod testClassMethod) {
+
+		if (testrayBuild == null) {
+			throw new RuntimeException("Testray build is null");
+		}
+
+		if (topLevelBuildReport == null) {
+			throw new RuntimeException("Top level build report is null");
+		}
+
+		if (axisTestClassGroup == null) {
+			throw new RuntimeException("Axis test class group is null");
+		}
+
+		if (testClass != null) {
+			if (axisTestClassGroup instanceof FunctionalAxisTestClassGroup) {
+				return new FunctionalBatchBuildTestrayCaseResult(
+					testrayBuild, topLevelBuildReport, axisTestClassGroup,
+					testClass);
+			}
+			else if (axisTestClassGroup instanceof JSUnitAxisTestClassGroup) {
+				return new JSUnitBatchBuildTestrayCaseResult(
+					testrayBuild, topLevelBuildReport, axisTestClassGroup,
+					testClassMethod);
+			}
+			else if (axisTestClassGroup instanceof JUnitAxisTestClassGroup) {
+				return new JUnitBatchBuildTestrayCaseResult(
+					testrayBuild, topLevelBuildReport, axisTestClassGroup,
+					testClass);
+			}
+			else if (axisTestClassGroup instanceof
+						PlaywrightAxisTestClassGroup) {
+
+				return new PlaywrightBatchBuildTestrayCaseResult(
+					testrayBuild, topLevelBuildReport, axisTestClassGroup,
+					testClass, testClassMethod);
+			}
+			else if (axisTestClassGroup instanceof
+						SemVerModulesAxisTestClassGroup) {
+
+				return new SemVerModulesBatchBuildTestrayCaseResult(
+					testrayBuild, topLevelBuildReport, axisTestClassGroup,
+					testClass);
+			}
+		}
+
+		if (Objects.equals(
+				topLevelBuildReport.getJobName(),
+				"test-portal-source-format")) {
+
+			return new SFBatchBuildTestrayCaseResult(
+				testrayBuild, topLevelBuildReport, axisTestClassGroup);
+		}
+
+		return new BatchBuildTestrayCaseResult(
+			testrayBuild, topLevelBuildReport, axisTestClassGroup);
+	}
+
+	public static TestrayCaseResult newJSONObjectTestrayCaseResult(
+		TestrayBuild testrayBuild, JSONObject jsonObject) {
+
+		return new JSONObjectTestrayCaseResult(testrayBuild, jsonObject);
+	}
+
+	public static TestrayCaseResult newJSONObjectTestrayCaseResult(
+		TestrayServer testrayServer, JSONObject jsonObject) {
+
+		return new JSONObjectTestrayCaseResult(testrayServer, jsonObject);
+	}
 
 	public static PortalLogBatchBuildTestrayCaseResult
 		newPortalLogTestrayCaseResult(
@@ -119,88 +199,6 @@ public class TestrayFactory {
 		TestrayProject testrayProject, JSONObject jsonObject) {
 
 		return new TestrayCase(testrayProject, jsonObject);
-	}
-
-	public static TestrayCaseResult newBuildTestrayCaseResult(
-		TestrayBuild testrayBuild, TopLevelBuildReport topLevelBuildReport,
-		AxisTestClassGroup axisTestClassGroup, TestClass testClass) {
-
-		return newBuildTestrayCaseResult(
-			testrayBuild, topLevelBuildReport, axisTestClassGroup, testClass,
-			null);
-	}
-
-	public static TestrayCaseResult newBuildTestrayCaseResult(
-		TestrayBuild testrayBuild, TopLevelBuildReport topLevelBuildReport,
-		AxisTestClassGroup axisTestClassGroup, TestClass testClass,
-		TestClassMethod testClassMethod) {
-
-		if (testrayBuild == null) {
-			throw new RuntimeException("Testray build is null");
-		}
-
-		if (topLevelBuildReport == null) {
-			throw new RuntimeException("Top level build report is null");
-		}
-
-		if (axisTestClassGroup == null) {
-			throw new RuntimeException("Axis test class group is null");
-		}
-
-		if (testClass != null) {
-			if (axisTestClassGroup instanceof FunctionalAxisTestClassGroup) {
-				return new FunctionalBatchBuildTestrayCaseResult(
-					testrayBuild, topLevelBuildReport, axisTestClassGroup,
-					testClass);
-			}
-			else if (axisTestClassGroup instanceof JSUnitAxisTestClassGroup) {
-				return new JSUnitBatchBuildTestrayCaseResult(
-					testrayBuild, topLevelBuildReport, axisTestClassGroup,
-					testClassMethod);
-			}
-			else if (axisTestClassGroup instanceof JUnitAxisTestClassGroup) {
-				return new JUnitBatchBuildTestrayCaseResult(
-					testrayBuild, topLevelBuildReport, axisTestClassGroup,
-					testClass);
-			}
-			else if (axisTestClassGroup instanceof
-						PlaywrightAxisTestClassGroup) {
-
-				return new PlaywrightBatchBuildTestrayCaseResult(
-					testrayBuild, topLevelBuildReport, axisTestClassGroup,
-					testClass, testClassMethod);
-			}
-			else if (axisTestClassGroup instanceof
-						SemVerModulesAxisTestClassGroup) {
-
-				return new SemVerModulesBatchBuildTestrayCaseResult(
-					testrayBuild, topLevelBuildReport, axisTestClassGroup,
-					testClass);
-			}
-		}
-
-		if (Objects.equals(
-				"test-portal-source-format",
-				topLevelBuildReport.getJobName())) {
-
-			return new SFBatchBuildTestrayCaseResult(
-				testrayBuild, topLevelBuildReport, axisTestClassGroup);
-		}
-
-		return new BatchBuildTestrayCaseResult(
-			testrayBuild, topLevelBuildReport, axisTestClassGroup);
-	}
-
-	public static TestrayCaseResult newJSONObjectTestrayCaseResult(
-		TestrayBuild testrayBuild, JSONObject jsonObject) {
-
-		return new JSONObjectTestrayCaseResult(testrayBuild, jsonObject);
-	}
-
-	public static TestrayCaseResult newJSONObjectTestrayCaseResult(
-		TestrayServer testrayServer, JSONObject jsonObject) {
-
-		return new JSONObjectTestrayCaseResult(testrayServer, jsonObject);
 	}
 
 	public static TestrayCaseType newTestrayCaseType(

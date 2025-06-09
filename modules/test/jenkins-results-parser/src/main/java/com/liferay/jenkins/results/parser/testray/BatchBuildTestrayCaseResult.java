@@ -58,16 +58,6 @@ public class BatchBuildTestrayCaseResult extends BuildTestrayCaseResult {
 		return _axisTestClassGroup.getBatchName();
 	}
 
-	public DownstreamBuildReport getDownstreamBuildReport() {
-		BuildReport buildReport = getBuildReport();
-
-		if (!(buildReport instanceof DownstreamBuildReport)) {
-			return null;
-		}
-
-		return (DownstreamBuildReport)buildReport;
-	}
-
 	@Override
 	public BuildReport getBuildReport() {
 		TopLevelBuildReport topLevelBuildReport = getTopLevelBuildReport();
@@ -85,6 +75,16 @@ public class BatchBuildTestrayCaseResult extends BuildTestrayCaseResult {
 		catch (IOException ioException) {
 			throw new RuntimeException(ioException);
 		}
+	}
+
+	public DownstreamBuildReport getDownstreamBuildReport() {
+		BuildReport buildReport = getBuildReport();
+
+		if (!(buildReport instanceof DownstreamBuildReport)) {
+			return null;
+		}
+
+		return (DownstreamBuildReport)buildReport;
 	}
 
 	@Override
@@ -546,7 +546,9 @@ public class BatchBuildTestrayCaseResult extends BuildTestrayCaseResult {
 			return testrayAttachments;
 		}
 
-		for (URL testrayAttachmentURL : buildReport.getTestrayAttachmentURLs()) {
+		for (URL testrayAttachmentURL :
+				buildReport.getTestrayAttachmentURLs()) {
+
 			Matcher matcher = _dockerLogsURLPattern.matcher(
 				String.valueOf(testrayAttachmentURL));
 

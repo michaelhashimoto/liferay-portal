@@ -519,7 +519,9 @@ public class TestrayServer {
 			false, entityName, entityFields, filter, sort, maxCount, pageSize);
 	}
 
-	private void _importCaseResultsToGCP(TopLevelBuildReport topLevelBuildReport) {
+	private void _importCaseResultsToGCP(
+		TopLevelBuildReport topLevelBuildReport) {
+
 		if (!TestrayS3Bucket.hasGoogleApplicationCredentials()) {
 			return;
 		}

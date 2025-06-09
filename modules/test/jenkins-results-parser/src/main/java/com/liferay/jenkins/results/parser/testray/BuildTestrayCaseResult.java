@@ -9,7 +9,6 @@ import com.liferay.jenkins.results.parser.BuildReport;
 import com.liferay.jenkins.results.parser.JenkinsMaster;
 import com.liferay.jenkins.results.parser.JenkinsResultsParserUtil;
 import com.liferay.jenkins.results.parser.TopLevelBuildReport;
-import org.json.JSONObject;
 
 import java.io.File;
 
@@ -20,34 +19,12 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Callable;
 
+import org.json.JSONObject;
+
 /**
  * @author Michael Hashimoto
  */
 public abstract class BuildTestrayCaseResult extends TestrayCaseResult {
-
-	protected BuildTestrayCaseResult(
-		TestrayBuild testrayBuild, TopLevelBuildReport topLevelBuildReport) {
-
-		super(testrayBuild, new JSONObject());
-
-		_topLevelBuildReport =  topLevelBuildReport;
-
-		String workspace = System.getenv("WORKSPACE");
-
-		if (JenkinsResultsParserUtil.isNullOrEmpty(workspace)) {
-			throw new RuntimeException("Please set WORKSPACE");
-		}
-
-		_testrayUploadBaseDir = new File(
-			workspace,
-			"testray/" + JenkinsResultsParserUtil.getDistinctTimeStamp());
-	}
-
-	public TopLevelBuildReport getTopLevelBuildReport() {
-		return _topLevelBuildReport;
-	}
-
-	private final TopLevelBuildReport _topLevelBuildReport;
 
 	@Override
 	public long getDuration() {
@@ -75,6 +52,28 @@ public abstract class BuildTestrayCaseResult extends TestrayCaseResult {
 		return Status.PASSED;
 	}
 
+	public TopLevelBuildReport getTopLevelBuildReport() {
+		return _topLevelBuildReport;
+	}
+
+	protected BuildTestrayCaseResult(
+		TestrayBuild testrayBuild, TopLevelBuildReport topLevelBuildReport) {
+
+		super(testrayBuild, new JSONObject());
+
+		_topLevelBuildReport = topLevelBuildReport;
+
+		String workspace = System.getenv("WORKSPACE");
+
+		if (JenkinsResultsParserUtil.isNullOrEmpty(workspace)) {
+			throw new RuntimeException("Please set WORKSPACE");
+		}
+
+		_testrayUploadBaseDir = new File(
+			workspace,
+			"testray/" + JenkinsResultsParserUtil.getDistinctTimeStamp());
+	}
+
 	protected abstract BuildReport getBuildReport();
 
 	protected TestrayAttachment getTestrayAttachment(
@@ -86,16 +85,15 @@ public abstract class BuildTestrayCaseResult extends TestrayCaseResult {
 
 		if ((buildReport == null) ||
 			JenkinsResultsParserUtil.isNullOrEmpty(key) ||
-			JenkinsResultsParserUtil.isNullOrEmpty(name)) {
+			JenkinsResultsParserUtil.isNullOrEmpty(name) ||
+			!TestrayS3Bucket.hasGoogleApplicationCredentials()) {
 
 			return null;
 		}
 
-		if (!TestrayS3Bucket.hasGoogleApplicationCredentials()) {
-			return null;
-		}
+		for (URL testrayS3AttachmentURL :
+				buildReport.getTestrayAttachmentURLs()) {
 
-		for (URL testrayS3AttachmentURL : buildReport.getTestrayAttachmentURLs()) {
 			String testrayS3AttachmentURLString = String.valueOf(
 				testrayS3AttachmentURL);
 
@@ -254,5 +252,6 @@ public abstract class BuildTestrayCaseResult extends TestrayCaseResult {
 		new HashMap<>();
 
 	private final File _testrayUploadBaseDir;
+	private final TopLevelBuildReport _topLevelBuildReport;
 
 }

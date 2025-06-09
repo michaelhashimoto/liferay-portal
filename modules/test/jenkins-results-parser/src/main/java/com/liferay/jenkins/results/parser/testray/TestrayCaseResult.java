@@ -23,6 +23,7 @@ import java.util.TreeMap;
 import org.apache.commons.lang3.StringUtils;
 
 import org.dom4j.Element;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -37,28 +38,6 @@ public class TestrayCaseResult {
 		"componentToCaseResult", "dateCreated", "dateModified",
 		"dueStatus { key name }", "errors", "id", "startDate"
 	};
-
-	protected void addPropertyElements(
-		Element propertiesElement, Map<String, String> propertiesMap) {
-
-		for (Map.Entry<String, String> propertyEntry :
-			propertiesMap.entrySet()) {
-
-			Element propertyElement = propertiesElement.addElement("property");
-
-			String propertyName = propertyEntry.getKey();
-			String propertyValue = propertyEntry.getValue();
-
-			if (JenkinsResultsParserUtil.isNullOrEmpty(propertyName) ||
-				JenkinsResultsParserUtil.isNullOrEmpty(propertyValue)) {
-
-				continue;
-			}
-
-			propertyElement.addAttribute("name", propertyName);
-			propertyElement.addAttribute("value", propertyValue);
-		}
-	}
 
 	public TestrayAttachment getBuildResultTestrayAttachment() {
 		initTestrayAttachments();
@@ -393,6 +372,28 @@ public class TestrayCaseResult {
 
 		_testrayServer = testrayServer;
 		_jsonObject = jsonObject;
+	}
+
+	protected void addPropertyElements(
+		Element propertiesElement, Map<String, String> propertiesMap) {
+
+		for (Map.Entry<String, String> propertyEntry :
+				propertiesMap.entrySet()) {
+
+			Element propertyElement = propertiesElement.addElement("property");
+
+			String propertyName = propertyEntry.getKey();
+			String propertyValue = propertyEntry.getValue();
+
+			if (JenkinsResultsParserUtil.isNullOrEmpty(propertyName) ||
+				JenkinsResultsParserUtil.isNullOrEmpty(propertyValue)) {
+
+				continue;
+			}
+
+			propertyElement.addAttribute("name", propertyName);
+			propertyElement.addAttribute("value", propertyValue);
+		}
 	}
 
 	protected synchronized void initTestrayAttachments() {
