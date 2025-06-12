@@ -297,7 +297,7 @@ public abstract class BaseBuild implements Build {
 			sb.append("C:");
 		}
 
-		sb.append("/opt/dev/projects/github/.tmp/jenkins/");
+		sb.append("/home/me/dev/projects/.tmp/jenkins/");
 
 		JenkinsMaster jenkinsMaster = getJenkinsMaster();
 
