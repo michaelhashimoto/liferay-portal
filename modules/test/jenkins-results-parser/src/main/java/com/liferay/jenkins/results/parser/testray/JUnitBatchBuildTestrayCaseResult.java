@@ -38,11 +38,13 @@ public class JUnitBatchBuildTestrayCaseResult
 
 	@Override
 	public BuildReport getBuildReport() {
-		DownstreamBuildReport cachedDownstreamBuildReport =
-			_jUnitTestClass.getCachedDownstreamBuildReport();
+		if (JenkinsResultsParserUtil.isBuildCachingEnabled()) {
+			DownstreamBuildReport cachedDownstreamBuildReport =
+				_jUnitTestClass.getCachedDownstreamBuildReport();
 
-		if (cachedDownstreamBuildReport != null) {
-			return cachedDownstreamBuildReport;
+			if (cachedDownstreamBuildReport != null) {
+				return cachedDownstreamBuildReport;
+			}
 		}
 
 		return super.getBuildReport();
@@ -262,7 +264,8 @@ public class JUnitBatchBuildTestrayCaseResult
 		}
 
 		TestrayAttachment testrayAttachment = getTestrayAttachment(
-			getBuildReport(), "Failure Messages", "/" + getName() + ".txt.gz");
+			getBuildReport(), "Failure Messages",
+			getAxisName() + "/" + getName() + ".txt.gz");
 
 		if (testrayAttachment == null) {
 			return null;
@@ -298,15 +301,17 @@ public class JUnitBatchBuildTestrayCaseResult
 			return _testClassReports;
 		}
 
-		List<TestClassReport> cachedTestClassReports =
-			_jUnitTestClass.getCachedTestClassReports();
+		if (JenkinsResultsParserUtil.isBuildCachingEnabled()) {
+			List<TestClassReport> cachedTestClassReports =
+				_jUnitTestClass.getCachedTestClassReports();
 
-		if ((cachedTestClassReports != null) &&
-			!cachedTestClassReports.isEmpty()) {
+			if ((cachedTestClassReports != null) &&
+				!cachedTestClassReports.isEmpty()) {
 
-			_testClassReports = cachedTestClassReports;
+				_testClassReports = cachedTestClassReports;
 
-			return _testClassReports;
+				return _testClassReports;
+			}
 		}
 
 		DownstreamBuildReport downstreamBuildReport =
