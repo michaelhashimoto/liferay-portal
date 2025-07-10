@@ -6873,6 +6873,64 @@ information. Make sure to commit in all format-javadoc results.
 					</sequential>
 				</for>
 
+				<beanshell>
+					<![CDATA[
+						import com.liferay.jenkins.results.parser.Dom4JUtil;
+						import com.liferay.jenkins.results.parser.JenkinsResultsParserUtil;
+
+						import org.dom4j.Document;
+						import org.dom4j.Element;
+
+						public String fixPrefix(String name) {
+							if (name.contains(".modules.")) {
+								name = name.substring(name.indexOf(".modules.") + 8);
+							}
+							else {
+								name = ".apps." + name;
+							}
+
+							return name;
+						}
+
+						List files = JenkinsResultsParserUtil.findFiles(new File("modules"), "TEST-frontend-js.xml");
+
+						for (File file : files) {
+							Document document = Dom4JUtil.parse(JenkinsResultsParserUtil.read(file));
+
+							Element rootElement = document.getRootElement();
+
+							String packageName = rootElement.attributeValue("package");
+
+							if (packageName.matches(":.+")) {
+								continue;
+							}
+
+							packageName = fixPrefix(packageName);
+
+							if (packageName.contains(".test.")) {
+								packageName = packageName.substring(0, packageName.indexOf(".test."));
+							}
+							else if (packageName.contains(".src.")) {
+								packageName = packageName.substring(0, packageName.indexOf(".src."));
+							}
+
+							packageName = packageName.replaceAll("\\.", ":");
+
+							rootElement.setAttributeValue("package", packageName);
+
+							for (Element testcaseElement : rootElement.elements("testcase")) {
+								String classname = testcaseElement.attributeValue("classname");
+
+								testcaseElement.setAttributeValue("classname", packageName + ":packageRunTest");
+
+								testcaseElement.setAttributeValue("name", fixPrefix(classname) + "." + testcaseElement.attributeValue("name"));
+							}
+
+							JenkinsResultsParserUtil.write(file, Dom4JUtil.format(rootElement));
+						}
+					]]>
+				</beanshell>
+
 				<replace
 					dir="modules"
 					includes="**/TEST-frontend-js.xml"
