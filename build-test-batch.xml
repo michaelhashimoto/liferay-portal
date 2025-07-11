@@ -6911,16 +6911,18 @@ information. Make sure to commit in all format-javadoc results.
 
 							Element rootElement = document.getRootElement();
 
-							String packageName = getRelativePath(rootElement.attributeValue("package"));
+							String moduleDirPath = getRelativePath(rootElement.attributeValue("package"));
 
-							rootElement.setAttributeValue("package", packageName.replaceAll("(.*apps\\.[^\\.]+)(\\..+)", "$1"));
+							rootElement.setAttributeValue("package", moduleDirPath.replaceAll("(.*apps\\.[^\\.]+)(\\..+)", "$1"));
 
 							for (Element testcaseElement : rootElement.elements("testcase")) {
-								testcaseElement.setAttributeValue("classname", packageName);
+								String testClassFileName = getRelativePath(testcaseElement.attributeValue("classname"));
 
-								String classname = getRelativePath(testcaseElement.attributeValue("classname"));
+								testClassFileName = testClassFileName.replace(moduleDirPath + ".", "");
 
-								testcaseElement.setAttributeValue("name", classname.replace(packageName + ".", "") + "." + testcaseElement.attributeValue("name"));
+								testcaseElement.setAttributeValue("classname", moduleDirPath);
+
+								testcaseElement.setAttributeValue("name", testClassFileName + "." + testcaseElement.attributeValue("name"));
 							}
 
 							JenkinsResultsParserUtil.write(resultFile, Dom4JUtil.format(rootElement));
