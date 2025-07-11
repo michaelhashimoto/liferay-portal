@@ -6901,9 +6901,9 @@ information. Make sure to commit in all format-javadoc results.
 						List resultFiles = JenkinsResultsParserUtil.findFiles(modulesDir, "TEST-frontend-js.xml");
 
 						for (File resultFile : resultFiles) {
-							String resultFilePath = JenkinsResultsParserUtil.getCanonicalPath(resultFile);
+							String resultFilePath = String.valueOf(resultFile);
 
-							if (resultFilePath.contains("/node_modules/")) {
+							if (resultFilePath.contains("node_modules")) {
 								continue;
 							}
 
