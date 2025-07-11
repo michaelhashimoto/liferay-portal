@@ -6847,8 +6847,6 @@ information. Make sure to commit in all format-javadoc results.
 	<target name="js-unit">
 		<run-batch-test>
 			<test-action>
-				<echo>START</echo>
-
 				<property name="js.unit.failure.count" value="0" />
 
 				<for delimiter=" " list="${modules.test.class.group}" param="modules.test.class" trim="true">
@@ -6875,8 +6873,6 @@ information. Make sure to commit in all format-javadoc results.
 					</sequential>
 				</for>
 
-				<echo>START0</echo>
-
 				<beanshell>
 					<![CDATA[
 						import com.liferay.jenkins.results.parser.Dom4JUtil;
@@ -6885,12 +6881,12 @@ information. Make sure to commit in all format-javadoc results.
 						import org.dom4j.Document;
 						import org.dom4j.Element;
 
-						public String fixPrefix(String name) {
+						public String getRelativePath(String name) {
 							if (name.contains(".modules.")) {
-								name = name.substring(name.indexOf(".modules.") + 8);
+								name = name.substring(name.indexOf(".modules.") + 9);
 							}
 							else {
-								name = ".apps." + name;
+								name = "apps." + name;
 							}
 
 							return name;
@@ -6898,14 +6894,14 @@ information. Make sure to commit in all format-javadoc results.
 
 						File modulesDir = JenkinsResultsParserUtil.getCanonicalFile(new File(project.getProperty("project.dir"), "modules"));
 
-						System.out.println("modulesDir=" + modulesDir);
+						if (!modulesDir.exists()) {
+							return;
+						}
 
-						List files = JenkinsResultsParserUtil.findFiles(modulesDir, "TEST-frontend-js.xml");
+						List resultFiles = JenkinsResultsParserUtil.findFiles(modulesDir, "TEST-frontend-js.xml");
 
-						for (File file : files) {
-							System.out.println("file=" + file);
-
-							Document document = Dom4JUtil.parse(JenkinsResultsParserUtil.read(file));
+						for (File resultFile : resultFiles) {
+							Document document = Dom4JUtil.parse(JenkinsResultsParserUtil.read(resultFile));
 
 							Element rootElement = document.getRootElement();
 
@@ -6915,7 +6911,7 @@ information. Make sure to commit in all format-javadoc results.
 								continue;
 							}
 
-							packageName = fixPrefix(packageName);
+							packageName = getRelativePat(packageName);
 
 							if (packageName.contains(".test.")) {
 								packageName = packageName.substring(0, packageName.indexOf(".test."));
@@ -6924,24 +6920,22 @@ information. Make sure to commit in all format-javadoc results.
 								packageName = packageName.substring(0, packageName.indexOf(".src."));
 							}
 
-							packageName = packageName.replaceAll("\\.", ":");
-
 							rootElement.setAttributeValue("package", packageName);
 
 							for (Element testcaseElement : rootElement.elements("testcase")) {
 								String classname = testcaseElement.attributeValue("classname");
 
-								testcaseElement.setAttributeValue("classname", packageName + ":packageRunTest");
+								testcaseElement.setAttributeValue("classname", packageName + ".packageRunTest");
 
-								testcaseElement.setAttributeValue("name", fixPrefix(classname) + "." + testcaseElement.attributeValue("name"));
+								testcaseElement.setAttributeValue("name", getRelativePath(classname) + "." + testcaseElement.attributeValue("name"));
 							}
 
-							JenkinsResultsParserUtil.write(file, Dom4JUtil.format(rootElement));
+							JenkinsResultsParserUtil.write(resultFile, Dom4JUtil.format(rootElement));
+
+							System.out.prinltn("Updated " + resultFile);
 						}
 					]]>
 				</beanshell>
-
-				<echo>END0</echo>
 
 				<replace
 					dir="modules"
@@ -6970,76 +6964,6 @@ information. Make sure to commit in all format-javadoc results.
 			<test-set-up>
 				<setup-test-environment />
 			</test-set-up>
-
-			<test-tear-down>
-				<echo>START1</echo>
-
-				<beanshell>
-					<![CDATA[
-						import com.liferay.jenkins.results.parser.Dom4JUtil;
-						import com.liferay.jenkins.results.parser.JenkinsResultsParserUtil;
-
-						import org.dom4j.Document;
-						import org.dom4j.Element;
-
-						public String fixPrefix(String name) {
-							if (name.contains(".modules.")) {
-								name = name.substring(name.indexOf(".modules.") + 8);
-							}
-							else {
-								name = ".apps." + name;
-							}
-
-							return name;
-						}
-
-						File modulesDir = JenkinsResultsParserUtil.getCanonicalFile(new File(project.getProperty("project.dir"), "modules"));
-
-						System.out.println("modulesDir=" + modulesDir);
-
-						List files = JenkinsResultsParserUtil.findFiles(modulesDir, "TEST-frontend-js.xml");
-
-						for (File file : files) {
-							System.out.println("file=" + file);
-
-							Document document = Dom4JUtil.parse(JenkinsResultsParserUtil.read(file));
-
-							Element rootElement = document.getRootElement();
-
-							String packageName = rootElement.attributeValue("package");
-
-							if (packageName.matches(":.+")) {
-								continue;
-							}
-
-							packageName = fixPrefix(packageName);
-
-							if (packageName.contains(".test.")) {
-								packageName = packageName.substring(0, packageName.indexOf(".test."));
-							}
-							else if (packageName.contains(".src.")) {
-								packageName = packageName.substring(0, packageName.indexOf(".src."));
-							}
-
-							packageName = packageName.replaceAll("\\.", ":");
-
-							rootElement.setAttributeValue("package", packageName);
-
-							for (Element testcaseElement : rootElement.elements("testcase")) {
-								String classname = testcaseElement.attributeValue("classname");
-
-								testcaseElement.setAttributeValue("classname", packageName + ":packageRunTest");
-
-								testcaseElement.setAttributeValue("name", fixPrefix(classname) + "." + testcaseElement.attributeValue("name"));
-							}
-
-							JenkinsResultsParserUtil.write(file, Dom4JUtil.format(rootElement));
-						}
-					]]>
-				</beanshell>
-
-				<echo>END1</echo>
-			</test-tear-down>
 		</run-batch-test>
 	</target>
 
