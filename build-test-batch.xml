@@ -6932,7 +6932,7 @@ information. Make sure to commit in all format-javadoc results.
 
 							JenkinsResultsParserUtil.write(resultFile, Dom4JUtil.format(rootElement));
 
-							System.out.prinltn("Updated " + resultFile);
+							System.out.println("Updated " + resultFile);
 						}
 					]]>
 				</beanshell>
