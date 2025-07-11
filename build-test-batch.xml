@@ -6911,7 +6911,7 @@ information. Make sure to commit in all format-javadoc results.
 								continue;
 							}
 
-							packageName = getRelativePat(packageName);
+							packageName = getRelativePath(packageName);
 
 							if (packageName.contains(".test.")) {
 								packageName = packageName.substring(0, packageName.indexOf(".test."));
