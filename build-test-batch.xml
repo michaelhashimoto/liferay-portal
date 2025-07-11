@@ -6901,33 +6901,26 @@ information. Make sure to commit in all format-javadoc results.
 						List resultFiles = JenkinsResultsParserUtil.findFiles(modulesDir, "TEST-frontend-js.xml");
 
 						for (File resultFile : resultFiles) {
+							String resultFilePath = JenkinsResultsParserUtil.getCanonicalPath(resultFile);
+
+							if (resultFilePath.contains("/node_modules/")) {
+								continue;
+							}
+
 							Document document = Dom4JUtil.parse(JenkinsResultsParserUtil.read(resultFile));
 
 							Element rootElement = document.getRootElement();
 
-							String packageName = rootElement.attributeValue("package");
+							String packageName = getRelativePath(rootElement.attributeValue("package"));
 
-							if (packageName.matches(":.+")) {
-								continue;
-							}
-
-							packageName = getRelativePath(packageName);
-
-							if (packageName.contains(".test.")) {
-								packageName = packageName.substring(0, packageName.indexOf(".test."));
-							}
-							else if (packageName.contains(".src.")) {
-								packageName = packageName.substring(0, packageName.indexOf(".src."));
-							}
-
-							rootElement.setAttributeValue("package", packageName);
+							rootElement.setAttributeValue("package", packageName.replaceAll("(.*apps\\.[^\\.]+)(\\..+)", "$1"));
 
 							for (Element testcaseElement : rootElement.elements("testcase")) {
-								String classname = testcaseElement.attributeValue("classname");
+								testcaseElement.setAttributeValue("classname", packageName);
 
-								testcaseElement.setAttributeValue("classname", packageName + ".packageRunTest");
+								String classname = getRelativePath(testcaseElement.attributeValue("classname"));
 
-								testcaseElement.setAttributeValue("name", getRelativePath(classname) + "." + testcaseElement.attributeValue("name"));
+								testcaseElement.setAttributeValue("name", classname.replace(packageName + ".", "") + "." + testcaseElement.attributeValue("name"));
 							}
 
 							JenkinsResultsParserUtil.write(resultFile, Dom4JUtil.format(rootElement));
