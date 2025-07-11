@@ -6847,6 +6847,8 @@ information. Make sure to commit in all format-javadoc results.
 	<target name="js-unit">
 		<run-batch-test>
 			<test-action>
+				<echo>START</echo>
+
 				<property name="js.unit.failure.count" value="0" />
 
 				<for delimiter=" " list="${modules.test.class.group}" param="modules.test.class" trim="true">
@@ -6873,6 +6875,8 @@ information. Make sure to commit in all format-javadoc results.
 					</sequential>
 				</for>
 
+				<echo>START0</echo>
+
 				<beanshell>
 					<![CDATA[
 						import com.liferay.jenkins.results.parser.Dom4JUtil;
@@ -6892,7 +6896,11 @@ information. Make sure to commit in all format-javadoc results.
 							return name;
 						}
 
-						List files = JenkinsResultsParserUtil.findFiles(new File("modules"), "TEST-frontend-js.xml");
+						File modulesDir = JenkinsResultsParserUtil.getCanonicalFile(new File(project.getProperty("project.dir"), "modules"));
+
+						System.out.println("modulesDir=" + modulesDir);
+
+						List files = JenkinsResultsParserUtil.findFiles(modulesDir, "TEST-frontend-js.xml");
 
 						for (File file : files) {
 							System.out.println("file=" = file);
@@ -6932,6 +6940,8 @@ information. Make sure to commit in all format-javadoc results.
 						}
 					]]>
 				</beanshell>
+
+				<echo>END0</echo>
 
 				<replace
 					dir="modules"
@@ -6962,6 +6972,8 @@ information. Make sure to commit in all format-javadoc results.
 			</test-set-up>
 
 			<test-tear-down>
+				<echo>START1</echo>
+
 				<beanshell>
 					<![CDATA[
 						import com.liferay.jenkins.results.parser.Dom4JUtil;
@@ -6981,7 +6993,11 @@ information. Make sure to commit in all format-javadoc results.
 							return name;
 						}
 
-						List files = JenkinsResultsParserUtil.findFiles(new File("modules"), "TEST-frontend-js.xml");
+						File modulesDir = JenkinsResultsParserUtil.getCanonicalFile(new File(project.getProperty("project.dir"), "modules"));
+
+						System.out.println("modulesDir=" + modulesDir);
+
+						List files = JenkinsResultsParserUtil.findFiles(modulesDir, "TEST-frontend-js.xml");
 
 						for (File file : files) {
 							System.out.println("file=" = file);
@@ -7021,6 +7037,8 @@ information. Make sure to commit in all format-javadoc results.
 						}
 					]]>
 				</beanshell>
+
+				<echo>END1</echo>
 			</test-tear-down>
 		</run-batch-test>
 	</target>
