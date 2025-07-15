@@ -1142,6 +1142,87 @@ app.server.type=@{app.server.type}]]></echo>
 		</sequential>
 	</macrodef>
 
+	<macrodef name="record-test-task-results-file">
+		<attribute name="test.task.name" />
+		<attribute default="0" name="test.task.duration" />
+		<attribute default="" name="test.task.failure.message" />
+
+		<sequential>
+			<local name="test.task.class.name" />
+			<local name="test.task.duration" />
+			<local name="test.task.results.file.name" />
+			<local name="test.task.method.name" />
+			<local name="test.task.package.name" />
+			<local name="test.task.timestamp" />
+
+			<beanshell>
+				<![CDATA[
+					import com.liferay.jenkins.results.parser.JenkinsResultsParserUtil;
+
+					import java.util.regex.Matcher;
+					import java.util.regex.Pattern;
+
+					public double getTestTaskDuration() {
+						int testTaskDuration = Integer.parseInt("@{test.task.duration}");
+
+						return (double)testTaskDuration / 1000;
+					}
+
+					String testTaskFileName = "@{test.task.name}";
+
+					if (testTaskFileName.startsWith(":")) {
+						testTaskFileName = testTaskFileName.substring(1);
+					}
+
+					testTaskFileName = testTaskFileName.replaceAll(":", ".");
+
+					Pattern pattern = Pattern.compile("(?<packageName>(dxp\\.)?apps\\.[^\\.]+)\\.(?<className>.+)\\.(?<methodName>[^\\.]+)");
+
+					Matcher matcher = pattern.matcher(testTaskFileName);
+
+					if (!matcher.find()) {
+						return;
+					}
+
+					project.setProperty("test.task.class.name", matcher.group("className"));
+					project.setProperty("test.task.duration", String.valueOf(getTestTaskDuration()));
+					project.setProperty("test.task.results.file.name", testTaskFileName);
+					project.setProperty("test.task.method.name", matcher.group("methodName"));
+					project.setProperty("test.task.package.name", matcher.group("packageName"));
+					project.setProperty("test.task.timestamp", JenkinsResultsParserUtil.toDateString(new Date(), "yyyy-MM-dd_kk:mm:ss", "America/Los_Angeles"))
+				]]>
+			</beanshell>
+
+			<if>
+				<equals arg1="@{test.task.failure.message}" arg2="" />
+				<then>
+					<echo file="${project.dir}/modules/TEST-${test.task.results.file.name}.xml"><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
+
+<testsuite errors="1" failures="1" hostname="${env.HOSTNAME}" package="${test.task.package.name}" name="${test.task.method.name}" skipped="0" tests="1" time="${test.task.duration}" timestamp="${test.task.timestamp}">
+	<properties />
+	<testcase classname="${test.task.package.name}.${test.task.class.name}" name="${test.task.method.name}" time="${test.task.duration}" />
+	<system-out></system-out>
+	<system-err></system-err>
+</testsuite>]]></echo>
+				</then>
+				<else>
+					<echo file="${project.dir}/modules/TEST-${test.task.results.file.name}.xml"><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
+
+<testsuite errors="1" failures="1" hostname="${env.HOSTNAME}" package="${test.task.package.name}" name="${test.task.method.name}" skipped="0" tests="1" time="${test.task.duration}" timestamp="${test.task.timestamp}">
+	<properties />
+	<testcase classname="${test.task.package.name}.${test.task.class.name}" name="${test.task.method.name}" time="${test.task.duration}">
+		<failure message="@{test.task.failure.message}" />
+	</testcase>
+	<system-out></system-out>
+	<system-err></system-err>
+</testsuite>]]></echo>
+				</else>
+			</if>
+
+			<echo>Recording ${project.dir}/modules/TEST-${test.task.results.file.name}.xml</echo>
+		</sequential>
+	</macrodef>
+
 	<macrodef name="run-archived-module-smoke">
 		<attribute name="database.type" />
 
