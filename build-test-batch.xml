@@ -7018,6 +7018,8 @@ information. Make sure to commit in all format-javadoc results.
 	</target>
 
 	<target name="lpkg-container-mysql57">
+		<fail message="QUICK" />
+
 		<run-lpkg-container-test database.type="mysql" />
 	</target>
 
