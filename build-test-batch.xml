@@ -7024,6 +7024,8 @@ information. Make sure to commit in all format-javadoc results.
 	</target>
 
 	<target name="lpkg-container-postgresql163">
+		<fail message="QUICK" />
+
 		<run-lpkg-container-test database.type="postgresql" />
 	</target>
 
