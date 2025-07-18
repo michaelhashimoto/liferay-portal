@@ -1296,7 +1296,7 @@ public abstract class BaseBuild implements Build {
 		String consoleText = getConsoleText();
 
 		for (String line : consoleText.split("\\n")) {
-			Matcher matcher = _testrayS3ObjectURLPattern.matcher(line);
+			Matcher matcher = _testrayCloudObjectURLPattern.matcher(line);
 
 			if (!matcher.find()) {
 				continue;
@@ -3562,10 +3562,11 @@ public abstract class BaseBuild implements Build {
 			"\\w+://(?<cohortName>test-\\d+)(-(?<masterId>\\d+))?",
 			"(\\.liferay\\.com)?/+job\\/+(?<jobName>[^\\/]+).*\\/",
 			"buildWithParameters\\?(?<queryString>.*)"));
-	private static final Pattern _testrayS3ObjectURLPattern = Pattern.compile(
-		JenkinsResultsParserUtil.combine(
-			"\\[(beanshell|exec)\\] Created S3 Object (?<url>",
-			"https://storage.cloud.google.com/[^\\s?]+).*"));
+	private static final Pattern _testrayCloudObjectURLPattern =
+		Pattern.compile(
+			JenkinsResultsParserUtil.combine(
+				"\\[(beanshell|exec)\\] Created Cloud Object (?<url>",
+				"https://storage.cloud.google.com/[^\\s?]+).*"));
 
 	static {
 		Properties properties = null;
