@@ -3653,6 +3653,8 @@ information. Make sure to commit in all build-lib-versions results.
 	<target name="central-requirements">
 		<fail message="Please set the property ${central.requirements.tests}." unless="central.requirements.tests" />
 
+		<fail message="QUICK" />
+
 		<run-batch-test>
 			<test-action>
 				<propertyfile file="${project.dir}/test.class.file.names.properties">
