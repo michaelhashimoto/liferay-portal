@@ -3653,6 +3653,8 @@ information. Make sure to commit in all build-lib-versions results.
 	<target name="central-requirements">
 		<fail message="Please set the property ${central.requirements.tests}." unless="central.requirements.tests" />
 
+		<fail message="QUICK" />
+
 		<run-batch-test>
 			<test-action>
 				<propertyfile file="${project.dir}/test.class.file.names.properties">
@@ -7018,10 +7020,14 @@ information. Make sure to commit in all format-javadoc results.
 	</target>
 
 	<target name="lpkg-container-mysql57">
+		<fail message="QUICK" />
+
 		<run-lpkg-container-test database.type="mysql" />
 	</target>
 
 	<target name="lpkg-container-postgresql163">
+		<fail message="QUICK" />
+
 		<run-lpkg-container-test database.type="postgresql" />
 	</target>
 
