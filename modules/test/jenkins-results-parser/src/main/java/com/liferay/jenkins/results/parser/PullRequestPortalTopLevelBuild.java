@@ -128,6 +128,11 @@ public class PullRequestPortalTopLevelBuild
 
 		String result = "FAILURE";
 
+		System.out.println(
+			"pullRequestForwardUpstreamFailureComparisonEnabled=" +
+				pullRequestForwardUpstreamFailureComparisonEnabled);
+		System.out.println("isCompareToUpstream()=" + isCompareToUpstream());
+
 		if (!pullRequestForwardUpstreamFailureComparisonEnabled ||
 			!isCompareToUpstream()) {
 
@@ -136,9 +141,13 @@ public class PullRequestPortalTopLevelBuild
 
 		String testSuiteName = getTestSuiteName();
 
-		if (!testSuiteName.matches("relevant|stable")) {
+		System.out.println(
+			"testSuiteName.matches(\"relevant|stable\")" +
+				testSuiteName.matches("relevant|stable"));
+
+		/*if (!testSuiteName.matches("relevant|stable")) {
 			return result;
-		}
+		}*/
 
 		String batchWhitelist = buildProperties.getProperty(
 			"pull.request.forward.upstream.failure.comparison.batch.whitelist");
@@ -147,6 +156,10 @@ public class PullRequestPortalTopLevelBuild
 			batchWhitelist.split("\\s*,\\s*"));
 
 		for (Build downstreamBuild : downstreamBuildFailures) {
+			System.out.println(
+				"downstreamBuild.isUniqueFailure()=" +
+					downstreamBuild.isUniqueFailure());
+
 			if (downstreamBuild.isUniqueFailure()) {
 				return result;
 			}

@@ -7125,6 +7125,8 @@ information. Make sure to commit in all format-javadoc results.
 	</target>
 
 	<target name="lpkg-override-mysql57">
+		<fail message="ONE" />
+		
 		<run-lpkg-override-test database.type="mysql" />
 	</target>
 
