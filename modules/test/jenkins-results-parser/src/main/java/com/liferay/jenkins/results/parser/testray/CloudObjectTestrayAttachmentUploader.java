@@ -17,7 +17,8 @@ import java.net.URL;
 /**
  * @author Michael Hashimoto
  */
-public class S3TestrayAttachmentUploader extends BaseTestrayAttachmentUploader {
+public class CloudObjectTestrayAttachmentUploader
+	extends BaseTestrayAttachmentUploader {
 
 	@Override
 	public File getPreparedFilesBaseDir() {
@@ -27,7 +28,7 @@ public class S3TestrayAttachmentUploader extends BaseTestrayAttachmentUploader {
 			throw new RuntimeException("Please set WORKSPACE");
 		}
 
-		return new File(workspace, "testray/prepared_s3_logs");
+		return new File(workspace, "testray/prepared_cloud_logs");
 	}
 
 	@Override
@@ -52,18 +53,19 @@ public class S3TestrayAttachmentUploader extends BaseTestrayAttachmentUploader {
 
 		File preparedFilesBaseDir = getPreparedFilesBaseDir();
 
-		TestrayS3Bucket testrayS3Bucket = TestrayS3Bucket.getInstance();
+		TestrayCloudBucket testrayCloudBucket =
+			TestrayCloudBucket.getInstance();
 
 		for (File preparedFile : getPreparedFiles()) {
-			TestrayS3Object testrayS3Object =
-				testrayS3Bucket.createTestrayS3Object(
+			TestrayCloudObject testrayCloudObject =
+				testrayCloudBucket.createTestrayCloudObject(
 					JenkinsResultsParserUtil.getPathRelativeTo(
 						preparedFile, preparedFilesBaseDir),
 					preparedFile);
 
 			if (topLevelBuildReport != null) {
 				topLevelBuildReport.addTestrayAttachmentURL(
-					testrayS3Object.getURL());
+					testrayCloudObject.getURL());
 			}
 		}
 
@@ -72,7 +74,9 @@ public class S3TestrayAttachmentUploader extends BaseTestrayAttachmentUploader {
 		_uploaded = true;
 	}
 
-	protected S3TestrayAttachmentUploader(Build build, URL testrayServerURL) {
+	protected CloudObjectTestrayAttachmentUploader(
+		Build build, URL testrayServerURL) {
+
 		super(build, testrayServerURL);
 	}
 

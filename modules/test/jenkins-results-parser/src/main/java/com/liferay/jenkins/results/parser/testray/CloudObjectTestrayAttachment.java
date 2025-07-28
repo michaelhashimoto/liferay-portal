@@ -10,36 +10,37 @@ import java.net.URL;
 /**
  * @author Michael Hashimoto
  */
-public class S3TestrayAttachment extends BaseTestrayAttachment {
+public class CloudObjectTestrayAttachment extends BaseTestrayAttachment {
 
-	public S3TestrayAttachment(
+	public CloudObjectTestrayAttachment(
 		TestrayCaseResult testrayCaseResult, String name, String key) {
 
 		super(testrayCaseResult, name, key);
 
-		TestrayS3Bucket testrayS3Bucket = TestrayS3Bucket.getInstance();
+		TestrayCloudBucket testrayCloudBucket =
+			TestrayCloudBucket.getInstance();
 
-		_testrayS3Object = testrayS3Bucket.getTestrayS3Object(key);
+		_testrayCloudObject = testrayCloudBucket.getTestrayCloudObject(key);
 	}
 
 	@Override
 	public URL getURL() {
-		if (_testrayS3Object == null) {
+		if (_testrayCloudObject == null) {
 			return null;
 		}
 
-		return _testrayS3Object.getURL();
+		return _testrayCloudObject.getURL();
 	}
 
 	@Override
 	public String getValue() {
-		if (_testrayS3Object == null) {
+		if (_testrayCloudObject == null) {
 			return null;
 		}
 
-		return _testrayS3Object.getValue();
+		return _testrayCloudObject.getValue();
 	}
 
-	private final TestrayS3Object _testrayS3Object;
+	private final TestrayCloudObject _testrayCloudObject;
 
 }
