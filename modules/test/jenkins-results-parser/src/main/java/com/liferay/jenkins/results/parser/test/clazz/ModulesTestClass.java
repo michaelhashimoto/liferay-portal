@@ -39,7 +39,9 @@ public abstract class ModulesTestClass extends BaseTestClass {
 
 		_taskName = taskName;
 
-		if (this instanceof JSUnitModulesTestClass) {
+		if (this instanceof CompileModulesTestClass ||
+			this instanceof JSUnitModulesTestClass) {
+
 			return;
 		}
 
