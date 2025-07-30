@@ -394,6 +394,43 @@ mariadb.executable=${mariadb.executable}]]></echo>
 		</sequential>
 	</macrodef>
 
+	<macrodef name="execute-test-task">
+		<attribute name="test.task.name" />
+		<element name="action" />
+
+		<sequential>
+			<trycatch property="test.task.failure.message">
+				<try>
+					<beanshell>
+						project.setProperty("test.task.start.time", String.valueOf(System.currentTimeMillis()));
+					</beanshell>
+
+					<generate-backend-batch-junit-report-test-task
+						test.task.failure.count="1"
+						test.task.name="@{test.task.name}"
+						test.task.start.time="${test.task.start.time}"
+					/>
+
+					<action />
+
+					<generate-backend-batch-junit-report-test-task
+						test.task.failure.count="0"
+						test.task.name="@{test.task.name}"
+						test.task.start.time="${test.task.start.time}"
+					/>
+				</try>
+				<catch>
+					<generate-backend-batch-junit-report-test-task
+						test.task.failure.count="1"
+						test.task.failure.message="${test.task.failure.message}"
+						test.task.name="@{test.task.name}"
+						test.task.start.time="${test.task.start.time}"
+					/>
+				</catch>
+			</trycatch>
+		</sequential>
+	</macrodef>
+
 	<macrodef name="get-release-dependency-modules">
 		<attribute default="false" name="post.startup.modules.only" />
 		<attribute default="false" name="pre.startup.modules.only" />
@@ -7203,7 +7240,6 @@ information. Make sure to commit in all format-javadoc results.
 						Pattern pattern = Pattern.compile("(.*):.*");
 
 						for (String modulesCompileTaskGroup : modulesCompileTaskGroups) {
-
 							Matcher matcher = pattern.matcher(modulesCompileTaskGroup);
 
 							if (!matcher.find()) {
@@ -7227,7 +7263,6 @@ information. Make sure to commit in all format-javadoc results.
 							}
 
 							sb.append(modulesCompileTaskGroup);
-
 							sb.append(" ");
 						}
 
@@ -7235,14 +7270,16 @@ information. Make sure to commit in all format-javadoc results.
 					]]>
 				</beanshell>
 
-				<for list="${modules.compile.processed.task.groups}" param="modules.compile.task.group" trim="true">
+				<for delimiter=" " list="${modules.compile.processed.task.groups}" param="modules.compile.task.name" trim="true">
 					<sequential>
-						<echo>Executing Gradle tasks: @{modules.compile.task.group}.</echo>
-
-						<gradle-execute dir="modules" task="@{modules.compile.task.group}">
-							<arg value="--continue" />
-							<arg value="--parallel" />
-						</gradle-execute>
+						<execute-test-task test.task.name="@{modules.compile.task.name}">
+							<action>
+								<gradle-execute dir="modules" task="@{modules.compile.task.name}">
+									<arg value="--continue" />
+									<arg value="--parallel" />
+								</gradle-execute>
+							</action>
+						</execute-test-task>
 					</sequential>
 				</for>
 			</test-action>
