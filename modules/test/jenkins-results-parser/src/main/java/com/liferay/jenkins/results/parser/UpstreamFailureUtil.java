@@ -83,6 +83,8 @@ public class UpstreamFailureUtil {
 			}
 		}
 
+		upstreamFailures.add("lpkg-override-mysql57,FAILURE");
+
 		return upstreamFailures;
 	}
 
