@@ -7,10 +7,11 @@ package com.liferay.jenkins.results.parser.test.clazz.group;
 
 import com.liferay.jenkins.results.parser.JenkinsResultsParserUtil;
 import com.liferay.jenkins.results.parser.test.clazz.TestClass;
-import com.liferay.jenkins.results.parser.test.clazz.TestClassMethod;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 import org.json.JSONObject;
 
@@ -30,25 +31,31 @@ public class ModulesSegmentTestClassGroup extends SegmentTestClassGroup {
 		for (int axisIndex = 0; axisIndex < getAxisCount(); axisIndex++) {
 			axisIndexes.add(String.valueOf(axisIndex));
 
-			AxisTestClassGroup axisTestClassGroup = getAxisTestClassGroup(
-				axisIndex);
-
-			List<TestClassMethod> testClassMethods = new ArrayList<>();
-
-			for (TestClass testClass : axisTestClassGroup.getTestClasses()) {
-				testClassMethods.addAll(testClass.getTestClassMethods());
-			}
-
 			sb.append("TEST_CLASS_GROUP_");
 			sb.append(axisIndex);
 			sb.append("=");
 
-			for (TestClassMethod testClassMethod : testClassMethods) {
-				sb.append(testClassMethod.getName());
+			AxisTestClassGroup axisTestClassGroup = getAxisTestClassGroup(
+				axisIndex);
+
+			Set<String> testTaskNames = new TreeSet<>();
+
+			for (TestClass testClass : axisTestClassGroup.getTestClasses()) {
+				String testTaskName = testClass.getTestTaskName();
+
+				if (JenkinsResultsParserUtil.isNullOrEmpty(testTaskName)) {
+					continue;
+				}
+
+				testTaskNames.add(testTaskName);
+			}
+
+			for (String testTaskName : testTaskNames) {
+				sb.append(testTaskName);
 				sb.append(",");
 			}
 
-			if (!testClassMethods.isEmpty()) {
+			if (!testTaskNames.isEmpty()) {
 				sb.setLength(sb.length() - 1);
 			}
 

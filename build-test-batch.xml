@@ -394,6 +394,46 @@ mariadb.executable=${mariadb.executable}]]></echo>
 		</sequential>
 	</macrodef>
 
+	<macrodef name="execute-test-task">
+		<attribute name="test.task.name" />
+		<element name="action" />
+		<element name="action-fail" optional="true" />
+
+		<sequential>
+			<trycatch property="test.task.failure.message">
+				<try>
+					<beanshell>
+						project.setProperty("test.task.start.time", String.valueOf(System.currentTimeMillis()));
+					</beanshell>
+
+					<generate-backend-batch-junit-report-test-task
+						test.task.failure.count="1"
+						test.task.name="@{test.task.name}"
+						test.task.start.time="${test.task.start.time}"
+					/>
+
+					<action />
+
+					<generate-backend-batch-junit-report-test-task
+						test.task.failure.count="0"
+						test.task.name="@{test.task.name}"
+						test.task.start.time="${test.task.start.time}"
+					/>
+
+					<action-fail />
+				</try>
+				<catch>
+					<generate-backend-batch-junit-report-test-task
+						test.task.failure.count="1"
+						test.task.failure.message="${test.task.failure.message}"
+						test.task.name="@{test.task.name}"
+						test.task.start.time="${test.task.start.time}"
+					/>
+				</catch>
+			</trycatch>
+		</sequential>
+	</macrodef>
+
 	<macrodef name="get-release-dependency-modules">
 		<attribute default="false" name="post.startup.modules.only" />
 		<attribute default="false" name="pre.startup.modules.only" />
@@ -7203,7 +7243,6 @@ information. Make sure to commit in all format-javadoc results.
 						Pattern pattern = Pattern.compile("(.*):.*");
 
 						for (String modulesCompileTaskGroup : modulesCompileTaskGroups) {
-
 							Matcher matcher = pattern.matcher(modulesCompileTaskGroup);
 
 							if (!matcher.find()) {
@@ -7227,7 +7266,6 @@ information. Make sure to commit in all format-javadoc results.
 							}
 
 							sb.append(modulesCompileTaskGroup);
-
 							sb.append(" ");
 						}
 
@@ -7235,14 +7273,16 @@ information. Make sure to commit in all format-javadoc results.
 					]]>
 				</beanshell>
 
-				<for list="${modules.compile.processed.task.groups}" param="modules.compile.task.group" trim="true">
+				<for delimiter=" " list="${modules.compile.processed.task.groups}" param="modules.compile.task.name" trim="true">
 					<sequential>
-						<echo>Executing Gradle tasks: @{modules.compile.task.group}.</echo>
-
-						<gradle-execute dir="modules" task="@{modules.compile.task.group}">
-							<arg value="--continue" />
-							<arg value="--parallel" />
-						</gradle-execute>
+						<execute-test-task test.task.name="@{modules.compile.task.name}">
+							<action>
+								<gradle-execute dir="modules" task="@{modules.compile.task.name}">
+									<arg value="--continue" />
+									<arg value="--parallel" />
+								</gradle-execute>
+							</action>
+						</execute-test-task>
 					</sequential>
 				</for>
 			</test-action>
@@ -7736,24 +7776,70 @@ information. Make sure to commit in all format-javadoc results.
 					<propertyresource name="modules.test.class.group" />
 				</loadresource>
 
-				<for list="${modules.baseline.task.groups}" param="modules.baseline.task.group" trim="true">
+				<for delimiter=" " list="${modules.baseline.task.groups}" param="modules.baseline.task" trim="true">
 					<sequential>
-						<echo>Executing Gradle tasks: @{modules.baseline.task.group}.</echo>
+						<sequential>
+							<execute-test-task test.task.name="@{modules.baseline.task}">
+								<action>
+									<gradle-execute dir="modules" forcedcacheenabled="false" task="@{modules.baseline.task}">
+										<arg value="--continue" />
+										<arg value="--parallel" />
+										<arg value="-Dbaseline.ignoreFailures=true" />
+									</gradle-execute>
+								</action>
+								<action-fail>
+									<beanshell>
+										<![CDATA[
+											String modulesPath = "@{modules.baseline.task}";
 
-						<gradle-execute dir="modules" forcedcacheenabled="false" task="@{modules.baseline.task.group}">
-							<arg value="--continue" />
-							<arg value="--parallel" />
-							<arg value="-Dbaseline.ignoreFailures=true" />
-						</gradle-execute>
+											modulesPath = modulesPath.replaceAll(":", "/");
+
+											modulesPath = modulesPath.replace("/baseline", "");
+
+											project.setProperty("modules.path", modulesPath);
+										]]>
+									</beanshell>
+
+									<local name="baseline.log.file.path" />
+
+									<property name="baseline.log.file.path" value="${project.dir}/modules/${modules.path}/build/reports/baseline/baseline.log" />
+
+									<echo>baseline.log.file.path=${baseline.log.file.path}</echo>
+
+									<if>
+										<available file="${baseline.log.file.path}" />
+										<then>
+											<echo>Found ${baseline.log.file.path}</echo>
+
+											<local name="baseline.log.file.content" />
+
+											<loadfile
+												property="baseline.log.file.content"
+												srcfile="${baseline.log.file.path}"
+											/>
+
+											<echo>
+												<![CDATA[<generate-backend-batch-junit-report-test-task
+	test.task.failure.count="1"
+	test.task.failure.message="${baseline.log.file.content}"
+	test.task.name="@{test.task.name}"
+	test.task.start.time="${test.task.start.time}"
+/>]]>
+											</echo>
+
+											<generate-backend-batch-junit-report-test-task
+												test.task.failure.count="1"
+												test.task.failure.message="${baseline.log.file.content}"
+												test.task.name="@{test.task.name}"
+												test.task.start.time="${test.task.start.time}"
+											/>
+										</then>
+									</if>
+								</action-fail>
+							</execute-test-task>
+						</sequential>
 					</sequential>
 				</for>
-
-				<echo>Checking for baseline log files.</echo>
-
-				<gradle-execute dir="modules/test/semantic-versioning-test" task="test">
-					<arg value="-Dmodules.test.class.group=${modules.test.class.group}" />
-					<arg value="-Dproject.dir=${project.dir}" />
-				</gradle-execute>
 
 				<echo>Check for baseline log files completed.</echo>
 			</test-action>

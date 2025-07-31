@@ -12,8 +12,6 @@ import com.liferay.jenkins.results.parser.test.clazz.group.BatchTestClassGroup;
 
 import java.io.File;
 
-import java.util.Collections;
-import java.util.List;
 import java.util.Objects;
 
 import org.json.JSONObject;
@@ -164,11 +162,6 @@ public class JSUnitModulesTestClass extends ModulesTestClass {
 		else {
 			_testrayMainComponentName = null;
 		}
-	}
-
-	@Override
-	protected List<File> getModulesProjectDirs() {
-		return Collections.singletonList(getModuleBaseDir());
 	}
 
 	private File _getAppBaseDir() {
