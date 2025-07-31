@@ -7,10 +7,11 @@ package com.liferay.jenkins.results.parser.test.clazz.group;
 
 import com.liferay.jenkins.results.parser.JenkinsResultsParserUtil;
 import com.liferay.jenkins.results.parser.test.clazz.TestClass;
-import com.liferay.jenkins.results.parser.test.clazz.TestClassMethod;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 import org.json.JSONObject;
 
@@ -33,7 +34,31 @@ public class ModulesSegmentTestClassGroup extends SegmentTestClassGroup {
 			sb.append("TEST_CLASS_GROUP_");
 			sb.append(axisIndex);
 			sb.append("=");
-			sb.append(getTestTaskNames(axisIndex));
+
+			AxisTestClassGroup axisTestClassGroup = getAxisTestClassGroup(
+				axisIndex);
+
+			Set<String> testTaskNames = new TreeSet<>();
+
+			for (TestClass testClass : axisTestClassGroup.getTestClasses()) {
+				String testTaskName = testClass.getTestTaskName();
+
+				if (JenkinsResultsParserUtil.isNullOrEmpty(testTaskName)) {
+					continue;
+				}
+
+				testTaskNames.add(testTaskName);
+			}
+
+			for (String testTaskName : testTaskNames) {
+				sb.append(testTaskName);
+				sb.append(",");
+			}
+
+			if (!testTaskNames.isEmpty()) {
+				sb.setLength(sb.length() - 1);
+			}
+
 			sb.append("\n");
 		}
 
@@ -54,30 +79,6 @@ public class ModulesSegmentTestClassGroup extends SegmentTestClassGroup {
 		BatchTestClassGroup parentBatchTestClassGroup, JSONObject jsonObject) {
 
 		super(parentBatchTestClassGroup, jsonObject);
-	}
-
-	protected String getTestTaskNames(int axisIndex) {
-		AxisTestClassGroup axisTestClassGroup = getAxisTestClassGroup(
-			axisIndex);
-
-		List<TestClassMethod> testClassMethods = new ArrayList<>();
-
-		for (TestClass testClass : axisTestClassGroup.getTestClasses()) {
-			testClassMethods.addAll(testClass.getTestClassMethods());
-		}
-
-		StringBuilder sb = new StringBuilder();
-
-		for (TestClassMethod testClassMethod : testClassMethods) {
-			sb.append(testClassMethod.getName());
-			sb.append(",");
-		}
-
-		if (!testClassMethods.isEmpty()) {
-			sb.setLength(sb.length() - 1);
-		}
-
-		return sb.toString();
 	}
 
 }

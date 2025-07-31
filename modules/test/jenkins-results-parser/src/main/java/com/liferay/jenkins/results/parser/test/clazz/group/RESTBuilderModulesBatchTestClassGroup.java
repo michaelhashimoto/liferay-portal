@@ -14,8 +14,14 @@ import com.liferay.jenkins.results.parser.test.clazz.TestClassFactory;
 import java.io.File;
 import java.io.IOException;
 
+import java.nio.file.FileVisitResult;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.PathMatcher;
+import java.nio.file.SimpleFileVisitor;
+import java.nio.file.attribute.BasicFileAttributes;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.json.JSONObject;
@@ -136,15 +142,62 @@ public class RESTBuilderModulesBatchTestClassGroup
 		}
 
 		for (File moduleDir : moduleDirsList) {
-			TestClass testClass = TestClassFactory.newTestClass(
-				this, moduleDir);
+			for (File modulesProjectDir : _getModulesProjectDirs(moduleDir)) {
+				TestClass testClass = TestClassFactory.newTestClass(
+					this, modulesProjectDir);
 
-			if (!testClass.hasTestClassMethods()) {
-				continue;
+				if (!testClass.hasTestClassMethods()) {
+					continue;
+				}
+
+				addTestClass(testClass);
 			}
-
-			addTestClass(testClass);
 		}
+	}
+
+	private List<File> _getModulesProjectDirs(File moduleDir) {
+		final List<File> modulesProjectDirs = new ArrayList<>();
+
+		try {
+			Files.walkFileTree(
+				moduleDir.toPath(),
+				new SimpleFileVisitor<Path>() {
+
+					@Override
+					public FileVisitResult preVisitDirectory(
+						Path filePath,
+						BasicFileAttributes basicFileAttributes) {
+
+						File currentDirectory = filePath.toFile();
+						String filePathString = filePath.toString();
+
+						if (filePathString.endsWith("-impl")) {
+							File restConfigYAMLFile = new File(
+								currentDirectory, "rest-config.yaml");
+							File restOpenAPIYAMLFile = new File(
+								currentDirectory, "rest-openapi.yaml");
+
+							if (restConfigYAMLFile.exists() &&
+								restOpenAPIYAMLFile.exists()) {
+
+								modulesProjectDirs.add(currentDirectory);
+
+								return FileVisitResult.SKIP_SUBTREE;
+							}
+						}
+
+						return FileVisitResult.CONTINUE;
+					}
+
+				});
+		}
+		catch (IOException ioException) {
+			throw new RuntimeException(
+				"Unable to get module marker files from " + moduleDir,
+				ioException);
+		}
+
+		return modulesProjectDirs;
 	}
 
 	private BuildType _buildType;

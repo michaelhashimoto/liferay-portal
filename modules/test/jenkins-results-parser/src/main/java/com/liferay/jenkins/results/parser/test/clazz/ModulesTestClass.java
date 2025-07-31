@@ -13,14 +13,12 @@ import java.io.File;
 
 import java.nio.file.Path;
 
-import java.util.List;
-
 import org.json.JSONObject;
 
 /**
  * @author Michael Hashimoto
  */
-public abstract class ModulesTestClass extends BaseTestClass {
+public class ModulesTestClass extends BaseTestClass {
 
 	@Override
 	public JSONObject getJSONObject() {
@@ -31,6 +29,20 @@ public abstract class ModulesTestClass extends BaseTestClass {
 		return jsonObject;
 	}
 
+	@Override
+	public String getName() {
+		return getTestTaskName();
+	}
+
+	@Override
+	public String getTestTaskName() {
+		String path = JenkinsResultsParserUtil.getPathRelativeTo(
+			getModuleBaseDir(), getPortalModulesBaseDir());
+
+		return JenkinsResultsParserUtil.combine(
+			":", path.replaceAll("/", ":"), ":", getTaskName());
+	}
+
 	protected ModulesTestClass(
 		BatchTestClassGroup batchTestClassGroup, File moduleBaseDir,
 		String taskName) {
@@ -38,22 +50,6 @@ public abstract class ModulesTestClass extends BaseTestClass {
 		super(batchTestClassGroup, moduleBaseDir);
 
 		_taskName = taskName;
-
-		if (this instanceof CompileModulesTestClass ||
-			this instanceof JSUnitModulesTestClass) {
-
-			return;
-		}
-
-		for (File modulesProjectDir : getModulesProjectDirs()) {
-			String path = JenkinsResultsParserUtil.getPathRelativeTo(
-				modulesProjectDir, getPortalModulesBaseDir());
-
-			String moduleTaskCall = JenkinsResultsParserUtil.combine(
-				":", path.replaceAll("/", ":"), ":", getTaskName());
-
-			addTestClassMethod(moduleTaskCall);
-		}
 	}
 
 	protected ModulesTestClass(
@@ -73,8 +69,6 @@ public abstract class ModulesTestClass extends BaseTestClass {
 
 		return testClassFile.toPath();
 	}
-
-	protected abstract List<File> getModulesProjectDirs();
 
 	protected File getPortalModulesBaseDir() {
 		PortalGitWorkingDirectory portalGitWorkingDirectory =

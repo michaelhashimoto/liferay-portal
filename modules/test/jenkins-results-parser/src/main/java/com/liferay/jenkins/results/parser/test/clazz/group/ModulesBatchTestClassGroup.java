@@ -6,6 +6,7 @@
 package com.liferay.jenkins.results.parser.test.clazz.group;
 
 import com.liferay.jenkins.results.parser.JenkinsResultsParserUtil;
+import com.liferay.jenkins.results.parser.PortalGitWorkingDirectory;
 import com.liferay.jenkins.results.parser.PortalTestClassJob;
 import com.liferay.jenkins.results.parser.job.property.JobProperty;
 
@@ -233,6 +234,14 @@ public abstract class ModulesBatchTestClassGroup extends BatchTestClassGroup {
 				JenkinsResultsParserUtil.getCanonicalPath(portalModulesBaseDir),
 				File.separator),
 			includeGlobs.toArray(new String[0]));
+	}
+
+	protected File getPortalModulesBaseDir() {
+		PortalGitWorkingDirectory portalGitWorkingDirectory =
+			getPortalGitWorkingDirectory();
+
+		return new File(
+			portalGitWorkingDirectory.getWorkingDirectory(), "modules");
 	}
 
 	protected abstract void setTestClasses() throws IOException;

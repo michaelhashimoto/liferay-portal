@@ -5,13 +5,9 @@
 
 package com.liferay.jenkins.results.parser.test.clazz;
 
-import com.liferay.jenkins.results.parser.JenkinsResultsParserUtil;
 import com.liferay.jenkins.results.parser.test.clazz.group.BatchTestClassGroup;
 
 import java.io.File;
-
-import java.util.Collections;
-import java.util.List;
 
 import org.json.JSONObject;
 
@@ -19,15 +15,6 @@ import org.json.JSONObject;
  * @author Michael Hashimoto
  */
 public class CompileModulesTestClass extends ModulesTestClass {
-
-	@Override
-	public String getName() {
-		String path = JenkinsResultsParserUtil.getPathRelativeTo(
-			getModuleBaseDir(), getPortalModulesBaseDir());
-
-		return JenkinsResultsParserUtil.combine(
-			":", path.replaceAll("/", ":"), ":", getTaskName());
-	}
 
 	protected CompileModulesTestClass(
 		BatchTestClassGroup batchTestClassGroup, File moduleBaseDir) {
@@ -41,11 +28,6 @@ public class CompileModulesTestClass extends ModulesTestClass {
 		BatchTestClassGroup batchTestClassGroup, JSONObject jsonObject) {
 
 		super(batchTestClassGroup, jsonObject);
-	}
-
-	@Override
-	protected List<File> getModulesProjectDirs() {
-		return Collections.singletonList(getModuleBaseDir());
 	}
 
 }

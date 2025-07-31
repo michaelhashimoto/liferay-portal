@@ -50,17 +50,6 @@ public class JSUnitAxisTestClassGroup extends AxisTestClassGroup {
 		return cachedDownstreamBuildReports;
 	}
 
-	@Override
-	public JSONObject getJSONObject() {
-		JSONObject jsonObject = super.getJSONObject();
-
-		jsonObject.put(
-			"test_base_dir",
-			JenkinsResultsParserUtil.getCanonicalPath(getTestBaseDir()));
-
-		return jsonObject;
-	}
-
 	public List<JSUnitModulesTestClass> getJSUnitModulesTestClasses() {
 		List<JSUnitModulesTestClass> jsUnitModulesTestClass = new ArrayList<>();
 
@@ -73,25 +62,6 @@ public class JSUnitAxisTestClassGroup extends AxisTestClassGroup {
 		}
 
 		return jsUnitModulesTestClass;
-	}
-
-	@Override
-	public File getTestBaseDir() {
-		if (_testBaseDir != null) {
-			return _testBaseDir;
-		}
-
-		List<TestClass> testClasses = getTestClasses();
-
-		if (testClasses.isEmpty()) {
-			return null;
-		}
-
-		TestClass testClass = testClasses.get(0);
-
-		_testBaseDir = testClass.getTestClassFile();
-
-		return _testBaseDir;
 	}
 
 	@Override
