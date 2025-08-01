@@ -620,6 +620,7 @@ information.
 	<macrodef name="generate-backend-batch-junit-report">
 		<attribute name="junit.failure.count" />
 		<attribute name="junit.failure.message.element" />
+		<attribute default="0.0" name="test.class.duration" />
 		<attribute name="test.class.name" />
 		<attribute name="test.command.name" />
 		<attribute default="." name="test.results.dir" />
@@ -631,11 +632,22 @@ information.
 				<format pattern="yyyy-MM-dd_kk:mm:ss" property="junit.timestamp" />
 			</tstamp>
 
-			<echo file="@{test.results.dir}/TEST-@{test.class.name}.xml"><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
+			<local name="test.class.file.name" />
 
-			<testsuite errors="@{junit.failure.count}" failures="@{junit.failure.count}" hostname="localhost" name="@{test.class.name}" skipped="0" tests="1" time="0.0" timestamp="${junit.timestamp}">
+			<propertyregex
+				global="true"
+				input="@{test.class.name}"
+				override="yes"
+				property="test.class.file.name"
+				regexp="\/"
+				replace="_"
+			/>
+
+			<echo file="@{test.results.dir}/TEST-${test.class.file.name}.xml"><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
+
+			<testsuite errors="@{junit.failure.count}" failures="@{junit.failure.count}" hostname="localhost" name="@{test.class.name}" skipped="0" tests="1" time="@{test.class.duration}" timestamp="${junit.timestamp}">
 				<properties />
-				<testcase classname="@{test.class.name}" name="@{test.command.name}" time="0.0">
+				<testcase classname="@{test.class.name}" name="@{test.command.name}" time="@{test.class.duration}">
 					@{junit.failure.message.element}
 				</testcase>
 				<system-out></system-out>
@@ -654,6 +666,66 @@ information.
 				junit.failure.message.element="&lt;failure message=&quot;@{test.task.name} could not be executed. Please check the logs for details.&quot; /&gt;"
 				test.class.name="@{test.class.name}"
 				test.command.name="testRun"
+				test.results.dir="modules/test-results"
+			/>
+		</sequential>
+	</macrodef>
+
+	<macrodef name="generate-backend-batch-junit-report-test-task">
+		<attribute name="test.task.failure.count" />
+		<attribute default="" name="test.task.failure.message" />
+		<attribute name="test.task.start.time" />
+		<attribute name="test.task.name" />
+		<attribute name="test.module.dir" />
+		<attribute name="test.batch.name" />
+
+		<sequential>
+			<local name="test.task.duration" />
+			<local name="test.task.message.element" />
+
+			<beanshell>
+				<![CDATA[
+					public double getTestTaskDuration() {
+						long duration = System.currentTimeMillis() - Long.valueOf("@{test.task.start.time}");
+
+						return (double)duration / 1000;
+					}
+
+					project.setProperty("test.task.duration", String.valueOf(getTestTaskDuration()));
+				]]>
+			</beanshell>
+
+			<if>
+				<equals arg1="@{test.task.failure.count}" arg2="0" />
+				<then>
+					<property name="test.task.message.element" value="" />
+				</then>
+				<elseif>
+					<equals arg1="@{test.task.failure.message}" arg2="" />
+					<then>
+						<property name="test.task.message.element" value="&lt;failure message=&quot;@{test.batch.name}[@{test.module.dir}] could not be executed. Please check the logs for details.&quot; /&gt;" />
+					</then>
+				</elseif>
+				<else>
+					<property name="test.task.message.element" value="&lt;failure message=&quot;@{test.task.failure.message}&quot; /&gt;" />
+				</else>
+			</if>
+
+			<local name="test.task.name" />
+
+			<condition else="@{test.task.name}" property="test.task.name" value="assemble">
+				<or>
+					<contains string="@{test.task.name}" substring="assemble" />
+					<contains string="@{test.task.name}" substring="compileTestIntegrationJava" />
+				</or>
+			</condition>
+
+			<generate-backend-batch-junit-report
+				junit.failure.count="@{test.task.failure.count}"
+				junit.failure.message.element="${test.task.message.element}"
+				test.class.duration="${test.task.duration}"
+				test.class.name="@{test.batch.name}[@{test.module.dir}]"
+				test.command.name="${test.task.name}"
 				test.results.dir="modules/test-results"
 			/>
 		</sequential>

@@ -394,6 +394,153 @@ mariadb.executable=${mariadb.executable}]]></echo>
 		</sequential>
 	</macrodef>
 
+	<macrodef name="execute-test-task">
+		<attribute name="test.batch.name" />
+		<attribute name="test.module.dir" />
+		<attribute name="test.task.name" />
+		<element name="action" />
+		<element name="action-fail" optional="true" />
+
+		<sequential>
+			<trycatch property="test.task.failure.message">
+				<try>
+					<beanshell>
+						project.setProperty("test.task.start.time", String.valueOf(System.currentTimeMillis()));
+					</beanshell>
+
+					<generate-backend-batch-junit-report-test-task
+						test.batch.name="@{test.batch.name}"
+						test.module.dir="@{test.module.dir}"
+						test.task.failure.count="1"
+						test.task.name="@{test.task.name}"
+						test.task.start.time="${test.task.start.time}"
+					/>
+
+					<action />
+
+					<generate-backend-batch-junit-report-test-task
+						test.batch.name="@{test.batch.name}"
+						test.module.dir="@{test.module.dir}"
+						test.task.failure.count="0"
+						test.task.name="@{test.task.name}"
+						test.task.start.time="${test.task.start.time}"
+					/>
+
+					<action-fail />
+				</try>
+				<catch>
+					<generate-backend-batch-junit-report-test-task
+						test.batch.name="@{test.batch.name}"
+						test.module.dir="@{test.module.dir}"
+						test.task.failure.count="1"
+						test.task.failure.message="${test.task.failure.message}"
+						test.task.name="@{test.task.name}"
+						test.task.start.time="${test.task.start.time}"
+					/>
+				</catch>
+			</trycatch>
+		</sequential>
+	</macrodef>
+
+	<macrodef name="get-module-dir-tasks">
+		<attribute name="test.task.names" />
+
+		<sequential>
+			<var name="module.dir.tasks" unset="true" />
+
+			<beanshell>
+				<![CDATA[
+					import com.liferay.jenkins.results.parser.JenkinsResultsParserUtil;
+					import com.liferay.jenkins.results.parser.PortalGitWorkingDirectory.Module;
+
+					import java.util.regex.Matcher;
+					import java.util.regex.Pattern;
+
+					public File getModuleDir(File dir) {
+				        List moduleDirs = new ArrayList();
+
+						File currentDir = dir;
+
+						while (currentDir != null && !modulesDir.equals(currentDir.getParentFile())) {
+							moduleDirs.add(currentDir);
+
+							currentDir = currentDir.getParentFile();
+						}
+
+						Collections.reverse(moduleDirs);
+
+						for (File moduleDir : moduleDirs) {
+							if (isModuleDir(moduleDir)) {
+								return moduleDir;
+							}
+						}
+
+						return dir;
+					}
+
+					public boolean isModuleDir(File dir) {
+						Module module = Module.getModule(dir.toPath());
+
+						if ((module != null) && dir.equals(module.getFile())) {
+							return true;
+						}
+
+						return false;
+					}
+
+					File modulesDir = new File(project.getProperty("project.dir"), "modules");
+
+					String testTaskNames = "@{test.task.names}";
+
+					Pattern pattern = Pattern.compile("(?<dirName>:(apps|dxp:apps|test|util):([^:]+).*):(?<task>[^:]+)");
+
+					Map map = new HashMap();
+
+					for (String testTaskName : testTaskNames.split(",")) {
+						Matcher matcher = pattern.matcher(testTaskName);
+
+						if (!matcher.find()) {
+							continue;
+						}
+
+						String dirName = matcher.group("dirName");
+
+						dirName = dirName.replaceAll(":", "/");
+
+						File dir = new File(project.getProperty("project.dir") + "/modules" + dirName);
+
+						File moduleDir = getModuleDir(dir);
+
+						Set tasks = map.get(moduleDir);
+
+						if (tasks == null) {
+							tasks = new HashSet();
+						}
+
+						tasks.add(matcher.group("task"));
+
+						map.put(moduleDir, tasks);
+					}
+
+					StringBuilder sb = new StringBuilder();
+
+					for (Map.Entry entry : map.entrySet()) {
+						sb.append(JenkinsResultsParserUtil.getPathRelativeTo(entry.getKey(), modulesDir.getParentFile()));
+						sb.append("=");
+						sb.append(JenkinsResultsParserUtil.join(" ", new ArrayList(entry.getValue())));
+						sb.append("|");
+					}
+
+					if (sb.length() > 0) {
+						sb.setLength(sb.length() - 1);
+					}
+
+					project.setProperty("module.dir.tasks", sb.toString());
+				]]>
+			</beanshell>
+		</sequential>
+	</macrodef>
+
 	<macrodef name="get-release-dependency-modules">
 		<attribute default="false" name="post.startup.modules.only" />
 		<attribute default="false" name="pre.startup.modules.only" />
@@ -7193,62 +7340,37 @@ information. Make sure to commit in all format-javadoc results.
 					<propertyresource name="modules.test.class.group" />
 				</loadresource>
 
-				<beanshell>
-					<![CDATA[
-						import java.io.File;
+				<get-module-dir-tasks test.task.names="${modules.compile.task.groups}" />
 
-						import java.util.regex.Matcher;
-						import java.util.regex.Pattern;
-
-						String modulesCompileTaskGroupsString = project.getProperty("modules.compile.task.groups");
-
-						String[] modulesCompileTaskGroups = modulesCompileTaskGroupsString.split(" ");
-
-						StringBuilder sb = new StringBuilder();
-
-						Pattern pattern = Pattern.compile("(.*):.*");
-
-						for (String modulesCompileTaskGroup : modulesCompileTaskGroups) {
-
-							Matcher matcher = pattern.matcher(modulesCompileTaskGroup);
-
-							if (!matcher.find()) {
-								continue;
-							}
-
-							String modulesCompileTaskGroupPath = matcher.group(1);
-
-							modulesCompileTaskGroupDirPath = project.getProperty("project.dir") + "/modules" + modulesCompileTaskGroupPath.replace(":", "/");
-
-							File modulesCompileTaskGroupDir = new File(modulesCompileTaskGroupDirPath);
-
-							if (!modulesCompileTaskGroupDir.isDirectory()) {
-								continue;
-							}
-
-							File lfrBuildPortalFile = new File(modulesCompileTaskGroupDir, ".lfrbuild-portal");
-
-							if (lfrBuildPortalFile.exists()) {
-								continue;
-							}
-
-							sb.append(modulesCompileTaskGroup);
-
-							sb.append(" ");
-						}
-
-						project.setProperty("modules.compile.processed.task.groups", sb.toString());
-					]]>
-				</beanshell>
-
-				<for list="${modules.compile.processed.task.groups}" param="modules.compile.task.group" trim="true">
+				<for delimiter="|" list="${module.dir.tasks}" param="module.dir.task" trim="true">
 					<sequential>
-						<echo>Executing Gradle tasks: @{modules.compile.task.group}.</echo>
+						<local name="module.dir" />
+						<local name="task.name" />
 
-						<gradle-execute dir="modules" task="@{modules.compile.task.group}">
-							<arg value="--continue" />
-							<arg value="--parallel" />
-						</gradle-execute>
+						<propertyregex
+							input="@{module.dir.task}"
+							override="true"
+							property="module.dir"
+							regexp="([^=]+)=([^=]+)"
+							replace="\1"
+						/>
+
+						<propertyregex
+							input="@{module.dir.task}"
+							override="true"
+							property="task.name"
+							regexp="([^=]+)=([^=]+)"
+							replace="\2"
+						/>
+
+						<execute-test-task test.batch.name="${test.batch.name}" test.module.dir="${module.dir}" test.task.name="${task.name}">
+							<action>
+								<gradle-execute dir="${module.dir}" task="${task.name}">
+									<arg value="--continue" />
+									<arg value="--parallel" />
+								</gradle-execute>
+							</action>
+						</execute-test-task>
 					</sequential>
 				</for>
 			</test-action>
@@ -7742,24 +7864,66 @@ information. Make sure to commit in all format-javadoc results.
 					<propertyresource name="modules.test.class.group" />
 				</loadresource>
 
-				<for list="${modules.baseline.task.groups}" param="modules.baseline.task.group" trim="true">
-					<sequential>
-						<echo>Executing Gradle tasks: @{modules.baseline.task.group}.</echo>
+				<get-module-dir-tasks test.task.names="${modules.baseline.task.groups}" />
 
-						<gradle-execute dir="modules" forcedcacheenabled="false" task="@{modules.baseline.task.group}">
-							<arg value="--continue" />
-							<arg value="--parallel" />
-							<arg value="-Dbaseline.ignoreFailures=true" />
-						</gradle-execute>
+				<for delimiter="|" list="${module.dir.tasks}" param="module.dir.task" trim="true">
+					<sequential>
+						<local name="module.dir" />
+						<local name="task.name" />
+
+						<propertyregex
+							input="@{module.dir.task}"
+							override="true"
+							property="module.dir"
+							regexp="([^=]+)=([^=]+)"
+							replace="\1"
+						/>
+
+						<propertyregex
+							input="@{module.dir.task}"
+							override="true"
+							property="task.name"
+							regexp="([^=]+)=([^=]+)"
+							replace="\2"
+						/>
+
+						<execute-test-task test.batch.name="${test.batch.name}" test.module.dir="${module.dir}" test.task.name="${task.name}">
+							<action>
+								<gradle-execute dir="${module.dir}" forcedcacheenabled="false" task="${task.name}">
+									<arg value="--continue" />
+									<arg value="--parallel" />
+									<arg value="-Dbaseline.ignoreFailures=true" />
+								</gradle-execute>
+							</action>
+							<action-fail>
+								<local name="baseline.log.file.path" />
+
+								<property name="baseline.log.file.path" value="${project.dir}/${module.dir}/build/reports/baseline/baseline.log" />
+
+								<if>
+									<available file="${baseline.log.file.path}" />
+									<then>
+										<echo>Found ${baseline.log.file.path}</echo>
+
+										<local name="baseline.log.file.content" />
+
+										<loadfile
+											property="baseline.log.file.content"
+											srcfile="${baseline.log.file.path}"
+										/>
+
+										<generate-backend-batch-junit-report-test-task
+											test.task.failure.count="1"
+											test.task.failure.message="${baseline.log.file.content}"
+											test.task.name="@{test.task.name}"
+											test.task.start.time="${test.task.start.time}"
+										/>
+									</then>
+								</if>
+							</action-fail>
+						</execute-test-task>
 					</sequential>
 				</for>
-
-				<echo>Checking for baseline log files.</echo>
-
-				<gradle-execute dir="modules/test/semantic-versioning-test" task="test">
-					<arg value="-Dmodules.test.class.group=${modules.test.class.group}" />
-					<arg value="-Dproject.dir=${project.dir}" />
-				</gradle-execute>
 
 				<echo>Check for baseline log files completed.</echo>
 			</test-action>
@@ -9534,24 +9698,38 @@ ${output.content}</echo>
 				<if>
 					<isset property="modules.test.class.group" />
 					<then>
-						<loadresource property="modules.build.rest.tasks">
-							<filterchain>
-								<tokenfilter>
-									<replaceregex flags="g" pattern="(\S+ )" replace="\0," />
-								</tokenfilter>
-							</filterchain>
-							<propertyresource name="modules.test.class.group" />
-						</loadresource>
+						<get-module-dir-tasks test.task.names="${modules.test.class.group}" />
 
-						<for list="${modules.build.rest.tasks}" param="modules.build.rest.task" trim="true">
+						<for delimiter="|" list="${module.dir.tasks}" param="module.dir.task" trim="true">
 							<sequential>
-								<echo>Executing Gradle tasks: @{modules.build.rest.task}</echo>
+								<local name="module.dir" />
+								<local name="task.name" />
 
-								<gradle-execute dir="modules" forcedcacheenabled="false" task="@{modules.build.rest.task}">
-									<arg value="-DbuildREST.forceClientVersionDescription=false" />
-									<arg value="-Dskip.read.only=${build.rest.skip.read.only}" />
-									<arg value="-Pcom.liferay.portal.tools.rest.builder.ignore.local=false" />
-								</gradle-execute>
+								<propertyregex
+									input="@{module.dir.task}"
+									override="true"
+									property="module.dir"
+									regexp="([^=]+)=([^=]+)"
+									replace="\1"
+								/>
+
+								<propertyregex
+									input="@{module.dir.task}"
+									override="true"
+									property="task.name"
+									regexp="([^=]+)=([^=]+)"
+									replace="\2"
+								/>
+
+								<execute-test-task test.batch.name="${test.batch.name}" test.module.dir="${module.dir}" test.task.name="${task.name}">
+									<action>
+										<gradle-execute dir="${module.dir}" forcedcacheenabled="false" task="${task.name}">
+											<arg value="-DbuildREST.forceClientVersionDescription=false" />
+											<arg value="-Dskip.read.only=${build.rest.skip.read.only}" />
+											<arg value="-Pcom.liferay.portal.tools.rest.builder.ignore.local=false" />
+										</gradle-execute>
+									</action>
+								</execute-test-task>
 							</sequential>
 						</for>
 					</then>
@@ -9756,23 +9934,37 @@ tar --extract --file=liferay-portal-source.tar.gz modules/core/portal-bootstrap/
 						<if>
 							<isset property="modules.test.class.group" />
 							<then>
-								<loadresource property="modules.build.service.tasks">
-									<filterchain>
-										<tokenfilter>
-											<replaceregex flags="g" pattern="(\S+ )" replace="\0," />
-										</tokenfilter>
-									</filterchain>
-									<propertyresource name="modules.test.class.group" />
-								</loadresource>
+								<get-module-dir-tasks test.task.names="${modules.test.class.group}" />
 
-								<for list="${modules.build.service.tasks}" param="modules.build.service.task" trim="true">
+								<for delimiter="|" list="${module.dir.tasks}" param="module.dir.task" trim="true">
 									<sequential>
-										<echo>Executing Gradle tasks: @{modules.build.service.task}</echo>
+										<local name="module.dir" />
+										<local name="task.name" />
 
-										<gradle-execute dir="modules" forcedcacheenabled="false" task="@{modules.build.service.task}">
-											<arg value="-Dskip.read.only=${build.services.skip.read.only}" />
-											<arg value="-Pcom.liferay.portal.tools.service.builder.ignore.local=false" />
-										</gradle-execute>
+										<propertyregex
+											input="@{module.dir.task}"
+											override="true"
+											property="module.dir"
+											regexp="([^=]+)=([^=]+)"
+											replace="\1"
+										/>
+
+										<propertyregex
+											input="@{module.dir.task}"
+											override="true"
+											property="task.name"
+											regexp="([^=]+)=([^=]+)"
+											replace="\2"
+										/>
+
+										<execute-test-task test.batch.name="${test.batch.name}" test.module.dir="${module.dir}" test.task.name="${task.name}">
+											<action>
+												<gradle-execute dir="${module.dir}" forcedcacheenabled="false" task="${task.name}">
+													<arg value="-Dskip.read.only=${build.services.skip.read.only}" />
+													<arg value="-Pcom.liferay.portal.tools.service.builder.ignore.local=false" />
+												</gradle-execute>
+											</action>
+										</execute-test-task>
 									</sequential>
 								</for>
 							</then>
