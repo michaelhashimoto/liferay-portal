@@ -395,9 +395,9 @@ mariadb.executable=${mariadb.executable}]]></echo>
 	</macrodef>
 
 	<macrodef name="execute-test-task">
-		<attribute name="test.batch.name" />
-		<attribute name="test.module.dir" />
 		<attribute name="test.task.name" />
+		<attribute name="test.task.module.dir" />
+
 		<element name="action" />
 		<element name="action-fail" optional="true" />
 
@@ -409,9 +409,8 @@ mariadb.executable=${mariadb.executable}]]></echo>
 					</beanshell>
 
 					<generate-backend-batch-junit-report-test-task
-						test.batch.name="@{test.batch.name}"
-						test.module.dir="@{test.module.dir}"
 						test.task.failure.count="1"
+						test.task.module.dir="@{test.task.module.dir}"
 						test.task.name="@{test.task.name}"
 						test.task.start.time="${test.task.start.time}"
 					/>
@@ -419,9 +418,8 @@ mariadb.executable=${mariadb.executable}]]></echo>
 					<action />
 
 					<generate-backend-batch-junit-report-test-task
-						test.batch.name="@{test.batch.name}"
-						test.module.dir="@{test.module.dir}"
 						test.task.failure.count="0"
+						test.task.module.dir="@{test.task.module.dir}"
 						test.task.name="@{test.task.name}"
 						test.task.start.time="${test.task.start.time}"
 					/>
@@ -430,10 +428,9 @@ mariadb.executable=${mariadb.executable}]]></echo>
 				</try>
 				<catch>
 					<generate-backend-batch-junit-report-test-task
-						test.batch.name="@{test.batch.name}"
-						test.module.dir="@{test.module.dir}"
 						test.task.failure.count="1"
 						test.task.failure.message="${test.task.failure.message}"
+						test.task.module.dir="@{test.task.module.dir}"
 						test.task.name="@{test.task.name}"
 						test.task.start.time="${test.task.start.time}"
 					/>
@@ -7363,7 +7360,7 @@ information. Make sure to commit in all format-javadoc results.
 							replace="\2"
 						/>
 
-						<execute-test-task test.batch.name="${test.batch.name}" test.module.dir="${module.dir}" test.task.name="${task.name}">
+						<execute-test-task test.task.module.dir="${module.dir}" test.task.name="${task.name}">
 							<action>
 								<gradle-execute dir="${module.dir}" task="${task.name}">
 									<arg value="--continue" />
@@ -7887,7 +7884,7 @@ information. Make sure to commit in all format-javadoc results.
 							replace="\2"
 						/>
 
-						<execute-test-task test.batch.name="${test.batch.name}" test.module.dir="${module.dir}" test.task.name="${task.name}">
+						<execute-test-task test.task.module.dir="${module.dir}" test.task.name="${task.name}">
 							<action>
 								<gradle-execute dir="${module.dir}" forcedcacheenabled="false" task="${task.name}">
 									<arg value="--continue" />
@@ -7915,6 +7912,7 @@ information. Make sure to commit in all format-javadoc results.
 										<generate-backend-batch-junit-report-test-task
 											test.task.failure.count="1"
 											test.task.failure.message="${baseline.log.file.content}"
+											test.task.module.dir="${module.dir}"
 											test.task.name="@{test.task.name}"
 											test.task.start.time="${test.task.start.time}"
 										/>
@@ -9721,7 +9719,7 @@ ${output.content}</echo>
 									replace="\2"
 								/>
 
-								<execute-test-task test.batch.name="${test.batch.name}" test.module.dir="${module.dir}" test.task.name="${task.name}">
+								<execute-test-task test.task.module.dir="${module.dir}" test.task.name="${task.name}">
 									<action>
 										<gradle-execute dir="${module.dir}" forcedcacheenabled="false" task="${task.name}">
 											<arg value="-DbuildREST.forceClientVersionDescription=false" />
@@ -9957,7 +9955,7 @@ tar --extract --file=liferay-portal-source.tar.gz modules/core/portal-bootstrap/
 											replace="\2"
 										/>
 
-										<execute-test-task test.batch.name="${test.batch.name}" test.module.dir="${module.dir}" test.task.name="${task.name}">
+										<execute-test-task test.task.module.dir="${module.dir}" test.task.name="${task.name}">
 											<action>
 												<gradle-execute dir="${module.dir}" forcedcacheenabled="false" task="${task.name}">
 													<arg value="-Dskip.read.only=${build.services.skip.read.only}" />
@@ -10431,7 +10429,7 @@ junit.jvm.override.version=21</echo>
 										<echo>##</echo>
 										<echo></echo>
 
-										<execute-test-task test.batch.name="${test.batch.name}" test.module.dir="${workspace.dir}" test.task.name="build">
+										<execute-test-task test.task.module.dir="${workspace.dir}" test.task.name="build">
 											<action>
 												<execute dir="${workspace.dir}">
 													./gradlew build

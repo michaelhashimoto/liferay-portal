@@ -632,18 +632,7 @@ information.
 				<format pattern="yyyy-MM-dd_kk:mm:ss" property="junit.timestamp" />
 			</tstamp>
 
-			<local name="test.class.file.name" />
-
-			<propertyregex
-				global="true"
-				input="@{test.class.name}"
-				override="yes"
-				property="test.class.file.name"
-				regexp="\/"
-				replace="_"
-			/>
-
-			<echo file="@{test.results.dir}/TEST-${test.class.file.name}.xml"><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
+			<echo file="@{test.results.dir}/TEST-@{test.class.name}.xml"><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
 
 			<testsuite errors="@{junit.failure.count}" failures="@{junit.failure.count}" hostname="localhost" name="@{test.class.name}" skipped="0" tests="1" time="@{test.class.duration}" timestamp="${junit.timestamp}">
 				<properties />
@@ -674,10 +663,9 @@ information.
 	<macrodef name="generate-backend-batch-junit-report-test-task">
 		<attribute name="test.task.failure.count" />
 		<attribute default="" name="test.task.failure.message" />
+		<attribute name="test.task.module.dir" />
 		<attribute name="test.task.start.time" />
 		<attribute name="test.task.name" />
-		<attribute name="test.module.dir" />
-		<attribute name="test.batch.name" />
 
 		<sequential>
 			<local name="test.task.duration" />
@@ -703,7 +691,7 @@ information.
 				<elseif>
 					<equals arg1="@{test.task.failure.message}" arg2="" />
 					<then>
-						<property name="test.task.message.element" value="&lt;failure message=&quot;@{test.batch.name}[@{test.module.dir}] could not be executed. Please check the logs for details.&quot; /&gt;" />
+						<property name="test.task.message.element" value="&lt;failure message=&quot;@{test.task.module.dir} @{test.task.name} could not be executed. Please check the logs for details.&quot; /&gt;" />
 					</then>
 				</elseif>
 				<else>
@@ -720,11 +708,22 @@ information.
 				</or>
 			</condition>
 
+			<local name="test.class.name" />
+
+			<propertyregex
+				global="true"
+				input="@{test.module.dir}"
+				override="yes"
+				property="test.class.name"
+				regexp="\/"
+				replace="."
+			/>
+
 			<generate-backend-batch-junit-report
 				junit.failure.count="@{test.task.failure.count}"
 				junit.failure.message.element="${test.task.message.element}"
 				test.class.duration="${test.task.duration}"
-				test.class.name="@{test.batch.name}[@{test.module.dir}]"
+				test.class.name="${test.class.name}"
 				test.command.name="${test.task.name}"
 				test.results.dir="modules/test-results"
 			/>
