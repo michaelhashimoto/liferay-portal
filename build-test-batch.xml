@@ -489,7 +489,7 @@ mariadb.executable=${mariadb.executable}]]></echo>
 
 					String testTaskNames = "@{test.task.names}";
 
-					Pattern pattern = Pattern.compile("(?<dirName>:(apps|dxp:apps|test|util):([^:]+).*):(?<task>[^:]+)");
+					Pattern pattern = Pattern.compile("(?<dirName>[^:]+):(?<task>[^:]+)");
 
 					Map map = new HashMap();
 
