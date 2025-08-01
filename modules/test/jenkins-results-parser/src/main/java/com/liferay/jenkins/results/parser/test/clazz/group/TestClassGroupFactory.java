@@ -555,6 +555,18 @@ public class TestClassGroupFactory {
 						batchName, portalTestClassJob);
 				}
 			}
+			else if (batchName.startsWith("workspaces-compile")) {
+				if (jsonObject != null) {
+					batchTestClassGroup =
+						new WorkspacesCompileBatchTestClassGroup(
+							jsonObject, portalTestClassJob);
+				}
+				else {
+					batchTestClassGroup =
+						new WorkspacesCompileBatchTestClassGroup(
+							batchName, portalTestClassJob);
+				}
+			}
 			else {
 				if (jsonObject != null) {
 					batchTestClassGroup = new DefaultBatchTestClassGroup(
