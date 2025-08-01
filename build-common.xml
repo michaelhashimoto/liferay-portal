@@ -712,7 +712,7 @@ information.
 
 			<propertyregex
 				global="true"
-				input="@{test.module.dir}"
+				input="@{test.task.module.dir}"
 				override="yes"
 				property="test.class.name"
 				regexp="\/"
