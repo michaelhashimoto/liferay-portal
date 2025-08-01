@@ -10418,7 +10418,7 @@ junit.jvm.override.version=21</echo>
 							<try>
 								<local name="workspace.dir" />
 
-								<property name="workspace.dir" value="${project.dir}/workspaces/@{workspace.name}" />
+								<property name="workspace.dir" value="workspaces/@{workspace.name}" />
 
 								<if>
 									<available file="${workspace.dir}" />
