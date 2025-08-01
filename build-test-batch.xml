@@ -7339,6 +7339,8 @@ information. Make sure to commit in all format-javadoc results.
 
 				<get-module-dir-tasks test.task.names="${modules.compile.task.groups}" />
 
+				<echo>modules.compile.task.groups=${modules.compile.task.groups}</echo>
+
 				<for delimiter="|" list="${module.dir.tasks}" param="module.dir.task" trim="true">
 					<sequential>
 						<local name="module.dir" />
@@ -7862,6 +7864,8 @@ information. Make sure to commit in all format-javadoc results.
 				</loadresource>
 
 				<get-module-dir-tasks test.task.names="${modules.baseline.task.groups}" />
+
+				<echo>modules.baseline.task.groups=${modules.baseline.task.groups}</echo>
 
 				<for delimiter="|" list="${module.dir.tasks}" param="module.dir.task" trim="true">
 					<sequential>
@@ -9698,6 +9702,8 @@ ${output.content}</echo>
 					<then>
 						<get-module-dir-tasks test.task.names="${modules.test.class.group}" />
 
+						<echo>modules.test.class.group=${modules.test.class.group}</echo>
+
 						<for delimiter="|" list="${module.dir.tasks}" param="module.dir.task" trim="true">
 							<sequential>
 								<local name="module.dir" />
@@ -9933,6 +9939,8 @@ tar --extract --file=liferay-portal-source.tar.gz modules/core/portal-bootstrap/
 							<isset property="modules.test.class.group" />
 							<then>
 								<get-module-dir-tasks test.task.names="${modules.test.class.group}" />
+
+								<echo>modules.test.class.group=${modules.test.class.group}</echo>
 
 								<for delimiter="|" list="${module.dir.tasks}" param="module.dir.task" trim="true">
 									<sequential>
