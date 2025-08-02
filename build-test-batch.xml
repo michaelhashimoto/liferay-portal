@@ -7897,22 +7897,18 @@ information. Make sure to commit in all format-javadoc results.
 								</gradle-execute>
 							</action>
 							<action-fail>
-								<local name="baseline.log.file.path" />
-
-								<property name="baseline.log.file.path" value="${project.dir}/${module.dir}/build/reports/baseline/baseline.log" />
-
-								<echo>SEMVER: Looking for ${baseline.log.file.path}</echo>
-
-								<if>
-									<available file="${baseline.log.file.path}" />
-									<then>
-										<echo>SEMVER: Found ${baseline.log.file.path}</echo>
+								<for param="baseline.log.file.path">
+									<fileset dir="${project.dir}/${module.dir}/">
+										<include name="**/build/reports/baseline/baseline.log" />
+									</fileset>
+									<sequential>
+										<echo>SEMVER: Found @{baseline.log.file.path}</echo>
 
 										<local name="baseline.log.file.content" />
 
 										<loadfile
 											property="baseline.log.file.content"
-											srcfile="${baseline.log.file.path}"
+											srcfile="@{baseline.log.file.path}"
 										/>
 
 										<generate-backend-batch-junit-report-test-task
@@ -7922,8 +7918,8 @@ information. Make sure to commit in all format-javadoc results.
 											test.task.name="@{test.task.name}"
 											test.task.start.time="${test.task.start.time}"
 										/>
-									</then>
-								</if>
+									</sequential>
+								</for>
 							</action-fail>
 						</execute-test-task>
 					</sequential>
