@@ -13,7 +13,7 @@ import com.liferay.jenkins.results.parser.test.clazz.TestClassFactory;
 import java.io.File;
 
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import org.json.JSONObject;
@@ -65,7 +65,7 @@ public class WorkspacesCompileBatchTestClassGroup extends BatchTestClassGroup {
 
 		String workspacesNames = jobProperty.getValue();
 
-		workspaceNames.addAll(Arrays.asList(workspacesNames.split(",")));
+		Collections.addAll(workspaceNames, workspacesNames.split(","));
 
 		return workspaceNames;
 	}
