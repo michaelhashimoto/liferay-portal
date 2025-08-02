@@ -7927,6 +7927,13 @@ information. Make sure to commit in all format-javadoc results.
 					</sequential>
 				</for>
 
+				<echo>Checking for baseline log files.</echo>
+
+				<gradle-execute dir="modules/test/semantic-versioning-test" task="test">
+					<arg value="-Dmodules.test.class.group=${modules.test.class.group}" />
+					<arg value="-Dproject.dir=${project.dir}" />
+				</gradle-execute>
+
 				<echo>Check for baseline log files completed.</echo>
 			</test-action>
 
