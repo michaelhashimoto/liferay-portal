@@ -7911,6 +7911,8 @@ information. Make sure to commit in all format-javadoc results.
 											srcfile="@{baseline.log.file.path}"
 										/>
 
+										<echo>${baseline.log.file.content}</echo>
+
 										<generate-backend-batch-junit-report-test-task
 											test.task.failure.count="1"
 											test.task.failure.message="${baseline.log.file.content}"
@@ -7918,6 +7920,19 @@ information. Make sure to commit in all format-javadoc results.
 											test.task.name="@{test.task.name}"
 											test.task.start.time="${test.task.start.time}"
 										/>
+
+										<local name="test.class.name" />
+
+										<propertyregex
+											global="true"
+											input="${module.dir}"
+											override="yes"
+											property="test.class.name"
+											regexp="\/"
+											replace="."
+										/>
+
+										<print-file file.name="modules/test-results/TEST-${test.class.name}.xml" />
 									</sequential>
 								</for>
 							</action-fail>
