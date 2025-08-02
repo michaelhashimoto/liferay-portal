@@ -7901,10 +7901,12 @@ information. Make sure to commit in all format-javadoc results.
 
 								<property name="baseline.log.file.path" value="${project.dir}/${module.dir}/build/reports/baseline/baseline.log" />
 
+								<echo>SEMVER: Looking for ${baseline.log.file.path}</echo>
+
 								<if>
 									<available file="${baseline.log.file.path}" />
 									<then>
-										<echo>Found ${baseline.log.file.path}</echo>
+										<echo>SEMVER: Found ${baseline.log.file.path}</echo>
 
 										<local name="baseline.log.file.content" />
 
