@@ -423,8 +423,6 @@ mariadb.executable=${mariadb.executable}]]></echo>
 						test.task.name="@{test.task.name}"
 						test.task.start.time="${test.task.start.time}"
 					/>
-
-					<action-fail />
 				</try>
 				<catch>
 					<generate-backend-batch-junit-report-test-task
@@ -435,6 +433,9 @@ mariadb.executable=${mariadb.executable}]]></echo>
 						test.task.start.time="${test.task.start.time}"
 					/>
 				</catch>
+				<finally>
+					<action-fail />
+				</finally>
 			</trycatch>
 		</sequential>
 	</macrodef>
