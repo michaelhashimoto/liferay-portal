@@ -697,7 +697,13 @@ information.
 					</then>
 				</elseif>
 				<else>
-					<property name="test.task.message.element" value="&lt;failure message=&quot;@{test.task.failure.message}&quot; /&gt;" />
+					<antelope:stringutil property="test.task.failure.message" string="@{test.task.failure.message}">
+						<antelope:replace regex="&gt;" replacement="&amp;gt;" />
+						<antelope:replace regex="&lt;" replacement="&amp;lt;" />
+						<antelope:replace regex="&quot;" replacement="&apos;" />
+					</antelope:stringutil>
+
+					<property name="test.task.message.element"><![CDATA[<failure message="${test.task.failure.message}">${test.task.failure.message}</failure>]]></property>
 				</else>
 			</if>
 
