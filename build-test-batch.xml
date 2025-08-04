@@ -10051,15 +10051,18 @@ tar --extract --file=liferay-portal-source.tar.gz modules/core/portal-bootstrap/
 					<arg value="--all" />
 				</exec>
 
+				<echo>skip.service.builder.core=${skip.service.builder.core}</echo>
+				<echo>skip.service.builder.full=${skip.service.builder.full}</echo>
+
 				<if>
-					<and>
+					<or>
 						<not>
 							<equals arg1="${skip.service.builder.core}" arg2="true" />
 						</not>
 						<not>
 							<equals arg1="${skip.service.builder.full}" arg2="true" />
 						</not>
-					</and>
+					</or>
 					<then>
 						<execute-build-services-ant-target ant.target.file="portal-impl/build.xml" ant.target.name="build-service-counter" />
 						<execute-build-services-ant-target ant.target.file="portal-impl/build.xml" ant.target.name="build-service-portal" />
