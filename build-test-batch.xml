@@ -394,6 +394,117 @@ mariadb.executable=${mariadb.executable}]]></echo>
 		</sequential>
 	</macrodef>
 
+	<macrodef name="execute-build-services-ant-target">
+		<attribute name="ant.target.name" />
+		<attribute name="ant.target.file" />
+
+		<sequential>
+			<trycatch property="ant.target.failure.message">
+				<try>
+					<beanshell>
+						project.setProperty("ant.target.start.time", String.valueOf(System.currentTimeMillis()));
+					</beanshell>
+
+					<generate-backend-batch-junit-report-ant-target
+						test.ant.target.failure.count="1"
+						test.ant.target.file="@{ant.target.file}"
+						test.ant.target.name="@{ant.target.name}"
+						test.ant.target.start.time="${ant.target.start.time}"
+					/>
+
+					<local name="ant.target.dir" />
+					<local name="ant.target.file.name" />
+
+					<propertyregex
+						input="@{ant.target.file}"
+						override="true"
+						property="ant.target.dir"
+						regexp="(.+)/(.+.xml)"
+						replace="\1"
+					/>
+
+					<propertyregex
+						input="@{ant.target.file}"
+						override="true"
+						property="ant.target.file.name"
+						regexp="(.+)/(.+.xml)"
+						replace="\2"
+					/>
+
+					<record-build-services-diffs>
+						<action>
+							<ant antfile="${ant.target.file.name}" dir="${ant.target.dir}" target="@{ant.target.name}" />
+						</action>
+					</record-build-services-diffs>
+
+					<generate-backend-batch-junit-report-ant-target
+						test.ant.target.failure.count="0"
+						test.ant.target.file="@{ant.target.file}"
+						test.ant.target.name="@{ant.target.name}"
+						test.ant.target.start.time="${ant.target.start.time}"
+					/>
+				</try>
+				<catch>
+					<generate-backend-batch-junit-report-ant-target
+						test.ant.target.failure.count="1"
+						test.ant.target.failure.message="${ant.target.failure.message}"
+						test.ant.target.file="@{ant.target.file}"
+						test.ant.target.name="@{ant.target.name}"
+						test.ant.target.start.time="${ant.target.start.time}"
+					/>
+				</catch>
+				<finally>
+					<if>
+						<isset property="build.services.diffs" />
+						<then>
+							<generate-backend-batch-junit-report-ant-target
+								test.ant.target.failure.count="1"
+								test.ant.target.failure.message="${build.services.diffs}"
+								test.ant.target.file="@{test.ant.target.file}"
+								test.ant.target.name="@{test.ant.target.name}"
+								test.ant.target.start.time="${ant.target.start.time}"
+							/>
+						</then>
+					</if>
+				</finally>
+			</trycatch>
+		</sequential>
+	</macrodef>
+
+	<macrodef name="execute-build-services-gradle-task">
+		<attribute name="gradle.module.dir" />
+		<attribute name="gradle.task.name" />
+
+		<sequential>
+			<execute-test-task>
+				<action>
+					<record-build-services-diffs>
+						<action>
+							<gradle-execute dir="@{gradle.module.dir}" forcedcacheenabled="false" task="@{gradle.task.name}">
+								<arg value="-Dskip.read.only=${build.services.skip.read.only}" />
+								<arg value="-Pcom.liferay.portal.tools.service.builder.ignore.local=false" />
+							</gradle-execute>
+						</action>
+					</record-build-services-diffs>
+				</action>
+				<action-fail>
+					<if>
+						<isset property="build.services.diffs" />
+						<then>
+							<generate-backend-batch-junit-report-test-task
+								test.task.failure.count="1"
+								test.task.failure.message="${build.services.diffs}"
+								test.task.module.dir="@{gradle.module.dir}"
+								test.task.name="@{gradle.task.name}"
+								test.task.start.time="${test.task.start.time}"
+							/>
+						</then>
+					</if>
+				</action-fail>
+			</execute-test-task>
+		</sequential>
+	</macrodef>
+
 	<macrodef name="execute-test-task">
 		<attribute name="test.task.name" />
 		<attribute name="test.task.module.dir" />
@@ -9933,114 +10044,39 @@ tar --extract --file=liferay-portal-source.tar.gz modules/core/portal-bootstrap/
 					<arg value="--all" />
 				</exec>
 
-				<record action="start" name="${project.dir}/build.services.output.txt" />
+				<execute-build-services-ant-target ant.target.file="portal-impl/build.xml" ant.target.name="build-service-counter" />
+				<execute-build-services-ant-target ant.target.file="portal-impl/build.xml" ant.target.name="build-service-portal" />
+				<execute-build-services-ant-target ant.target.file="portal-impl/build.xml" ant.target.name="build-service-portlets" />
 
 				<if>
-					<not>
-						<equals arg1="${skip.service.builder.full}" arg2="true" />
-					</not>
+					<isset property="modules.test.class.group" />
 					<then>
-						<ant dir="portal-impl" target="build-services">
-							<property name="com.liferay.portal.tools.service.builder.ignore.local" value="false" />
-						</ant>
-					</then>
-					<else>
-						<if>
-							<not>
-								<equals arg1="${skip.service.builder.core}" arg2="true" />
-							</not>
-							<then>
-								<ant dir="portal-impl" target="build-service-counter" />
-								<ant dir="portal-impl" target="build-service-portal" />
-								<ant dir="portal-impl" target="build-service-portlets" />
-							</then>
-						</if>
+						<get-module-dir-tasks test.task.names="${modules.test.class.group}" />
 
-						<if>
-							<isset property="modules.test.class.group" />
-							<then>
-								<get-module-dir-tasks test.task.names="${modules.test.class.group}" />
+						<for delimiter="|" list="${module.dir.tasks}" param="module.dir.task" trim="true">
+							<sequential>
+								<local name="module.dir" />
+								<local name="task.name" />
 
-								<echo>modules.test.class.group=${modules.test.class.group}</echo>
+								<propertyregex
+									input="@{module.dir.task}"
+									override="true"
+									property="module.dir"
+									regexp="([^=]+)=([^=]+)"
+									replace="\1"
+								/>
 
-								<for delimiter="|" list="${module.dir.tasks}" param="module.dir.task" trim="true">
-									<sequential>
-										<local name="module.dir" />
-										<local name="task.name" />
+								<propertyregex
+									input="@{module.dir.task}"
+									override="true"
+									property="task.name"
+									regexp="([^=]+)=([^=]+)"
+									replace="\2"
+								/>
 
-										<propertyregex
-											input="@{module.dir.task}"
-											override="true"
-											property="module.dir"
-											regexp="([^=]+)=([^=]+)"
-											replace="\1"
-										/>
-
-										<propertyregex
-											input="@{module.dir.task}"
-											override="true"
-											property="task.name"
-											regexp="([^=]+)=([^=]+)"
-											replace="\2"
-										/>
-
-										<execute-test-task test.task.module.dir="${module.dir}" test.task.name="${task.name}">
-											<action>
-												<gradle-execute dir="${module.dir}" forcedcacheenabled="false" task="${task.name}">
-													<arg value="-Dskip.read.only=${build.services.skip.read.only}" />
-													<arg value="-Pcom.liferay.portal.tools.service.builder.ignore.local=false" />
-												</gradle-execute>
-											</action>
-										</execute-test-task>
-									</sequential>
-								</for>
-							</then>
-						</if>
-					</else>
-				</if>
-
-				<record action="stop" name="${project.dir}/build.services.output.txt" />
-
-				<loadfile
-					property="build.services.output.txt.content"
-					srcfile="${project.dir}/build.services.output.txt"
-				/>
-
-				<delete file="${project.dir}/build.services.output.txt" />
-
-				<if>
-					<contains string="${build.services.output.txt.content}" substring="Writing " />
-					<then>
-						<exec executable="git" output="${project.dir}/build.services.diff.txt">
-							<arg value="diff" />
-							<arg value="--" />
-							<arg value="." />
-							<arg value=":!*/*-portlet-service.jar" />
-							<arg value=":!*/packageinfo" />
-							<arg value=":!*/src/main/resources/service.properties" />
-							<arg value=":!*/src/service.properties" />
-						</exec>
-
-						<loadfile
-							property="build.services.diff.txt.content"
-							srcfile="${project.dir}/build.services.diff.txt"
-						/>
-
-						<delete file="${project.dir}/build.services.diff.txt" />
-
-						<if>
-							<isset property="build.services.diff.txt.content" />
-							<then>
-								<echo>${build.services.diff.txt.content}</echo>
-
-								<fail>
-.
-
-Detected build services changes. See above build services log for more
-information. Make sure to commit in all build services results.
-								</fail>
-							</then>
-						</if>
+								<execute-build-services-gradle-task gradle.module.dir="${module.dir}" gradle.task.name="${task.name}" />
+							</sequential>
+						</for>
 					</then>
 				</if>
 			</test-action>
@@ -10050,6 +10086,51 @@ information. Make sure to commit in all build services results.
 			</test-set-up>
 		</run-batch-test>
 	</target>
+
+	<macrodef name="record-build-services-diffs">
+		<attribute name="test.dir" />
+
+		<element name="action" />
+
+		<sequential>
+			<var name="build.services.diffs.content" unset="true" />
+
+			<record action="start" name="@{test.dir}/build.services.log" />
+
+			<action />
+
+			<record action="stop" name="@{test.dir}/build.services.log" />
+
+			<loadfile
+				property="build.services.log"
+				srcfile="@{test.dir}/build.services.log"
+			/>
+
+			<delete file="@{test.dir}/build.services.log" />
+
+			<if>
+				<contains string="${build.services.log}" substring="Writing " />
+				<then>
+					<exec dir="@{test.dir}" executable="git" output="@{test.dir}/build.services.diffs">
+						<arg value="diff" />
+						<arg value="--" />
+						<arg value="." />
+						<arg value=":!*/*-portlet-service.jar" />
+						<arg value=":!*/packageinfo" />
+						<arg value=":!*/src/main/resources/service.properties" />
+						<arg value=":!*/src/service.properties" />
+					</exec>
+
+					<loadfile
+						property="build.services.diffs"
+						srcfile="@{test.dir}/build.services.diffs"
+					/>
+
+					<delete file="@{test.dir}/build.services.diffs" />
+				</then>
+			</if>
+		</sequential>
+	</macrodef>
 
 	<target name="setup-testable-tomcat-gc">
 		<setup-testable-tomcat-gc test.portal.bundle.version="${test.portal.bundle.version}" />

@@ -647,6 +647,73 @@ information.
 		</sequential>
 	</macrodef>
 
+	<macrodef name="generate-backend-batch-junit-report-ant-target">
+		<attribute name="ant.target.failure.count" />
+		<attribute default="" name="ant.target.failure.message" />
+		<attribute name="ant.target.file" />
+		<attribute name="ant.target.name" />
+		<attribute name="ant.target.start.time" />
+
+		<sequential>
+			<local name="ant.target.duration" />
+			<local name="ant.target.message.element" />
+
+			<beanshell>
+				<![CDATA[
+					public double getAntTargetDuration() {
+						long duration = System.currentTimeMillis() - Long.valueOf("@{ant.target.start.time}");
+
+						return (double)duration / 1000;
+					}
+
+					project.setProperty("ant.target.duration", String.valueOf(getAntTargetDuration()));
+				]]>
+			</beanshell>
+
+			<if>
+				<equals arg1="@{ant.target.failure.count}" arg2="0" />
+				<then>
+					<property name="ant.target.message.element" value="" />
+				</then>
+				<elseif>
+					<equals arg1="@{ant.target.failure.message}" arg2="" />
+					<then>
+						<property name="ant.target.message.element" value="&lt;failure message=&quot;@{ant.target.file} @{ant.target.name} could not be executed. Please check the logs for details.&quot; /&gt;" />
+					</then>
+				</elseif>
+				<else>
+					<antelope:stringutil property="ant.target.failure.message" string="@{ant.target.failure.message}">
+						<antelope:replace regex="&gt;" replacement="&amp;gt;" />
+						<antelope:replace regex="&lt;" replacement="&amp;lt;" />
+						<antelope:replace regex="&quot;" replacement="&apos;" />
+					</antelope:stringutil>
+
+					<property name="ant.target.message.element"><![CDATA[<failure message="${ant.target.failure.message}">${ant.target.failure.message}</failure>]]></property>
+				</else>
+			</if>
+
+			<local name="test.class.name" />
+
+			<propertyregex
+				global="true"
+				input="@{ant.target.file}"
+				override="yes"
+				property="test.class.name"
+				regexp="\/"
+				replace="."
+			/>
+
+			<generate-backend-batch-junit-report
+				junit.failure.count="@{ant.target.failure.count}"
+				junit.failure.message.element="${ant.target.message.element}"
+				test.class.duration="${ant.target.duration}"
+				test.class.name="${test.class.name}"
+				test.command.name="@{ant.target.name}"
+				test.results.dir="modules/test-results"
+			/>
+		</sequential>
+	</macrodef>
+
 	<macrodef name="generate-backend-batch-junit-report-modules">
 		<attribute name="test.class.name" />
 		<attribute name="test.task.name" />
