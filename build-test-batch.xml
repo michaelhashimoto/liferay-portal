@@ -476,7 +476,7 @@ mariadb.executable=${mariadb.executable}]]></echo>
 		<attribute name="gradle.task.name" />
 
 		<sequential>
-			<execute-test-task>
+			<execute-test-task test.task.module.dir="@{gradle.module.dir}" test.task.name="@{gradle.task.name}">
 				<action>
 					<record-build-services-diffs>
 						<action>
