@@ -10111,6 +10111,8 @@ tar --extract --file=liferay-portal-source.tar.gz modules/core/portal-bootstrap/
 		<sequential>
 			<var name="build.services.diffs.content" unset="true" />
 
+			<delete file="@{test.dir}/build.services.log" />
+
 			<record action="start" name="@{test.dir}/build.services.log" />
 
 			<action />
