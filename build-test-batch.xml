@@ -6970,6 +6970,65 @@ information. Make sure to commit in all format-javadoc results.
 					</sequential>
 				</for>
 
+				<beanshell>
+					<![CDATA[
+						import com.liferay.jenkins.results.parser.Dom4JUtil;
+						import com.liferay.jenkins.results.parser.JenkinsResultsParserUtil;
+
+						import org.dom4j.Document;
+						import org.dom4j.Element;
+
+						public String getRelativePath(String name) {
+							if (name.contains(".modules.")) {
+								name = name.substring(name.indexOf(".modules.") + 9);
+							}
+							else {
+								name = "apps." + name;
+							}
+
+							return name;
+						}
+
+						File modulesDir = JenkinsResultsParserUtil.getCanonicalFile(new File(project.getProperty("project.dir"), "modules"));
+
+						if (!modulesDir.exists()) {
+							return;
+						}
+
+						List resultFiles = JenkinsResultsParserUtil.findFiles(modulesDir, "TEST-frontend-js.xml");
+
+						for (File resultFile : resultFiles) {
+							String resultFilePath = String.valueOf(resultFile);
+
+							if (resultFilePath.contains("node_modules")) {
+								continue;
+							}
+
+							Document document = Dom4JUtil.parse(JenkinsResultsParserUtil.read(resultFile));
+
+							Element rootElement = document.getRootElement();
+
+							String moduleDirPath = getRelativePath(rootElement.attributeValue("package"));
+
+							rootElement.setAttributeValue("package", moduleDirPath.replaceAll("(.*apps\\.[^\\.]+)(\\..+)", "$1"));
+
+							for (Element testcaseElement : rootElement.elements("testcase")) {
+								String testClassFileName = getRelativePath(testcaseElement.attributeValue("classname"));
+
+								testClassFileName = testClassFileName.replace(moduleDirPath + ".", "");
+
+								testcaseElement.setAttributeValue("classname", moduleDirPath);
+
+								testcaseElement.setAttributeValue("name", testClassFileName + "." + testcaseElement.attributeValue("name"));
+							}
+
+							JenkinsResultsParserUtil.write(resultFile, Dom4JUtil.format(rootElement));
+
+							System.out.println("Updated " + resultFile);
+						}
+					]]>
+				</beanshell>
+
 				<replace
 					dir="modules"
 					includes="**/TEST-frontend-js.xml"
