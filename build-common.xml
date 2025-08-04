@@ -1255,7 +1255,10 @@ information.
 	<macrodef name="lstopwatch">
 		<attribute name="action" />
 		<attribute name="name" />
+
 		<sequential>
+			<var name="@{name}.duration" unset="true" />
+
 			<if>
 				<equals arg1="@{action}" arg2="start" />
 				<then>
@@ -1266,7 +1269,18 @@ information.
 					</tstamp>
 
 					<echo>@{name}.start.timestamp: ${timestamp}</echo>
+
+					<beanshell mapId="lstopwatch">
+						beanShellMap.put("@{name}.start", System.currentTimeMillis());
+					</beanshell>
 				</then>
+				<else>
+					<beanshell mapId="lstopwatch">
+						long start = beanShellMap.get("@{name}.start");
+						
+						project.setProperty("lstopwatch.duration", String.valueOf(System.currentTimeMillis() - start));
+					</beanshell>
+				</else>
 			</if>
 
 			<stopwatch action="@{action}" name="@{name}" />

@@ -1148,6 +1148,87 @@ app.server.type=@{app.server.type}]]></echo>
 		</sequential>
 	</macrodef>
 
+	<macrodef name="record-test-task-results-file">
+		<attribute name="test.task.name" />
+		<attribute default="0" name="test.task.duration" />
+		<attribute default="" name="test.task.failure.message" />
+
+		<sequential>
+			<local name="test.task.class.name" />
+			<local name="test.task.duration" />
+			<local name="test.task.results.file.name" />
+			<local name="test.task.method.name" />
+			<local name="test.task.package.name" />
+			<local name="test.task.timestamp" />
+
+			<beanshell>
+				<![CDATA[
+					import com.liferay.jenkins.results.parser.JenkinsResultsParserUtil;
+
+					import java.util.regex.Matcher;
+					import java.util.regex.Pattern;
+
+					public double getTestTaskDuration() {
+						int testTaskDuration = Integer.parseInt("@{test.task.duration}");
+
+						return (double)testTaskDuration / 1000;
+					}
+
+					String testTaskFileName = "@{test.task.name}";
+
+					if (testTaskFileName.startsWith(":")) {
+						testTaskFileName = testTaskFileName.substring(1);
+					}
+
+					testTaskFileName = testTaskFileName.replaceAll(":", ".");
+
+					Pattern pattern = Pattern.compile("(?<packageName>(dxp\\.)?apps\\.[^\\.]+)\\.(?<className>.+)\\.(?<methodName>[^\\.]+)");
+
+					Matcher matcher = pattern.matcher(testTaskFileName);
+
+					if (!matcher.find()) {
+						return;
+					}
+
+					project.setProperty("test.task.class.name", matcher.group("className"));
+					project.setProperty("test.task.duration", String.valueOf(getTestTaskDuration()));
+					project.setProperty("test.task.results.file.name", testTaskFileName);
+					project.setProperty("test.task.method.name", matcher.group("methodName"));
+					project.setProperty("test.task.package.name", matcher.group("packageName"));
+					project.setProperty("test.task.timestamp", JenkinsResultsParserUtil.toDateString(new Date(), "yyyy-MM-dd_kk:mm:ss", "America/Los_Angeles"))
+				]]>
+			</beanshell>
+
+			<if>
+				<equals arg1="@{test.task.failure.message}" arg2="" />
+				<then>
+					<echo file="${project.dir}/modules/TEST-${test.task.results.file.name}.xml"><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
+
+<testsuite errors="1" failures="1" hostname="${env.HOSTNAME}" package="${test.task.package.name}" name="${test.task.method.name}" skipped="0" tests="1" time="${test.task.duration}" timestamp="${test.task.timestamp}">
+	<properties />
+	<testcase classname="${test.task.package.name}.${test.task.class.name}" name="${test.task.method.name}" time="${test.task.duration}" />
+	<system-out></system-out>
+	<system-err></system-err>
+</testsuite>]]></echo>
+				</then>
+				<else>
+					<echo file="${project.dir}/modules/TEST-${test.task.results.file.name}.xml"><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
+
+<testsuite errors="1" failures="1" hostname="${env.HOSTNAME}" package="${test.task.package.name}" name="${test.task.method.name}" skipped="0" tests="1" time="${test.task.duration}" timestamp="${test.task.timestamp}">
+	<properties />
+	<testcase classname="${test.task.package.name}.${test.task.class.name}" name="${test.task.method.name}" time="${test.task.duration}">
+		<failure message="@{test.task.failure.message}" />
+	</testcase>
+	<system-out></system-out>
+	<system-err></system-err>
+</testsuite>]]></echo>
+				</else>
+			</if>
+
+			<echo>Recording ${project.dir}/modules/TEST-${test.task.results.file.name}.xml</echo>
+		</sequential>
+	</macrodef>
+
 	<macrodef name="run-archived-module-smoke">
 		<attribute name="database.type" />
 
@@ -7193,62 +7274,19 @@ information. Make sure to commit in all format-javadoc results.
 					<propertyresource name="modules.test.class.group" />
 				</loadresource>
 
-				<beanshell>
-					<![CDATA[
-						import java.io.File;
-
-						import java.util.regex.Matcher;
-						import java.util.regex.Pattern;
-
-						String modulesCompileTaskGroupsString = project.getProperty("modules.compile.task.groups");
-
-						String[] modulesCompileTaskGroups = modulesCompileTaskGroupsString.split(" ");
-
-						StringBuilder sb = new StringBuilder();
-
-						Pattern pattern = Pattern.compile("(.*):.*");
-
-						for (String modulesCompileTaskGroup : modulesCompileTaskGroups) {
-
-							Matcher matcher = pattern.matcher(modulesCompileTaskGroup);
-
-							if (!matcher.find()) {
-								continue;
-							}
-
-							String modulesCompileTaskGroupPath = matcher.group(1);
-
-							modulesCompileTaskGroupDirPath = project.getProperty("project.dir") + "/modules" + modulesCompileTaskGroupPath.replace(":", "/");
-
-							File modulesCompileTaskGroupDir = new File(modulesCompileTaskGroupDirPath);
-
-							if (!modulesCompileTaskGroupDir.isDirectory()) {
-								continue;
-							}
-
-							File lfrBuildPortalFile = new File(modulesCompileTaskGroupDir, ".lfrbuild-portal");
-
-							if (lfrBuildPortalFile.exists()) {
-								continue;
-							}
-
-							sb.append(modulesCompileTaskGroup);
-
-							sb.append(" ");
-						}
-
-						project.setProperty("modules.compile.processed.task.groups", sb.toString());
-					]]>
-				</beanshell>
-
-				<for list="${modules.compile.processed.task.groups}" param="modules.compile.task.group" trim="true">
+				<for list="${modules.compile.task.groups}" param="modules.compile.task.name" trim="true">
 					<sequential>
-						<echo>Executing Gradle tasks: @{modules.compile.task.group}.</echo>
+						<lstopwatch action="start" name="@{modules.compile.task.name}" />
 
-						<gradle-execute dir="modules" task="@{modules.compile.task.group}">
-							<arg value="--continue" />
-							<arg value="--parallel" />
-						</gradle-execute>
+						<record-test-task-results-file test.task.name="@{modules.compile.task.name}" test.task.failure.message="@{modules.compile.task.name} could not be executed. Please check the logs for details." />
+
+						<echo>Executing Gradle tasks: @{modules.compile.task.name}</echo>
+
+						<gradle-execute dir="modules" task="@{modules.compile.task.name}" />
+
+						<lstopwatch action="total" name="@{modules.compile.task.name}" />
+
+						<record-test-task-results-file test.task.name="@{modules.compile.task.name}" test.task.duration="${lstopwatch.duration}" />
 					</sequential>
 				</for>
 			</test-action>
@@ -9545,6 +9583,10 @@ ${output.content}</echo>
 
 						<for list="${modules.build.rest.tasks}" param="modules.build.rest.task" trim="true">
 							<sequential>
+								<lstopwatch action="start" name="@{modules.build.rest.task}" />
+
+								<record-test-task-results-file test.task.name="@{modules.build.rest.task}" test.task.failure.message="@{modules.build.rest.task} could not be executed. Please check the logs for details." />
+
 								<echo>Executing Gradle tasks: @{modules.build.rest.task}</echo>
 
 								<gradle-execute dir="modules" forcedcacheenabled="false" task="@{modules.build.rest.task}">
@@ -9552,10 +9594,18 @@ ${output.content}</echo>
 									<arg value="-Dskip.read.only=${build.rest.skip.read.only}" />
 									<arg value="-Pcom.liferay.portal.tools.rest.builder.ignore.local=false" />
 								</gradle-execute>
+
+								<lstopwatch action="total" name="@{modules.build.rest.task}" />
+
+								<record-test-task-results-file test.task.name="@{modules.build.rest.task}" test.task.duration="${lstopwatch.duration}" />
 							</sequential>
 						</for>
 					</then>
 					<else>
+						<lstopwatch action="start" name="@{modules.build.rest.task}" />
+
+						<record-test-task-results-file test.task.name="@{modules.build.rest.task}" test.task.failure.message="@{modules.build.rest.task} could not be executed. Please check the logs for details." />
+
 						<echo>Executing Gradle tasks: @{modules.build.rest.task}</echo>
 
 						<gradle-execute dir="modules" forcedcacheenabled="false" task="buildREST">
@@ -9563,6 +9613,10 @@ ${output.content}</echo>
 							<arg value="-Dskip.read.only=${build.rest.skip.read.only}" />
 							<arg value="-Pcom.liferay.portal.tools.rest.builder.ignore.local=false" />
 						</gradle-execute>
+
+						<lstopwatch action="total" name="@{modules.build.rest.task}.duration" />
+
+						<record-test-task-results-file test.task.name="@{modules.build.rest.task}" test.task.duration="${lstopwatch.duration}" />
 					</else>
 				</if>
 
@@ -9767,12 +9821,20 @@ tar --extract --file=liferay-portal-source.tar.gz modules/core/portal-bootstrap/
 
 								<for list="${modules.build.service.tasks}" param="modules.build.service.task" trim="true">
 									<sequential>
+										<lstopwatch action="start" name="@{modules.build.service.task}" />
+
+										<record-test-task-results-file test.task.name="@{modules.build.rest.task}" test.task.failure.message="@{modules.build.service.task} could not be executed. Please check the logs for details." />
+
 										<echo>Executing Gradle tasks: @{modules.build.service.task}</echo>
 
 										<gradle-execute dir="modules" forcedcacheenabled="false" task="@{modules.build.service.task}">
 											<arg value="-Dskip.read.only=${build.services.skip.read.only}" />
 											<arg value="-Pcom.liferay.portal.tools.service.builder.ignore.local=false" />
 										</gradle-execute>
+
+										<lstopwatch action="total" name="@{modules.build.service.task}" />
+
+										<record-test-task-results-file test.task.name="@{modules.build.service.task}" test.task.duration="${lstopwatch.duration}" />
 									</sequential>
 								</for>
 							</then>
