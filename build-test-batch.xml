@@ -431,6 +431,10 @@ mariadb.executable=${mariadb.executable}]]></echo>
 						replace="\2"
 					/>
 
+					<echo>ant.target.file.name=${ant.target.file.name}</echo>
+					<echo>ant.target.dir=${ant.target.dir}</echo>
+					<echo>ant.target.name=@{ant.target.name}</echo>
+
 					<record-build-services-diffs test.dir="${ant.target.dir}">
 						<action>
 							<ant antfile="${ant.target.file.name}" dir="${ant.target.dir}" target="@{ant.target.name}" />
@@ -10044,9 +10048,21 @@ tar --extract --file=liferay-portal-source.tar.gz modules/core/portal-bootstrap/
 					<arg value="--all" />
 				</exec>
 
-				<execute-build-services-ant-target ant.target.file="portal-impl/build.xml" ant.target.name="build-service-counter" />
-				<execute-build-services-ant-target ant.target.file="portal-impl/build.xml" ant.target.name="build-service-portal" />
-				<execute-build-services-ant-target ant.target.file="portal-impl/build.xml" ant.target.name="build-service-portlets" />
+				<if>
+					<and>
+						<not>
+							<equals arg1="${skip.service.builder.core}" arg2="true" />
+						</not>
+						<not>
+							<equals arg1="${skip.service.builder.full}" arg2="true" />
+						</not>
+					</and>
+					<then>
+						<execute-build-services-ant-target ant.target.file="portal-impl/build.xml" ant.target.name="build-service-counter" />
+						<execute-build-services-ant-target ant.target.file="portal-impl/build.xml" ant.target.name="build-service-portal" />
+						<execute-build-services-ant-target ant.target.file="portal-impl/build.xml" ant.target.name="build-service-portlets" />
+					</then>
+				</if>
 
 				<if>
 					<isset property="modules.test.class.group" />

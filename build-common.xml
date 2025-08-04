@@ -635,7 +635,7 @@ information.
 
 			<local name="test.class.file.name" />
 
-			<condition property="test.class.file.name" value="@{test.class.name}">
+			<condition else="@{test.class.file.name}" property="test.class.file.name" value="@{test.class.name}">
 				<equals arg1="@{test.class.file.name}" arg2="" />
 			</condition>
 
@@ -703,7 +703,7 @@ information.
 
 			<propertyregex
 				global="true"
-				input="@{ant.target.file}.@{ant.target.name}"
+				input="@{ant.target.file}"
 				override="yes"
 				property="test.class.name"
 				regexp="\/"
