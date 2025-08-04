@@ -406,10 +406,10 @@ mariadb.executable=${mariadb.executable}]]></echo>
 					</beanshell>
 
 					<generate-backend-batch-junit-report-ant-target
-						test.ant.target.failure.count="1"
-						test.ant.target.file="@{ant.target.file}"
-						test.ant.target.name="@{ant.target.name}"
-						test.ant.target.start.time="${ant.target.start.time}"
+						ant.target.failure.count="1"
+						ant.target.file="@{ant.target.file}"
+						ant.target.name="@{ant.target.name}"
+						ant.target.start.time="${ant.target.start.time}"
 					/>
 
 					<local name="ant.target.dir" />
@@ -438,19 +438,19 @@ mariadb.executable=${mariadb.executable}]]></echo>
 					</record-build-services-diffs>
 
 					<generate-backend-batch-junit-report-ant-target
-						test.ant.target.failure.count="0"
-						test.ant.target.file="@{ant.target.file}"
-						test.ant.target.name="@{ant.target.name}"
-						test.ant.target.start.time="${ant.target.start.time}"
+						ant.target.failure.count="0"
+						ant.target.file="@{ant.target.file}"
+						ant.target.name="@{ant.target.name}"
+						ant.target.start.time="${ant.target.start.time}"
 					/>
 				</try>
 				<catch>
 					<generate-backend-batch-junit-report-ant-target
-						test.ant.target.failure.count="1"
-						test.ant.target.failure.message="${ant.target.failure.message}"
-						test.ant.target.file="@{ant.target.file}"
-						test.ant.target.name="@{ant.target.name}"
-						test.ant.target.start.time="${ant.target.start.time}"
+						ant.target.failure.count="1"
+						ant.target.failure.message="${ant.target.failure.message}"
+						ant.target.file="@{ant.target.file}"
+						ant.target.name="@{ant.target.name}"
+						ant.target.start.time="${ant.target.start.time}"
 					/>
 				</catch>
 				<finally>
@@ -458,11 +458,11 @@ mariadb.executable=${mariadb.executable}]]></echo>
 						<isset property="build.services.diffs" />
 						<then>
 							<generate-backend-batch-junit-report-ant-target
-								test.ant.target.failure.count="1"
-								test.ant.target.failure.message="${build.services.diffs}"
-								test.ant.target.file="@{test.ant.target.file}"
-								test.ant.target.name="@{test.ant.target.name}"
-								test.ant.target.start.time="${ant.target.start.time}"
+								ant.target.failure.count="1"
+								ant.target.failure.message="${build.services.diffs}"
+								ant.target.file="@{test.ant.target.file}"
+								ant.target.name="@{test.ant.target.name}"
+								ant.target.start.time="${ant.target.start.time}"
 							/>
 						</then>
 					</if>
