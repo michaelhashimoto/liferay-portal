@@ -10114,25 +10114,32 @@ tar --extract --file=liferay-portal-source.tar.gz modules/core/portal-bootstrap/
 		<sequential>
 			<var name="build.services.diffs.content" unset="true" />
 
-			<delete file="@{test.dir}/build.services.log" />
+			<local name="tstamp" />
 
-			<record action="start" name="@{test.dir}/build.services.log" />
+			<tstamp>
+				<format pattern="yyyyMMddkkmmssSSS" property="tstamp" />
+			</tstamp>
+
+			<echo>Writing ${tstamp}.log</echo>
+			<echo>test.dir=@{test.dir}</echo>
+
+			<record action="start" name="${tstamp}.log" />
 
 			<action />
 
-			<record action="stop" name="@{test.dir}/build.services.log" />
+			<record action="stop" name="${tstamp}.log" />
 
 			<loadfile
 				property="build.services.log"
-				srcfile="@{test.dir}/build.services.log"
+				srcfile="${tstamp}.log"
 			/>
 
-			<delete file="@{test.dir}/build.services.log" />
+			<delete file="${tstamp}.log" />
 
 			<if>
 				<contains string="${build.services.log}" substring="Writing " />
 				<then>
-					<exec dir="@{test.dir}" executable="git" output="@{test.dir}/build.services.diffs">
+					<exec dir="@{test.dir}" executable="git" output="${tstamp}.diff">
 						<arg value="diff" />
 						<arg value="--" />
 						<arg value="." />
@@ -10144,10 +10151,10 @@ tar --extract --file=liferay-portal-source.tar.gz modules/core/portal-bootstrap/
 
 					<loadfile
 						property="build.services.diffs"
-						srcfile="@{test.dir}/build.services.diffs"
+						srcfile="${tstamp}.diff"
 					/>
 
-					<delete file="@{test.dir}/build.services.diffs" />
+					<delete file="${tstamp}.diff" />
 				</then>
 			</if>
 		</sequential>
