@@ -621,6 +621,7 @@ information.
 		<attribute name="junit.failure.count" />
 		<attribute name="junit.failure.message.element" />
 		<attribute default="0.0" name="test.class.duration" />
+		<attribute default="" name="test.class.file.name" />
 		<attribute name="test.class.name" />
 		<attribute name="test.command.name" />
 		<attribute default="." name="test.results.dir" />
@@ -632,9 +633,15 @@ information.
 				<format pattern="yyyy-MM-dd_kk:mm:ss" property="junit.timestamp" />
 			</tstamp>
 
-			<echo>Writing @{test.results.dir}/TEST-@{test.class.name}.xml</echo>
+			<local name="test.class.file.name" />
 
-			<echo file="@{test.results.dir}/TEST-@{test.class.name}.xml"><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
+			<condition property="test.class.file.name" value="@{test.class.name}">
+				<equals arg="@{test.class.file.name}" arg2="" />
+			</condition>
+
+			<echo>Writing @{test.results.dir}/TEST-${test.class.file.name}.xml</echo>
+
+			<echo file="@{test.results.dir}/TEST-${test.class.file.name}.xml"><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
 
 			<testsuite errors="@{junit.failure.count}" failures="@{junit.failure.count}" hostname="localhost" name="@{test.class.name}" skipped="0" tests="1" time="@{test.class.duration}" timestamp="${junit.timestamp}">
 				<properties />
@@ -696,7 +703,7 @@ information.
 
 			<propertyregex
 				global="true"
-				input="@{ant.target.file}"
+				input="@{ant.target.file}.@{ant.target.name}"
 				override="yes"
 				property="test.class.name"
 				regexp="\/"
@@ -707,6 +714,7 @@ information.
 				junit.failure.count="@{ant.target.failure.count}"
 				junit.failure.message.element="${ant.target.message.element}"
 				test.class.duration="${ant.target.duration}"
+				test.class.file.name="${test.class.name}.@{ant.target.name}"
 				test.class.name="${test.class.name}"
 				test.command.name="@{ant.target.name}"
 				test.results.dir="modules/test-results"
