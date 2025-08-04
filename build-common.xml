@@ -636,7 +636,7 @@ information.
 			<local name="test.class.file.name" />
 
 			<condition property="test.class.file.name" value="@{test.class.name}">
-				<equals arg="@{test.class.file.name}" arg2="" />
+				<equals arg1="@{test.class.file.name}" arg2="" />
 			</condition>
 
 			<echo>Writing @{test.results.dir}/TEST-${test.class.file.name}.xml</echo>
