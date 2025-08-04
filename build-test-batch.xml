@@ -482,6 +482,9 @@ mariadb.executable=${mariadb.executable}]]></echo>
 		<sequential>
 			<execute-test-task test.task.module.dir="@{gradle.module.dir}" test.task.name="@{gradle.task.name}">
 				<action>
+					<echo>gradle.module.dir=@{gradle.module.dir}</echo>
+					<echo>gradle.task.name=@{gradle.task.name}</echo>
+
 					<record-build-services-diffs test.dir="@{gradle.module.dir}">
 						<action>
 							<gradle-execute dir="@{gradle.module.dir}" forcedcacheenabled="false" task="@{gradle.task.name}">
