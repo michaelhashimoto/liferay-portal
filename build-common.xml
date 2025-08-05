@@ -651,8 +651,6 @@ information.
 				<system-out></system-out>
 				<system-err></system-err>
 			</testsuite>]]></echo>
-
-			<print-file file.name="@{test.results.dir}/TEST-${test.class.file.name}.xml" />
 		</sequential>
 	</macrodef>
 
@@ -698,6 +696,14 @@ information.
 					</antelope:stringutil>
 
 					<property name="ant.target.message.element"><![CDATA[<failure message="${ant.target.failure.message}">${ant.target.failure.message}</failure>]]></property>
+
+					<echo>------------------------------------------</echo>
+					<echo>@{ant.target.failure.message}</echo>
+					<echo>------------------------------------------</echo>
+					<echo>${ant.target.failure.message}</echo>
+					<echo>------------------------------------------</echo>
+					<echo>${ant.target.message.element}</echo>
+					<echo>------------------------------------------</echo>
 				</else>
 			</if>
 
