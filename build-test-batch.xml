@@ -10135,6 +10135,12 @@ tar --extract --file=liferay-portal-source.tar.gz modules/core/portal-bootstrap/
 				<arg value=":!*/src/service.properties" />
 			</exec>
 
+			<exec dir="@{test.dir}" executable="git">
+				<arg value="checkout" />
+				<arg value="--" />
+				<arg value="." />
+			</exec>
+
 			<loadfile
 				property="build.services.diffs"
 				srcfile="${tstamp}.diff"
