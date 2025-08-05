@@ -651,6 +651,8 @@ information.
 				<system-out></system-out>
 				<system-err></system-err>
 			</testsuite>]]></echo>
+
+			<print-file file.name="@{test.results.dir}/TEST-${test.class.file.name}.xml" />
 		</sequential>
 	</macrodef>
 
