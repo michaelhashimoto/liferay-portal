@@ -10123,19 +10123,20 @@ tar --extract --file=liferay-portal-source.tar.gz modules/core/portal-bootstrap/
 				<format pattern="yyyyMMddkkmmssSSS" property="tstamp" />
 			</tstamp>
 
-			<echo>Writing ${tstamp}.log</echo>
-			<echo>test.dir=@{test.dir}</echo>
-
 			<record action="start" name="${tstamp}.log" />
 
 			<action />
 
 			<record action="stop" name="${tstamp}.log" />
 
+			<local name="build.services.log" />
+
 			<loadfile
 				property="build.services.log"
 				srcfile="${tstamp}.log"
 			/>
+
+			<echo>build.services.log=${build.services.log}</echo>
 
 			<delete file="${tstamp}.log" />
 
