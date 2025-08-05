@@ -695,7 +695,7 @@ information.
 						<antelope:replace regex="&quot;" replacement="&apos;" />
 					</antelope:stringutil>
 
-					<property name="ant.target.message.element"><![CDATA[<failure message="${ant.target.failure.message}">${ant.target.failure.message}</failure>]]></property>
+					<property name="ant.target.message.element"><![CDATA[<failure message="Detected build services changes. See below for more information. Make sure to commit in all build services results.">${ant.target.failure.message}</failure>]]></property>
 
 					<echo>------------------------------------------</echo>
 					<echo>@{ant.target.failure.message}</echo>
@@ -786,7 +786,7 @@ information.
 						<antelope:replace regex="&quot;" replacement="&apos;" />
 					</antelope:stringutil>
 
-					<property name="test.task.message.element"><![CDATA[<failure message="${test.task.failure.message}">${test.task.failure.message}</failure>]]></property>
+					<property name="test.task.message.element"><![CDATA[<failure message="Detected build services changes. See below for more information. Make sure to commit in all build services results.">${ant.target.failure.message}</failure>]]></property>
 				</else>
 			</if>
 
