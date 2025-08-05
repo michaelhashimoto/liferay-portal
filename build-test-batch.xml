@@ -10117,6 +10117,8 @@ tar --extract --file=liferay-portal-source.tar.gz modules/core/portal-bootstrap/
 		<sequential>
 			<var name="build.services.diffs" unset="true" />
 
+			<action />
+
 			<local name="tstamp" />
 
 			<tstamp>
