@@ -162,6 +162,12 @@ public class ServiceBuilderModulesBatchTestClassGroup
 					excludesPathMatchers, includesPathMatchers));
 		}
 
+		File portalImplBuildFile = new File(
+			portalGitWorkingDirectory.getWorkingDirectory(),
+			"portal-impl/build.xml");
+
+		addTestClass(TestClassFactory.newTestClass(this, portalImplBuildFile));
+
 		for (File moduleDir : moduleDirsList) {
 			TestClass testClass = TestClassFactory.newTestClass(
 				this, moduleDir);
