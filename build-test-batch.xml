@@ -1443,8 +1443,6 @@ app.server.type=@{app.server.type}]]></echo>
 	</macrodef>
 
 	<macrodef name="record-git-diffs-build-services">
-		<attribute name="gradle.module.dir" />
-
 		<element name="action" />
 
 		<sequential>
@@ -1484,8 +1482,6 @@ app.server.type=@{app.server.type}]]></echo>
 	</macrodef>
 
 	<macrodef name="record-git-diffs-rest-builder">
-		<attribute name="gradle.module.dir" />
-
 		<element name="action" />
 
 		<sequential>
