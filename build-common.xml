@@ -651,6 +651,17 @@ information.
 				<system-out></system-out>
 				<system-err></system-err>
 			</testsuite>]]></echo>
+
+			<echo><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
+
+			<testsuite errors="@{junit.failure.count}" failures="@{junit.failure.count}" hostname="localhost" name="@{test.class.name}" skipped="0" tests="1" time="@{test.class.duration}" timestamp="${junit.timestamp}">
+				<properties />
+				<testcase classname="@{test.class.name}" name="@{test.command.name}" time="@{test.class.duration}">
+					@{junit.failure.message.element}
+				</testcase>
+				<system-out></system-out>
+				<system-err></system-err>
+			</testsuite>]]></echo>
 		</sequential>
 	</macrodef>
 
