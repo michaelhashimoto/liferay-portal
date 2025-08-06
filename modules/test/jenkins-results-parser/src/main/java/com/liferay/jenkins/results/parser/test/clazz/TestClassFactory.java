@@ -19,6 +19,7 @@ import com.liferay.jenkins.results.parser.test.clazz.group.RESTBuilderModulesBat
 import com.liferay.jenkins.results.parser.test.clazz.group.SemVerModulesBatchTestClassGroup;
 import com.liferay.jenkins.results.parser.test.clazz.group.ServiceBuilderModulesBatchTestClassGroup;
 import com.liferay.jenkins.results.parser.test.clazz.group.TCKJunitBatchTestClassGroup;
+import com.liferay.jenkins.results.parser.test.clazz.group.WorkspacesCompileBatchTestClassGroup;
 
 import java.io.File;
 
@@ -278,6 +279,22 @@ public class TestClassFactory {
 			else if (batchTestClassGroup instanceof
 						ServiceBuilderModulesBatchTestClassGroup) {
 
+				if ((testClassFile == null) && jsonObject.has("file")) {
+					testClassFile = new File(jsonObject.getString("file"));
+				}
+
+				String testClassFileName = testClassFile.getName();
+
+				if (testClassFileName.endsWith(".xml")) {
+					if (jsonObject != null) {
+						return new ServiceBuilderAntTargetTestClass(
+							batchTestClassGroup, jsonObject);
+					}
+
+					return new ServiceBuilderAntTargetTestClass(
+						batchTestClassGroup, testClassFile);
+				}
+
 				if (jsonObject != null) {
 					return new ServiceBuilderModulesTestClass(
 						batchTestClassGroup, jsonObject);
@@ -294,6 +311,17 @@ public class TestClassFactory {
 				}
 
 				return new TCKTestClass(batchTestClassGroup, testClassFile);
+			}
+			else if (batchTestClassGroup instanceof
+						WorkspacesCompileBatchTestClassGroup) {
+
+				if (jsonObject != null) {
+					return new WorkspacesCompileTestClass(
+						batchTestClassGroup, jsonObject);
+				}
+
+				return new WorkspacesCompileTestClass(
+					batchTestClassGroup, testClassFile);
 			}
 
 			if (jsonObject != null) {

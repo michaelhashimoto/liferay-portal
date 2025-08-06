@@ -14,6 +14,7 @@ import com.liferay.jenkins.results.parser.test.clazz.group.AxisTestClassGroup;
 import com.liferay.jenkins.results.parser.test.clazz.group.FunctionalAxisTestClassGroup;
 import com.liferay.jenkins.results.parser.test.clazz.group.JSUnitAxisTestClassGroup;
 import com.liferay.jenkins.results.parser.test.clazz.group.JUnitAxisTestClassGroup;
+import com.liferay.jenkins.results.parser.test.clazz.group.ModulesAxisTestClassGroup;
 import com.liferay.jenkins.results.parser.test.clazz.group.PlaywrightAxisTestClassGroup;
 import com.liferay.jenkins.results.parser.test.clazz.group.SemVerModulesAxisTestClassGroup;
 
@@ -93,10 +94,16 @@ public class TestrayFactory {
 					testrayBuild, topLevelBuildReport, axisTestClassGroup,
 					testClass, testClassMethod);
 			}
-			else if (axisTestClassGroup instanceof
+			else if (axisTestClassGroup instanceof ModulesAxisTestClassGroup) {
+				if (axisTestClassGroup instanceof
 						SemVerModulesAxisTestClassGroup) {
 
-				return new SemVerModulesBatchBuildTestrayCaseResult(
+					return new SemVerModulesBatchBuildTestrayCaseResult(
+						testrayBuild, topLevelBuildReport, axisTestClassGroup,
+						testClass);
+				}
+
+				return new ModulesBatchBuildTestrayCaseResult(
 					testrayBuild, topLevelBuildReport, axisTestClassGroup,
 					testClass);
 			}

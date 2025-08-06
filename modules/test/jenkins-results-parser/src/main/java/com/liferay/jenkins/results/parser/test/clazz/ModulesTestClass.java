@@ -28,7 +28,36 @@ public abstract class ModulesTestClass extends BaseTestClass {
 
 		jsonObject.put("task_name", _taskName);
 
+		if ((_testPropertiesFile != null) && _testPropertiesFile.exists()) {
+			jsonObject.put("test_properties_file", _testPropertiesFile);
+		}
+
+		if (!JenkinsResultsParserUtil.isNullOrEmpty(
+				_testrayMainComponentName)) {
+
+			jsonObject.put(
+				"testray_main_component_name", _testrayMainComponentName);
+		}
+
 		return jsonObject;
+	}
+
+	public String getModulePath() {
+		String modulePath = getName();
+
+		if (modulePath.startsWith("modules")) {
+			modulePath = modulePath.substring(7);
+		}
+
+		return modulePath;
+	}
+
+	public String getTaskName() {
+		return _taskName;
+	}
+
+	public String getTestrayMainComponentName() {
+		return _testrayMainComponentName;
 	}
 
 	protected ModulesTestClass(
@@ -38,6 +67,22 @@ public abstract class ModulesTestClass extends BaseTestClass {
 		super(batchTestClassGroup, moduleBaseDir);
 
 		_taskName = taskName;
+
+		File testPropertiesBaseDir = getTestPropertiesBaseDir(
+			getTestClassFile());
+
+		if ((testPropertiesBaseDir != null) && testPropertiesBaseDir.exists()) {
+			_testPropertiesFile = new File(
+				testPropertiesBaseDir, "test.properties");
+
+			_testrayMainComponentName = JenkinsResultsParserUtil.getProperty(
+				JenkinsResultsParserUtil.getProperties(_testPropertiesFile),
+				"testray.main.component.name");
+		}
+		else {
+			_testPropertiesFile = null;
+			_testrayMainComponentName = null;
+		}
 
 		if (this instanceof JSUnitModulesTestClass) {
 			return;
@@ -60,6 +105,17 @@ public abstract class ModulesTestClass extends BaseTestClass {
 		super(batchTestClassGroup, jsonObject);
 
 		_taskName = jsonObject.getString("task_name");
+
+		if (jsonObject.has("test_properties_file")) {
+			_testPropertiesFile = new File(
+				jsonObject.getString("test_properties_file"));
+		}
+		else {
+			_testPropertiesFile = null;
+		}
+
+		_testrayMainComponentName = jsonObject.optString(
+			"testray_main_component_name");
 	}
 
 	protected File getModuleBaseDir() {
@@ -82,10 +138,8 @@ public abstract class ModulesTestClass extends BaseTestClass {
 			portalGitWorkingDirectory.getWorkingDirectory(), "modules");
 	}
 
-	protected String getTaskName() {
-		return _taskName;
-	}
-
 	private final String _taskName;
+	private final File _testPropertiesFile;
+	private final String _testrayMainComponentName;
 
 }

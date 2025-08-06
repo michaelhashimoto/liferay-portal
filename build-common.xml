@@ -620,6 +620,8 @@ information.
 	<macrodef name="generate-backend-batch-junit-report">
 		<attribute name="junit.failure.count" />
 		<attribute name="junit.failure.message.element" />
+		<attribute default="0.0" name="test.class.duration" />
+		<attribute default="" name="test.class.file.name" />
 		<attribute name="test.class.name" />
 		<attribute name="test.command.name" />
 		<attribute default="." name="test.results.dir" />
@@ -631,16 +633,113 @@ information.
 				<format pattern="yyyy-MM-dd_kk:mm:ss" property="junit.timestamp" />
 			</tstamp>
 
-			<echo file="@{test.results.dir}/TEST-@{test.class.name}.xml"><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
+			<local name="test.class.file.name" />
 
-			<testsuite errors="@{junit.failure.count}" failures="@{junit.failure.count}" hostname="localhost" name="@{test.class.name}" skipped="0" tests="1" time="0.0" timestamp="${junit.timestamp}">
+			<condition else="@{test.class.file.name}" property="test.class.file.name" value="@{test.class.name}">
+				<equals arg1="@{test.class.file.name}" arg2="" />
+			</condition>
+
+			<echo>Writing @{test.results.dir}/TEST-${test.class.file.name}.xml</echo>
+
+			<echo file="@{test.results.dir}/TEST-${test.class.file.name}.xml"><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
+
+			<testsuite errors="@{junit.failure.count}" failures="@{junit.failure.count}" hostname="localhost" name="@{test.class.name}" skipped="0" tests="1" time="@{test.class.duration}" timestamp="${junit.timestamp}">
 				<properties />
-				<testcase classname="@{test.class.name}" name="@{test.command.name}" time="0.0">
+				<testcase classname="@{test.class.name}" name="@{test.command.name}" time="@{test.class.duration}">
 					@{junit.failure.message.element}
 				</testcase>
 				<system-out></system-out>
 				<system-err></system-err>
 			</testsuite>]]></echo>
+
+			<echo><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
+
+			<testsuite errors="@{junit.failure.count}" failures="@{junit.failure.count}" hostname="localhost" name="@{test.class.name}" skipped="0" tests="1" time="@{test.class.duration}" timestamp="${junit.timestamp}">
+				<properties />
+				<testcase classname="@{test.class.name}" name="@{test.command.name}" time="@{test.class.duration}">
+					@{junit.failure.message.element}
+				</testcase>
+				<system-out></system-out>
+				<system-err></system-err>
+			</testsuite>]]></echo>
+		</sequential>
+	</macrodef>
+
+	<macrodef name="generate-backend-batch-junit-report-ant-target">
+		<attribute name="ant.target.failure.count" />
+		<attribute default="" name="ant.target.failure.message" />
+		<attribute name="ant.target.file" />
+		<attribute name="ant.target.name" />
+		<attribute name="ant.target.start.time" />
+
+		<sequential>
+			<local name="ant.target.duration" />
+			<local name="ant.target.message.element" />
+
+			<beanshell>
+				<![CDATA[
+					public double getAntTargetDuration() {
+						long duration = System.currentTimeMillis() - Long.valueOf("@{ant.target.start.time}");
+
+						return (double)duration / 1000;
+					}
+
+					project.setProperty("ant.target.duration", String.valueOf(getAntTargetDuration()));
+				]]>
+			</beanshell>
+
+			<if>
+				<equals arg1="@{ant.target.failure.count}" arg2="0" />
+				<then>
+					<property name="ant.target.message.element" value="" />
+				</then>
+				<elseif>
+					<equals arg1="@{ant.target.failure.message}" arg2="" />
+					<then>
+						<property name="ant.target.message.element" value="&lt;failure message=&quot;@{ant.target.file} @{ant.target.name} could not be executed. Please check the logs for details.&quot; /&gt;" />
+					</then>
+				</elseif>
+				<else>
+					<antelope:stringutil property="ant.target.failure.message" string="@{ant.target.failure.message}">
+						<antelope:replace regex="&amp;" replacement="&amp;amp;" />
+						<antelope:replace regex="&apos;" replacement="&amp;apos;" />
+						<antelope:replace regex="&gt;" replacement="&amp;gt;" />
+						<antelope:replace regex="&lt;" replacement="&amp;lt;" />
+						<antelope:replace regex="&quot;" replacement="&amp;quot;" />
+					</antelope:stringutil>
+
+					<property name="ant.target.message.element"><![CDATA[<failure message="Detected build services changes. See below for more information. Make sure to commit in all build services results.">${ant.target.failure.message}</failure>]]></property>
+
+					<echo>------------------------------------------</echo>
+					<echo>@{ant.target.failure.message}</echo>
+					<echo>------------------------------------------</echo>
+					<echo>${ant.target.failure.message}</echo>
+					<echo>------------------------------------------</echo>
+					<echo>${ant.target.message.element}</echo>
+					<echo>------------------------------------------</echo>
+				</else>
+			</if>
+
+			<local name="test.class.name" />
+
+			<propertyregex
+				global="true"
+				input="@{ant.target.file}"
+				override="yes"
+				property="test.class.name"
+				regexp="\/"
+				replace="."
+			/>
+
+			<generate-backend-batch-junit-report
+				junit.failure.count="@{ant.target.failure.count}"
+				junit.failure.message.element="${ant.target.message.element}"
+				test.class.duration="${ant.target.duration}"
+				test.class.file.name="${test.class.name}.@{ant.target.name}"
+				test.class.name="${test.class.name}"
+				test.command.name="@{ant.target.name}"
+				test.results.dir="modules/test-results"
+			/>
 		</sequential>
 	</macrodef>
 
@@ -654,6 +753,84 @@ information.
 				junit.failure.message.element="&lt;failure message=&quot;@{test.task.name} could not be executed. Please check the logs for details.&quot; /&gt;"
 				test.class.name="@{test.class.name}"
 				test.command.name="testRun"
+				test.results.dir="modules/test-results"
+			/>
+		</sequential>
+	</macrodef>
+
+	<macrodef name="generate-backend-batch-junit-report-test-task">
+		<attribute name="test.task.failure.count" />
+		<attribute default="" name="test.task.failure.message" />
+		<attribute name="test.task.module.dir" />
+		<attribute name="test.task.start.time" />
+		<attribute name="test.task.name" />
+
+		<sequential>
+			<local name="test.task.duration" />
+			<local name="test.task.message.element" />
+
+			<beanshell>
+				<![CDATA[
+					public double getTestTaskDuration() {
+						long duration = System.currentTimeMillis() - Long.valueOf("@{test.task.start.time}");
+
+						return (double)duration / 1000;
+					}
+
+					project.setProperty("test.task.duration", String.valueOf(getTestTaskDuration()));
+				]]>
+			</beanshell>
+
+			<if>
+				<equals arg1="@{test.task.failure.count}" arg2="0" />
+				<then>
+					<property name="test.task.message.element" value="" />
+				</then>
+				<elseif>
+					<equals arg1="@{test.task.failure.message}" arg2="" />
+					<then>
+						<property name="test.task.message.element" value="&lt;failure message=&quot;@{test.task.module.dir} @{test.task.name} could not be executed. Please check the logs for details.&quot; /&gt;" />
+					</then>
+				</elseif>
+				<else>
+					<antelope:stringutil property="test.task.failure.message" string="@{test.task.failure.message}">
+						<antelope:replace regex="&amp;" replacement="&amp;amp;" />
+						<antelope:replace regex="&apos;" replacement="&amp;apos;" />
+						<antelope:replace regex="&gt;" replacement="&amp;gt;" />
+						<antelope:replace regex="&lt;" replacement="&amp;lt;" />
+						<antelope:replace regex="&quot;" replacement="&amp;quot;" />
+					</antelope:stringutil>
+
+					<property name="test.task.message.element"><![CDATA[<failure message="Detected build services changes. See below for more information. Make sure to commit in all build services results.">${test.task.failure.message}</failure>]]></property>
+				</else>
+			</if>
+
+			<local name="test.task.name" />
+
+			<condition else="@{test.task.name}" property="test.task.name" value="assemble">
+				<or>
+					<contains string="@{test.task.name}" substring="assemble" />
+					<contains string="@{test.task.name}" substring="compileTestIntegrationJava" />
+				</or>
+			</condition>
+
+			<local name="test.class.name" />
+
+			<propertyregex
+				global="true"
+				input="@{test.task.module.dir}"
+				override="yes"
+				property="test.class.name"
+				regexp="\/"
+				replace="."
+			/>
+
+			<generate-backend-batch-junit-report
+				junit.failure.count="@{test.task.failure.count}"
+				junit.failure.message.element="${test.task.message.element}"
+				test.class.duration="${test.task.duration}"
+				test.class.name="${test.class.name}"
+				test.command.name="${test.task.name}"
 				test.results.dir="modules/test-results"
 			/>
 		</sequential>

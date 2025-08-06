@@ -5,6 +5,10 @@
 
 package com.liferay.jenkins.results.parser.test.clazz.group;
 
+import com.liferay.jenkins.results.parser.test.clazz.ServiceBuilderAntTargetTestClass;
+import com.liferay.jenkins.results.parser.test.clazz.TestClass;
+import com.liferay.jenkins.results.parser.test.clazz.TestClassMethod;
+
 import org.json.JSONObject;
 
 /**
@@ -65,6 +69,33 @@ public class ServiceBuilderModulesSegmentTestClassGroup
 
 		_serviceBuilderModulesBatchTestClassGroup =
 			(ServiceBuilderModulesBatchTestClassGroup)batchTestClassGroup;
+	}
+
+	@Override
+	protected String getTestTaskNames(int axisIndex) {
+		StringBuilder sb = new StringBuilder();
+
+		AxisTestClassGroup axisTestClassGroup = getAxisTestClassGroup(
+			axisIndex);
+
+		for (TestClass testClass : axisTestClassGroup.getTestClasses()) {
+			if (testClass instanceof ServiceBuilderAntTargetTestClass) {
+				continue;
+			}
+
+			for (TestClassMethod testClassMethod :
+					testClass.getTestClassMethods()) {
+
+				sb.append(testClassMethod.getName());
+				sb.append(",");
+			}
+		}
+
+		if (!sb.isEmpty()) {
+			sb.setLength(sb.length() - 1);
+		}
+
+		return sb.toString();
 	}
 
 	private final ServiceBuilderModulesBatchTestClassGroup

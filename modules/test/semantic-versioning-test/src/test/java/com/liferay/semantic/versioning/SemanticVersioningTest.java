@@ -62,6 +62,8 @@ public class SemanticVersioningTest {
 			System.getProperty("project.dir"), "modules", _module, "build",
 			"reports", "baseline", "baseline.log");
 
+		System.out.println("baselineLogPath=" + baselineLogPath);
+
 		boolean exist = Files.exists(baselineLogPath);
 
 		String message = "";

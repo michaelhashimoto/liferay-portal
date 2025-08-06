@@ -25,13 +25,13 @@ import java.util.regex.Pattern;
  * @author Kenji Heigel
  */
 public class SemVerModulesBatchBuildTestrayCaseResult
-	extends BatchBuildTestrayCaseResult {
+	extends ModulesBatchBuildTestrayCaseResult {
 
 	public SemVerModulesBatchBuildTestrayCaseResult(
 		TestrayBuild testrayBuild, TopLevelBuildReport topLevelBuildReport,
 		AxisTestClassGroup axisTestClassGroup, TestClass testClass) {
 
-		super(testrayBuild, topLevelBuildReport, axisTestClassGroup);
+		super(testrayBuild, topLevelBuildReport, axisTestClassGroup, testClass);
 
 		_semVerModulesTestClass = (SemVerModulesTestClass)testClass;
 	}
@@ -48,18 +48,6 @@ public class SemVerModulesBatchBuildTestrayCaseResult
 		}
 
 		return super.getBuildReport();
-	}
-
-	@Override
-	public String getComponentName() {
-		String componentName =
-			_semVerModulesTestClass.getTestrayMainComponentName();
-
-		if (JenkinsResultsParserUtil.isNullOrEmpty(componentName)) {
-			return super.getComponentName();
-		}
-
-		return componentName;
 	}
 
 	@Override
@@ -146,46 +134,6 @@ public class SemVerModulesBatchBuildTestrayCaseResult
 		}
 
 		return errorMessage;
-	}
-
-	@Override
-	public String getName() {
-		if (_semVerModulesTestClass == null) {
-			return super.getName();
-		}
-
-		return getBatchName() + "[" + _semVerModulesTestClass.getName() + "]";
-	}
-
-	@Override
-	public Status getStatus() {
-		BuildReport buildReport = getBuildReport();
-
-		if (buildReport == null) {
-			return Status.UNTESTED;
-		}
-
-		List<TestReport> testReports = getTestReports();
-
-		if (testReports.isEmpty()) {
-			String result = buildReport.getResult();
-
-			if ((result == null) || result.equals("SUCCESS") ||
-				result.equals("UNSTABLE")) {
-
-				return Status.UNTESTED;
-			}
-
-			return Status.FAILED;
-		}
-
-		for (TestReport testReport : testReports) {
-			if (testReport.isFailing()) {
-				return Status.FAILED;
-			}
-		}
-
-		return Status.PASSED;
 	}
 
 	public List<TestReport> getTestReports() {

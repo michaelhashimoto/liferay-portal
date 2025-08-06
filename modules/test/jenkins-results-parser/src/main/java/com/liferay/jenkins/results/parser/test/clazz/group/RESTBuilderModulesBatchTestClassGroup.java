@@ -16,6 +16,8 @@ import java.io.IOException;
 
 import java.nio.file.PathMatcher;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.json.JSONObject;
@@ -137,7 +139,7 @@ public class RESTBuilderModulesBatchTestClassGroup
 
 		for (File moduleDir : moduleDirsList) {
 			TestClass testClass = TestClassFactory.newTestClass(
-				this, moduleDir);
+				this, _getParentModuleDir(moduleDir));
 
 			if (!testClass.hasTestClassMethods()) {
 				continue;
@@ -145,6 +147,33 @@ public class RESTBuilderModulesBatchTestClassGroup
 
 			addTestClass(testClass);
 		}
+	}
+
+	private File _getParentModuleDir(File dir) {
+		List<File> moduleDirs = new ArrayList<>();
+
+		File currentDir = dir;
+
+		File modulesDir = new File(
+			portalGitWorkingDirectory.getWorkingDirectory(), "modules");
+
+		while ((currentDir != null) &&
+			   !modulesDir.equals(currentDir.getParentFile())) {
+
+			moduleDirs.add(currentDir);
+
+			currentDir = currentDir.getParentFile();
+		}
+
+		Collections.reverse(moduleDirs);
+
+		for (File moduleDir : moduleDirs) {
+			if (isModuleDir(moduleDir)) {
+				return moduleDir;
+			}
+		}
+
+		return dir;
 	}
 
 	private BuildType _buildType;
