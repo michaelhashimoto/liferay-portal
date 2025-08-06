@@ -7,7 +7,7 @@
 
 		<!-- PK fields -->
 
-		<column name="name" primary="true" type="String" />
+		<column name="names" primary="true" type="String" />
 
 		<!-- Other fields -->
 
