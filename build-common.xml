@@ -701,9 +701,11 @@ information.
 				</elseif>
 				<else>
 					<antelope:stringutil property="ant.target.failure.message" string="@{ant.target.failure.message}">
+						<antelope:replace regex="&amp;" replacement="&amp;amp;" />
+						<antelope:replace regex="&apos;" replacement="&amp;apos;" />
 						<antelope:replace regex="&gt;" replacement="&amp;gt;" />
 						<antelope:replace regex="&lt;" replacement="&amp;lt;" />
-						<antelope:replace regex="&quot;" replacement="&apos;" />
+						<antelope:replace regex="&quot;" replacement="&amp;quot;" />
 					</antelope:stringutil>
 
 					<property name="ant.target.message.element"><![CDATA[<failure message="Detected build services changes. See below for more information. Make sure to commit in all build services results.">${ant.target.failure.message}</failure>]]></property>
@@ -791,10 +793,12 @@ information.
 					</then>
 				</elseif>
 				<else>
-					<antelope:stringutil property="test.task.failure.message" string="@{test.task.failure.message}">
+					<antelope:stringutil property="ant.target.failure.message" string="@{ant.target.failure.message}">
+						<antelope:replace regex="&amp;" replacement="&amp;amp;" />
+						<antelope:replace regex="&apos;" replacement="&amp;apos;" />
 						<antelope:replace regex="&gt;" replacement="&amp;gt;" />
 						<antelope:replace regex="&lt;" replacement="&amp;lt;" />
-						<antelope:replace regex="&quot;" replacement="&apos;" />
+						<antelope:replace regex="&quot;" replacement="&amp;quot;" />
 					</antelope:stringutil>
 
 					<property name="test.task.message.element"><![CDATA[<failure message="Detected build services changes. See below for more information. Make sure to commit in all build services results.">${ant.target.failure.message}</failure>]]></property>
