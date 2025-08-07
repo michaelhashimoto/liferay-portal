@@ -8132,7 +8132,7 @@ information. Make sure to commit in all format-javadoc results.
 
 										<generate-backend-batch-junit-report-gradle-task
 											gradle.task.failure.count="1"
-											gradle.task.failure.message="${baseline.log.file.content}"
+											gradle.task.failure.stacktrace="${baseline.log.file.content}"
 											gradle.task.module.dir="${gradle.module.dir}"
 											gradle.task.name="${gradle.task.name}"
 											gradle.task.start.time="${gradle.task.start.time}"
