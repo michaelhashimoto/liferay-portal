@@ -590,7 +590,7 @@ mariadb.executable=${mariadb.executable}]]></echo>
 
 					<generate-backend-batch-junit-report-gradle-task
 						gradle.task.failure.count="1"
-						gradle.task.failure.message="@{gradle.task.module.dir}&gt; @{gradle.task.name} failed. See below for more information."
+						gradle.task.failure.message="@{gradle.task.module.dir} @{gradle.task.name} failed. Please check the logs for details."
 						gradle.task.failure.stacktrace="${gradle.task.failure.stacktrace}"
 						gradle.task.module.dir="@{gradle.task.module.dir}"
 						gradle.task.name="@{gradle.task.name}"
