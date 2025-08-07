@@ -399,7 +399,7 @@ mariadb.executable=${mariadb.executable}]]></echo>
 		<attribute name="ant.target.file" />
 
 		<sequential>
-			<trycatch property="ant.target.failure.stacktrace">
+			<trycatch property="ant.target.failure">
 				<try>
 					<beanshell>
 						project.setProperty("ant.target.start.time", String.valueOf(System.currentTimeMillis()));
@@ -458,31 +458,13 @@ mariadb.executable=${mariadb.executable}]]></echo>
 
 					<delete failonerror="false" file="${project.dir}/execute.ant.target.log" />
 
-					<beanshell>
-						import com.liferay.jenkins.results.parser.JenkinsResultsParserUtil;
-						import com.liferay.jenkins.results.parser.failure.message.generator.CompileFailureMessageGenerator;
-						import com.liferay.jenkins.results.parser.failure.message.generator.ModulesCompilationFailureMessageGenerator;
+					<get-console-log-failure-message console.log="${execute.ant.target.log}" />
 
-						String executeAntTargetLog = project.getProperty("execute.ant.target.log");
+					<local name="ant.target.failure.stacktrace" />
 
-						if (JenkinsResultsParserUtil.isNullOrEmpty(executeAntTargetLog)) {
-							return;
-						}
-
-						CompileFailureMessageGenerator compileFailureMessageGenerator = new CompileFailureMessageGenerator();
-
-						String message = compileFailureMessageGenerator.getMessage(executeAntTargetLog);
-
-						if (JenkinsResultsParserUtil.isNullOrEmpty(message)) {
-							ModulesCompilationFailureMessageGenerator modulesCompilationFailureMessageGenerator = new ModulesCompilationFailureMessageGenerator();
-
-							message = modulesCompilationFailureMessageGenerator.getMessage(executeAntTargetLog);
-						}
-
-						if (!JenkinsResultsParserUtil.isNullOrEmpty(message)) {
-							project.setProperty("ant.target.failure.stacktrace", message);
-						}
-					</beanshell>
+					<condition else="${ant.target.failure}" property="ant.target.failure.stacktrace" value="${console.log.failure.message}">
+						<isset property="console.log.failure.message" />
+					</condition>
 
 					<generate-backend-batch-junit-report-ant-target
 						ant.target.failure.count="1"
@@ -524,9 +506,9 @@ mariadb.executable=${mariadb.executable}]]></echo>
 		<element name="action-fail" optional="true" />
 
 		<sequential>
-			<local name="gradle.task.failure.stacktrace" />
+			<local name="gradle.task.failure" />
 
-			<trycatch property="gradle.task.failure.stacktrace">
+			<trycatch property="gradle.task.failure">
 				<try>
 					<beanshell>
 						project.setProperty("gradle.task.start.time", String.valueOf(System.currentTimeMillis()));
@@ -562,31 +544,13 @@ mariadb.executable=${mariadb.executable}]]></echo>
 
 					<delete failonerror="false" file="${project.dir}/execute.gradle.task.log" />
 
-					<beanshell>
-						import com.liferay.jenkins.results.parser.JenkinsResultsParserUtil;
-						import com.liferay.jenkins.results.parser.failure.message.generator.CompileFailureMessageGenerator;
-						import com.liferay.jenkins.results.parser.failure.message.generator.ModulesCompilationFailureMessageGenerator;
+					<get-console-log-failure-message console.log="${execute.gradle.task.log}" />
 
-						String executeGradleTaskLog = project.getProperty("execute.gradle.task.log");
+					<local name="gradle.task.failure.stacktrace" />
 
-						if (JenkinsResultsParserUtil.isNullOrEmpty(executeGradleTaskLog)) {
-							return;
-						}
-
-						CompileFailureMessageGenerator compileFailureMessageGenerator = new CompileFailureMessageGenerator();
-
-						String message = compileFailureMessageGenerator.getMessage(executeGradleTaskLog);
-
-						if (JenkinsResultsParserUtil.isNullOrEmpty(message)) {
-							ModulesCompilationFailureMessageGenerator modulesCompilationFailureMessageGenerator = new ModulesCompilationFailureMessageGenerator();
-
-							message = modulesCompilationFailureMessageGenerator.getMessage(executeGradleTaskLog);
-						}
-
-						if (!JenkinsResultsParserUtil.isNullOrEmpty(message)) {
-							project.setProperty("gradle.task.failure.stacktrace", message);
-						}
-					</beanshell>
+					<condition else="${gradle.task.failure}" property="gradle.task.failure.stacktrace" value="${console.log.failure.message}">
+						<isset property="console.log.failure.message" />
+					</condition>
 
 					<generate-backend-batch-junit-report-gradle-task
 						gradle.task.failure.count="1"
@@ -676,6 +640,42 @@ mariadb.executable=${mariadb.executable}]]></echo>
 					</if>
 				</action-fail>
 			</execute-gradle-task>
+		</sequential>
+	</macrodef>
+
+	<macrodef name="get-console-log-failure-message">
+		<attribute name="console.log" />
+
+		<sequential>
+			<var name="console.log.failure.message" unset="true" />
+
+			<beanshell>
+				<![CDATA[
+					import com.liferay.jenkins.results.parser.JenkinsResultsParserUtil;
+					import com.liferay.jenkins.results.parser.failure.message.generator.CompileFailureMessageGenerator;
+					import com.liferay.jenkins.results.parser.failure.message.generator.ModulesCompilationFailureMessageGenerator;
+
+					String consoleLog = "@{console.log}";
+
+					if (JenkinsResultsParserUtil.isNullOrEmpty(consoleLog)) {
+						return;
+					}
+
+					CompileFailureMessageGenerator compileFailureMessageGenerator = new CompileFailureMessageGenerator();
+
+					String failureMessage = compileFailureMessageGenerator.getMessage(consoleLog);
+
+					if (JenkinsResultsParserUtil.isNullOrEmpty(failureMessage)) {
+						ModulesCompilationFailureMessageGenerator modulesCompilationFailureMessageGenerator = new ModulesCompilationFailureMessageGenerator();
+
+						failureMessage = modulesCompilationFailureMessageGenerator.getMessage(consoleLog);
+					}
+
+					if (!JenkinsResultsParserUtil.isNullOrEmpty(failureMessage)) {
+						project.setProperty("console.log.failure.message", failureMessage);
+					}
+				]]>
+			</beanshell>
 		</sequential>
 	</macrodef>
 
