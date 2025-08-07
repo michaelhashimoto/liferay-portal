@@ -431,6 +431,8 @@ mariadb.executable=${mariadb.executable}]]></echo>
 						replace="\2"
 					/>
 
+					<record action="start" name="${project.dir}/execute.ant.target.log" />
+
 					<record-git-diffs-build-services>
 						<action>
 							<ant antfile="${ant.target.file.name}" dir="${ant.target.dir}" target="@{ant.target.name}" />
@@ -445,6 +447,43 @@ mariadb.executable=${mariadb.executable}]]></echo>
 					/>
 				</try>
 				<catch>
+					<record action="stop" name="${project.dir}/execute.ant.target.log" />
+
+					<local name="execute.ant.target.log" />
+
+					<loadfile
+						property="execute.ant.target.log"
+						srcfile="${project.dir}/execute.ant.target.log"
+					/>
+
+					<delete failonerror="false" file="${project.dir}/execute.ant.target.log" />
+
+					<beanshell>
+						import com.liferay.jenkins.results.parser.JenkinsResultsParserUtil;
+						import com.liferay.jenkins.results.parser.failure.message.generator.CompileFailureMessageGenerator;
+						import com.liferay.jenkins.results.parser.failure.message.generator.ModulesCompilationFailureMessageGenerator;
+
+						String executeAntTargetLog = project.getProperty("execute.ant.target.log");
+
+						if (JenkinsResultsParserUtil.isNullOrEmpty(executeAntTargetLog)) {
+							return;
+						}
+
+						CompileFailureMessageGenerator compileFailureMessageGenerator = new CompileFailureMessageGenerator();
+
+						String message = compileFailureMessageGenerator.getMessage(executeAntTargetLog);
+
+						if (JenkinsResultsParserUtil.isNullOrEmpty(message)) {
+							ModulesCompilationFailureMessageGenerator modulesCompilationFailureMessageGenerator = new ModulesCompilationFailureMessageGenerator();
+
+							message = modulesCompilationFailureMessageGenerator.getMessage(executeAntTargetLog);
+						}
+
+						if (!JenkinsResultsParserUtil.isNullOrEmpty(message)) {
+							project.setProperty("ant.target.failure.stacktrace", message);
+						}
+					</beanshell>
+
 					<generate-backend-batch-junit-report-ant-target
 						ant.target.failure.count="1"
 						ant.target.failure.message="Detected build services compilation error. See below for more information."
@@ -455,6 +494,10 @@ mariadb.executable=${mariadb.executable}]]></echo>
 					/>
 				</catch>
 				<finally>
+					<record action="stop" name="${project.dir}/execute.ant.target.log" />
+
+					<delete failonerror="false" file="${project.dir}/execute.ant.target.log" />
+
 					<if>
 						<isset property="git.diffs" />
 						<then>
@@ -521,11 +564,24 @@ mariadb.executable=${mariadb.executable}]]></echo>
 
 					<beanshell>
 						import com.liferay.jenkins.results.parser.JenkinsResultsParserUtil;
+						import com.liferay.jenkins.results.parser.failure.message.generator.CompileFailureMessageGenerator;
 						import com.liferay.jenkins.results.parser.failure.message.generator.ModulesCompilationFailureMessageGenerator;
 
-						ModulesCompilationFailureMessageGenerator modulesCompilationFailureMessageGenerator = new ModulesCompilationFailureMessageGenerator();
+						String executeGradleTaskLog = project.getProperty("execute.gradle.task.log");
 
-						String message = modulesCompilationFailureMessageGenerator.getMessage(project.getProperty("execute.gradle.task.log"));
+						if (JenkinsResultsParserUtil.isNullOrEmpty(executeGradleTaskLog)) {
+							return;
+						}
+
+						CompileFailureMessageGenerator compileFailureMessageGenerator = new CompileFailureMessageGenerator();
+
+						String message = compileFailureMessageGenerator.getMessage(executeGradleTaskLog);
+
+						if (JenkinsResultsParserUtil.isNullOrEmpty(message)) {
+							ModulesCompilationFailureMessageGenerator modulesCompilationFailureMessageGenerator = new ModulesCompilationFailureMessageGenerator();
+
+							message = modulesCompilationFailureMessageGenerator.getMessage(executeGradleTaskLog);
+						}
 
 						if (!JenkinsResultsParserUtil.isNullOrEmpty(message)) {
 							project.setProperty("gradle.task.failure.stacktrace", message);
