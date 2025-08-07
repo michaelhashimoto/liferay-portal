@@ -498,8 +498,6 @@ mariadb.executable=${mariadb.executable}]]></echo>
 
 					<record action="start" name="${project.dir}/execute.gradle.task.log" />
 
-					<ant dir="portal-impl" inheritAll="false" target="build-iw" />
-
 					<action />
 
 					<generate-backend-batch-junit-report-gradle-task
