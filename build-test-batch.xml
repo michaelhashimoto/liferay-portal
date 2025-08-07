@@ -496,6 +496,10 @@ mariadb.executable=${mariadb.executable}]]></echo>
 						gradle.task.start.time="${gradle.task.start.time}"
 					/>
 
+					<record action="start" name="${project.dir}/execute.gradle.task.log" />
+
+					<ant dir="portal-impl" inheritAll="false" target="build-iw" />
+
 					<action />
 
 					<generate-backend-batch-junit-report-gradle-task
@@ -506,9 +510,33 @@ mariadb.executable=${mariadb.executable}]]></echo>
 					/>
 				</try>
 				<catch>
+					<record action="stop" name="${project.dir}/execute.gradle.task.log" />
+
+					<local name="execute.gradle.task.log" />
+
+					<loadfile
+						property="execute.gradle.task.log"
+						srcfile="${project.dir}/execute.gradle.task.log"
+					/>
+
+					<delete failonerror="false" file="${project.dir}/execute.gradle.task.log" />
+
+					<beanshell>
+						import com.liferay.jenkins.results.parser.JenkinsResultsParserUtil;
+						import com.liferay.jenkins.results.parser.failure.message.generator.ModulesCompilationFailureMessageGenerator;
+
+						ModulesCompilationFailureMessageGenerator modulesCompilationFailureMessageGenerator = new ModulesCompilationFailureMessageGenerator();
+
+						String message = modulesCompilationFailureMessageGenerator.getMessage(project.getProperty("execute.gradle.task.log"));
+
+						if (!JenkinsResultsParserUtil.isNull(message)) {
+							project.setProperty("gradle.task.failure.stacktrace", message);
+						}
+					</beanshell>
+
 					<generate-backend-batch-junit-report-gradle-task
 						gradle.task.failure.count="1"
-						gradle.task.failure.message="Detected gradle task error. See below for more information."
+						gradle.task.failure.message="@{gradle.task.module.dir}&gt; @{gradle.task.name} failed. See below for more information."
 						gradle.task.failure.stacktrace="${gradle.task.failure.stacktrace}"
 						gradle.task.module.dir="@{gradle.task.module.dir}"
 						gradle.task.name="@{gradle.task.name}"
@@ -516,6 +544,10 @@ mariadb.executable=${mariadb.executable}]]></echo>
 					/>
 				</catch>
 				<finally>
+					<record action="stop" name="${project.dir}/execute.gradle.task.log" />
+
+					<delete failonerror="false" file="${project.dir}/execute.gradle.task.log" />
+
 					<action-fail />
 				</finally>
 			</trycatch>
@@ -8131,10 +8163,9 @@ information. Make sure to commit in all format-javadoc results.
 										StringBuilder sb = new StringBuilder();
 
 										for (File baselineFile : JenkinsResultsParserUtil.findFiles(baseDir, "baseline.log")) {
-											sb.append("\n##\n");
-											sb.append("## ");
+											sb.append("\n> ");
 											sb.append(JenkinsResultsParserUtil.getPathRelativeTo(baselineFile, projectDir));
-											sb.append("\n##\n\n");
+											sb.append("\n\n");
 											sb.append(JenkinsResultsParserUtil.read(baselineFile));
 											sb.append("\n");
 										}
@@ -8150,6 +8181,7 @@ information. Make sure to commit in all format-javadoc results.
 									<then>
 										<generate-backend-batch-junit-report-gradle-task
 											gradle.task.failure.count="1"
+											gradle.task.failure.message="${gradle.module.dir} failed semantic versioning. Please see below for more details."
 											gradle.task.failure.stacktrace="${baseline.log.files.content}"
 											gradle.task.module.dir="${gradle.module.dir}"
 											gradle.task.name="${gradle.task.name}"
