@@ -527,7 +527,7 @@ mariadb.executable=${mariadb.executable}]]></echo>
 
 						String message = modulesCompilationFailureMessageGenerator.getMessage(project.getProperty("execute.gradle.task.log"));
 
-						if (!JenkinsResultsParserUtil.isNull(message)) {
+						if (!JenkinsResultsParserUtil.isNullOrEmpty(message)) {
 							project.setProperty("gradle.task.failure.stacktrace", message);
 						}
 					</beanshell>
