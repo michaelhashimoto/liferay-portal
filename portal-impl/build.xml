@@ -534,8 +534,6 @@
 			]]>
 		</beanshell>
 
-		<fail />
-
 		<if>
 			<equals arg1="${current.branch.name}" arg2="${git.working.branch.name}" />
 			<then>
