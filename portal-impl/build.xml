@@ -506,6 +506,36 @@
 			<path refid="project.classpath" />
 		</path>
 
+		<beanshell>
+			<![CDATA[
+				import com.liferay.jenkins.results.parser.Dom4JUtil;
+				import com.liferay.jenkins.results.parser.JenkinsResultsParserUtil;
+
+				import org.dom4j.Document;
+				import org.dom4j.Element;
+
+				String ivyXMLFileContent = JenkinsResultsParserUtil.read(new File(project.getProperty("sdk.dir"), "dependencies/com.liferay.source.formatter/ivy.xml"));
+
+				Document document = Dom4JUtil.parse(ivyXMLFileContent);
+
+				Element rootElement = document.getRootElement();;
+
+				Element dependenciesElement = rootElement.element("dependencies");
+
+				for (Element dependencyElement : dependenciesElement.elements("dependency")) {
+					String name = dependencyElement.attributeValue("name");
+
+					if (!name.equals("com.liferay.source.formatter")) {
+						continue;
+					}
+
+					System.out.println("Running " + name + " at " + dependencyElement.attributeValue("rev"));
+				}
+			]]>
+		</beanshell>
+
+		<fail />
+
 		<if>
 			<equals arg1="${current.branch.name}" arg2="${git.working.branch.name}" />
 			<then>
