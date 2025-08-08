@@ -9,6 +9,8 @@ import {Locator, Page, expect} from '@playwright/test';
 import {ApiHelpers} from '../../../../helpers/ApiHelpers';
 import {clickAndExpectToBeHidden} from '../../../../utils/clickAndExpectToBeHidden';
 import {clickAndExpectToBeVisible} from '../../../../utils/clickAndExpectToBeVisible';
+import {getRandomInt} from '../../../../utils/getRandomInt';
+import getRandomString from '../../../../utils/getRandomString';
 import {PORTLET_URLS} from '../../../../utils/portletUrls';
 import {waitForAlert} from '../../../../utils/waitForAlert';
 
@@ -26,7 +28,7 @@ export const FIELD_TYPES = [
 	'Upload',
 ] as const;
 
-type FieldType = (typeof FIELD_TYPES)[number];
+export type FieldType = (typeof FIELD_TYPES)[number];
 
 type Field = {label: string; nth?: number};
 
@@ -299,13 +301,49 @@ export class StructureBuilderPage {
 		}
 	}
 
-	async createStructure(type: StructureType = 'content') {
-		await this.goto({type});
+	async createStructureFromData({
+		erc = getRandomString(),
+		label,
+		name = `StructureName${getRandomInt()}`,
+		page,
+		publish = true,
+		structureIds,
+	}: {
+		erc?: string;
+		label: string;
+		name?: string;
+		page: StructureBuilderPage;
+		publish?: boolean;
+		structureIds?: string[];
+	}) {
+		await page.goToCreateStructure();
+
+		await page.enableForAllSpaces();
+
+		await page.changeStructureSettings({
+			erc,
+			label,
+			name,
+		});
+
+		const {externalReferenceCode, id} = await page.saveStructure();
+
+		if (publish) {
+			await page.publishStructure();
+		}
+
+		if (structureIds) {
+			structureIds.push(id);
+		}
+
+		return externalReferenceCode;
 	}
 
 	async customizeExperience() {
 		await expect(async () => {
-			await this.customizeExperienceButton.click();
+			if (await this.customizeExperienceButton.isVisible()) {
+				await this.customizeExperienceButton.click({timeout: 2000});
+			}
 
 			await expect(
 				this.page.getByText('Select a Page Element', {exact: true})
@@ -410,6 +448,10 @@ export class StructureBuilderPage {
 				timeout: 2000,
 			});
 		}).toPass();
+	}
+
+	async goToCreateStructure(type: StructureType = 'content') {
+		await this.goto({type});
 	}
 
 	async publishStructure() {
