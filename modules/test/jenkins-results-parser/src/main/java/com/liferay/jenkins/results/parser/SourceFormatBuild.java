@@ -14,10 +14,13 @@ import com.liferay.jenkins.results.parser.failure.message.generator.RebaseFailur
 import com.liferay.jenkins.results.parser.failure.message.generator.RelevantRuleValidationFailureMessageGenerator;
 import com.liferay.jenkins.results.parser.failure.message.generator.SourceFormatFailureMessageGenerator;
 
+import java.io.File;
+
 import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.dom4j.Document;
 import org.dom4j.Element;
 
 /**
@@ -28,17 +31,12 @@ public class SourceFormatBuild
 	implements PortalBranchInformationBuild, PullRequestBuild, WorkspaceBuild {
 
 	public boolean bypassCITestRelevant() {
-		Workspace workspace = getWorkspace();
+		PortalWorkspaceGitRepository portalWorkspaceGitRepository =
+			_getPortalWorkspaceGitRepository();
 
-		WorkspaceGitRepository workspaceGitRepository =
-			workspace.getPrimaryWorkspaceGitRepository();
-
-		if (!(workspaceGitRepository instanceof PortalWorkspaceGitRepository)) {
+		if (portalWorkspaceGitRepository == null) {
 			return false;
 		}
-
-		PortalWorkspaceGitRepository portalWorkspaceGitRepository =
-			(PortalWorkspaceGitRepository)workspaceGitRepository;
 
 		return portalWorkspaceGitRepository.bypassCITestRelevant();
 	}
@@ -154,7 +152,7 @@ public class SourceFormatBuild
 		Dom4JUtil.addToElement(
 			detailsElement, String.valueOf(successCount), " out of ",
 			String.valueOf(getDownstreamBuildCountByResult(null) + 1),
-			"jobs PASSED");
+			" jobs PASSED");
 
 		if (Objects.equals(result, "SUCCESS")) {
 			Dom4JUtil.addToElement(
@@ -173,7 +171,8 @@ public class SourceFormatBuild
 		}
 
 		return Dom4JUtil.getNewElement(
-			"html", null, getResultElement(), detailsElement);
+			"html", null, getResultElement(), _getSourceFormatVersionElement(),
+			detailsElement);
 	}
 
 	@Override
@@ -251,6 +250,91 @@ public class SourceFormatBuild
 			Dom4JUtil.getNewAnchorElement(senderBranchURL, senderBranchName),
 			Dom4JUtil.getNewElement("br"), "Branch GIT ID: ",
 			Dom4JUtil.getNewAnchorElement(senderCommitURL, senderSHA));
+	}
+
+	private PortalWorkspaceGitRepository _getPortalWorkspaceGitRepository() {
+		Workspace workspace = getWorkspace();
+
+		WorkspaceGitRepository workspaceGitRepository =
+			workspace.getPrimaryWorkspaceGitRepository();
+
+		if (!(workspaceGitRepository instanceof PortalWorkspaceGitRepository)) {
+			return null;
+		}
+
+		return (PortalWorkspaceGitRepository)workspaceGitRepository;
+	}
+
+	private String _getSourceFormatVersion() {
+		PortalWorkspaceGitRepository portalWorkspaceGitRepository =
+			_getPortalWorkspaceGitRepository();
+
+		if (portalWorkspaceGitRepository == null) {
+			return null;
+		}
+
+		GitWorkingDirectory gitWorkingDirectory =
+			portalWorkspaceGitRepository.getGitWorkingDirectory();
+
+		for (File modifiedFile : gitWorkingDirectory.getModifiedFilesList()) {
+			String modifiedFilePath = JenkinsResultsParserUtil.getCanonicalPath(
+				modifiedFile);
+
+			if (modifiedFilePath.contains("modules/util$/source-formatter") ||
+				modifiedFilePath.contains("source-formatter.properties")) {
+
+				return portalWorkspaceGitRepository.getSenderBranchSHAShort();
+			}
+		}
+
+		File ivyXMLFile = new File(
+			portalWorkspaceGitRepository.getDirectory(),
+			"tools/sdk/dependencies/com.liferay.source.formatter/ivy.xml");
+
+		if (!ivyXMLFile.exists()) {
+			return null;
+		}
+
+		try {
+			Document document = Dom4JUtil.parse(
+				JenkinsResultsParserUtil.read(ivyXMLFile));
+
+			Element rootElement = document.getRootElement();
+
+			Element dependenciesElement = rootElement.element("dependencies");
+
+			for (Element dependencyElement :
+					dependenciesElement.elements("dependency")) {
+
+				if (!Objects.equals(
+						dependencyElement.attributeValue("name"),
+						"com.liferay.source.formatter")) {
+
+					continue;
+				}
+
+				return dependencyElement.attributeValue("rev");
+			}
+
+			return null;
+		}
+		catch (Exception exception) {
+			return null;
+		}
+	}
+
+	private Element _getSourceFormatVersionElement() {
+		String sourceFormatVersion = _getSourceFormatVersion();
+
+		if (sourceFormatVersion == null) {
+			return Dom4JUtil.getNewElement("span");
+		}
+
+		return Dom4JUtil.getNewElement(
+			"h4", null,
+			JenkinsResultsParserUtil.combine(
+				"Run com.liferay.source.formatter from ", sourceFormatVersion,
+				"."));
 	}
 
 	private static final String _NAME_TEST_SUITE = "sf";
