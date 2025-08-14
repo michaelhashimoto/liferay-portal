@@ -25,6 +25,22 @@ import java.util.regex.Pattern;
  */
 public class EnvironmentBuildProperties extends Properties {
 
+	public static void main(String[] args) throws IOException {
+		EnvironmentBuildProperties ebp = new EnvironmentBuildProperties(
+			Environment.AWS,
+			toURLString(
+				new File(
+					"/Users/pyoo/dev/liferay-jenkins-ee/dev/commands",
+					"build.properties")),
+			false);
+
+		System.out.println("ebp size: " + ebp.size());
+
+		System.out.println(
+			"analytics.cloud.branch.names: " +
+				ebp.get("analytics.cloud.branch.names"));
+	}
+
 	public static String toURLString(File file) throws IOException {
 		URI uri = file.toURI();
 
@@ -79,7 +95,7 @@ public class EnvironmentBuildProperties extends Properties {
 		try {
 			String content = _toString(
 				JenkinsResultsParserUtil.combine(
-					matcher.group(1), "-", environment.getName(),
+					matcher.group(1), "-", environment.getExtension(),
 					matcher.group(2)),
 				checkCache);
 
@@ -134,17 +150,23 @@ public class EnvironmentBuildProperties extends Properties {
 
 	public enum Environment {
 
-		AWS("aws"), DB("db");
+		AWS("aws-master", "aws"), DB("master", "db");
 
-		public String getName() {
-			return _name;
+		public String getBranchName() {
+			return _branchName;
 		}
 
-		private Environment(String name) {
-			_name = name;
+		public String getExtension() {
+			return _extension;
 		}
 
-		private final String _name;
+		private Environment(String branchName, String extension) {
+			_branchName = branchName;
+			_extension = extension;
+		}
+
+		private final String _branchName;
+		private final String _extension;
 
 	}
 
