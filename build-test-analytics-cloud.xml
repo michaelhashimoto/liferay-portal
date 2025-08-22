@@ -999,6 +999,20 @@ if (Os.isFamily(Os.FAMILY_WINDOWS)) {
 		<build-analytics-cloud-images />
 	</target>
 
+	<target name="pull-asah-docker-image-dependencies">
+		<pull-docker-image-dependencies
+			analytics.cloud.image.names.excludes="${analytics.cloud.asah.image.names.excludes}"
+			analytics.cloud.repository.dir="${analytics.cloud.asah.dir}"
+		/>
+	</target>
+
+	<target name="pull-faro-docker-image-dependencies">
+		<pull-docker-image-dependencies
+			analytics.cloud.image.names.excludes="${analytics.cloud.faro.image.names.excludes}"
+			analytics.cloud.repository.dir="${analytics.cloud.faro.dir}"
+		/>
+	</target>
+
 	<target name="start-analytics-cloud">
 		<stop-analytics-cloud />
 
