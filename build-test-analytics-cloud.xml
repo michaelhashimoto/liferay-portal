@@ -99,7 +99,7 @@
 						</else>
 					</if>
 
-					<lstopwatch action="stop" name="build-analytics-cloud-asah-images" />
+					<lstopwatch action="total" name="build-analytics-cloud-asah-images" />
 
 					<lstopwatch action="start" name="build-analytics-cloud-faro-images" />
 
@@ -214,7 +214,7 @@
 						</else>
 					</if>
 
-					<lstopwatch action="stop" name="build-analytics-cloud-faro-images" />
+					<lstopwatch action="total" name="build-analytics-cloud-faro-images" />
 				</else>
 			</if>
 		</sequential>
