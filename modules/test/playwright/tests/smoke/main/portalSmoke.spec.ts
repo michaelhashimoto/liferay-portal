@@ -82,7 +82,7 @@ test('Smoke', async ({
 		await sitesPage.createSite({
 			isCustom: false,
 			siteName,
-			templateName: 'Blank Site',
+			templateName: 'Blank Sites',
 		});
 
 		await siteConfigurationDetailsPage.selectMembership('Open');
