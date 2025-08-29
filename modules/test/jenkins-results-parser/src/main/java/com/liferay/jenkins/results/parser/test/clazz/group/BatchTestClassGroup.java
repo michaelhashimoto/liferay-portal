@@ -273,6 +273,12 @@ public abstract class BatchTestClassGroup extends BaseTestClassGroup {
 
 		for (File buildReportFile : buildReportFiles) {
 			try {
+				String buildReportFileName = buildReportFile.getName();
+
+				if (buildReportFileName.endsWith(".sha512")) {
+					continue;
+				}
+
 				String buildReportFileContent = JenkinsResultsParserUtil.read(
 					buildReportFile);
 
