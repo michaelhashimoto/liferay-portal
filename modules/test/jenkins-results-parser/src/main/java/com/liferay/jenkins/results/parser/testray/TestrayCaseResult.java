@@ -35,15 +35,14 @@ import org.json.JSONObject;
 public class TestrayCaseResult {
 
 	public static final String[] FIELD_NAMES = {
-		"attachments", "buildToCaseResult", "caseToCaseResult",
-		"componentToCaseResult", "dateCreated", "dateModified",
-		"dueStatus { key name }", "errors", "id", "startDate"
+		"attachments", "caseToCaseResult", "componentToCaseResult",
+		"dateCreated", "dateModified", "dueStatus { key name }", "errors", "id",
+		"startDate"
 	};
 
 	public static final String[] TESTRAY_REPORT_FIELD_NAMES = {
-		"buildToCaseResult", "caseToCaseResult", "componentToCaseResult",
-		"dateCreated", "dateModified", "dueStatus { key name }", "errors", "id",
-		"startDate"
+		"caseToCaseResult", "componentToCaseResult", "dateCreated",
+		"dateModified", "dueStatus { key name }", "errors", "id", "startDate"
 	};
 
 	public TestrayAttachment getBuildResultTestrayAttachment() {
@@ -192,7 +191,7 @@ public class TestrayCaseResult {
 			return _testrayBuild;
 		}
 
-		JSONObject buildJSONObject = _jsonObject.getJSONObject(
+		JSONObject buildJSONObject = _jsonObject.optJSONObject(
 			"buildToCaseResult");
 
 		if (buildJSONObject != null) {
