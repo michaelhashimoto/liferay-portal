@@ -102,7 +102,7 @@ public class JUnitTestClass extends BaseTestClass {
 	}
 
 	@Override
-	public String getSharedWeightName() {
+	public String getSharedWeightName() {  // TODO - Group all tests by shared weight names / test tasks.
 		return getTestTaskName();
 	}
 
