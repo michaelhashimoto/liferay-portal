@@ -2024,13 +2024,17 @@ artifact.url=${remote.repository.cdn.url}/com/liferay/portal/com.liferay.${proce
 			<lstopwatch action="start" name="setup.yarn" />
 
 			<if>
-				<not>
-					<and>
+				<and>
+					<isset property="env.JENKINS_HOME" />
+					<or>
+						<available file="${node.home}" />
 						<equals arg1="${os.name}" arg2="SunOS" />
-						<isset property="env.JENKINS_HOME" />
-					</and>
-				</not>
+					</or>
+				</and>
 				<then>
+					<echo>Skipped running setup-yarn</echo>
+				</then>
+				<else>
 					<if>
 						<isset property="env.FIX_PACKS_RELEASE_ENVIRONMENT" />
 						<then>
@@ -2082,7 +2086,7 @@ artifact.url=${remote.repository.cdn.url}/com/liferay/portal/com.liferay.${proce
 							</gradle-execute>
 						</then>
 					</if>
-				</then>
+				</else>
 			</if>
 
 			<lstopwatch action="total" name="setup.yarn" />
