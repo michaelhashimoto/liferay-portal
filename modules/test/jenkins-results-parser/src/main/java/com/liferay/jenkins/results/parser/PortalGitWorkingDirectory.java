@@ -31,6 +31,29 @@ import org.json.JSONObject;
  */
 public class PortalGitWorkingDirectory extends GitWorkingDirectory {
 
+	public File archive(String fileName) {
+		setUpYarn();
+
+		File archiveFile = super.archive(fileName);
+
+		GitUtil.ExecutionResult executionResult = executeBashCommands(
+			3, GitUtil.MILLIS_RETRY_DELAY, 1000 * 60 * 10,
+			JenkinsResultsParserUtil.combine(
+				"zip -r ", fileName, " build/node"));
+
+		if (executionResult.getExitValue() != 0) {
+			throw new GitWorkingDirectoryRuntimeException(
+				this,
+				JenkinsResultsParserUtil.combine(
+					"Failed to add build/node to ", fileName, "\n",
+					executionResult.getStandardError()));
+		}
+
+		System.out.println(executionResult.getStandardOut());
+
+		return archiveFile;
+	}
+
 	public Properties getAppServerProperties() {
 		if (_appServerProperties != null) {
 			return _appServerProperties;
@@ -323,6 +346,29 @@ public class PortalGitWorkingDirectory extends GitWorkingDirectory {
 			testPropertiesFile);
 
 		return _testProperties;
+	}
+
+	public void setUpYarn() {
+		Map<String, String> map = System.getenv();
+
+		for (Map.Entry<String, String> entry : map.entrySet()) {
+			System.out.println(entry);
+		}
+
+		File workingDirectory = getWorkingDirectory();
+
+		try {
+			AntUtil.callTarget(
+				workingDirectory, "build.xml", "setup-yarn", null,
+				System.getenv());
+		}
+		catch (AntException antException) {
+			throw new GitWorkingDirectoryRuntimeException(
+				this,
+				JenkinsResultsParserUtil.combine(
+					"Failed to run setup-yarn in ",
+					workingDirectory.toString()));
+		}
 	}
 
 	public static class Module {
