@@ -2030,7 +2030,7 @@ artifact.url=${remote.repository.cdn.url}/com/liferay/portal/com.liferay.${proce
 				<and>
 					<isset property="env.JENKINS_HOME" />
 					<or>
-						<available file="${node.home}" />
+						<available file="build/node" />
 						<equals arg1="${os.name}" arg2="SunOS" />
 					</or>
 				</and>
