@@ -2023,6 +2023,9 @@ artifact.url=${remote.repository.cdn.url}/com/liferay/portal/com.liferay.${proce
 		<sequential>
 			<lstopwatch action="start" name="setup.yarn" />
 
+			<echo>env.JENKINS_HOME=${env.JENKINS_HOME}</echo>
+			<echo>node.home=${node.home}</echo>
+
 			<if>
 				<and>
 					<isset property="env.JENKINS_HOME" />
