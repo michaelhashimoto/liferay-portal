@@ -1316,26 +1316,6 @@ mariadb.executable=${mariadb.executable}]]></echo>
 		<attribute default="" name="dist.type" />
 
 		<sequential>
-			<execute>
-				echo "0"
-
-				echo "${node.exec}"
-
-				${node.exec} -v
-
-				echo "${npm.exec}"
-
-				${npm.exec} -v
-
-				echo "${npx.exec}"
-
-				${npx.exec} -v
-
-				echo "${yarn.exec}"
-
-				${yarn.exec} -v
-			</execute>
-
 			<lstopwatch action="start" name="prepare-test-build-dist.bundles.@{app.server.type}" />
 
 			<var name="app.server.type" value="@{app.server.type}" />
@@ -1347,47 +1327,7 @@ app.server.type=@{app.server.type}]]></echo>
 
 			<antcall inheritAll="false" target="compile" />
 
-			<execute>
-				echo "1"
-
-				echo "${node.exec}"
-
-				${node.exec} -v
-
-				echo "${npm.exec}"
-
-				${npm.exec} -v
-
-				echo "${npx.exec}"
-
-				${npx.exec} -v
-
-				echo "${yarn.exec}"
-
-				${yarn.exec} -v
-			</execute>
-
 			<antcall inheritAll="false" target="install-portal-snapshots" />
-
-			<execute>
-				echo "2"
-
-				echo "${node.exec}"
-
-				${node.exec} -v
-
-				echo "${npm.exec}"
-
-				${npm.exec} -v
-
-				echo "${npx.exec}"
-
-				${npx.exec} -v
-
-				echo "${yarn.exec}"
-
-				${yarn.exec} -v
-			</execute>
 
 			<if>
 				<and>
