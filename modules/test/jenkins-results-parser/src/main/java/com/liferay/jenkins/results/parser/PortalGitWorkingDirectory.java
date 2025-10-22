@@ -40,8 +40,7 @@ public class PortalGitWorkingDirectory extends GitWorkingDirectory {
 			3, GitUtil.MILLIS_RETRY_DELAY, 1000 * 60 * 10,
 			JenkinsResultsParserUtil.combine(
 				"zip -r ", fileName,
-				" $(git ls-files --directory --no-empty-directory --others | ",
-				"grep -v .gradle/)"));
+				" $(git ls-files --directory --no-empty-directory --others)"));
 
 		if (executionResult.getExitValue() != 0) {
 			throw new GitWorkingDirectoryRuntimeException(
