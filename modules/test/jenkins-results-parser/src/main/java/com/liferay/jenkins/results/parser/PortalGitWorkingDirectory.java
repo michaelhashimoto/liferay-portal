@@ -351,12 +351,6 @@ public class PortalGitWorkingDirectory extends GitWorkingDirectory {
 	}
 
 	public void setUpYarn() {
-		Map<String, String> map = System.getenv();
-
-		for (Map.Entry<String, String> entry : map.entrySet()) {
-			System.out.println(entry);
-		}
-
 		File workingDirectory = getWorkingDirectory();
 
 		try {
@@ -366,10 +360,7 @@ public class PortalGitWorkingDirectory extends GitWorkingDirectory {
 		}
 		catch (AntException antException) {
 			throw new GitWorkingDirectoryRuntimeException(
-				this,
-				JenkinsResultsParserUtil.combine(
-					"Failed to run setup-yarn in ",
-					workingDirectory.toString()));
+				this, "Failed to run setup-yarn in " + workingDirectory);
 		}
 	}
 
