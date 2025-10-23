@@ -2073,7 +2073,9 @@ artifact.url=${remote.repository.cdn.url}/com/liferay/portal/com.liferay.${proce
 					<if>
 						<and>
 							<isset property="env.JENKINS_HOME" />
-							<available file="build/node" />
+							<not>
+								<available file="build/node" />
+							</not>
 						</and>
 						<then>
 							<retry retrycount="5" retrydelay="30000">
