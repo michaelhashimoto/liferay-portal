@@ -942,6 +942,8 @@ public abstract class BaseWorkspaceGitRepository
 		if (!jobName.contains("-batch") && !jobName.contains("-downstream")) {
 			GitWorkingDirectory gitWorkingDirectory = getGitWorkingDirectory();
 
+			writePropertiesFiles();
+
 			File archiveFile = gitWorkingDirectory.archive(
 				_getGitArchiveName());
 
