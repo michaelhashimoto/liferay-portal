@@ -12158,6 +12158,8 @@ send_user $expect_out(buffer)]]></echo>
 							System.out.println("Truncating errors in " + testResultsFile);
 						}
 						catch (Exception exception) {
+							System.out.println(content);
+
 							exception.printStackTrace();
 						}
 					]]>
