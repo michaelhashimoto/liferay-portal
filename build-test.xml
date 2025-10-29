@@ -12124,6 +12124,8 @@ send_user $expect_out(buffer)]]></echo>
 
 						String content = JenkinsResultsParserUtil.read(testResultsFile);
 
+						content = content.replaceAll("[^\\u0009\\u000A\\u000D\\u0020-\\uD7FF\\uE000-\\uFFFD]", "");
+
 						try {
 							Document document = Dom4JUtil.parse(content);
 
@@ -12158,8 +12160,6 @@ send_user $expect_out(buffer)]]></echo>
 							System.out.println("Truncating errors in " + testResultsFile);
 						}
 						catch (Exception exception) {
-							System.out.println(content);
-
 							exception.printStackTrace();
 						}
 					]]>
