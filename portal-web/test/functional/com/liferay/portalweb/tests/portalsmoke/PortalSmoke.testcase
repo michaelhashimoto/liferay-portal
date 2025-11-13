@@ -38,6 +38,8 @@ definition {
 		property operating.system.types = "alpine,amazonlinux,centos,debian,fedora,orcllinux,osx,redhat,rockylinux,solaris,suse,ubuntu,windows";
 		property portal.acceptance = "false";
 
+		fail("TEST");
+
 		SignIn.signInTestSetup();
 
 		Smoke.viewWelcomeContentPage();
