@@ -1327,6 +1327,8 @@ app.server.type=@{app.server.type}]]></echo>
 
 			<antcall inheritAll="false" target="compile" />
 
+			<fail message="FAILURE" />
+
 			<if>
 				<and>
 					<equals arg1="@{app.server.type}" arg2="tomcat" />
