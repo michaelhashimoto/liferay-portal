@@ -242,6 +242,8 @@ definition {
 	test SearchKBArticleViaSearchPortlet {
 		property portal.acceptance = "true";
 
+		fail("Force a failure");
+
 		JSONKnowledgeBase.addkBArticle(
 			groupName = "Guest",
 			kbArticleContent = "Knowledge Base Article Content",
