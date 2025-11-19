@@ -3076,6 +3076,27 @@ public class JenkinsResultsParserUtil {
 		return plural;
 	}
 
+	public static String getOSArchitecture() {
+		try {
+			Process process = executeBashCommands("uname -m");
+
+			String result = readInputStream(process.getInputStream());
+
+			result = result.replace("Finished executing Bash commands.", "");
+
+			result = result.trim();
+
+			if (result.equals("aarch64") || result.equals("arm64")) {
+				return "arm_64";
+			}
+
+			return "x86_64";
+		}
+		catch (IOException | TimeoutException exception) {
+			return null;
+		}
+	}
+
 	public static String getPathRelativeTo(File file, File relativeToFile) {
 		try {
 			String filePath = getCanonicalPath(file);
