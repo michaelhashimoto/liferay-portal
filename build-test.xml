@@ -7752,6 +7752,19 @@ org.apache.catalina.startup.ClassLoaderFactory.level=INFO]]>
 
 			<get-host-git-dir />
 
+			<echo><![CDATA[<start-docker-container image="${browser.docker.image}" name="${browser.host}" options="${browser.docker.browser.options}">\
+				${browser.docker.run.options} \
+				${docker.add.host.hostname.arg} \
+				${docker.add.host.node.name.arg} \
+				--add-host www.able.com:127.0.0.1 \
+				--add-host www.baker.com:127.0.0.1 \
+				--add-host www.charlie.com:127.0.0.1 \
+				--add-host www.dog.com:127.0.0.1 \
+				--add-host www.easy.com:127.0.0.1 \
+				--add-host www.fox.com:127.0.0.1 \
+				--mount type=bind,source=${host.git.dir}/${portal.dir.name},target=${portal.dir} \
+			</start-docker-container>]]></echo>
+
 			<start-docker-container image="${browser.docker.image}" name="${browser.host}" options="${browser.docker.browser.options}">\
 				${browser.docker.run.options} \
 				${docker.add.host.hostname.arg} \
@@ -7873,6 +7886,8 @@ org.apache.catalina.startup.ClassLoaderFactory.level=INFO]]>
 				/>
 			</chmod>
 
+			<print-file file.name="${docker.start.script}" />
+
 			<local name="docker.start.error" />
 			<local name="docker.start.output" />
 			<local name="docker.start.result" />
@@ -7884,6 +7899,9 @@ org.apache.catalina.startup.ClassLoaderFactory.level=INFO]]>
 			<exec errorproperty="docker.start.error" executable="cmd.exe" os="${os.windows}" outputproperty="docker.start.output" resultproperty="docker.start.result">
 				<arg value="${docker.start.script}" />
 			</exec>
+
+			<echo>docker.start.error=${docker.start.error}</echo>
+			<echo>docker.start.result=${docker.start.result}</echo>
 
 			<if>
 				<or>
