@@ -2262,6 +2262,11 @@ rerun your task.
 				</then>
 			</if>
 
+			<echo>gradle.s3.build.cache.bucket=${gradle.s3.build.cache.bucket}</echo>
+			<echo>gradle.s3.build.cache.enabled=${gradle.s3.build.cache.enabled}</echo>
+			<echo>gradle.s3.build.cache.prefix=${gradle.s3.build.cache.prefix}</echo>
+			<echo>gradle.s3.build.cache.region=${gradle.s3.build.cache.region}</echo>
+
 			<echoproperties destfile="${gradle.properties.file}">
 				<propertyset>
 					<propertyref name="app.server.type" />
@@ -2304,6 +2309,7 @@ rerun your task.
 					<propertyref prefix="build.jakarta.transformer." />
 					<propertyref prefix="gradle.publish." />
 					<propertyref prefix="gradle.releng.pom." />
+					<propertyref prefix="gradle.s3.build.cache." />
 					<propertyref prefix="ivy.pom." />
 					<propertyref prefix="microsoft.translator." />
 					<propertyref prefix="nodejs." />
