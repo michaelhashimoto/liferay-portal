@@ -16,6 +16,11 @@ apply plugin: "com.liferay.settings.plugin"
 
 apply from: "build-develocity.gradle"
 
+println("gradle.s3.build.cache.enabled=" + Boolean.getBoolean("gradle.s3.build.cache.enabled"));
+println("gradle.s3.build.cache.bucket=" + System.getProperty("gradle.s3.build.cache.bucket"));
+println("gradle.s3.build.cache.prefix=" + System.getProperty("gradle.s3.build.cache.prefix"));
+println("gradle.s3.build.cache.region=" + System.getProperty("gradle.s3.build.cache.region"));
+
 if (Boolean.getBoolean("gradle.s3.build.cache.enabled")) {
 	apply plugin: "com.github.burrunan.s3-build-cache"
 
