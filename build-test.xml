@@ -2492,8 +2492,6 @@ war.path=${app.server.portal.dir}/</echo>
 </gradle-execute>]]>
 					</echo>
 
-					<sleep seconds="3600" />
-
 					<gradle-execute dir="@{build.gradle.dir}" failonerror="@{failonerror}" setupbinariescache="false" stacktrace="false" task="@{task}">
 						<arg value="--build-file=@{build.gradle.file}" />
 						<arg value="-Ptmp.maven.repository.dir=../.m2-tmp" />
@@ -16337,6 +16335,10 @@ jdbc.default.username=${database.mysql.username}
 jdbc.default.password=${database.mysql.password}</echo>
 			</then>
 		</if>
+
+		<echo>PAUSE!</echo>
+
+		<sleep seconds="3600" />
 
 		<if>
 			<isset property="test.workspace.dir" />
