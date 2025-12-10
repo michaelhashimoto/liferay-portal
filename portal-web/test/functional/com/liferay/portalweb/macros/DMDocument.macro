@@ -893,9 +893,15 @@ definition {
 
 	@summary = "Default summary"
 	macro assertFileNameFromTempFolder(fileName = null) {
+		takeScreenshot();
+
 		var tempDir = PropsUtil.get("output.dir.name");
 
 		var downloadedFile = FileUtil.exists("${tempDir}/${fileName}");
+
+		echo("downloadedFile=${downloadedFile}");
+
+		sleep(3600000);
 
 		if (${downloadedFile} == "true") {
 			echo("There is a file named ${fileName} in temp folder ${tempDir}");

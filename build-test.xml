@@ -16336,10 +16336,6 @@ jdbc.default.password=${database.mysql.password}</echo>
 			</then>
 		</if>
 
-		<echo>PAUSE!</echo>
-
-		<sleep seconds="3600" />
-
 		<if>
 			<isset property="test.workspace.dir" />
 			<then>
