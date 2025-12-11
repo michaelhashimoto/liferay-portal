@@ -901,8 +901,6 @@ definition {
 
 		echo("downloadedFile=${downloadedFile}");
 
-		sleep(3600000);
-
 		if (${downloadedFile} == "true") {
 			echo("There is a file named ${fileName} in temp folder ${tempDir}");
 		}
