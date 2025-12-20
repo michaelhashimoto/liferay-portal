@@ -181,6 +181,20 @@ public abstract class BaseTestClass implements TestClass {
 	}
 
 	@Override
+	public TestClassTask getTestClassTask() {
+		if (_testClassTask != null) {
+			return _testClassTask;
+		}
+
+		_testClassTask = TestClassFactory.newTestClassTask(
+			getTestTaskName(), getAverageTestTaskDuration());
+
+		_testClassTask.addTestClasses(this);
+
+		return _testClassTask;
+	}
+
+	@Override
 	public TestHistory getTestHistory() {
 		if (_testHistory != null) {
 			return _testHistory;
@@ -360,6 +374,7 @@ public abstract class BaseTestClass implements TestClass {
 	private SegmentTestClassGroup _segmentTestClassGroup;
 	private final File _testClassFile;
 	private final List<TestClassMethod> _testClassMethods = new ArrayList<>();
+	private TestClassTask _testClassTask;
 	private TestHistory _testHistory;
 
 }

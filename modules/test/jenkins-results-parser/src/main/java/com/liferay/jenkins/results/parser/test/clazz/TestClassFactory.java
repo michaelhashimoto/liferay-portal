@@ -141,6 +141,21 @@ public class TestClassFactory {
 		return new TestClassMethod(jsonObject, testClass);
 	}
 
+	public static TestClassTask newTestClassTask(
+		String taskName, long averageDuration) {
+
+		if (_testClassTasks.containsKey(taskName)) {
+			return _testClassTasks.get(taskName);
+		}
+
+		TestClassTask testClassTask = new DefaultTestClassTask(
+			taskName, averageDuration);
+
+		_testClassTasks.put(taskName, testClassTask);
+
+		return testClassTask;
+	}
+
 	private static File _getCanonicalFile(
 		File testClassFile, JSONObject jsonObject) {
 
@@ -408,5 +423,7 @@ public class TestClassFactory {
 		new HashMap<>();
 	private static final Map<File, PlaywrightJUnitTestClass>
 		_playwrightJUnitTestClasses = new HashMap<>();
+	private static final Map<String, TestClassTask> _testClassTasks =
+		new HashMap<>();
 
 }
