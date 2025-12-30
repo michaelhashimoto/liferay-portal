@@ -93,6 +93,8 @@ public interface Job {
 
 	public String getTestPropertiesContent();
 
+	public TestTaskGroupingStrategy getTestTaskGroupingStrategy();
+
 	public int getTimeoutMinutes(JenkinsMaster jenkinsMaster);
 
 	public boolean isBuildCachingEnabled();
@@ -166,6 +168,44 @@ public interface Job {
 
 		private DistType(String string) {
 			_string = string;
+		}
+
+		private final String _string;
+
+	}
+
+	public static enum TestTaskGroupingStrategy {
+
+		AVERAGE_DURATION("average_duration"),
+		AVERAGE_TOTAL_DURATION("average_total_duration"),
+		LONGEST_DURATION("longest_duration");
+
+		public static TestTaskGroupingStrategy getByString(String string) {
+			return _testTaskGroupingStrategies.get(string);
+		}
+
+		public static boolean isValid(String string) {
+			return _testTaskGroupingStrategies.containsKey(string);
+		}
+
+		@Override
+		public String toString() {
+			return _string;
+		}
+
+		private TestTaskGroupingStrategy(String string) {
+			_string = string;
+		}
+
+		private static final Map<String, TestTaskGroupingStrategy>
+			_testTaskGroupingStrategies = new HashMap<>();
+
+		static {
+			for (TestTaskGroupingStrategy testTaskGroupingStrategy : values()) {
+				_testTaskGroupingStrategies.put(
+					testTaskGroupingStrategy.toString(),
+					testTaskGroupingStrategy);
+			}
 		}
 
 		private final String _string;

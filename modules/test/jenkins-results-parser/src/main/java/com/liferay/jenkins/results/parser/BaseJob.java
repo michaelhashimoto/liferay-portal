@@ -575,6 +575,10 @@ public abstract class BaseJob implements Job {
 				jsonObject.put("test_suite_name", testSuiteName);
 			}
 
+			jsonObject.put(
+				"test_task_grouping_strategy",
+				String.valueOf(getTestTaskGroupingStrategy()));
+
 			return jsonObject;
 		}
 	}
@@ -829,6 +833,26 @@ public abstract class BaseJob implements Job {
 		}
 
 		return null;
+	}
+
+	@Override
+	public TestTaskGroupingStrategy getTestTaskGroupingStrategy() {
+		JobProperty jobProperty = getJobProperty(
+			"test.batch.test.task.grouping.strategy");
+
+		if (jobProperty == null) {
+			return TestTaskGroupingStrategy.AVERAGE_DURATION;
+		}
+
+		String jobPropertyValue = jobProperty.getValue();
+
+		if (!TestTaskGroupingStrategy.isValid(jobPropertyValue)) {
+			return TestTaskGroupingStrategy.AVERAGE_DURATION;
+		}
+
+		recordJobProperty(jobProperty);
+
+		return TestTaskGroupingStrategy.getByString(jobPropertyValue);
 	}
 
 	@Override
