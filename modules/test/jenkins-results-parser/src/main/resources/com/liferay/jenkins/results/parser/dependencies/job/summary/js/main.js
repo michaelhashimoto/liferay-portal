@@ -360,7 +360,16 @@ function getTestTaskElement(test_task) {
 
 	let summaryElement = detailsElement.childNodes[0];
 
-	summaryElement.innerHTML = test_task.name + " - " + getDurationString(test_task.average_duration);
+	let test_task_duration = test_task[data.test_task_grouping_strategy] || 0;
+
+	let test_task_duration_string = "n/a";
+
+	if ((test_task_duration != undefined) && (test_task_duration > 0)) {
+		test_task_duration_string = getDurationString(test_task_duration);
+	}
+
+	summaryElement.innerHTML = test_task.name + " - " + test_task_duration_string;
+
 	summaryElement.setAttribute("class", "level-5");
 
 	let divElement = detailsElement.childNodes[1];

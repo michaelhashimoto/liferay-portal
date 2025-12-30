@@ -5,16 +5,19 @@
 
 package com.liferay.jenkins.results.parser.test.task;
 
+import com.liferay.jenkins.results.parser.Job;
+
 /**
  * @author Michael Hashimoto
  */
 public class DefaultTestTask extends BaseTestTask {
 
 	protected DefaultTestTask(
-		long averageDuration, long averageTotalDuration, long longestDuration,
-		String name) {
+		long averageDuration, long averageTotalDuration, Job job,
+		long longestDuration, String name) {
 
-		super(averageDuration, averageTotalDuration, longestDuration, name);
+		super(
+			averageDuration, averageTotalDuration, job, longestDuration, name);
 	}
 
 }

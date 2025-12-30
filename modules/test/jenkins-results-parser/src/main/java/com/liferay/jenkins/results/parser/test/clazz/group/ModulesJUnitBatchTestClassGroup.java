@@ -44,6 +44,8 @@ public class ModulesJUnitBatchTestClassGroup extends JUnitBatchTestClassGroup {
 
 		_testTasks = new HashMap<>();
 
+		Job job = getJob();
+
 		for (ModulesJUnitTestClass modulesJUnitTestClass :
 				_getModulesJUnitTestClasses()) {
 
@@ -55,7 +57,7 @@ public class ModulesJUnitBatchTestClassGroup extends JUnitBatchTestClassGroup {
 				testTask = TestTaskFactory.newTestTask(
 					modulesJUnitTestClass.getAverageTestTaskDuration(),
 					modulesJUnitTestClass.getAverageTotalTestTaskDuration(),
-					modulesJUnitTestClass.getLongestTestTaskDuration(),
+					job, modulesJUnitTestClass.getLongestTestTaskDuration(),
 					testTaskName);
 
 				_testTasks.put(testTaskName, testTask);

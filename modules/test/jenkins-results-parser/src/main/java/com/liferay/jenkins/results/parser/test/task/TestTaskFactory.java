@@ -5,17 +5,19 @@
 
 package com.liferay.jenkins.results.parser.test.task;
 
+import com.liferay.jenkins.results.parser.Job;
+
 /**
  * @author Michael Hashimoto
  */
 public class TestTaskFactory {
 
 	public static TestTask newTestTask(
-		long averageDuration, long averageTotalDuration, long longestDuration,
-		String name) {
+		long averageDuration, long averageTotalDuration, Job job,
+		long longestDuration, String name) {
 
 		return new DefaultTestTask(
-			averageDuration, averageTotalDuration, longestDuration, name);
+			averageDuration, averageTotalDuration, job, longestDuration, name);
 	}
 
 }
