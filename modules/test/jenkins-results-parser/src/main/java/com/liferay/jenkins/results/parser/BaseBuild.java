@@ -1713,6 +1713,9 @@ public abstract class BaseBuild implements Build {
 	public void setStatus(String status) {
 		boolean different = _isDifferent(status, _status);
 
+		String currentStatus = _status;
+		String previousStatus = _previousStatus;
+
 		_previousStatus = _status;
 
 		_status = status;
@@ -1727,6 +1730,18 @@ public abstract class BaseBuild implements Build {
 				_statusModifiedTime - previousStatusModifiedTime);
 
 			if (isParentBuildRoot()) {
+				if (this instanceof DownstreamBuild) {
+					DownstreamBuild downstreamBuild = (DownstreamBuild)this;
+
+					System.out.println(
+						JenkinsResultsParserUtil.combine(
+							"[", downstreamBuild.getAxisName(),
+							"] previousStatus=", previousStatus, ", status=",
+							status, ", currentStatus=", currentStatus,
+							", _status=" + _status, ", _previousStatus=",
+							_previousStatus));
+				}
+
 				System.out.println(getBuildMessage());
 			}
 		}
