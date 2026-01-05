@@ -1721,11 +1721,14 @@ public abstract class BaseBuild implements Build {
 
 		_statusModifiedTime = JenkinsResultsParserUtil.getCurrentTimeMillis();
 
-		_statusDurations.put(
-			_previousStatus, _statusModifiedTime - previousStatusModifiedTime);
+		if (different) {
+			_statusDurations.put(
+				_previousStatus,
+				_statusModifiedTime - previousStatusModifiedTime);
 
-		if (different && isParentBuildRoot()) {
-			System.out.println(getBuildMessage());
+			if (isParentBuildRoot()) {
+				System.out.println(getBuildMessage());
+			}
 		}
 	}
 
