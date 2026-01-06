@@ -1713,6 +1713,10 @@ public abstract class BaseBuild implements Build {
 	public void setStatus(String status) {
 		boolean different = _isDifferent(status, _status);
 
+		if (_status == null) {
+			_status = status;
+		}
+
 		String currentStatus = _status;
 		String previousStatus = _previousStatus;
 
@@ -1745,6 +1749,21 @@ public abstract class BaseBuild implements Build {
 				System.out.println(getBuildMessage());
 			}
 		}
+
+		//      [exec] [app-server-bundle-builder/portal]
+		//      previousStatus=null,
+		//      status=completed,
+		//      currentStatus=null,
+		//      _status=completed,
+		//      _previousStatus=null
+
+
+		//      [exec] [app-server-bundle-builder/portal]
+		//      previousStatus=null,
+		//      status=completed,
+		//      currentStatus=completed,
+		//      _status=completed,
+		//      _previousStatus=completed
 	}
 
 	@Override

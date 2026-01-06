@@ -37,6 +37,8 @@ public abstract class BaseParentBuild extends BaseBuild implements ParentBuild {
 
 		build.setBuildCached(true);
 
+		build.setStatus("completed");
+
 		build.saveBuildURLInBuildDatabase();
 
 		addDownstreamBuild(build);
