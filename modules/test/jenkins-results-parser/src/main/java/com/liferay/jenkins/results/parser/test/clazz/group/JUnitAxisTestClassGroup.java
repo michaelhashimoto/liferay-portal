@@ -9,12 +9,14 @@ import com.liferay.jenkins.results.parser.DownstreamBuildReport;
 import com.liferay.jenkins.results.parser.TestClassReport;
 import com.liferay.jenkins.results.parser.test.clazz.JUnitTestClass;
 import com.liferay.jenkins.results.parser.test.clazz.TestClass;
+import com.liferay.jenkins.results.parser.test.clazz.TestClassTask;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 /**
@@ -39,6 +41,27 @@ public class JUnitAxisTestClassGroup extends AxisTestClassGroup {
 		}
 
 		return new ArrayList<>(cachedDownstreamBuildReports);
+	}
+
+	@Override
+	public JSONObject getJSONObject() {
+		JSONObject jsonObject = super.getJSONObject();
+
+		Set<TestClassTask> testClassTasks = new HashSet<>();
+
+		for (TestClass testClass : getTestClasses()) {
+			testClassTasks.add(testClass.getTestClassTask());
+		}
+
+		JSONArray testClassTasksJSONArray = new JSONArray();
+
+		jsonObject.put("test_class_tasks", testClassTasksJSONArray);
+
+		for (TestClassTask testClassTask : testClassTasks) {
+			testClassTasksJSONArray.put(testClassTask.getJSONObject());
+		}
+
+		return jsonObject;
 	}
 
 	public List<JUnitTestClass> getJUnitTestClasses() {

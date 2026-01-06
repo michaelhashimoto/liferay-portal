@@ -50,6 +50,8 @@ public interface TestClass extends Comparable<TestClass>, WeightedItem {
 
 	public String getTestClassName();
 
+	public TestClassTask getTestClassTask();
+
 	public TestHistory getTestHistory();
 
 	public String getTestTaskName();
