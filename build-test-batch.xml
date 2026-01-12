@@ -3312,21 +3312,32 @@ ${poshi.runner.testsuite.testcase.name}</echo>
 						File baseDir = getPortalGitWorkingDirectory();
 
 						for (String testClassFilePath : testClassFilePathList) {
+		                    System.out.println("--------------------------------------");
+		                    System.out.println("testClassFilePath_0=" + testClassFilePath);
+
 							testClassFilePath = testClassFilePath.replaceAll("\\.class", "\\.java");
+		                    System.out.println("testClassFilePath_1=" + testClassFilePath);
 
 							String testClassName = getTestClassNameForTestResults(testClassFilePath);
+		                    System.out.println("testClassName=" + testClassName);
 
 							File testClassFile = JenkinsResultsParserUtil.getFileFromPathSnippet(projectDir, testClassName);
+		                    System.out.println("testClassFile=" + testClassFile);
 
 							String testProjectName = getTestProjectName(testClassFile.toString());
+		                    System.out.println("testProjectName=" + testProjectName);
 
 							String testTaskName = testProjectName + ":" + "@{test.task}";
+		                    System.out.println("testTaskName=" + testTaskName);
 
 							generateJunitReport(baseDir, testClassName, testTaskName);
+		                    System.out.println("generateJunitReport()");
 
 							String testName = getTestName(testClassFilePath);
+		                    System.out.println("testName=" + testName);
 
 							addProjectToMap(testProjectName, testName, projectTestMap);
+							System.out.println("addProjectToMap()");
 						}
 
 						for (Map.Entry projectTestEntry : projectTestMap.entrySet()) {
