@@ -1529,9 +1529,23 @@ app.server.type=@{app.server.type}]]></echo>
 		<sequential>
 			<property file="${project.dir}/test.class.file.names.properties" />
 
-			<propertycopy from="TEST_CLASS_GROUP_@{test.class.group.index}" name="test.class.group" />
+			<if>
+				<isset property="TEST_CLASS_GROUP_@{test.class.group.index}" />
+				<then>
+					<propertycopy from="TEST_CLASS_GROUP_@{test.class.group.index}" name="test.class.group" />
 
-			<echo>TEST_CLASS_GROUP_@{test.class.group.index}=${test.class.group}</echo>
+					<echo>TEST_CLASS_GROUP_@{test.class.group.index}=${test.class.group}</echo>
+				</then>
+			</if>
+
+			<if>
+				<isset property="TEST_TASK_GROUP_@{test.class.group.index}" />
+				<then>
+					<propertycopy from="TEST_TASK_GROUP_@{test.class.group.index}" name="test.task.group" />
+
+					<echo>TEST_TASK_GROUP_@{test.class.group.index}=${test.task.group}</echo>
+				</then>
+			</if>
 		</sequential>
 	</macrodef>
 
@@ -2919,7 +2933,13 @@ ${poshi.runner.testsuite.testcase.name}</echo>
 
 							<antcall inheritAll="false" target="prepare-system-ext-properties" />
 
+							<echo>test.class.group_0=${test.class.group}</echo>
+							<echo>test.task.group_0=${test.task.group}</echo>
+
 							<print-test-class-group test.class.group.index="${axis.variable}" />
+
+							<echo>test.class.group_1=${test.class.group}</echo>
+							<echo>test.task.group_1=${test.task.group}</echo>
 
 							<echo>Executing Gradle task in directory "modules": testIntegration.</echo>
 
@@ -2950,7 +2970,15 @@ ${poshi.runner.testsuite.testcase.name}</echo>
 
 							<property name="test.junit.args" value="--continue -Dbuild.exclude.ant.plugin=true -Dtest.class.group.index=${axis.variable}" />
 
-							<run-modules-junit-test test.class.group="${test.class.group}" test.junit.args="${test.junit.args}" test.task="testIntegration" />
+							<if>
+								<isset property="test.task.group" />
+								<then>
+									<run-modules-junit-test test.junit.args="${test.junit.args}" test.task.group="${test.task.group}" />
+								</then>
+								<else>
+									<run-modules-junit-test test.class.group="${test.class.group}" test.junit.args="${test.junit.args}" test.task="testIntegration" />
+								</else>
+							</if>
 
 							<lstopwatch action="total" name="test.execution.duration" />
 
@@ -3127,9 +3155,10 @@ ${poshi.runner.testsuite.testcase.name}</echo>
 	</macrodef>
 
 	<macrodef name="run-modules-junit-test">
-		<attribute name="test.class.group" />
+		<attribute default="" name="test.class.group" />
 		<attribute default="" name="test.junit.args" />
-		<attribute name="test.task" />
+		<attribute default="" name="test.task" />
+		<attribute default="" name="test.task.group" />
 
 		<sequential>
 			<sequential>
@@ -3301,32 +3330,67 @@ ${poshi.runner.testsuite.testcase.name}</echo>
 							}
 						}
 
+						File baseDir = getPortalGitWorkingDirectory();
+
 						File projectDir = new File(project.getProperty("project.dir"));
-
-						String testClassGroup = project.getProperty("test.class.group");
-
-						String[] testClassFilePathList = testClassGroup.split(",");
 
 						Map projectTestMap = new HashMap();
 
-						File baseDir = getPortalGitWorkingDirectory();
+						String testTaskGroup = "@{test.task.group}";
 
-						for (String testClassFilePath : testClassFilePathList) {
-							testClassFilePath = testClassFilePath.replaceAll("\\.class", "\\.java");
+						if (JenkinsResultsParserUtil.isNullOrEmpty(testTaskGroup)) {
+							for (String testTask : testTaskGroup.split(";")) {
+								Pattern pattern = Pattern.compile("([^\\[]+)\\[([^\\]]+)\\]");
 
-							String testClassName = getTestClassNameForTestResults(testClassFilePath);
+								Matcher matcher = pattern.matcher(testTask);
 
-							File testClassFile = JenkinsResultsParserUtil.getFileFromPathSnippet(projectDir, testClassName);
+								if (!matcher.find()) {
+									continue;
+								}
 
-							String testProjectName = getTestProjectName(testClassFile.toString());
+								String testTaskName = matcher.group(1);
 
-							String testTaskName = testProjectName + ":" + "@{test.task}";
+								String testProjectName = testTaskName.replaceAll("(.+):[^:]+", 1);
 
-							generateJunitReport(baseDir, testClassName, testTaskName);
+								String testClassGroup = matcher.group(2);
 
-							String testName = getTestName(testClassFilePath);
+								String[] testClassFilePathList = testClassGroup.split(",");
 
-							addProjectToMap(testProjectName, testName, projectTestMap);
+								for (String testClassFilePath : testClassFilePathList) {
+									testClassFilePath = testClassFilePath.replaceAll("\\.class", "\\.java");
+
+									String testClassName = getTestClassNameForTestResults(testClassFilePath);
+
+									generateJunitReport(baseDir, testClassName, testTaskName);
+
+									String testName = getTestName(testClassFilePath);
+
+									addProjectToMap(testProjectName, testName, projectTestMap);
+								}
+							}
+						}
+						else {
+							String testClassGroup = project.getProperty("test.class.group");
+
+							String[] testClassFilePathList = testClassGroup.split(",");
+
+							for (String testClassFilePath : testClassFilePathList) {
+								testClassFilePath = testClassFilePath.replaceAll("\\.class", "\\.java");
+
+								String testClassName = getTestClassNameForTestResults(testClassFilePath);
+
+								File testClassFile = JenkinsResultsParserUtil.getFileFromPathSnippet(projectDir, testClassName);
+
+								String testProjectName = getTestProjectName(testClassFile.toString());
+
+								String testTaskName = testProjectName + ":" + "@{test.task}";
+
+								generateJunitReport(baseDir, testClassName, testTaskName);
+
+								String testName = getTestName(testClassFilePath);
+
+								addProjectToMap(testProjectName, testName, projectTestMap);
+							}
 						}
 
 						for (Map.Entry projectTestEntry : projectTestMap.entrySet()) {
@@ -9153,7 +9217,13 @@ information. Make sure to commit in all format-javadoc results.
 	<target name="modules-unit">
 		<run-batch-test>
 			<test-action>
+				<echo>test.class.group_0=${test.class.group}</echo>
+				<echo>test.task.group_0=${test.task.group}</echo>
+
 				<print-test-class-group test.class.group.index="${axis.variable}" />
+
+				<echo>test.class.group_1=${test.class.group}</echo>
+				<echo>test.task.group_1=${test.task.group}</echo>
 
 				<lstopwatch action="start" name="test.execution.duration" />
 
@@ -9182,7 +9252,15 @@ information. Make sure to commit in all format-javadoc results.
 
 				<property name="test.junit.args" value="--continue -Dbuild.exclude.ant.plugin=true ${test.arg.opensearch2.unit.tests} ${test.arg.project.templates} ${test.arg.solr.unit.tests} -Djunit.code.coverage=${test.batch.code.coverage} -Dtest.class.group.index=${axis.variable}" />
 
-				<run-modules-junit-test test.class.group="${test.class.group}" test.junit.args="${test.junit.args}" test.task="test" />
+				<if>
+					<isset property="test.task.group" />
+					<then>
+						<run-modules-junit-test test.task.group="${test.task.group}" test.junit.args="${test.junit.args}" />
+					</then>
+					<else>
+						<run-modules-junit-test test.class.group="${test.class.group}" test.junit.args="${test.junit.args}" test.task="test" />
+					</else>
+				</if>
 
 				<lstopwatch action="total" name="test.execution.duration" />
 			</test-action>
