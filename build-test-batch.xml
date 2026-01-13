@@ -3332,6 +3332,8 @@ ${poshi.runner.testsuite.testcase.name}</echo>
 
 						File baseDir = getPortalGitWorkingDirectory();
 
+						File projectDir = new File(project.getProperty("project.dir"));
+
 						Map projectTestMap = new HashMap();
 
 						String testTaskGroup = "@{test.task.group}";
@@ -3368,8 +3370,6 @@ ${poshi.runner.testsuite.testcase.name}</echo>
 							}
 						}
 						else {
-							File projectDir = new File(project.getProperty("project.dir"));
-
 							String testClassGroup = project.getProperty("test.class.group");
 
 							String[] testClassFilePathList = testClassGroup.split(",");
