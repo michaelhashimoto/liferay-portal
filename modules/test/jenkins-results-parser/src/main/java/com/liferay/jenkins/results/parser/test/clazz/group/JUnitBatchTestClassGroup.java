@@ -645,8 +645,6 @@ public class JUnitBatchTestClassGroup extends BatchTestClassGroup {
 					0, TestClassGroupFactory.newAxisTestClassGroup(this));
 			}
 			else {
-				List<List<TestClass>> testClassLists = null;
-
 				GroupingStrategy groupingStrategy = getGroupingStrategy();
 
 				if ((this instanceof ModulesJUnitBatchTestClassGroup) &&
@@ -663,35 +661,99 @@ public class JUnitBatchTestClassGroup extends BatchTestClassGroup {
 					List<List<TestTask>> testTaskLists =
 						testTaskBalancedListSplitter.split(getTestTasks());
 
-					testClassLists = new ArrayList<>();
-
 					for (List<TestTask> testTasksList : testTaskLists) {
+						if (testTasksList.size() == 1) {
+							TestTask testTask = testTasksList.get(0);
+
+							long totalDuration =
+								testTask.getWeight() +
+									testTask.getOverheadWeight();
+
+							if (!testTask.isIsolated() &&
+								(totalDuration > targetAxisDuration)) {
+
+								testTask.setSplittable(true);
+
+								TestClassBalancedListSplitter
+									testClassBalancedListSplitter =
+									new TestClassBalancedListSplitter(
+										targetAxisDuration);
+
+								List<List<TestClass>> testClassesSplitLists =
+									new ArrayList<>();
+
+								testClassesSplitLists.addAll(
+									testClassBalancedListSplitter.split(
+										testTask.getTestClasses()));
+
+								for (List<TestClass> testClassesSplit : testClassesSplitLists) {
+									AxisTestClassGroup axisTestClassGroup =
+										TestClassGroupFactory.newAxisTestClassGroup(this);
+
+									axisTestClassGroup.addTestClasses(testClassesSplit);
+
+									axisTestClassGroups.add(axisTestClassGroup);
+
+									if (!(axisTestClassGroup instanceof ModulesJUnitAxisTestClassGroup)) {
+										continue;
+									}
+
+									ModulesJUnitAxisTestClassGroup
+										modulesJUnitAxisTestClassGroup =
+											(ModulesJUnitAxisTestClassGroup)
+												axisTestClassGroup;
+
+									modulesJUnitAxisTestClassGroup.addTestTask(testTask);
+
+								}
+
+								continue;
+							}
+						}
+
 						List<TestClass> testClassList = new ArrayList<>();
 
 						for (TestTask testTask : testTasksList) {
 							testClassList.addAll(testTask.getTestClasses());
 						}
 
-						testClassLists.add(testClassList);
+						AxisTestClassGroup axisTestClassGroup =
+							TestClassGroupFactory.newAxisTestClassGroup(this);
+
+						axisTestClassGroup.addTestClasses(testClassList);
+
+						axisTestClassGroups.add(axisTestClassGroup);
+
+						if (!(axisTestClassGroup instanceof ModulesJUnitAxisTestClassGroup)) {
+							continue;
+						}
+
+						ModulesJUnitAxisTestClassGroup
+							modulesJUnitAxisTestClassGroup =
+								(ModulesJUnitAxisTestClassGroup)
+									axisTestClassGroup;
+
+						for (TestTask testTask : testTasksList) {
+							modulesJUnitAxisTestClassGroup.addTestTask(testTask);
+						}
 					}
 				}
 				else {
-					TestClassBalancedListSplitter
-						testClassBalancedListSplitter =
-							new TestClassBalancedListSplitter(
-								targetAxisDuration);
+					TestClassBalancedListSplitter testClassBalancedListSplitter =
+						new TestClassBalancedListSplitter(targetAxisDuration);
 
-					testClassLists = testClassBalancedListSplitter.split(
-						new ArrayList<>(testClasses));
-				}
+					List<List<TestClass>> testClassLists =
+						testClassBalancedListSplitter.split(
+							new ArrayList<>(testClasses));
 
-				for (List<TestClass> testClassList : testClassLists) {
-					AxisTestClassGroup axisTestClassGroup =
-						TestClassGroupFactory.newAxisTestClassGroup(this);
+					for (List<TestClass> testClassList : testClassLists) {
+						AxisTestClassGroup axisTestClassGroup =
+								TestClassGroupFactory.newAxisTestClassGroup(this);
 
-					axisTestClassGroup.addTestClasses(testClassList);
+						axisTestClassGroup.addTestClasses(testClassList);
 
-					axisTestClassGroups.add(axisTestClassGroup);
+						axisTestClassGroups.add(axisTestClassGroup);
+					}
 				}
 			}
 		}

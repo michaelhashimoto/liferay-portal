@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -32,7 +33,7 @@ public class ModulesJUnitAxisTestClassGroup extends JUnitAxisTestClassGroup {
 
 		GroupingStrategy groupingStrategy = getGroupingStrategy();
 
-		if (groupingStrategy == GroupingStrategy.DEFAULT) {
+		if ((groupingStrategy == GroupingStrategy.DEFAULT) || isSplittable()) {
 			_averageDuration = super.getAverageDuration();
 
 			return _averageDuration;
@@ -42,6 +43,16 @@ public class ModulesJUnitAxisTestClassGroup extends JUnitAxisTestClassGroup {
 			getAverageOverheadDuration() + getAverageTotalTestTaskDuration();
 
 		return _averageDuration;
+	}
+
+	private boolean isSplittable() {
+		for (TestTask testTask : getTestTasks()) {
+			if (testTask.isSplittable()) {
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	public long getAverageTotalTestTaskDuration() {
@@ -85,15 +96,49 @@ public class ModulesJUnitAxisTestClassGroup extends JUnitAxisTestClassGroup {
 			"axis_name", getAxisName()
 		);
 
+		List<TestTask> testTasks = getTestTasks();
+
+		if (testTasks.size() == 1) {
+			TestTask testTask = testTasks.get(0);
+
+			if (testTask.isSplittable()) {
+				JSONArray testClassesJSONArray = new JSONArray();
+
+				jsonObject.put("test_classes", testClassesJSONArray);
+
+				for (TestClass testClass : getTestClasses()) {
+					if (testClass == null) {
+						throw new RuntimeException(
+							"Unable to not find test class in " +
+								getAxisName());
+					}
+
+					testClassesJSONArray.put(testClass.getJSONObject());
+				}
+
+				return jsonObject;
+			}
+		}
+
 		JSONArray testTasksJSONArray = new JSONArray();
 
 		jsonObject.put("test_tasks", testTasksJSONArray);
 
-		for (TestTask testTask : getTestTasks()) {
+		for (TestTask testTask : testTasks) {
 			testTasksJSONArray.put(testTask.getJSONObject());
 		}
 
 		return jsonObject;
+	}
+
+	public void addTestTask(TestTask testTask) {
+		String testTaskName = testTask.getName();
+
+		if (_testTasks.containsKey(testTaskName)) {
+			return;
+		}
+
+		_testTasks.put(testTaskName, testTask);
 	}
 
 	public List<TestTask> getTestTasks() {

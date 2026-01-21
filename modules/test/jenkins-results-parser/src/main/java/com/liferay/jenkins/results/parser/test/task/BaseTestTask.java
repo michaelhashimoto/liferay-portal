@@ -95,6 +95,20 @@ public class BaseTestTask implements TestTask {
 	}
 
 	@Override
+	public void setSplittable(boolean splittable) {
+		_splitable = splittable;
+
+		System.out.println("_splitable=" + _splitable);
+	}
+
+	@Override
+	public boolean isSplittable() {
+		return _splitable;
+	}
+
+	private boolean _splitable;
+
+	@Override
 	public long getLongestDuration() {
 		return _longestDuration;
 	}
