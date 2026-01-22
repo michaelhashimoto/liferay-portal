@@ -95,20 +95,6 @@ public class BaseTestTask implements TestTask {
 	}
 
 	@Override
-	public void setSplittable(boolean splittable) {
-		_splitable = splittable;
-
-		System.out.println("_splitable=" + _splitable);
-	}
-
-	@Override
-	public boolean isSplittable() {
-		return _splitable;
-	}
-
-	private boolean _splitable;
-
-	@Override
 	public long getLongestDuration() {
 		return _longestDuration;
 	}
@@ -179,6 +165,16 @@ public class BaseTestTask implements TestTask {
 		return _latestReportMissing;
 	}
 
+	@Override
+	public boolean isSplittable() {
+		return _splitable;
+	}
+
+	@Override
+	public void setSplittable(boolean splittable) {
+		_splitable = splittable;
+	}
+
 	protected BaseTestTask(
 		long averageDuration, long averageTotalDuration,
 		TestClassGroup.GroupingStrategy groupingStrategy,
@@ -198,6 +194,7 @@ public class BaseTestTask implements TestTask {
 	private final boolean _latestReportMissing;
 	private final long _longestDuration;
 	private final String _name;
+	private boolean _splitable;
 	private final List<TestClass> _testClasses = new ArrayList<>();
 	private Long _weight;
 

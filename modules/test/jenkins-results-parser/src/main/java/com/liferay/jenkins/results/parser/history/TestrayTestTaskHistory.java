@@ -9,7 +9,6 @@ import com.liferay.jenkins.results.parser.JenkinsResultsParserUtil;
 import com.liferay.jenkins.results.parser.TestTaskReport;
 import com.liferay.jenkins.results.parser.TopLevelBuildReport;
 
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -186,7 +185,7 @@ public class TestrayTestTaskHistory extends BaseTestTaskHistory {
 		super(batchHistory, testTaskName);
 	}
 
-	private final Map<String, TestrayTestTaskEntry>
-		_testrayTestTaskEntries = new HashMap<>();
+	private final Map<String, TestrayTestTaskEntry> _testrayTestTaskEntries =
+		new HashMap<>();
 
 }

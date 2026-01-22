@@ -15,7 +15,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -25,6 +24,16 @@ import org.json.JSONObject;
  */
 public class ModulesJUnitAxisTestClassGroup extends JUnitAxisTestClassGroup {
 
+	public void addTestTask(TestTask testTask) {
+		String testTaskName = testTask.getName();
+
+		if (_testTasks.containsKey(testTaskName)) {
+			return;
+		}
+
+		_testTasks.put(testTaskName, testTask);
+	}
+
 	@Override
 	public long getAverageDuration() {
 		if (_averageDuration != null) {
@@ -33,7 +42,7 @@ public class ModulesJUnitAxisTestClassGroup extends JUnitAxisTestClassGroup {
 
 		GroupingStrategy groupingStrategy = getGroupingStrategy();
 
-		if ((groupingStrategy == GroupingStrategy.DEFAULT) || isSplittable()) {
+		if ((groupingStrategy == GroupingStrategy.DEFAULT) || _isSplittable()) {
 			_averageDuration = super.getAverageDuration();
 
 			return _averageDuration;
@@ -43,16 +52,6 @@ public class ModulesJUnitAxisTestClassGroup extends JUnitAxisTestClassGroup {
 			getAverageOverheadDuration() + getAverageTotalTestTaskDuration();
 
 		return _averageDuration;
-	}
-
-	private boolean isSplittable() {
-		for (TestTask testTask : getTestTasks()) {
-			if (testTask.isSplittable()) {
-				return true;
-			}
-		}
-
-		return false;
 	}
 
 	public long getAverageTotalTestTaskDuration() {
@@ -129,16 +128,6 @@ public class ModulesJUnitAxisTestClassGroup extends JUnitAxisTestClassGroup {
 		}
 
 		return jsonObject;
-	}
-
-	public void addTestTask(TestTask testTask) {
-		String testTaskName = testTask.getName();
-
-		if (_testTasks.containsKey(testTaskName)) {
-			return;
-		}
-
-		_testTasks.put(testTaskName, testTask);
 	}
 
 	public List<TestTask> getTestTasks() {
@@ -252,6 +241,16 @@ public class ModulesJUnitAxisTestClassGroup extends JUnitAxisTestClassGroup {
 		}
 
 		return modulesJUnitTestClasses;
+	}
+
+	private boolean _isSplittable() {
+		for (TestTask testTask : getTestTasks()) {
+			if (testTask.isSplittable()) {
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	private Long _averageDuration;

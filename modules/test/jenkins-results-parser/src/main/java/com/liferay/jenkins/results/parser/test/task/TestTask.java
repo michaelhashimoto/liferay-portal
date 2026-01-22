@@ -33,8 +33,8 @@ public interface TestTask extends WeightedItem {
 
 	public List<TestClass> getTestClasses();
 
-	public void setSplittable(boolean splitable);
-
 	public boolean isSplittable();
+
+	public void setSplittable(boolean splitable);
 
 }

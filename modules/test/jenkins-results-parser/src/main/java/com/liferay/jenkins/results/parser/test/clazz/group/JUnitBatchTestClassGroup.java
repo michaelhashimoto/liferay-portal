@@ -676,8 +676,8 @@ public class JUnitBatchTestClassGroup extends BatchTestClassGroup {
 
 								TestClassBalancedListSplitter
 									testClassBalancedListSplitter =
-									new TestClassBalancedListSplitter(
-										targetAxisDuration);
+										new TestClassBalancedListSplitter(
+											targetAxisDuration);
 
 								List<List<TestClass>> testClassesSplitLists =
 									new ArrayList<>();
@@ -686,15 +686,21 @@ public class JUnitBatchTestClassGroup extends BatchTestClassGroup {
 									testClassBalancedListSplitter.split(
 										testTask.getTestClasses()));
 
-								for (List<TestClass> testClassesSplit : testClassesSplitLists) {
-									AxisTestClassGroup axisTestClassGroup =
-										TestClassGroupFactory.newAxisTestClassGroup(this);
+								for (List<TestClass> testClassesSplit :
+										testClassesSplitLists) {
 
-									axisTestClassGroup.addTestClasses(testClassesSplit);
+									AxisTestClassGroup axisTestClassGroup =
+										TestClassGroupFactory.
+											newAxisTestClassGroup(this);
+
+									axisTestClassGroup.addTestClasses(
+										testClassesSplit);
 
 									axisTestClassGroups.add(axisTestClassGroup);
 
-									if (!(axisTestClassGroup instanceof ModulesJUnitAxisTestClassGroup)) {
+									if (!(axisTestClassGroup instanceof
+											ModulesJUnitAxisTestClassGroup)) {
+
 										continue;
 									}
 
@@ -703,8 +709,8 @@ public class JUnitBatchTestClassGroup extends BatchTestClassGroup {
 											(ModulesJUnitAxisTestClassGroup)
 												axisTestClassGroup;
 
-									modulesJUnitAxisTestClassGroup.addTestTask(testTask);
-
+									modulesJUnitAxisTestClassGroup.addTestTask(
+										testTask);
 								}
 
 								continue;
@@ -724,7 +730,9 @@ public class JUnitBatchTestClassGroup extends BatchTestClassGroup {
 
 						axisTestClassGroups.add(axisTestClassGroup);
 
-						if (!(axisTestClassGroup instanceof ModulesJUnitAxisTestClassGroup)) {
+						if (!(axisTestClassGroup instanceof
+								ModulesJUnitAxisTestClassGroup)) {
+
 							continue;
 						}
 
@@ -734,13 +742,16 @@ public class JUnitBatchTestClassGroup extends BatchTestClassGroup {
 									axisTestClassGroup;
 
 						for (TestTask testTask : testTasksList) {
-							modulesJUnitAxisTestClassGroup.addTestTask(testTask);
+							modulesJUnitAxisTestClassGroup.addTestTask(
+								testTask);
 						}
 					}
 				}
 				else {
-					TestClassBalancedListSplitter testClassBalancedListSplitter =
-						new TestClassBalancedListSplitter(targetAxisDuration);
+					TestClassBalancedListSplitter
+						testClassBalancedListSplitter =
+							new TestClassBalancedListSplitter(
+								targetAxisDuration);
 
 					List<List<TestClass>> testClassLists =
 						testClassBalancedListSplitter.split(
@@ -748,7 +759,7 @@ public class JUnitBatchTestClassGroup extends BatchTestClassGroup {
 
 					for (List<TestClass> testClassList : testClassLists) {
 						AxisTestClassGroup axisTestClassGroup =
-								TestClassGroupFactory.newAxisTestClassGroup(this);
+							TestClassGroupFactory.newAxisTestClassGroup(this);
 
 						axisTestClassGroup.addTestClasses(testClassList);
 
