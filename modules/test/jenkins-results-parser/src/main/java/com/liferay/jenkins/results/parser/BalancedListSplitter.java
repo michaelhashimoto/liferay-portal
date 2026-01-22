@@ -5,6 +5,9 @@
 
 package com.liferay.jenkins.results.parser;
 
+import com.liferay.jenkins.results.parser.test.clazz.TestClass;
+import com.liferay.jenkins.results.parser.test.task.TestTask;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -29,6 +32,17 @@ public abstract class BalancedListSplitter<T extends WeightedItem> {
 			ListItemList chosenListItemList = null;
 
 			if (listItem.isIsolated()) {
+				if (item instanceof TestClass) {
+					TestClass testClass = (TestClass)item;
+
+					System.out.println("ISOLATED - NAME - " + testClass.getTestClassName());
+				}
+				else if (item instanceof TestTask) {
+					TestTask testTask = (TestTask)item;
+
+					System.out.println("ISOLATED - NAME - " + testTask.getName());
+				}
+
 				chosenListItemList = new ListItemList(getMaxListWeight());
 
 				chosenListItemList.add(listItem);
