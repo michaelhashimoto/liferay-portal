@@ -1,0 +1,115 @@
+// 1. Configure the tasks before they run to capture output
+allprojects {
+	afterEvaluate {
+		project ->
+		project.tasks.configureEach {
+			task ->
+			if (task.path.contains("packageRunBuild")) {
+				// Force stdout/stderr to be visible
+				task.logging.captureStandardOutput(LogLevel.LIFECYCLE)
+				task.logging.captureStandardError(LogLevel.LIFECYCLE)
+
+				task.doFirst {
+					println "--------------------------------------------------------------------------------"
+					println " Task '${project.name}:${task.name}'"
+					try {
+						println "Working Dir: ${task.workingDir}"
+					} catch (Exception e) {
+					}
+
+					println "\n------------ [DEBUG] MEMORY ------------"
+					println ""
+
+					def runtime = Runtime.getRuntime()
+					def usedMem = (runtime.totalMemory() - runtime.freeMemory()) / (1024 * 1024)
+					println "JVM Memory used at start: ${usedMem} MB"
+					try {
+						println ">>> HOST MEMORY STATE (free -m):"
+						def proc = "free -m".execute()
+						proc.waitFor()
+						println proc.in.text
+					} catch (e) {
+						println "Could not check memory: " + e.message
+					}
+					println "\n------------ [DEBUG] FILE INPUTS ------------"
+					println ""
+
+					task.inputs.files.each {
+						file ->
+						println " - ${file}"
+					}
+					println ""
+
+					println "\n------------ [DEBUG] PROPERTY INPUTS ------------"
+					println ""
+					task.inputs.properties.each {
+						key, value ->
+						println " - ${key} = ${value}"
+					}
+
+					println "\n------------ [DEBUG] ENVIRONMENT VARIABLES ---------------"
+					println ""
+
+					// Print specifically the memory-related ones
+					println task.environment
+					println "NODE_OPTIONS: " + System.getenv("NODE_OPTIONS")
+					println "NODE_DEBUG: " + System.getenv("NODE_DEBUG")
+					println ""
+					println "--------------------------------------------------------------------------------"
+				}
+			}
+		}
+	}
+}
+
+// 2. The "Finally" Block - Runs after ANY task finishes, fail or pass
+gradle.taskGraph.afterTask {
+	task, state ->
+	if (task.path.contains("packageRunBuild")) {
+		println "--------------------------------------------------------------------------------"
+		println ""
+
+		println "\n------------ [DEBUG] END ------------"
+		println ""
+		println " Task '${task.path}'"
+		try {
+			println "Working Dir: ${task.workingDir}"
+
+		} catch (Exception e) {
+
+		}
+
+		// 3. If it failed, let's try to print why right here
+		if (state.failure) {
+			println ""
+
+			println "\n------------ [DEBUG] STACKTRACE ------------"
+			println ""
+			println state.failure.printStackTrace()
+
+			println ""
+
+			println "\n------------ [DEBUG] STATUS ------------"
+			println ""
+			println "STATUS: FAILED"
+			println "ERROR MESSAGE: ${state.failure.message}"
+
+			// Sometimes the real error is wrapped in a 'cause'
+			def cause = state.failure.cause
+			while (cause != null) {
+				println "  Caused by: ${cause.message}"
+			}
+			println ""
+		} else {
+			println ""
+
+			println "\n------------ [DEBUG] STATUS ------------"
+			println ""
+
+			println "STATUS: SUCCESS"
+			println ""
+		}
+
+		println "--------------------------------------------------------------------------------"
+	}
+}
