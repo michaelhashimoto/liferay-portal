@@ -24,6 +24,16 @@ import org.json.JSONObject;
  */
 public class ModulesJUnitAxisTestClassGroup extends JUnitAxisTestClassGroup {
 
+	public void addTestTask(TestTask testTask) {
+		String testTaskName = testTask.getName();
+
+		if (_testTasks.containsKey(testTaskName)) {
+			return;
+		}
+
+		_testTasks.put(testTaskName, testTask);
+	}
+
 	@Override
 	public long getAverageDuration() {
 		if (_averageDuration != null) {
@@ -32,7 +42,7 @@ public class ModulesJUnitAxisTestClassGroup extends JUnitAxisTestClassGroup {
 
 		GroupingStrategy groupingStrategy = getGroupingStrategy();
 
-		if (groupingStrategy == GroupingStrategy.DEFAULT) {
+		if ((groupingStrategy == GroupingStrategy.DEFAULT) || _isSplittable()) {
 			_averageDuration = super.getAverageDuration();
 
 			return _averageDuration;
@@ -85,11 +95,35 @@ public class ModulesJUnitAxisTestClassGroup extends JUnitAxisTestClassGroup {
 			"axis_name", getAxisName()
 		);
 
+		List<TestTask> testTasks = getTestTasks();
+
+		if (testTasks.size() == 1) {
+			TestTask testTask = testTasks.get(0);
+
+			if (testTask.isSplittable()) {
+				JSONArray testClassesJSONArray = new JSONArray();
+
+				jsonObject.put("test_classes", testClassesJSONArray);
+
+				for (TestClass testClass : getTestClasses()) {
+					if (testClass == null) {
+						throw new RuntimeException(
+							"Unable to not find test class in " +
+								getAxisName());
+					}
+
+					testClassesJSONArray.put(testClass.getJSONObject());
+				}
+
+				return jsonObject;
+			}
+		}
+
 		JSONArray testTasksJSONArray = new JSONArray();
 
 		jsonObject.put("test_tasks", testTasksJSONArray);
 
-		for (TestTask testTask : getTestTasks()) {
+		for (TestTask testTask : testTasks) {
 			testTasksJSONArray.put(testTask.getJSONObject());
 		}
 
@@ -207,6 +241,16 @@ public class ModulesJUnitAxisTestClassGroup extends JUnitAxisTestClassGroup {
 		}
 
 		return modulesJUnitTestClasses;
+	}
+
+	private boolean _isSplittable() {
+		for (TestTask testTask : getTestTasks()) {
+			if (testTask.isSplittable()) {
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	private Long _averageDuration;

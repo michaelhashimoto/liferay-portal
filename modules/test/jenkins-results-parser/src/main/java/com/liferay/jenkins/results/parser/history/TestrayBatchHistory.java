@@ -83,13 +83,14 @@ public class TestrayBatchHistory extends BaseBatchHistory {
 				continue;
 			}
 
-			TestrayTestTaskHistory testrayTestTaskHistory =
-				(TestrayTestTaskHistory)testTaskHistory;
+			if (downstreamBuildReport.isBuildTimedOut() && latestBuild &&
+				testTaskReport.isMissing()) {
 
-			testrayTestTaskHistory.addTestTaskReport(testTaskReport);
+				TestrayTestTaskHistory testrayTestTaskHistory =
+					(TestrayTestTaskHistory)testTaskHistory;
 
-			if (latestBuild && testTaskReport.isMissing()) {
-				testrayTestTaskHistory.setLatestReportMissing(true);
+				testrayTestTaskHistory.addTestTaskReport(
+					latestBuild, testTaskReport);
 			}
 		}
 	}

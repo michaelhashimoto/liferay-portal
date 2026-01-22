@@ -141,8 +141,6 @@ public class BaseTestTask implements TestTask {
 		}
 
 		if (weight <= 0) {
-			_latestReportMissing = true;
-
 			weight = 0L;
 		}
 
@@ -160,15 +158,21 @@ public class BaseTestTask implements TestTask {
 
 	@Override
 	public boolean isIsolated() {
-		if (_weight == null) {
-			getWeight();
-		}
-
 		return isLatestReportMissing();
 	}
 
 	public boolean isLatestReportMissing() {
 		return _latestReportMissing;
+	}
+
+	@Override
+	public boolean isSplittable() {
+		return _splitable;
+	}
+
+	@Override
+	public void setSplittable(boolean splittable) {
+		_splitable = splittable;
 	}
 
 	protected BaseTestTask(
@@ -187,9 +191,10 @@ public class BaseTestTask implements TestTask {
 	private final long _averageDuration;
 	private final long _averageTotalDuration;
 	private final TestClassGroup.GroupingStrategy _groupingStrategy;
-	private boolean _latestReportMissing;
+	private final boolean _latestReportMissing;
 	private final long _longestDuration;
 	private final String _name;
+	private boolean _splitable;
 	private final List<TestClass> _testClasses = new ArrayList<>();
 	private Long _weight;
 
