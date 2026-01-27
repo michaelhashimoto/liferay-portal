@@ -221,6 +221,11 @@ gradle.beforeProject {
 		task printProjectPath
 
 		afterEvaluate {
+			tasks.withType(com.liferay.gradle.plugins.node.task.YarnInstallTask) {
+				frozenLockFile = GradleUtil.getProperty(project, "gradle.yarn.frozen.lock.file", (Boolean)null)
+				networkTimeout = GradleUtil.getProperty(project, "gradle.yarn.network.timeout", (Long)null)
+			}
+
 			String forcedUpdateFilesVersion = GradleUtil.getProperty(project, "forced.update.files.version", (String)null)
 
 			if (forcedUpdateFilesVersion && tasks.findByName("updateFileVersions")) {
