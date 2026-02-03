@@ -88,10 +88,18 @@ public abstract class BaseParentBuild extends BaseBuild implements ParentBuild {
 							}
 							catch (RuntimeException runtimeException) {
 								if (!isFromArchive()) {
+									String shortStackTrace =
+										JenkinsResultsParserUtil.
+											getShortStackTrace(
+												runtimeException, 10);
+
+									System.out.println(
+										"WARNING: Build object failure:\n" +
+											shortStackTrace);
+
 									NotificationUtil.sendSlackNotification(
-										runtimeException.getMessage() +
-											"\nBuild URL: " +
-												thisBuild.getBuildURL(),
+										shortStackTrace + "\nBuild URL: " +
+											thisBuild.getBuildURL(),
 										"ci-notifications",
 										"Build object failure");
 								}

@@ -3588,6 +3588,41 @@ public class JenkinsResultsParserUtil {
 		}
 	}
 
+	public static String getShortStackTrace(Exception exception, int lines) {
+		if (exception == null) {
+			return null;
+		}
+
+		StringBuilder sb = new StringBuilder();
+
+		StackTraceElement[] stackTraceElements = exception.getStackTrace();
+
+		Class<?> clazz = exception.getClass();
+
+		sb.append(clazz.getName());
+
+		String message = exception.getMessage();
+
+		if (!isNullOrEmpty(message)) {
+			sb.append(": ");
+			sb.append(message);
+		}
+
+		sb.append("\n");
+
+		if (stackTraceElements != null) {
+			lines = Math.min(stackTraceElements.length, lines);
+
+			for (int i = 0; i < lines; i++) {
+				sb.append("\t");
+				sb.append(stackTraceElements[i]);
+				sb.append("\n");
+			}
+		}
+
+		return sb.toString();
+	}
+
 	public static List<String> getSlaves(
 		Properties buildProperties, String jenkinsMasterPatternString) {
 
