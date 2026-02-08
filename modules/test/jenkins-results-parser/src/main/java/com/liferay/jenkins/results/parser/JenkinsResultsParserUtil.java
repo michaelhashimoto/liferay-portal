@@ -2870,6 +2870,10 @@ public class JenkinsResultsParserUtil {
 	}
 
 	public static String getLocalURL(String remoteURL) {
+		if (remoteURL == null) {
+			return null;
+		}
+
 		if (remoteURL.contains(Build.DEPENDENCIES_URL_TOKEN)) {
 			remoteURL = fixFileName(remoteURL);
 
