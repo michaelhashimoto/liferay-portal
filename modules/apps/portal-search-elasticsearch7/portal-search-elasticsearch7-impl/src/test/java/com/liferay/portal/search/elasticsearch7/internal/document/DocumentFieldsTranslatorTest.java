@@ -8,7 +8,6 @@ package com.liferay.portal.search.elasticsearch7.internal.document;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.search.document.Document;
 import com.liferay.portal.search.document.DocumentBuilder;
-import com.liferay.portal.search.internal.document.DocumentBuilderImpl;
 import com.liferay.portal.test.rule.LiferayUnitTestRule;
 
 import java.util.Arrays;
@@ -35,7 +34,7 @@ public class DocumentFieldsTranslatorTest {
 		DocumentFieldsTranslator documentFieldsTranslator =
 			new DocumentFieldsTranslator();
 
-		DocumentBuilder documentBuilder = new DocumentBuilderImpl();
+		DocumentBuilder documentBuilder = new DocumentBuilder();
 
 		String fieldName = RandomTestUtil.randomString();
 

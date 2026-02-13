@@ -12,14 +12,11 @@ import com.liferay.portal.search.aggregation.AggregationResultTranslator;
 import com.liferay.portal.search.aggregation.AggregationResults;
 import com.liferay.portal.search.aggregation.pipeline.PipelineAggregation;
 import com.liferay.portal.search.aggregation.pipeline.PipelineAggregationResultTranslator;
-import com.liferay.portal.search.document.DocumentBuilderFactory;
 import com.liferay.portal.search.engine.adapter.search.SearchSearchRequest;
 import com.liferay.portal.search.engine.adapter.search.SearchSearchResponse;
-import com.liferay.portal.search.groupby.GroupByResponseFactory;
 import com.liferay.portal.search.highlight.HighlightFieldBuilderFactory;
 import com.liferay.portal.search.hits.SearchHitBuilderFactory;
 import com.liferay.portal.search.hits.SearchHitsBuilderFactory;
-import com.liferay.portal.search.legacy.stats.StatsRequestBuilderFactory;
 import com.liferay.portal.search.legacy.stats.StatsResultsTranslator;
 import com.liferay.portal.search.opensearch2.internal.aggregation.AggregationResultTranslatorFactory;
 import com.liferay.portal.search.opensearch2.internal.aggregation.OpenSearchAggregationResultTranslator;
@@ -85,8 +82,8 @@ public class SearchSearchResponseAssemblerImpl
 		return new OpenSearchAggregationResultTranslator(
 			aggregate, _aggregationResults,
 			new HitsMetadataTranslator(
-				_documentBuilderFactory, _highlightFieldBuilderFactory,
-				_searchHitBuilderFactory, _searchHitsBuilderFactory));
+				_highlightFieldBuilderFactory, _searchHitBuilderFactory,
+				_searchHitsBuilderFactory));
 	}
 
 	@Override
@@ -100,7 +97,6 @@ public class SearchSearchResponseAssemblerImpl
 	@Activate
 	protected void activate() {
 		_searchResponseTranslator = new SearchResponseTranslator(
-			_groupByResponseFactory, _statsRequestBuilderFactory,
 			_statsResultsTranslator);
 	}
 
@@ -164,8 +160,8 @@ public class SearchSearchResponseAssemblerImpl
 
 		HitsMetadataTranslator hitsMetadataTranslator =
 			new HitsMetadataTranslator(
-				_documentBuilderFactory, _highlightFieldBuilderFactory,
-				_searchHitBuilderFactory, _searchHitsBuilderFactory);
+				_highlightFieldBuilderFactory, _searchHitBuilderFactory,
+				_searchHitsBuilderFactory);
 
 		searchSearchResponse.setSearchHits(
 			hitsMetadataTranslator.translate(
@@ -192,12 +188,6 @@ public class SearchSearchResponseAssemblerImpl
 	private AggregationResults _aggregationResults;
 
 	@Reference
-	private DocumentBuilderFactory _documentBuilderFactory;
-
-	@Reference
-	private GroupByResponseFactory _groupByResponseFactory;
-
-	@Reference
 	private HighlightFieldBuilderFactory _highlightFieldBuilderFactory;
 
 	@Reference
@@ -207,9 +197,6 @@ public class SearchSearchResponseAssemblerImpl
 	private SearchHitsBuilderFactory _searchHitsBuilderFactory;
 
 	private SearchResponseTranslator _searchResponseTranslator;
-
-	@Reference
-	private StatsRequestBuilderFactory _statsRequestBuilderFactory;
 
 	@Reference
 	private StatsResultsTranslator _statsResultsTranslator;
