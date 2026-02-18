@@ -8,7 +8,6 @@ package com.liferay.portal.search.elasticsearch7.internal.search.engine.adapter;
 import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.search.elasticsearch7.internal.connection.ElasticsearchClientResolver;
 import com.liferay.portal.search.elasticsearch7.internal.connection.ElasticsearchFixture;
-import com.liferay.portal.search.elasticsearch7.internal.search.engine.adapter.snapshot.SnapshotRequestExecutorTestUtil;
 import com.liferay.portal.search.engine.adapter.SearchEngineAdapter;
 import com.liferay.portal.search.engine.adapter.snapshot.CreateSnapshotRepositoryRequest;
 import com.liferay.portal.search.engine.adapter.snapshot.CreateSnapshotRepositoryResponse;
@@ -28,6 +27,7 @@ import com.liferay.portal.test.rule.LiferayUnitTestRule;
 
 import java.io.IOException;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -282,15 +282,17 @@ public class ElasticsearchSearchEngineAdapterSnapshotRequestTest {
 	protected static SearchEngineAdapter createSearchEngineAdapter(
 		ElasticsearchClientResolver elasticsearchClientResolver) {
 
-		SearchEngineAdapter searchEngineAdapter =
-			new ElasticsearchSearchEngineAdapterImpl();
+		ElasticsearchSearchEngineAdapterImpl
+			elasticsearchSearchEngineAdapterImpl =
+				new ElasticsearchSearchEngineAdapterImpl();
 
 		ReflectionTestUtil.setFieldValue(
-			searchEngineAdapter, "_snapshotRequestExecutor",
-			SnapshotRequestExecutorTestUtil.createSnapshotRequestExecutor(
-				elasticsearchClientResolver));
+			elasticsearchSearchEngineAdapterImpl,
+			"_elasticsearchClientResolver", elasticsearchClientResolver);
 
-		return searchEngineAdapter;
+		elasticsearchSearchEngineAdapterImpl.activate(Collections.emptyMap());
+
+		return elasticsearchSearchEngineAdapterImpl;
 	}
 
 	private void _createIndex() {

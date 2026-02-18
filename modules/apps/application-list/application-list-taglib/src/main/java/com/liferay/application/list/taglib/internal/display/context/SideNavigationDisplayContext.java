@@ -14,11 +14,17 @@ import com.liferay.application.list.display.context.logic.PanelCategoryHelper;
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.IconItem;
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.VerticalNavItem;
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.VerticalNavItemList;
+import com.liferay.item.selector.ItemSelector;
+import com.liferay.item.selector.criteria.URLItemSelectorReturnType;
 import com.liferay.petra.string.StringPool;
+import com.liferay.portal.kernel.module.service.Snapshot;
+import com.liferay.portal.kernel.portlet.RequestBackedPortletURLFactoryUtil;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.SessionClicks;
 import com.liferay.portal.kernel.util.WebKeys;
+import com.liferay.product.navigation.product.menu.constants.ProductNavigationProductMenuPortletKeys;
+import com.liferay.site.item.selector.SiteItemSelectorCriterion;
 
 import jakarta.servlet.http.HttpServletRequest;
 
@@ -68,6 +74,18 @@ public class SideNavigationDisplayContext {
 		return expandedKeys;
 	}
 
+	public String getPanelCategoryImageUrl() {
+		PanelCategory panelCategory = _getPanelCategory();
+
+		if (panelCategory == null) {
+			return null;
+		}
+
+		return String.format(
+			"%s/product_icons/%s_sm.svg", _themeDisplay.getPathThemeImages(),
+			panelCategory.getKey());
+	}
+
 	public String getPanelCategoryLabel() {
 		PanelCategory panelCategory = _getPanelCategory();
 
@@ -89,7 +107,14 @@ public class SideNavigationDisplayContext {
 			return Collections.emptyMap();
 		}
 
+		String itemSelectedEventName = String.format(
+			"_%s_selectSite",
+			ProductNavigationProductMenuPortletKeys.
+				PRODUCT_NAVIGATION_PRODUCT_MENU);
+
 		return HashMapBuilder.<String, Object>put(
+			"categoryImageUrl", getPanelCategoryImageUrl()
+		).put(
 			"expandedKeys", getExpandedKeys()
 		).put(
 			"expandedKeysSessionKey", _getExpandedKeysSessionKey()
@@ -99,6 +124,25 @@ public class SideNavigationDisplayContext {
 			"label", getPanelCategoryLabel()
 		).put(
 			"portletId", _portletId
+		).put(
+			"siteAdministrationItemSelectedEventName", itemSelectedEventName
+		).put(
+			"siteAdministrationItemSelectorUrl",
+			() -> {
+				ItemSelector itemSelector = _itemSelectorSnapshot.get();
+
+				SiteItemSelectorCriterion siteItemSelectorCriterion =
+					new SiteItemSelectorCriterion();
+
+				siteItemSelectorCriterion.setDesiredItemSelectorReturnTypes(
+					new URLItemSelectorReturnType());
+
+				return String.valueOf(
+					itemSelector.getItemSelectorURL(
+						RequestBackedPortletURLFactoryUtil.create(
+							_httpServletRequest),
+						itemSelectedEventName, siteItemSelectorCriterion));
+			}
 		).put(
 			"visible", isVisible()
 		).put(
@@ -268,6 +312,9 @@ public class SideNavigationDisplayContext {
 
 	private static final String _VISIBLE_SESSION_KEY =
 		"com_liferay_application_list_taglib_SideNavigationState";
+
+	private static final Snapshot<ItemSelector> _itemSelectorSnapshot =
+		new Snapshot<>(SideNavigationDisplayContext.class, ItemSelector.class);
 
 	private final HttpServletRequest _httpServletRequest;
 	private final PanelAppRegistry _panelAppRegistry;

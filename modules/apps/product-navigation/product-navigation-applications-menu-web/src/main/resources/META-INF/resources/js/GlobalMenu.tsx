@@ -54,7 +54,7 @@ type SiteItem = {
 	url?: string;
 };
 
-type Sites = {recentSites: Site[]; viewAllURL: string};
+type Sites = {mySites: Site[]; recentSites: Site[]; viewAllURL: string};
 
 export default function GlobalMenu({
 	panelAppsURL,
@@ -266,7 +266,9 @@ function normalizeCategoryItems({
 		item.key === 'control_panel' ? {...item, className: 'c-mt-2'} : item
 	);
 
-	categoryItems.splice(2, 0, {...cms, homeURL: cms.url});
+	if (Liferay.FeatureFlags['LPD-17564']) {
+		categoryItems.splice(2, 0, {...cms, homeURL: cms.url});
+	}
 
 	return categoryItems;
 }
@@ -278,7 +280,12 @@ function normalizeSiteItems({
 	portletNamespace: string;
 	sites: Sites;
 }): GroupItem[] {
-	const children: SiteItem[] = [...sites.recentSites];
+	const children: SiteItem[] = [
+		...sites.recentSites,
+		...sites.mySites.filter(
+			({label}) => label === Liferay.Language.get('global')
+		),
+	];
 
 	if (sites?.viewAllURL) {
 		children.push({
@@ -302,7 +309,7 @@ function normalizeSiteItems({
 		{
 			children,
 			key: 'sites',
-			label: Liferay.Language.get('recent-sites'),
+			label: Liferay.Language.get('sites'),
 		},
 	];
 }

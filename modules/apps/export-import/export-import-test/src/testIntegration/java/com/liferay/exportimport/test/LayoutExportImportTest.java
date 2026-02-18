@@ -50,6 +50,7 @@ import com.liferay.portal.kernel.service.LayoutSetPrototypeLocalService;
 import com.liferay.portal.kernel.service.PortletPreferencesLocalServiceUtil;
 import com.liferay.portal.kernel.test.TestInfo;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
+import com.liferay.portal.kernel.test.util.FeatureFlagTestUtil;
 import com.liferay.portal.kernel.test.util.GroupTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.test.util.ServiceContextTestUtil;
@@ -132,7 +133,7 @@ public class LayoutExportImportTest extends BaseExportImportTestCase {
 
 		layoutIds = new long[] {layout1.getLayoutId()};
 
-		exportImportLayouts(layoutIds, getImportParameterMap());
+		exportImportLayouts(layoutIds, parameterMap);
 
 		Assert.assertEquals(
 			_layoutLocalService.getLayoutsCount(group, false),
@@ -149,6 +150,68 @@ public class LayoutExportImportTest extends BaseExportImportTestCase {
 				layout2.getUuid(), importedGroup.getGroupId(), false);
 
 		Assert.assertNotNull(importedLayout2);
+	}
+
+	@FeatureFlags(
+		featureFlags = {@FeatureFlag("LPD-35443"), @FeatureFlag("LPD-35914")}
+	)
+	@Test
+	public void testDeleteMissingLayoutsSameGroupWithPromoteContentFeatureFlags()
+		throws Exception {
+
+		FeatureFlagTestUtil.invokeFeatureFlagListeners(
+			TestPropsValues.getCompanyId(), true, "LPD-35443");
+		FeatureFlagTestUtil.invokeFeatureFlagListeners(
+			TestPropsValues.getCompanyId(), true, "LPD-35914");
+
+		Layout layoutA = LayoutTestUtil.addTypePortletLayout(group);
+		Layout layoutB = LayoutTestUtil.addTypePortletLayout(group);
+
+		long[] layoutIds = {layoutA.getLayoutId(), layoutB.getLayoutId()};
+
+		exportLayouts(layoutIds, getExportParameterMap());
+
+		Layout layoutC = LayoutTestUtil.addTypePortletLayout(group);
+
+		Group originalImportedGroup = importedGroup;
+
+		try {
+			importedGroup = group;
+
+			Map<String, String[]> parameterMap = getImportParameterMap();
+
+			parameterMap.put(
+				PortletDataHandlerKeys.DELETE_MISSING_LAYOUTS,
+				new String[] {Boolean.TRUE.toString()});
+
+			importLayouts(parameterMap);
+
+			Layout fetchedLayoutA =
+				_layoutLocalService.fetchLayoutByUuidAndGroupId(
+					layoutA.getUuid(), group.getGroupId(), false);
+
+			Assert.assertNotNull(fetchedLayoutA);
+
+			Layout fetchedLayoutB =
+				_layoutLocalService.fetchLayoutByUuidAndGroupId(
+					layoutB.getUuid(), group.getGroupId(), false);
+
+			Assert.assertNotNull(fetchedLayoutB);
+
+			Layout fetchedLayoutCAfterImport =
+				_layoutLocalService.fetchLayoutByUuidAndGroupId(
+					layoutC.getUuid(), group.getGroupId(), false);
+
+			Assert.assertNull(fetchedLayoutCAfterImport);
+
+			FeatureFlagTestUtil.invokeFeatureFlagListeners(
+				TestPropsValues.getCompanyId(), false, "LPD-35443");
+			FeatureFlagTestUtil.invokeFeatureFlagListeners(
+				TestPropsValues.getCompanyId(), false, "LPD-35914");
+		}
+		finally {
+			importedGroup = originalImportedGroup;
+		}
 	}
 
 	@Test
@@ -450,6 +513,12 @@ public class LayoutExportImportTest extends BaseExportImportTestCase {
 			Arrays.asList(LocaleUtil.US, LocaleUtil.GERMANY), true);
 	}
 
+	@FeatureFlags(
+		featureFlags = {
+			@FeatureFlag(enable = false, value = "LPD-35443"),
+			@FeatureFlag(enable = false, value = "LPD-35914")
+		}
+	)
 	@Test
 	public void testExportImportLayoutsPriorities() throws Exception {
 		Layout layout1 = LayoutTestUtil.addTypePortletLayout(group);
@@ -671,6 +740,12 @@ public class LayoutExportImportTest extends BaseExportImportTestCase {
 	}
 
 	@FeatureFlag("LPS-199086")
+	@FeatureFlags(
+		featureFlags = {
+			@FeatureFlag(enable = false, value = "LPD-35443"),
+			@FeatureFlag(enable = false, value = "LPD-35914")
+		}
+	)
 	@Test
 	public void testLayoutExportImportWithChildLayoutReferencedWithButtonAndChildLayoutHasParentLayout()
 		throws Exception {
@@ -734,6 +809,12 @@ public class LayoutExportImportTest extends BaseExportImportTestCase {
 	}
 
 	@FeatureFlag("LPS-199086")
+	@FeatureFlags(
+		featureFlags = {
+			@FeatureFlag(enable = false, value = "LPD-35443"),
+			@FeatureFlag(enable = false, value = "LPD-35914")
+		}
+	)
 	@Test
 	@TestInfo("LPD-6808: AC9-AC10")
 	public void testLayoutExportImportWithModifiedContentAndExistingParentAndChildLayoutsOnImportSide()
@@ -816,6 +897,12 @@ public class LayoutExportImportTest extends BaseExportImportTestCase {
 	}
 
 	@FeatureFlag("LPS-199086")
+	@FeatureFlags(
+		featureFlags = {
+			@FeatureFlag(enable = false, value = "LPD-35443"),
+			@FeatureFlag(enable = false, value = "LPD-35914")
+		}
+	)
 	@Test
 	@TestInfo("LPD-6808: AC9-AC11")
 	public void testLayoutExportImportWithModifiedContentAndNonexistentParentAndChildLayoutsOnImportSide()
@@ -859,6 +946,63 @@ public class LayoutExportImportTest extends BaseExportImportTestCase {
 				childLayout.getUuid(), importedGroup.getGroupId(), false);
 
 		Assert.assertNotNull(importedChildLayout);
+	}
+
+	@FeatureFlags(
+		featureFlags = {@FeatureFlag("LPD-35443"), @FeatureFlag("LPD-35914")}
+	)
+	@Test
+	public void testLayoutExportImportWithPromoteContentFeatureFlagsEnabledParentsNotPublishedEvenWithConfigurationEnabled()
+		throws Exception {
+
+		FeatureFlagTestUtil.invokeFeatureFlagListeners(
+			TestPropsValues.getCompanyId(), true, "LPD-35443");
+		FeatureFlagTestUtil.invokeFeatureFlagListeners(
+			TestPropsValues.getCompanyId(), true, "LPD-35914");
+		_configurationProvider.saveCompanyConfiguration(
+			StagingConfiguration.class, CompanyThreadLocal.getCompanyId(),
+			HashMapDictionaryBuilder.<String, Object>put(
+				"publishParentLayoutsByDefault", true
+			).build());
+
+		Layout layout = LayoutTestUtil.addTypePortletLayout(group);
+
+		Layout childLayout = LayoutTestUtil.addTypePortletLayout(
+			group, layout.getPlid());
+
+		Map<Long, Boolean> selectedLayouts = HashMapBuilder.put(
+			LayoutConstants.DEFAULT_PLID, true
+		).put(
+			childLayout.getPlid(), false
+		).build();
+
+		Map<String, String[]> exportParameterMap = getExportParameterMap();
+
+		exportParameterMap.put(Constants.CMD, new String[] {Constants.EXPORT});
+
+		exportLayouts(
+			ExportImportHelperUtil.getLayoutIds(selectedLayouts),
+			exportParameterMap);
+
+		importLayouts(exportParameterMap, false);
+
+		Layout importedParentLayout =
+			LayoutLocalServiceUtil.fetchLayoutByUuidAndGroupId(
+				layout.getUuid(), importedGroup.getGroupId(), false);
+
+		Assert.assertNull(importedParentLayout);
+
+		Layout importedChildLayout =
+			LayoutLocalServiceUtil.fetchLayoutByUuidAndGroupId(
+				childLayout.getUuid(), importedGroup.getGroupId(), false);
+
+		Assert.assertNotNull(importedChildLayout);
+		Assert.assertEquals(0, importedChildLayout.getParentLayoutId());
+
+		FeatureFlagTestUtil.invokeFeatureFlagListeners(
+			TestPropsValues.getCompanyId(), false, "LPD-35443");
+		FeatureFlagTestUtil.invokeFeatureFlagListeners(
+			TestPropsValues.getCompanyId(), false, "LPD-35914");
 	}
 
 	@FeatureFlag("LPS-199086")
@@ -988,6 +1132,71 @@ public class LayoutExportImportTest extends BaseExportImportTestCase {
 				PortletDataException.MISSING_REFERENCE,
 				portletDataException.getType());
 		}
+	}
+
+	@FeatureFlags(
+		featureFlags = {@FeatureFlag("LPD-34594"), @FeatureFlag("LPD-35443")}
+	)
+	@Test
+	public void testPromotedPageWithSamePriorityTakesPrecedence()
+		throws Exception {
+
+		FeatureFlagTestUtil.invokeFeatureFlagListeners(
+			TestPropsValues.getCompanyId(), true, "LPD-35443");
+		FeatureFlagTestUtil.invokeFeatureFlagListeners(
+			TestPropsValues.getCompanyId(), true, "LPD-35914");
+
+		Layout layout1 = LayoutTestUtil.addTypePortletLayout(group);
+		Layout layout2 = LayoutTestUtil.addTypePortletLayout(group);
+		Layout layout3 = LayoutTestUtil.addTypePortletLayout(group);
+
+		exportImportLayouts(
+			ExportImportHelperUtil.getLayoutIds(
+				_layoutLocalService.getLayouts(group.getGroupId(), false)),
+			getImportParameterMap());
+
+		Layout importedLayout1 =
+			_layoutLocalService.fetchLayoutByUuidAndGroupId(
+				layout1.getUuid(), importedGroup.getGroupId(), false);
+		Layout importedLayout2 =
+			_layoutLocalService.fetchLayoutByUuidAndGroupId(
+				layout2.getUuid(), importedGroup.getGroupId(), false);
+
+		Layout importedLayout3 =
+			_layoutLocalService.fetchLayoutByUuidAndGroupId(
+				layout3.getUuid(), importedGroup.getGroupId(), false);
+
+		importedLayout3.setPriority(1);
+
+		_layoutLocalService.updateLayout(importedLayout3);
+
+		importedLayout1.setPriority(2);
+
+		_layoutLocalService.updateLayout(importedLayout1);
+
+		importedLayout2.setPriority(3);
+
+		_layoutLocalService.updateLayout(importedLayout2);
+
+		exportImportLayouts(
+			new long[] {layout1.getLayoutId()}, getImportParameterMap());
+
+		importedLayout1 = _layoutLocalService.fetchLayoutByUuidAndGroupId(
+			layout1.getUuid(), importedGroup.getGroupId(), false);
+		importedLayout2 = _layoutLocalService.fetchLayoutByUuidAndGroupId(
+			layout2.getUuid(), importedGroup.getGroupId(), false);
+		importedLayout3 = _layoutLocalService.fetchLayoutByUuidAndGroupId(
+			layout3.getUuid(), importedGroup.getGroupId(), false);
+
+		Assert.assertTrue(
+			importedLayout3.getPriority() > importedLayout1.getPriority());
+		Assert.assertTrue(
+			importedLayout2.getPriority() > importedLayout3.getPriority());
+
+		FeatureFlagTestUtil.invokeFeatureFlagListeners(
+			TestPropsValues.getCompanyId(), false, "LPD-35443");
+		FeatureFlagTestUtil.invokeFeatureFlagListeners(
+			TestPropsValues.getCompanyId(), false, "LPD-35914");
 	}
 
 	@Test

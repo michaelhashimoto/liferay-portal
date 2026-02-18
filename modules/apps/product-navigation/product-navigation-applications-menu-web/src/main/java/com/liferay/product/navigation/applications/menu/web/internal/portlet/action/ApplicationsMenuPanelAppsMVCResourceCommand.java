@@ -111,6 +111,8 @@ public class ApplicationsMenuPanelAppsMVCResourceCommand
 		return JSONUtil.put(
 			"cms", _getCMSJSONObject(httpServletRequest, themeDisplay)
 		).put(
+			"dsr", _getDSRJSONObject(themeDisplay)
+		).put(
 			"items",
 			_getPanelCategoriesJSONArray(
 				httpServletRequest, resourceRequest, themeDisplay)
@@ -363,6 +365,16 @@ public class ApplicationsMenuPanelAppsMVCResourceCommand
 		return 0;
 	}
 
+	private JSONObject _getDSRJSONObject(ThemeDisplay themeDisplay)
+		throws Exception {
+
+		return JSONUtil.put(
+			"url",
+			StringBundler.concat(
+				themeDisplay.getPathFriendlyURLPublic(), "/",
+				StringUtil.toLowerCase(GroupConstants.DSR), "/rooms"));
+	}
+
 	private String _getNewSpaceCreationURL(
 			HttpServletRequest httpServletRequest, ThemeDisplay themeDisplay)
 		throws Exception {
@@ -560,10 +572,7 @@ public class ApplicationsMenuPanelAppsMVCResourceCommand
 			}
 		}
 
-		if (FeatureFlagManagerUtil.isEnabled(
-				themeDisplay.getCompanyId(), "LPD-36105") ||
-			(max < 0)) {
-
+		if (max < 0) {
 			sitesJSONObject.put(
 				"viewAllURL",
 				_getViewAllURL(resourceRequest, resourceResponse));

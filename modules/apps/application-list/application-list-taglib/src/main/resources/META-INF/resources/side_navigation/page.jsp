@@ -15,16 +15,32 @@ SideNavigationDisplayContext sideNavigationDisplayContext = new SideNavigationDi
 	<div class="c-slideout c-slideout-fixed c-slideout-push c-slideout-start<%= sideNavigationDisplayContext.isVisible() ? " c-slideout-shown" : "" %>">
 		<section aria-labelledby="com_liferay_application_list_taglib_side_navigation_label" class="sidebar sidebar-light<%= sideNavigationDisplayContext.isVisible() ? " c-slideout-show" : "" %>" data-qa-id="sideNavigation" id="com_liferay_application_list_taglib_side_navigation">
 			<div class="c-focus-trap">
-				<div class="sidebar-header">
+				<div class="c-mt-2 c-mx-1 c-px-2 sidebar-header">
 					<div class="autofit-row">
-						<div class="autofit-col autofit-col-expand">
-							<span class="component-title" id="com_liferay_application_list_taglib_side_navigation_label">
-								<%-- TODO: replace the icon below with the panel icon --%>
-								<clay:icon symbol="grid" /><span class="c-px-2" data-qa-id="sideNavigationLabel"><%= sideNavigationDisplayContext.getPanelCategoryLabel() %></span>
+						<div class="align-items-center autofit-col autofit-col-expand d-flex flex-row">
+							<span class="border-0 c-mr-1 sticker sticker-outline">
+								<span class="sticker-overlay">
+									<img alt="" class="c-mx-1" data-qa-id="sideNavigationProductIcon" src="<%= sideNavigationDisplayContext.getPanelCategoryImageUrl() %>" />
+								</span>
 							</span>
+							<span class="align-items-center c-my-0 component-title d-flex" id="com_liferay_application_list_taglib_side_navigation_label">
+								<span class="c-ml-2 text-5" id="sideNavigationLabel"><%= sideNavigationDisplayContext.getPanelCategoryLabel() %></span>
+							</span>
+
+							<clay:button
+								aria-label='<%= LanguageUtil.get(request, "go-to-other-site") %>'
+								borderless="<%= true %>"
+								cssClass="c-ml-auto"
+								data-qa-id="sideNavigationSiteSelectorButton"
+								displayType="secondary"
+								icon="sites"
+								monospaced="<%= true %>"
+								small="<%= true %>"
+								title='<%= LanguageUtil.get(request, "go-to-other-site") %>'
+							/>
 						</div>
 
-						<div class="autofit-col">
+						<div class="align-items-center autofit-col d-flex flex-row">
 							<button aria-controls="com_liferay_application_list_taglib_side_navigation" class="close lfr-portal-tooltip" title="<%= LanguageUtil.get(request, "close-product-menu") %>" type="button">
 								<clay:icon
 									symbol="times"
@@ -34,7 +50,11 @@ SideNavigationDisplayContext sideNavigationDisplayContext = new SideNavigationDi
 					</div>
 				</div>
 
-				<div class="c-px-0 sidebar-body">
+				<div class="c-pt-2 c-px-0 sidebar-body">
+					<div class="c-mx-1 c-px-2 form-group">
+						<input class="c-pl-3 form-control" placeholder="Search" type="search" value="" />
+					</div>
+
 					<clay:vertical-nav
 						active="<%= sideNavigationDisplayContext.getPortletId() %>"
 						defaultExpandedKeys="<%= sideNavigationDisplayContext.getExpandedKeys() %>"

@@ -5,6 +5,7 @@
 
 import {
 	DateRenderer,
+	FDS_PAGINATION_DELTA_ALL,
 	IInternalRenderer,
 	IView,
 } from '@liferay/frontend-data-set-web';
@@ -120,12 +121,14 @@ export default function TasksFDSPropsTransformer({
 		return {
 			...view,
 			default: false,
+			initialPaginationDelta: 20,
 		};
 	});
 
 	const kanbanView: IView = {
 		component: (props: any) => KanbanView({...props, currentURL}),
 		default: false,
+		initialPaginationDelta: FDS_PAGINATION_DELTA_ALL,
 		label: Liferay.Language.get('kanban'),
 		name: 'kanban',
 		schema: {
@@ -136,6 +139,7 @@ export default function TasksFDSPropsTransformer({
 			symbol: '',
 			title: 'embedded.title',
 		},
+		showPagination: false,
 		thumbnail: 'columns',
 	};
 
@@ -351,6 +355,7 @@ export default function TasksFDSPropsTransformer({
 						<BulkEditAssigneeModalContent
 							apiURL={otherProps.apiURL}
 							closeModal={closeModal}
+							dataSetId={id}
 							selectedData={selectedData}
 							value={{name: null}}
 						/>
@@ -361,6 +366,7 @@ export default function TasksFDSPropsTransformer({
 			else if (action?.data?.id === 'delete') {
 				deleteAssetEntriesBulkAction({
 					apiURL: otherProps.apiURL,
+					dataSetId: id,
 					selectedData,
 				});
 			}
@@ -375,6 +381,7 @@ export default function TasksFDSPropsTransformer({
 						BulkEditDueDateModalContent({
 							apiURL: otherProps?.apiURL,
 							closeModal,
+							dataSetId: id,
 							selectedData,
 						}),
 					size: 'md',
@@ -391,6 +398,7 @@ export default function TasksFDSPropsTransformer({
 						BulkEditStateModalContent({
 							apiURL: otherProps?.apiURL,
 							closeModal,
+							dataSetId: id,
 							selectedData,
 							states: additionalProps.states,
 						}),

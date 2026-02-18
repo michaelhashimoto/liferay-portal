@@ -47,6 +47,33 @@ public class ObjectEntryAssetRendererTest {
 		LiferayUnitTestRule.INSTANCE;
 
 	@Test
+	public void testGetSharingEntryRowPortletURL() throws Exception {
+		Mockito.when(
+			_objectDefinition.isCMS()
+		).thenReturn(
+			false
+		);
+
+		AssetRenderer<ObjectEntry> assetRenderer =
+			_getObjectEntryAssetRenderer();
+
+		ThemeDisplay themeDisplay = Mockito.mock(ThemeDisplay.class);
+
+		Assert.assertNull(
+			assetRenderer.getSharingEntryRowPortletURL(false, themeDisplay));
+
+		Mockito.when(
+			_objectDefinition.isCMS()
+		).thenReturn(
+			true
+		);
+
+		Assert.assertEquals(
+			_getCMSFriendlyURL(themeDisplay),
+			assetRenderer.getSharingEntryRowPortletURL(false, themeDisplay));
+	}
+
+	@Test
 	public void testGetTitle() throws Exception {
 		String title = RandomTestUtil.randomString();
 
@@ -87,6 +114,13 @@ public class ObjectEntryAssetRendererTest {
 
 		LiferayPortletRequest liferayPortletRequest = Mockito.mock(
 			LiferayPortletRequest.class);
+
+		Mockito.when(
+			liferayPortletRequest.getAttribute(WebKeys.THEME_DISPLAY)
+		).thenReturn(
+			null
+		);
+
 		LiferayPortletResponse liferayPortletResponse = Mockito.mock(
 			LiferayPortletResponse.class);
 

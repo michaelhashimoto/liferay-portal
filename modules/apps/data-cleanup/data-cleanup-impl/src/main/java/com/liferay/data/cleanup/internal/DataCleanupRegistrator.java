@@ -69,8 +69,10 @@ import com.liferay.layout.page.template.service.LayoutPageTemplateStructureRelLo
 import com.liferay.layout.service.LayoutClassedModelUsageLocalService;
 import com.liferay.message.boards.service.MBMessageLocalService;
 import com.liferay.message.boards.service.MBThreadLocalService;
+import com.liferay.object.service.ObjectDefinitionLocalService;
 import com.liferay.portal.kernel.model.ReleaseConstants;
 import com.liferay.portal.kernel.service.ClassNameLocalService;
+import com.liferay.portal.kernel.service.CompanyLocalService;
 import com.liferay.portal.kernel.service.ImageLocalService;
 import com.liferay.portal.kernel.service.LayoutLocalService;
 import com.liferay.portal.kernel.service.PortletLocalService;
@@ -94,6 +96,7 @@ import com.liferay.portal.upgrade.data.cleanup.LayoutDataCleanupPreupgradeProces
 import com.liferay.portal.upgrade.data.cleanup.NullUnicodeContentDataCleanupPreupgradeProcess;
 import com.liferay.portal.upgrade.data.cleanup.PortalPreferencesDataCleanupPreupgradeProcess;
 import com.liferay.portal.upgrade.data.cleanup.QuartzJobDetailsDataCleanupPreupgradeProcess;
+import com.liferay.portal.upgrade.data.cleanup.ResourcePermissionDataCleanupPreupgradeProcess;
 import com.liferay.portal.upgrade.data.cleanup.RoleDataCleanupPreupgradeProcess;
 import com.liferay.portal.upgrade.data.cleanup.UserDataCleanupPreupgradeProcess;
 import com.liferay.portal.verify.VerifyProcess;
@@ -402,7 +405,9 @@ public class DataCleanupRegistrator {
 						PostUpgradeDataCleanupProcess
 							postUpgradeDataCleanupProcess =
 								new ClassNamePostUpgradeDataCleanupProcess(
-									_classNameLocalService, connection);
+									_classNameLocalService,
+									_companyLocalService, connection,
+									_objectDefinitionLocalService);
 
 						postUpgradeDataCleanupProcess.cleanUp();
 					}
@@ -573,6 +578,9 @@ public class DataCleanupRegistrator {
 			QuartzJobDetailsDataCleanupPreupgradeProcess.class,
 			"remove-quartz-job-details-data"
 		).put(
+			ResourcePermissionDataCleanupPreupgradeProcess.class,
+			"remove-resource-permission-orphan-data"
+		).put(
 			RoleDataCleanupPreupgradeProcess.class, "remove-role-orphan-data"
 		).put(
 			UserDataCleanupPreupgradeProcess.class, "remove-user-orphan-data"
@@ -580,6 +588,9 @@ public class DataCleanupRegistrator {
 
 	@Reference
 	private ClassNameLocalService _classNameLocalService;
+
+	@Reference
+	private CompanyLocalService _companyLocalService;
 
 	@Reference
 	private ContentManager _contentManager;
@@ -627,6 +638,9 @@ public class DataCleanupRegistrator {
 
 	@Reference
 	private MBThreadLocalService _mbThreadLocalService;
+
+	@Reference
+	private ObjectDefinitionLocalService _objectDefinitionLocalService;
 
 	@Reference
 	private Portal _portal;

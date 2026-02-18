@@ -5,8 +5,10 @@
 
 package com.liferay.site.cms.site.initializer.internal.display.context;
 
+import com.liferay.learn.LearnMessageUtil;
 import com.liferay.object.constants.ObjectFolderConstants;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.feature.flag.FeatureFlagManagerUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Group;
@@ -65,6 +67,13 @@ public class ViewDashboardDisplayContext {
 				LayoutLocalServiceUtil.getLayoutByFriendlyURL(
 					_themeDisplay.getScopeGroupId(), false, "/dashboard"),
 				_themeDisplay)
+		).put(
+			"freeTier",
+			FeatureFlagManagerUtil.isEnabled(
+				_themeDisplay.getCompanyId(), "LPD-74377")
+		).put(
+			"learnResources",
+			LearnMessageUtil.getReactDataJSONObject("site-cms-site-initializer")
 		).build();
 	}
 

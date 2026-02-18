@@ -25,13 +25,11 @@ import com.liferay.portal.search.elasticsearch8.internal.document.FieldsTranslat
 import com.liferay.portal.search.elasticsearch8.internal.util.ConversionUtil;
 import com.liferay.portal.search.elasticsearch8.internal.util.JsonpUtil;
 import com.liferay.portal.search.highlight.HighlightField;
-import com.liferay.portal.search.highlight.HighlightFieldBuilderFactory;
+import com.liferay.portal.search.highlight.HighlightFieldBuilder;
 import com.liferay.portal.search.hits.SearchHit;
 import com.liferay.portal.search.hits.SearchHitBuilder;
-import com.liferay.portal.search.hits.SearchHitBuilderFactory;
 import com.liferay.portal.search.hits.SearchHits;
 import com.liferay.portal.search.hits.SearchHitsBuilder;
-import com.liferay.portal.search.hits.SearchHitsBuilderFactory;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -45,16 +43,6 @@ import java.util.Map;
  */
 public class HitsMetadataTranslator {
 
-	public HitsMetadataTranslator(
-		HighlightFieldBuilderFactory highlightFieldBuilderFactory,
-		SearchHitBuilderFactory searchHitBuilderFactory,
-		SearchHitsBuilderFactory searchHitsBuilderFactory) {
-
-		_highlightFieldBuilderFactory = highlightFieldBuilderFactory;
-		_searchHitBuilderFactory = searchHitBuilderFactory;
-		_searchHitsBuilderFactory = searchHitsBuilderFactory;
-	}
-
 	public SearchHits translate(HitsMetadata<JsonData> hitsMetadata) {
 		return translate(null, hitsMetadata);
 	}
@@ -62,8 +50,7 @@ public class HitsMetadataTranslator {
 	public SearchHits translate(
 		String alternateUidFieldName, HitsMetadata<JsonData> hitsMetadata) {
 
-		SearchHitsBuilder searchHitsBuilder =
-			_searchHitsBuilderFactory.getSearchHitsBuilder();
+		SearchHitsBuilder searchHitsBuilder = new SearchHitsBuilder();
 
 		List<Hit<JsonData>> hits = hitsMetadata.hits();
 
@@ -87,8 +74,7 @@ public class HitsMetadataTranslator {
 	protected SearchHit translate(
 		String alternateUidFieldName, Hit<JsonData> hit) {
 
-		SearchHitBuilder searchHitBuilder =
-			_searchHitBuilderFactory.getSearchHitBuilder();
+		SearchHitBuilder searchHitBuilder = new SearchHitBuilder();
 
 		return searchHitBuilder.addHighlightFields(
 			_translateHighlightFields(hit.highlight())
@@ -147,7 +133,7 @@ public class HitsMetadataTranslator {
 
 		for (Map.Entry<String, List<String>> entry : highlight.entrySet()) {
 			highlightFields.add(
-				_highlightFieldBuilderFactory.builder(
+				new HighlightFieldBuilder(
 				).fragments(
 					entry.getValue()
 				).name(
@@ -176,9 +162,5 @@ public class HitsMetadataTranslator {
 			throw new RuntimeException(jsonProcessingException);
 		}
 	}
-
-	private final HighlightFieldBuilderFactory _highlightFieldBuilderFactory;
-	private final SearchHitBuilderFactory _searchHitBuilderFactory;
-	private final SearchHitsBuilderFactory _searchHitsBuilderFactory;
 
 }
