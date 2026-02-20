@@ -85,8 +85,12 @@ public class LearnMessageUtil {
 					sb.append("http://localhost:3062/");
 				}
 				else {
-					sb.append("https://s3.amazonaws.com");
-					sb.append("/learn-resources.liferay.com/");
+					//sb.append("https://s3.amazonaws.com");
+					//sb.append("/learn-resources.liferay.com/");
+
+					sb.append("https://raw.githubusercontent.com/");
+					sb.append("liferay/liferay-portal/refs/heads/");
+					sb.append("master/learn-resources/data/")
 				}
 
 				sb.append(_resource);
