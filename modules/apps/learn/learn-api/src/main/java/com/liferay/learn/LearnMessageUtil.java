@@ -90,7 +90,7 @@ public class LearnMessageUtil {
 
 					sb.append("https://raw.githubusercontent.com/");
 					sb.append("liferay/liferay-portal/refs/heads/");
-					sb.append("master/learn-resources/data/")
+					sb.append("master/learn-resources/data/");
 				}
 
 				sb.append(_resource);
