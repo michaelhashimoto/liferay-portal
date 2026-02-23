@@ -11,7 +11,6 @@ import com.liferay.application.list.PanelCategory;
 import com.liferay.application.list.constants.ApplicationListWebKeys;
 import com.liferay.application.list.constants.PanelCategoryKeys;
 import com.liferay.application.list.display.context.logic.PanelCategoryHelper;
-import com.liferay.frontend.taglib.clay.servlet.taglib.util.IconItem;
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.VerticalNavItem;
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.VerticalNavItemList;
 import com.liferay.item.selector.ItemSelector;
@@ -55,21 +54,30 @@ public class SideNavigationDisplayContext {
 	public List<String> getExpandedKeys() {
 		List<String> expandedKeys = new ArrayList<>();
 
-		PanelCategory panelCategory = _getPanelCategory();
-
-		PanelCategory childPanelCategory = _getActivePanelCategory(
-			panelCategory.getKey());
-
-		if (childPanelCategory != null) {
-			expandedKeys.add(childPanelCategory.getKey());
-		}
-
-		String storedExpandedKeysAsString = SessionClicks.get(
+		String expandedKeysString = SessionClicks.get(
 			_httpServletRequest, _getExpandedKeysSessionKey(),
 			StringPool.BLANK);
 
-		Collections.addAll(
-			expandedKeys, storedExpandedKeysAsString.split(StringPool.COMMA));
+		if (!expandedKeysString.isEmpty()) {
+			Collections.addAll(
+				expandedKeys, expandedKeysString.split(StringPool.COMMA));
+
+			return expandedKeys;
+		}
+
+		PanelCategory panelCategory = _getPanelCategory();
+
+		if (panelCategory == null) {
+			return expandedKeys;
+		}
+
+		List<PanelCategory> childPanelCategories =
+			_panelCategoryHelper.getChildPanelCategories(
+				panelCategory.getKey(), _themeDisplay);
+
+		for (PanelCategory childPanelCategory : childPanelCategories) {
+			expandedKeys.add(childPanelCategory.getKey());
+		}
 
 		return expandedKeys;
 	}
@@ -275,8 +283,6 @@ public class SideNavigationDisplayContext {
 					"id", panelApp.getPortletId()
 				).put(
 					"label", panelApp.getLabel(_themeDisplay.getLocale())
-				).put(
-					"leadingIcon", "home"
 				).build());
 		}
 
@@ -302,7 +308,6 @@ public class SideNavigationDisplayContext {
 			verticalNavItem.setId(panelApp.getPortletId());
 			verticalNavItem.setLabel(
 				panelApp.getLabel(_themeDisplay.getLocale()));
-			verticalNavItem.setLeadingIcon(IconItem.of("home", null));
 
 			verticalNavItems.add(verticalNavItem);
 		}

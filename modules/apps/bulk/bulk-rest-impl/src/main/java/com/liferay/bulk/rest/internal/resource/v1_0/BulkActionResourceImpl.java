@@ -5,10 +5,12 @@
 
 package com.liferay.bulk.rest.internal.resource.v1_0;
 
+import com.liferay.bulk.rest.dto.v1_0.AssignStructureDefaultWorkflowBulkAction;
 import com.liferay.bulk.rest.dto.v1_0.AssignToBulkAction;
 import com.liferay.bulk.rest.dto.v1_0.BulkAction;
 import com.liferay.bulk.rest.dto.v1_0.BulkActionItem;
 import com.liferay.bulk.rest.dto.v1_0.BulkActionTask;
+import com.liferay.bulk.rest.dto.v1_0.CopyBulkAction;
 import com.liferay.bulk.rest.dto.v1_0.DefaultPermissionBulkAction;
 import com.liferay.bulk.rest.dto.v1_0.DeleteAssetVersionBulkAction;
 import com.liferay.bulk.rest.dto.v1_0.DueDateBulkAction;
@@ -397,8 +399,16 @@ public class BulkActionResourceImpl extends BaseBulkActionResourceImpl {
 	private BulkSelectionAction<Object> _getBulkSelectionAction(
 		BulkAction.Type type) {
 
-		if (BulkAction.Type.ASSIGN_TO_BULK_ACTION.equals(type)) {
+		if (BulkAction.Type.ASSIGN_STRUCTURE_DEFAULT_WORKFLOW_BULK_ACTION.
+				equals(type)) {
+
+			return _assignStructureDefaultWorkflowBulkSelectionAction;
+		}
+		else if (BulkAction.Type.ASSIGN_TO_BULK_ACTION.equals(type)) {
 			return _assignToObjectBulkSelectionAction;
+		}
+		else if (BulkAction.Type.COPY_BULK_ACTION.equals(type)) {
+			return _copyObjectBulkSelectionAction;
 		}
 		else if (BulkAction.Type.DEFAULT_PERMISSION_BULK_ACTION.equals(type)) {
 			return _defaultPermissionObjectBulkSelectionAction;
@@ -452,7 +462,19 @@ public class BulkActionResourceImpl extends BaseBulkActionResourceImpl {
 			HashMapBuilder.<String, Serializable>put(
 				"bulkActionTaskId", bulkActionTask.getId());
 
-		if (BulkAction.Type.ASSIGN_TO_BULK_ACTION.equals(type)) {
+		if (BulkAction.Type.ASSIGN_STRUCTURE_DEFAULT_WORKFLOW_BULK_ACTION.
+				equals(type)) {
+
+			AssignStructureDefaultWorkflowBulkAction
+				assignStructureDefaultWorkflowBulkAction =
+					(AssignStructureDefaultWorkflowBulkAction)bulkAction;
+
+			return hashMapWrapper.put(
+				"workflow",
+				assignStructureDefaultWorkflowBulkAction::getWorkflow
+			).build();
+		}
+		else if (BulkAction.Type.ASSIGN_TO_BULK_ACTION.equals(type)) {
 			AssignToBulkAction assignToBulkAction =
 				(AssignToBulkAction)bulkAction;
 
@@ -463,6 +485,13 @@ public class BulkActionResourceImpl extends BaseBulkActionResourceImpl {
 				"name", assignToBulkAction::getName
 			).put(
 				"type", assignToBulkAction::getClassName
+			).build();
+		}
+		else if (BulkAction.Type.COPY_BULK_ACTION.equals(type)) {
+			CopyBulkAction copyBulkAction = (CopyBulkAction)bulkAction;
+
+			return hashMapWrapper.put(
+				"objectEntryFolderId", copyBulkAction.getObjectEntryFolderId()
 			).build();
 		}
 		else if (BulkAction.Type.DEFAULT_PERMISSION_BULK_ACTION.equals(type)) {
@@ -865,6 +894,12 @@ public class BulkActionResourceImpl extends BaseBulkActionResourceImpl {
 
 	private static final EntityModel _entityModel = new BulkActionEntityModel();
 
+	@Reference(
+		target = "(bulk.selection.action.key=assign.structure.default.workflow.object.definition)"
+	)
+	private BulkSelectionAction<Object>
+		_assignStructureDefaultWorkflowBulkSelectionAction;
+
 	@Reference(target = "(bulk.selection.action.key=assign.to.object)")
 	private BulkSelectionAction<Object> _assignToObjectBulkSelectionAction;
 
@@ -873,6 +908,9 @@ public class BulkActionResourceImpl extends BaseBulkActionResourceImpl {
 
 	@Reference
 	private BulkSelectionRunner _bulkSelectionRunner;
+
+	@Reference(target = "(bulk.selection.action.key=copy.object)")
+	private BulkSelectionAction<Object> _copyObjectBulkSelectionAction;
 
 	@Reference(target = "(bulk.selection.action.key=default.permission.object)")
 	private BulkSelectionAction<Object>

@@ -115,6 +115,7 @@ function SideNavigation({
 	return (
 		<SidePanel
 			aria-label={sub(Liferay.Language.get('x-menu'), label)}
+			closeOnEscape={false}
 			containerRef={containerRef}
 			data-qa-id="sideNavigation"
 			defaultOpen={initialVisible}
@@ -178,6 +179,7 @@ function SideNavigation({
 						itemAriaCurrent={true}
 						items={items}
 						onExpandedChange={updateExpandedKeys}
+						stacked={true}
 					>
 						{(item) => {
 							if (typeof item === 'string') {

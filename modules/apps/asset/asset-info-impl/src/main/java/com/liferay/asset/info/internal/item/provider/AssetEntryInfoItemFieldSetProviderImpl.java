@@ -29,9 +29,16 @@ import com.liferay.petra.function.transform.TransformUtil;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.service.ServiceContext;
+import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
+import com.liferay.portal.kernel.util.GroupThreadLocal;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
+import com.liferay.portal.kernel.util.ScopeUtil;
 import com.liferay.portal.kernel.util.SortedArrayList;
+import com.liferay.portal.kernel.util.Validator;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -53,12 +60,13 @@ public class AssetEntryInfoItemFieldSetProviderImpl
 
 	@Override
 	public InfoFieldSet getInfoFieldSet(AssetEntry assetEntry) {
-		return _getInfoFieldSet(_getNoninternalAssetVocabularies(assetEntry));
+		return _getInfoFieldSet(
+			_getNoninternalAssetVocabularies(assetEntry), _getScopeGroupId());
 	}
 
 	@Override
 	public InfoFieldSet getInfoFieldSet(String itemClassName) {
-		return _getInfoFieldSet(Collections.emptyList());
+		return _getInfoFieldSet(Collections.emptyList(), _getScopeGroupId());
 	}
 
 	@Override
@@ -67,7 +75,8 @@ public class AssetEntryInfoItemFieldSetProviderImpl
 
 		return _getInfoFieldSet(
 			_getNoninternalAssetVocabularies(
-				itemClassName, itemClassTypeId, scopeGroupId));
+				itemClassName, itemClassTypeId, scopeGroupId),
+			scopeGroupId);
 	}
 
 	@Override
@@ -75,6 +84,8 @@ public class AssetEntryInfoItemFieldSetProviderImpl
 		AssetEntry assetEntry) {
 
 		List<InfoFieldValue<Object>> infoFieldValues = new ArrayList<>();
+
+		long scopeGroupId = _getScopeGroupId();
 
 		Set<AssetVocabulary> assetVocabularies =
 			_getNoninternalAssetVocabularies(assetEntry);
@@ -91,6 +102,10 @@ public class AssetEntryInfoItemFieldSetProviderImpl
 								assetVocabulary.getVocabularyId()
 					).name(
 						assetVocabulary.getName()
+					).externalUniqueId(
+						_getExternalUniqueId(
+							assetVocabulary.getExternalReferenceCode(),
+							assetVocabulary.getGroupId(), scopeGroupId)
 					).labelInfoLocalizedValue(
 						InfoLocalizedValue.<String>builder(
 						).defaultLocale(
@@ -169,8 +184,35 @@ public class AssetEntryInfoItemFieldSetProviderImpl
 			assetCategory -> assetCategory.getVocabularyId() == vocabularyId);
 	}
 
+	private String _getExternalUniqueId(
+		String externalReferenceCode, long itemGroupId, long scopeGroupId) {
+
+		String scopeExternalReferenceCode = null;
+
+		try {
+			scopeExternalReferenceCode =
+				ScopeUtil.getItemScopeExternalReferenceCode(
+					itemGroupId, scopeGroupId);
+		}
+		catch (PortalException portalException) {
+			if (_log.isDebugEnabled()) {
+				_log.debug(portalException);
+			}
+		}
+
+		if (Validator.isNull(scopeExternalReferenceCode)) {
+			return StringBundler.concat(
+				AssetVocabulary.class.getSimpleName(), "__ERC__",
+				externalReferenceCode);
+		}
+
+		return StringBundler.concat(
+			AssetVocabulary.class.getSimpleName(), "__ERC__",
+			externalReferenceCode, "__SERC__", scopeExternalReferenceCode);
+	}
+
 	private InfoFieldSet _getInfoFieldSet(
-		Collection<AssetVocabulary> assetVocabularies) {
+		Collection<AssetVocabulary> assetVocabularies, long scopeGroupId) {
 
 		return InfoFieldSet.builder(
 		).infoFieldSetEntry(
@@ -187,6 +229,10 @@ public class AssetEntryInfoItemFieldSetProviderImpl
 								assetVocabulary.getVocabularyId()
 					).name(
 						assetVocabulary.getName()
+					).externalUniqueId(
+						_getExternalUniqueId(
+							assetVocabulary.getExternalReferenceCode(),
+							assetVocabulary.getGroupId(), scopeGroupId)
 					).labelInfoLocalizedValue(
 						InfoLocalizedValue.<String>builder(
 						).defaultLocale(
@@ -292,10 +338,34 @@ public class AssetEntryInfoItemFieldSetProviderImpl
 					AssetVocabularyConstants.VISIBILITY_TYPE_INTERNAL));
 	}
 
+	private long _getScopeGroupId() {
+		ServiceContext serviceContext =
+			ServiceContextThreadLocal.getServiceContext();
+
+		if ((serviceContext != null) &&
+			(serviceContext.getScopeGroupId() > 0)) {
+
+			return serviceContext.getScopeGroupId();
+		}
+
+		Long groupId = GroupThreadLocal.getGroupId();
+
+		if (groupId != null) {
+			return groupId;
+		}
+
+		throw new IllegalStateException(
+			"Neither service context thread local nor group thread local are " +
+				"initialized");
+	}
+
 	private List<String> _getTags(List<AssetTag> assetTags) {
 		return TransformUtil.transform(
 			assetTags, assetTag -> assetTag.getName());
 	}
+
+	private static final Log _log = LogFactoryUtil.getLog(
+		AssetEntryInfoItemFieldSetProviderImpl.class);
 
 	@Reference
 	private AssetVocabularyLocalService _assetVocabularyLocalService;

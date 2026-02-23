@@ -384,6 +384,7 @@
 									},
 									{
 										"definition": {
+											"customCSS": ".[$FRAGMENT_CLASS$] {.cms-related-assets-header {font-weight: 600;}}",
 											"fragment": {
 												"key": "com.liferay.site.cms.site.initializer.internal.fragment.renderer.ViewRelatedAssetsJSPSectionFragmentRenderer"
 											},

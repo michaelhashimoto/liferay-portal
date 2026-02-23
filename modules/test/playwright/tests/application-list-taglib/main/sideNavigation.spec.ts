@@ -140,3 +140,71 @@ test(
 		}
 	}
 );
+
+test(
+	'Navigation item groups maintain their state when the page reloads',
+	{tag: '@LPD-79369'},
+	async ({globalMenuPage, page}) => {
+		await globalMenuPage.goToApplications();
+
+		const workflowItem = page.getByText('Workflow');
+
+		try {
+			const categories = page.locator('button.collapse-icon');
+
+			const categoriesExpanded = page.locator(
+				'button.collapse-icon[aria-expanded="true"]'
+			);
+
+			await expect(categories).toHaveCount(
+				await categoriesExpanded.count()
+			);
+
+			await workflowItem.click();
+
+			await page.reload();
+
+			await waitForPageToBeLoaded(page);
+
+			await expect(workflowItem).toHaveAttribute(
+				'aria-expanded',
+				'false'
+			);
+		}
+		finally {
+
+			// Reset the state of the navigation item
+
+			await expect(async () => {
+				await workflowItem.click();
+
+				await expect(workflowItem).toHaveAttribute(
+					'aria-expanded',
+					'true'
+				);
+			}).toPass();
+		}
+	}
+);
+
+test(
+	'Escape key does not close the side navigation menu',
+	{tag: '@LPD-79543'},
+	async ({globalMenuPage, page}) => {
+		const menu = page.getByLabel('Applications Menu');
+
+		await test.step('Go to an Applications Panel page', async () => {
+			await globalMenuPage.goToApplications();
+
+			await expect(menu).toBeVisible();
+		});
+
+		await test.step('Press the Escape key and check if the navigation menu is still visible', async () => {
+			await page.keyboard.press('Escape');
+
+			await page.reload();
+
+			await expect(menu).toBeVisible();
+		});
+	}
+);

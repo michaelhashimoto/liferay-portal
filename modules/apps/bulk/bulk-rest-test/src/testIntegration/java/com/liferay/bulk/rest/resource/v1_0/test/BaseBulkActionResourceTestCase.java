@@ -13,9 +13,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.util.ISO8601DateFormat;
 
+import com.liferay.bulk.rest.client.dto.v1_0.AssignStructureDefaultWorkflowBulkAction;
 import com.liferay.bulk.rest.client.dto.v1_0.AssignToBulkAction;
 import com.liferay.bulk.rest.client.dto.v1_0.BulkAction;
 import com.liferay.bulk.rest.client.dto.v1_0.BulkActionTask;
+import com.liferay.bulk.rest.client.dto.v1_0.CopyBulkAction;
 import com.liferay.bulk.rest.client.dto.v1_0.DefaultPermissionBulkAction;
 import com.liferay.bulk.rest.client.dto.v1_0.DeleteAssetVersionBulkAction;
 import com.liferay.bulk.rest.client.dto.v1_0.DeleteBulkAction;
@@ -301,6 +303,22 @@ public abstract class BaseBulkActionResourceTestCase {
 				continue;
 			}
 
+			if (Objects.equals("workflow", additionalAssertFieldName)) {
+				if (!(bulkAction instanceof
+						AssignStructureDefaultWorkflowBulkAction)) {
+
+					continue;
+				}
+
+				if (((AssignStructureDefaultWorkflowBulkAction)bulkAction).
+						getWorkflow() == null) {
+
+					valid = false;
+				}
+
+				continue;
+			}
+
 			if (Objects.equals("className", additionalAssertFieldName)) {
 				if (!(bulkAction instanceof AssignToBulkAction)) {
 					continue;
@@ -335,6 +353,22 @@ public abstract class BaseBulkActionResourceTestCase {
 				}
 
 				if (((AssignToBulkAction)bulkAction).getName() == null) {
+					valid = false;
+				}
+
+				continue;
+			}
+
+			if (Objects.equals(
+					"objectEntryFolderId", additionalAssertFieldName)) {
+
+				if (!(bulkAction instanceof CopyBulkAction)) {
+					continue;
+				}
+
+				if (((CopyBulkAction)bulkAction).getObjectEntryFolderId() ==
+						null) {
+
 					valid = false;
 				}
 
@@ -819,6 +853,27 @@ public abstract class BaseBulkActionResourceTestCase {
 				continue;
 			}
 
+			if (Objects.equals("workflow", additionalAssertFieldName)) {
+				if (!(bulkAction1 instanceof
+						AssignStructureDefaultWorkflowBulkAction) ||
+					!(bulkAction2 instanceof
+						AssignStructureDefaultWorkflowBulkAction)) {
+
+					continue;
+				}
+
+				if (!Objects.deepEquals(
+						((AssignStructureDefaultWorkflowBulkAction)bulkAction1).
+							getWorkflow(),
+						((AssignStructureDefaultWorkflowBulkAction)bulkAction2).
+							getWorkflow())) {
+
+					return false;
+				}
+
+				continue;
+			}
+
 			if (Objects.equals("className", additionalAssertFieldName)) {
 				if (!(bulkAction1 instanceof AssignToBulkAction) ||
 					!(bulkAction2 instanceof AssignToBulkAction)) {
@@ -867,6 +922,26 @@ public abstract class BaseBulkActionResourceTestCase {
 				if (!Objects.deepEquals(
 						((AssignToBulkAction)bulkAction1).getName(),
 						((AssignToBulkAction)bulkAction2).getName())) {
+
+					return false;
+				}
+
+				continue;
+			}
+
+			if (Objects.equals(
+					"objectEntryFolderId", additionalAssertFieldName)) {
+
+				if (!(bulkAction1 instanceof CopyBulkAction) ||
+					!(bulkAction2 instanceof CopyBulkAction)) {
+
+					continue;
+				}
+
+				if (!Objects.deepEquals(
+						((CopyBulkAction)bulkAction1).getObjectEntryFolderId(),
+						((CopyBulkAction)bulkAction2).
+							getObjectEntryFolderId())) {
 
 					return false;
 				}
@@ -1472,6 +1547,19 @@ public abstract class BaseBulkActionResourceTestCase {
 	protected BulkAction randomBulkAction() throws Exception {
 		List<Supplier<BulkAction>> suppliers = Arrays.asList(
 			() -> {
+				AssignStructureDefaultWorkflowBulkAction bulkAction =
+					new AssignStructureDefaultWorkflowBulkAction();
+
+				bulkAction.setWorkflow(
+					StringUtil.toLowerCase(RandomTestUtil.randomString()));
+
+				bulkAction.setType(
+					BulkAction.Type.create(
+						"AssignStructureDefaultWorkflowBulkAction"));
+
+				return bulkAction;
+			},
+			() -> {
 				AssignToBulkAction bulkAction = new AssignToBulkAction();
 
 				bulkAction.setClassName(
@@ -1483,6 +1571,15 @@ public abstract class BaseBulkActionResourceTestCase {
 
 				bulkAction.setType(
 					BulkAction.Type.create("AssignToBulkAction"));
+
+				return bulkAction;
+			},
+			() -> {
+				CopyBulkAction bulkAction = new CopyBulkAction();
+
+				bulkAction.setObjectEntryFolderId(RandomTestUtil.randomLong());
+
+				bulkAction.setType(BulkAction.Type.create("CopyBulkAction"));
 
 				return bulkAction;
 			},

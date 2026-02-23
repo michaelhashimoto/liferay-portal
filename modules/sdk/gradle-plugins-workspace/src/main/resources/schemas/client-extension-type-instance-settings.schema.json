@@ -188,6 +188,9 @@
 				"liferayAnalyticsConnectionType": {
 					"type": "string"
 				},
+				"liferayAnalyticsCredentialType": {
+					"type": "string"
+				},
 				"liferayAnalyticsDataSourceId": {
 					"type": "string"
 				},
@@ -3370,30 +3373,6 @@
 					"type": "boolean"
 				},
 				"pid": {
-					"const": "com.liferay.portal.search.elasticsearch7.configuration.DeepPaginationConfiguration",
-					"title": "Deep Pagination Configuration"
-				},
-				"pointInTimeKeepAliveSeconds": {
-					"default": 60,
-					"description": "The amount of time in seconds the search engine will keep a point in time alive (between 1 and 60).",
-					"title": "Point in Time Keep Alive",
-					"type": "number"
-				}
-			},
-			"required": [
-				"pid"
-			],
-			"title": "Deep Pagination Configuration"
-		},
-		{
-			"properties": {
-				"enableDeepPagination": {
-					"default": false,
-					"description": "Enable deep pagination to paginate through all the results of a search query.",
-					"title": "Enable Deep Pagination",
-					"type": "boolean"
-				},
-				"pid": {
 					"const": "com.liferay.portal.search.elasticsearch8.configuration.DeepPaginationConfiguration",
 					"title": "Deep Pagination Configuration"
 				},
@@ -4197,24 +4176,6 @@
 		},
 		{
 			"properties": {
-				"enableApplicationsMenu": {
-					"default": true,
-					"description": "When enabled, the control panel applications and cross-site applications will be accessible through the new applications menu which can be accessed by clicking the grid menu icon in the upper-right corner.",
-					"title": "Enable Applications Menu",
-					"type": "boolean"
-				},
-				"pid": {
-					"const": "com.liferay.product.navigation.applications.menu.configuration.ApplicationsMenuInstanceConfiguration",
-					"title": "Applications Menu"
-				}
-			},
-			"required": [
-				"pid"
-			],
-			"title": "Applications Menu"
-		},
-		{
-			"properties": {
 				"personalApplicationsLookAndFeel": {
 					"default": "current-site",
 					"description": "Define the look and feel for personal applications. Use the same look and feel of the current site or My Dashboard pages.",
@@ -4996,7 +4957,6 @@
 				"com.liferay.portal.defaultpermissions.configuration.PortalDefaultPermissionsCompanyConfiguration",
 				"com.liferay.portal.remote.cors.configuration.PortalCORSConfiguration",
 				"com.liferay.portal.search.configuration.SemanticSearchConfiguration",
-				"com.liferay.portal.search.elasticsearch7.configuration.DeepPaginationConfiguration",
 				"com.liferay.portal.search.elasticsearch8.configuration.DeepPaginationConfiguration",
 				"com.liferay.portal.search.internal.configuration.SiteActivityAsahConfiguration",
 				"com.liferay.portal.search.internal.configuration.UserActivityAsahConfiguration",
@@ -5014,7 +4974,6 @@
 				"com.liferay.portal.url.builder.configuration.PortalURLBuilderConfiguration",
 				"com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration",
 				"com.liferay.portal.vulcan.internal.configuration.VulcanCompanyConfiguration",
-				"com.liferay.product.navigation.applications.menu.configuration.ApplicationsMenuInstanceConfiguration",
 				"com.liferay.product.navigation.personal.menu.configuration.PersonalMenuConfiguration",
 				"com.liferay.redirect.internal.configuration.RedirectURLConfiguration",
 				"com.liferay.saml.runtime.configuration.SamlProviderConfiguration",

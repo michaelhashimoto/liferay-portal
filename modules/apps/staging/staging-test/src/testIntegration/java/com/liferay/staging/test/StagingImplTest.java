@@ -62,7 +62,6 @@ import com.liferay.portal.kernel.test.TestInfo;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.DeleteAfterTestRun;
 import com.liferay.portal.kernel.test.rule.Sync;
-import com.liferay.portal.kernel.test.util.FeatureFlagTestUtil;
 import com.liferay.portal.kernel.test.util.GroupTestUtil;
 import com.liferay.portal.kernel.test.util.PropsValuesTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
@@ -86,8 +85,6 @@ import com.liferay.portal.kernel.zip.ZipReader;
 import com.liferay.portal.kernel.zip.ZipReaderFactory;
 import com.liferay.portal.test.log.LogCapture;
 import com.liferay.portal.test.log.LoggerTestUtil;
-import com.liferay.portal.test.rule.FeatureFlag;
-import com.liferay.portal.test.rule.FeatureFlags;
 import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.test.rule.PermissionCheckerMethodTestRule;
@@ -344,16 +341,10 @@ public class StagingImplTest {
 		enableLocalStaging(false);
 	}
 
-	@FeatureFlags(
-		featureFlags = {@FeatureFlag("LPD-35443"), @FeatureFlag("LPD-35914")}
-	)
 	@Test
 	@TestInfo("LPD-75738")
 	public void testLocalStagingAssetTagsFromLastPublishDateWithBatchEngine()
 		throws Exception {
-
-		FeatureFlagTestUtil.invokeFeatureFlagListeners(
-			TestPropsValues.getCompanyId(), true, "LPD-35914");
 
 		String externalReferenceCode = StringUtil.toLowerCase(
 			RandomTestUtil.randomString());
@@ -402,20 +393,11 @@ public class StagingImplTest {
 				externalReferenceCode, _group.getGroupId());
 
 		Assert.assertEquals(stagingAssetTag.getName(), liveAssetTag.getName());
-
-		FeatureFlagTestUtil.invokeFeatureFlagListeners(
-			TestPropsValues.getCompanyId(), false, "LPD-35914");
 	}
 
-	@FeatureFlags(
-		featureFlags = {@FeatureFlag("LPD-35443"), @FeatureFlag("LPD-35914")}
-	)
 	@Test
 	@TestInfo("LPD-75738")
 	public void testLocalStagingChangesetEntries() throws Exception {
-		FeatureFlagTestUtil.invokeFeatureFlagListeners(
-			TestPropsValues.getCompanyId(), true, "LPD-35914");
-
 		enableLocalStaging(true);
 
 		Group stagingGroup = _group.getStagingGroup();
@@ -462,9 +444,6 @@ public class StagingImplTest {
 			count,
 			_changesetEntryLocalService.getChangesetEntriesCount(
 				changesetCollection.getChangesetCollectionId()));
-
-		FeatureFlagTestUtil.invokeFeatureFlagListeners(
-			TestPropsValues.getCompanyId(), false, "LPD-35914");
 	}
 
 	@Test

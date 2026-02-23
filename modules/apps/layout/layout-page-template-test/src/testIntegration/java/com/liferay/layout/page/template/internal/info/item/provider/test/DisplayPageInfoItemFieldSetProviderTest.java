@@ -101,7 +101,7 @@ public class DisplayPageInfoItemFieldSetProviderTest {
 		_layoutPageTemplateEntry =
 			DisplayPageTemplateTestUtil.addDisplayPageTemplate(
 				_group.getGroupId(), _classNameId,
-				_journalArticle.getDDMStructureId(), true,
+				_journalArticle.getDDMStructureKey(), true,
 				WorkflowConstants.STATUS_APPROVED);
 
 		AssetDisplayPageEntry assetDisplayPageEntry =
@@ -165,7 +165,7 @@ public class DisplayPageInfoItemFieldSetProviderTest {
 		DisplayPageTemplateTestUtil.addDisplayPageTemplate(
 			_group.getGroupId(),
 			_portal.getClassNameId(JournalArticle.class.getName()),
-			_journalArticle.getDDMStructureId(), false,
+			_journalArticle.getDDMStructureKey(), false,
 			WorkflowConstants.STATUS_DRAFT);
 
 		InfoItemReference infoItemReference = new InfoItemReference(
