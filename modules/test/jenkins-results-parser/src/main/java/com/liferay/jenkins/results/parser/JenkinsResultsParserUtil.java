@@ -6017,13 +6017,27 @@ public class JenkinsResultsParserUtil {
 		}
 	}
 
+	public static void unTar(File sourceTarFile, File targetDir) {
+		targetDir.mkdirs();
+
+		try {
+			executeBashCommands(
+				combine(
+					"tar --directory=", getCanonicalPath(targetDir),
+					" --extract --file=", getCanonicalPath(sourceTarFile)));
+		}
+		catch (IOException | TimeoutException exception) {
+			throw new RuntimeException(exception);
+		}
+	}
+
 	public static void unTarGzip(File sourceTarGzipFile, File targetDir) {
 		targetDir.mkdirs();
 
 		try {
 			executeBashCommands(
 				combine(
-					"tar  --directory=", getCanonicalPath(targetDir),
+					"tar --directory=", getCanonicalPath(targetDir),
 					" --extract --file=", getCanonicalPath(sourceTarGzipFile),
 					" --gzip"));
 		}
