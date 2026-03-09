@@ -6,6 +6,7 @@
 package com.liferay.jenkins.results.parser;
 
 import java.io.File;
+import java.io.IOException;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -266,6 +267,51 @@ public class JobFactory {
 			null, jobName, null, null, null, null, null, null, null, null);
 	}
 
+	private static String _getS3ObjectPath(
+		String jobName, PortalGitWorkingDirectory portalGitWorkingDirectory,
+		String testSuiteName) {
+
+		if (portalGitWorkingDirectory == null) {
+			return null;
+		}
+
+		StringBuilder sb = new StringBuilder();
+
+		try {
+			sb.append(
+				JenkinsResultsParserUtil.getBuildProperty(
+					"cloud.ci.s3.bucket.job.cache.path"));
+		}
+		catch (IOException ioException) {
+			throw new RuntimeException(ioException);
+		}
+
+		LocalGitBranch currentLocalGitBranch =
+			portalGitWorkingDirectory.getCurrentLocalGitBranch();
+		LocalGitBranch upstreamLocalGitBranch =
+			portalGitWorkingDirectory.getUpstreamLocalGitBranch();
+
+		sb.append("/");
+		sb.append(jobName.replaceAll("[\\/\\(\\)]+", "__"));
+		sb.append("/");
+		sb.append(portalGitWorkingDirectory.getGitRepositoryName());
+		sb.append("/");
+		sb.append(upstreamLocalGitBranch.getSHA());
+		sb.append("/");
+		sb.append(currentLocalGitBranch.getSHA());
+		sb.append("/");
+
+		if (JenkinsResultsParserUtil.isNullOrEmpty(testSuiteName)) {
+			testSuiteName = "default";
+		}
+
+		sb.append(testSuiteName);
+
+		sb.append(".json.gz");
+
+		return sb.toString();
+	}
+
 	private static Job _newJob(
 		Job.BuildProfile buildProfile, String jobName, JSONObject jsonObject,
 		PortalGitWorkingDirectory portalGitWorkingDirectory,
@@ -276,10 +322,32 @@ public class JobFactory {
 
 		String key = null;
 
+		String s3ObjectPath = _getS3ObjectPath(
+			jobName, portalGitWorkingDirectory, testSuiteName);
+
+		System.out.println("s3ObjectPath=" + s3ObjectPath);
+
 		if (jsonObject != null) {
 			jobName = jsonObject.getString("job_name");
 
 			key = getKey(jsonObject);
+		}
+		else if (!JenkinsResultsParserUtil.isNullOrEmpty(s3ObjectPath)) {
+			File file = new File("job.json.gz");
+
+			try {
+				CloudBucketUtil.downloadS3File(file, s3ObjectPath);
+
+				jsonObject = new JSONObject(
+					JenkinsResultsParserUtil.read(file));
+
+				jobName = jsonObject.getString("job_name");
+
+				key = getKey(jsonObject);
+			}
+			catch (IOException ioException) {
+				throw new RuntimeException(ioException);
+			}
 		}
 		else {
 			key = getKey(
