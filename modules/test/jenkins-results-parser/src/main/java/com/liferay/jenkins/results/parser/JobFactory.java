@@ -23,6 +23,53 @@ import org.json.JSONObject;
  */
 public class JobFactory {
 
+	public static void cacheJob(Job job) {
+		if (!JenkinsResultsParserUtil.isCloudCINode()) {
+			return;
+		}
+
+		PortalGitWorkingDirectory portalGitWorkingDirectory = null;
+
+		if (job instanceof PortalGitRepositoryJob) {
+			PortalGitRepositoryJob portalGitRepositoryJob =
+				(PortalGitRepositoryJob)job;
+
+			portalGitWorkingDirectory =
+				portalGitRepositoryJob.getPortalGitWorkingDirectory();
+		}
+
+		String testSuiteName = null;
+
+		if (job instanceof TestSuiteJob) {
+			TestSuiteJob testSuiteJob = (TestSuiteJob)job;
+
+			testSuiteName = testSuiteJob.getTestSuiteName();
+		}
+
+		String s3ObjectPath = _getS3ObjectPath(
+			job.getJobName(), portalGitWorkingDirectory, testSuiteName);
+
+		if (JenkinsResultsParserUtil.isNullOrEmpty(s3ObjectPath)) {
+			return;
+		}
+
+		File jobFile = new File("job.json");
+		File jobGzFile = new File("job.json.gz");
+
+		JSONObject jsonObject = job.getJSONObject();
+
+		try {
+			JenkinsResultsParserUtil.write(jobFile, String.valueOf(jsonObject));
+
+			JenkinsResultsParserUtil.gzip(jobFile, jobGzFile);
+
+			CloudBucketUtil.uploadS3File(s3ObjectPath, jobGzFile);
+		}
+		catch (IOException ioException) {
+			throw new RuntimeException(ioException);
+		}
+	}
+
 	public static String getKey(Job job) {
 		List<String> projectNames = null;
 
@@ -273,53 +320,6 @@ public class JobFactory {
 	public static Job newJob(String jobName) {
 		return _newJob(
 			null, jobName, null, null, null, null, null, null, null, null);
-	}
-
-	public void cacheJob(Job job) {
-		if (!JenkinsResultsParserUtil.isCloudCINode()) {
-			return;
-		}
-
-		PortalGitWorkingDirectory portalGitWorkingDirectory = null;
-
-		if (job instanceof PortalGitRepositoryJob) {
-			PortalGitRepositoryJob portalGitRepositoryJob =
-				(PortalGitRepositoryJob)job;
-
-			portalGitWorkingDirectory =
-				portalGitRepositoryJob.getPortalGitWorkingDirectory();
-		}
-
-		String testSuiteName = null;
-
-		if (job instanceof TestSuiteJob) {
-			TestSuiteJob testSuiteJob = (TestSuiteJob)job;
-
-			testSuiteName = testSuiteJob.getTestSuiteName();
-		}
-
-		String s3ObjectPath = _getS3ObjectPath(
-			job.getJobName(), portalGitWorkingDirectory, testSuiteName);
-
-		if (JenkinsResultsParserUtil.isNullOrEmpty(s3ObjectPath)) {
-			return;
-		}
-
-		File jobFile = new File("job.json");
-		File jobGzFile = new File("job.json.gz");
-
-		JSONObject jsonObject = job.getJSONObject();
-
-		try {
-			JenkinsResultsParserUtil.write(jobFile, String.valueOf(jsonObject));
-
-			JenkinsResultsParserUtil.gzip(jobFile, jobGzFile);
-
-			CloudBucketUtil.uploadS3File(s3ObjectPath, jobGzFile);
-		}
-		catch (IOException ioException) {
-			throw new RuntimeException(ioException);
-		}
 	}
 
 	private static String _getS3ObjectPath(
