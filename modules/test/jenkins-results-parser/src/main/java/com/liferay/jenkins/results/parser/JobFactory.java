@@ -200,10 +200,18 @@ public class JobFactory {
 			portalUpstreamBranchName = topLevelBuild.getBranchName();
 		}
 
+		PortalGitWorkingDirectory portalGitWorkingDirectory = null;
+
+		if (JenkinsResultsParserUtil.isCINode()) {
+			portalGitWorkingDirectory =
+				GitWorkingDirectoryFactory.newPortalGitWorkingDirectory(
+					portalUpstreamBranchName);
+		}
+
 		return _newJob(
 			topLevelBuild.getBuildProfile(), topLevelBuild.getJobName(), null,
-			null, portalHotfixRelease, portalUpstreamBranchName,
-			topLevelBuild.getProjectNames(),
+			portalGitWorkingDirectory, portalHotfixRelease,
+			portalUpstreamBranchName, topLevelBuild.getProjectNames(),
 			topLevelBuild.getBaseGitRepositoryName(),
 			topLevelBuild.getTestSuiteName(), topLevelBuild.getBranchName());
 	}
