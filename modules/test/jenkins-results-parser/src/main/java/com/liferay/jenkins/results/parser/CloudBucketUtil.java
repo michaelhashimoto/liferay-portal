@@ -288,7 +288,13 @@ public class CloudBucketUtil {
 		try {
 			String listS3Files = listS3Files(s3ObjectPath, true);
 
-			return !JenkinsResultsParserUtil.isNullOrEmpty(listS3Files.trim());
+			if (!JenkinsResultsParserUtil.isNullOrEmpty(listS3Files.trim())) {
+				return true;
+			}
+
+			File s3ObjectRefFile = _getS3ObjectRefFile(s3ObjectPath);
+
+			return s3ObjectRefFile.exists();
 		}
 		catch (IOException | TimeoutException exception) {
 			return false;
