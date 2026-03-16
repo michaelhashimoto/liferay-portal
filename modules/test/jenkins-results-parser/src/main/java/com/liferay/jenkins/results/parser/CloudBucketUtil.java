@@ -329,6 +329,19 @@ public class CloudBucketUtil {
 			process.getInputStream());
 	}
 
+	public static String readS3File(String s3SourcePath) throws IOException {
+		File tempFile = File.createTempFile("s3-file-", ".tmp");
+
+		try {
+			downloadS3File(tempFile, s3SourcePath);
+
+			return JenkinsResultsParserUtil.read(tempFile);
+		}
+		finally {
+			JenkinsResultsParserUtil.delete(tempFile);
+		}
+	}
+
 	public static void syncGCPFiles(String destination, String source)
 		throws IOException {
 
@@ -426,6 +439,40 @@ public class CloudBucketUtil {
 			_VALIDATE_CHECKSUM) {
 
 			_createChecksumFile(replacedS3DestinationPath, sourceFile);
+		}
+	}
+
+	public static void uploadS3ObjectFromContent(
+			String s3DestinationPath, String content)
+		throws IOException {
+
+		File tempFile = File.createTempFile("s3-file-", ".tmp");
+
+		File tempGzipFile = null;
+
+		if (s3DestinationPath.endsWith(".gz")) {
+			tempGzipFile = File.createTempFile("s3-file-", ".tmp.gz");
+		}
+
+		try {
+			JenkinsResultsParserUtil.write(tempFile, content);
+
+			if (s3DestinationPath.endsWith(".gz") && (tempGzipFile != null)) {
+				JenkinsResultsParserUtil.gzip(tempFile, tempGzipFile);
+
+				uploadS3File(s3DestinationPath, tempGzipFile);
+
+				return;
+			}
+
+			uploadS3File(s3DestinationPath, tempFile);
+		}
+		finally {
+			JenkinsResultsParserUtil.delete(tempFile);
+
+			if (tempGzipFile != null) {
+				JenkinsResultsParserUtil.delete(tempGzipFile);
+			}
 		}
 	}
 
