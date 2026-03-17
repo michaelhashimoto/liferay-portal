@@ -5,6 +5,10 @@
 
 package com.liferay.jenkins.results.parser.persistent.resource;
 
+import com.liferay.jenkins.results.parser.CloudBucketUtil;
+import com.liferay.jenkins.results.parser.JenkinsMaster;
+import com.liferay.jenkins.results.parser.JenkinsResultsParserUtil;
+
 import java.util.List;
 
 import org.json.JSONObject;
@@ -14,27 +18,98 @@ import org.json.JSONObject;
  */
 public interface PersistentResource {
 
+	public void addPersistentResourceArtifact(Artifact artifact);
+
+	public List<Artifact> getArtifacts();
+
+	public String getBaseS3ObjectPath();
+
 	public String getControllerBuildURL();
 
 	public JSONObject getJSONObject();
 
-	public String getKey();
-
-	public List<PersistentResourceArtifact> getPersistentResourceArtifacts();
-
 	public String getProducerBuildURL();
+
+	public JenkinsMaster getProducerJenkinsMaster();
 
 	public long getProducerQueueId();
 
+	public String getS3ObjectPath();
+
 	public Status getStatus();
 
-	public void touch();
+	public Type getType();
 
-	public long trigger();
+	public boolean isArtifactsAvailable();
 
-	public enum Status {
+	public boolean isController();
 
-		ABANDONED, FAILED, IN_PROGRESS, IN_QUEUE, NOT_STARTED, SUCCESS, WAITING
+	public boolean isMissing();
+
+	public void print(String message);
+
+	public void start();
+
+	public void update();
+
+	public static class Artifact {
+
+		public JSONObject getJSONObject() {
+			JSONObject jsonObject = new JSONObject();
+
+			jsonObject.put(
+				"name", getName()
+			).put(
+				"s3_object_path", getS3ObjectPath()
+			);
+
+			return jsonObject;
+		}
+
+		public String getName() {
+			return _name;
+		}
+
+		public String getS3ObjectPath() {
+			return JenkinsResultsParserUtil.combine(
+				_persistentResource.getBaseS3ObjectPath(), "/", getName());
+		}
+
+		public boolean isAvailable() {
+			return CloudBucketUtil.isS3ObjectPathAvailable(getS3ObjectPath());
+		}
+
+		protected Artifact(String name, PersistentResource persistentResource) {
+			_name = name;
+			_persistentResource = persistentResource;
+		}
+
+		private final String _name;
+		private final PersistentResource _persistentResource;
+
+	}
+
+	public static enum Status {
+
+		FAILED, IN_PROGRESS, IN_QUEUE, SUCCESS
+
+	}
+
+	public static enum Type {
+
+		ASAH_BUNDLE("asah-bundle"), FARO_BUNDLE("faro-bundle"),
+		PORTAL_BUNDLE("portal-bundle");
+
+		@Override
+		public String toString() {
+			return _key;
+		}
+
+		private Type(String key) {
+			_key = key;
+		}
+
+		private final String _key;
 
 	}
 

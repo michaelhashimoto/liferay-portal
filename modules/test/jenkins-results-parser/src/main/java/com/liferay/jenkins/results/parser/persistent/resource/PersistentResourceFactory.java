@@ -5,13 +5,10 @@
 
 package com.liferay.jenkins.results.parser.persistent.resource;
 
-import com.liferay.jenkins.results.parser.CloudBucketUtil;
-import com.liferay.jenkins.results.parser.JenkinsResultsParserUtil;
-import com.liferay.jenkins.results.parser.WorkspaceGitRepository;
+import com.liferay.jenkins.results.parser.TopLevelBuild;
 
-import java.io.IOException;
-
-import org.json.JSONObject;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author Michael Hashimoto
@@ -19,64 +16,30 @@ import org.json.JSONObject;
 public class PersistentResourceFactory {
 
 	public static PersistentResource newPersistentResource(
-			String resourceName,
-			WorkspaceGitRepository workspaceGitRepository)
-		throws IOException {
+		TopLevelBuild topLevelBuild, PersistentResource.Type type) {
 
-		String key = _getKey(resourceName, workspaceGitRepository);
-
-		String s3ObjectPath = _getS3ObjectPath(
-			resourceName, workspaceGitRepository);
-
-		JSONObject jsonObject = null;
-
-		if (CloudBucketUtil.isS3ObjectRefAvailable(s3ObjectPath)) {
-			jsonObject = new JSONObject(
-				CloudBucketUtil.readS3File(s3ObjectPath));
-		}
-		else {
-			jsonObject = new JSONObject();
+		if (_persistentResources.containsKey(type)) {
+			return _persistentResources.get(type);
 		}
 
-		if (resourceName.equals("app-server-bundle")) {
-			return new AppServerBundlePersistentResource(
-				key, jsonObject, s3ObjectPath, workspaceGitRepository);
+		if (type == PersistentResource.Type.ASAH_BUNDLE) {
+			_persistentResources.put(
+				type, new AsahBundlePersistentResource(topLevelBuild));
 		}
 
-		return null;
+		if (type == PersistentResource.Type.FARO_BUNDLE) {
+			_persistentResources.put(
+				type, new FaroBundlePersistentResource(topLevelBuild));
+		}
+		else if (type == PersistentResource.Type.PORTAL_BUNDLE) {
+			_persistentResources.put(
+				type, new PortalBundlePersistentResource(topLevelBuild));
+		}
+
+		return _persistentResources.get(type);
 	}
 
-	private static String _getKey(
-		String resourceName, WorkspaceGitRepository workspaceGitRepository) {
-
-		StringBuilder sb = new StringBuilder();
-
-		sb.append(workspaceGitRepository.getName());
-		sb.append("/");
-		sb.append(workspaceGitRepository.getBaseBranchSHA());
-		sb.append("/");
-		sb.append(workspaceGitRepository.getSenderBranchSHA());
-		sb.append("/");
-		sb.append(resourceName);
-
-		return sb.toString();
-	}
-
-	private static String _getS3ObjectPath(
-			String resourceName,
-			WorkspaceGitRepository workspaceGitRepository)
-		throws IOException {
-
-		StringBuilder sb = new StringBuilder();
-
-		sb.append(
-			JenkinsResultsParserUtil.getBuildProperty(
-				"cloud.ci.s3.bucket.bundles.path"));
-		sb.append("/");
-		sb.append(_getKey(resourceName, workspaceGitRepository));
-		sb.append("/resource-state.json");
-
-		return sb.toString();
-	}
+	private static final Map<PersistentResource.Type, PersistentResource>
+		_persistentResources = new HashMap<>();
 
 }

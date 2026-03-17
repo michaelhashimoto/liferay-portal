@@ -5,90 +5,75 @@
 
 package com.liferay.jenkins.results.parser.persistent.resource;
 
+import com.liferay.jenkins.results.parser.JenkinsMaster;
 import com.liferay.jenkins.results.parser.JenkinsResultsParserUtil;
-
-import java.util.Objects;
 
 /**
  * @author Michael Hashimoto
  */
 public class PersistentResourceManager {
 
-	public void waitForPersistentResource(
+	public static void waitForPersistentResource(
 		PersistentResource persistentResource) {
 
-		PersistentResource.Status status = persistentResource.getStatus();
-
-		if ((status == PersistentResource.Status.NOT_STARTED) ||
-			(status == PersistentResource.Status.ABANDONED)) {
-
-			persistentResource.trigger();
-		}
-
-		int abandonedCount = 0;
+		persistentResource.update();
 
 		while (true) {
-			status = persistentResource.getStatus();
+			PersistentResource.Status status = persistentResource.getStatus();
 
-			String role = _getRole(persistentResource);
+			if (status == PersistentResource.Status.IN_QUEUE) {
+				JenkinsMaster producerJenkinsMaster =
+					persistentResource.getProducerJenkinsMaster();
 
-			if (status == PersistentResource.Status.SUCCESS) {
-				persistentResource.touch();
+				persistentResource.print(
+					"In queue at " + producerJenkinsMaster.getURL());
 
-				System.out.println(
-					role + " Resource is available: " +
-						persistentResource.getKey());
+				_sleepAndUpdate(persistentResource);
 
-				return;
+				continue;
+			}
+
+			String producerBuildURL = persistentResource.getProducerBuildURL();
+
+			if (status == PersistentResource.Status.IN_PROGRESS) {
+				if (persistentResource.isController()) {
+					persistentResource.print(
+						"Building artifact at " + producerBuildURL);
+				}
+				else {
+					persistentResource.print(
+						"Waiting for artifact from " + producerBuildURL);
+				}
+
+				_sleepAndUpdate(persistentResource);
+
+				continue;
 			}
 
 			if (status == PersistentResource.Status.FAILED) {
-				throw new RuntimeException(
-					role + " Resource production failed: " +
-						persistentResource.getKey());
+				String failureMessage =
+					"Failed to build artifacts at " + producerBuildURL;
+
+				persistentResource.print(failureMessage);
+
+				throw new RuntimeException(failureMessage);
 			}
 
-			if (status == PersistentResource.Status.ABANDONED) {
-				abandonedCount++;
+			if (status == PersistentResource.Status.SUCCESS) {
+				persistentResource.print(
+					"Completed successfully at " + producerBuildURL);
 
-				if (abandonedCount >= 3) {
-					System.out.println(
-						role + " Resource was abandoned. Promoting to " +
-							"[IN_PROGRESS] and retrying...");
-
-					persistentResource.trigger();
-
-					abandonedCount = 0;
-				}
-			}
-			else {
-				abandonedCount = 0;
+				break;
 			}
 
-			System.out.println(
-				role + " Waiting for resource: " + persistentResource.getKey() +
-					" (Status: " + status + ")");
-
-			JenkinsResultsParserUtil.sleep(30000);
+			_sleepAndUpdate(persistentResource);
 		}
 	}
 
-	private String _getRole(PersistentResource persistentResource) {
-		PersistentResource.Status status = persistentResource.getStatus();
+	private static void _sleepAndUpdate(PersistentResource persistentResource) {
+		JenkinsResultsParserUtil.sleep(30000);
 
-		if (status == PersistentResource.Status.NOT_STARTED) {
-			return "[IN_PROGRESS]";
-		}
-
-		String buildURL = JenkinsResultsParserUtil.getBuildProperty("BUILD_URL");
-
-		if (Objects.equals(
-				buildURL, persistentResource.getControllerBuildURL())) {
-
-			return "[IN_PROGRESS]";
-		}
-
-		return "[WAITING]";
+		persistentResource.update();
 	}
 
 }
