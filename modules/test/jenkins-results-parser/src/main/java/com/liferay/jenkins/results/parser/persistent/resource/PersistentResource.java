@@ -48,6 +48,10 @@ public interface PersistentResource {
 
 	public void print(String message);
 
+	public void printStatusMessage();
+
+	public String getStatusMessage();
+
 	public void start();
 
 	public void update();
@@ -91,7 +95,7 @@ public interface PersistentResource {
 
 	public static enum Status {
 
-		FAILED, IN_PROGRESS, IN_QUEUE, SUCCESS
+		FAILED, IN_PROGRESS, IN_QUEUE, NOT_STARTED, SUCCESS
 
 	}
 

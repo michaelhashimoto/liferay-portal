@@ -58,8 +58,37 @@ public abstract class BaseBundlePersistentResource
 	}
 
 	@Override
-	public void print(String message) {
-		System.out.println("[" + getType() + "] " + message);
+	public String getStatusMessage() {
+		Status status = getStatus();
+
+		if (status == PersistentResource.Status.FAILED) {
+			return "Failed to build artifacts at " + getProducerBuildURL();
+		}
+		else if (status == Status.IN_PROGRESS) {
+			if (isController()) {
+				return "Building artifact at " + getProducerBuildURL();
+			}
+
+			return "Building artifact at " + getProducerBuildURL();
+		}
+		else if (status == Status.IN_QUEUE) {
+			return "In queue at " + _getProducerJobURL();
+		}
+		else if (status == PersistentResource.Status.SUCCESS) {
+			return "Completed successfully at " + getProducerBuildURL();
+		}
+
+		return "Not started";
+	}
+
+	private String _getProducerJobURL() {
+		JenkinsMaster producerJenkinsMaster = getProducerJenkinsMaster();
+
+		if (producerJenkinsMaster == null) {
+			return null;
+		}
+
+		return producerJenkinsMaster.getRemoteURL() + "/job/" + _JOB_NAME;
 	}
 
 	@Override
@@ -91,6 +120,8 @@ public abstract class BaseBundlePersistentResource
 
 		buildDatabase.putProperties(key, properties, true);
 
+		buildDatabase.uploadBuildDatabaseFileToCloudBucket();
+
 		JenkinsMaster jenkinsMaster =
 			JenkinsResultsParserUtil.getMostAvailableJenkinsMaster(
 				topLevelBuild.getBaseInvocationURL(), 1, _SLAVE_LABEL);
@@ -106,13 +137,15 @@ public abstract class BaseBundlePersistentResource
 
 		save();
 
-		print("Invoked build on " + jenkinsMaster.getURL());
+		print("Invoked at " + _getProducerJobURL());
 	}
 
 	@Override
 	public void update() {
 		if (!isController()) {
 			JSONObject s3JSONObject = getS3JSONObject();
+
+			System.out.println("s3JSONObject=" + s3JSONObject.toString(2));
 
 			if (s3JSONObject == null) {
 				start();
@@ -164,76 +197,13 @@ public abstract class BaseBundlePersistentResource
 
 		Status status = getStatus();
 
-		if (status == Status.IN_QUEUE) {
-			JenkinsMaster producerJenkinsMaster = getProducerJenkinsMaster();
-
-			long producerQueueId = getProducerQueueId();
-
-			for (JenkinsMaster.QueueItem queueItem :
-					producerJenkinsMaster.getQueueItems()) {
-
-				if (queueItem.getId() == producerQueueId) {
-					System.out.println("Build is In Queue");
-
-					return;
-				}
-			}
-
-			String producerBuildURL = JenkinsResultsParserUtil.getBuildURL(
-				_JOB_NAME, producerJenkinsMaster, producerQueueId);
-
-			if (producerBuildURL != null) {
-				setStatus(Status.IN_PROGRESS);
-
-				if (isController()) {
-					setProducerBuildURL(producerBuildURL);
-
-					save();
-				}
-
-				System.out.println("Build is In Progress");
-
-				return;
-			}
-
-			System.out.println("WARNING: Unable to find queue item");
-
-			return;
-		}
-
-		if (status == Status.IN_PROGRESS) {
-			String producerBuildURL = getProducerBuildURL();
-
-			JSONObject apiJSONObject = JenkinsAPIUtil.getAPIJSONObject(
-				producerBuildURL);
-
-			String result = apiJSONObject.optString("result");
-
-			if (result == null) {
-				System.out.println(producerBuildURL + " is in progress");
-
-				return;
-			}
-
-			if (Objects.equals(result, "SUCCESS")) {
-				setStatus(Status.SUCCESS);
-			}
-			else {
-				setStatus(Status.FAILED);
-			}
-
-			save();
-
-			return;
-		}
-
-		if ((status == Status.SUCCESS) || (status == Status.FAILED)) {
+		if ((status == Status.FAILED) || (status == Status.SUCCESS)) {
 			String producerBuildURL = getProducerBuildURL();
 
 			TopLevelBuild topLevelBuild = getTopLevelBuild();
 
 			Build build = BuildFactory.newBuild(
-				producerBuildURL, getJobVariant(), topLevelBuild);
+					producerBuildURL, getJobVariant(), topLevelBuild);
 
 			topLevelBuild.addDownstreamBuild(build);
 
@@ -245,6 +215,55 @@ public abstract class BaseBundlePersistentResource
 			setProducerQueueId(buildInvocation.getQueueId());
 
 			save();
+		}
+		else if (status == Status.IN_PROGRESS) {
+			String producerBuildURL = getProducerBuildURL();
+
+			JSONObject apiJSONObject = JenkinsAPIUtil.getAPIJSONObject(
+				producerBuildURL);
+
+			String result = apiJSONObject.optString("result");
+
+			if (JenkinsResultsParserUtil.isNullOrEmpty(result)) {
+				return;
+			}
+
+			if (Objects.equals(result, "SUCCESS")) {
+				setStatus(Status.SUCCESS);
+			}
+			else {
+				setStatus(Status.FAILED);
+			}
+
+			save();
+		}
+		else if (status == Status.IN_QUEUE) {
+			JenkinsMaster producerJenkinsMaster = getProducerJenkinsMaster();
+
+			long producerQueueId = getProducerQueueId();
+
+			for (JenkinsMaster.QueueItem queueItem :
+					producerJenkinsMaster.getQueueItems()) {
+
+				if (queueItem.getId() == producerQueueId) {
+					return;
+				}
+			}
+
+			String producerBuildURL = JenkinsResultsParserUtil.getBuildURL(
+				_JOB_NAME, producerJenkinsMaster, producerQueueId);
+
+			if (producerBuildURL != null) {
+				setStatus(Status.IN_PROGRESS);
+
+				setProducerBuildURL(producerBuildURL);
+
+				save();
+
+				return;
+			}
+
+			print("WARNING: Unable to find queue item");
 		}
 	}
 

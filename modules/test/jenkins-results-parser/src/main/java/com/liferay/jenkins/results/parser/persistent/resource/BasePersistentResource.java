@@ -142,6 +142,16 @@ public abstract class BasePersistentResource implements PersistentResource {
 		return true;
 	}
 
+	@Override
+	public void print(String message) {
+		System.out.println("[" + getType() + "] " + message);
+	}
+
+	@Override
+	public void printStatusMessage() {
+		print(getStatusMessage());
+	}
+
 	protected BasePersistentResource(TopLevelBuild topLevelBuild) {
 		_topLevelBuild = topLevelBuild;
 
