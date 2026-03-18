@@ -111,7 +111,11 @@ public abstract class BasePersistentResource implements PersistentResource {
 
 	@Override
 	public boolean isArtifactsAvailable() {
+		System.out.println("getArtifacts()=" + getArtifacts());
+
 		for (Artifact artifact : getArtifacts()) {
+			System.out.println("artifact=" + artifact);
+
 			if (!artifact.isAvailable()) {
 				return false;
 			}

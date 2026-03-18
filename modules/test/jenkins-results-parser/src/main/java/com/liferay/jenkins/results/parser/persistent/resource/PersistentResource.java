@@ -83,6 +83,11 @@ public interface PersistentResource {
 			return CloudBucketUtil.isS3ObjectPathAvailable(getS3ObjectPath());
 		}
 
+		@Override
+		public String toString() {
+			return String.valueOf(getJSONObject());
+		}
+
 		protected Artifact(String name, PersistentResource persistentResource) {
 			_name = name;
 			_persistentResource = persistentResource;

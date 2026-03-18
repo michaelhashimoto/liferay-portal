@@ -153,6 +153,8 @@ public abstract class BaseBundlePersistentResource
 				return;
 			}
 
+			System.out.println("isMissing()=" + isMissing());
+
 			if (isMissing()) {
 				_missingCount++;
 
@@ -186,11 +188,11 @@ public abstract class BaseBundlePersistentResource
 
 			Status status = Status.valueOf(s3JSONObject.getString("status"));
 
+			System.out.println("status=" + status);
+
 			setStatus(status);
 
-			if ((status == Status.FAILED) || (status == Status.SUCCESS)) {
-				save();
-			}
+			System.out.println("getJSONObject()=" + getJSONObject());
 
 			return;
 		}
