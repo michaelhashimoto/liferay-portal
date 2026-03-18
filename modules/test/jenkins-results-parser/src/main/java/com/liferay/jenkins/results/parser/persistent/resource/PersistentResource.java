@@ -10,7 +10,7 @@ import com.liferay.jenkins.results.parser.JenkinsMaster;
 import com.liferay.jenkins.results.parser.JenkinsResultsParserUtil;
 
 import java.io.File;
-import java.io.IOException;
+
 import java.util.List;
 
 import org.json.JSONObject;
@@ -21,6 +21,8 @@ import org.json.JSONObject;
 public interface PersistentResource {
 
 	public void addPersistentResourceArtifact(Artifact artifact);
+
+	public void download(String artifactName, File destinationDir);
 
 	public List<Artifact> getArtifacts();
 
@@ -40,6 +42,8 @@ public interface PersistentResource {
 
 	public Status getStatus();
 
+	public String getStatusMessage();
+
 	public Type getType();
 
 	public boolean isArtifactsAvailable();
@@ -51,8 +55,6 @@ public interface PersistentResource {
 	public void print(String message);
 
 	public void printStatusMessage();
-
-	public String getStatusMessage();
 
 	public void start();
 

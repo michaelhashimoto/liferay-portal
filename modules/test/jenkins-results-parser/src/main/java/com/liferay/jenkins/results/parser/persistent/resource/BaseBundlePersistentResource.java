@@ -81,16 +81,6 @@ public abstract class BaseBundlePersistentResource
 		return "Not started";
 	}
 
-	private String _getProducerJobURL() {
-		JenkinsMaster producerJenkinsMaster = getProducerJenkinsMaster();
-
-		if (producerJenkinsMaster == null) {
-			return null;
-		}
-
-		return producerJenkinsMaster.getRemoteURL() + "job/" + _JOB_NAME;
-	}
-
 	@Override
 	public void start() {
 		TopLevelBuild topLevelBuild = getTopLevelBuild();
@@ -273,15 +263,25 @@ public abstract class BaseBundlePersistentResource
 		}
 	}
 
-	protected String getJobVariant() {
-		return String.valueOf(getType());
-	};
-
 	protected BaseBundlePersistentResource(TopLevelBuild topLevelBuild) {
 		super(topLevelBuild);
 	}
 
+	protected String getJobVariant() {
+		return String.valueOf(getType());
+	};
+
 	protected abstract WorkspaceGitRepository getBundleWorkspaceGitRepository();
+
+	private String _getProducerJobURL() {
+		JenkinsMaster producerJenkinsMaster = getProducerJenkinsMaster();
+
+		if (producerJenkinsMaster == null) {
+			return null;
+		}
+
+		return producerJenkinsMaster.getRemoteURL() + "job/" + _JOB_NAME;
+	}
 
 	private static final String _BUILD_PRIORITY = "2";
 

@@ -41,6 +41,28 @@ public abstract class BasePersistentResource implements PersistentResource {
 	}
 
 	@Override
+	public void download(String artifactName, File destinationDir) {
+		Artifact artifact = _artifacts.get(artifactName);
+
+		if (artifact == null) {
+			throw new RuntimeException(artifactName + " does not exist");
+		}
+
+		if (!artifact.isAvailable()) {
+			throw new RuntimeException(artifactName + " is not available");
+		}
+
+		try {
+			CloudBucketUtil.downloadS3File(
+				new File(destinationDir, artifactName),
+				artifact.getS3ObjectPath());
+		}
+		catch (IOException ioException) {
+			throw new RuntimeException(ioException);
+		}
+	}
+
+	@Override
 	public List<Artifact> getArtifacts() {
 		return new ArrayList<>(_artifacts.values());
 	}
@@ -196,6 +218,21 @@ public abstract class BasePersistentResource implements PersistentResource {
 		}
 	}
 
+	protected String getPortalUpstreamBranchName() {
+		Workspace workspace = getWorkspace();
+
+		if (workspace instanceof PortalWorkspace) {
+			PortalWorkspace portalWorkspace = (PortalWorkspace)workspace;
+
+			PortalWorkspaceGitRepository portalWorkspaceGitRepository =
+				portalWorkspace.getPortalWorkspaceGitRepository();
+
+			return portalWorkspaceGitRepository.getBranchName();
+		}
+
+		return "master";
+	}
+
 	protected JSONObject getS3JSONObject() {
 		String s3ObjectPath = getS3ObjectPath();
 
@@ -276,21 +313,6 @@ public abstract class BasePersistentResource implements PersistentResource {
 		}
 
 		return artifactNames;
-	}
-
-	protected String getPortalUpstreamBranchName() {
-		Workspace workspace = getWorkspace();
-
-		if (workspace instanceof PortalWorkspace) {
-			PortalWorkspace portalWorkspace = (PortalWorkspace)workspace;
-
-			PortalWorkspaceGitRepository portalWorkspaceGitRepository =
-				portalWorkspace.getPortalWorkspaceGitRepository();
-
-			return portalWorkspaceGitRepository.getBranchName();
-		}
-
-		return "master";
 	}
 
 	private final Map<String, Artifact> _artifacts = new HashMap<>();
