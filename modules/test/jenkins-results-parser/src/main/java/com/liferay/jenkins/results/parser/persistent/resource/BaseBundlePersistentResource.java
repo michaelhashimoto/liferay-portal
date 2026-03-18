@@ -36,7 +36,7 @@ public abstract class BaseBundlePersistentResource
 		try {
 			sb.append(
 				JenkinsResultsParserUtil.getBuildProperty(
-					"cloud.ci.s3.bucket.bundles.path"));
+					"cloud.ci.s3.bucket.persistent.resources.archives.path"));
 		}
 		catch (IOException ioException) {
 			throw new RuntimeException(ioException);
@@ -45,6 +45,8 @@ public abstract class BaseBundlePersistentResource
 		WorkspaceGitRepository bundleWorkspaceGitRepository =
 			getBundleWorkspaceGitRepository();
 
+		sb.append("/");
+		sb.append(getType());
 		sb.append("/");
 		sb.append(bundleWorkspaceGitRepository.getName());
 		sb.append("/");
@@ -67,7 +69,7 @@ public abstract class BaseBundlePersistentResource
 				return "Building artifact at " + getProducerBuildURL();
 			}
 
-			return "Building artifact at " + getProducerBuildURL();
+			return "Waiting for artifact at " + getProducerBuildURL();
 		}
 		else if (status == Status.IN_QUEUE) {
 			return "In queue at " + _getProducerJobURL();
@@ -86,7 +88,7 @@ public abstract class BaseBundlePersistentResource
 			return null;
 		}
 
-		return producerJenkinsMaster.getRemoteURL() + "/job/" + _JOB_NAME;
+		return producerJenkinsMaster.getRemoteURL() + "job/" + _JOB_NAME;
 	}
 
 	@Override
@@ -203,7 +205,11 @@ public abstract class BaseBundlePersistentResource
 			TopLevelBuild topLevelBuild = getTopLevelBuild();
 
 			Build build = BuildFactory.newBuild(
-					producerBuildURL, getJobVariant(), topLevelBuild);
+				producerBuildURL, getJobVariant(), topLevelBuild);
+
+			System.out.println(
+				"Adding " + build.getBuildURL() + " to " +
+					topLevelBuild.getBuildURL());
 
 			topLevelBuild.addDownstreamBuild(build);
 

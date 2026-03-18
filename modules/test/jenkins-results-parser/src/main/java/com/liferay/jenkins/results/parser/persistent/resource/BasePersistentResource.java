@@ -15,6 +15,7 @@ import com.liferay.jenkins.results.parser.TopLevelBuild;
 import com.liferay.jenkins.results.parser.Workspace;
 import com.liferay.jenkins.results.parser.WorkspaceBuild;
 
+import java.io.File;
 import java.io.IOException;
 
 import java.util.ArrayList;
@@ -145,11 +146,9 @@ public abstract class BasePersistentResource implements PersistentResource {
 		}
 
 		JSONObject apiJSONObject = JenkinsAPIUtil.getAPIJSONObject(
-			controllerBuildURL, "status");
+			controllerBuildURL, "result");
 
-		System.out.println("apiJSONObject=" + apiJSONObject);
-
-		if (apiJSONObject.optString("status") == null) {
+		if (apiJSONObject.optString("result") == null) {
 			return false;
 		}
 
@@ -164,6 +163,27 @@ public abstract class BasePersistentResource implements PersistentResource {
 	@Override
 	public void printStatusMessage() {
 		print(getStatusMessage());
+	}
+
+	@Override
+	public void upload(File baseDir) {
+		for (Artifact artifact : getArtifacts()) {
+			File artifactFile = new File(baseDir, artifact.getName());
+
+			System.out.println("artifactFile=" + artifactFile);
+
+			if (artifactFile.exists()) {
+				continue;
+			}
+
+			try {
+				CloudBucketUtil.uploadS3File(
+					artifact.getS3ObjectPath(), artifactFile);
+			}
+			catch (IOException ioException) {
+				throw new RuntimeException(ioException);
+			}
+		}
 	}
 
 	protected BasePersistentResource(TopLevelBuild topLevelBuild) {
