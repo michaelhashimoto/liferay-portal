@@ -6,6 +6,7 @@
 package com.liferay.jenkins.results.parser.persistent.resource;
 
 import com.liferay.jenkins.results.parser.Build;
+import com.liferay.jenkins.results.parser.BuildDatabase;
 import com.liferay.jenkins.results.parser.BuildFactory;
 import com.liferay.jenkins.results.parser.JenkinsAPIUtil;
 import com.liferay.jenkins.results.parser.JenkinsMaster;
@@ -18,6 +19,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Properties;
 
 import org.json.JSONObject;
 
@@ -64,56 +66,30 @@ public abstract class BaseBundlePersistentResource
 	public void start() {
 		TopLevelBuild topLevelBuild = getTopLevelBuild();
 
-		Map<String, String> buildParameters = new HashMap<>();
+		Map<String, String> buildParameters = new HashMap<>(
+			topLevelBuild.getStartPropertiesTempMap());
 
-		buildParameters.put("AXIS_VARIABLE", String.valueOf(getType()));
+		buildParameters.put("AXIS_VARIABLE", getJobVariant());
 		buildParameters.put("BUILD_PRIORITY", _BUILD_PRIORITY);
 		buildParameters.put(
-			"DIST_NODES", topLevelBuild.getStartProperty("DIST_NODES"));
-		buildParameters.put(
-			"DIST_PATH", topLevelBuild.getStartProperty("DIST_PATH"));
-		buildParameters.put(
-			"GITHUB_UPSTREAM_BRANCH_NAME",
-			topLevelBuild.getStartProperty("GITHUB_UPSTREAM_BRANCH_NAME"));
-		buildParameters.put(
-			"JENKINS_GITHUB_ORIGIN_NAME",
-			topLevelBuild.getStartProperty("JENKINS_GITHUB_ORIGIN_NAME"));
-		buildParameters.put(
-			"JENKINS_GITHUB_PULL_REQUEST_NUMBER",
-			topLevelBuild.getStartProperty(
-				"JENKINS_GITHUB_PULL_REQUEST_NUMBER"));
-		buildParameters.put(
-			"JENKINS_GITHUB_PULL_REQUEST_USERNAME",
-			topLevelBuild.getStartProperty(
-				"JENKINS_GITHUB_PULL_REQUEST_USERNAME"));
-		buildParameters.put(
-			"JENKINS_GITHUB_RECEIVER_USERNAME",
-			topLevelBuild.getStartProperty("JENKINS_GITHUB_RECEIVER_USERNAME"));
-		buildParameters.put(
-			"JENKINS_GITHUB_SENDER_BRANCH_NAME",
-			topLevelBuild.getStartProperty(
-				"JENKINS_GITHUB_SENDER_BRANCH_NAME"));
-		buildParameters.put(
-			"JENKINS_GITHUB_SENDER_BRANCH_SHA",
-			topLevelBuild.getStartProperty("JENKINS_GITHUB_SENDER_BRANCH_SHA"));
-		buildParameters.put(
-			"JENKINS_GITHUB_SENDER_USERNAME",
-			topLevelBuild.getStartProperty("JENKINS_GITHUB_SENDER_USERNAME"));
-		buildParameters.put(
-			"JENKINS_GITHUB_UPSTREAM_BRANCH_NAME",
-			topLevelBuild.getStartProperty(
-				"JENKINS_GITHUB_UPSTREAM_BRANCH_NAME"));
-		buildParameters.put(
-			"JENKINS_GITHUB_UPSTREAM_BRANCH_SHA",
-			topLevelBuild.getStartProperty(
-				"JENKINS_GITHUB_UPSTREAM_BRANCH_SHA"));
-		buildParameters.put("JOB_VARIANT", _JOB_NAME);
-		buildParameters.put(
-			"JSON_MAP_URL", topLevelBuild.getStartProperty("JSON_MAP_URL"));
-		buildParameters.put(
-			"S3_BUCKET_DIST_PATH",
-			topLevelBuild.getStartProperty("S3_BUCKET_DIST_PATH"));
+			"GITHUB_UPSTREAM_BRANCH_NAME", getPortalUpstreamBranchName());
+		buildParameters.put("JOB_VARIANT", getJobVariant());
 		buildParameters.put("SLAVE_LABEL", _SLAVE_LABEL);
+
+		BuildDatabase buildDatabase = topLevelBuild.getBuildDatabase();
+
+		StringBuilder sb = new StringBuilder();
+
+		sb.append(getJobVariant());
+		sb.append("/start.properties");
+
+		String key = sb.toString();
+
+		Properties properties = new Properties();
+
+		properties.putAll(buildParameters);
+
+		buildDatabase.putProperties(key, properties, true);
 
 		JenkinsMaster jenkinsMaster =
 			JenkinsResultsParserUtil.getMostAvailableJenkinsMaster(
@@ -257,7 +233,7 @@ public abstract class BaseBundlePersistentResource
 			TopLevelBuild topLevelBuild = getTopLevelBuild();
 
 			Build build = BuildFactory.newBuild(
-				producerBuildURL, _JOB_VARIANT, topLevelBuild);
+				producerBuildURL, getJobVariant(), topLevelBuild);
 
 			topLevelBuild.addDownstreamBuild(build);
 
@@ -272,6 +248,10 @@ public abstract class BaseBundlePersistentResource
 		}
 	}
 
+	protected String getJobVariant() {
+		return String.valueOf(getType());
+	};
+
 	protected BaseBundlePersistentResource(TopLevelBuild topLevelBuild) {
 		super(topLevelBuild);
 	}
@@ -281,8 +261,6 @@ public abstract class BaseBundlePersistentResource
 	private static final String _BUILD_PRIORITY = "2";
 
 	private static final String _JOB_NAME = "app-server-bundle-builder";
-
-	private static final String _JOB_VARIANT = "app-server-bundle-builder";
 
 	private static final int _MAX_MISSING_COUNT = 2;
 

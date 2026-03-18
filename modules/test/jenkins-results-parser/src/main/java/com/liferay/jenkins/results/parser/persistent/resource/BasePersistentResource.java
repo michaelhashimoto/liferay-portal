@@ -218,7 +218,7 @@ public abstract class BasePersistentResource implements PersistentResource {
 			String artifactNamesString =
 				JenkinsResultsParserUtil.getBuildProperty(
 					"persistent.resource.artifact.names[" + getType() + "]",
-					_getPortalUpstreamBranchName());
+					getPortalUpstreamBranchName());
 
 			if (JenkinsResultsParserUtil.isNullOrEmpty(artifactNamesString)) {
 				return artifactNames;
@@ -232,7 +232,7 @@ public abstract class BasePersistentResource implements PersistentResource {
 		return artifactNames;
 	}
 
-	private String _getPortalUpstreamBranchName() {
+	protected String getPortalUpstreamBranchName() {
 		Workspace workspace = getWorkspace();
 
 		if (workspace instanceof PortalWorkspace) {
