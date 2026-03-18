@@ -36,7 +36,7 @@ public abstract class BaseBundlePersistentResource
 		try {
 			sb.append(
 				JenkinsResultsParserUtil.getBuildProperty(
-					"cloud.ci.s3.bucket.persistent.resources.archives.path"));
+					"cloud.ci.s3.bucket.bundles.path"));
 		}
 		catch (IOException ioException) {
 			throw new RuntimeException(ioException);
@@ -45,8 +45,6 @@ public abstract class BaseBundlePersistentResource
 		WorkspaceGitRepository bundleWorkspaceGitRepository =
 			getBundleWorkspaceGitRepository();
 
-		sb.append("/");
-		sb.append(getType());
 		sb.append("/");
 		sb.append(bundleWorkspaceGitRepository.getName());
 		sb.append("/");

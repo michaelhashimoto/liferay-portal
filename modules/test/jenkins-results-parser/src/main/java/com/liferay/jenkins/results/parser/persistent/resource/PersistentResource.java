@@ -9,6 +9,7 @@ import com.liferay.jenkins.results.parser.CloudBucketUtil;
 import com.liferay.jenkins.results.parser.JenkinsMaster;
 import com.liferay.jenkins.results.parser.JenkinsResultsParserUtil;
 
+import java.io.IOException;
 import java.util.List;
 
 import org.json.JSONObject;
