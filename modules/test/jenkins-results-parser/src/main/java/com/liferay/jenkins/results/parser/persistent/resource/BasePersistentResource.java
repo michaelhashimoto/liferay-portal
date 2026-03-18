@@ -136,8 +136,18 @@ public abstract class BasePersistentResource implements PersistentResource {
 			return false;
 		}
 
+		String controllerBuildURL = getControllerBuildURL();
+
+		System.out.println("controllerBuildURL=" + controllerBuildURL);
+
+		if (!JenkinsResultsParserUtil.isURL(controllerBuildURL)) {
+			return false;
+		}
+
 		JSONObject apiJSONObject = JenkinsAPIUtil.getAPIJSONObject(
-			getControllerBuildURL(), "status");
+			controllerBuildURL, "status");
+
+		System.out.println("apiJSONObject=" + apiJSONObject);
 
 		if (apiJSONObject.optString("status") == null) {
 			return false;

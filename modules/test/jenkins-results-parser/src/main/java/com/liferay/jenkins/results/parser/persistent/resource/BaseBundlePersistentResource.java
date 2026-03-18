@@ -152,19 +152,6 @@ public abstract class BaseBundlePersistentResource
 			}
 
 			System.out.println("s3JSONObject=" + s3JSONObject.toString(2));
-			System.out.println("isMissing()=" + isMissing());
-
-			if (isMissing()) {
-				_missingCount++;
-
-				if (_missingCount >= _MAX_MISSING_COUNT) {
-					start();
-
-					_missingCount = 0;
-
-					return;
-				}
-			}
 
 			setControllerBuildURL(
 				s3JSONObject.optString("controller_build_url"));
@@ -192,6 +179,20 @@ public abstract class BaseBundlePersistentResource
 			setStatus(status);
 
 			System.out.println("getJSONObject()=" + getJSONObject());
+
+			System.out.println("isMissing()=" + isMissing());
+
+			if (isMissing()) {
+				_missingCount++;
+
+				if (_missingCount >= _MAX_MISSING_COUNT) {
+					start();
+
+					_missingCount = 0;
+
+					return;
+				}
+			}
 
 			return;
 		}
