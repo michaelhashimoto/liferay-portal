@@ -170,7 +170,9 @@ public abstract class BasePersistentResource implements PersistentResource {
 		JSONObject apiJSONObject = JenkinsAPIUtil.getAPIJSONObject(
 			controllerBuildURL, "result");
 
-		if (apiJSONObject.optString("result") == null) {
+		if (JenkinsResultsParserUtil.isNullOrEmpty(
+				apiJSONObject.optString("result"))) {
+
 			return false;
 		}
 

@@ -11,8 +11,11 @@ import com.liferay.jenkins.results.parser.JenkinsResultsParserUtil;
 
 import java.io.File;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import com.liferay.jenkins.results.parser.Job;
 import org.json.JSONObject;
 
 /**
@@ -120,8 +123,21 @@ public interface PersistentResource {
 			return _key;
 		}
 
+		public static Type get(String key) {
+			return _types.get(key);
+		}
+
 		private Type(String key) {
 			_key = key;
+		}
+
+		private static Map<String, Type> _types =
+			new HashMap<>();
+
+		static {
+			for (Type type : values()) {
+				_types.put(type.toString(), type);
+			}
 		}
 
 		private final String _key;
