@@ -145,14 +145,13 @@ public abstract class BaseBundlePersistentResource
 		if (!isController()) {
 			JSONObject s3JSONObject = getS3JSONObject();
 
-			System.out.println("s3JSONObject=" + s3JSONObject.toString(2));
-
 			if (s3JSONObject == null) {
 				start();
 
 				return;
 			}
 
+			System.out.println("s3JSONObject=" + s3JSONObject.toString(2));
 			System.out.println("isMissing()=" + isMissing());
 
 			if (isMissing()) {

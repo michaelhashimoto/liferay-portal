@@ -160,6 +160,8 @@ public abstract class BasePersistentResource implements PersistentResource {
 		_topLevelBuild = topLevelBuild;
 
 		for (String artifactName : _getArtifactNames()) {
+			System.out.println("artifactName=" + artifactName);
+
 			_artifacts.put(artifactName, new Artifact(artifactName, this));
 		}
 	}
