@@ -5,13 +5,10 @@
 
 package com.liferay.jenkins.results.parser.persistent.resource;
 
-import com.liferay.jenkins.results.parser.Build;
 import com.liferay.jenkins.results.parser.BuildDatabase;
-import com.liferay.jenkins.results.parser.BuildFactory;
 import com.liferay.jenkins.results.parser.JenkinsAPIUtil;
 import com.liferay.jenkins.results.parser.JenkinsMaster;
 import com.liferay.jenkins.results.parser.JenkinsResultsParserUtil;
-import com.liferay.jenkins.results.parser.TopLevelBuild;
 import com.liferay.jenkins.results.parser.WorkspaceGitRepository;
 
 import java.io.IOException;
@@ -83,10 +80,16 @@ public abstract class BaseBundlePersistentResource
 
 	@Override
 	public void start() {
-		TopLevelBuild topLevelBuild = getTopLevelBuild();
+		Map<String, String> buildParameters = new HashMap<>();
 
-		Map<String, String> buildParameters = new HashMap<>(
-			topLevelBuild.getStartPropertiesTempMap());
+		Properties startProperties = getStartProperties();
+
+		for (String propertyName : startProperties.stringPropertyNames()) {
+			buildParameters.put(
+				propertyName,
+				JenkinsResultsParserUtil.getProperty(
+					startProperties, propertyName));
+		}
 
 		buildParameters.put("AXIS_VARIABLE", getJobVariant());
 		buildParameters.put("BUILD_PRIORITY", _BUILD_PRIORITY);
@@ -94,8 +97,6 @@ public abstract class BaseBundlePersistentResource
 			"GITHUB_UPSTREAM_BRANCH_NAME", getPortalUpstreamBranchName());
 		buildParameters.put("JOB_VARIANT", getJobVariant());
 		buildParameters.put("SLAVE_LABEL", _SLAVE_LABEL);
-
-		BuildDatabase buildDatabase = topLevelBuild.getBuildDatabase();
 
 		StringBuilder sb = new StringBuilder();
 
@@ -108,18 +109,20 @@ public abstract class BaseBundlePersistentResource
 
 		properties.putAll(buildParameters);
 
+		BuildDatabase buildDatabase = getBuildDatabase();
+
 		buildDatabase.putProperties(key, properties, true);
 
 		buildDatabase.uploadBuildDatabaseFileToCloudBucket();
 
 		JenkinsMaster jenkinsMaster =
 			JenkinsResultsParserUtil.getMostAvailableJenkinsMaster(
-				topLevelBuild.getBaseInvocationURL(), 1, _SLAVE_LABEL);
+				_getBaseInvocationURL(), 1, _SLAVE_LABEL);
 
 		long queueId = JenkinsResultsParserUtil.invokeJenkinsBuild(
 			jenkinsMaster, _JOB_NAME, buildParameters);
 
-		setControllerBuildURL(topLevelBuild.getBuildURL());
+		setControllerBuildURL(getCurrentTopLevelBuildURL());
 		setProducerJenkinsMaster(jenkinsMaster);
 		setProducerQueueId(queueId);
 
@@ -189,32 +192,48 @@ public abstract class BaseBundlePersistentResource
 
 		Status status = getStatus();
 
-		if ((status == Status.FAILED) || (status == Status.SUCCESS)) {
-			String producerBuildURL = getProducerBuildURL();
+		if (status == Status.IN_QUEUE) {
+			JenkinsMaster producerJenkinsMaster = getProducerJenkinsMaster();
 
-			TopLevelBuild topLevelBuild = getTopLevelBuild();
+			long producerQueueId = getProducerQueueId();
 
-			Build build = BuildFactory.newBuild(
-				producerBuildURL, getJobVariant(), topLevelBuild);
+			for (JenkinsMaster.QueueItem queueItem :
+					producerJenkinsMaster.getQueueItems()) {
 
-			System.out.println(
-				"Adding " + build.getBuildURL() + " to " +
-					topLevelBuild.getBuildURL());
+				if (queueItem.getId() == producerQueueId) {
+					return;
+				}
+			}
 
-			topLevelBuild.addDownstreamBuild(build);
+			String producerBuildURL = JenkinsResultsParserUtil.getBuildURL(
+				_JOB_NAME, producerJenkinsMaster, producerQueueId);
 
-			Build.Invocation buildInvocation = build.getCurrentInvocation();
+			if (JenkinsResultsParserUtil.isURL(producerBuildURL)) {
+				setStatus(Status.IN_PROGRESS);
 
-			setControllerBuildURL(topLevelBuild.getBuildURL());
-			setProducerBuildURL(producerBuildURL);
-			setProducerJenkinsMaster(buildInvocation.getJenkinsMaster());
-			setProducerQueueId(buildInvocation.getQueueId());
+				setProducerBuildURL(producerBuildURL);
+				setProducerJenkinsMaster(producerJenkinsMaster);
+				setProducerQueueId(producerQueueId);
 
-			save();
+				save();
+
+				return;
+			}
+
+			print("WARNING: Unable to find queue item");
+
+			return;
 		}
-		else if (status == Status.IN_PROGRESS) {
-			String producerBuildURL = getProducerBuildURL();
 
+		String producerBuildURL = getProducerBuildURL();
+
+		if (!JenkinsResultsParserUtil.isURL(producerBuildURL)) {
+			print("WARNING: Unable to find producer build url");
+
+			return;
+		}
+
+		if (status == Status.IN_PROGRESS) {
 			JSONObject apiJSONObject = JenkinsAPIUtil.getAPIJSONObject(
 				producerBuildURL);
 
@@ -233,45 +252,35 @@ public abstract class BaseBundlePersistentResource
 
 			save();
 		}
-		else if (status == Status.IN_QUEUE) {
-			JenkinsMaster producerJenkinsMaster = getProducerJenkinsMaster();
-
-			long producerQueueId = getProducerQueueId();
-
-			for (JenkinsMaster.QueueItem queueItem :
-					producerJenkinsMaster.getQueueItems()) {
-
-				if (queueItem.getId() == producerQueueId) {
-					return;
-				}
-			}
-
-			String producerBuildURL = JenkinsResultsParserUtil.getBuildURL(
-				_JOB_NAME, producerJenkinsMaster, producerQueueId);
-
-			if (producerBuildURL != null) {
-				setStatus(Status.IN_PROGRESS);
-
-				setProducerBuildURL(producerBuildURL);
-
-				save();
-
-				return;
-			}
-
-			print("WARNING: Unable to find queue item");
-		}
 	}
 
-	protected BaseBundlePersistentResource(TopLevelBuild topLevelBuild) {
-		super(topLevelBuild);
+	protected BaseBundlePersistentResource(BuildDatabase buildDatabase) {
+		super(buildDatabase);
 	}
+
+	protected abstract WorkspaceGitRepository getBundleWorkspaceGitRepository();
 
 	protected String getJobVariant() {
 		return String.valueOf(getType());
-	};
+	}
 
-	protected abstract WorkspaceGitRepository getBundleWorkspaceGitRepository();
+	private String _getBaseInvocationURL() {
+		try {
+			String serverType = "production";
+
+			String topLevelBuildURL = getCurrentTopLevelBuildURL();
+
+			if (topLevelBuildURL.contains("test-5")) {
+				serverType = "staging";
+			}
+
+			return JenkinsResultsParserUtil.getBuildProperty(
+				"github.webhook.base.invocation.url", serverType);
+		}
+		catch (IOException ioException) {
+			return _BASE_INVOCATION_URL;
+		}
+	}
 
 	private String _getProducerJobURL() {
 		JenkinsMaster producerJenkinsMaster = getProducerJenkinsMaster();
@@ -282,6 +291,9 @@ public abstract class BaseBundlePersistentResource
 
 		return producerJenkinsMaster.getRemoteURL() + "job/" + _JOB_NAME;
 	}
+
+	private static final String _BASE_INVOCATION_URL =
+		"http://test-1.liferay.com";
 
 	private static final String _BUILD_PRIORITY = "2";
 

@@ -221,25 +221,6 @@ public abstract class BaseTopLevelBuild
 	}
 
 	@Override
-	public String getBaseInvocationURL() {
-		try {
-			String serverType = "production";
-
-			String buildURL = getBuildURL();
-
-			if (buildURL.contains("test-5")) {
-				serverType = "staging";
-			}
-
-			return JenkinsResultsParserUtil.getBuildProperty(
-				"github.webhook.base.invocation.url", serverType);
-		}
-		catch (IOException ioException) {
-			return _BASE_INVOCATION_URL;
-		}
-	}
-
-	@Override
 	public String getBuildName() {
 		String jenkinsJobVariant = getParameterValue("JENKINS_JOB_VARIANT");
 
@@ -2451,9 +2432,6 @@ public abstract class BaseTopLevelBuild
 
 		return totalReinvocationCount;
 	}
-
-	private static final String _BASE_INVOCATION_URL =
-		"http://test-1.liferay.com";
 
 	private static final FailureMessageGenerator[] _FAILURE_MESSAGE_GENERATORS =
 		{

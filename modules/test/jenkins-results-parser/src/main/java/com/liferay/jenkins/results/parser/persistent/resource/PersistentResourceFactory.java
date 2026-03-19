@@ -5,7 +5,7 @@
 
 package com.liferay.jenkins.results.parser.persistent.resource;
 
-import com.liferay.jenkins.results.parser.TopLevelBuild;
+import com.liferay.jenkins.results.parser.BuildDatabase;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -16,7 +16,7 @@ import java.util.Map;
 public class PersistentResourceFactory {
 
 	public static PersistentResource newPersistentResource(
-		TopLevelBuild topLevelBuild, PersistentResource.Type type) {
+		BuildDatabase buildDatabase, PersistentResource.Type type) {
 
 		if (_persistentResources.containsKey(type)) {
 			return _persistentResources.get(type);
@@ -24,16 +24,16 @@ public class PersistentResourceFactory {
 
 		if (type == PersistentResource.Type.ASAH_BUNDLE) {
 			_persistentResources.put(
-				type, new AsahBundlePersistentResource(topLevelBuild));
+				type, new AsahBundlePersistentResource(buildDatabase));
 		}
 
 		if (type == PersistentResource.Type.FARO_BUNDLE) {
 			_persistentResources.put(
-				type, new FaroBundlePersistentResource(topLevelBuild));
+				type, new FaroBundlePersistentResource(buildDatabase));
 		}
 		else if (type == PersistentResource.Type.PORTAL_BUNDLE) {
 			_persistentResources.put(
-				type, new PortalBundlePersistentResource(topLevelBuild));
+				type, new PortalBundlePersistentResource(buildDatabase));
 		}
 
 		return _persistentResources.get(type);

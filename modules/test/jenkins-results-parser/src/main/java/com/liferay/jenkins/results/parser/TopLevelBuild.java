@@ -28,8 +28,6 @@ public interface TopLevelBuild extends ParentBuild {
 
 	public Map<String, String> getBaseGitRepositoryDetailsTempMap();
 
-	public String getBaseInvocationURL();
-
 	public Build getControllerBuild();
 
 	public DownstreamBuild getDownstreamBuild(String axisName);

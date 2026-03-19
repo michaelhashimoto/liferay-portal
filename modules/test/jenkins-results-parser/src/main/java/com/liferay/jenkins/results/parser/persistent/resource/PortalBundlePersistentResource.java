@@ -5,6 +5,7 @@
 
 package com.liferay.jenkins.results.parser.persistent.resource;
 
+import com.liferay.jenkins.results.parser.BuildDatabase;
 import com.liferay.jenkins.results.parser.PortalTopLevelBuild;
 import com.liferay.jenkins.results.parser.TopLevelBuild;
 import com.liferay.jenkins.results.parser.Workspace;
@@ -21,17 +22,17 @@ public class PortalBundlePersistentResource
 		return Type.PORTAL_BUNDLE;
 	}
 
-	protected PortalBundlePersistentResource(TopLevelBuild topLevelBuild) {
-		super(topLevelBuild);
+	protected PortalBundlePersistentResource(BuildDatabase buildDatabase) {
+		super(buildDatabase);
 	}
 
 	@Override
 	protected WorkspaceGitRepository getBundleWorkspaceGitRepository() {
-		TopLevelBuild topLevelBuild = getTopLevelBuild();
+		String currentTopLevelBuildURL = getCurrentTopLevelBuildURL();
 
 		Workspace workspace = getWorkspace();
 
-		if (topLevelBuild instanceof PortalTopLevelBuild) {
+		if (currentTopLevelBuildURL.contains("portal")) {
 			return workspace.getPrimaryWorkspaceGitRepository();
 		}
 

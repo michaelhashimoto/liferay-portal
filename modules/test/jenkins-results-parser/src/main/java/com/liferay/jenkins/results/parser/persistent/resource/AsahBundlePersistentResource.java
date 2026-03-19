@@ -5,7 +5,7 @@
 
 package com.liferay.jenkins.results.parser.persistent.resource;
 
-import com.liferay.jenkins.results.parser.TopLevelBuild;
+import com.liferay.jenkins.results.parser.BuildDatabase;
 import com.liferay.jenkins.results.parser.Workspace;
 import com.liferay.jenkins.results.parser.WorkspaceGitRepository;
 
@@ -19,8 +19,8 @@ public class AsahBundlePersistentResource extends BaseBundlePersistentResource {
 		return Type.ASAH_BUNDLE;
 	}
 
-	protected AsahBundlePersistentResource(TopLevelBuild topLevelBuild) {
-		super(topLevelBuild);
+	protected AsahBundlePersistentResource(BuildDatabase buildDatabase) {
+		super(buildDatabase);
 	}
 
 	@Override

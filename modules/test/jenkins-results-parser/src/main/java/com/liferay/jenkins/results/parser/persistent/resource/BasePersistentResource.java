@@ -5,15 +5,15 @@
 
 package com.liferay.jenkins.results.parser.persistent.resource;
 
+import com.liferay.jenkins.results.parser.BuildDatabase;
 import com.liferay.jenkins.results.parser.CloudBucketUtil;
 import com.liferay.jenkins.results.parser.JenkinsAPIUtil;
 import com.liferay.jenkins.results.parser.JenkinsMaster;
 import com.liferay.jenkins.results.parser.JenkinsResultsParserUtil;
 import com.liferay.jenkins.results.parser.PortalWorkspace;
 import com.liferay.jenkins.results.parser.PortalWorkspaceGitRepository;
-import com.liferay.jenkins.results.parser.TopLevelBuild;
+import com.liferay.jenkins.results.parser.SubrepositoryWorkspace;
 import com.liferay.jenkins.results.parser.Workspace;
-import com.liferay.jenkins.results.parser.WorkspaceBuild;
 
 import java.io.File;
 import java.io.IOException;
@@ -25,6 +25,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Properties;
 import java.util.Set;
 
 import org.json.JSONArray;
@@ -150,7 +151,7 @@ public abstract class BasePersistentResource implements PersistentResource {
 	@Override
 	public boolean isController() {
 		return Objects.equals(
-			_topLevelBuild.getBuildURL(), getControllerBuildURL());
+			getCurrentTopLevelBuildURL(), getControllerBuildURL());
 	}
 
 	@Override
@@ -170,13 +171,8 @@ public abstract class BasePersistentResource implements PersistentResource {
 		JSONObject apiJSONObject = JenkinsAPIUtil.getAPIJSONObject(
 			controllerBuildURL, "result");
 
-		if (JenkinsResultsParserUtil.isNullOrEmpty(
-				apiJSONObject.optString("result"))) {
-
-			return false;
-		}
-
-		return true;
+		return !JenkinsResultsParserUtil.isNullOrEmpty(
+			apiJSONObject.optString("result"));
 	}
 
 	@Override
@@ -210,14 +206,22 @@ public abstract class BasePersistentResource implements PersistentResource {
 		}
 	}
 
-	protected BasePersistentResource(TopLevelBuild topLevelBuild) {
-		_topLevelBuild = topLevelBuild;
+	protected BasePersistentResource(BuildDatabase buildDatabase) {
+		_buildDatabase = buildDatabase;
 
 		for (String artifactName : _getArtifactNames()) {
 			System.out.println("artifactName=" + artifactName);
 
 			_artifacts.put(artifactName, new Artifact(artifactName, this));
 		}
+	}
+
+	protected BuildDatabase getBuildDatabase() {
+		return _buildDatabase;
+	}
+
+	protected String getCurrentTopLevelBuildURL() {
+		return getStartProperty("TOP_LEVEL_BUILD_URL");
 	}
 
 	protected String getPortalUpstreamBranchName() {
@@ -250,18 +254,59 @@ public abstract class BasePersistentResource implements PersistentResource {
 		}
 	}
 
-	protected TopLevelBuild getTopLevelBuild() {
-		return _topLevelBuild;
+	protected synchronized Properties getStartProperties() {
+		if (_startProperties != null) {
+			return _startProperties;
+		}
+
+		_startProperties = new Properties();
+
+		if (_buildDatabase.hasProperties("start.properties")) {
+			_startProperties.putAll(
+				_buildDatabase.getProperties("start.properties"));
+		}
+
+		String jobVariant = System.getenv("JOB_VARIANT");
+
+		if (_buildDatabase.hasProperties(jobVariant + "/start.properties")) {
+			_startProperties.putAll(
+				_buildDatabase.getProperties(jobVariant + "/start.properties"));
+		}
+
+		return _startProperties;
 	}
 
-	protected Workspace getWorkspace() {
-		if (!(_topLevelBuild instanceof WorkspaceBuild)) {
+	protected String getStartProperty(String propertyName) {
+		return JenkinsResultsParserUtil.getProperty(
+			getStartProperties(), propertyName);
+	}
+
+	protected synchronized Workspace getWorkspace() {
+		String primaryGitDirectoryName = getStartProperty(
+			"PRIMARY_GIT_DIRECTORY_NAME");
+
+		if (!_buildDatabase.hasWorkspace(primaryGitDirectoryName)) {
 			return null;
 		}
 
-		WorkspaceBuild workspaceBuild = (WorkspaceBuild)_topLevelBuild;
+		_workspace = _buildDatabase.getWorkspace(primaryGitDirectoryName);
 
-		return workspaceBuild.getWorkspace();
+		if (_workspace instanceof SubrepositoryWorkspace) {
+			String portalUpstreamBranchName = getStartProperty(
+				"PORTAL_UPSTREAM_BRANCH_NAME");
+
+			if (!JenkinsResultsParserUtil.isNullOrEmpty(
+					portalUpstreamBranchName)) {
+
+				SubrepositoryWorkspace subrepositoryWorkspace =
+					(SubrepositoryWorkspace)_workspace;
+
+				subrepositoryWorkspace.setPortalUpstreamBranchName(
+					portalUpstreamBranchName);
+			}
+		}
+
+		return _workspace;
 	}
 
 	protected void save() {
@@ -318,11 +363,13 @@ public abstract class BasePersistentResource implements PersistentResource {
 	}
 
 	private final Map<String, Artifact> _artifacts = new HashMap<>();
+	private final BuildDatabase _buildDatabase;
 	private String _controllerBuildURL;
 	private String _producerBuildURL;
 	private JenkinsMaster _producerJenkinsMaster;
 	private long _producerQueueId;
+	private Properties _startProperties;
 	private Status _status;
-	private final TopLevelBuild _topLevelBuild;
+	private Workspace _workspace;
 
 }
