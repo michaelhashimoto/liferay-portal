@@ -249,9 +249,10 @@ public abstract class BaseBundlePersistentResource
 			else {
 				_failCount++;
 
-				if (_failCount < _MAX_FAIL_COUNT) {
+				if (_failCount <= _MAX_FAIL_COUNT) {
 					print(
-						"Retrying due to FAILURE in " + getProducerBuildURL());
+						"Retry " + _failCount + " of " + _MAX_FAIL_COUNT +
+							" due to FAILURE in " + getProducerBuildURL());
 
 					start();
 
