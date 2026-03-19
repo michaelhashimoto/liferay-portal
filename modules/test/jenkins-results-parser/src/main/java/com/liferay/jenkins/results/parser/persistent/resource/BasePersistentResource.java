@@ -345,6 +345,10 @@ public abstract class BasePersistentResource implements PersistentResource {
 		Set<String> artifactNames = new HashSet<>();
 
 		try {
+			System.out.println(
+				"getPortalUpstreamBranchName()=" +
+					getPortalUpstreamBranchName());
+
 			String artifactNamesString =
 				JenkinsResultsParserUtil.getBuildProperty(
 					"persistent.resource.artifact.names[" + getType() + "]",
