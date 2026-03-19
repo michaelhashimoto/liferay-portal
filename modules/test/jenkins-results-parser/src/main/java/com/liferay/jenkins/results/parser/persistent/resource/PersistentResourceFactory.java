@@ -26,8 +26,7 @@ public class PersistentResourceFactory {
 			_persistentResources.put(
 				type, new AsahBundlePersistentResource(buildDatabase));
 		}
-
-		if (type == PersistentResource.Type.FARO_BUNDLE) {
+		else if (type == PersistentResource.Type.FARO_BUNDLE) {
 			_persistentResources.put(
 				type, new FaroBundlePersistentResource(buildDatabase));
 		}
