@@ -192,7 +192,7 @@ public abstract class BasePersistentResource implements PersistentResource {
 
 			System.out.println("artifactFile=" + artifactFile);
 
-			if (artifactFile.exists()) {
+			if (!artifactFile.exists()) {
 				continue;
 			}
 

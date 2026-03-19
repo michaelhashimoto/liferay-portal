@@ -6,8 +6,6 @@
 package com.liferay.jenkins.results.parser.persistent.resource;
 
 import com.liferay.jenkins.results.parser.BuildDatabase;
-import com.liferay.jenkins.results.parser.PortalTopLevelBuild;
-import com.liferay.jenkins.results.parser.TopLevelBuild;
 import com.liferay.jenkins.results.parser.Workspace;
 import com.liferay.jenkins.results.parser.WorkspaceGitRepository;
 

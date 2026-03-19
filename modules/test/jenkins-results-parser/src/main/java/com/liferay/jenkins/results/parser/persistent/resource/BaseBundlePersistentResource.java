@@ -247,6 +247,14 @@ public abstract class BaseBundlePersistentResource
 				setStatus(Status.SUCCESS);
 			}
 			else {
+				_failCount++;
+
+				if (_failCount < _MAX_FAIL_COUNT) {
+					start();
+
+					return;
+				}
+
 				setStatus(Status.FAILED);
 			}
 
@@ -299,10 +307,13 @@ public abstract class BaseBundlePersistentResource
 
 	private static final String _JOB_NAME = "app-server-bundle-builder";
 
+	private static final int _MAX_FAIL_COUNT = 2;
+
 	private static final int _MAX_MISSING_COUNT = 2;
 
 	private static final String _SLAVE_LABEL = "slave-bundle-builder";
 
+	private int _failCount;
 	private int _missingCount;
 
 }
