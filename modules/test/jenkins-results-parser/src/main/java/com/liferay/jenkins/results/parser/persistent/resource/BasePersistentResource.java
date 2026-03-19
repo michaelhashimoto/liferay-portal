@@ -233,7 +233,7 @@ public abstract class BasePersistentResource implements PersistentResource {
 			PortalWorkspaceGitRepository portalWorkspaceGitRepository =
 				portalWorkspace.getPortalWorkspaceGitRepository();
 
-			return portalWorkspaceGitRepository.getBranchName();
+			return portalWorkspaceGitRepository.getUpstreamBranchName();
 		}
 
 		return "master";
