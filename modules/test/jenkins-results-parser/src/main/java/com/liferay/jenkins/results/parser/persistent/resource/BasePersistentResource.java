@@ -233,16 +233,6 @@ public abstract class BasePersistentResource implements PersistentResource {
 			apiJSONObject.optString("result"));
 	}
 
-	protected boolean isTopLevelBuild() {
-		TopLevelBuild topLevelBuild = getTopLevelBuild();
-
-		if (topLevelBuild == null) {
-			return false;
-		}
-
-		return true;
-	}
-
 	protected void print(String message) {
 		System.out.println("[" + getType() + "] " + message);
 	}
