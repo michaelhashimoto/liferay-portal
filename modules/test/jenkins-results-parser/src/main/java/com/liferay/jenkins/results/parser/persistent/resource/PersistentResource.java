@@ -22,17 +22,11 @@ import org.json.JSONObject;
  */
 public interface PersistentResource {
 
-	public void addPersistentResourceArtifact(Artifact artifact);
-
 	public void download(String artifactName, File destinationDir);
 
 	public List<Artifact> getArtifacts();
 
-	public String getBaseS3ObjectPath();
-
 	public String getControllerBuildURL();
-
-	public JSONObject getJSONObject();
 
 	public String getProducerBuildURL();
 
@@ -40,27 +34,9 @@ public interface PersistentResource {
 
 	public long getProducerQueueId();
 
-	public String getS3ObjectPath();
-
 	public Status getStatus();
 
-	public String getStatusMessage();
-
 	public Type getType();
-
-	public boolean isArtifactsAvailable();
-
-	public boolean isController();
-
-	public boolean isMissing();
-
-	public void print(String message);
-
-	public void printStatusMessage();
-
-	public void start();
-
-	public void update();
 
 	public void upload(File baseDir);
 

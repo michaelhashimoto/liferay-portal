@@ -5,11 +5,15 @@
 
 package com.liferay.jenkins.results.parser.persistent.resource;
 
+import com.liferay.jenkins.results.parser.Build;
 import com.liferay.jenkins.results.parser.BuildDatabase;
+import com.liferay.jenkins.results.parser.BuildFactory;
 import com.liferay.jenkins.results.parser.JenkinsAPIUtil;
 import com.liferay.jenkins.results.parser.JenkinsMaster;
 import com.liferay.jenkins.results.parser.JenkinsResultsParserUtil;
+import com.liferay.jenkins.results.parser.SubrepositoryWorkspace;
 import com.liferay.jenkins.results.parser.TopLevelBuild;
+import com.liferay.jenkins.results.parser.Workspace;
 import com.liferay.jenkins.results.parser.WorkspaceGitRepository;
 
 import java.io.IOException;
@@ -30,8 +34,34 @@ import org.json.JSONObject;
 public abstract class BaseBundlePersistentResource
 	extends BasePersistentResource {
 
-	@Override
-	public String getBaseS3ObjectPath() {
+	protected BaseBundlePersistentResource(
+		BuildDatabase buildDatabase, TopLevelBuild topLevelBuild) {
+
+		super(buildDatabase, topLevelBuild);
+	}
+
+	protected Set<String> getArtifactNames() {
+		Set<String> artifactNames = new HashSet<>();
+
+		try {
+			String artifactNamesString =
+				JenkinsResultsParserUtil.getBuildProperty(
+					"persistent.resource.artifact.names[" + getType() + "]",
+					getUpstreamBranchName());
+
+			if (JenkinsResultsParserUtil.isNullOrEmpty(artifactNamesString)) {
+				return artifactNames;
+			}
+
+			Collections.addAll(artifactNames, artifactNamesString.split(","));
+		}
+		catch (IOException ioException) {
+		}
+
+		return artifactNames;
+	}
+
+	protected String getBaseS3ObjectPath() {
 		StringBuilder sb = new StringBuilder();
 
 		try {
@@ -58,8 +88,9 @@ public abstract class BaseBundlePersistentResource
 		return sb.toString();
 	}
 
-	@Override
-	public String getStatusMessage() {
+	protected abstract WorkspaceGitRepository getBundleWorkspaceGitRepository();
+
+	protected String getStatusMessage() {
 		Status status = getStatus();
 
 		if (status == PersistentResource.Status.FAILED) {
@@ -82,8 +113,48 @@ public abstract class BaseBundlePersistentResource
 		return "Not started";
 	}
 
-	@Override
-	public void start() {
+	protected String getUpstreamBranchName() {
+		WorkspaceGitRepository workspaceGitRepository =
+			getBundleWorkspaceGitRepository();
+
+		return workspaceGitRepository.getUpstreamBranchName();
+	}
+
+	protected synchronized Workspace getWorkspace() {
+		if (_workspace != null) {
+			return _workspace;
+		}
+
+		String primaryGitDirectoryName = getStartProperty(
+			"PRIMARY_GIT_DIRECTORY_NAME");
+
+		BuildDatabase buildDatabase = getBuildDatabase();
+
+		if (!buildDatabase.hasWorkspace(primaryGitDirectoryName)) {
+			return null;
+		}
+
+		_workspace = buildDatabase.getWorkspace(primaryGitDirectoryName);
+
+		if (_workspace instanceof SubrepositoryWorkspace) {
+			String portalUpstreamBranchName = getStartProperty(
+				"PORTAL_UPSTREAM_BRANCH_NAME");
+
+			if (!JenkinsResultsParserUtil.isNullOrEmpty(
+					portalUpstreamBranchName)) {
+
+				SubrepositoryWorkspace subrepositoryWorkspace =
+					(SubrepositoryWorkspace)_workspace;
+
+				subrepositoryWorkspace.setPortalUpstreamBranchName(
+					portalUpstreamBranchName);
+			}
+		}
+
+		return _workspace;
+	}
+
+	protected void start() {
 		Map<String, String> buildParameters = new HashMap<>();
 
 		Properties startProperties = getStartProperties();
@@ -135,24 +206,24 @@ public abstract class BaseBundlePersistentResource
 		print("Invoked at " + _getProducerJobURL());
 	}
 
-	@Override
-	public void update() {
+	protected void update() {
 		if (!isController()) {
-			JSONObject s3JSONObject = getS3JSONObject();
+			JSONObject resourceJSONObject = getResourceJSONObject();
 
-			if (s3JSONObject == null) {
+			if (resourceJSONObject == null) {
 				start();
 
 				return;
 			}
 
 			setControllerBuildURL(
-				s3JSONObject.optString("controller_build_url"));
-			setProducerBuildURL(s3JSONObject.optString("producer_build_url"));
+				resourceJSONObject.optString("controller_build_url"));
+			setProducerBuildURL(
+				resourceJSONObject.optString("producer_build_url"));
 
 			setProducerJenkinsMaster(null);
 
-			String producerJenkinsMasterName = s3JSONObject.optString(
+			String producerJenkinsMasterName = resourceJSONObject.optString(
 				"producer_jenkins_master");
 
 			if (!JenkinsResultsParserUtil.isNullOrEmpty(
@@ -162,8 +233,8 @@ public abstract class BaseBundlePersistentResource
 					JenkinsMaster.getInstance(producerJenkinsMasterName));
 			}
 
-			setProducerQueueId(s3JSONObject.optLong("producer_queue_id"));
-			setStatus(Status.valueOf(s3JSONObject.getString("status")));
+			setProducerQueueId(resourceJSONObject.optLong("producer_queue_id"));
+			setStatus(Status.valueOf(resourceJSONObject.getString("status")));
 
 			if (isMissing()) {
 				_missingCount++;
@@ -205,6 +276,8 @@ public abstract class BaseBundlePersistentResource
 				setProducerJenkinsMaster(producerJenkinsMaster);
 				setProducerQueueId(producerQueueId);
 
+				_updateBuild(producerBuildURL);
+
 				save();
 
 				return;
@@ -233,6 +306,8 @@ public abstract class BaseBundlePersistentResource
 				return;
 			}
 
+			_updateBuild(producerBuildURL);
+
 			if (Objects.equals(result, "SUCCESS")) {
 				setStatus(Status.SUCCESS);
 			}
@@ -254,44 +329,6 @@ public abstract class BaseBundlePersistentResource
 
 			save();
 		}
-	}
-
-	protected BaseBundlePersistentResource(
-		BuildDatabase buildDatabase, TopLevelBuild topLevelBuild) {
-
-		super(buildDatabase);
-
-		_topLevelBuild = topLevelBuild;
-	}
-
-	protected Set<String> getArtifactNames() {
-		Set<String> artifactNames = new HashSet<>();
-
-		try {
-			String artifactNamesString =
-				JenkinsResultsParserUtil.getBuildProperty(
-					"persistent.resource.artifact.names[" + getType() + "]",
-					getUpstreamBranchName());
-
-			if (JenkinsResultsParserUtil.isNullOrEmpty(artifactNamesString)) {
-				return artifactNames;
-			}
-
-			Collections.addAll(artifactNames, artifactNamesString.split(","));
-		}
-		catch (IOException ioException) {
-		}
-
-		return artifactNames;
-	}
-
-	protected abstract WorkspaceGitRepository getBundleWorkspaceGitRepository();
-
-	protected String getUpstreamBranchName() {
-		WorkspaceGitRepository workspaceGitRepository =
-			getBundleWorkspaceGitRepository();
-
-		return workspaceGitRepository.getUpstreamBranchName();
 	}
 
 	private String _getAxisVariable() {
@@ -326,6 +363,26 @@ public abstract class BaseBundlePersistentResource
 		return producerJenkinsMaster.getRemoteURL() + "job/" + _JOB_NAME;
 	}
 
+	private void _updateBuild(String producerBuildURL) {
+		TopLevelBuild topLevelBuild = getTopLevelBuild();
+
+		if (topLevelBuild == null) {
+			return;
+		}
+
+		if (_build == null) {
+			_build = BuildFactory.newBuild(producerBuildURL, topLevelBuild);
+
+			topLevelBuild.addDownstreamBuild(_build);
+		}
+
+		_build.setBuildURL(producerBuildURL);
+
+		_build.saveBuildURLInBuildDatabase();
+
+		topLevelBuild.update();
+	}
+
 	private static final String _BASE_INVOCATION_URL =
 		"http://test-1.liferay.com";
 
@@ -339,8 +396,9 @@ public abstract class BaseBundlePersistentResource
 
 	private static final String _SLAVE_LABEL = "slave-bundle-builder";
 
+	private Build _build;
 	private int _failCount;
 	private int _missingCount;
-	private final TopLevelBuild _topLevelBuild;
+	private Workspace _workspace;
 
 }

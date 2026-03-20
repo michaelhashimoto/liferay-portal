@@ -10,8 +10,7 @@ import com.liferay.jenkins.results.parser.CloudBucketUtil;
 import com.liferay.jenkins.results.parser.JenkinsAPIUtil;
 import com.liferay.jenkins.results.parser.JenkinsMaster;
 import com.liferay.jenkins.results.parser.JenkinsResultsParserUtil;
-import com.liferay.jenkins.results.parser.SubrepositoryWorkspace;
-import com.liferay.jenkins.results.parser.Workspace;
+import com.liferay.jenkins.results.parser.TopLevelBuild;
 
 import java.io.File;
 import java.io.IOException;
@@ -31,11 +30,6 @@ import org.json.JSONObject;
  * @author Michael Hashimoto
  */
 public abstract class BasePersistentResource implements PersistentResource {
-
-	@Override
-	public void addPersistentResourceArtifact(Artifact artifact) {
-		_artifacts.put(artifact.getName(), artifact);
-	}
 
 	@Override
 	public void download(String artifactName, File destinationDir) {
@@ -70,40 +64,6 @@ public abstract class BasePersistentResource implements PersistentResource {
 	}
 
 	@Override
-	public JSONObject getJSONObject() {
-		JSONObject jsonObject = new JSONObject();
-
-		JSONArray artifactsJSONArray = new JSONArray();
-
-		for (Artifact artifact : getArtifacts()) {
-			artifactsJSONArray.put(artifact.getJSONObject());
-		}
-
-		jsonObject.put(
-			"artifacts", artifactsJSONArray
-		).put(
-			"controller_build_url", getControllerBuildURL()
-		).put(
-			"producer_build_url", getProducerBuildURL()
-		);
-
-		JenkinsMaster producerJenkinsMaster = getProducerJenkinsMaster();
-
-		if (producerJenkinsMaster != null) {
-			jsonObject.put(
-				"producer_jenkins_master", producerJenkinsMaster.getName());
-		}
-
-		jsonObject.put(
-			"producer_queue_id", getProducerQueueId()
-		).put(
-			"status", String.valueOf(getStatus())
-		);
-
-		return jsonObject;
-	}
-
-	@Override
 	public String getProducerBuildURL() {
 		return _producerBuildURL;
 	}
@@ -119,60 +79,8 @@ public abstract class BasePersistentResource implements PersistentResource {
 	}
 
 	@Override
-	public String getS3ObjectPath() {
-		return JenkinsResultsParserUtil.combine(
-			getBaseS3ObjectPath(), "/resource.json");
-	}
-
-	@Override
 	public Status getStatus() {
 		return _status;
-	}
-
-	@Override
-	public boolean isArtifactsAvailable() {
-		for (Artifact artifact : getArtifacts()) {
-			if (!artifact.isAvailable()) {
-				return false;
-			}
-		}
-
-		return true;
-	}
-
-	@Override
-	public boolean isController() {
-		return Objects.equals(
-			getCurrentTopLevelBuildURL(), getControllerBuildURL());
-	}
-
-	@Override
-	public boolean isMissing() {
-		if (isController() || isArtifactsAvailable()) {
-			return false;
-		}
-
-		String controllerBuildURL = getControllerBuildURL();
-
-		if (!JenkinsResultsParserUtil.isURL(controllerBuildURL)) {
-			return false;
-		}
-
-		JSONObject apiJSONObject = JenkinsAPIUtil.getAPIJSONObject(
-			controllerBuildURL, "result");
-
-		return !JenkinsResultsParserUtil.isNullOrEmpty(
-			apiJSONObject.optString("result"));
-	}
-
-	@Override
-	public void print(String message) {
-		System.out.println("[" + getType() + "] " + message);
-	}
-
-	@Override
-	public void printStatusMessage() {
-		print(getStatusMessage());
 	}
 
 	@Override
@@ -201,9 +109,9 @@ public abstract class BasePersistentResource implements PersistentResource {
 		while (true) {
 			Status status = getStatus();
 
-			if (status == Status.FAILED) {
-				String statusMessage = getStatusMessage();
+			String statusMessage = getStatusMessage();
 
+			if (status == Status.FAILED) {
 				print(statusMessage);
 
 				throw new RuntimeException(statusMessage);
@@ -214,7 +122,7 @@ public abstract class BasePersistentResource implements PersistentResource {
 				break;
 			}
 
-			printStatusMessage();
+			print(statusMessage);
 
 			JenkinsResultsParserUtil.sleep(30000);
 
@@ -222,8 +130,11 @@ public abstract class BasePersistentResource implements PersistentResource {
 		}
 	}
 
-	protected BasePersistentResource(BuildDatabase buildDatabase) {
+	protected BasePersistentResource(
+		BuildDatabase buildDatabase, TopLevelBuild topLevelBuild) {
+
 		_buildDatabase = buildDatabase;
+		_topLevelBuild = topLevelBuild;
 
 		for (String artifactName : getArtifactNames()) {
 			_artifacts.put(artifactName, new Artifact(artifactName, this));
@@ -231,6 +142,8 @@ public abstract class BasePersistentResource implements PersistentResource {
 	}
 
 	protected abstract Set<String> getArtifactNames();
+
+	protected abstract String getBaseS3ObjectPath();
 
 	protected BuildDatabase getBuildDatabase() {
 		return _buildDatabase;
@@ -240,15 +153,16 @@ public abstract class BasePersistentResource implements PersistentResource {
 		return getStartProperty("TOP_LEVEL_BUILD_URL");
 	}
 
-	protected JSONObject getS3JSONObject() {
-		String s3ObjectPath = getS3ObjectPath();
+	protected JSONObject getResourceJSONObject() {
+		String resourceS3ObjectPath = _getResourceS3ObjectPath();
 
-		if (!CloudBucketUtil.isS3ObjectPathAvailable(s3ObjectPath)) {
+		if (!CloudBucketUtil.isS3ObjectPathAvailable(resourceS3ObjectPath)) {
 			return null;
 		}
 
 		try {
-			return new JSONObject(CloudBucketUtil.readS3File(s3ObjectPath));
+			return new JSONObject(
+				CloudBucketUtil.readS3File(resourceS3ObjectPath));
 		}
 		catch (Exception exception) {
 			throw new RuntimeException(exception);
@@ -282,42 +196,92 @@ public abstract class BasePersistentResource implements PersistentResource {
 			getStartProperties(), propertyName);
 	}
 
-	protected synchronized Workspace getWorkspace() {
-		if (_workspace != null) {
-			return _workspace;
-		}
+	protected abstract String getStatusMessage();
 
-		String primaryGitDirectoryName = getStartProperty(
-			"PRIMARY_GIT_DIRECTORY_NAME");
+	protected TopLevelBuild getTopLevelBuild() {
+		return _topLevelBuild;
+	}
 
-		if (!_buildDatabase.hasWorkspace(primaryGitDirectoryName)) {
-			return null;
-		}
-
-		_workspace = _buildDatabase.getWorkspace(primaryGitDirectoryName);
-
-		if (_workspace instanceof SubrepositoryWorkspace) {
-			String portalUpstreamBranchName = getStartProperty(
-				"PORTAL_UPSTREAM_BRANCH_NAME");
-
-			if (!JenkinsResultsParserUtil.isNullOrEmpty(
-					portalUpstreamBranchName)) {
-
-				SubrepositoryWorkspace subrepositoryWorkspace =
-					(SubrepositoryWorkspace)_workspace;
-
-				subrepositoryWorkspace.setPortalUpstreamBranchName(
-					portalUpstreamBranchName);
+	protected boolean isArtifactsAvailable() {
+		for (Artifact artifact : getArtifacts()) {
+			if (!artifact.isAvailable()) {
+				return false;
 			}
 		}
 
-		return _workspace;
+		return true;
+	}
+
+	protected boolean isController() {
+		return Objects.equals(
+			getCurrentTopLevelBuildURL(), getControllerBuildURL());
+	}
+
+	protected boolean isMissing() {
+		if (isController() || isArtifactsAvailable()) {
+			return false;
+		}
+
+		String controllerBuildURL = getControllerBuildURL();
+
+		if (!JenkinsResultsParserUtil.isURL(controllerBuildURL)) {
+			return false;
+		}
+
+		JSONObject apiJSONObject = JenkinsAPIUtil.getAPIJSONObject(
+			controllerBuildURL, "result");
+
+		return !JenkinsResultsParserUtil.isNullOrEmpty(
+			apiJSONObject.optString("result"));
+	}
+
+	protected boolean isTopLevelBuild() {
+		TopLevelBuild topLevelBuild = getTopLevelBuild();
+
+		if (topLevelBuild == null) {
+			return false;
+		}
+
+		return true;
+	}
+
+	protected void print(String message) {
+		System.out.println("[" + getType() + "] " + message);
 	}
 
 	protected void save() {
+		JSONObject jsonObject = new JSONObject();
+
+		JSONArray artifactsJSONArray = new JSONArray();
+
+		for (Artifact artifact : getArtifacts()) {
+			artifactsJSONArray.put(artifact.getJSONObject());
+		}
+
+		jsonObject.put(
+			"artifacts", artifactsJSONArray
+		).put(
+			"controller_build_url", getControllerBuildURL()
+		).put(
+			"producer_build_url", getProducerBuildURL()
+		);
+
+		JenkinsMaster producerJenkinsMaster = getProducerJenkinsMaster();
+
+		if (producerJenkinsMaster != null) {
+			jsonObject.put(
+				"producer_jenkins_master", producerJenkinsMaster.getName());
+		}
+
+		jsonObject.put(
+			"producer_queue_id", getProducerQueueId()
+		).put(
+			"status", String.valueOf(getStatus())
+		);
+
 		try {
 			CloudBucketUtil.uploadS3ObjectFromContent(
-				getS3ObjectPath(), String.valueOf(getJSONObject()));
+				_getResourceS3ObjectPath(), String.valueOf(jsonObject));
 		}
 		catch (IOException ioException) {
 			throw new RuntimeException(ioException);
@@ -346,6 +310,13 @@ public abstract class BasePersistentResource implements PersistentResource {
 		_status = status;
 	}
 
+	protected abstract void update();
+
+	private String _getResourceS3ObjectPath() {
+		return JenkinsResultsParserUtil.combine(
+			getBaseS3ObjectPath(), "/persistent-resource.json");
+	}
+
 	private final Map<String, Artifact> _artifacts = new HashMap<>();
 	private final BuildDatabase _buildDatabase;
 	private String _controllerBuildURL;
@@ -354,6 +325,6 @@ public abstract class BasePersistentResource implements PersistentResource {
 	private long _producerQueueId;
 	private Properties _startProperties;
 	private Status _status;
-	private Workspace _workspace;
+	private final TopLevelBuild _topLevelBuild;
 
 }
