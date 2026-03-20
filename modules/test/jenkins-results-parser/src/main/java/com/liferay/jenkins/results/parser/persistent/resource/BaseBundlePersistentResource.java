@@ -94,14 +94,14 @@ public abstract class BaseBundlePersistentResource
 					startProperties, startPropertyName));
 		}
 
-		buildParameters.put("AXIS_VARIABLE", "0");
+		buildParameters.put("AXIS_VARIABLE", _getAxisVariable());
 		buildParameters.put("BUILD_PRIORITY", _BUILD_PRIORITY);
-		buildParameters.put("JOB_VARIANT", getJobVariant());
+		buildParameters.put("JOB_VARIANT", _JOB_NAME);
 		buildParameters.put("SLAVE_LABEL", _SLAVE_LABEL);
 
 		StringBuilder sb = new StringBuilder();
 
-		sb.append(getJobVariant());
+		sb.append(_JOB_NAME);
 		sb.append("/start.properties");
 
 		String key = sb.toString();
@@ -264,7 +264,7 @@ public abstract class BaseBundlePersistentResource
 
 	protected abstract WorkspaceGitRepository getBundleWorkspaceGitRepository();
 
-	protected String getJobVariant() {
+	private String _getAxisVariable() {
 		return String.valueOf(getType());
 	}
 
