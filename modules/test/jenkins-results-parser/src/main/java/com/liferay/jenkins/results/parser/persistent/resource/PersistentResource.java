@@ -64,6 +64,8 @@ public interface PersistentResource {
 
 	public void upload(File baseDir);
 
+	public void waitForUpdate();
+
 	public static class Artifact {
 
 		public JSONObject getJSONObject() {

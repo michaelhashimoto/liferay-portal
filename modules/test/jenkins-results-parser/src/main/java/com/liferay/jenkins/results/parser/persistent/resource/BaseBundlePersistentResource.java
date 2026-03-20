@@ -9,6 +9,7 @@ import com.liferay.jenkins.results.parser.BuildDatabase;
 import com.liferay.jenkins.results.parser.JenkinsAPIUtil;
 import com.liferay.jenkins.results.parser.JenkinsMaster;
 import com.liferay.jenkins.results.parser.JenkinsResultsParserUtil;
+import com.liferay.jenkins.results.parser.TopLevelBuild;
 import com.liferay.jenkins.results.parser.WorkspaceGitRepository;
 
 import java.io.IOException;
@@ -255,8 +256,12 @@ public abstract class BaseBundlePersistentResource
 		}
 	}
 
-	protected BaseBundlePersistentResource(BuildDatabase buildDatabase) {
+	protected BaseBundlePersistentResource(
+		BuildDatabase buildDatabase, TopLevelBuild topLevelBuild) {
+
 		super(buildDatabase);
+
+		_topLevelBuild = topLevelBuild;
 	}
 
 	protected Set<String> getArtifactNames() {
@@ -336,5 +341,6 @@ public abstract class BaseBundlePersistentResource
 
 	private int _failCount;
 	private int _missingCount;
+	private final TopLevelBuild _topLevelBuild;
 
 }

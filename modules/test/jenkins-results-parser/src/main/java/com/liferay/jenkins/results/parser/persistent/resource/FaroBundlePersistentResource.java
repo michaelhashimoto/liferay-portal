@@ -6,6 +6,7 @@
 package com.liferay.jenkins.results.parser.persistent.resource;
 
 import com.liferay.jenkins.results.parser.BuildDatabase;
+import com.liferay.jenkins.results.parser.TopLevelBuild;
 import com.liferay.jenkins.results.parser.Workspace;
 import com.liferay.jenkins.results.parser.WorkspaceGitRepository;
 
@@ -19,8 +20,10 @@ public class FaroBundlePersistentResource extends BaseBundlePersistentResource {
 		return Type.FARO_BUNDLE;
 	}
 
-	protected FaroBundlePersistentResource(BuildDatabase buildDatabase) {
-		super(buildDatabase);
+	protected FaroBundlePersistentResource(
+		BuildDatabase buildDatabase, TopLevelBuild topLevelBuild) {
+
+		super(buildDatabase, topLevelBuild);
 	}
 
 	@Override

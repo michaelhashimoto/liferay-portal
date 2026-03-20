@@ -180,8 +180,6 @@ public abstract class BasePersistentResource implements PersistentResource {
 		for (Artifact artifact : getArtifacts()) {
 			File artifactFile = new File(baseDir, artifact.getName());
 
-			System.out.println("artifactFile=" + artifactFile);
-
 			if (!artifactFile.exists()) {
 				continue;
 			}
@@ -193,6 +191,34 @@ public abstract class BasePersistentResource implements PersistentResource {
 			catch (IOException ioException) {
 				throw new RuntimeException(ioException);
 			}
+		}
+	}
+
+	@Override
+	public void waitForUpdate() {
+		update();
+
+		while (true) {
+			Status status = getStatus();
+
+			if (status == Status.FAILED) {
+				String statusMessage = getStatusMessage();
+
+				print(statusMessage);
+
+				throw new RuntimeException(statusMessage);
+			}
+			else if (status == Status.SUCCESS) {
+				print(getStatusMessage());
+
+				break;
+			}
+
+			printStatusMessage();
+
+			JenkinsResultsParserUtil.sleep(30000);
+
+			update();
 		}
 	}
 
