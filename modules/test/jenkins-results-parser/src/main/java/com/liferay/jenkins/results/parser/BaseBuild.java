@@ -3555,8 +3555,6 @@ public abstract class BaseBuild implements Build {
 		else {
 			setStatus("running");
 		}
-
-		saveBuildURLInBuildDatabase();
 	}
 
 	private void _setInvocationURL(String invocationURL) {
