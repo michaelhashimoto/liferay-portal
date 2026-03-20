@@ -988,9 +988,37 @@ public class TestrayImporter {
 				job);
 
 			AppServerBundleStandaloneBuildTestrayCaseResult
+				asahAppServerBundleStandaloneBuildTestrayCaseResult =
+					new AppServerBundleStandaloneBuildTestrayCaseResult(
+						"asah-bundle", testrayBuild, _topLevelBuildReport);
+
+			BuildReport asahAppServerBundleBuildReport =
+				asahAppServerBundleStandaloneBuildTestrayCaseResult.
+					getBuildReport();
+
+			if (asahAppServerBundleBuildReport != null) {
+				asahAppServerBundleStandaloneBuildTestrayCaseResult.
+					recordTestrayCaseResult(job);
+			}
+
+			AppServerBundleStandaloneBuildTestrayCaseResult
+				faroAppServerBundleStandaloneBuildTestrayCaseResult =
+					new AppServerBundleStandaloneBuildTestrayCaseResult(
+						"faro-bundle", testrayBuild, _topLevelBuildReport);
+
+			BuildReport faroAppServerBundleBuildReport =
+				faroAppServerBundleStandaloneBuildTestrayCaseResult.
+					getBuildReport();
+
+			if (faroAppServerBundleBuildReport != null) {
+				asahAppServerBundleStandaloneBuildTestrayCaseResult.
+					recordTestrayCaseResult(job);
+			}
+
+			AppServerBundleStandaloneBuildTestrayCaseResult
 				portalAppServerBundleStandaloneBuildTestrayCaseResult =
 					new AppServerBundleStandaloneBuildTestrayCaseResult(
-						"portal", testrayBuild, _topLevelBuildReport);
+						"portal-bundle", testrayBuild, _topLevelBuildReport);
 
 			BuildReport portalAppServerBundleBuildReport =
 				portalAppServerBundleStandaloneBuildTestrayCaseResult.
@@ -998,20 +1026,6 @@ public class TestrayImporter {
 
 			if (portalAppServerBundleBuildReport != null) {
 				portalAppServerBundleStandaloneBuildTestrayCaseResult.
-					recordTestrayCaseResult(job);
-			}
-
-			AppServerBundleStandaloneBuildTestrayCaseResult
-				analyticsCloudAppServerBundleStandaloneBuildTestrayCaseResult =
-					new AppServerBundleStandaloneBuildTestrayCaseResult(
-						"analytics.cloud", testrayBuild, _topLevelBuildReport);
-
-			BuildReport analyticsCloudAppServerBundleBuildReport =
-				analyticsCloudAppServerBundleStandaloneBuildTestrayCaseResult.
-					getBuildReport();
-
-			if (analyticsCloudAppServerBundleBuildReport != null) {
-				analyticsCloudAppServerBundleStandaloneBuildTestrayCaseResult.
 					recordTestrayCaseResult(job);
 			}
 
