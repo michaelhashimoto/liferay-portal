@@ -26,6 +26,8 @@ public interface PersistentResource {
 
 	public List<Artifact> getArtifacts();
 
+	public String getBaseS3ObjectPath();
+
 	public String getControllerBuildURL();
 
 	public String getProducerBuildURL();

@@ -143,8 +143,6 @@ public abstract class BasePersistentResource implements PersistentResource {
 
 	protected abstract Set<String> getArtifactNames();
 
-	protected abstract String getBaseS3ObjectPath();
-
 	protected BuildDatabase getBuildDatabase() {
 		return _buildDatabase;
 	}

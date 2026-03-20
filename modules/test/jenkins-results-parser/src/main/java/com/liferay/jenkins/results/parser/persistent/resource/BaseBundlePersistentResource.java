@@ -34,6 +34,34 @@ import org.json.JSONObject;
 public abstract class BaseBundlePersistentResource
 	extends BasePersistentResource {
 
+	@Override
+	public String getBaseS3ObjectPath() {
+		StringBuilder sb = new StringBuilder();
+
+		try {
+			sb.append(
+				JenkinsResultsParserUtil.getBuildProperty(
+					"cloud.ci.s3.bucket.persistent.resources.archives.path"));
+		}
+		catch (IOException ioException) {
+			throw new RuntimeException(ioException);
+		}
+
+		WorkspaceGitRepository bundleWorkspaceGitRepository =
+			getBundleWorkspaceGitRepository();
+
+		sb.append("/");
+		sb.append(getType());
+		sb.append("/");
+		sb.append(bundleWorkspaceGitRepository.getName());
+		sb.append("/");
+		sb.append(bundleWorkspaceGitRepository.getBaseBranchSHA());
+		sb.append("/");
+		sb.append(bundleWorkspaceGitRepository.getSenderBranchSHA());
+
+		return sb.toString();
+	}
+
 	protected BaseBundlePersistentResource(
 		BuildDatabase buildDatabase, TopLevelBuild topLevelBuild) {
 
@@ -61,33 +89,6 @@ public abstract class BaseBundlePersistentResource
 		return artifactNames;
 	}
 
-	protected String getBaseS3ObjectPath() {
-		StringBuilder sb = new StringBuilder();
-
-		try {
-			sb.append(
-				JenkinsResultsParserUtil.getBuildProperty(
-					"cloud.ci.s3.bucket.persistent.resources.archives.path"));
-		}
-		catch (IOException ioException) {
-			throw new RuntimeException(ioException);
-		}
-
-		WorkspaceGitRepository bundleWorkspaceGitRepository =
-			getBundleWorkspaceGitRepository();
-
-		sb.append("/");
-		sb.append(getType());
-		sb.append("/");
-		sb.append(bundleWorkspaceGitRepository.getName());
-		sb.append("/");
-		sb.append(bundleWorkspaceGitRepository.getBaseBranchSHA());
-		sb.append("/");
-		sb.append(bundleWorkspaceGitRepository.getSenderBranchSHA());
-
-		return sb.toString();
-	}
-
 	protected abstract WorkspaceGitRepository getBundleWorkspaceGitRepository();
 
 	protected String getStatusMessage() {
@@ -98,10 +99,10 @@ public abstract class BaseBundlePersistentResource
 		}
 		else if (status == Status.IN_PROGRESS) {
 			if (isController()) {
-				return "Building artifact at " + getProducerBuildURL();
+				return "Building artifacts at " + getProducerBuildURL();
 			}
 
-			return "Waiting for artifact at " + getProducerBuildURL();
+			return "Waiting for artifacts at " + getProducerBuildURL();
 		}
 		else if (status == Status.IN_QUEUE) {
 			return "In queue at " + _getProducerJobURL();
@@ -218,8 +219,15 @@ public abstract class BaseBundlePersistentResource
 
 			setControllerBuildURL(
 				resourceJSONObject.optString("controller_build_url"));
-			setProducerBuildURL(
-				resourceJSONObject.optString("producer_build_url"));
+
+			String producerBuildURL = resourceJSONObject.optString(
+				"producer_build_url");
+
+			setProducerBuildURL(producerBuildURL);
+
+			if (JenkinsResultsParserUtil.isURL(producerBuildURL)) {
+				_updateBuild(producerBuildURL);
+			}
 
 			setProducerJenkinsMaster(null);
 
@@ -374,6 +382,10 @@ public abstract class BaseBundlePersistentResource
 			_build = BuildFactory.newBuild(producerBuildURL, topLevelBuild);
 
 			topLevelBuild.addDownstreamBuild(_build);
+		}
+
+		if (Objects.equals(producerBuildURL, _build.getBuildURL())) {
+			return;
 		}
 
 		_build.setBuildURL(producerBuildURL);
