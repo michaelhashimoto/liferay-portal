@@ -46,7 +46,7 @@ public class PersistentResourceFactory {
 		return persistentResource;
 	}
 
-	private static final Map<String, PersistentResource>
-		_persistentResources = new HashMap<>();
+	private static final Map<String, PersistentResource> _persistentResources =
+		new HashMap<>();
 
 }

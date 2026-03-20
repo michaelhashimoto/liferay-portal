@@ -162,10 +162,7 @@ public abstract class BaseBundlePersistentResource
 			}
 
 			setProducerQueueId(s3JSONObject.optLong("producer_queue_id"));
-
-			Status status = Status.valueOf(s3JSONObject.getString("status"));
-
-			setStatus(status);
+			setStatus(Status.valueOf(s3JSONObject.getString("status")));
 
 			if (isMissing()) {
 				_missingCount++;
@@ -262,7 +259,35 @@ public abstract class BaseBundlePersistentResource
 		super(buildDatabase);
 	}
 
+	protected Set<String> getArtifactNames() {
+		Set<String> artifactNames = new HashSet<>();
+
+		try {
+			String artifactNamesString =
+				JenkinsResultsParserUtil.getBuildProperty(
+					"persistent.resource.artifact.names[" + getType() + "]",
+					getUpstreamBranchName());
+
+			if (JenkinsResultsParserUtil.isNullOrEmpty(artifactNamesString)) {
+				return artifactNames;
+			}
+
+			Collections.addAll(artifactNames, artifactNamesString.split(","));
+		}
+		catch (IOException ioException) {
+		}
+
+		return artifactNames;
+	}
+
 	protected abstract WorkspaceGitRepository getBundleWorkspaceGitRepository();
+
+	protected String getUpstreamBranchName() {
+		WorkspaceGitRepository workspaceGitRepository =
+			getBundleWorkspaceGitRepository();
+
+		return workspaceGitRepository.getUpstreamBranchName();
+	}
 
 	private String _getAxisVariable() {
 		return String.valueOf(getType());
@@ -294,34 +319,6 @@ public abstract class BaseBundlePersistentResource
 		}
 
 		return producerJenkinsMaster.getRemoteURL() + "job/" + _JOB_NAME;
-	}
-
-	protected String getUpstreamBranchName() {
-		WorkspaceGitRepository workspaceGitRepository =
-			getBundleWorkspaceGitRepository();
-
-		return workspaceGitRepository.getUpstreamBranchName();
-	}
-
-	protected Set<String> getArtifactNames() {
-		Set<String> artifactNames = new HashSet<>();
-
-		try {
-			String artifactNamesString =
-				JenkinsResultsParserUtil.getBuildProperty(
-					"persistent.resource.artifact.names[" + getType() + "]",
-					getUpstreamBranchName());
-
-			if (JenkinsResultsParserUtil.isNullOrEmpty(artifactNamesString)) {
-				return artifactNames;
-			}
-
-			Collections.addAll(artifactNames, artifactNamesString.split(","));
-		}
-		catch (IOException ioException) {
-		}
-
-		return artifactNames;
 	}
 
 	private static final String _BASE_INVOCATION_URL =

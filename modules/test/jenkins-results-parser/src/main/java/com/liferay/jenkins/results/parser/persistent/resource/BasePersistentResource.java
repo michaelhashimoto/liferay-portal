@@ -10,8 +10,6 @@ import com.liferay.jenkins.results.parser.CloudBucketUtil;
 import com.liferay.jenkins.results.parser.JenkinsAPIUtil;
 import com.liferay.jenkins.results.parser.JenkinsMaster;
 import com.liferay.jenkins.results.parser.JenkinsResultsParserUtil;
-import com.liferay.jenkins.results.parser.PortalWorkspace;
-import com.liferay.jenkins.results.parser.PortalWorkspaceGitRepository;
 import com.liferay.jenkins.results.parser.SubrepositoryWorkspace;
 import com.liferay.jenkins.results.parser.Workspace;
 
@@ -19,9 +17,7 @@ import java.io.File;
 import java.io.IOException;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -135,11 +131,7 @@ public abstract class BasePersistentResource implements PersistentResource {
 
 	@Override
 	public boolean isArtifactsAvailable() {
-		System.out.println("getArtifacts()=" + getArtifacts());
-
 		for (Artifact artifact : getArtifacts()) {
-			System.out.println("artifact=" + artifact);
-
 			if (!artifact.isAvailable()) {
 				return false;
 			}
@@ -211,6 +203,8 @@ public abstract class BasePersistentResource implements PersistentResource {
 			_artifacts.put(artifactName, new Artifact(artifactName, this));
 		}
 	}
+
+	protected abstract Set<String> getArtifactNames();
 
 	protected BuildDatabase getBuildDatabase() {
 		return _buildDatabase;
@@ -325,8 +319,6 @@ public abstract class BasePersistentResource implements PersistentResource {
 	protected void setStatus(Status status) {
 		_status = status;
 	}
-
-	protected abstract Set<String> getArtifactNames();
 
 	private final Map<String, Artifact> _artifacts = new HashMap<>();
 	private final BuildDatabase _buildDatabase;
