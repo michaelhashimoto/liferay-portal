@@ -137,6 +137,8 @@ public interface Build {
 
 	public Map<String, String> getStartPropertiesTempMap();
 
+	public String getStartProperty(String key);
+
 	public Long getStartTime();
 
 	public String getStatus();

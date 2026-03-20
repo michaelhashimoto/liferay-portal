@@ -1129,6 +1129,13 @@ public abstract class BaseBuild implements Build {
 	}
 
 	@Override
+	public String getStartProperty(String key) {
+		Map<String, String> startProperties = getStartPropertiesTempMap();
+
+		return startProperties.get(key);
+	}
+
+	@Override
 	public Long getStartTime() {
 		if (startTime != null) {
 			return startTime;

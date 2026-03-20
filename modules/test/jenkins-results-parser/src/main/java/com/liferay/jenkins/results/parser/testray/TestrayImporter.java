@@ -29,6 +29,7 @@ import com.liferay.jenkins.results.parser.Workspace;
 import com.liferay.jenkins.results.parser.WorkspaceGitRepository;
 import com.liferay.jenkins.results.parser.job.property.JobProperty;
 import com.liferay.jenkins.results.parser.job.property.JobPropertyFactory;
+import com.liferay.jenkins.results.parser.persistent.resource.PersistentResource;
 import com.liferay.jenkins.results.parser.test.clazz.TestClass;
 import com.liferay.jenkins.results.parser.test.clazz.TestClassMethod;
 import com.liferay.jenkins.results.parser.test.clazz.group.AxisTestClassGroup;
@@ -947,6 +948,40 @@ public class TestrayImporter {
 		}
 	}
 
+	private void _recordTopLevelTestrayCaseResult(Job job, File testBaseDir) {
+		TestrayBuild testrayBuild = getTestrayBuild(testBaseDir);
+
+		TopLevelStandaloneBuildTestrayCaseResult
+			topLevelStandaloneBuildTestrayCaseResult =
+			TestrayFactory.newTopLevelStandaloneBuildTestrayCaseResult(
+				testrayBuild, _topLevelBuildReport);
+
+		topLevelStandaloneBuildTestrayCaseResult.recordTestrayCaseResult(job);
+	}
+
+	private void _recordAppServerTestrayCaseResults(Job job, File testBaseDir) {
+		TestrayBuild testrayBuild = getTestrayBuild(testBaseDir);
+
+		for (PersistentResource.Type type : PersistentResource.Type.values()) {
+			AppServerBundleStandaloneBuildTestrayCaseResult
+				appServerBundleStandaloneBuildTestrayCaseResult =
+					new AppServerBundleStandaloneBuildTestrayCaseResult(
+						String.valueOf(type), testrayBuild,
+						_topLevelBuildReport);
+
+			BuildReport buildReport =
+				appServerBundleStandaloneBuildTestrayCaseResult.
+					getBuildReport();
+
+			if (buildReport == null) {
+				continue;
+			}
+
+			appServerBundleStandaloneBuildTestrayCaseResult.
+				recordTestrayCaseResult(job);
+		}
+	}
+
 	public void recordTestrayCaseResults() {
 		List<AxisTestClassGroup> axisTestClassGroups = new ArrayList<>();
 		List<Callable<Void>> callables = new ArrayList<>();
@@ -977,43 +1012,8 @@ public class TestrayImporter {
 				testBaseDir = axisTestClassGroup.getTestBaseDir();
 			}
 
-			TestrayBuild testrayBuild = getTestrayBuild(testBaseDir);
-
-			TopLevelStandaloneBuildTestrayCaseResult
-				topLevelStandaloneBuildTestrayCaseResult =
-					TestrayFactory.newTopLevelStandaloneBuildTestrayCaseResult(
-						testrayBuild, _topLevelBuildReport);
-
-			topLevelStandaloneBuildTestrayCaseResult.recordTestrayCaseResult(
-				job);
-
-			AppServerBundleStandaloneBuildTestrayCaseResult
-				portalAppServerBundleStandaloneBuildTestrayCaseResult =
-					new AppServerBundleStandaloneBuildTestrayCaseResult(
-						"portal", testrayBuild, _topLevelBuildReport);
-
-			BuildReport portalAppServerBundleBuildReport =
-				portalAppServerBundleStandaloneBuildTestrayCaseResult.
-					getBuildReport();
-
-			if (portalAppServerBundleBuildReport != null) {
-				portalAppServerBundleStandaloneBuildTestrayCaseResult.
-					recordTestrayCaseResult(job);
-			}
-
-			AppServerBundleStandaloneBuildTestrayCaseResult
-				analyticsCloudAppServerBundleStandaloneBuildTestrayCaseResult =
-					new AppServerBundleStandaloneBuildTestrayCaseResult(
-						"analytics.cloud", testrayBuild, _topLevelBuildReport);
-
-			BuildReport analyticsCloudAppServerBundleBuildReport =
-				analyticsCloudAppServerBundleStandaloneBuildTestrayCaseResult.
-					getBuildReport();
-
-			if (analyticsCloudAppServerBundleBuildReport != null) {
-				analyticsCloudAppServerBundleStandaloneBuildTestrayCaseResult.
-					recordTestrayCaseResult(job);
-			}
+			_recordTopLevelTestrayCaseResult(job, testBaseDir);
+			_recordAppServerTestrayCaseResults(job, testBaseDir);
 
 			for (final AxisTestClassGroup axisTestClassGroup :
 					axisTestClassGroups) {
