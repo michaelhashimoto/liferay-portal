@@ -24,7 +24,8 @@ public class PersistentResourceManager {
 				persistentResource.printStatusMessage();
 
 				throw new RuntimeException(
-					persistentResource.getStatusMessage());
+					persistentResource.getStatusMessage() + " (" +
+						persistentResource.getProducerBuildURL() + ")");
 			}
 			else if (status == PersistentResource.Status.SUCCESS) {
 				persistentResource.printStatusMessage();

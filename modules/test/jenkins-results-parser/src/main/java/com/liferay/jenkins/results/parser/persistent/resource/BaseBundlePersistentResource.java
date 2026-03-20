@@ -13,10 +13,13 @@ import com.liferay.jenkins.results.parser.WorkspaceGitRepository;
 
 import java.io.IOException;
 
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Properties;
+import java.util.Set;
 
 import org.json.JSONObject;
 
@@ -84,17 +87,15 @@ public abstract class BaseBundlePersistentResource
 
 		Properties startProperties = getStartProperties();
 
-		for (String propertyName : startProperties.stringPropertyNames()) {
+		for (String startPropertyName : startProperties.stringPropertyNames()) {
 			buildParameters.put(
-				propertyName,
+				startPropertyName,
 				JenkinsResultsParserUtil.getProperty(
-					startProperties, propertyName));
+					startProperties, startPropertyName));
 		}
 
 		buildParameters.put("AXIS_VARIABLE", "0");
 		buildParameters.put("BUILD_PRIORITY", _BUILD_PRIORITY);
-		buildParameters.put(
-			"GITHUB_UPSTREAM_BRANCH_NAME", getPortalUpstreamBranchName());
 		buildParameters.put("JOB_VARIANT", getJobVariant());
 		buildParameters.put("SLAVE_LABEL", _SLAVE_LABEL);
 
@@ -144,11 +145,11 @@ public abstract class BaseBundlePersistentResource
 				return;
 			}
 
-			System.out.println("s3JSONObject=" + s3JSONObject.toString(2));
-
 			setControllerBuildURL(
 				s3JSONObject.optString("controller_build_url"));
 			setProducerBuildURL(s3JSONObject.optString("producer_build_url"));
+
+			setProducerJenkinsMaster(null);
 
 			String producerJenkinsMasterName = s3JSONObject.optString(
 				"producer_jenkins_master");
@@ -159,21 +160,12 @@ public abstract class BaseBundlePersistentResource
 				setProducerJenkinsMaster(
 					JenkinsMaster.getInstance(producerJenkinsMasterName));
 			}
-			else {
-				setProducerJenkinsMaster(null);
-			}
 
 			setProducerQueueId(s3JSONObject.optLong("producer_queue_id"));
 
 			Status status = Status.valueOf(s3JSONObject.getString("status"));
 
-			System.out.println("status=" + status);
-
 			setStatus(status);
-
-			System.out.println("getJSONObject()=" + getJSONObject());
-
-			System.out.println("isMissing()=" + isMissing());
 
 			if (isMissing()) {
 				_missingCount++;
@@ -302,6 +294,34 @@ public abstract class BaseBundlePersistentResource
 		}
 
 		return producerJenkinsMaster.getRemoteURL() + "job/" + _JOB_NAME;
+	}
+
+	protected String getUpstreamBranchName() {
+		WorkspaceGitRepository workspaceGitRepository =
+			getBundleWorkspaceGitRepository();
+
+		return workspaceGitRepository.getUpstreamBranchName();
+	}
+
+	protected Set<String> getArtifactNames() {
+		Set<String> artifactNames = new HashSet<>();
+
+		try {
+			String artifactNamesString =
+				JenkinsResultsParserUtil.getBuildProperty(
+					"persistent.resource.artifact.names[" + getType() + "]",
+					getUpstreamBranchName());
+
+			if (JenkinsResultsParserUtil.isNullOrEmpty(artifactNamesString)) {
+				return artifactNames;
+			}
+
+			Collections.addAll(artifactNames, artifactNamesString.split(","));
+		}
+		catch (IOException ioException) {
+		}
+
+		return artifactNames;
 	}
 
 	private static final String _BASE_INVOCATION_URL =

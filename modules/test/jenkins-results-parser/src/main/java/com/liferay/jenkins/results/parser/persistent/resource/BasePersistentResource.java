@@ -209,9 +209,7 @@ public abstract class BasePersistentResource implements PersistentResource {
 	protected BasePersistentResource(BuildDatabase buildDatabase) {
 		_buildDatabase = buildDatabase;
 
-		for (String artifactName : _getArtifactNames()) {
-			System.out.println("artifactName=" + artifactName);
-
+		for (String artifactName : getArtifactNames()) {
 			_artifacts.put(artifactName, new Artifact(artifactName, this));
 		}
 	}
@@ -222,21 +220,6 @@ public abstract class BasePersistentResource implements PersistentResource {
 
 	protected String getCurrentTopLevelBuildURL() {
 		return getStartProperty("TOP_LEVEL_BUILD_URL");
-	}
-
-	protected String getPortalUpstreamBranchName() {
-		Workspace workspace = getWorkspace();
-
-		if (workspace instanceof PortalWorkspace) {
-			PortalWorkspace portalWorkspace = (PortalWorkspace)workspace;
-
-			PortalWorkspaceGitRepository portalWorkspaceGitRepository =
-				portalWorkspace.getPortalWorkspaceGitRepository();
-
-			return portalWorkspaceGitRepository.getUpstreamBranchName();
-		}
-
-		return "master";
 	}
 
 	protected JSONObject getS3JSONObject() {
@@ -282,6 +265,10 @@ public abstract class BasePersistentResource implements PersistentResource {
 	}
 
 	protected synchronized Workspace getWorkspace() {
+		if (_workspace != null) {
+			return _workspace;
+		}
+
 		String primaryGitDirectoryName = getStartProperty(
 			"PRIMARY_GIT_DIRECTORY_NAME");
 
@@ -341,30 +328,7 @@ public abstract class BasePersistentResource implements PersistentResource {
 		_status = status;
 	}
 
-	private Set<String> _getArtifactNames() {
-		Set<String> artifactNames = new HashSet<>();
-
-		try {
-			System.out.println(
-				"getPortalUpstreamBranchName()=" +
-					getPortalUpstreamBranchName());
-
-			String artifactNamesString =
-				JenkinsResultsParserUtil.getBuildProperty(
-					"persistent.resource.artifact.names[" + getType() + "]",
-					getPortalUpstreamBranchName());
-
-			if (JenkinsResultsParserUtil.isNullOrEmpty(artifactNamesString)) {
-				return artifactNames;
-			}
-
-			Collections.addAll(artifactNames, artifactNamesString.split(","));
-		}
-		catch (IOException ioException) {
-		}
-
-		return artifactNames;
-	}
+	protected abstract Set<String> getArtifactNames();
 
 	private final Map<String, Artifact> _artifacts = new HashMap<>();
 	private final BuildDatabase _buildDatabase;

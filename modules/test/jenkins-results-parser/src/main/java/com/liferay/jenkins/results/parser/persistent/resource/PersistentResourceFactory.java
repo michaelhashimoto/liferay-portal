@@ -15,7 +15,7 @@ import java.util.Map;
  */
 public class PersistentResourceFactory {
 
-	public static PersistentResource newPersistentResource(
+	public static synchronized PersistentResource newPersistentResource(
 		BuildDatabase buildDatabase, PersistentResource.Type type) {
 
 		String key = buildDatabase.getBuildDatabaseFile() + "/" + type;
