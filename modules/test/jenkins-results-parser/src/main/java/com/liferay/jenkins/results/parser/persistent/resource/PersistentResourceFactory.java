@@ -18,27 +18,29 @@ public class PersistentResourceFactory {
 	public static PersistentResource newPersistentResource(
 		BuildDatabase buildDatabase, PersistentResource.Type type) {
 
-		if (_persistentResources.containsKey(type)) {
-			return _persistentResources.get(type);
+		String key = buildDatabase.getBuildDatabaseFile() + "/" + type;
+
+		if (_persistentResources.containsKey(key)) {
+			return _persistentResources.get(key);
 		}
 
 		if (type == PersistentResource.Type.ASAH_BUNDLE) {
 			_persistentResources.put(
-				type, new AsahBundlePersistentResource(buildDatabase));
+				key, new AsahBundlePersistentResource(buildDatabase));
 		}
 		else if (type == PersistentResource.Type.FARO_BUNDLE) {
 			_persistentResources.put(
-				type, new FaroBundlePersistentResource(buildDatabase));
+				key, new FaroBundlePersistentResource(buildDatabase));
 		}
 		else if (type == PersistentResource.Type.PORTAL_BUNDLE) {
 			_persistentResources.put(
-				type, new PortalBundlePersistentResource(buildDatabase));
+				key, new PortalBundlePersistentResource(buildDatabase));
 		}
 
-		return _persistentResources.get(type);
+		return _persistentResources.get(key);
 	}
 
-	private static final Map<PersistentResource.Type, PersistentResource>
+	private static final Map<String, PersistentResource>
 		_persistentResources = new HashMap<>();
 
 }

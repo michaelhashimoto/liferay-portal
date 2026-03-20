@@ -15,24 +15,10 @@ public class PersistentResourceManager {
 	public static void waitForPersistentResource(
 		PersistentResource persistentResource) {
 
-		System.out.println("waitForPersistentResource - START");
-
-		System.out.println(
-			"persistentResource.getProducerBuildURL()=" +
-				persistentResource.getProducerBuildURL());
-
 		persistentResource.update();
-
-		System.out.println(
-			"persistentResource.getJSONObject()=" +
-				persistentResource.getJSONObject());
 
 		while (true) {
 			PersistentResource.Status status = persistentResource.getStatus();
-
-			System.out.println(
-				"persistentResource.getStatus()=" +
-					persistentResource.getStatus());
 
 			if (status == PersistentResource.Status.FAILED) {
 				persistentResource.printStatusMessage();
@@ -52,8 +38,6 @@ public class PersistentResourceManager {
 
 			persistentResource.update();
 		}
-
-		System.out.println("waitForPersistentResource - END");
 	}
 
 }
