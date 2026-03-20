@@ -162,8 +162,6 @@ public abstract class BasePersistentResource implements PersistentResource {
 
 		String controllerBuildURL = getControllerBuildURL();
 
-		System.out.println("controllerBuildURL=" + controllerBuildURL);
-
 		if (!JenkinsResultsParserUtil.isURL(controllerBuildURL)) {
 			return false;
 		}

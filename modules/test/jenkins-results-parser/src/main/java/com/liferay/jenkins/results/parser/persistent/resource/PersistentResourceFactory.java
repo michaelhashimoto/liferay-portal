@@ -24,20 +24,26 @@ public class PersistentResourceFactory {
 			return _persistentResources.get(key);
 		}
 
+		PersistentResource persistentResource = null;
+
 		if (type == PersistentResource.Type.ASAH_BUNDLE) {
-			_persistentResources.put(
-				key, new AsahBundlePersistentResource(buildDatabase));
+			persistentResource = new AsahBundlePersistentResource(
+				buildDatabase);
 		}
 		else if (type == PersistentResource.Type.FARO_BUNDLE) {
-			_persistentResources.put(
-				key, new FaroBundlePersistentResource(buildDatabase));
+			persistentResource = new FaroBundlePersistentResource(
+				buildDatabase);
 		}
 		else if (type == PersistentResource.Type.PORTAL_BUNDLE) {
-			_persistentResources.put(
-				key, new PortalBundlePersistentResource(buildDatabase));
+			persistentResource = new PortalBundlePersistentResource(
+				buildDatabase);
 		}
 
-		return _persistentResources.get(key);
+		if (persistentResource != null) {
+			_persistentResources.put(key, persistentResource);
+		}
+
+		return persistentResource;
 	}
 
 	private static final Map<String, PersistentResource>
