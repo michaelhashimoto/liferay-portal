@@ -393,6 +393,10 @@ public abstract class BaseBundlePersistentResource
 		_build.saveBuildURLInBuildDatabase();
 
 		topLevelBuild.update();
+
+		BuildDatabase buildDatabase = getBuildDatabase();
+
+		buildDatabase.uploadBuildDatabaseFileToCloudBucket();
 	}
 
 	private static final String _BASE_INVOCATION_URL =
