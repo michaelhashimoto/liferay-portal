@@ -91,7 +91,7 @@ public abstract class BaseBundlePersistentResource
 					startProperties, propertyName));
 		}
 
-		buildParameters.put("AXIS_VARIABLE", getJobVariant());
+		buildParameters.put("AXIS_VARIABLE", "0");
 		buildParameters.put("BUILD_PRIORITY", _BUILD_PRIORITY);
 		buildParameters.put(
 			"GITHUB_UPSTREAM_BRANCH_NAME", getPortalUpstreamBranchName());
