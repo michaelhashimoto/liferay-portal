@@ -397,8 +397,7 @@ public abstract class BaseBundlePersistentResource
 
 			_topLevelBuild.addDownstreamBuild(_build);
 		}
-
-		if (Objects.equals(producerBuildURL, _build.getBuildURL())) {
+		else if (Objects.equals(producerBuildURL, _build.getBuildURL())) {
 			return;
 		}
 
