@@ -413,7 +413,8 @@ public abstract class BaseBundlePersistentResource
 
 		StringBuilder sb = new StringBuilder();
 
-		sb.append("usercontent/jobs/");
+		sb.append(System.getenv("JENKINS_HOME"));
+		sb.append("/userContent/jobs/");
 		sb.append(getStartProperty("TOP_LEVEL_JOB_NAME"));
 		sb.append("/builds/");
 		sb.append(getStartProperty("TOP_LEVEL_BUILD_NUMBER"));
