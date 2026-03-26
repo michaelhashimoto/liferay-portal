@@ -410,19 +410,6 @@ public abstract class BaseBundlePersistentResource
 		BuildDatabase buildDatabase = getBuildDatabase();
 
 		buildDatabase.uploadBuildDatabaseFileToCloudBucket();
-
-		StringBuilder sb = new StringBuilder();
-
-		sb.append(System.getenv("JENKINS_HOME"));
-		sb.append("/userContent/jobs/");
-		sb.append(getStartProperty("TOP_LEVEL_JOB_NAME"));
-		sb.append("/builds/");
-		sb.append(getStartProperty("TOP_LEVEL_BUILD_NUMBER"));
-
-		buildDatabase.rsyncBuildDatabaseFile(
-			Collections.singletonList(
-				getStartProperty("TOP_LEVEL_JENKINS_MASTER")),
-			sb.toString(), null, null, 1);
 	}
 
 	private static final String _BASE_INVOCATION_URL =
