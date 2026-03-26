@@ -418,7 +418,6 @@ public abstract class BaseBundlePersistentResource
 		sb.append(getStartProperty("TOP_LEVEL_JOB_NAME"));
 		sb.append("/builds/");
 		sb.append(getStartProperty("TOP_LEVEL_BUILD_NUMBER"));
-		sb.append("/");
 
 		buildDatabase.rsyncBuildDatabaseFile(
 			Collections.singletonList(
