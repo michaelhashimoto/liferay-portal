@@ -179,7 +179,7 @@ public class ViewCategoriesDisplayContext {
 								_themeDisplay),
 							"parentCategoryId", "{id}", "vocabularyId",
 							"{taxonomyVocabularyId}"),
-						"plus", "add-subcategory",
+						null, "add-subcategory",
 						_language.get(_httpServletRequest, "add-subcategory"),
 						"get", "update", null),
 					new FDSActionDropdownItem(
@@ -191,7 +191,7 @@ public class ViewCategoriesDisplayContext {
 								_themeDisplay),
 							"categoryId", "{id}", "vocabularyId",
 							"{taxonomyVocabularyId}"),
-						"categories", "view-categories",
+						null, "view-categories",
 						_language.get(
 							_httpServletRequest, "view-subcategories"),
 						"get", null, null),
@@ -203,7 +203,7 @@ public class ViewCategoriesDisplayContext {
 									"/categorization/view-category-usages"),
 								_themeDisplay),
 							"categoryId", "{id}"),
-						"list-ul", "view-category-usages",
+						null, "view-category-usages",
 						_language.get(_httpServletRequest, "view-usages"),
 						"get", null, null))
 			).setSeparator(

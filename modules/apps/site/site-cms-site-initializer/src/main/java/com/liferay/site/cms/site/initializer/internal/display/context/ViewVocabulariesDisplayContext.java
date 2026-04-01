@@ -106,7 +106,7 @@ public class ViewVocabulariesDisplayContext {
 									"/categorization/view-categories"),
 								_themeDisplay),
 							"vocabularyId", "{id}"),
-						"categories", "view-categories",
+						null, "view-categories",
 						LanguageUtil.get(
 							_httpServletRequest, "view-categories"),
 						"get", null, null))
