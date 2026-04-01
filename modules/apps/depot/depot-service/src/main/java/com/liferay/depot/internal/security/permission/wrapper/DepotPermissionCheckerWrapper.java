@@ -308,9 +308,7 @@ public class DepotPermissionCheckerWrapper extends PermissionCheckerWrapper {
 		}
 		else if (StringUtil.equals(name, User.class.getName())) {
 			try {
-				if (_isDepotGroupAdmin(groupId)) {
-					return true;
-				}
+				return _isDepotGroupAdmin(groupId);
 			}
 			catch (PortalException portalException) {
 				_log.error(portalException);
