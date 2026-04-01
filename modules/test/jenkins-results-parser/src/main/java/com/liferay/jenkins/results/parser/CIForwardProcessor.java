@@ -207,8 +207,16 @@ public class CIForwardProcessor {
 				"Unable to forward pull request", exception);
 		}
 
+		if (JenkinsResultsParserUtil.isNullOrEmpty(forwardedPullRequestURL)) {
+			return;
+		}
+
 		PullRequest forwardedPullRequest = new PullRequest(
 			forwardedPullRequestURL);
+
+		_copyLabels(forwardedPullRequest);
+
+		_copyStatuses(forwardedPullRequest);
 
 		try {
 			for (PullRequest.Comment comment :
@@ -221,9 +229,49 @@ public class CIForwardProcessor {
 			ioException.printStackTrace();
 		}
 
-		if (!JenkinsResultsParserUtil.isNullOrEmpty(forwardedPullRequestURL)) {
-			_pullRequest.addComment(
-				_getSuccessCommentBody(forwardedPullRequestURL));
+		_pullRequest.addComment(
+			_getSuccessCommentBody(forwardedPullRequestURL));
+	}
+
+	private void _copyLabels(PullRequest forwardedPullRequest) {
+		for (GitHubRemoteGitRepository.Label label : _pullRequest.getLabels()) {
+			forwardedPullRequest.addLabel(label);
+		}
+	}
+
+	private void _copyStatuses(PullRequest forwardedPullRequest) {
+		JSONObject statusJSONObject =
+			_pullRequest.getSenderSHAStatusJSONObject();
+
+		if (statusJSONObject == null) {
+			return;
+		}
+
+		JSONArray statusesJSONArray = statusJSONObject.optJSONArray("statuses");
+
+		if (statusesJSONArray == null) {
+			return;
+		}
+
+		GitHubRemoteGitCommit gitHubRemoteGitCommit =
+			forwardedPullRequest.getGitHubRemoteGitCommit();
+
+		for (int i = 0; i < statusesJSONArray.length(); i++) {
+			JSONObject statusJSONObjectItem = statusesJSONArray.getJSONObject(
+				i);
+
+			String state = statusJSONObjectItem.getString("state");
+			String context = statusJSONObjectItem.getString("context");
+			String description = statusJSONObjectItem.optString(
+				"description", null);
+			String targetURL = statusJSONObjectItem.optString(
+				"target_url", null);
+
+			GitHubRemoteGitCommit.Status status =
+				GitHubRemoteGitCommit.Status.valueOf(state.toUpperCase());
+
+			gitHubRemoteGitCommit.setStatus(
+				status, context, description, targetURL);
 		}
 	}
 
