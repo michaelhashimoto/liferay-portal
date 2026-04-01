@@ -19,6 +19,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
@@ -110,33 +111,32 @@ public class PullRequest {
 		}
 	}
 
-	public boolean addLabel(GitHubRemoteGitRepository.Label label) {
-		if (!isUpdateEnabled()) {
-			return false;
+	public void addLabel(GitHubRemoteGitRepository.Label label) {
+		addLabels(Arrays.asList(label));
+	}
+
+	public void addLabels(List<GitHubRemoteGitRepository.Label> labels) {
+		if (!isUpdateEnabled() || (labels == null) || labels.isEmpty()) {
+			return;
 		}
 
-		if ((label == null) || hasLabel(label.getName())) {
-			return true;
+		List<GitHubRemoteGitRepository.Label> newLabels = new ArrayList<>();
+
+		for (GitHubRemoteGitRepository.Label label : labels) {
+			if (!hasLabel(label.getName())) {
+				newLabels.add(label);
+			}
 		}
 
-		GitHubRemoteGitRepository gitHubRemoteGitRepository =
-			getGitHubRemoteGitRepository();
-
-		GitHubRemoteGitRepository.Label gitRepositoryLabel =
-			gitHubRemoteGitRepository.getLabel(label.getName());
-
-		if (gitRepositoryLabel == null) {
-			System.out.println(
-				JenkinsResultsParserUtil.combine(
-					"GitHubRemoteGitRepository.Label ", label.getName(),
-					" does not exist in ", getGitHubRemoteGitRepositoryName()));
-
-			return false;
+		if (newLabels.isEmpty()) {
+			return;
 		}
 
 		JSONArray jsonArray = new JSONArray();
 
-		jsonArray.put(label.getName());
+		for (GitHubRemoteGitRepository.Label newLabel : newLabels) {
+			jsonArray.put(newLabel.getName());
+		}
 
 		String gitHubApiUrl = JenkinsResultsParserUtil.getGitHubApiUrl(
 			getGitHubRemoteGitRepositoryName(), getOwnerUsername(),
@@ -148,14 +148,10 @@ public class PullRequest {
 				jsonArray.toString());
 		}
 		catch (IOException ioException) {
-			System.out.println("Unable to add label " + label.getName());
+			System.out.println("Unable to add labels " + jsonArray);
 
 			ioException.printStackTrace();
-
-			return false;
 		}
-
-		return true;
 	}
 
 	public void close() {

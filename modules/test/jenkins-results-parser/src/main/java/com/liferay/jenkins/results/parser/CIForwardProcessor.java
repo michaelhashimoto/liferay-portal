@@ -234,20 +234,21 @@ public class CIForwardProcessor {
 	}
 
 	private void _copyLabels(PullRequest forwardedPullRequest) {
-		for (GitHubRemoteGitRepository.Label label : _pullRequest.getLabels()) {
-			forwardedPullRequest.addLabel(label);
-		}
+		_pullRequest.refresh();
+
+		forwardedPullRequest.addLabels(_pullRequest.getLabels());
 	}
 
 	private void _copyStatuses(PullRequest forwardedPullRequest) {
-		JSONObject statusJSONObject =
+		JSONObject senderSHAStatusJSONObject =
 			_pullRequest.getSenderSHAStatusJSONObject();
 
-		if (statusJSONObject == null) {
+		if (senderSHAStatusJSONObject == null) {
 			return;
 		}
 
-		JSONArray statusesJSONArray = statusJSONObject.optJSONArray("statuses");
+		JSONArray statusesJSONArray = senderSHAStatusJSONObject.optJSONArray(
+			"statuses");
 
 		if (statusesJSONArray == null) {
 			return;
@@ -257,15 +258,13 @@ public class CIForwardProcessor {
 			forwardedPullRequest.getGitHubRemoteGitCommit();
 
 		for (int i = 0; i < statusesJSONArray.length(); i++) {
-			JSONObject statusJSONObjectItem = statusesJSONArray.getJSONObject(
-				i);
+			JSONObject statusJSONObject = statusesJSONArray.getJSONObject(i);
 
-			String state = statusJSONObjectItem.getString("state");
-			String context = statusJSONObjectItem.getString("context");
-			String description = statusJSONObjectItem.optString(
+			String state = statusJSONObject.getString("state");
+			String context = statusJSONObject.getString("context");
+			String description = statusJSONObject.optString(
 				"description", null);
-			String targetURL = statusJSONObjectItem.optString(
-				"target_url", null);
+			String targetURL = statusJSONObject.optString("target_url", null);
 
 			GitHubRemoteGitCommit.Status status =
 				GitHubRemoteGitCommit.Status.valueOf(state.toUpperCase());
