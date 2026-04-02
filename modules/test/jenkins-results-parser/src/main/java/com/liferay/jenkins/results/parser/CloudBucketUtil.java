@@ -438,6 +438,22 @@ public class CloudBucketUtil {
 		System.out.println("Synced " + source + " to " + destination);
 	}
 
+	public static void touchS3File(String s3Path) throws IOException {
+		String replacedS3Path = _replaceS3ObjectPath(s3Path);
+
+		long start = System.currentTimeMillis();
+
+		_executeAWSCommands(
+			_getFileTransferCommand(
+				"aws s3 cp --no-progress", replacedS3Path, replacedS3Path));
+
+		System.out.println(
+			JenkinsResultsParserUtil.combine(
+				"Touched ", replacedS3Path, " in ",
+				JenkinsResultsParserUtil.toDurationString(
+					System.currentTimeMillis() - start)));
+	}
+
 	public static void uploadS3File(String s3DestinationPath, File sourceFile)
 		throws IOException {
 
