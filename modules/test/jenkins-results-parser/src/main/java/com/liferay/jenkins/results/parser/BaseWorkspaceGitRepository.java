@@ -758,6 +758,12 @@ public abstract class BaseWorkspaceGitRepository
 
 		boolean useSnapshot = false;
 
+		String jobName = System.getenv("JOB_NAME");
+
+		if ((jobName != null) && jobName.equals("test-portal-source-format")) {
+			return;
+		}
+
 		if (_isDotGitDirArchiveRequired()) {
 			if (_isGitArchiveAvailable() && _isDotGitArchiveAvailable()) {
 				CloudBucketUtil.touchS3File(_getGitArchiveS3BucketPath());
