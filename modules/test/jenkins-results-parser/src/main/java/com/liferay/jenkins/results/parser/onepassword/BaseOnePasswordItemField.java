@@ -5,6 +5,8 @@
 
 package com.liferay.jenkins.results.parser.onepassword;
 
+import com.liferay.jenkins.results.parser.JenkinsResultsParserUtil;
+
 import org.json.JSONObject;
 
 /**
@@ -29,7 +31,13 @@ public class BaseOnePasswordItemField implements OnePasswordItemField {
 
 	@Override
 	public Type getType() {
-		return Type.valueOf(_jsonObject.getString("type"));
+		String type = _jsonObject.getString("type");
+
+		if (JenkinsResultsParserUtil.isNullOrEmpty(type)) {
+			return Type.STRING;
+		}
+
+		return Type.valueOf(type.toUpperCase());
 	}
 
 	@Override

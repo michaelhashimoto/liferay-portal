@@ -56,8 +56,6 @@ public class BaseOnePasswordItemFile implements OnePasswordItemFile {
 
 		_jsonObject = jsonObject;
 		_onePasswordItem = onePasswordItem;
-
-		System.out.println(_jsonObject);
 	}
 
 	private String _content;

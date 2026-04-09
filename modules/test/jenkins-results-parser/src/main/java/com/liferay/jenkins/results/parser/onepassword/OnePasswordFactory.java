@@ -7,8 +7,8 @@ package com.liferay.jenkins.results.parser.onepassword;
 
 import java.net.URL;
 
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.json.JSONObject;
 
@@ -22,12 +22,14 @@ public class OnePasswordFactory {
 			return null;
 		}
 
-		OnePasswordConnect onePasswordConnect = _onePasswordConnects.get(url);
+		String key = String.valueOf(url);
+
+		OnePasswordConnect onePasswordConnect = _onePasswordConnects.get(key);
 
 		if (onePasswordConnect == null) {
-			onePasswordConnect = new BaseOnePasswordConnect(url);
+			onePasswordConnect = new DefaultOnePasswordConnect(url);
 
-			_onePasswordConnects.put(url, onePasswordConnect);
+			_onePasswordConnects.put(key, onePasswordConnect);
 		}
 
 		return onePasswordConnect;
@@ -36,8 +38,7 @@ public class OnePasswordFactory {
 	public static OnePasswordItem newOnePasswordItem(
 		JSONObject jsonObject, OnePasswordVault onePasswordVault) {
 
-		String key =
-			onePasswordVault.getName() + "__" + jsonObject.getString("id");
+		String key = jsonObject.getString("id");
 
 		OnePasswordItem onePasswordItem = _onePasswordItems.get(key);
 
@@ -54,8 +55,7 @@ public class OnePasswordFactory {
 	public static OnePasswordItemField newOnePasswordItemField(
 		OnePasswordItem onePasswordItem, JSONObject jsonObject) {
 
-		String key =
-			onePasswordItem.getId() + "__" + jsonObject.getString("label");
+		String key = onePasswordItem.getId() + "_" + jsonObject.getString("id");
 
 		OnePasswordItemField onePasswordItemField = _onePasswordItemFields.get(
 			key);
@@ -74,7 +74,7 @@ public class OnePasswordFactory {
 		OnePasswordItem onePasswordItem, JSONObject jsonObject) {
 
 		String key =
-			onePasswordItem.getId() + "__" + jsonObject.getString("name");
+			onePasswordItem.getId() + "_" + jsonObject.getString("name");
 
 		OnePasswordItemFile onePasswordItemFile = _onePasswordItemFiles.get(
 			key);
@@ -107,15 +107,15 @@ public class OnePasswordFactory {
 		return onePasswordVault;
 	}
 
-	private static final Map<URL, OnePasswordConnect> _onePasswordConnects =
-		new HashMap<>();
+	private static final Map<String, OnePasswordConnect> _onePasswordConnects =
+		new ConcurrentHashMap<>();
 	private static final Map<String, OnePasswordItemField>
-		_onePasswordItemFields = new HashMap<>();
+		_onePasswordItemFields = new ConcurrentHashMap<>();
 	private static final Map<String, OnePasswordItemFile>
-		_onePasswordItemFiles = new HashMap<>();
+		_onePasswordItemFiles = new ConcurrentHashMap<>();
 	private static final Map<String, OnePasswordItem> _onePasswordItems =
-		new HashMap<>();
+		new ConcurrentHashMap<>();
 	private static final Map<String, OnePasswordVault> _onePasswordVaults =
-		new HashMap<>();
+		new ConcurrentHashMap<>();
 
 }

@@ -23,7 +23,7 @@ import org.json.JSONObject;
 /**
  * @author Michael Hashimoto
  */
-public class BaseOnePasswordConnect implements OnePasswordConnect {
+public abstract class BaseOnePasswordConnect implements OnePasswordConnect {
 
 	@Override
 	public OnePasswordVault getOnePasswordVault(String vaultName) {
@@ -122,8 +122,11 @@ public class BaseOnePasswordConnect implements OnePasswordConnect {
 					"one.password.access.token.key");
 
 			Process process = JenkinsResultsParserUtil.executeBashCommands(
-				"aws ssm get-parameter --name \"" + onePasswordAccessTokenKey +
-					"\" --with-decryption | jq -r .Parameter.Value");
+				JenkinsResultsParserUtil.combine(
+					"aws ssm get-parameter --name ",
+					JenkinsResultsParserUtil.escapeForBash(
+						onePasswordAccessTokenKey),
+					" --with-decryption | jq -r .Parameter.Value"));
 
 			String accessToken = JenkinsResultsParserUtil.readInputStream(
 				process.getInputStream());
