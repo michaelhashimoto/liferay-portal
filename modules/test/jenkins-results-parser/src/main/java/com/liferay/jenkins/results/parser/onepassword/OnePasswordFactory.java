@@ -33,6 +33,24 @@ public class OnePasswordFactory {
 		return onePasswordConnect;
 	}
 
+	public static OnePasswordItem newOnePasswordItem(
+		JSONObject jsonObject, OnePasswordVault onePasswordVault) {
+
+		String key =
+			onePasswordVault.getName() + "__" + jsonObject.getString("id");
+
+		OnePasswordItem onePasswordItem = _onePasswordItems.get(key);
+
+		if (onePasswordItem == null) {
+			onePasswordItem = new DefaultOnePasswordItem(
+				jsonObject, onePasswordVault);
+
+			_onePasswordItems.put(key, onePasswordItem);
+		}
+
+		return onePasswordItem;
+	}
+
 	public static OnePasswordVault newOnePasswordVault(
 		JSONObject jsonObject, OnePasswordConnect onePasswordConnect) {
 
@@ -52,6 +70,8 @@ public class OnePasswordFactory {
 	}
 
 	private static final Map<URL, OnePasswordConnect> _onePasswordConnects =
+		new HashMap<>();
+	private static final Map<String, OnePasswordItem> _onePasswordItems =
 		new HashMap<>();
 	private static final Map<String, OnePasswordVault> _onePasswordVaults =
 		new HashMap<>();

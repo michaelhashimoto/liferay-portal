@@ -5,6 +5,12 @@
 
 package com.liferay.jenkins.results.parser.onepassword;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 /**
@@ -27,6 +33,20 @@ public abstract class BaseOnePasswordVault implements OnePasswordVault {
 		return _onePasswordConnect;
 	}
 
+	@Override
+	public OnePasswordItem getOnePasswordItem(String title) {
+		_initializeOnePasswordItems();
+
+		return _onePasswordItems.get(title);
+	}
+
+	@Override
+	public List<OnePasswordItem> getOnePasswordItems() {
+		_initializeOnePasswordItems();
+
+		return new ArrayList<>(_onePasswordItems.values());
+	}
+
 	protected BaseOnePasswordVault(
 		JSONObject jsonObject, OnePasswordConnect onePasswordConnect) {
 
@@ -34,7 +54,29 @@ public abstract class BaseOnePasswordVault implements OnePasswordVault {
 		_onePasswordConnect = onePasswordConnect;
 	}
 
+	private synchronized void _initializeOnePasswordItems() {
+		if (_onePasswordItems != null) {
+			return;
+		}
+
+		_onePasswordItems = new HashMap<>();
+
+		OnePasswordConnect onePasswordConnect = getOnePasswordConnect();
+
+		JSONArray itemsJSONArray = onePasswordConnect.requestJSONArray(
+			"/v1/vaults/" + getId() + "/items");
+
+		for (int i = 0; i < itemsJSONArray.length(); i++) {
+			OnePasswordItem onePasswordItem =
+				OnePasswordFactory.newOnePasswordItem(
+					itemsJSONArray.getJSONObject(i), this);
+
+			_onePasswordItems.put(onePasswordItem.getTitle(), onePasswordItem);
+		}
+	}
+
 	private final JSONObject _jsonObject;
 	private final OnePasswordConnect _onePasswordConnect;
+	private Map<String, OnePasswordItem> _onePasswordItems;
 
 }
