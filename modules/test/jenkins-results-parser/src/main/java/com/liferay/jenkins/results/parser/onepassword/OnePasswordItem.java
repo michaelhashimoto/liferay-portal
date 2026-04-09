@@ -5,6 +5,8 @@
 
 package com.liferay.jenkins.results.parser.onepassword;
 
+import java.util.List;
+
 /**
  * @author Michael Hashimoto
  */
@@ -13,6 +15,10 @@ public interface OnePasswordItem {
 	public String getId();
 
 	public OnePasswordConnect getOnePasswordConnect();
+
+	public OnePasswordItemField getOnePasswordItemField(String label);
+
+	public List<OnePasswordItemField> getOnePasswordItemFields();
 
 	public OnePasswordVault getOnePasswordVault();
 
