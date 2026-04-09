@@ -11,6 +11,9 @@ import java.io.IOException;
 
 import java.net.URL;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeoutException;
 
@@ -21,6 +24,20 @@ import org.json.JSONObject;
  * @author Michael Hashimoto
  */
 public class BaseOnePasswordConnect implements OnePasswordConnect {
+
+	@Override
+	public OnePasswordVault getOnePasswordVault(String vaultName) {
+		_initializeOnePasswordVaults();
+
+		return _onePasswordVaults.get(vaultName);
+	}
+
+	@Override
+	public List<OnePasswordVault> getOnePasswordVaults() {
+		_initializeOnePasswordVaults();
+
+		return new ArrayList<>(_onePasswordVaults.values());
+	}
 
 	@Override
 	public URL getURL() {
@@ -122,7 +139,27 @@ public class BaseOnePasswordConnect implements OnePasswordConnect {
 		}
 	}
 
+	private synchronized void _initializeOnePasswordVaults() {
+		if (_onePasswordVaults != null) {
+			return;
+		}
+
+		_onePasswordVaults = new HashMap<>();
+
+		JSONArray vaultsJSONArray = requestJSONArray("/v1/vaults");
+
+		for (int i = 0; i < vaultsJSONArray.length(); i++) {
+			OnePasswordVault onePasswordVault =
+				OnePasswordFactory.newOnePasswordVault(
+					vaultsJSONArray.getJSONObject(i), this);
+
+			_onePasswordVaults.put(
+				onePasswordVault.getName(), onePasswordVault);
+		}
+	}
+
 	private final JenkinsResultsParserUtil.HTTPAuthorization _httpAuthorization;
+	private Map<String, OnePasswordVault> _onePasswordVaults;
 	private final URL _url;
 
 }

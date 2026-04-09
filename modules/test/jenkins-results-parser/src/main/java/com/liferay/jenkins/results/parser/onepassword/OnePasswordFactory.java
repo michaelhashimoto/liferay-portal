@@ -10,6 +10,8 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.json.JSONObject;
+
 /**
  * @author Michael Hashimoto
  */
@@ -31,7 +33,27 @@ public class OnePasswordFactory {
 		return onePasswordConnect;
 	}
 
+	public static OnePasswordVault newOnePasswordVault(
+		JSONObject jsonObject, OnePasswordConnect onePasswordConnect) {
+
+		String key =
+			onePasswordConnect.getURL() + "__" + jsonObject.getString("name");
+
+		OnePasswordVault onePasswordVault = _onePasswordVaults.get(key);
+
+		if (onePasswordVault == null) {
+			onePasswordVault = new DefaultOnePasswordVault(
+				jsonObject, onePasswordConnect);
+
+			_onePasswordVaults.put(key, onePasswordVault);
+		}
+
+		return onePasswordVault;
+	}
+
 	private static final Map<URL, OnePasswordConnect> _onePasswordConnects =
+		new HashMap<>();
+	private static final Map<String, OnePasswordVault> _onePasswordVaults =
 		new HashMap<>();
 
 }

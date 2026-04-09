@@ -7,6 +7,7 @@ package com.liferay.jenkins.results.parser.onepassword;
 
 import java.net.URL;
 
+import java.util.List;
 import java.util.Map;
 
 import org.json.JSONArray;
@@ -16,6 +17,10 @@ import org.json.JSONObject;
  * @author Michael Hashimoto
  */
 public interface OnePasswordConnect {
+
+	public OnePasswordVault getOnePasswordVault(String vaultName);
+
+	public List<OnePasswordVault> getOnePasswordVaults();
 
 	public URL getURL();
 
