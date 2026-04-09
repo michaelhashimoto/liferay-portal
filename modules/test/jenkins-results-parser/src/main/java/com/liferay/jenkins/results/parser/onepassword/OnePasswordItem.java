@@ -20,6 +20,10 @@ public interface OnePasswordItem {
 
 	public List<OnePasswordItemField> getOnePasswordItemFields();
 
+	public OnePasswordItemFile getOnePasswordItemFile(String name);
+
+	public List<OnePasswordItemFile> getOnePasswordItemFiles();
+
 	public OnePasswordVault getOnePasswordVault();
 
 	public String getTitle();

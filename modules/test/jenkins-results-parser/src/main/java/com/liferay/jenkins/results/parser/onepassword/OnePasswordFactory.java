@@ -70,6 +70,25 @@ public class OnePasswordFactory {
 		return onePasswordItemField;
 	}
 
+	public static OnePasswordItemFile newOnePasswordItemFile(
+		OnePasswordItem onePasswordItem, JSONObject jsonObject) {
+
+		String key =
+			onePasswordItem.getId() + "__" + jsonObject.getString("name");
+
+		OnePasswordItemFile onePasswordItemFile = _onePasswordItemFiles.get(
+			key);
+
+		if (onePasswordItemFile == null) {
+			onePasswordItemFile = new DefaultOnePasswordItemFile(
+				jsonObject, onePasswordItem);
+
+			_onePasswordItemFiles.put(key, onePasswordItemFile);
+		}
+
+		return onePasswordItemFile;
+	}
+
 	public static OnePasswordVault newOnePasswordVault(
 		JSONObject jsonObject, OnePasswordConnect onePasswordConnect) {
 
@@ -92,6 +111,8 @@ public class OnePasswordFactory {
 		new HashMap<>();
 	private static final Map<String, OnePasswordItemField>
 		_onePasswordItemFields = new HashMap<>();
+	private static final Map<String, OnePasswordItemFile>
+		_onePasswordItemFiles = new HashMap<>();
 	private static final Map<String, OnePasswordItem> _onePasswordItems =
 		new HashMap<>();
 	private static final Map<String, OnePasswordVault> _onePasswordVaults =

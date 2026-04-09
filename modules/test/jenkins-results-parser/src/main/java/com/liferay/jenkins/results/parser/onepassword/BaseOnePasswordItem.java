@@ -43,6 +43,20 @@ public abstract class BaseOnePasswordItem implements OnePasswordItem {
 	}
 
 	@Override
+	public OnePasswordItemFile getOnePasswordItemFile(String name) {
+		_initialize();
+
+		return _onePasswordItemFiles.get(name);
+	}
+
+	@Override
+	public List<OnePasswordItemFile> getOnePasswordItemFiles() {
+		_initialize();
+
+		return new ArrayList<>(_onePasswordItemFiles.values());
+	}
+
+	@Override
 	public OnePasswordVault getOnePasswordVault() {
 		return _onePasswordVault;
 	}
@@ -85,11 +99,28 @@ public abstract class BaseOnePasswordItem implements OnePasswordItem {
 					onePasswordItemField.getLabel(), onePasswordItemField);
 			}
 		}
+
+		JSONArray filesJSONArray = _itemDetailsJSONObject.optJSONArray("files");
+
+		if (filesJSONArray != null) {
+			for (int j = 0; j < filesJSONArray.length(); j++) {
+				JSONObject fileJSONObject = filesJSONArray.getJSONObject(j);
+
+				OnePasswordItemFile onePasswordItemFile =
+					OnePasswordFactory.newOnePasswordItemFile(
+						this, fileJSONObject);
+
+				_onePasswordItemFiles.put(
+					onePasswordItemFile.getName(), onePasswordItemFile);
+			}
+		}
 	}
 
 	private JSONObject _itemDetailsJSONObject;
 	private final JSONObject _jsonObject;
 	private final Map<String, OnePasswordItemField> _onePasswordItemFields =
+		new HashMap<>();
+	private final Map<String, OnePasswordItemFile> _onePasswordItemFiles =
 		new HashMap<>();
 	private final OnePasswordVault _onePasswordVault;
 
