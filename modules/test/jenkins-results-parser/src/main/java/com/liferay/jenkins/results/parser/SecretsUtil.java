@@ -214,6 +214,7 @@ public abstract class SecretsUtil {
 			}
 
 			Process process = JenkinsResultsParserUtil.executeBashCommands(
+				true, false,
 				"aws ssm get-parameter --name \"" + onePasswordAccessTokenKey +
 					"\" --with-decryption | jq -r .Parameter.Value");
 

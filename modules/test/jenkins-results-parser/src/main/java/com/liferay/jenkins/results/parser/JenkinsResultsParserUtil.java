@@ -576,14 +576,25 @@ public class JenkinsResultsParserUtil {
 	}
 
 	public static Process executeBashCommands(
-			boolean exitOnFirstFail, File baseDir, long timeout,
-			String... commands)
+			boolean exitOnFirstFail, boolean printCommands, String... commands)
 		throws IOException, TimeoutException {
 
-		System.out.print("Executing commands: ");
+		return executeBashCommands(
+			exitOnFirstFail, new File("."), printCommands,
+			_MILLIS_BASH_COMMAND_TIMEOUT_DEFAULT, commands);
+	}
 
-		for (String command : commands) {
-			System.out.println(command);
+	public static Process executeBashCommands(
+			boolean exitOnFirstFail, File baseDir, boolean printCommands,
+			long timeout, String... commands)
+		throws IOException, TimeoutException {
+
+		if (printCommands) {
+			System.out.print("Executing commands: ");
+
+			for (String command : commands) {
+				System.out.println(command);
+			}
 		}
 
 		String[] bashCommands = new String[3];
@@ -700,6 +711,15 @@ public class JenkinsResultsParserUtil {
 		}
 
 		return process;
+	}
+
+	public static Process executeBashCommands(
+			boolean exitOnFirstFail, File baseDir, long timeout,
+			String... commands)
+		throws IOException, TimeoutException {
+
+		return executeBashCommands(
+			exitOnFirstFail, baseDir, true, timeout, commands);
 	}
 
 	public static Process executeBashCommands(
