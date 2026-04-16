@@ -118,8 +118,6 @@ public abstract class SecretsUtil {
 			}
 		}
 		catch (IOException ioException) {
-			System.out.println("WARNING: Please set one.password.connect.url");
-
 			onePasswordConnectURL = _SERVER_URL_DEFAULT;
 		}
 
@@ -187,6 +185,9 @@ public abstract class SecretsUtil {
 
 	private static final String _ACCESS_TOKEN;
 
+	private static final String _ACCESS_TOKEN_KEY_DEFAULT =
+		"/ci/op/access-token";
+
 	private static final String _SERVER_URL_DEFAULT =
 		"https://1password.liferay.com";
 
@@ -209,8 +210,7 @@ public abstract class SecretsUtil {
 			if (JenkinsResultsParserUtil.isNullOrEmpty(
 					onePasswordAccessTokenKey)) {
 
-				System.out.println(
-					"WARNING: Please set one.password.access.token.key");
+				onePasswordAccessTokenKey = _ACCESS_TOKEN_KEY_DEFAULT;
 			}
 
 			Process process = JenkinsResultsParserUtil.executeBashCommands(
