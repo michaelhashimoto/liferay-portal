@@ -2498,6 +2498,14 @@ war.path=${app.server.portal.dir}/</echo>
 
 					<get-poshi-java-jdk-opts />
 
+					<echo><![CDATA[<gradle-execute dir="@{build.gradle.dir}" failonerror="@{failonerror}" setupbinariescache="false" stacktrace="false" task="@{task}">
+	<arg value="--build-file=@{build.gradle.file}" />
+	<arg value="-Ptmp.maven.repository.dir=../.m2-tmp" />
+	<env key="ANT_OPTS" value="${poshi.java.jdk.opts}" />
+	<env key="JAVA_HOME" path="${java.jdk.home}" />
+</gradle-execute>]]>
+					</echo>
+
 					<gradle-execute dir="@{build.gradle.dir}" failonerror="@{failonerror}" setupbinariescache="false" stacktrace="false" task="@{task}">
 						<arg value="--build-file=@{build.gradle.file}" />
 						<arg value="-Ptmp.maven.repository.dir=../.m2-tmp" />

@@ -492,6 +492,8 @@ definition {
 
 				AssertElementPresent(locator1 = "Button#SELECT_FILES");
 
+				takeScreenshot();
+
 				if (${uploadTempFile} == "true") {
 					UploadTempFile.uploadTempFileHiddenNoMouseOver(
 						locator1 = "TextInput#FILE",
@@ -501,7 +503,11 @@ definition {
 					UploadDependencyFile.uploadFile(fileName = ${dmDocumentFile});
 				}
 
+				takeScreenshot();
+
 				AssertChecked(locator1 = "DynamicUploader#SELECT_ALL_CHECKBOX");
+
+				takeScreenshot();
 
 				AssertElementPresent(
 					key_documentName = ${dmDocumentFile},
@@ -893,6 +899,8 @@ definition {
 
 	@summary = "Default summary"
 	macro assertFileNameFromTempFolder(fileName = null) {
+		takeScreenshot();
+
 		var tempDir = PropsUtil.get("output.dir.name");
 
 		var downloadedFileCrdownload = FileUtil.exists("${tempDir}/${fileName}.crdownload");
@@ -907,6 +915,8 @@ definition {
 		}
 
 		var downloadedFile = FileUtil.exists("${tempDir}/${fileName}");
+
+		echo("downloadedFile=${downloadedFile}");
 
 		if (${downloadedFile} == "true") {
 			echo("There is a file named ${fileName} in temp folder ${tempDir}");

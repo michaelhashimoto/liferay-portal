@@ -43,6 +43,8 @@ definition {
 			dmDocumentSize = "68 B",
 			dmDocumentTitle = "これは文書です");
 
+		takeScreenshot();
+
 		AssertTextNotPresent(value1 = "The requested resource could not be found.");
 
 		DMDocument.assertFileNameFromTempFolder(fileName = "これは文書です.txt");
