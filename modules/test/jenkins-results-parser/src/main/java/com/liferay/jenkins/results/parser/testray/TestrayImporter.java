@@ -1457,6 +1457,14 @@ public class TestrayImporter {
 
 		List<TestrayCaseResult> testrayCaseResults = new ArrayList<>();
 
+		TestrayCaseResult buildTestrayCaseResult =
+			TestrayFactory.newBuildTestrayCaseResult(
+				axisTestClassGroup, testrayBuild, _topLevelBuildReport);
+
+		buildTestrayCaseResult.setTestrayRun(testrayRun);
+
+		testrayCaseResults.add(buildTestrayCaseResult);
+
 		if (axisTestClassGroup instanceof FunctionalAxisTestClassGroup ||
 			axisTestClassGroup instanceof JSUnitAxisTestClassGroup ||
 			axisTestClassGroup instanceof JUnitAxisTestClassGroup ||
@@ -1470,14 +1478,24 @@ public class TestrayImporter {
 			if (!JenkinsResultsParserUtil.isNullOrEmpty(
 					portalLogBatchBuildTestrayCaseResult.getErrors())) {
 
+				portalLogBatchBuildTestrayCaseResult.setParentTestrayCaseResult(
+					buildTestrayCaseResult);
+				portalLogBatchBuildTestrayCaseResult.setTestrayRun(testrayRun);
+
 				testrayCaseResults.add(portalLogBatchBuildTestrayCaseResult);
 			}
 
 			for (TestClass testClass : axisTestClassGroup.getTestClasses()) {
-				testrayCaseResults.add(
+				TestrayCaseResult testClassTestrayCaseResult =
 					TestrayFactory.newBuildTestrayCaseResult(
 						axisTestClassGroup, testClass, testrayBuild,
-						_topLevelBuildReport));
+						_topLevelBuildReport);
+
+				testClassTestrayCaseResult.setParentTestrayCaseResult(
+					buildTestrayCaseResult);
+				testClassTestrayCaseResult.setTestrayRun(testrayRun);
+
+				testrayCaseResults.add(testClassTestrayCaseResult);
 			}
 		}
 		else if (axisTestClassGroup instanceof PlaywrightAxisTestClassGroup) {
@@ -1485,17 +1503,18 @@ public class TestrayImporter {
 				for (TestClassMethod testClassMethod :
 						testClass.getTestClassMethods()) {
 
-					testrayCaseResults.add(
+					TestrayCaseResult testClassMethodTestrayCaseResult =
 						TestrayFactory.newBuildTestrayCaseResult(
 							axisTestClassGroup, testClass, testClassMethod,
-							testrayBuild, _topLevelBuildReport));
+							testrayBuild, _topLevelBuildReport);
+
+					testClassMethodTestrayCaseResult.setParentTestrayCaseResult(
+						buildTestrayCaseResult);
+					testClassMethodTestrayCaseResult.setTestrayRun(testrayRun);
+
+					testrayCaseResults.add(testClassMethodTestrayCaseResult);
 				}
 			}
-		}
-		else {
-			testrayCaseResults.add(
-				TestrayFactory.newBuildTestrayCaseResult(
-					axisTestClassGroup, testrayBuild, _topLevelBuildReport));
 		}
 
 		for (TestrayCaseResult testrayCaseResult : testrayCaseResults) {
