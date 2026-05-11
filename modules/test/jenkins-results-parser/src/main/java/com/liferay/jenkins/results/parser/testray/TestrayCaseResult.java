@@ -231,6 +231,10 @@ public class TestrayCaseResult {
 				}
 			}
 
+			if (_testrayCase == null) {
+				_testrayCase = getCachedTestrayCase();
+			}
+
 			return _testrayCase;
 		}
 		finally {
@@ -280,7 +284,7 @@ public class TestrayCaseResult {
 		return testrayCaseResults;
 	}
 
-	public URL getTestrayCaseResultURL() {
+	public synchronized URL getTestrayCaseResultURL() {
 		if (_testrayCaseResultURL != null) {
 			return _testrayCaseResultURL;
 		}
@@ -518,6 +522,38 @@ public class TestrayCaseResult {
 		}
 	}
 
+	protected TestrayCase getCachedTestrayCase() {
+		String name = getName();
+
+		if (JenkinsResultsParserUtil.isNullOrEmpty(name)) {
+			return null;
+		}
+
+		String type = getType();
+
+		if (JenkinsResultsParserUtil.isNullOrEmpty(type)) {
+			return null;
+		}
+
+		TestrayServer testrayServer = getTestrayServer();
+
+		TestrayCaseType testrayCaseType =
+			testrayServer.getTestrayCaseTypeByName(type);
+
+		if (testrayCaseType == null) {
+			return null;
+		}
+
+		TestrayProject testrayProject = getTestrayProject();
+
+		if (testrayProject == null) {
+			return null;
+		}
+
+		return TestrayFactory.newTestrayCase(
+			testrayProject, name, testrayCaseType);
+	}
+
 	protected synchronized void initTestrayAttachments() {
 		if (testrayAttachments != null) {
 			return;
@@ -635,7 +671,7 @@ public class TestrayCaseResult {
 
 			System.out.println(
 				JenkinsResultsParserUtil.combine(
-					"Testray Case Result ",
+					"Testray Case Result '", getName(), "' ",
 					String.valueOf(testrayCaseResultURL), " created in ",
 					JenkinsResultsParserUtil.toDurationString(end - start)));
 
