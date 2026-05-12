@@ -134,10 +134,10 @@ public class TestrayRun {
 			return _testrayFactors;
 		}
 
-		List<TestrayFactor> testrayFactors = _loadTestrayFactorsByRunID();
+		List<TestrayFactor> testrayFactors = _getTestrayFactorsByRunID();
 
 		if (testrayFactors == null) {
-			testrayFactors = _loadTestrayFactorsByName();
+			testrayFactors = _getTestrayFactorsByName();
 		}
 
 		_testrayFactors = testrayFactors;
@@ -404,7 +404,27 @@ public class TestrayRun {
 		return sb.toString();
 	}
 
-	private List<TestrayFactor> _loadTestrayFactorsByName() {
+	private synchronized int _getNextRunNumber() {
+		TestrayBuild testrayBuild = getTestrayBuild();
+
+		String filter =
+			"r_buildToRuns_c_buildId eq '" + testrayBuild.getID() + "'";
+
+		try {
+			TestrayServer testrayServer = getTestrayServer();
+
+			JSONObject jsonObject = new JSONObject(
+				testrayServer.requestGet(
+					"/o/c/runs?filter=" + URLEncoder.encode(filter, "UTF-8")));
+
+			return jsonObject.optInt("totalCount") + 1;
+		}
+		catch (IOException ioException) {
+			throw new RuntimeException(ioException);
+		}
+	}
+
+	private List<TestrayFactor> _getTestrayFactorsByName() {
 		List<TestrayFactor> testrayFactors = new ArrayList<>();
 
 		String name = getRunIDString();
@@ -421,7 +441,7 @@ public class TestrayRun {
 		return testrayFactors;
 	}
 
-	private List<TestrayFactor> _loadTestrayFactorsByRunID() {
+	private List<TestrayFactor> _getTestrayFactorsByRunID() {
 		long runID = 0;
 
 		if (_id != null) {
@@ -477,26 +497,6 @@ public class TestrayRun {
 			}
 
 			return testrayFactors;
-		}
-		catch (IOException ioException) {
-			throw new RuntimeException(ioException);
-		}
-	}
-
-	private synchronized int _getNextRunNumber() {
-		TestrayBuild testrayBuild = getTestrayBuild();
-
-		String filter =
-			"r_buildToRuns_c_buildId eq '" + testrayBuild.getID() + "'";
-
-		try {
-			TestrayServer testrayServer = getTestrayServer();
-
-			JSONObject jsonObject = new JSONObject(
-				testrayServer.requestGet(
-					"/o/c/runs?filter=" + URLEncoder.encode(filter, "UTF-8")));
-
-			return jsonObject.optInt("totalCount") + 1;
 		}
 		catch (IOException ioException) {
 			throw new RuntimeException(ioException);
