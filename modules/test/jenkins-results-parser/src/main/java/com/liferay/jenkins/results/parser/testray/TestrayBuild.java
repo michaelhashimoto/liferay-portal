@@ -614,7 +614,21 @@ public class TestrayBuild implements Comparable<TestrayBuild> {
 			throw new RuntimeException(ioException);
 		}
 
-		return null;
+		JSONObject jsonObject = new JSONObject();
+
+		jsonObject.put(
+			"name", runIDString
+		).put(
+			"r_buildToRuns_c_buildId", getID()
+		);
+
+		try {
+			return new JSONObject(
+				testrayServer.requestPost("/o/c/runs", jsonObject.toString()));
+		}
+		catch (IOException ioException) {
+			throw new RuntimeException(ioException);
+		}
 	}
 
 	private static final Pattern _portalBranchPattern = Pattern.compile(
