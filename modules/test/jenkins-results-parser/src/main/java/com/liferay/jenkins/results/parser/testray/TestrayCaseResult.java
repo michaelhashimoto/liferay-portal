@@ -285,10 +285,10 @@ public class TestrayCaseResult {
 			return _testrayCaseResultURL;
 		}
 
-		URL cachedTestrayCaseResultURL = _fetchTestrayCaseResultURL();
+		URL testrayCaseResultURL = _fetchTestrayCaseResultURL();
 
-		if (cachedTestrayCaseResultURL != null) {
-			_testrayCaseResultURL = cachedTestrayCaseResultURL;
+		if (testrayCaseResultURL != null) {
+			_testrayCaseResultURL = testrayCaseResultURL;
 
 			return _testrayCaseResultURL;
 		}
