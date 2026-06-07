@@ -3,7 +3,12 @@
  * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
  */
 
-import {PreviewPortletDataHandlerControl} from '../types/portletDataHandler';
+import {
+	PreviewPortletDataHandlerControl,
+	PreviewPortletDataHandlerSection,
+} from '../types/portletDataHandler';
+
+import type {ContentSelection} from '../components/forms/content_selector/ContentSelector';
 
 export type HandlerSelection =
 	| {
@@ -14,6 +19,10 @@ export type HandlerSelection =
 
 export const LAYOUT_SET_LAYOUTS_PORTLET_DATA_KEY =
 	'PORTLET_DATA_com_liferay_layout_admin_web_portlet_LayoutSetLayoutsPortlet';
+
+export const CONTENT_SECTION_KEY = 'category.site_administration.content';
+
+export const SITE_BUILDER_SECTION_KEY = 'category.site_administration.build';
 
 export function isAllLayoutsSelected(
 	value: HandlerSelection | undefined
@@ -94,4 +103,40 @@ export function getSelectionSummary(
 		.filter((control) => selection[control.name] !== undefined)
 		.map((control) => control.label)
 		.join(', ');
+}
+
+export function withSiteBuilderSection(
+	sections: PreviewPortletDataHandlerSection[],
+	label = ''
+): PreviewPortletDataHandlerSection[] {
+	if (sections.some((section) => section.name === SITE_BUILDER_SECTION_KEY)) {
+		return sections;
+	}
+
+	return [
+		...sections,
+		{
+			label,
+			name: SITE_BUILDER_SECTION_KEY,
+			previewPortletDataHandlers: [],
+		},
+	];
+}
+
+export function toProcessRequestFlags(
+	contentSelection: ContentSelection | undefined
+) {
+	const commentsAndRatings = (contentSelection?.[CONTENT_SECTION_KEY]
+		?.commentsAndRatings ?? {}) as Record<string, boolean>;
+	const lookAndFeel = (contentSelection?.[SITE_BUILDER_SECTION_KEY]
+		?.lookAndFeel ?? {}) as Record<string, boolean>;
+
+	return {
+		comments: !!commentsAndRatings.comments,
+		logo: !!lookAndFeel.logo,
+		ratings: !!commentsAndRatings.ratings,
+		sitePagesSettings: !!lookAndFeel.sitePagesSettings,
+		siteTemplateSettings: !!lookAndFeel.siteTemplateSettings,
+		themeSettings: !!lookAndFeel.themeSettings,
+	};
 }

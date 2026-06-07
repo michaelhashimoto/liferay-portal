@@ -11,9 +11,13 @@ import {ImportPreview} from '../../../types/exportImportPreview';
 import FileSummary from './FileSummary';
 
 export default function DataSelectionStep({
+	commentsAndRatingsEnabled = false,
 	importPreview,
+	lookAndFeelEnabled = false,
 }: {
+	commentsAndRatingsEnabled?: boolean;
 	importPreview?: ImportPreview;
+	lookAndFeelEnabled?: boolean;
 }) {
 	if (!importPreview) {
 		return null;
@@ -42,7 +46,10 @@ export default function DataSelectionStep({
 			/>
 
 			<FormikFieldContentSelector
+				commentsAndRatingsEnabled={commentsAndRatingsEnabled}
+				lookAndFeelEnabled={lookAndFeelEnabled}
 				name="contentSelection"
+				process="import"
 				sections={importPreview.previewPortletDataHandlerSections}
 			/>
 		</>

@@ -6,6 +6,8 @@
 import {Range} from '../components/date_filter';
 import {RequestPortletDataHandler} from './portletDataHandler';
 
+export type ExportImportProcess = 'export' | 'import';
+
 export interface ExportProcess {
 	dateCreated?: string;
 	dateModified?: string;
@@ -15,14 +17,20 @@ export interface ExportProcess {
 }
 
 export interface ExportProcessRequest {
+	comments?: boolean;
 	deletions?: boolean;
 	endDate?: string;
 	last?: number;
+	logo?: boolean;
 	name: string;
 	permissions?: boolean;
 	range?: Range;
+	ratings?: boolean;
 	requestPortletDataHandlers?: RequestPortletDataHandler[];
+	sitePagesSettings?: boolean;
+	siteTemplateSettings?: boolean;
 	startDate?: string;
+	themeSettings?: boolean;
 }
 
 export type DataStrategy = 'MIRROR' | 'MIRROR_OVERWRITE' | 'COPY_AS_NEW';
@@ -38,10 +46,16 @@ export interface ImportProcess {
 }
 
 export interface ImportProcessRequest {
+	comments?: boolean;
 	dataStrategy?: DataStrategy;
 	deletions?: boolean;
+	logo?: boolean;
 	name?: string;
 	permissions?: boolean;
+	ratings?: boolean;
 	requestPortletDataHandlers?: RequestPortletDataHandler[];
+	sitePagesSettings?: boolean;
+	siteTemplateSettings?: boolean;
+	themeSettings?: boolean;
 	userIdStrategy?: UserIdStrategy;
 }
