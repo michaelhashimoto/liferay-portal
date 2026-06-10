@@ -19,7 +19,7 @@
 			</library>
 			<library>
 				<file-name>lib/development/antelope.jar</file-name>
-				<version>3.4.0</version>
+				<version>3.4.1</version>
 				<project-name>Antelope</project-name>
 				<project-url>http://antelope.tigris.org</project-url>
 				<licenses>

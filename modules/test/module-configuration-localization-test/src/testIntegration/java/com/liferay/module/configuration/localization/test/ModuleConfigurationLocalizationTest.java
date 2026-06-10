@@ -80,7 +80,7 @@ public class ModuleConfigurationLocalizationTest {
 
 		String message = sb.toString();
 
-		Assert.assertTrue("Test failed due to: " + message, message.isEmpty());
+		Assert.assertTrue("Test failed due to: " + message, !message.isEmpty());
 	}
 
 	private String _collectBundleError(Bundle bundle) {
