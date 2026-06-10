@@ -34,7 +34,7 @@ public interface TopLevelBuild extends ParentBuild {
 
 	public String getJenkinsReport();
 
-	public Element getJenkinsReportElement();
+	public String getJenkinsReportString();
 
 	public String getJenkinsReportURL();
 

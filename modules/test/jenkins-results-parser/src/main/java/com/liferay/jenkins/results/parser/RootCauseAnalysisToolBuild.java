@@ -7,6 +7,8 @@ package com.liferay.jenkins.results.parser;
 
 import com.google.common.collect.Lists;
 
+import java.io.IOException;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,7 +40,6 @@ public class RootCauseAnalysisToolBuild extends DefaultTopLevelBuild {
 		return getParameterValue("PORTAL_UPSTREAM_BRANCH_NAME");
 	}
 
-	@Override
 	public synchronized Element getJenkinsReportElement() {
 		if (_workspaceGitRepository == null) {
 			throw new IllegalStateException(
@@ -53,6 +54,18 @@ public class RootCauseAnalysisToolBuild extends DefaultTopLevelBuild {
 		return Dom4JUtil.getNewElement(
 			"html", null, getJenkinsReportHeadElement(),
 			getJenkinsReportBodyElement());
+	}
+
+	@Override
+	public synchronized String getJenkinsReportString() {
+		try {
+			return StringEscapeUtils.unescapeXml(
+				Dom4JUtil.format(getJenkinsReportElement(), true));
+		}
+		catch (IOException ioException) {
+			throw new RuntimeException(
+				"Unable to format Jenkins report", ioException);
+		}
 	}
 
 	public void setDownstreamPortalBuildDataList(
@@ -339,7 +352,6 @@ public class RootCauseAnalysisToolBuild extends DefaultTopLevelBuild {
 		return Dom4JUtil.getNewElement("td");
 	}
 
-	@Override
 	protected Element getJenkinsReportBodyElement() {
 		Element subheadingElement = null;
 
@@ -376,7 +388,6 @@ public class RootCauseAnalysisToolBuild extends DefaultTopLevelBuild {
 					"em", null, "Indicates HEAD Commit (*)")));
 	}
 
-	@Override
 	protected Element getJenkinsReportHeadElement() {
 		return Dom4JUtil.getNewElement(
 			"head", null, getJenkinsReportHeadJQueryElement(),
@@ -532,7 +543,6 @@ public class RootCauseAnalysisToolBuild extends DefaultTopLevelBuild {
 		return tableBodyElement;
 	}
 
-	@Override
 	protected Element getJenkinsReportTableColumnHeadersElement() {
 		Element toggleElement = Dom4JUtil.getNewElement("th", null, "");
 

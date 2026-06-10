@@ -598,16 +598,12 @@ public class TestrayAttachmentRecorder {
 
 		TopLevelBuild topLevelBuild = (TopLevelBuild)_build;
 
-		Element jenkinsReportElement = topLevelBuild.getJenkinsReportElement();
-
 		File jenkinsReportFile = new File(
 			_getRecordedFilesBuildDir(), "jenkins-report.html");
 
 		try {
 			JenkinsResultsParserUtil.write(
-				jenkinsReportFile,
-				StringEscapeUtils.unescapeXml(
-					Dom4JUtil.format(jenkinsReportElement, true)));
+				jenkinsReportFile, topLevelBuild.getJenkinsReportString());
 		}
 		catch (IOException ioException) {
 			throw new RuntimeException(ioException);

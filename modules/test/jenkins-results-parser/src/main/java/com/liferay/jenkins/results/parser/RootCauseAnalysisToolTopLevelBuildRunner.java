@@ -14,6 +14,8 @@ import com.liferay.jenkins.results.parser.test.clazz.TestClassMethod;
 import com.liferay.jenkins.results.parser.test.clazz.group.BatchTestClassGroup;
 import com.liferay.jenkins.results.parser.test.clazz.group.TestClassGroupFactory;
 
+import java.io.IOException;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -21,6 +23,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import org.dom4j.Element;
@@ -45,18 +48,27 @@ public class RootCauseAnalysisToolTopLevelBuildRunner
 	}
 
 	@Override
-	protected Element getJenkinsReportElement() {
+	protected String getJenkinsReportString() {
 		PortalTopLevelBuildData portalTopLevelBuildData = getBuildData();
 		Workspace workspace = getWorkspace();
 
 		if (workspace == null) {
-			return Dom4JUtil.getNewElement(
+			Element htmlElement = Dom4JUtil.getNewElement(
 				"html", null,
 				Dom4JUtil.getNewElement(
 					"h1", null, "Report building in progress for ",
 					Dom4JUtil.getNewAnchorElement(
 						portalTopLevelBuildData.getBuildURL(),
 						portalTopLevelBuildData.getBuildURL())));
+
+			try {
+				return StringEscapeUtils.unescapeXml(
+					Dom4JUtil.format(htmlElement, true));
+			}
+			catch (IOException ioException) {
+				throw new RuntimeException(
+					"Unable to format Jenkins report", ioException);
+			}
 		}
 
 		RootCauseAnalysisToolBuild rootCauseAnalysisToolBuild =
@@ -79,7 +91,7 @@ public class RootCauseAnalysisToolTopLevelBuildRunner
 		rootCauseAnalysisToolBuild.setWorkspaceGitRepository(
 			workspace.getPrimaryWorkspaceGitRepository());
 
-		return super.getJenkinsReportElement();
+		return super.getJenkinsReportString();
 	}
 
 	@Override
