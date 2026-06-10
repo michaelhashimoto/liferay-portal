@@ -19,10 +19,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
-import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.commons.lang3.StringUtils;
-
-import org.dom4j.Element;
 
 /**
  * @author Michael Hashimoto
@@ -133,8 +130,8 @@ public abstract class TopLevelBuildRunner<T extends TopLevelBuildData>
 		return topLevelBuildData.getBuildParameter(key);
 	}
 
-	protected Element getJenkinsReportElement() {
-		return _topLevelBuild.getJenkinsReportElement();
+	protected String getJenkinsReportString() {
+		return _topLevelBuild.getJenkinsReportString();
 	}
 
 	protected String getJobPropertyValue(String key) {
@@ -197,8 +194,7 @@ public abstract class TopLevelBuildRunner<T extends TopLevelBuildData>
 		_updateBuildData();
 
 		try {
-			String jenkinsReportString = StringEscapeUtils.unescapeXml(
-				Dom4JUtil.format(getJenkinsReportElement(), true));
+			String jenkinsReportString = getJenkinsReportString();
 
 			TopLevelBuildData topLevelBuildData = getBuildData();
 
