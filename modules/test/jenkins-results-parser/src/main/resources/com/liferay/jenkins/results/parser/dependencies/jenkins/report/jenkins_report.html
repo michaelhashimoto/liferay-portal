@@ -46,12 +46,7 @@
 			</th:block>
 		</div>
 
-		<div>
-			<canvas height="300" id="timeline"></canvas>
-
-			<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
-			<script th:utext="${build.jenkinsReportChartJsContent}"></script>
-		</div>
+		<div th:replace="~{jenkins_report_timeline.html :: timeline}"></div>
 
 		<table>
 			<caption>Top Level Build - <strong th:text="${build.result != null} ? ${build.result} : ${#strings.toUpperCase(build.status)}"></strong></caption>

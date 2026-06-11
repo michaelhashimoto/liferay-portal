@@ -328,6 +328,36 @@ public interface Build {
 
 	public class TimelineData {
 
+		public int[] getIndexData() {
+			int[] indexes = new int[_timeline.length];
+
+			for (int i = 0; i < _timeline.length; i++) {
+				indexes[i] = _timeline[i]._index;
+			}
+
+			return indexes;
+		}
+
+		public int[] getInvocationsData() {
+			int[] invocationsData = new int[_timeline.length];
+
+			for (int i = 0; i < _timeline.length; i++) {
+				invocationsData[i] = _timeline[i]._invocationsCount;
+			}
+
+			return invocationsData;
+		}
+
+		public int[] getSlaveUsageData() {
+			int[] slaveUsageData = new int[_timeline.length];
+
+			for (int i = 0; i < _timeline.length; i++) {
+				slaveUsageData[i] = _timeline[i]._slaveUsageCount;
+			}
+
+			return slaveUsageData;
+		}
+
 		protected TimelineData(int size, TopLevelBuild topLevelBuild) {
 			if (topLevelBuild != topLevelBuild.getTopLevelBuild()) {
 				throw new IllegalArgumentException(
@@ -372,36 +402,6 @@ public interface Build {
 			for (int i = startIndex; i <= endIndex; i++) {
 				_timeline[i]._slaveUsageCount++;
 			}
-		}
-
-		protected int[] getIndexData() {
-			int[] indexes = new int[_timeline.length];
-
-			for (int i = 0; i < _timeline.length; i++) {
-				indexes[i] = _timeline[i]._index;
-			}
-
-			return indexes;
-		}
-
-		protected int[] getInvocationsData() {
-			int[] invocationsData = new int[_timeline.length];
-
-			for (int i = 0; i < _timeline.length; i++) {
-				invocationsData[i] = _timeline[i]._invocationsCount;
-			}
-
-			return invocationsData;
-		}
-
-		protected int[] getSlaveUsageData() {
-			int[] slaveUsageData = new int[_timeline.length];
-
-			for (int i = 0; i < _timeline.length; i++) {
-				slaveUsageData[i] = _timeline[i]._slaveUsageCount;
-			}
-
-			return slaveUsageData;
 		}
 
 		private int _getIndex(long timestamp) {

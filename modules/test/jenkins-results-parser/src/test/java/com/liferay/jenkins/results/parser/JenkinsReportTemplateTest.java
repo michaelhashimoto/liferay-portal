@@ -177,8 +177,13 @@ public class JenkinsReportTemplateTest {
 			"Missing raw JS content",
 			content.contains("function f() { return 1 < 2; }"));
 		Assert.assertTrue(
-			"Missing raw Chart.js content",
-			content.contains("var x = 1 && 2;"));
+			"Missing timeline chart data",
+			content.contains("labels: [0,1,2],") &&
+			content.contains("data: [0,1,1],") &&
+			content.contains("data: [1,0,0],"));
+		Assert.assertTrue(
+			"Missing timeline chart callback",
+			content.contains("return hours + ':' + minutes + ':' + seconds;"));
 		Assert.assertTrue(
 			"Missing link summary item",
 			content.contains(
@@ -381,10 +386,6 @@ public class JenkinsReportTemplateTest {
 			return _createTextCellRow("top-level-row");
 		}
 
-		public String getJenkinsReportChartJsContent() {
-			return "var x = 1 && 2;";
-		}
-
 		public List<Map<String, Object>> getJenkinsReportStopWatchRecordRows() {
 			return Arrays.asList(_createTextCellRow("stop-watch-row"));
 		}
@@ -440,6 +441,12 @@ public class JenkinsReportTemplateTest {
 
 		public String getStatus() {
 			return "completed";
+		}
+
+		public Map<String, Object> getTimelineData() {
+			return _createObjectMap(
+				"indexData", new int[] {0, 1, 2}, "invocationsData",
+				new int[] {1, 0, 0}, "slaveUsageData", new int[] {0, 1, 1});
 		}
 
 		public long getTotalActualDuration() {

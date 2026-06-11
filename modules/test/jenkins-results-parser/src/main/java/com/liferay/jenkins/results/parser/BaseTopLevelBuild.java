@@ -35,7 +35,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -382,33 +381,6 @@ public abstract class BaseTopLevelBuild
 			throw new RuntimeException(
 				"Unable to get Jenkins report", ioException);
 		}
-	}
-
-	public String getJenkinsReportChartJsContent() {
-		String resourceFileContent = null;
-
-		try {
-			resourceFileContent =
-				JenkinsResultsParserUtil.getResourceFileContent(
-					"dependencies/chart_template.js");
-		}
-		catch (IOException ioException) {
-			throw new RuntimeException(
-				"Unable to load resource chart_template.js", ioException);
-		}
-
-		TimelineData timelineData = getTimelineData();
-
-		resourceFileContent = resourceFileContent.replace(
-			"'xData'", Arrays.toString(timelineData.getIndexData()));
-
-		resourceFileContent = resourceFileContent.replace(
-			"'y1Data'", Arrays.toString(timelineData.getSlaveUsageData()));
-
-		resourceFileContent = resourceFileContent.replace(
-			"'y2Data'", Arrays.toString(timelineData.getInvocationsData()));
-
-		return resourceFileContent;
 	}
 
 	@Override
