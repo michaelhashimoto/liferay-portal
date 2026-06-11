@@ -8,7 +8,11 @@ package com.liferay.jenkins.results.parser;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -22,6 +26,140 @@ import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
  * @author Michael Hashimoto
  */
 public class JenkinsReportTemplateTest {
+
+	@Test
+	public void testRenderJenkinsReportTableRows() {
+		TemplateEngine templateEngine = new TemplateEngine();
+
+		ClassLoaderTemplateResolver classLoaderTemplateResolver =
+			new ClassLoaderTemplateResolver();
+
+		classLoaderTemplateResolver.setCharacterEncoding("UTF-8");
+		classLoaderTemplateResolver.setPrefix(
+			"com/liferay/jenkins/results/parser/dependencies/");
+		classLoaderTemplateResolver.setTemplateMode(TemplateMode.HTML);
+
+		templateEngine.setTemplateResolver(classLoaderTemplateResolver);
+
+		List<Map<String, Object>> rows = new ArrayList<>();
+
+		rows.add(
+			_createObjectMap(
+				"cells",
+				Arrays.asList(
+					_createObjectMap(
+						"parts",
+						Arrays.asList(
+							_createMap(
+								"id", "12345-expander-anchor-", "onClick",
+								"return toggleStopWatchRecordExpander(" +
+									"'12345', '')",
+								"style",
+								"font-family: monospace, monospace; " +
+									"text-decoration: none",
+								"type", "expander"),
+							_createMap(
+								"text", "test (axis-1)", "type", "link", "url",
+								"https://test-1-1.liferay.com/job/test/1/"),
+							_createMap(
+								"text", "(cached build)", "type", "span")),
+						"style", "text-indent: 15", "tagName", "th"),
+					_createObjectMap(
+						"parts", Arrays.asList(_createMap("type", "nbsp")),
+						"tagName", "td"),
+					_createObjectMap(
+						"parts",
+						Arrays.asList(
+							_createMap(
+								"text", "Stop Watch Record", "type",
+								"underline")),
+						"tagName", "td")),
+				"childStopwatchRows", "stop-watch-record-header", "id",
+				"12345-"));
+		rows.add(_createObjectMap("batchName", "modules-unit"));
+		rows.add(
+			_createObjectMap(
+				"cells",
+				Arrays.asList(
+					_createObjectMap(
+						"parts", new ArrayList<>(), "tagName", "td")),
+				"id", "12345-stop-watch-record-header", "style",
+				"display: none"));
+		rows.add(
+			_createObjectMap(
+				"rawHTML", "<tr><td>legacy-archived-row</td></tr>"));
+
+		Context context = new Context();
+
+		context.setVariable("rows", rows);
+
+		String content = templateEngine.process(
+			"jenkins_report_table_rows.html", context);
+
+		JSONArray jsonArray = new JSONArray();
+
+		for (Map<String, Object> row : rows) {
+			jsonArray.put(row);
+		}
+
+		jsonArray = new JSONArray(jsonArray.toString());
+
+		List<Map<String, Object>> archivedRows = new ArrayList<>();
+
+		for (int i = 0; i < jsonArray.length(); i++) {
+			JSONObject jsonObject = jsonArray.getJSONObject(i);
+
+			archivedRows.add(jsonObject.toMap());
+		}
+
+		Context archivedContext = new Context();
+
+		archivedContext.setVariable("rows", archivedRows);
+
+		Assert.assertEquals(
+			"Rows rendered from a JSON archive round trip must match", content,
+			templateEngine.process(
+				"jenkins_report_table_rows.html", archivedContext));
+
+		Assert.assertTrue(
+			"Missing build info row attributes",
+			content.contains(
+				"<tr child-stopwatch-rows=\"stop-watch-record-header\" " +
+					"id=\"12345-\">"));
+		Assert.assertTrue(
+			"Missing expander anchor",
+			content.contains(
+				"<a href=\"\" id=\"12345-expander-anchor-\" onClick=\"return " +
+					"toggleStopWatchRecordExpander(&#39;12345&#39;, " +
+						"&#39;&#39;)\" style=\"font-family: monospace, " +
+							"monospace; text-decoration: none\">+ </a>"));
+		Assert.assertTrue(
+			"Missing name cell link",
+			content.contains(
+				"<a href=\"https://test-1-1.liferay.com/job/test/1/\">" +
+					"test (axis-1)</a><span>(cached build)</span></th>"));
+		Assert.assertTrue(
+			"Missing name cell style",
+			content.contains("<th style=\"text-indent: 15\">"));
+		Assert.assertTrue(
+			"Missing nbsp cell", content.contains("<td>&nbsp;</td>"));
+		Assert.assertTrue(
+			"Missing underline cell",
+			content.contains("<td><u>Stop Watch Record</u></td>"));
+		Assert.assertTrue(
+			"Missing batch name header",
+			content.contains("<th>modules-unit</th>"));
+		Assert.assertTrue(
+			"Missing hidden row",
+			content.contains(
+				"<tr id=\"12345-stop-watch-record-header\" style=\"display: " +
+					"none\">"));
+		Assert.assertTrue(
+			"Missing hidden row empty cell", content.contains("<td></td>"));
+		Assert.assertTrue(
+			"Missing raw HTML row",
+			content.contains("<tr><td>legacy-archived-row</td></tr>"));
+	}
 
 	@Test
 	public void testRenderJenkinsReportTemplate() {
@@ -146,6 +284,16 @@ public class JenkinsReportTemplateTest {
 
 		for (int i = 0; i < keyValues.length; i += 2) {
 			map.put(keyValues[i], keyValues[i + 1]);
+		}
+
+		return map;
+	}
+
+	private Map<String, Object> _createObjectMap(Object... keyValues) {
+		Map<String, Object> map = new HashMap<>();
+
+		for (int i = 0; i < keyValues.length; i += 2) {
+			map.put((String)keyValues[i], keyValues[i + 1]);
 		}
 
 		return map;

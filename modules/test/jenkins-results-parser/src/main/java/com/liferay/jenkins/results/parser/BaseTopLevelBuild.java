@@ -51,7 +51,6 @@ import java.util.concurrent.ExecutorService;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import org.dom4j.Element;
@@ -448,15 +447,15 @@ public abstract class BaseTopLevelBuild
 
 			context.setVariable("topLevelResult", topLevelResult);
 
-			List<Element> topLevelRowElements = new ArrayList<>();
+			List<Map<String, Object>> topLevelTableRows = new ArrayList<>();
 
-			topLevelRowElements.add(getJenkinsReportTableRowElement());
+			topLevelTableRows.add(getJenkinsReportBuildInfoRow());
 
-			topLevelRowElements.addAll(
-				getJenkinsReportStopWatchRecordElements());
+			topLevelTableRows.addAll(getJenkinsReportStopWatchRecordRows());
 
 			context.setVariable(
-				"topLevelRowsHTML", _getElementsHTML(topLevelRowElements));
+				"topLevelRowsHTML",
+				_getJenkinsReportTableRowsHTML(topLevelTableRows));
 
 			return _templateEngine.process("jenkins_report.html", context);
 		}
@@ -1397,7 +1396,7 @@ public abstract class BaseTopLevelBuild
 	}
 
 	@Override
-	protected String getJenkinsReportBuildInfoCellElementTagName() {
+	protected String getJenkinsReportBuildInfoCellTagName() {
 		return "th";
 	}
 
@@ -2076,10 +2075,10 @@ public abstract class BaseTopLevelBuild
 		List<Map<String, String>> downstreamTables, String result,
 		String status, String captionText) {
 
-		List<Element> tableRowElements = getJenkinsReportTableRowElements(
+		List<Map<String, Object>> tableRows = getJenkinsReportTableRows(
 			result, status);
 
-		if (tableRowElements.isEmpty()) {
+		if (tableRows.isEmpty()) {
 			return;
 		}
 
@@ -2087,7 +2086,8 @@ public abstract class BaseTopLevelBuild
 
 		downstreamTable.put(
 			"caption", captionText + getDownstreamBuildCount(result, status));
-		downstreamTable.put("rowsHTML", _getElementsHTML(tableRowElements));
+		downstreamTable.put(
+			"rowsHTML", _getJenkinsReportTableRowsHTML(tableRows));
 
 		downstreamTables.add(downstreamTable);
 	}
@@ -2383,24 +2383,6 @@ public abstract class BaseTopLevelBuild
 		return _URL_CI_SYSTEM_STATUS;
 	}
 
-	private String _getElementsHTML(List<Element> elements) {
-		StringBuilder sb = new StringBuilder();
-
-		for (Element element : elements) {
-			try {
-				sb.append(
-					StringEscapeUtils.unescapeXml(
-						Dom4JUtil.format(element, true)));
-			}
-			catch (IOException ioException) {
-				throw new RuntimeException(
-					"Unable to format element", ioException);
-			}
-		}
-
-		return sb.toString();
-	}
-
 	private Map<String, String> _getJenkinsReportCommitMap() {
 		if (!(this instanceof WorkspaceBuild)) {
 			return null;
@@ -2447,6 +2429,17 @@ public abstract class BaseTopLevelBuild
 		commitMap.put("senderBranchSHA", senderBranchSHA);
 
 		return commitMap;
+	}
+
+	private String _getJenkinsReportTableRowsHTML(
+		List<Map<String, Object>> tableRows) {
+
+		Context context = new Context();
+
+		context.setVariable("rows", tableRows);
+
+		return _templateEngine.process(
+			"jenkins_report_table_rows.html", context);
 	}
 
 	private Map<Map<String, String>, Integer> _getSlaveUsageByLabels() {

@@ -716,10 +716,10 @@ public abstract class BaseParentBuild extends BaseBuild implements ParentBuild {
 	}
 
 	@Override
-	protected List<Element> getJenkinsReportTableRowElements(
+	protected List<Map<String, Object>> getJenkinsReportTableRows(
 		String result, String status) {
 
-		List<Element> tableRowElements = super.getJenkinsReportTableRowElements(
+		List<Map<String, Object>> tableRows = super.getJenkinsReportTableRows(
 			result, status);
 
 		List<Build> builds = getDownstreamBuilds(result, status);
@@ -739,9 +739,11 @@ public abstract class BaseParentBuild extends BaseBuild implements ParentBuild {
 				String downstreamBatchName = downstreamBuild.getBatchName();
 
 				if (!Objects.equals(batchName, downstreamBatchName)) {
-					tableRowElements.add(
-						Dom4JUtil.getNewElement(
-							"th", null, downstreamBatchName));
+					Map<String, Object> batchNameTableRow = new HashMap<>();
+
+					batchNameTableRow.put("batchName", downstreamBatchName);
+
+					tableRows.add(batchNameTableRow);
 
 					batchName = downstreamBatchName;
 				}
@@ -749,11 +751,11 @@ public abstract class BaseParentBuild extends BaseBuild implements ParentBuild {
 
 			BaseBuild baseBuild = (BaseBuild)build;
 
-			tableRowElements.addAll(
-				baseBuild.getJenkinsReportTableRowElements(result, status));
+			tableRows.addAll(
+				baseBuild.getJenkinsReportTableRows(result, status));
 		}
 
-		return tableRowElements;
+		return tableRows;
 	}
 
 	@Override
