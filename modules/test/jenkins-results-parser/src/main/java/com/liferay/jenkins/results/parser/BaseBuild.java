@@ -38,6 +38,7 @@ import java.util.concurrent.TimeoutException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import org.dom4j.Document;
@@ -2170,23 +2171,6 @@ public abstract class BaseBuild implements Build {
 		}
 	}
 
-	protected void archiveFileElements(
-		String urlSuffix, List<Element> elements) {
-
-		Element rootElement = Dom4JUtil.getNewElement("root");
-
-		for (Element element : elements) {
-			rootElement.add(element);
-		}
-
-		try {
-			_archive(Dom4JUtil.format(rootElement), true, urlSuffix);
-		}
-		catch (IOException ioException) {
-			throw new RuntimeException(ioException);
-		}
-	}
-
 	protected boolean archiveFileExists(String urlSuffix) {
 		File archiveFile = getArchiveFile(urlSuffix);
 
@@ -2195,6 +2179,18 @@ public abstract class BaseBuild implements Build {
 		}
 
 		return archiveFile.exists();
+	}
+
+	protected void archiveJenkinsReportTableRows(
+		String urlSuffix, List<Map<String, Object>> tableRows) {
+
+		JSONArray jsonArray = new JSONArray();
+
+		for (Map<String, Object> tableRow : tableRows) {
+			jsonArray.put(tableRow);
+		}
+
+		_archive(jsonArray.toString(), true, urlSuffix);
 	}
 
 	protected boolean buildDurationsEnabled() {
@@ -2302,6 +2298,60 @@ public abstract class BaseBuild implements Build {
 		return archiveCallables;
 	}
 
+	protected List<Map<String, Object>> getArchivedJenkinsReportTableRows(
+		String urlSuffix) {
+
+		String archiveFileContent = getArchiveFileContent(urlSuffix);
+
+		List<Map<String, Object>> tableRows = new ArrayList<>();
+
+		if (JenkinsResultsParserUtil.isNullOrEmpty(archiveFileContent)) {
+			return tableRows;
+		}
+
+		archiveFileContent = archiveFileContent.trim();
+
+		if (archiveFileContent.startsWith("<")) {
+
+			// Archives written before the Jenkins report was rendered with
+			// Thymeleaf contain dom4j XML fragments instead of JSON
+
+			try {
+				Document document = Dom4JUtil.parse(archiveFileContent);
+
+				Element rootElement = document.getRootElement();
+
+				for (Element element : rootElement.elements()) {
+					element.detach();
+
+					Map<String, Object> tableRow = new HashMap<>();
+
+					tableRow.put(
+						"rawHTML",
+						StringEscapeUtils.unescapeXml(
+							Dom4JUtil.format(element, true)));
+
+					tableRows.add(tableRow);
+				}
+			}
+			catch (DocumentException | IOException exception) {
+				throw new RuntimeException(exception);
+			}
+
+			return tableRows;
+		}
+
+		JSONArray jsonArray = new JSONArray(archiveFileContent);
+
+		for (int i = 0; i < jsonArray.length(); i++) {
+			JSONObject jsonObject = jsonArray.getJSONObject(i);
+
+			tableRows.add(jsonObject.toMap());
+		}
+
+		return tableRows;
+	}
+
 	protected File getArchiveFile(String urlSuffix) {
 		JenkinsMaster jenkinsMaster = getJenkinsMaster();
 
@@ -2329,33 +2379,6 @@ public abstract class BaseBuild implements Build {
 		}
 		catch (IOException ioException) {
 			return null;
-		}
-	}
-
-	protected List<Element> getArchiveFileElements(String urlSuffix) {
-		String archiveFileContent = getArchiveFileContent(urlSuffix);
-
-		if (JenkinsResultsParserUtil.isNullOrEmpty(archiveFileContent)) {
-			return new ArrayList<>();
-		}
-
-		try {
-			Document document = Dom4JUtil.parse(archiveFileContent);
-
-			Element rootElement = document.getRootElement();
-
-			List<Element> elements = new ArrayList<>();
-
-			for (Element element : rootElement.elements()) {
-				element.detach();
-
-				elements.add(element);
-			}
-
-			return elements;
-		}
-		catch (DocumentException documentException) {
-			throw new RuntimeException(documentException);
 		}
 	}
 
@@ -2513,27 +2536,6 @@ public abstract class BaseBuild implements Build {
 		return null;
 	}
 
-	protected Element getExpanderAnchorElement(
-		String expanderName, String namespace) {
-
-		Element expanderAnchorElement = Dom4JUtil.getNewAnchorElement("", "+ ");
-
-		expanderAnchorElement.addAttribute(
-			"id",
-			JenkinsResultsParserUtil.combine(
-				namespace, "-expander-anchor-", expanderName));
-		expanderAnchorElement.addAttribute(
-			"onClick",
-			JenkinsResultsParserUtil.combine(
-				"return toggleStopWatchRecordExpander(\'", namespace, "\', \'",
-				expanderName, "\')"));
-		expanderAnchorElement.addAttribute(
-			"style",
-			"font-family: monospace, monospace; text-decoration: none");
-
-		return expanderAnchorElement;
-	}
-
 	protected Element getFailureMessageElement() {
 		for (FailureMessageGenerator failureMessageGenerator :
 				getFailureMessageGenerators()) {
@@ -2569,154 +2571,72 @@ public abstract class BaseBuild implements Build {
 		return getGitHubMessageJobResultsElement();
 	}
 
-	protected List<Element> getJenkinsReportBuildDurationsElements() {
+	protected List<Map<String, Object>> getJenkinsReportBuildDurationRows() {
 		return new ArrayList<>();
 	}
 
-	protected String getJenkinsReportBuildInfoCellElementTagName() {
+	protected String getJenkinsReportBuildInfoCellTagName() {
 		return "td";
 	}
 
-	protected List<Element> getJenkinsReportStopWatchRecordElements() {
-		String urlSuffix = "stopWatchRecordElements";
+	protected Map<String, Object> getJenkinsReportBuildInfoRow() {
+		String cellTagName = getJenkinsReportBuildInfoCellTagName();
 
-		if (archiveFileExists(urlSuffix)) {
-			return getArchiveFileElements(urlSuffix);
-		}
+		List<Map<String, Object>> tableCells = new ArrayList<>();
 
-		List<Element> jenkinsReportStopWatchRecordTableRowElements =
-			new ArrayList<>();
+		Map<String, String> stopWatchRecordsExpanderPart =
+			getStopWatchRecordsExpanderPart();
 
-		Element stopWatchRecordHeaderRowElement = Dom4JUtil.getNewElement("tr");
-
-		stopWatchRecordHeaderRowElement.addAttribute(
-			"id", hashCode() + "-stop-watch-record-header");
-		stopWatchRecordHeaderRowElement.addAttribute("style", "display: none");
-
-		Element headerDataElement = Dom4JUtil.getNewElement(
-			"td", stopWatchRecordHeaderRowElement,
-			getExpanderAnchorElement(
-				"stop-watch-record-header", String.valueOf(hashCode())),
-			Dom4JUtil.getNewElement("u", null, "Stop Watch Record"));
-
-		headerDataElement.addAttribute(
-			"style",
-			JenkinsResultsParserUtil.combine(
-				"text-indent: ",
-				String.valueOf(getDepth() * PIXELS_WIDTH_INDENT), "px"));
-
-		jenkinsReportStopWatchRecordTableRowElements.add(
-			stopWatchRecordHeaderRowElement);
-
-		StopWatchRecordsGroup stopWatchRecordsGroup =
-			getStopWatchRecordsGroup();
-
-		if (!stopWatchRecordsGroup.isEmpty()) {
-			List<String> childStopWatchRecordNames = new ArrayList<>(
-				stopWatchRecordsGroup.size());
-
-			for (StopWatchRecord stopWatchRecord : stopWatchRecordsGroup) {
-				childStopWatchRecordNames.add(stopWatchRecord.getName());
-			}
-
-			stopWatchRecordHeaderRowElement.addAttribute(
-				"child-stopwatch-rows",
-				JenkinsResultsParserUtil.join(",", childStopWatchRecordNames));
-		}
-
-		for (StopWatchRecord stopWatchRecord : getStopWatchRecordsGroup()) {
-			jenkinsReportStopWatchRecordTableRowElements.addAll(
-				_getStopWatchRecordTableRowElements(stopWatchRecord));
-		}
-
-		archiveFileElements(
-			urlSuffix, jenkinsReportStopWatchRecordTableRowElements);
-
-		return jenkinsReportStopWatchRecordTableRowElements;
-	}
-
-	protected Element getJenkinsReportTableRowElement() {
-		String cellElementTagName =
-			getJenkinsReportBuildInfoCellElementTagName();
-
-		Element stopWatchRecordsExpanderAnchorElement =
-			getStopWatchRecordsExpanderAnchorElement();
-
-		Element cachedBuildElement = null;
+		Map<String, String> cachedBuildPart = null;
 
 		if (isBuildCached()) {
-			cachedBuildElement = Dom4JUtil.getNewElement(
-				"span", null, "(cached build)");
+			cachedBuildPart = getJenkinsReportSpanPart("(cached build)");
 		}
-
-		Element nameCellElement = Dom4JUtil.getNewElement(
-			cellElementTagName, null, stopWatchRecordsExpanderAnchorElement,
-			Dom4JUtil.getNewAnchorElement(
-				getBuildURL(), null, getDisplayName()),
-			cachedBuildElement);
 
 		int indent = getDepth() * PIXELS_WIDTH_INDENT;
 
-		if (stopWatchRecordsExpanderAnchorElement != null) {
+		if (stopWatchRecordsExpanderPart != null) {
 			indent -= _PIXELS_WIDTH_EXPANDER;
 		}
 
-		nameCellElement.addAttribute("style", "text-indent: " + indent);
-
-		Element buildInfoElement = Dom4JUtil.getNewElement(
-			"tr", null, nameCellElement,
-			Dom4JUtil.getNewElement(
-				cellElementTagName, null,
-				Dom4JUtil.getNewAnchorElement(
-					getBuildURL() + "console", null, "Console")),
-			Dom4JUtil.getNewElement(
-				cellElementTagName, null,
-				Dom4JUtil.getNewAnchorElement(
+		tableCells.add(
+			getJenkinsReportTableCell(
+				cellTagName, "text-indent: " + indent,
+				stopWatchRecordsExpanderPart,
+				getJenkinsReportLinkPart(getBuildURL(), getDisplayName()),
+				cachedBuildPart));
+		tableCells.add(
+			getJenkinsReportTableCell(
+				cellTagName, null,
+				getJenkinsReportLinkPart(
+					getBuildURL() + "console", "Console")));
+		tableCells.add(
+			getJenkinsReportTableCell(
+				cellTagName, null,
+				getJenkinsReportLinkPart(
 					getBuildURL() + "testReport", "Test Report")));
-
-		List<String> childStopWatchRows = new ArrayList<>();
-
-		if (buildDurationsEnabled()) {
-			childStopWatchRows.add("build-durations-header");
-			childStopWatchRows.add("test-durations-header");
-		}
-
-		childStopWatchRows.add("stop-watch-record-header");
-
-		buildInfoElement.addAttribute(
-			"child-stopwatch-rows",
-			JenkinsResultsParserUtil.join(",", childStopWatchRows));
-
-		buildInfoElement.addAttribute("id", String.valueOf(hashCode()) + "-");
 
 		getStartTime();
 
 		if (startTime == null) {
-			Dom4JUtil.addToElement(
-				buildInfoElement,
-				Dom4JUtil.getNewElement(
-					cellElementTagName, null, "",
-					getJenkinsReportTimeZoneName()));
+			tableCells.add(
+				getJenkinsReportTableCell(
+					cellTagName, null, "", getJenkinsReportTimeZoneName()));
 		}
 		else {
-			Dom4JUtil.addToElement(
-				buildInfoElement,
-				Dom4JUtil.getNewElement(
-					cellElementTagName, null,
+			tableCells.add(
+				getJenkinsReportTableCell(
+					cellTagName, null,
 					toJenkinsReportDateString(
 						new Date(startTime), getJenkinsReportTimeZoneName())));
 		}
 
 		long duration = getDuration();
 
-		Dom4JUtil.addToElement(
-			buildInfoElement,
-			Dom4JUtil.getNewElement(
-				cellElementTagName, null,
+		tableCells.add(
+			getJenkinsReportTableCell(
+				cellTagName, null,
 				JenkinsResultsParserUtil.toDurationString(duration)));
-
-		Element estimatedDurationElement = null;
-		Element diffDurationElement = null;
 
 		if (buildDurationsEnabled()) {
 			String estimatedDurationString = "n/a";
@@ -2733,15 +2653,13 @@ public abstract class BaseBuild implements Build {
 					duration - averageDuration);
 			}
 
-			estimatedDurationElement = Dom4JUtil.getNewElement(
-				cellElementTagName, null, estimatedDurationString);
-			diffDurationElement = Dom4JUtil.getNewElement(
-				cellElementTagName, null, diffDurationString);
+			tableCells.add(
+				getJenkinsReportTableCell(
+					cellTagName, null, estimatedDurationString));
+			tableCells.add(
+				getJenkinsReportTableCell(
+					cellTagName, null, diffDurationString));
 		}
-
-		Dom4JUtil.addToElement(buildInfoElement, estimatedDurationElement);
-
-		Dom4JUtil.addToElement(buildInfoElement, diffDurationElement);
 
 		String currentStatus = getStatus();
 
@@ -2752,8 +2670,8 @@ public abstract class BaseBuild implements Build {
 			currentStatus = "";
 		}
 
-		Dom4JUtil.getNewElement(
-			cellElementTagName, buildInfoElement, currentStatus);
+		tableCells.add(
+			getJenkinsReportTableCell(cellTagName, null, currentStatus));
 
 		String result = getResult();
 
@@ -2761,41 +2679,227 @@ public abstract class BaseBuild implements Build {
 			result = "";
 		}
 
-		Dom4JUtil.getNewElement(cellElementTagName, buildInfoElement, result);
+		tableCells.add(getJenkinsReportTableCell(cellTagName, null, result));
 
-		return buildInfoElement;
+		Map<String, Object> buildInfoTableRow = getJenkinsReportTableRow(
+			String.valueOf(hashCode()) + "-", null, tableCells);
+
+		List<String> childStopWatchRows = new ArrayList<>();
+
+		if (buildDurationsEnabled()) {
+			childStopWatchRows.add("build-durations-header");
+			childStopWatchRows.add("test-durations-header");
+		}
+
+		childStopWatchRows.add("stop-watch-record-header");
+
+		buildInfoTableRow.put(
+			"childStopwatchRows",
+			JenkinsResultsParserUtil.join(",", childStopWatchRows));
+
+		return buildInfoTableRow;
 	}
 
-	protected List<Element> getJenkinsReportTableRowElements(
+	protected Map<String, String> getJenkinsReportExpanderPart(
+		String expanderName, String namespace) {
+
+		Map<String, String> expanderPart = new HashMap<>();
+
+		expanderPart.put(
+			"id",
+			JenkinsResultsParserUtil.combine(
+				namespace, "-expander-anchor-", expanderName));
+		expanderPart.put(
+			"onClick",
+			JenkinsResultsParserUtil.combine(
+				"return toggleStopWatchRecordExpander(\'", namespace, "\', \'",
+				expanderName, "\')"));
+		expanderPart.put(
+			"style",
+			"font-family: monospace, monospace; text-decoration: none");
+		expanderPart.put("type", "expander");
+
+		return expanderPart;
+	}
+
+	protected Map<String, String> getJenkinsReportLinkPart(
+		String url, String text) {
+
+		Map<String, String> linkPart = new HashMap<>();
+
+		linkPart.put("text", text);
+		linkPart.put("type", "link");
+		linkPart.put("url", url);
+
+		return linkPart;
+	}
+
+	protected Map<String, String> getJenkinsReportNbspPart() {
+		Map<String, String> nbspPart = new HashMap<>();
+
+		nbspPart.put("type", "nbsp");
+
+		return nbspPart;
+	}
+
+	protected Map<String, String> getJenkinsReportSpanPart(String text) {
+		Map<String, String> spanPart = new HashMap<>();
+
+		spanPart.put("text", text);
+		spanPart.put("type", "span");
+
+		return spanPart;
+	}
+
+	protected List<Map<String, Object>> getJenkinsReportStopWatchRecordRows() {
+		String urlSuffix = "stopWatchRecordElements";
+
+		if (archiveFileExists(urlSuffix)) {
+			return getArchivedJenkinsReportTableRows(urlSuffix);
+		}
+
+		List<Map<String, Object>> stopWatchRecordTableRows = new ArrayList<>();
+
+		List<Map<String, Object>> headerTableCells = new ArrayList<>();
+
+		headerTableCells.add(
+			getJenkinsReportTableCell(
+				"td",
+				JenkinsResultsParserUtil.combine(
+					"text-indent: ",
+					String.valueOf(getDepth() * PIXELS_WIDTH_INDENT), "px"),
+				getJenkinsReportExpanderPart(
+					"stop-watch-record-header", String.valueOf(hashCode())),
+				getJenkinsReportUnderlinePart("Stop Watch Record")));
+
+		Map<String, Object> headerTableRow = getJenkinsReportTableRow(
+			hashCode() + "-stop-watch-record-header", "display: none",
+			headerTableCells);
+
+		stopWatchRecordTableRows.add(headerTableRow);
+
+		StopWatchRecordsGroup stopWatchRecordsGroup =
+			getStopWatchRecordsGroup();
+
+		if (!stopWatchRecordsGroup.isEmpty()) {
+			List<String> childStopWatchRecordNames = new ArrayList<>(
+				stopWatchRecordsGroup.size());
+
+			for (StopWatchRecord stopWatchRecord : stopWatchRecordsGroup) {
+				childStopWatchRecordNames.add(stopWatchRecord.getName());
+			}
+
+			headerTableRow.put(
+				"childStopwatchRows",
+				JenkinsResultsParserUtil.join(",", childStopWatchRecordNames));
+		}
+
+		for (StopWatchRecord stopWatchRecord : getStopWatchRecordsGroup()) {
+			stopWatchRecordTableRows.addAll(
+				_getStopWatchRecordTableRows(stopWatchRecord));
+		}
+
+		archiveJenkinsReportTableRows(urlSuffix, stopWatchRecordTableRows);
+
+		return stopWatchRecordTableRows;
+	}
+
+	protected Map<String, Object> getJenkinsReportTableCell(
+		String tagName, String style, Object... parts) {
+
+		Map<String, Object> tableCell = new HashMap<>();
+
+		List<Map<String, String>> tableCellParts = new ArrayList<>();
+
+		for (Object part : parts) {
+			if (part == null) {
+				continue;
+			}
+
+			if (part instanceof String) {
+				tableCellParts.add(getJenkinsReportTextPart((String)part));
+
+				continue;
+			}
+
+			tableCellParts.add((Map<String, String>)part);
+		}
+
+		tableCell.put("parts", tableCellParts);
+
+		if (style != null) {
+			tableCell.put("style", style);
+		}
+
+		tableCell.put("tagName", tagName);
+
+		return tableCell;
+	}
+
+	protected Map<String, Object> getJenkinsReportTableRow(
+		String id, String style, List<Map<String, Object>> tableCells) {
+
+		Map<String, Object> tableRow = new HashMap<>();
+
+		tableRow.put("cells", tableCells);
+
+		if (id != null) {
+			tableRow.put("id", id);
+		}
+
+		if (style != null) {
+			tableRow.put("style", style);
+		}
+
+		return tableRow;
+	}
+
+	protected List<Map<String, Object>> getJenkinsReportTableRows(
 		String result, String status) {
 
-		List<Element> tableRowElements = new ArrayList<>();
+		List<Map<String, Object>> tableRows = new ArrayList<>();
 
 		if ((getParentBuild() != null) &&
 			((result == null) || result.equals(getResult())) &&
 			((status == null) || status.equals(getStatus()))) {
 
-			tableRowElements.add(getJenkinsReportTableRowElement());
+			tableRows.add(getJenkinsReportBuildInfoRow());
 
 			if (buildDurationsEnabled()) {
-				tableRowElements.addAll(
-					getJenkinsReportBuildDurationsElements());
-				tableRowElements.addAll(
-					getJenkinsReportTestDurationsElements());
+				tableRows.addAll(getJenkinsReportBuildDurationRows());
+				tableRows.addAll(getJenkinsReportTestDurationRows());
 			}
 
-			tableRowElements.addAll(getJenkinsReportStopWatchRecordElements());
+			tableRows.addAll(getJenkinsReportStopWatchRecordRows());
 		}
 
-		return tableRowElements;
+		return tableRows;
 	}
 
-	protected List<Element> getJenkinsReportTestDurationsElements() {
+	protected List<Map<String, Object>> getJenkinsReportTestDurationRows() {
 		return new ArrayList<>();
+	}
+
+	protected Map<String, String> getJenkinsReportTextPart(String text) {
+		Map<String, String> textPart = new HashMap<>();
+
+		textPart.put("text", text);
+		textPart.put("type", "text");
+
+		return textPart;
 	}
 
 	protected String getJenkinsReportTimeZoneName() {
 		return _NAME_JENKINS_REPORT_TIME_ZONE;
+	}
+
+	protected Map<String, String> getJenkinsReportUnderlinePart(String text) {
+		Map<String, String> underlinePart = new HashMap<>();
+
+		underlinePart.put("text", text);
+		underlinePart.put("type", "underline");
+
+		return underlinePart;
 	}
 
 	protected Map<String, String> getParameters(JSONArray jsonArray) {
@@ -2859,7 +2963,7 @@ public abstract class BaseBuild implements Build {
 		return null;
 	}
 
-	protected Element getStopWatchRecordExpanderAnchorElement(
+	protected Map<String, String> getStopWatchRecordExpanderPart(
 		StopWatchRecord stopWatchRecord, String namespace) {
 
 		Set<StopWatchRecord> childStopWatchRecords =
@@ -2869,10 +2973,11 @@ public abstract class BaseBuild implements Build {
 			return null;
 		}
 
-		return getExpanderAnchorElement(stopWatchRecord.getName(), namespace);
+		return getJenkinsReportExpanderPart(
+			stopWatchRecord.getName(), namespace);
 	}
 
-	protected Element getStopWatchRecordsExpanderAnchorElement() {
+	protected Map<String, String> getStopWatchRecordsExpanderPart() {
 		StopWatchRecordsGroup stopWatchRecordsGroup =
 			getStopWatchRecordsGroup();
 
@@ -2880,26 +2985,7 @@ public abstract class BaseBuild implements Build {
 			return null;
 		}
 
-		Element stopWatchRecordsExpanderAnchorElement =
-			Dom4JUtil.getNewAnchorElement("", "+ ");
-
-		String hashCode = String.valueOf(hashCode());
-
-		stopWatchRecordsExpanderAnchorElement.addAttribute(
-			"id",
-			JenkinsResultsParserUtil.combine(hashCode, "-expander-anchor-"));
-
-		stopWatchRecordsExpanderAnchorElement.addAttribute(
-			"onClick",
-			JenkinsResultsParserUtil.combine(
-				"return toggleStopWatchRecordExpander(\'", hashCode,
-				"\', \'\')"));
-
-		stopWatchRecordsExpanderAnchorElement.addAttribute(
-			"style",
-			"font-family: monospace, monospace; text-decoration: none");
-
-		return stopWatchRecordsExpanderAnchorElement;
+		return getJenkinsReportExpanderPart("", String.valueOf(hashCode()));
 	}
 
 	protected Map<String, String> getTempMap(String tempMapName) {
@@ -3328,65 +3414,66 @@ public abstract class BaseBuild implements Build {
 		return _MAXIMUM_INVOCATION_COUNT;
 	}
 
-	private List<Element> _getStopWatchRecordTableRowElements(
+	private List<Map<String, Object>> _getStopWatchRecordTableRows(
 		StopWatchRecord stopWatchRecord) {
-
-		Element buildInfoElement = Dom4JUtil.getNewElement("tr", null);
 
 		String buildHashCode = String.valueOf(hashCode());
 
-		buildInfoElement.addAttribute(
-			"id", buildHashCode + "-" + stopWatchRecord.getName());
-
-		buildInfoElement.addAttribute("style", "display: none");
-
-		Element expanderAnchorElement = getStopWatchRecordExpanderAnchorElement(
+		Map<String, String> expanderPart = getStopWatchRecordExpanderPart(
 			stopWatchRecord, buildHashCode);
-
-		Element nameElement = Dom4JUtil.getNewElement(
-			"td", buildInfoElement, expanderAnchorElement,
-			stopWatchRecord.getShortName());
 
 		int indent =
 			(getDepth() + stopWatchRecord.getDepth() + 1) * PIXELS_WIDTH_INDENT;
 
-		if (expanderAnchorElement != null) {
+		if (expanderPart != null) {
 			indent -= _PIXELS_WIDTH_EXPANDER;
 		}
 
-		nameElement.addAttribute(
-			"style",
-			JenkinsResultsParserUtil.combine(
-				"text-indent: ", String.valueOf(indent), "px"));
+		List<Map<String, Object>> tableCells = new ArrayList<>();
 
-		Dom4JUtil.getNewElement("td", buildInfoElement, "&nbsp;");
-
-		Dom4JUtil.getNewElement("td", buildInfoElement, "&nbsp;");
-
-		Dom4JUtil.getNewElement(
-			"td", buildInfoElement,
-			toJenkinsReportDateString(
-				new Date(stopWatchRecord.getStartTimestamp()),
-				getJenkinsReportTimeZoneName()));
+		tableCells.add(
+			getJenkinsReportTableCell(
+				"td",
+				JenkinsResultsParserUtil.combine(
+					"text-indent: ", String.valueOf(indent), "px"),
+				expanderPart, stopWatchRecord.getShortName()));
+		tableCells.add(
+			getJenkinsReportTableCell("td", null, getJenkinsReportNbspPart()));
+		tableCells.add(
+			getJenkinsReportTableCell("td", null, getJenkinsReportNbspPart()));
+		tableCells.add(
+			getJenkinsReportTableCell(
+				"td", null,
+				toJenkinsReportDateString(
+					new Date(stopWatchRecord.getStartTimestamp()),
+					getJenkinsReportTimeZoneName())));
 
 		Long duration = stopWatchRecord.getDuration();
 
 		if (duration == null) {
-			Dom4JUtil.getNewElement("td", buildInfoElement, "&nbsp;");
+			tableCells.add(
+				getJenkinsReportTableCell(
+					"td", null, getJenkinsReportNbspPart()));
 		}
 		else {
-			Dom4JUtil.getNewElement(
-				"td", buildInfoElement,
-				JenkinsResultsParserUtil.toDurationString(duration));
+			tableCells.add(
+				getJenkinsReportTableCell(
+					"td", null,
+					JenkinsResultsParserUtil.toDurationString(duration)));
 		}
 
-		Dom4JUtil.getNewElement("td", buildInfoElement, "&nbsp;");
+		tableCells.add(
+			getJenkinsReportTableCell("td", null, getJenkinsReportNbspPart()));
+		tableCells.add(
+			getJenkinsReportTableCell("td", null, getJenkinsReportNbspPart()));
 
-		Dom4JUtil.getNewElement("td", buildInfoElement, "&nbsp;");
+		Map<String, Object> buildInfoTableRow = getJenkinsReportTableRow(
+			buildHashCode + "-" + stopWatchRecord.getName(), "display: none",
+			tableCells);
 
-		List<Element> jenkinsReportTableRowElements = new ArrayList<>();
+		List<Map<String, Object>> tableRows = new ArrayList<>();
 
-		jenkinsReportTableRowElements.add(buildInfoElement);
+		tableRows.add(buildInfoTableRow);
 
 		Set<StopWatchRecord> childStopWatchRecords =
 			stopWatchRecord.getChildStopWatchRecords();
@@ -3398,26 +3485,22 @@ public abstract class BaseBuild implements Build {
 			for (StopWatchRecord childStopWatchRecord : childStopWatchRecords) {
 				childStopWatchRecordNames.add(childStopWatchRecord.getName());
 
-				List<Element> childJenkinsReportTableRowElements =
-					_getStopWatchRecordTableRowElements(childStopWatchRecord);
+				List<Map<String, Object>> childTableRows =
+					_getStopWatchRecordTableRows(childStopWatchRecord);
 
-				for (Element childJenkinsReportTableRowElement :
-						childJenkinsReportTableRowElements) {
-
-					childJenkinsReportTableRowElement.addAttribute(
-						"style", "display: none");
+				for (Map<String, Object> childTableRow : childTableRows) {
+					childTableRow.put("style", "display: none");
 				}
 
-				jenkinsReportTableRowElements.addAll(
-					childJenkinsReportTableRowElements);
+				tableRows.addAll(childTableRows);
 			}
 
-			buildInfoElement.addAttribute(
-				"child-stopwatch-rows",
+			buildInfoTableRow.put(
+				"childStopwatchRows",
 				JenkinsResultsParserUtil.join(",", childStopWatchRecordNames));
 		}
 
-		return jenkinsReportTableRowElements;
+		return tableRows;
 	}
 
 	private String _getSuiteClassName(JSONObject suiteJSONObject) {
