@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-import org.dom4j.DocumentException;
+import org.dom4j.Document;
 
 import org.json.JSONObject;
 
@@ -30,7 +30,7 @@ import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
 public class JenkinsReportTemplateTest {
 
 	@Test
-	public void testRenderJenkinsReportTemplate() throws DocumentException {
+	public void testRenderJenkinsReportTemplate() throws Exception {
 		TemplateEngine templateEngine = new TemplateEngine();
 
 		ClassLoaderTemplateResolver classLoaderTemplateResolver =
@@ -213,7 +213,19 @@ public class JenkinsReportTemplateTest {
 			content.contains("<td>date-2000</td>") &&
 			content.contains("<td>&#160;</td>"));
 
-		Dom4JUtil.parse(content);
+		Document document = Dom4JUtil.parse(content);
+
+		String formattedContent = Dom4JUtil.format(
+			document.getRootElement(), true);
+
+		Assert.assertFalse(
+			"Unexpected self closing script element",
+			formattedContent.contains("<script") &&
+			formattedContent.matches("(?s).*<script[^>]*/>.*"));
+		Assert.assertTrue(
+			"Missing Chart.js script body after the round trip",
+			formattedContent.contains("Chart.min.js\">/**/</script>") &&
+			formattedContent.contains("labels: [0,1,2],"));
 
 		Assert.assertTrue(
 			"Missing column header", content.contains("<th>Test Report</th>"));
@@ -294,8 +306,8 @@ public class JenkinsReportTemplateTest {
 			"Missing jQuery script",
 			content.contains(
 				"<script src=\"https://ajax.aspnetcdn.com/ajax/jQuery" +
-					"/jquery-3.3.1.min.js\" type=\"text/javascript\">" +
-						"</script>"));
+					"/jquery-3.3.1.min.js\" type=\"text/javascript\">/**/<" +
+						"/script>"));
 		Assert.assertTrue(
 			"Missing raw JS content",
 			content.contains("$(document).ready(function() {});"));
