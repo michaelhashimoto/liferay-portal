@@ -1,0 +1,17 @@
+<th:block th:fragment="downstreamTable (captionText, result, status)">
+	<th:block th:if="${build != null}" th:with="tableEntries=${build.getJenkinsReportTableEntries(result, status)}">
+		<table th:if="${!tableEntries.isEmpty()}">
+			<caption th:text="${captionText} + ${build.getDownstreamBuildCount(result, status)}"></caption>
+
+			<tr th:replace="~{jenkins_report_table_rows.html :: columnHeadersRow}"></tr>
+
+			<th:block th:each="tableEntry : ${tableEntries}">
+				<th th:if="${tableEntry.batchName != null}" th:text="${tableEntry.batchName}"></th>
+
+				<th:block th:if="${tableEntry.build != null}">
+					<th:block th:insert="~{jenkins_report_table_rows.html :: buildRows (${tableEntry.build}, 'td')}" />
+				</th:block>
+			</th:block>
+		</table>
+	</th:block>
+</th:block>

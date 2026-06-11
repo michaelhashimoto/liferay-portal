@@ -1,3 +1,15 @@
+<tr th:fragment="columnHeadersRow">
+	<th>Name</th>
+	<th>Console</th>
+	<th>Test Report</th>
+	<th>Start Time</th>
+	<th>Build Time</th>
+	<th th:if="${(build != null) && build.buildDurationsEnabled()}">Build Time (est)</th>
+	<th th:if="${(build != null) && build.buildDurationsEnabled()}">Build Time (+/-)</th>
+	<th>Status</th>
+	<th>Result</th>
+</tr>
+
 <th:block th:fragment="buildRows (build, cellTagName)">
 	<th:block th:if="${build != null}" th:with="buildDurationsEnabled=${build.buildDurationsEnabled()},hashCode=${build.hashCode()},stopWatchRecordsGroup=${build.stopWatchRecordsGroup}">
 		<tr th:attr="child-stopwatch-rows=${buildDurationsEnabled} ? 'build-durations-header,test-durations-header,stop-watch-record-header' : 'stop-watch-record-header',id=${hashCode} + '-'" th:with="indent=(${build.depth} * 35) - (${stopWatchRecordsGroup.isEmpty()} ? 0 : 20)">

@@ -51,52 +51,24 @@
 		<table>
 			<caption>Top Level Build - <strong th:text="${build.result != null} ? ${build.result} : ${#strings.toUpperCase(build.status)}"></strong></caption>
 
-			<tr th:fragment="columnHeadersRow">
-				<th>Name</th>
-				<th>Console</th>
-				<th>Test Report</th>
-				<th>Start Time</th>
-				<th>Build Time</th>
-				<th th:if="${build.buildDurationsEnabled()}">Build Time (est)</th>
-				<th th:if="${build.buildDurationsEnabled()}">Build Time (+/-)</th>
-				<th>Status</th>
-				<th>Result</th>
-			</tr>
+			<tr th:replace="~{jenkins_report_table_rows.html :: columnHeadersRow}"></tr>
 
 			<th:block th:insert="~{jenkins_report_table_rows.html :: buildRows (${build}, 'th')}" />
 		</table>
 
 		<div>
-			<th:block th:insert="~{:: downstreamTable ('Queued: ', null, 'queued')}" />
-			<th:block th:insert="~{:: downstreamTable ('Starting: ', null, 'starting')}" />
-			<th:block th:insert="~{:: downstreamTable ('Running: ', null, 'running')}" />
-			<th:block th:insert="~{:: downstreamTable ('Missing: ', null, 'missing')}" />
+			<th:block th:insert="~{jenkins_report_downstream_table.html :: downstreamTable ('Queued: ', null, 'queued')}" />
+			<th:block th:insert="~{jenkins_report_downstream_table.html :: downstreamTable ('Starting: ', null, 'starting')}" />
+			<th:block th:insert="~{jenkins_report_downstream_table.html :: downstreamTable ('Running: ', null, 'running')}" />
+			<th:block th:insert="~{jenkins_report_downstream_table.html :: downstreamTable ('Missing: ', null, 'missing')}" />
 
 			<h2>Completed: </h2>
 
-			<th:block th:insert="~{:: downstreamTable ('---- Aborted: ', 'ABORTED', 'completed')}" />
-			<th:block th:insert="~{:: downstreamTable ('---- Failure: ', 'FAILURE', 'completed')}" />
-			<th:block th:insert="~{:: downstreamTable ('---- Missing: ', 'MISSING', 'completed')}" />
-			<th:block th:insert="~{:: downstreamTable ('---- Unstable: ', 'UNSTABLE', 'completed')}" />
-			<th:block th:insert="~{:: downstreamTable ('---- Success: ', 'SUCCESS', 'completed')}" />
+			<th:block th:insert="~{jenkins_report_downstream_table.html :: downstreamTable ('---- Aborted: ', 'ABORTED', 'completed')}" />
+			<th:block th:insert="~{jenkins_report_downstream_table.html :: downstreamTable ('---- Failure: ', 'FAILURE', 'completed')}" />
+			<th:block th:insert="~{jenkins_report_downstream_table.html :: downstreamTable ('---- Missing: ', 'MISSING', 'completed')}" />
+			<th:block th:insert="~{jenkins_report_downstream_table.html :: downstreamTable ('---- Unstable: ', 'UNSTABLE', 'completed')}" />
+			<th:block th:insert="~{jenkins_report_downstream_table.html :: downstreamTable ('---- Success: ', 'SUCCESS', 'completed')}" />
 		</div>
-
-		<th:block th:if="${false}">
-			<th:block th:fragment="downstreamTable (captionText, result, status)" th:with="tableEntries=${build.getJenkinsReportTableEntries(result, status)}">
-				<table th:if="${!tableEntries.isEmpty()}">
-					<caption th:text="${captionText} + ${build.getDownstreamBuildCount(result, status)}"></caption>
-
-					<tr th:replace="~{:: columnHeadersRow}"></tr>
-
-					<th:block th:each="tableEntry : ${tableEntries}">
-						<th th:if="${tableEntry.batchName != null}" th:text="${tableEntry.batchName}"></th>
-
-						<th:block th:if="${tableEntry.build != null}">
-							<th:block th:insert="~{jenkins_report_table_rows.html :: buildRows (${tableEntry.build}, 'td')}" />
-						</th:block>
-					</th:block>
-				</table>
-			</th:block>
-		</th:block>
 	</body>
 </html>
