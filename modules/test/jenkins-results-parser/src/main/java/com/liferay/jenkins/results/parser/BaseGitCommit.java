@@ -66,6 +66,12 @@ public abstract class BaseGitCommit implements GitCommit {
 	}
 
 	@Override
+	public String getCommitDateString(String pattern, String timeZoneName) {
+		return JenkinsResultsParserUtil.toDateString(
+			getCommitDate(), pattern, timeZoneName);
+	}
+
+	@Override
 	public String getEmailAddress() {
 		if (emailAddress == null) {
 			initEmailAddress();

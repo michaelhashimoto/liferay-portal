@@ -24,6 +24,10 @@ public interface WorkspaceGitRepository extends LocalGitRepository {
 
 	public String getFileContent(String filePath);
 
+	public String getGitHubCommitURL(String sha);
+
+	public String getGitHubCompareURL(String baseSHA, String headSHA);
+
 	public String getGitHubDevBranchName();
 
 	public String getGitHubURL();

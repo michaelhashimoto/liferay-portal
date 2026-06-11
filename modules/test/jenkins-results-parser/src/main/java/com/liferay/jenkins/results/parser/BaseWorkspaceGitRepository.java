@@ -158,6 +158,23 @@ public abstract class BaseWorkspaceGitRepository
 	}
 
 	@Override
+	public String getGitHubCommitURL(String sha) {
+		String gitHubURL = getGitHubURL();
+
+		return gitHubURL.replaceAll("/tree/.+", "/commit/" + sha);
+	}
+
+	@Override
+	public String getGitHubCompareURL(String baseSHA, String headSHA) {
+		String gitHubURL = getGitHubURL();
+
+		return gitHubURL.replaceAll(
+			"/tree/.+",
+			JenkinsResultsParserUtil.combine(
+				"/compare/", baseSHA, "...", headSHA));
+	}
+
+	@Override
 	public String getGitHubDevBranchName() {
 		String baseBranchSHA = _getBaseBranchHeadSHA();
 		String senderBranchSHA = _getSenderBranchHeadSHA();

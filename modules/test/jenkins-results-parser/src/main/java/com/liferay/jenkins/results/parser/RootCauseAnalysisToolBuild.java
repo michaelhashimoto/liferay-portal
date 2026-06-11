@@ -10,9 +10,7 @@ import com.google.common.collect.Lists;
 import java.io.IOException;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.dom4j.Element;
 
@@ -39,85 +37,7 @@ public class RootCauseAnalysisToolBuild extends DefaultTopLevelBuild {
 		return getParameterValue("PORTAL_UPSTREAM_BRANCH_NAME");
 	}
 
-	@Override
-	public synchronized Element getJenkinsReportElement() {
-		if (_workspaceGitRepository == null) {
-			throw new IllegalStateException(
-				"Please set the workspace Git repository");
-		}
-
-		if (_downstreamPortalBuildDataList == null) {
-			throw new IllegalStateException(
-				"Please set the downstream portal build data list");
-		}
-
-		Context context = new Context();
-
-		context.setVariable("build", this);
-
-		List<Map<String, Object>> commitGroupMaps = new ArrayList<>();
-
-		List<GitCommitGroup> gitCommitGroups = getCommitGroups();
-
-		for (int i = 0; i < gitCommitGroups.size(); i++) {
-			GitCommitGroup nextGitCommitGroup = null;
-
-			if (gitCommitGroups.size() > (i + 1)) {
-				nextGitCommitGroup = gitCommitGroups.get(i + 1);
-			}
-
-			commitGroupMaps.add(
-				_getCommitGroupMap(
-					gitCommitGroups.get(i), nextGitCommitGroup, i == 0));
-		}
-
-		context.setVariable("commitGroups", commitGroupMaps);
-
-		try {
-			context.setVariable(
-				"cssContent",
-				JenkinsResultsParserUtil.getResourceFileContent(
-					"dependencies/jenkins/report/jenkins_report_rca.css"));
-			context.setVariable(
-				"jsContent",
-				JenkinsResultsParserUtil.getResourceFileContent(
-					"dependencies/jenkins/report/jenkins_report_rca.js"));
-		}
-		catch (IOException ioException) {
-			throw new RuntimeException(
-				"Unable to load Jenkins report resources", ioException);
-		}
-
-		return processJenkinsReportTemplate("jenkins_report_rca.html", context);
-	}
-
-	public WorkspaceGitRepository getWorkspaceGitRepository() {
-		return _workspaceGitRepository;
-	}
-
-	public void setDownstreamPortalBuildDataList(
-		List<PortalBuildData> downstreamPortalBuildDataList) {
-
-		_downstreamPortalBuildDataList = downstreamPortalBuildDataList;
-	}
-
-	public void setWorkspaceGitRepository(
-		WorkspaceGitRepository workspaceGitRepository) {
-
-		_workspaceGitRepository = workspaceGitRepository;
-	}
-
-	protected RootCauseAnalysisToolBuild(String buildURL) {
-		this(buildURL, null);
-	}
-
-	protected RootCauseAnalysisToolBuild(
-		String buildURL, TopLevelBuild topLevelBuild) {
-
-		super(buildURL, topLevelBuild);
-	}
-
-	protected List<GitCommitGroup> getCommitGroups() {
+	public List<GitCommitGroup> getCommitGroups() {
 		List<PortalBuildData> portalBuildDataList = Lists.newArrayList(
 			_downstreamPortalBuildDataList);
 
@@ -211,7 +131,57 @@ public class RootCauseAnalysisToolBuild extends DefaultTopLevelBuild {
 		return gitCommitGroups;
 	}
 
-	protected static class GitCommitGroup extends ArrayList<LocalGitCommit> {
+	@Override
+	public synchronized Element getJenkinsReportElement() {
+		if (_workspaceGitRepository == null) {
+			throw new IllegalStateException(
+				"Please set the workspace Git repository");
+		}
+
+		if (_downstreamPortalBuildDataList == null) {
+			throw new IllegalStateException(
+				"Please set the downstream portal build data list");
+		}
+
+		Context context = new Context();
+
+		context.setVariable("build", this);
+
+		try {
+			context.setVariable(
+				"cssContent",
+				JenkinsResultsParserUtil.getResourceFileContent(
+					"dependencies/jenkins/report/jenkins_report_rca.css"));
+			context.setVariable(
+				"jsContent",
+				JenkinsResultsParserUtil.getResourceFileContent(
+					"dependencies/jenkins/report/jenkins_report_rca.js"));
+		}
+		catch (IOException ioException) {
+			throw new RuntimeException(
+				"Unable to load Jenkins report resources", ioException);
+		}
+
+		return processJenkinsReportTemplate("jenkins_report_rca.html", context);
+	}
+
+	public WorkspaceGitRepository getWorkspaceGitRepository() {
+		return _workspaceGitRepository;
+	}
+
+	public void setDownstreamPortalBuildDataList(
+		List<PortalBuildData> downstreamPortalBuildDataList) {
+
+		_downstreamPortalBuildDataList = downstreamPortalBuildDataList;
+	}
+
+	public void setWorkspaceGitRepository(
+		WorkspaceGitRepository workspaceGitRepository) {
+
+		_workspaceGitRepository = workspaceGitRepository;
+	}
+
+	public static class GitCommitGroup extends ArrayList<LocalGitCommit> {
 
 		public GitCommitGroup(PortalBuildData portalBuildData) {
 			this.portalBuildData = portalBuildData;
@@ -225,100 +195,15 @@ public class RootCauseAnalysisToolBuild extends DefaultTopLevelBuild {
 
 	}
 
-	private Map<String, Object> _getCommitGroupMap(
-		GitCommitGroup gitCommitGroup, GitCommitGroup nextGitCommitGroup,
-		boolean firstCommit) {
-
-		Map<String, Object> commitGroupMap = new HashMap<>();
-
-		PortalBuildData portalBuildData = gitCommitGroup.getPortalBuildData();
-
-		if (portalBuildData != null) {
-			commitGroupMap.put(
-				"buildDuration",
-				JenkinsResultsParserUtil.toDurationString(
-					portalBuildData.getBuildDuration()));
-			commitGroupMap.put("buildResult", portalBuildData.getBuildResult());
-			commitGroupMap.put("buildStatus", portalBuildData.getBuildStatus());
-			commitGroupMap.put("buildURL", portalBuildData.getBuildURL());
-		}
-
-		LocalGitCommit headerLocalGitCommit = gitCommitGroup.get(0);
-
-		commitGroupMap.put(
-			"commitDate",
-			JenkinsResultsParserUtil.toDateString(
-				headerLocalGitCommit.getCommitDate(), _DATE_FORMAT_COMMIT,
-				"PST"));
-		commitGroupMap.put("commitMessage", headerLocalGitCommit.getMessage());
-
-		String prefix = "";
-
-		if (firstCommit) {
-			prefix = "*";
-		}
-
-		commitGroupMap.put(
-			"commitSHA", prefix + headerLocalGitCommit.getAbbreviatedSHA());
-		commitGroupMap.put(
-			"commitURL", _getGitHubCommitURL(headerLocalGitCommit));
-
-		List<Map<String, String>> commitMaps = new ArrayList<>();
-
-		for (int i = 1; i < gitCommitGroup.size(); i++) {
-			commitMaps.add(_getCommitMap(gitCommitGroup.get(i)));
-		}
-
-		commitGroupMap.put("commits", commitMaps);
-
-		if (gitCommitGroup.size() > 1) {
-			commitGroupMap.put("toggleSHA", headerLocalGitCommit.getSHA());
-
-			if (nextGitCommitGroup != null) {
-				LocalGitCommit firstNextLocalGitCommit = nextGitCommitGroup.get(
-					0);
-
-				String gitHubCommitDiffURL =
-					_workspaceGitRepository.getGitHubURL();
-
-				gitHubCommitDiffURL = gitHubCommitDiffURL.replaceAll(
-					"/tree/.+", "/compare/");
-
-				commitGroupMap.put(
-					"diffText", gitCommitGroup.size() + " commits");
-				commitGroupMap.put(
-					"diffURL",
-					JenkinsResultsParserUtil.combine(
-						gitHubCommitDiffURL, firstNextLocalGitCommit.getSHA(),
-						"...", headerLocalGitCommit.getSHA()));
-			}
-		}
-
-		return commitGroupMap;
+	protected RootCauseAnalysisToolBuild(String buildURL) {
+		this(buildURL, null);
 	}
 
-	private Map<String, String> _getCommitMap(LocalGitCommit localGitCommit) {
-		Map<String, String> commitMap = new HashMap<>();
+	protected RootCauseAnalysisToolBuild(
+		String buildURL, TopLevelBuild topLevelBuild) {
 
-		commitMap.put(
-			"date",
-			JenkinsResultsParserUtil.toDateString(
-				localGitCommit.getCommitDate(), _DATE_FORMAT_COMMIT, "PST"));
-		commitMap.put("message", localGitCommit.getMessage());
-		commitMap.put("sha", localGitCommit.getAbbreviatedSHA());
-		commitMap.put("url", _getGitHubCommitURL(localGitCommit));
-
-		return commitMap;
+		super(buildURL, topLevelBuild);
 	}
-
-	private String _getGitHubCommitURL(LocalGitCommit localGitCommit) {
-		String gitHubCommitURL = _workspaceGitRepository.getGitHubURL();
-
-		return gitHubCommitURL.replaceAll(
-			"/tree/.+", "/commit/" + localGitCommit.getSHA());
-	}
-
-	private static final String _DATE_FORMAT_COMMIT = "yyyy-MM-dd h:mm:ss aa z";
 
 	private List<PortalBuildData> _downstreamPortalBuildDataList;
 	private WorkspaceGitRepository _workspaceGitRepository;

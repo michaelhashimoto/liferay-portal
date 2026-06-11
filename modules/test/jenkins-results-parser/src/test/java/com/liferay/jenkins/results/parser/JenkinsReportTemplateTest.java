@@ -268,34 +268,6 @@ public class JenkinsReportTemplateTest {
 		Context context = new Context();
 
 		context.setVariable("build", new TestBuild());
-		context.setVariable(
-			"commitGroups",
-			Arrays.asList(
-				_createObjectMap(
-					"buildDuration", "10 minutes", "buildResult", "SUCCESS",
-					"buildStatus", "completed", "buildURL",
-					"https://test-1-1.liferay.com/job/rca-batch/1/",
-					"commitDate", "2026-06-10 8:00:00 AM PST", "commitMessage",
-					"LPD-12345 Break <something>", "commitSHA", "*abc123d",
-					"commitURL",
-					"https://github.com/liferay/liferay-portal/commit/abc123d",
-					"commits",
-					Arrays.asList(
-						_createMap(
-							"date", "2026-06-10 7:00:00 AM PST", "message",
-							"LPD-12345 Earlier commit", "sha", "def456a", "url",
-							"https://github.com/liferay/liferay-portal/commit" +
-								"/def456a")),
-					"diffText", "2 commits", "diffURL",
-					"https://github.com/liferay/liferay-portal/compare" +
-						"/def456a...abc123d",
-					"toggleSHA", "abc123d"),
-				_createObjectMap(
-					"commitDate", "2026-06-09 8:00:00 AM PST", "commitMessage",
-					"LPD-12345 Good commit", "commitSHA", "fed789b",
-					"commitURL",
-					"https://github.com/liferay/liferay-portal/commit/fed789b",
-					"commits", new ArrayList<>())));
 		context.setVariable("cssContent", "body { font-family: sans-serif; }");
 		context.setVariable("jsContent", "$(document).ready(function() {});");
 
@@ -338,7 +310,7 @@ public class JenkinsReportTemplateTest {
 			"Missing diff link",
 			content.contains(
 				"<td><a href=\"https://github.com/liferay/liferay-portal" +
-					"/compare/def456a...abc123d\">2 commits</a></td>"));
+					"/compare/fed789b...abc123d\">2 commits</a></td>"));
 		Assert.assertTrue(
 			"Missing build link",
 			content.contains(
@@ -413,6 +385,33 @@ public class JenkinsReportTemplateTest {
 
 		public String getCISystemStatusURL() {
 			return "https://test-1-0.liferay.com/status";
+		}
+
+		public List<TestGitCommitGroup> getCommitGroups() {
+			TestGitCommitGroup testGitCommitGroup1 = new TestGitCommitGroup(
+				_createObjectMap(
+					"buildDurationString", "10 minutes", "buildResult",
+					"SUCCESS", "buildStatus", "completed", "buildURL",
+					"https://test-1-1.liferay.com/job/rca-batch/1/"));
+
+			testGitCommitGroup1.add(
+				new TestLocalGitCommit(
+					"abc123d", "LPD-12345 Break <something>",
+					"2026-06-10 8:00:00 AM PST"));
+			testGitCommitGroup1.add(
+				new TestLocalGitCommit(
+					"def456a", "LPD-12345 Earlier commit",
+					"2026-06-10 7:00:00 AM PST"));
+
+			TestGitCommitGroup testGitCommitGroup2 = new TestGitCommitGroup(
+				null);
+
+			testGitCommitGroup2.add(
+				new TestLocalGitCommit(
+					"fed789b", "LPD-12345 Good commit",
+					"2026-06-09 8:00:00 AM PST"));
+
+			return Arrays.asList(testGitCommitGroup1, testGitCommitGroup2);
 		}
 
 		public int getDepth() {
@@ -557,10 +556,8 @@ public class JenkinsReportTemplateTest {
 			return 6;
 		}
 
-		public Map<String, String> getWorkspaceGitRepository() {
-			return _createMap(
-				"gitHubURL",
-				"https://github.com/liferay/liferay-portal/tree/master");
+		public TestWorkspaceGitRepository getWorkspaceGitRepository() {
+			return new TestWorkspaceGitRepository();
 		}
 
 		public boolean hasBuildDurations() {
@@ -601,6 +598,70 @@ public class JenkinsReportTemplateTest {
 			String result, String status) {
 
 			return new ArrayList<>();
+		}
+
+	}
+
+	public class TestGitCommitGroup extends ArrayList<TestLocalGitCommit> {
+
+		public TestGitCommitGroup(Map<String, Object> portalBuildData) {
+			_portalBuildData = portalBuildData;
+		}
+
+		public Map<String, Object> getPortalBuildData() {
+			return _portalBuildData;
+		}
+
+		private final Map<String, Object> _portalBuildData;
+
+	}
+
+	public class TestLocalGitCommit {
+
+		public TestLocalGitCommit(
+			String sha, String message, String commitDateString) {
+
+			_sha = sha;
+			_message = message;
+			_commitDateString = commitDateString;
+		}
+
+		public String getAbbreviatedSHA() {
+			return _sha;
+		}
+
+		public String getCommitDateString(String pattern, String timeZoneName) {
+			return _commitDateString;
+		}
+
+		public String getMessage() {
+			return _message;
+		}
+
+		public String getSHA() {
+			return _sha;
+		}
+
+		private final String _commitDateString;
+		private final String _message;
+		private final String _sha;
+
+	}
+
+	public class TestWorkspaceGitRepository {
+
+		public String getGitHubCommitURL(String sha) {
+			return "https://github.com/liferay/liferay-portal/commit/" + sha;
+		}
+
+		public String getGitHubCompareURL(String baseSHA, String headSHA) {
+			return JenkinsResultsParserUtil.combine(
+				"https://github.com/liferay/liferay-portal/compare/", baseSHA,
+				"...", headSHA);
+		}
+
+		public String getGitHubURL() {
+			return "https://github.com/liferay/liferay-portal/tree/master";
 		}
 
 	}

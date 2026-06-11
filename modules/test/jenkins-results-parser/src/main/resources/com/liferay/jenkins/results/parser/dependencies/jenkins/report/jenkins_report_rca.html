@@ -32,34 +32,36 @@
 				<th>Build Result</th>
 			</tr>
 
-			<th:block th:each="commitGroup : ${commitGroups}">
-				<tbody class="result-row">
-					<tr>
-						<td><th:block th:if="${commitGroup.toggleSHA != null}"><label th:attr="for=${commitGroup.toggleSHA}">+</label><input data-toggle="toggle" th:attr="id=${commitGroup.toggleSHA},name=${commitGroup.toggleSHA}" type="checkbox" /></th:block></td>
-						<td><a th:href="${commitGroup.commitURL}" th:text="${commitGroup.commitSHA}"></a></td>
-						<td th:text="${commitGroup.commitDate}"></td>
-						<td th:text="${commitGroup.commitMessage}"></td>
-						<td><a th:href="${commitGroup.diffURL}" th:if="${commitGroup.diffURL != null}" th:text="${commitGroup.diffText}"></a></td>
-						<td><a th:href="${commitGroup.buildURL}" th:if="${commitGroup.buildURL != null}">build</a></td>
-						<td th:text="${commitGroup.buildDuration}"></td>
-						<td th:text="${commitGroup.buildStatus}"></td>
-						<td th:text="${commitGroup.buildResult}"></td>
-					</tr>
-				</tbody>
+			<th:block th:with="commitGroups=${build.commitGroups},workspaceGitRepository=${build.workspaceGitRepository}">
+				<th:block th:each="commitGroup, commitGroupStat : ${commitGroups}" th:with="headerLocalGitCommit=${commitGroup.get(0)},portalBuildData=${commitGroup.portalBuildData}">
+					<tbody class="result-row">
+						<tr>
+							<td><th:block th:if="${commitGroup.size() > 1}"><label th:attr="for=${headerLocalGitCommit.SHA}">+</label><input data-toggle="toggle" th:attr="id=${headerLocalGitCommit.SHA},name=${headerLocalGitCommit.SHA}" type="checkbox" /></th:block></td>
+							<td><a th:href="${workspaceGitRepository.getGitHubCommitURL(headerLocalGitCommit.SHA)}" th:text="${(commitGroupStat.first ? '*' : '') + headerLocalGitCommit.abbreviatedSHA}"></a></td>
+							<td th:text="${headerLocalGitCommit.getCommitDateString('yyyy-MM-dd h:mm:ss aa z', 'PST')}"></td>
+							<td th:text="${headerLocalGitCommit.message}"></td>
+							<td><a th:href="${workspaceGitRepository.getGitHubCompareURL(commitGroups[commitGroupStat.index + 1].get(0).SHA, headerLocalGitCommit.SHA)}" th:if="${!commitGroupStat.last && (commitGroup.size() > 1)}" th:text="${commitGroup.size() + ' commits'}"></a></td>
+							<td><a th:href="${portalBuildData.buildURL}" th:if="${portalBuildData != null}">build</a></td>
+							<td th:text="${portalBuildData == null} ? null : ${portalBuildData.buildDurationString}"></td>
+							<td th:text="${portalBuildData == null} ? null : ${portalBuildData.buildStatus}"></td>
+							<td th:text="${portalBuildData == null} ? null : ${portalBuildData.buildResult}"></td>
+						</tr>
+					</tbody>
 
-				<tbody class="hidden-row" th:if="${!commitGroup.commits.isEmpty()}">
-					<tr th:each="commit : ${commitGroup.commits}">
-						<td></td>
-						<td><a th:href="${commit.url}" th:text="${commit.sha}"></a></td>
-						<td th:text="${commit.date}"></td>
-						<td th:text="${commit.message}"></td>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td></td>
-					</tr>
-				</tbody>
+					<tbody class="hidden-row" th:if="${commitGroup.size() > 1}">
+						<tr th:each="localGitCommit, localGitCommitStat : ${commitGroup}" th:if="${!localGitCommitStat.first}">
+							<td></td>
+							<td><a th:href="${workspaceGitRepository.getGitHubCommitURL(localGitCommit.SHA)}" th:text="${localGitCommit.abbreviatedSHA}"></a></td>
+							<td th:text="${localGitCommit.getCommitDateString('yyyy-MM-dd h:mm:ss aa z', 'PST')}"></td>
+							<td th:text="${localGitCommit.message}"></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+					</tbody>
+				</th:block>
 			</th:block>
 		</table>
 

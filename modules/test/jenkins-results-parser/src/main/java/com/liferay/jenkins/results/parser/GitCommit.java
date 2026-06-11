@@ -23,6 +23,8 @@ public interface GitCommit {
 
 	public String getCommitDateString();
 
+	public String getCommitDateString(String pattern, String timeZoneName);
+
 	public String getEmailAddress();
 
 	public String getGitRepositoryName();
