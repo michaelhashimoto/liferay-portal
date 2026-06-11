@@ -1,0 +1,67 @@
+<html>
+	<head>
+		<script th:src="${jQueryURL}" type="text/javascript"></script>
+		<script th:utext="${jsContent}" type="text/javascript"></script>
+
+		<style th:utext="${cssContent}"></style>
+	</head>
+
+	<body>
+		<h1>Jenkins report for <a th:href="${buildURL}" th:text="${buildURL}"></a></h1>
+
+		<h2 th:if="${description != null}" th:utext="${description}"></h2>
+
+		<div>
+			<p th:each="summaryItem : ${summaryItems}"><th:block th:text="${summaryItem.label}" /><a th:href="${summaryItem.url}" th:if="${summaryItem.url != null}" th:text="${summaryItem.linkText}"></a><th:block th:text="${summaryItem.value}" /></p>
+		</div>
+
+		<div>
+			<canvas height="300" id="timeline"></canvas>
+
+			<script th:src="${chartJsURL}"></script>
+			<script th:utext="${chartJsContent}"></script>
+		</div>
+
+		<table>
+			<caption>
+				<h2>Commit history of <a th:href="${gitHubCommitsURL}" th:text="${gitHubCommitsURL}"></a></h2>
+			</caption>
+
+			<tr>
+				<th th:each="columnHeader : ${columnHeaders}" th:text="${columnHeader}"></th>
+			</tr>
+
+			<th:block th:each="commitGroup : ${commitGroups}">
+				<tbody class="result-row">
+					<tr>
+						<td><th:block th:if="${commitGroup.toggleSHA != null}"><label th:attr="for=${commitGroup.toggleSHA}">+</label><input data-toggle="toggle" th:attr="id=${commitGroup.toggleSHA},name=${commitGroup.toggleSHA}" type="checkbox" /></th:block></td>
+						<td><a th:href="${commitGroup.commitURL}" th:text="${commitGroup.commitSHA}"></a></td>
+						<td th:text="${commitGroup.commitDate}"></td>
+						<td th:text="${commitGroup.commitMessage}"></td>
+						<td><a th:href="${commitGroup.diffURL}" th:if="${commitGroup.diffURL != null}" th:text="${commitGroup.diffText}"></a></td>
+						<td><a th:href="${commitGroup.buildURL}" th:if="${commitGroup.buildURL != null}">build</a></td>
+						<td th:text="${commitGroup.buildDuration}"></td>
+						<td th:text="${commitGroup.buildStatus}"></td>
+						<td th:text="${commitGroup.buildResult}"></td>
+					</tr>
+				</tbody>
+
+				<tbody class="hidden-row" th:if="${!commitGroup.commits.isEmpty()}">
+					<tr th:each="commit : ${commitGroup.commits}">
+						<td></td>
+						<td><a th:href="${commit.url}" th:text="${commit.sha}"></a></td>
+						<td th:text="${commit.date}"></td>
+						<td th:text="${commit.message}"></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+					</tr>
+				</tbody>
+			</th:block>
+		</table>
+
+		<p><em>Indicates HEAD Commit (*)</em></p>
+	</body>
+</html>
