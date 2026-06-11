@@ -51,40 +51,37 @@ public class JenkinsReportTemplateTest {
 						"parts",
 						Arrays.asList(
 							_createMap(
-								"id", "12345-expander-anchor-", "onClick",
+								"id",
+								"12345-expander-anchor-build-durations-header",
+								"onClick",
 								"return toggleStopWatchRecordExpander(" +
-									"'12345', '')",
+									"'12345', 'build-durations-header')",
 								"style",
 								"font-family: monospace, monospace; " +
 									"text-decoration: none",
 								"type", "expander"),
 							_createMap(
-								"text", "test (axis-1)", "type", "link", "url",
-								"https://test-1-1.liferay.com/job/test/1/"),
-							_createMap(
-								"text", "(cached build)", "type", "span")),
-						"style", "text-indent: 15", "tagName", "th"),
-					_createObjectMap(
-						"parts", Arrays.asList(_createMap("type", "nbsp")),
-						"tagName", "td"),
-					_createObjectMap(
-						"parts",
-						Arrays.asList(
-							_createMap(
-								"text", "Stop Watch Record", "type",
+								"text", "Build Durations", "type",
 								"underline")),
-						"tagName", "td")),
-				"childStopwatchRows", "stop-watch-record-header", "id",
-				"12345-"));
-		rows.add(_createObjectMap("batchName", "modules-unit"));
+						"style", "text-indent: 35px", "tagName", "td")),
+				"childStopwatchRows",
+				"build-duration-names,build-duration-values", "id",
+				"12345-build-durations-header", "style", "display: none"));
 		rows.add(
 			_createObjectMap(
 				"cells",
 				Arrays.asList(
 					_createObjectMap(
-						"parts", new ArrayList<>(), "tagName", "td")),
-				"id", "12345-stop-watch-record-header", "style",
-				"display: none"));
+						"parts",
+						Arrays.asList(
+							_createMap("text", "Name", "type", "text")),
+						"style", "text-indent: 70px", "tagName", "th"),
+					_createObjectMap(
+						"parts",
+						Arrays.asList(
+							_createMap("text", "Duration", "type", "text")),
+						"tagName", "th")),
+				"id", "12345-build-duration-names", "style", "display: none;"));
 
 		Context context = new Context();
 
@@ -94,40 +91,33 @@ public class JenkinsReportTemplateTest {
 			"jenkins_report_table_rows.html", context);
 
 		Assert.assertTrue(
-			"Missing build info row attributes",
+			"Missing header row attributes",
 			content.contains(
-				"<tr child-stopwatch-rows=\"stop-watch-record-header\" " +
-					"id=\"12345-\">"));
+				"<tr child-stopwatch-rows=\"build-duration-names," +
+					"build-duration-values\" " +
+						"id=\"12345-build-durations-header\" " +
+							"style=\"display: none\">"));
 		Assert.assertTrue(
 			"Missing expander anchor",
 			content.contains(
-				"<a href=\"\" id=\"12345-expander-anchor-\" onClick=\"return " +
-					"toggleStopWatchRecordExpander(&#39;12345&#39;, " +
-						"&#39;&#39;)\" style=\"font-family: monospace, " +
-							"monospace; text-decoration: none\">+ </a>"));
-		Assert.assertTrue(
-			"Missing name cell link",
-			content.contains(
-				"<a href=\"https://test-1-1.liferay.com/job/test/1/\">" +
-					"test (axis-1)</a><span>(cached build)</span></th>"));
-		Assert.assertTrue(
-			"Missing name cell style",
-			content.contains("<th style=\"text-indent: 15\">"));
-		Assert.assertTrue(
-			"Missing nbsp cell", content.contains("<td>&nbsp;</td>"));
+				"<a href=\"\" " +
+					"id=\"12345-expander-anchor-build-durations-header\" " +
+						"onClick=\"return toggleStopWatchRecordExpander(" +
+							"&#39;12345&#39;, " +
+								"&#39;build-durations-header&#39;)\" " +
+									"style=\"font-family: monospace, " +
+										"monospace; text-decoration: " +
+											"none\">+ </a>"));
 		Assert.assertTrue(
 			"Missing underline cell",
-			content.contains("<td><u>Stop Watch Record</u></td>"));
+			content.contains("<u>Build Durations</u></td>"));
 		Assert.assertTrue(
-			"Missing batch name header",
-			content.contains("<th>modules-unit</th>"));
+			"Missing header cell style",
+			content.contains("<td style=\"text-indent: 35px\">"));
 		Assert.assertTrue(
-			"Missing hidden row",
-			content.contains(
-				"<tr id=\"12345-stop-watch-record-header\" style=\"display: " +
-					"none\">"));
-		Assert.assertTrue(
-			"Missing hidden row empty cell", content.contains("<td></td>"));
+			"Missing duration names cells",
+			content.contains("<th style=\"text-indent: 70px\">Name</th>") &&
+			content.contains("<th>Duration</th>"));
 	}
 
 	@Test
@@ -211,11 +201,59 @@ public class JenkinsReportTemplateTest {
 			"Missing top level table caption",
 			content.contains("Top Level Build - <strong>SUCCESS</strong>"));
 		Assert.assertTrue(
-			"Missing top level table rows",
-			content.contains("<td>top-level-row</td>"));
+			"Missing top level build info row",
+			content.contains(
+				"<tr child-stopwatch-rows=\"stop-watch-record-header\" " +
+					"id=\"12345-\">"));
 		Assert.assertTrue(
-			"Missing stop watch record rows",
-			content.contains("<td>stop-watch-row</td>"));
+			"Missing build info name cell",
+			content.contains(
+				"<th style=\"text-indent: 15\"><a href=\"\" " +
+					"id=\"12345-expander-anchor-\" onClick=\"return " +
+						"toggleStopWatchRecordExpander(&#39;12345&#39;, " +
+							"&#39;&#39;)\" style=\"font-family: monospace, " +
+								"monospace; text-decoration: none\">+ </a>" +
+									"<a href=\"https://test-1-1.liferay.com" +
+										"/job/test/1/\">test (axis-1)</a>" +
+											"<span>(cached build)</span>" +
+												"</th>"));
+		Assert.assertTrue(
+			"Missing build info link cells",
+			content.contains(
+				"<th><a href=\"https://test-1-1.liferay.com/job/test/1" +
+					"/console\">Console</a></th>") &&
+			content.contains(
+				"<th><a href=\"https://test-1-1.liferay.com/job/test/1" +
+					"/testReport\">Test Report</a></th>"));
+		Assert.assertTrue(
+			"Missing build info value cells",
+			content.contains("<th>6-10-2026 07:00:00 PST</th>") &&
+			content.contains("<th>10 minutes</th>") &&
+			content.contains("<th>COMPLETED</th>") &&
+			content.contains("<th>SUCCESS</th>"));
+		Assert.assertTrue(
+			"Missing stop watch record header row",
+			content.contains("id=\"12345-stop-watch-record-header\"") &&
+			content.contains("child-stopwatch-rows=\"record.one\"") &&
+			content.contains("<u>Stop Watch Record</u></td>"));
+		Assert.assertTrue(
+			"Missing stop watch record row",
+			content.contains("id=\"12345-record.one\"") &&
+			content.contains(
+				"<td style=\"text-indent: 50px\"><a href=\"\" " +
+					"id=\"12345-expander-anchor-record.one\" " +
+						"onClick=\"return toggleStopWatchRecordExpander(" +
+							"&#39;12345&#39;, &#39;record.one&#39;)\" " +
+								"style=\"font-family: monospace, monospace; " +
+									"text-decoration: none\">+ </a>one</td>") &&
+			content.contains("<td>date-1000</td>") &&
+			content.contains("<td>60 minutes</td>"));
+		Assert.assertTrue(
+			"Missing child stop watch record row",
+			content.contains("id=\"12345-record.one.child\"") &&
+			content.contains("<td style=\"text-indent: 105px\">child</td>") &&
+			content.contains("<td>date-2000</td>") &&
+			content.contains("<td>&nbsp;</td>"));
 		Assert.assertTrue(
 			"Missing column header", content.contains("<th>Test Report</th>"));
 		Assert.assertFalse(
@@ -228,9 +266,14 @@ public class JenkinsReportTemplateTest {
 			"Missing completed downstream table caption",
 			content.contains("<caption>---- Success: 2</caption>"));
 		Assert.assertTrue(
-			"Missing completed downstream table rows",
-			content.contains("<td>downstream-1</td>") &&
-			content.contains("<td>downstream-2</td>"));
+			"Missing batch name header",
+			content.contains("<th>modules-unit</th>"));
+		Assert.assertTrue(
+			"Missing downstream build info cells",
+			content.contains("<td style=\"text-indent: 15\">") &&
+			content.contains(
+				"<td><a href=\"https://test-1-1.liferay.com/job/test/1" +
+					"/console\">Console</a></td>"));
 		Assert.assertFalse(
 			"Unexpected empty downstream table", content.contains("Queued: "));
 	}
@@ -353,6 +396,15 @@ public class JenkinsReportTemplateTest {
 			return false;
 		}
 
+		@Override
+		public boolean equals(Object object) {
+			if (this == object) {
+				return true;
+			}
+
+			return false;
+		}
+
 		public long getAverageDelayTime() {
 			return 4;
 		}
@@ -374,6 +426,14 @@ public class JenkinsReportTemplateTest {
 			return "https://test-1-0.liferay.com/status";
 		}
 
+		public int getDepth() {
+			return 1;
+		}
+
+		public String getDisplayName() {
+			return "test (axis-1)";
+		}
+
 		public int getDownstreamBuildCount(String result, String status) {
 			return 2;
 		}
@@ -382,15 +442,7 @@ public class JenkinsReportTemplateTest {
 			return 10;
 		}
 
-		public Map<String, Object> getJenkinsReportBuildInfoRow() {
-			return _createTextCellRow("top-level-row");
-		}
-
-		public List<Map<String, Object>> getJenkinsReportStopWatchRecordRows() {
-			return Arrays.asList(_createTextCellRow("stop-watch-row"));
-		}
-
-		public List<Map<String, Object>> getJenkinsReportTableRows(
+		public List<Map<String, Object>> getJenkinsReportTableEntries(
 			String result, String status) {
 
 			if (!Objects.equals(result, "SUCCESS")) {
@@ -398,8 +450,12 @@ public class JenkinsReportTemplateTest {
 			}
 
 			return Arrays.asList(
-				_createTextCellRow("downstream-1"),
-				_createTextCellRow("downstream-2"));
+				_createObjectMap("batchName", "modules-unit"),
+				_createObjectMap("build", this));
+		}
+
+		public String getJenkinsReportTimeZoneName() {
+			return "PST";
 		}
 
 		public Map<String, Object> getLongestDelayedDownstreamBuild() {
@@ -435,12 +491,30 @@ public class JenkinsReportTemplateTest {
 			return "SUCCESS";
 		}
 
+		public Long getStartTime() {
+			return 5000L;
+		}
+
 		public String getStartTimeString() {
 			return "6-10-2026 07:00:00 PST";
 		}
 
 		public String getStatus() {
 			return "completed";
+		}
+
+		public Map<String, Object> getStopWatchRecordsGroup() {
+			return _createObjectMap(
+				"stopWatchRecords",
+				Arrays.asList(
+					_createObjectMap(
+						"childStopWatchRecords",
+						Arrays.asList(
+							_createObjectMap(
+								"depth", 1, "name", "record.one.child",
+								"shortName", "child", "startTimestamp", 2000L)),
+						"depth", 0, "duration", 60L, "name", "record.one",
+						"shortName", "one", "startTimestamp", 1000L)));
 		}
 
 		public Map<String, Object> getTimelineData() {
@@ -483,12 +557,25 @@ public class JenkinsReportTemplateTest {
 				"https://github.com/liferay/liferay-portal/tree/master");
 		}
 
+		@Override
+		public int hashCode() {
+			return 12345;
+		}
+
+		public boolean isBuildCached() {
+			return true;
+		}
+
 		public boolean isJenkinsReportLongestRunningTestEnabled() {
 			return false;
 		}
 
 		public String toDurationString(long duration) {
 			return duration + " minutes";
+		}
+
+		public String toJenkinsReportDateString(long timestamp) {
+			return "date-" + timestamp;
 		}
 
 	}
@@ -511,16 +598,6 @@ public class JenkinsReportTemplateTest {
 		}
 
 		return map;
-	}
-
-	private Map<String, Object> _createTextCellRow(String text) {
-		return _createObjectMap(
-			"cells",
-			Arrays.asList(
-				_createObjectMap(
-					"parts",
-					Arrays.asList(_createMap("text", text, "type", "text")),
-					"tagName", "td")));
 	}
 
 }

@@ -208,11 +208,11 @@ public abstract class BaseParentBuild extends BaseBuild implements ParentBuild {
 	}
 
 	@Override
-	public List<Map<String, Object>> getJenkinsReportTableRows(
+	public List<Map<String, Object>> getJenkinsReportTableEntries(
 		String result, String status) {
 
-		List<Map<String, Object>> tableRows = super.getJenkinsReportTableRows(
-			result, status);
+		List<Map<String, Object>> tableEntries =
+			super.getJenkinsReportTableEntries(result, status);
 
 		List<Build> builds = getDownstreamBuilds(result, status);
 
@@ -231,11 +231,11 @@ public abstract class BaseParentBuild extends BaseBuild implements ParentBuild {
 				String downstreamBatchName = downstreamBuild.getBatchName();
 
 				if (!Objects.equals(batchName, downstreamBatchName)) {
-					Map<String, Object> batchNameTableRow = new HashMap<>();
+					Map<String, Object> batchNameTableEntry = new HashMap<>();
 
-					batchNameTableRow.put("batchName", downstreamBatchName);
+					batchNameTableEntry.put("batchName", downstreamBatchName);
 
-					tableRows.add(batchNameTableRow);
+					tableEntries.add(batchNameTableEntry);
 
 					batchName = downstreamBatchName;
 				}
@@ -243,11 +243,11 @@ public abstract class BaseParentBuild extends BaseBuild implements ParentBuild {
 
 			BaseBuild baseBuild = (BaseBuild)build;
 
-			tableRows.addAll(
-				baseBuild.getJenkinsReportTableRows(result, status));
+			tableEntries.addAll(
+				baseBuild.getJenkinsReportTableEntries(result, status));
 		}
 
-		return tableRows;
+		return tableEntries;
 	}
 
 	@Override

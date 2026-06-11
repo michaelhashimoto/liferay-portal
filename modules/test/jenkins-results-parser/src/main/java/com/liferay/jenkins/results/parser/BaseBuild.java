@@ -38,8 +38,6 @@ import java.util.concurrent.TimeoutException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.apache.commons.lang3.StringUtils;
-
 import org.dom4j.Element;
 
 import org.json.JSONArray;
@@ -624,6 +622,10 @@ public abstract class BaseBuild implements Build {
 		return parentBuild.getDepth() + 1;
 	}
 
+	public String getDiffDurationString() {
+		return "n/a";
+	}
+
 	@Override
 	public String getDisplayName() {
 		StringBuilder sb = new StringBuilder();
@@ -663,6 +665,10 @@ public abstract class BaseBuild implements Build {
 		_duration = duration;
 
 		return _duration;
+	}
+
+	public String getEstimatedDurationString() {
+		return "n/a";
 	}
 
 	@Override
@@ -958,192 +964,35 @@ public abstract class BaseBuild implements Build {
 		return _jenkinsMaster;
 	}
 
-	public Map<String, Object> getJenkinsReportBuildInfoRow() {
-		String cellTagName = getJenkinsReportBuildInfoCellTagName();
-
-		List<Map<String, Object>> tableCells = new ArrayList<>();
-
-		Map<String, String> stopWatchRecordsExpanderPart =
-			getStopWatchRecordsExpanderPart();
-
-		Map<String, String> cachedBuildPart = null;
-
-		if (isBuildCached()) {
-			cachedBuildPart = getJenkinsReportSpanPart("(cached build)");
-		}
-
-		int indent = getDepth() * PIXELS_WIDTH_INDENT;
-
-		if (stopWatchRecordsExpanderPart != null) {
-			indent -= _PIXELS_WIDTH_EXPANDER;
-		}
-
-		tableCells.add(
-			getJenkinsReportTableCell(
-				cellTagName, "text-indent: " + indent,
-				stopWatchRecordsExpanderPart,
-				getJenkinsReportLinkPart(getBuildURL(), getDisplayName()),
-				cachedBuildPart));
-		tableCells.add(
-			getJenkinsReportTableCell(
-				cellTagName, null,
-				getJenkinsReportLinkPart(
-					getBuildURL() + "console", "Console")));
-		tableCells.add(
-			getJenkinsReportTableCell(
-				cellTagName, null,
-				getJenkinsReportLinkPart(
-					getBuildURL() + "testReport", "Test Report")));
-
-		getStartTime();
-
-		if (startTime == null) {
-			tableCells.add(
-				getJenkinsReportTableCell(
-					cellTagName, null, "", getJenkinsReportTimeZoneName()));
-		}
-		else {
-			tableCells.add(
-				getJenkinsReportTableCell(
-					cellTagName, null,
-					toJenkinsReportDateString(
-						new Date(startTime), getJenkinsReportTimeZoneName())));
-		}
-
-		long duration = getDuration();
-
-		tableCells.add(
-			getJenkinsReportTableCell(
-				cellTagName, null,
-				JenkinsResultsParserUtil.toDurationString(duration)));
-
-		if (buildDurationsEnabled()) {
-			String estimatedDurationString = "n/a";
-			String diffDurationString = "n/a";
-
-			if (this instanceof DownstreamBuild) {
-				DownstreamBuild downstreamBuild = (DownstreamBuild)this;
-
-				long averageDuration = downstreamBuild.getAverageDuration();
-
-				estimatedDurationString =
-					JenkinsResultsParserUtil.toDurationString(averageDuration);
-				diffDurationString = getDiffDurationString(
-					duration - averageDuration);
-			}
-
-			tableCells.add(
-				getJenkinsReportTableCell(
-					cellTagName, null, estimatedDurationString));
-			tableCells.add(
-				getJenkinsReportTableCell(
-					cellTagName, null, diffDurationString));
-		}
-
-		String currentStatus = getStatus();
-
-		if (currentStatus != null) {
-			currentStatus = StringUtils.upperCase(currentStatus);
-		}
-		else {
-			currentStatus = "";
-		}
-
-		tableCells.add(
-			getJenkinsReportTableCell(cellTagName, null, currentStatus));
-
-		String result = getResult();
-
-		if (result == null) {
-			result = "";
-		}
-
-		tableCells.add(getJenkinsReportTableCell(cellTagName, null, result));
-
-		Map<String, Object> buildInfoTableRow = getJenkinsReportTableRow(
-			String.valueOf(hashCode()) + "-", null, tableCells);
-
-		List<String> childStopWatchRows = new ArrayList<>();
-
-		if (buildDurationsEnabled()) {
-			childStopWatchRows.add("build-durations-header");
-			childStopWatchRows.add("test-durations-header");
-		}
-
-		childStopWatchRows.add("stop-watch-record-header");
-
-		buildInfoTableRow.put(
-			"childStopwatchRows",
-			JenkinsResultsParserUtil.join(",", childStopWatchRows));
-
-		return buildInfoTableRow;
+	public List<Map<String, Object>> getJenkinsReportBuildDurationRows() {
+		return new ArrayList<>();
 	}
 
-	public List<Map<String, Object>> getJenkinsReportStopWatchRecordRows() {
-		List<Map<String, Object>> stopWatchRecordTableRows = new ArrayList<>();
-
-		List<Map<String, Object>> headerTableCells = new ArrayList<>();
-
-		headerTableCells.add(
-			getJenkinsReportTableCell(
-				"td",
-				JenkinsResultsParserUtil.combine(
-					"text-indent: ",
-					String.valueOf(getDepth() * PIXELS_WIDTH_INDENT), "px"),
-				getJenkinsReportExpanderPart(
-					"stop-watch-record-header", String.valueOf(hashCode())),
-				getJenkinsReportUnderlinePart("Stop Watch Record")));
-
-		Map<String, Object> headerTableRow = getJenkinsReportTableRow(
-			hashCode() + "-stop-watch-record-header", "display: none",
-			headerTableCells);
-
-		stopWatchRecordTableRows.add(headerTableRow);
-
-		StopWatchRecordsGroup stopWatchRecordsGroup =
-			getStopWatchRecordsGroup();
-
-		if (!stopWatchRecordsGroup.isEmpty()) {
-			List<String> childStopWatchRecordNames = new ArrayList<>(
-				stopWatchRecordsGroup.size());
-
-			for (StopWatchRecord stopWatchRecord : stopWatchRecordsGroup) {
-				childStopWatchRecordNames.add(stopWatchRecord.getName());
-			}
-
-			headerTableRow.put(
-				"childStopwatchRows",
-				JenkinsResultsParserUtil.join(",", childStopWatchRecordNames));
-		}
-
-		for (StopWatchRecord stopWatchRecord : getStopWatchRecordsGroup()) {
-			stopWatchRecordTableRows.addAll(
-				_getStopWatchRecordTableRows(stopWatchRecord));
-		}
-
-		return stopWatchRecordTableRows;
-	}
-
-	public List<Map<String, Object>> getJenkinsReportTableRows(
+	public List<Map<String, Object>> getJenkinsReportTableEntries(
 		String result, String status) {
 
-		List<Map<String, Object>> tableRows = new ArrayList<>();
+		List<Map<String, Object>> tableEntries = new ArrayList<>();
 
 		if ((getParentBuild() != null) &&
 			((result == null) || result.equals(getResult())) &&
 			((status == null) || status.equals(getStatus()))) {
 
-			tableRows.add(getJenkinsReportBuildInfoRow());
+			Map<String, Object> tableEntry = new HashMap<>();
 
-			if (buildDurationsEnabled()) {
-				tableRows.addAll(getJenkinsReportBuildDurationRows());
-				tableRows.addAll(getJenkinsReportTestDurationRows());
-			}
+			tableEntry.put("build", this);
 
-			tableRows.addAll(getJenkinsReportStopWatchRecordRows());
+			tableEntries.add(tableEntry);
 		}
 
-		return tableRows;
+		return tableEntries;
+	}
+
+	public List<Map<String, Object>> getJenkinsReportTestDurationRows() {
+		return new ArrayList<>();
+	}
+
+	public String getJenkinsReportTimeZoneName() {
+		return _NAME_JENKINS_REPORT_TIME_ZONE;
 	}
 
 	@Override
@@ -2018,6 +1867,11 @@ public abstract class BaseBuild implements Build {
 		return JenkinsResultsParserUtil.toDurationString(duration);
 	}
 
+	public String toJenkinsReportDateString(long timestamp) {
+		return toJenkinsReportDateString(
+			new Date(timestamp), getJenkinsReportTimeZoneName());
+	}
+
 	@Override
 	public synchronized void update() {
 		if (skipUpdate()) {
@@ -2699,14 +2553,6 @@ public abstract class BaseBuild implements Build {
 		return getGitHubMessageJobResultsElement();
 	}
 
-	protected List<Map<String, Object>> getJenkinsReportBuildDurationRows() {
-		return new ArrayList<>();
-	}
-
-	protected String getJenkinsReportBuildInfoCellTagName() {
-		return "td";
-	}
-
 	protected Map<String, String> getJenkinsReportExpanderPart(
 		String expanderName, String namespace) {
 
@@ -2727,35 +2573,6 @@ public abstract class BaseBuild implements Build {
 		expanderPart.put("type", "expander");
 
 		return expanderPart;
-	}
-
-	protected Map<String, String> getJenkinsReportLinkPart(
-		String url, String text) {
-
-		Map<String, String> linkPart = new HashMap<>();
-
-		linkPart.put("text", text);
-		linkPart.put("type", "link");
-		linkPart.put("url", url);
-
-		return linkPart;
-	}
-
-	protected Map<String, String> getJenkinsReportNbspPart() {
-		Map<String, String> nbspPart = new HashMap<>();
-
-		nbspPart.put("type", "nbsp");
-
-		return nbspPart;
-	}
-
-	protected Map<String, String> getJenkinsReportSpanPart(String text) {
-		Map<String, String> spanPart = new HashMap<>();
-
-		spanPart.put("text", text);
-		spanPart.put("type", "span");
-
-		return spanPart;
 	}
 
 	protected Map<String, Object> getJenkinsReportTableCell(
@@ -2808,10 +2625,6 @@ public abstract class BaseBuild implements Build {
 		return tableRow;
 	}
 
-	protected List<Map<String, Object>> getJenkinsReportTestDurationRows() {
-		return new ArrayList<>();
-	}
-
 	protected Map<String, String> getJenkinsReportTextPart(String text) {
 		Map<String, String> textPart = new HashMap<>();
 
@@ -2819,10 +2632,6 @@ public abstract class BaseBuild implements Build {
 		textPart.put("type", "text");
 
 		return textPart;
-	}
-
-	protected String getJenkinsReportTimeZoneName() {
-		return _NAME_JENKINS_REPORT_TIME_ZONE;
 	}
 
 	protected Map<String, String> getJenkinsReportUnderlinePart(String text) {
@@ -2893,31 +2702,6 @@ public abstract class BaseBuild implements Build {
 
 	protected String getStopPropertiesTempMapURL() {
 		return null;
-	}
-
-	protected Map<String, String> getStopWatchRecordExpanderPart(
-		StopWatchRecord stopWatchRecord, String namespace) {
-
-		Set<StopWatchRecord> childStopWatchRecords =
-			stopWatchRecord.getChildStopWatchRecords();
-
-		if (childStopWatchRecords == null) {
-			return null;
-		}
-
-		return getJenkinsReportExpanderPart(
-			stopWatchRecord.getName(), namespace);
-	}
-
-	protected Map<String, String> getStopWatchRecordsExpanderPart() {
-		StopWatchRecordsGroup stopWatchRecordsGroup =
-			getStopWatchRecordsGroup();
-
-		if (stopWatchRecordsGroup.isEmpty()) {
-			return null;
-		}
-
-		return getJenkinsReportExpanderPart("", String.valueOf(hashCode()));
 	}
 
 	protected Map<String, String> getTempMap(String tempMapName) {
@@ -3346,95 +3130,6 @@ public abstract class BaseBuild implements Build {
 		return _MAXIMUM_INVOCATION_COUNT;
 	}
 
-	private List<Map<String, Object>> _getStopWatchRecordTableRows(
-		StopWatchRecord stopWatchRecord) {
-
-		String buildHashCode = String.valueOf(hashCode());
-
-		Map<String, String> expanderPart = getStopWatchRecordExpanderPart(
-			stopWatchRecord, buildHashCode);
-
-		int indent =
-			(getDepth() + stopWatchRecord.getDepth() + 1) * PIXELS_WIDTH_INDENT;
-
-		if (expanderPart != null) {
-			indent -= _PIXELS_WIDTH_EXPANDER;
-		}
-
-		List<Map<String, Object>> tableCells = new ArrayList<>();
-
-		tableCells.add(
-			getJenkinsReportTableCell(
-				"td",
-				JenkinsResultsParserUtil.combine(
-					"text-indent: ", String.valueOf(indent), "px"),
-				expanderPart, stopWatchRecord.getShortName()));
-		tableCells.add(
-			getJenkinsReportTableCell("td", null, getJenkinsReportNbspPart()));
-		tableCells.add(
-			getJenkinsReportTableCell("td", null, getJenkinsReportNbspPart()));
-		tableCells.add(
-			getJenkinsReportTableCell(
-				"td", null,
-				toJenkinsReportDateString(
-					new Date(stopWatchRecord.getStartTimestamp()),
-					getJenkinsReportTimeZoneName())));
-
-		Long duration = stopWatchRecord.getDuration();
-
-		if (duration == null) {
-			tableCells.add(
-				getJenkinsReportTableCell(
-					"td", null, getJenkinsReportNbspPart()));
-		}
-		else {
-			tableCells.add(
-				getJenkinsReportTableCell(
-					"td", null,
-					JenkinsResultsParserUtil.toDurationString(duration)));
-		}
-
-		tableCells.add(
-			getJenkinsReportTableCell("td", null, getJenkinsReportNbspPart()));
-		tableCells.add(
-			getJenkinsReportTableCell("td", null, getJenkinsReportNbspPart()));
-
-		Map<String, Object> buildInfoTableRow = getJenkinsReportTableRow(
-			buildHashCode + "-" + stopWatchRecord.getName(), "display: none",
-			tableCells);
-
-		List<Map<String, Object>> tableRows = new ArrayList<>();
-
-		tableRows.add(buildInfoTableRow);
-
-		Set<StopWatchRecord> childStopWatchRecords =
-			stopWatchRecord.getChildStopWatchRecords();
-
-		if (childStopWatchRecords != null) {
-			List<String> childStopWatchRecordNames = new ArrayList<>(
-				childStopWatchRecords.size());
-
-			for (StopWatchRecord childStopWatchRecord : childStopWatchRecords) {
-				childStopWatchRecordNames.add(childStopWatchRecord.getName());
-
-				List<Map<String, Object>> childTableRows =
-					_getStopWatchRecordTableRows(childStopWatchRecord);
-
-				for (Map<String, Object> childTableRow : childTableRows) {
-					childTableRow.put("style", "display: none");
-				}
-
-				tableRows.addAll(childTableRows);
-			}
-
-			buildInfoTableRow.put(
-				"childStopwatchRows",
-				JenkinsResultsParserUtil.join(",", childStopWatchRecordNames));
-		}
-
-		return tableRows;
-	}
-
 	private String _getSuiteClassName(JSONObject suiteJSONObject) {
 		JSONArray casesJSONArray = suiteJSONObject.optJSONArray("cases");
 
@@ -3696,8 +3391,6 @@ public abstract class BaseBuild implements Build {
 	private static final Integer _MINIMUM_SLAVE_RAM_DEFAULT = 12;
 
 	private static final String _NAME_JENKINS_REPORT_TIME_ZONE;
-
-	private static final int _PIXELS_WIDTH_EXPANDER = 20;
 
 	private static final String[] _TOKENS_HIGH_PRIORITY_CONTENT = {
 		"compileJSP", "SourceFormatter.format", "Unable to compile JSPs"

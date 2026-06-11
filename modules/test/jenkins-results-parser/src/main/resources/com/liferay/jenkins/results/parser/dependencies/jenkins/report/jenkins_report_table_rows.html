@@ -1,11 +1,76 @@
+<th:block th:fragment="buildRows (build, cellTagName)">
+	<th:block th:if="${build != null}" th:with="buildDurationsEnabled=${build.buildDurationsEnabled()},hashCode=${build.hashCode()},stopWatchRecordsGroup=${build.stopWatchRecordsGroup}">
+		<tr th:attr="child-stopwatch-rows=${buildDurationsEnabled} ? 'build-durations-header,test-durations-header,stop-watch-record-header' : 'stop-watch-record-header',id=${hashCode} + '-'" th:with="indent=(${build.depth} * 35) - (${stopWatchRecordsGroup.isEmpty()} ? 0 : 20)">
+			<th th:if="${cellTagName == 'th'}" th:style="'text-indent: ' + ${indent}"><a href="" th:attr="id=${hashCode} + '-expander-anchor-',onClick='return toggleStopWatchRecordExpander(\'' + ${hashCode} + '\', \'\')',style='font-family: monospace, monospace; text-decoration: none'" th:if="${!stopWatchRecordsGroup.isEmpty()}">+ </a><a th:href="${build.buildURL}" th:text="${build.displayName}"></a><span th:if="${build.isBuildCached()}">(cached build)</span></th>
+			<td th:if="${cellTagName == 'td'}" th:style="'text-indent: ' + ${indent}"><a href="" th:attr="id=${hashCode} + '-expander-anchor-',onClick='return toggleStopWatchRecordExpander(\'' + ${hashCode} + '\', \'\')',style='font-family: monospace, monospace; text-decoration: none'" th:if="${!stopWatchRecordsGroup.isEmpty()}">+ </a><a th:href="${build.buildURL}" th:text="${build.displayName}"></a><span th:if="${build.isBuildCached()}">(cached build)</span></td>
+			<th th:if="${cellTagName == 'th'}"><a th:href="${build.buildURL} + 'console'">Console</a></th>
+			<td th:if="${cellTagName == 'td'}"><a th:href="${build.buildURL} + 'console'">Console</a></td>
+			<th th:if="${cellTagName == 'th'}"><a th:href="${build.buildURL} + 'testReport'">Test Report</a></th>
+			<td th:if="${cellTagName == 'td'}"><a th:href="${build.buildURL} + 'testReport'">Test Report</a></td>
+			<th th:if="${cellTagName == 'th'}" th:text="${build.startTime == null} ? ${build.jenkinsReportTimeZoneName} : ${build.startTimeString}"></th>
+			<td th:if="${cellTagName == 'td'}" th:text="${build.startTime == null} ? ${build.jenkinsReportTimeZoneName} : ${build.startTimeString}"></td>
+			<th th:if="${cellTagName == 'th'}" th:text="${build.toDurationString(build.duration)}"></th>
+			<td th:if="${cellTagName == 'td'}" th:text="${build.toDurationString(build.duration)}"></td>
+			<th th:if="${buildDurationsEnabled && (cellTagName == 'th')}" th:text="${build.estimatedDurationString}"></th>
+			<td th:if="${buildDurationsEnabled && (cellTagName == 'td')}" th:text="${build.estimatedDurationString}"></td>
+			<th th:if="${buildDurationsEnabled && (cellTagName == 'th')}" th:text="${build.diffDurationString}"></th>
+			<td th:if="${buildDurationsEnabled && (cellTagName == 'td')}" th:text="${build.diffDurationString}"></td>
+			<th th:if="${cellTagName == 'th'}" th:text="${#strings.toUpperCase(build.status)}"></th>
+			<td th:if="${cellTagName == 'td'}" th:text="${#strings.toUpperCase(build.status)}"></td>
+			<th th:if="${cellTagName == 'th'}" th:text="${build.result}"></th>
+			<td th:if="${cellTagName == 'td'}" th:text="${build.result}"></td>
+		</tr>
+
+		<th:block th:if="${buildDurationsEnabled}">
+			<th:block th:insert="~{:: rows (${build.jenkinsReportBuildDurationRows})}" />
+			<th:block th:insert="~{:: rows (${build.jenkinsReportTestDurationRows})}" />
+		</th:block>
+
+		<th:block th:insert="~{:: stopWatchRecordRows (${build})}" />
+	</th:block>
+</th:block>
+
 <th:block th:fragment="rows (rows)">
 	<th:block th:each="row : ${rows}">
-		<th th:if="${row.batchName != null}" th:text="${row.batchName}"></th>
-		<tr th:attr="child-stopwatch-rows=${row.childStopwatchRows},id=${row.id},style=${row.style}" th:if="${row.cells != null}">
+		<tr th:attr="child-stopwatch-rows=${row.childStopwatchRows},id=${row.id},style=${row.style}">
 			<th:block th:each="cell : ${row.cells}">
-				<th th:attr="style=${cell.style}" th:if="${cell.tagName == 'th'}"><th:block th:each="part : ${cell.parts}"><a href="" th:attr="id=${part.id},onClick=${part.onClick},style=${part.style}" th:if="${part.type == 'expander'}">+ </a><a th:href="${part.url}" th:if="${part.type == 'link'}" th:text="${part.text}"></a><th:block th:if="${part.type == 'nbsp'}">&nbsp;</th:block><span th:if="${part.type == 'span'}" th:text="${part.text}"></span><th:block th:if="${part.type == 'text'}" th:text="${part.text}" /><u th:if="${part.type == 'underline'}" th:text="${part.text}"></u></th:block></th>
-				<td th:attr="style=${cell.style}" th:if="${cell.tagName == 'td'}"><th:block th:each="part : ${cell.parts}"><a href="" th:attr="id=${part.id},onClick=${part.onClick},style=${part.style}" th:if="${part.type == 'expander'}">+ </a><a th:href="${part.url}" th:if="${part.type == 'link'}" th:text="${part.text}"></a><th:block th:if="${part.type == 'nbsp'}">&nbsp;</th:block><span th:if="${part.type == 'span'}" th:text="${part.text}"></span><th:block th:if="${part.type == 'text'}" th:text="${part.text}" /><u th:if="${part.type == 'underline'}" th:text="${part.text}"></u></th:block></td>
+				<th th:attr="style=${cell.style}" th:if="${cell.tagName == 'th'}"><th:block th:each="part : ${cell.parts}"><a href="" th:attr="id=${part.id},onClick=${part.onClick},style=${part.style}" th:if="${part.type == 'expander'}">+ </a><th:block th:if="${part.type == 'text'}" th:text="${part.text}" /><u th:if="${part.type == 'underline'}" th:text="${part.text}"></u></th:block></th>
+				<td th:attr="style=${cell.style}" th:if="${cell.tagName == 'td'}"><th:block th:each="part : ${cell.parts}"><a href="" th:attr="id=${part.id},onClick=${part.onClick},style=${part.style}" th:if="${part.type == 'expander'}">+ </a><th:block th:if="${part.type == 'text'}" th:text="${part.text}" /><u th:if="${part.type == 'underline'}" th:text="${part.text}"></u></th:block></td>
 			</th:block>
 		</tr>
+	</th:block>
+</th:block>
+
+<th:block th:fragment="stopWatchRecordRows (build)">
+	<th:block th:if="${build != null}" th:with="hashCode=${build.hashCode()},stopWatchRecordsGroup=${build.stopWatchRecordsGroup}">
+		<tr th:attr="child-stopwatch-rows=${stopWatchRecordsGroup.isEmpty()} ? null : ${#strings.listJoin(stopWatchRecordsGroup.stopWatchRecords.{name}, ',')},id=${hashCode} + '-stop-watch-record-header'" th:style="'display: none'">
+			<td th:style="'text-indent: ' + (${build.depth} * 35) + 'px'"><a href="" th:attr="id=${hashCode} + '-expander-anchor-stop-watch-record-header',onClick='return toggleStopWatchRecordExpander(\'' + ${hashCode} + '\', \'stop-watch-record-header\')',style='font-family: monospace, monospace; text-decoration: none'">+ </a><u>Stop Watch Record</u></td>
+		</tr>
+
+		<th:block th:if="${!stopWatchRecordsGroup.isEmpty()}">
+			<th:block th:each="stopWatchRecord : ${stopWatchRecordsGroup.stopWatchRecords}">
+				<th:block th:insert="~{:: stopWatchRecordRow (${build}, ${hashCode}, ${stopWatchRecord})}" />
+			</th:block>
+		</th:block>
+	</th:block>
+</th:block>
+
+<th:block th:fragment="stopWatchRecordRow (build, hashCode, stopWatchRecord)">
+	<th:block th:if="${stopWatchRecord != null}" th:with="childStopWatchRecords=${stopWatchRecord.childStopWatchRecords}">
+		<tr th:attr="child-stopwatch-rows=${childStopWatchRecords == null} ? null : ${#strings.listJoin(childStopWatchRecords.{name}, ',')},id=${hashCode} + '-' + ${stopWatchRecord.name}" th:style="'display: none'">
+			<td th:style="'text-indent: ' + (((${build.depth} + ${stopWatchRecord.depth} + 1) * 35) - (${childStopWatchRecords == null} ? 0 : 20)) + 'px'"><a href="" th:attr="id=${hashCode} + '-expander-anchor-' + ${stopWatchRecord.name},onClick='return toggleStopWatchRecordExpander(\'' + ${hashCode} + '\', \'' + ${stopWatchRecord.name} + '\')',style='font-family: monospace, monospace; text-decoration: none'" th:if="${childStopWatchRecords != null}">+ </a><th:block th:text="${stopWatchRecord.shortName}" /></td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td th:text="${build.toJenkinsReportDateString(stopWatchRecord.startTimestamp)}"></td>
+			<td><th:block th:if="${stopWatchRecord.duration == null}">&nbsp;</th:block><th:block th:if="${stopWatchRecord.duration != null}" th:text="${build.toDurationString(stopWatchRecord.duration)}" /></td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+		</tr>
+
+		<th:block th:if="${childStopWatchRecords != null}">
+			<th:block th:each="childStopWatchRecord : ${childStopWatchRecords}">
+				<th:block th:insert="~{:: stopWatchRecordRow (${build}, ${hashCode}, ${childStopWatchRecord})}" />
+			</th:block>
+		</th:block>
 	</th:block>
 </th:block>

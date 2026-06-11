@@ -1418,11 +1418,6 @@ public abstract class BaseTopLevelBuild
 			".properties");
 	}
 
-	@Override
-	protected String getJenkinsReportBuildInfoCellTagName() {
-		return "th";
-	}
-
 	protected Element getJobSummaryElement() {
 		int successCount = getDownstreamBuildCountByResult("SUCCESS");
 

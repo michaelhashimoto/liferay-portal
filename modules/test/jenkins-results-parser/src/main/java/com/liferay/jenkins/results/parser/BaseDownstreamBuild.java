@@ -268,6 +268,11 @@ public class BaseDownstreamBuild extends BaseBuild implements DownstreamBuild {
 	}
 
 	@Override
+	public String getDiffDurationString() {
+		return getDiffDurationString(getDuration() - getAverageDuration());
+	}
+
+	@Override
 	public String getDisplayName() {
 		return getAxisName();
 	}
@@ -275,6 +280,11 @@ public class BaseDownstreamBuild extends BaseBuild implements DownstreamBuild {
 	@Override
 	public DownstreamBuildReport getDownstreamBuildReport() {
 		return _downstreamBuildReport;
+	}
+
+	@Override
+	public String getEstimatedDurationString() {
+		return JenkinsResultsParserUtil.toDurationString(getAverageDuration());
 	}
 
 	@Override
@@ -405,6 +415,245 @@ public class BaseDownstreamBuild extends BaseBuild implements DownstreamBuild {
 		_gitHubMessageElement = messageElement;
 
 		return _gitHubMessageElement;
+	}
+
+	@Override
+	public List<Map<String, Object>> getJenkinsReportBuildDurationRows() {
+		List<Map<String, Object>> tableRows = new ArrayList<>();
+
+		List<Map<String, Object>> headerTableCells = new ArrayList<>();
+
+		headerTableCells.add(
+			getJenkinsReportTableCell(
+				"td",
+				JenkinsResultsParserUtil.combine(
+					"text-indent: ",
+					String.valueOf(getDepth() * PIXELS_WIDTH_INDENT), "px"),
+				getJenkinsReportExpanderPart(
+					"build-durations-header", String.valueOf(hashCode())),
+				getJenkinsReportUnderlinePart("Build Durations")));
+
+		Map<String, Object> headerTableRow = getJenkinsReportTableRow(
+			hashCode() + "-build-durations-header", "display: none",
+			headerTableCells);
+
+		List<String> childStopWatchRows = new ArrayList<>();
+
+		childStopWatchRows.add("build-duration-names");
+		childStopWatchRows.add("build-duration-values");
+		childStopWatchRows.add("build-overhead-duration-values");
+		childStopWatchRows.add("build-test-duration-values");
+
+		headerTableRow.put(
+			"childStopwatchRows",
+			JenkinsResultsParserUtil.join(",", childStopWatchRows));
+
+		tableRows.add(headerTableRow);
+
+		String style = JenkinsResultsParserUtil.combine(
+			"text-indent: ",
+			String.valueOf((getDepth() + 1) * PIXELS_WIDTH_INDENT), "px");
+
+		List<Map<String, Object>> durationNamesTableCells = new ArrayList<>();
+
+		durationNamesTableCells.add(
+			getJenkinsReportTableCell("th", style, "Name"));
+		durationNamesTableCells.add(
+			getJenkinsReportTableCell("th", null, "Duration"));
+		durationNamesTableCells.add(
+			getJenkinsReportTableCell("th", null, "Duration (est)"));
+		durationNamesTableCells.add(
+			getJenkinsReportTableCell("th", null, "Duration (+/-)"));
+
+		tableRows.add(
+			getJenkinsReportTableRow(
+				hashCode() + "-build-duration-names", "display: none;",
+				durationNamesTableCells));
+
+		boolean overheadIncluded = false;
+
+		String batchName = getBatchName();
+
+		if (batchName.startsWith("function") ||
+			batchName.startsWith("integration") ||
+			batchName.startsWith("modules-integration") ||
+			batchName.startsWith("modules-unit") ||
+			batchName.startsWith("unit")) {
+
+			overheadIncluded = true;
+		}
+
+		long duration = getDuration();
+
+		tableRows.add(
+			getJenkinsReportTableRow(
+				hashCode() + "-build-duration-values", "display: none;",
+				_getDurationValuesTableCells(
+					"Total Duration", style, duration, getAverageDuration())));
+
+		if (!overheadIncluded) {
+			return tableRows;
+		}
+
+		long totalTestDuration = 0L;
+
+		for (TestResult testResult : getTestResults()) {
+			totalTestDuration += testResult.getDuration();
+		}
+
+		tableRows.add(
+			getJenkinsReportTableRow(
+				hashCode() + "-build-test-duration-values", "display: none;",
+				_getDurationValuesTableCells(
+					"Total Test Durations", style, totalTestDuration,
+					getAverageTotalTestDuration())));
+
+		long overheadDuration = duration - totalTestDuration;
+
+		if (overheadDuration <= 0L) {
+			overheadDuration = 0L;
+		}
+
+		tableRows.add(
+			getJenkinsReportTableRow(
+				hashCode() + "-build-overhead-duration-values",
+				"display: none;",
+				_getDurationValuesTableCells(
+					"Overhead Duration", style, overheadDuration,
+					getAverageOverheadDuration())));
+
+		return tableRows;
+	}
+
+	@Override
+	public List<Map<String, Object>> getJenkinsReportTestDurationRows() {
+		String batchName = getBatchName();
+
+		if (!batchName.startsWith("function") &&
+			!batchName.startsWith("integration") &&
+			!batchName.startsWith("modules-integration") &&
+			!batchName.startsWith("modules-unit") &&
+			!batchName.startsWith("unit")) {
+
+			return Collections.emptyList();
+		}
+
+		List<Map<String, Object>> tableRows = new ArrayList<>();
+
+		List<Map<String, Object>> headerTableCells = new ArrayList<>();
+
+		headerTableCells.add(
+			getJenkinsReportTableCell(
+				"td",
+				JenkinsResultsParserUtil.combine(
+					"text-indent: ",
+					String.valueOf(getDepth() * PIXELS_WIDTH_INDENT), "px"),
+				getJenkinsReportExpanderPart(
+					"test-durations-header", String.valueOf(hashCode())),
+				getJenkinsReportUnderlinePart("Test Durations")));
+
+		Map<String, Object> headerTableRow = getJenkinsReportTableRow(
+			hashCode() + "-test-durations-header", "display: none",
+			headerTableCells);
+
+		List<String> childStopWatchRows = new ArrayList<>();
+
+		childStopWatchRows.add("test-duration-names");
+
+		tableRows.add(headerTableRow);
+
+		String style = JenkinsResultsParserUtil.combine(
+			"text-indent: ",
+			String.valueOf((getDepth() + 1) * PIXELS_WIDTH_INDENT), "px");
+
+		List<Map<String, Object>> durationNamesTableCells = new ArrayList<>();
+
+		durationNamesTableCells.add(
+			getJenkinsReportTableCell("th", style, "Name"));
+		durationNamesTableCells.add(
+			getJenkinsReportTableCell("th", null, "Duration"));
+		durationNamesTableCells.add(
+			getJenkinsReportTableCell("th", null, "Duration (est)"));
+		durationNamesTableCells.add(
+			getJenkinsReportTableCell("th", null, "Duration (+/-)"));
+
+		tableRows.add(
+			getJenkinsReportTableRow(
+				hashCode() + "-test-duration-names", "display: none;",
+				durationNamesTableCells));
+
+		AxisTestClassGroup axisTestClassGroup = getAxisTestClassGroup();
+
+		if (axisTestClassGroup != null) {
+			List<TestClass> testClasses = axisTestClassGroup.getTestClasses();
+
+			for (int i = 0; i < testClasses.size(); i++) {
+				TestClass testClass = testClasses.get(i);
+
+				TestClassResult testClassResult = null;
+
+				String testClassName = null;
+
+				long duration = 0L;
+
+				if (testClass instanceof JUnitTestClass) {
+					JUnitTestClass jUnitTestClass = (JUnitTestClass)testClass;
+
+					testClassName = jUnitTestClass.getTestClassName();
+
+					testClassResult = getTestClassResult(testClassName);
+
+					if (testClassResult != null) {
+						duration = testClassResult.getDuration();
+					}
+				}
+				else if (testClass instanceof FunctionalTestClass) {
+					FunctionalTestClass functionalTestClass =
+						(FunctionalTestClass)testClass;
+
+					testClassName =
+						functionalTestClass.getTestClassMethodName();
+
+					testClassResult = getTestClassResult(
+						"com.liferay.poshi.runner.PoshiRunner");
+
+					if (testClassResult != null) {
+						for (TestResult testResult :
+								testClassResult.getTestResults()) {
+
+							String testMethodName =
+								"test[" + testClassName + "]";
+
+							if (!Objects.equals(
+									testMethodName, testResult.getTestName())) {
+
+								continue;
+							}
+
+							duration = testResult.getDuration();
+
+							break;
+						}
+					}
+				}
+
+				childStopWatchRows.add("test-duration-values-" + i);
+
+				tableRows.add(
+					getJenkinsReportTableRow(
+						hashCode() + "-test-duration-values-" + i,
+						"display: none;",
+						_getDurationValuesTableCells(
+							testClassName, style, duration,
+							testClass.getAverageDuration())));
+			}
+		}
+
+		headerTableRow.put(
+			"childStopwatchRows",
+			JenkinsResultsParserUtil.join(",", childStopWatchRows));
+
+		return tableRows;
 	}
 
 	public Map<String, List<String>> getTestClassMethodNamesMap() {
@@ -726,245 +975,6 @@ public class BaseDownstreamBuild extends BaseBuild implements DownstreamBuild {
 	@Override
 	protected Element getGitHubMessageJobResultsElement() {
 		return null;
-	}
-
-	@Override
-	protected List<Map<String, Object>> getJenkinsReportBuildDurationRows() {
-		List<Map<String, Object>> tableRows = new ArrayList<>();
-
-		List<Map<String, Object>> headerTableCells = new ArrayList<>();
-
-		headerTableCells.add(
-			getJenkinsReportTableCell(
-				"td",
-				JenkinsResultsParserUtil.combine(
-					"text-indent: ",
-					String.valueOf(getDepth() * PIXELS_WIDTH_INDENT), "px"),
-				getJenkinsReportExpanderPart(
-					"build-durations-header", String.valueOf(hashCode())),
-				getJenkinsReportUnderlinePart("Build Durations")));
-
-		Map<String, Object> headerTableRow = getJenkinsReportTableRow(
-			hashCode() + "-build-durations-header", "display: none",
-			headerTableCells);
-
-		List<String> childStopWatchRows = new ArrayList<>();
-
-		childStopWatchRows.add("build-duration-names");
-		childStopWatchRows.add("build-duration-values");
-		childStopWatchRows.add("build-overhead-duration-values");
-		childStopWatchRows.add("build-test-duration-values");
-
-		headerTableRow.put(
-			"childStopwatchRows",
-			JenkinsResultsParserUtil.join(",", childStopWatchRows));
-
-		tableRows.add(headerTableRow);
-
-		String style = JenkinsResultsParserUtil.combine(
-			"text-indent: ",
-			String.valueOf((getDepth() + 1) * PIXELS_WIDTH_INDENT), "px");
-
-		List<Map<String, Object>> durationNamesTableCells = new ArrayList<>();
-
-		durationNamesTableCells.add(
-			getJenkinsReportTableCell("th", style, "Name"));
-		durationNamesTableCells.add(
-			getJenkinsReportTableCell("th", null, "Duration"));
-		durationNamesTableCells.add(
-			getJenkinsReportTableCell("th", null, "Duration (est)"));
-		durationNamesTableCells.add(
-			getJenkinsReportTableCell("th", null, "Duration (+/-)"));
-
-		tableRows.add(
-			getJenkinsReportTableRow(
-				hashCode() + "-build-duration-names", "display: none;",
-				durationNamesTableCells));
-
-		boolean overheadIncluded = false;
-
-		String batchName = getBatchName();
-
-		if (batchName.startsWith("function") ||
-			batchName.startsWith("integration") ||
-			batchName.startsWith("modules-integration") ||
-			batchName.startsWith("modules-unit") ||
-			batchName.startsWith("unit")) {
-
-			overheadIncluded = true;
-		}
-
-		long duration = getDuration();
-
-		tableRows.add(
-			getJenkinsReportTableRow(
-				hashCode() + "-build-duration-values", "display: none;",
-				_getDurationValuesTableCells(
-					"Total Duration", style, duration, getAverageDuration())));
-
-		if (!overheadIncluded) {
-			return tableRows;
-		}
-
-		long totalTestDuration = 0L;
-
-		for (TestResult testResult : getTestResults()) {
-			totalTestDuration += testResult.getDuration();
-		}
-
-		tableRows.add(
-			getJenkinsReportTableRow(
-				hashCode() + "-build-test-duration-values", "display: none;",
-				_getDurationValuesTableCells(
-					"Total Test Durations", style, totalTestDuration,
-					getAverageTotalTestDuration())));
-
-		long overheadDuration = duration - totalTestDuration;
-
-		if (overheadDuration <= 0L) {
-			overheadDuration = 0L;
-		}
-
-		tableRows.add(
-			getJenkinsReportTableRow(
-				hashCode() + "-build-overhead-duration-values",
-				"display: none;",
-				_getDurationValuesTableCells(
-					"Overhead Duration", style, overheadDuration,
-					getAverageOverheadDuration())));
-
-		return tableRows;
-	}
-
-	@Override
-	protected List<Map<String, Object>> getJenkinsReportTestDurationRows() {
-		String batchName = getBatchName();
-
-		if (!batchName.startsWith("function") &&
-			!batchName.startsWith("integration") &&
-			!batchName.startsWith("modules-integration") &&
-			!batchName.startsWith("modules-unit") &&
-			!batchName.startsWith("unit")) {
-
-			return Collections.emptyList();
-		}
-
-		List<Map<String, Object>> tableRows = new ArrayList<>();
-
-		List<Map<String, Object>> headerTableCells = new ArrayList<>();
-
-		headerTableCells.add(
-			getJenkinsReportTableCell(
-				"td",
-				JenkinsResultsParserUtil.combine(
-					"text-indent: ",
-					String.valueOf(getDepth() * PIXELS_WIDTH_INDENT), "px"),
-				getJenkinsReportExpanderPart(
-					"test-durations-header", String.valueOf(hashCode())),
-				getJenkinsReportUnderlinePart("Test Durations")));
-
-		Map<String, Object> headerTableRow = getJenkinsReportTableRow(
-			hashCode() + "-test-durations-header", "display: none",
-			headerTableCells);
-
-		List<String> childStopWatchRows = new ArrayList<>();
-
-		childStopWatchRows.add("test-duration-names");
-
-		tableRows.add(headerTableRow);
-
-		String style = JenkinsResultsParserUtil.combine(
-			"text-indent: ",
-			String.valueOf((getDepth() + 1) * PIXELS_WIDTH_INDENT), "px");
-
-		List<Map<String, Object>> durationNamesTableCells = new ArrayList<>();
-
-		durationNamesTableCells.add(
-			getJenkinsReportTableCell("th", style, "Name"));
-		durationNamesTableCells.add(
-			getJenkinsReportTableCell("th", null, "Duration"));
-		durationNamesTableCells.add(
-			getJenkinsReportTableCell("th", null, "Duration (est)"));
-		durationNamesTableCells.add(
-			getJenkinsReportTableCell("th", null, "Duration (+/-)"));
-
-		tableRows.add(
-			getJenkinsReportTableRow(
-				hashCode() + "-test-duration-names", "display: none;",
-				durationNamesTableCells));
-
-		AxisTestClassGroup axisTestClassGroup = getAxisTestClassGroup();
-
-		if (axisTestClassGroup != null) {
-			List<TestClass> testClasses = axisTestClassGroup.getTestClasses();
-
-			for (int i = 0; i < testClasses.size(); i++) {
-				TestClass testClass = testClasses.get(i);
-
-				TestClassResult testClassResult = null;
-
-				String testClassName = null;
-
-				long duration = 0L;
-
-				if (testClass instanceof JUnitTestClass) {
-					JUnitTestClass jUnitTestClass = (JUnitTestClass)testClass;
-
-					testClassName = jUnitTestClass.getTestClassName();
-
-					testClassResult = getTestClassResult(testClassName);
-
-					if (testClassResult != null) {
-						duration = testClassResult.getDuration();
-					}
-				}
-				else if (testClass instanceof FunctionalTestClass) {
-					FunctionalTestClass functionalTestClass =
-						(FunctionalTestClass)testClass;
-
-					testClassName =
-						functionalTestClass.getTestClassMethodName();
-
-					testClassResult = getTestClassResult(
-						"com.liferay.poshi.runner.PoshiRunner");
-
-					if (testClassResult != null) {
-						for (TestResult testResult :
-								testClassResult.getTestResults()) {
-
-							String testMethodName =
-								"test[" + testClassName + "]";
-
-							if (!Objects.equals(
-									testMethodName, testResult.getTestName())) {
-
-								continue;
-							}
-
-							duration = testResult.getDuration();
-
-							break;
-						}
-					}
-				}
-
-				childStopWatchRows.add("test-duration-values-" + i);
-
-				tableRows.add(
-					getJenkinsReportTableRow(
-						hashCode() + "-test-duration-values-" + i,
-						"display: none;",
-						_getDurationValuesTableCells(
-							testClassName, style, duration,
-							testClass.getAverageDuration())));
-			}
-		}
-
-		headerTableRow.put(
-			"childStopwatchRows",
-			JenkinsResultsParserUtil.join(",", childStopWatchRows));
-
-		return tableRows;
 	}
 
 	protected long getStopWatchRecordDuration(String stopWatchRecordName) {
