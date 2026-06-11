@@ -232,6 +232,39 @@ public class JenkinsReportTemplateTest {
 			content.contains("<th>COMPLETED</th>") &&
 			content.contains("<th>SUCCESS</th>"));
 		Assert.assertTrue(
+			"Missing build durations header row",
+			content.contains("id=\"12345-build-durations-header\"") &&
+			content.contains(
+				"child-stopwatch-rows=\"build-duration-names," +
+					"build-duration-values,build-overhead-duration-values," +
+						"build-test-duration-values\"") &&
+			content.contains("<u>Build Durations</u></td>"));
+		Assert.assertTrue(
+			"Missing build duration names row",
+			content.contains("id=\"12345-build-duration-names\"") &&
+			content.contains("<th style=\"text-indent: 70px\">Name</th>") &&
+			content.contains("<th>Duration (est)</th>"));
+		Assert.assertTrue(
+			"Missing total duration row",
+			content.contains(
+				"<td style=\"text-indent: 70px\">Total Duration</td>") &&
+			content.contains("<td>7 minutes</td>") &&
+			content.contains("<td>diff-3</td>"));
+		Assert.assertTrue(
+			"Missing total test durations row",
+			content.contains(
+				"<td style=\"text-indent: 70px\">Total Test Durations</td>") &&
+			content.contains("<td>6 minutes</td>") &&
+			content.contains("<td>5 minutes</td>") &&
+			content.contains("<td>diff-1</td>"));
+		Assert.assertTrue(
+			"Missing overhead duration row",
+			content.contains(
+				"<td style=\"text-indent: 70px\">Overhead Duration</td>") &&
+			content.contains("<td>4 minutes</td>") &&
+			content.contains("<td>2 minutes</td>") &&
+			content.contains("<td>diff-2</td>"));
+		Assert.assertTrue(
 			"Missing stop watch record header row",
 			content.contains("id=\"12345-stop-watch-record-header\"") &&
 			content.contains("child-stopwatch-rows=\"record.one\"") &&
@@ -409,6 +442,18 @@ public class JenkinsReportTemplateTest {
 			return 4;
 		}
 
+		public long getAverageDuration() {
+			return 7;
+		}
+
+		public long getAverageOverheadDuration() {
+			return 2;
+		}
+
+		public long getAverageTotalTestDuration() {
+			return 5;
+		}
+
 		public JSONObject getBuildJSONObject() {
 			JSONObject buildJSONObject = new JSONObject();
 
@@ -428,6 +473,10 @@ public class JenkinsReportTemplateTest {
 
 		public int getDepth() {
 			return 1;
+		}
+
+		public String getDiffDurationString(long diffDuration) {
+			return "diff-" + diffDuration;
 		}
 
 		public String getDisplayName() {
@@ -454,6 +503,10 @@ public class JenkinsReportTemplateTest {
 				_createObjectMap("build", this));
 		}
 
+		public List<Map<String, Object>> getJenkinsReportTestDurationRows() {
+			return new ArrayList<>();
+		}
+
 		public String getJenkinsReportTimeZoneName() {
 			return "PST";
 		}
@@ -470,6 +523,10 @@ public class JenkinsReportTemplateTest {
 				"buildURL",
 				"https://test-1-1.liferay.com/job/test-downstream/1/",
 				"displayName", "downstream-1", "duration", 9L);
+		}
+
+		public long getOverheadDuration() {
+			return 4;
 		}
 
 		public Map<String, String> getPrimaryGitHubRemoteGitCommit() {
@@ -551,10 +608,18 @@ public class JenkinsReportTemplateTest {
 			return 13;
 		}
 
+		public long getTotalTestDuration() {
+			return 6;
+		}
+
 		public Map<String, String> getWorkspaceGitRepository() {
 			return _createMap(
 				"gitHubURL",
 				"https://github.com/liferay/liferay-portal/tree/master");
+		}
+
+		public boolean hasBuildDurations() {
+			return true;
 		}
 
 		@Override
@@ -568,6 +633,10 @@ public class JenkinsReportTemplateTest {
 
 		public boolean isJenkinsReportLongestRunningTestEnabled() {
 			return false;
+		}
+
+		public boolean isOverheadIncluded() {
+			return true;
 		}
 
 		public String toDurationString(long duration) {

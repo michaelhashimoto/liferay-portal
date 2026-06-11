@@ -21,12 +21,47 @@
 			<td th:if="${cellTagName == 'td'}" th:text="${build.result}"></td>
 		</tr>
 
-		<th:block th:if="${buildDurationsEnabled}">
-			<th:block th:insert="~{:: rows (${build.jenkinsReportBuildDurationRows})}" />
+		<th:block th:if="${build.hasBuildDurations()}">
+			<th:block th:insert="~{:: buildDurationRows (${build})}" />
 			<th:block th:insert="~{:: rows (${build.jenkinsReportTestDurationRows})}" />
 		</th:block>
 
 		<th:block th:insert="~{:: stopWatchRecordRows (${build})}" />
+	</th:block>
+</th:block>
+
+<th:block th:fragment="buildDurationRows (build)">
+	<th:block th:if="${build != null}" th:with="childIndent=(${build.depth} + 1) * 35,hashCode=${build.hashCode()}">
+		<tr th:attr="child-stopwatch-rows='build-duration-names,build-duration-values,build-overhead-duration-values,build-test-duration-values',id=${hashCode} + '-build-durations-header'" th:style="'display: none'">
+			<td th:style="'text-indent: ' + (${build.depth} * 35) + 'px'"><a href="" th:attr="id=${hashCode} + '-expander-anchor-build-durations-header',onClick='return toggleStopWatchRecordExpander(\'' + ${hashCode} + '\', \'build-durations-header\')',style='font-family: monospace, monospace; text-decoration: none'">+ </a><u>Build Durations</u></td>
+		</tr>
+		<tr th:attr="id=${hashCode} + '-build-duration-names'" th:style="'display: none;'">
+			<th th:style="'text-indent: ' + ${childIndent} + 'px'">Name</th>
+			<th>Duration</th>
+			<th>Duration (est)</th>
+			<th>Duration (+/-)</th>
+		</tr>
+		<tr th:attr="id=${hashCode} + '-build-duration-values'" th:style="'display: none;'">
+			<td th:style="'text-indent: ' + ${childIndent} + 'px'">Total Duration</td>
+			<td th:text="${build.toDurationString(build.duration)}"></td>
+			<td th:text="${build.toDurationString(build.averageDuration)}"></td>
+			<td th:text="${build.getDiffDurationString(build.duration - build.averageDuration)}"></td>
+		</tr>
+
+		<th:block th:if="${build.isOverheadIncluded()}">
+			<tr th:attr="id=${hashCode} + '-build-test-duration-values'" th:style="'display: none;'">
+				<td th:style="'text-indent: ' + ${childIndent} + 'px'">Total Test Durations</td>
+				<td th:text="${build.toDurationString(build.totalTestDuration)}"></td>
+				<td th:text="${build.toDurationString(build.averageTotalTestDuration)}"></td>
+				<td th:text="${build.getDiffDurationString(build.totalTestDuration - build.averageTotalTestDuration)}"></td>
+			</tr>
+			<tr th:attr="id=${hashCode} + '-build-overhead-duration-values'" th:style="'display: none;'">
+				<td th:style="'text-indent: ' + ${childIndent} + 'px'">Overhead Duration</td>
+				<td th:text="${build.toDurationString(build.overheadDuration)}"></td>
+				<td th:text="${build.toDurationString(build.averageOverheadDuration)}"></td>
+				<td th:text="${build.getDiffDurationString(build.overheadDuration - build.averageOverheadDuration)}"></td>
+			</tr>
+		</th:block>
 	</th:block>
 </th:block>
 

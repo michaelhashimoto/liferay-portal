@@ -626,6 +626,23 @@ public abstract class BaseBuild implements Build {
 		return "n/a";
 	}
 
+	public String getDiffDurationString(long diffDuration) {
+		String diffDurationPrefix = "";
+
+		if (diffDuration < 0) {
+			diffDurationPrefix = "-";
+
+			diffDuration *= -1;
+		}
+		else if (diffDuration > 0) {
+			diffDurationPrefix = "+";
+		}
+
+		return JenkinsResultsParserUtil.combine(
+			diffDurationPrefix,
+			JenkinsResultsParserUtil.toDurationString(diffDuration));
+	}
+
 	@Override
 	public String getDisplayName() {
 		StringBuilder sb = new StringBuilder();
@@ -962,10 +979,6 @@ public abstract class BaseBuild implements Build {
 		_jenkinsMaster = JenkinsMaster.getInstance(matcher.group("master"));
 
 		return _jenkinsMaster;
-	}
-
-	public List<Map<String, Object>> getJenkinsReportBuildDurationRows() {
-		return new ArrayList<>();
 	}
 
 	public List<Map<String, Object>> getJenkinsReportTableEntries(
@@ -1529,6 +1542,10 @@ public abstract class BaseBuild implements Build {
 	@Override
 	public List<TestResult> getUpstreamJobFailureTestResults() {
 		return Collections.emptyList();
+	}
+
+	public boolean hasBuildDurations() {
+		return false;
 	}
 
 	@Override
@@ -2495,23 +2512,6 @@ public abstract class BaseBuild implements Build {
 
 	protected MultiPattern getBuildURLMultiPattern() {
 		return _buildURLMultiPattern;
-	}
-
-	protected String getDiffDurationString(long diffDuration) {
-		String diffDurationPrefix = "";
-
-		if (diffDuration < 0) {
-			diffDurationPrefix = "-";
-
-			diffDuration *= -1;
-		}
-		else if (diffDuration > 0) {
-			diffDurationPrefix = "+";
-		}
-
-		return JenkinsResultsParserUtil.combine(
-			diffDurationPrefix,
-			JenkinsResultsParserUtil.toDurationString(diffDuration));
 	}
 
 	protected ExecutorService getExecutorService() {

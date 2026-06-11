@@ -418,123 +418,8 @@ public class BaseDownstreamBuild extends BaseBuild implements DownstreamBuild {
 	}
 
 	@Override
-	public List<Map<String, Object>> getJenkinsReportBuildDurationRows() {
-		List<Map<String, Object>> tableRows = new ArrayList<>();
-
-		List<Map<String, Object>> headerTableCells = new ArrayList<>();
-
-		headerTableCells.add(
-			getJenkinsReportTableCell(
-				"td",
-				JenkinsResultsParserUtil.combine(
-					"text-indent: ",
-					String.valueOf(getDepth() * PIXELS_WIDTH_INDENT), "px"),
-				getJenkinsReportExpanderPart(
-					"build-durations-header", String.valueOf(hashCode())),
-				getJenkinsReportUnderlinePart("Build Durations")));
-
-		Map<String, Object> headerTableRow = getJenkinsReportTableRow(
-			hashCode() + "-build-durations-header", "display: none",
-			headerTableCells);
-
-		List<String> childStopWatchRows = new ArrayList<>();
-
-		childStopWatchRows.add("build-duration-names");
-		childStopWatchRows.add("build-duration-values");
-		childStopWatchRows.add("build-overhead-duration-values");
-		childStopWatchRows.add("build-test-duration-values");
-
-		headerTableRow.put(
-			"childStopwatchRows",
-			JenkinsResultsParserUtil.join(",", childStopWatchRows));
-
-		tableRows.add(headerTableRow);
-
-		String style = JenkinsResultsParserUtil.combine(
-			"text-indent: ",
-			String.valueOf((getDepth() + 1) * PIXELS_WIDTH_INDENT), "px");
-
-		List<Map<String, Object>> durationNamesTableCells = new ArrayList<>();
-
-		durationNamesTableCells.add(
-			getJenkinsReportTableCell("th", style, "Name"));
-		durationNamesTableCells.add(
-			getJenkinsReportTableCell("th", null, "Duration"));
-		durationNamesTableCells.add(
-			getJenkinsReportTableCell("th", null, "Duration (est)"));
-		durationNamesTableCells.add(
-			getJenkinsReportTableCell("th", null, "Duration (+/-)"));
-
-		tableRows.add(
-			getJenkinsReportTableRow(
-				hashCode() + "-build-duration-names", "display: none;",
-				durationNamesTableCells));
-
-		boolean overheadIncluded = false;
-
-		String batchName = getBatchName();
-
-		if (batchName.startsWith("function") ||
-			batchName.startsWith("integration") ||
-			batchName.startsWith("modules-integration") ||
-			batchName.startsWith("modules-unit") ||
-			batchName.startsWith("unit")) {
-
-			overheadIncluded = true;
-		}
-
-		long duration = getDuration();
-
-		tableRows.add(
-			getJenkinsReportTableRow(
-				hashCode() + "-build-duration-values", "display: none;",
-				_getDurationValuesTableCells(
-					"Total Duration", style, duration, getAverageDuration())));
-
-		if (!overheadIncluded) {
-			return tableRows;
-		}
-
-		long totalTestDuration = 0L;
-
-		for (TestResult testResult : getTestResults()) {
-			totalTestDuration += testResult.getDuration();
-		}
-
-		tableRows.add(
-			getJenkinsReportTableRow(
-				hashCode() + "-build-test-duration-values", "display: none;",
-				_getDurationValuesTableCells(
-					"Total Test Durations", style, totalTestDuration,
-					getAverageTotalTestDuration())));
-
-		long overheadDuration = duration - totalTestDuration;
-
-		if (overheadDuration <= 0L) {
-			overheadDuration = 0L;
-		}
-
-		tableRows.add(
-			getJenkinsReportTableRow(
-				hashCode() + "-build-overhead-duration-values",
-				"display: none;",
-				_getDurationValuesTableCells(
-					"Overhead Duration", style, overheadDuration,
-					getAverageOverheadDuration())));
-
-		return tableRows;
-	}
-
-	@Override
 	public List<Map<String, Object>> getJenkinsReportTestDurationRows() {
-		String batchName = getBatchName();
-
-		if (!batchName.startsWith("function") &&
-			!batchName.startsWith("integration") &&
-			!batchName.startsWith("modules-integration") &&
-			!batchName.startsWith("modules-unit") &&
-			!batchName.startsWith("unit")) {
-
+		if (!isOverheadIncluded()) {
 			return Collections.emptyList();
 		}
 
@@ -656,6 +541,16 @@ public class BaseDownstreamBuild extends BaseBuild implements DownstreamBuild {
 		return tableRows;
 	}
 
+	public long getOverheadDuration() {
+		long overheadDuration = getDuration() - getTotalTestDuration();
+
+		if (overheadDuration <= 0L) {
+			return 0L;
+		}
+
+		return overheadDuration;
+	}
+
 	public Map<String, List<String>> getTestClassMethodNamesMap() {
 		String batchName = getBatchName();
 
@@ -716,6 +611,16 @@ public class BaseDownstreamBuild extends BaseBuild implements DownstreamBuild {
 		}
 
 		return testResults;
+	}
+
+	public long getTotalTestDuration() {
+		long totalTestDuration = 0L;
+
+		for (TestResult testResult : getTestResults()) {
+			totalTestDuration += testResult.getDuration();
+		}
+
+		return totalTestDuration;
 	}
 
 	@Override
@@ -912,6 +817,26 @@ public class BaseDownstreamBuild extends BaseBuild implements DownstreamBuild {
 		}
 
 		return warningMessages;
+	}
+
+	@Override
+	public boolean hasBuildDurations() {
+		return buildDurationsEnabled();
+	}
+
+	public boolean isOverheadIncluded() {
+		String batchName = getBatchName();
+
+		if (batchName.startsWith("function") ||
+			batchName.startsWith("integration") ||
+			batchName.startsWith("modules-integration") ||
+			batchName.startsWith("modules-unit") ||
+			batchName.startsWith("unit")) {
+
+			return true;
+		}
+
+		return false;
 	}
 
 	@Override
