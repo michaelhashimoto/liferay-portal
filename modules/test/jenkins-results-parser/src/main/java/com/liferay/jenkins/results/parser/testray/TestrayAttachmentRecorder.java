@@ -603,7 +603,9 @@ public class TestrayAttachmentRecorder {
 
 		try {
 			JenkinsResultsParserUtil.write(
-				jenkinsReportFile, topLevelBuild.getJenkinsReportString());
+				jenkinsReportFile,
+				Dom4JUtil.format(
+					topLevelBuild.getJenkinsReportElement(), true));
 		}
 		catch (IOException ioException) {
 			throw new RuntimeException(ioException);

@@ -131,12 +131,12 @@
 	<th:block th:if="${stopWatchRecord != null}" th:with="childStopWatchRecords=${stopWatchRecord.childStopWatchRecords}">
 		<tr th:attr="child-stopwatch-rows=${childStopWatchRecords == null} ? null : ${#strings.listJoin(childStopWatchRecords.{name}, ',')},id=${hashCode} + '-' + ${stopWatchRecord.name}" th:style="'display: none'">
 			<td th:style="'text-indent: ' + (((${build.depth} + ${stopWatchRecord.depth} + 1) * 35) - (${childStopWatchRecords == null} ? 0 : 20)) + 'px'"><a href="" th:attr="id=${hashCode} + '-expander-anchor-' + ${stopWatchRecord.name},onClick='return toggleStopWatchRecordExpander(\'' + ${hashCode} + '\', \'' + ${stopWatchRecord.name} + '\')',style='font-family: monospace, monospace; text-decoration: none'" th:if="${childStopWatchRecords != null}">+ </a><th:block th:text="${stopWatchRecord.shortName}" /></td>
-			<td>&nbsp;</td>
-			<td>&nbsp;</td>
+			<td>&#160;</td>
+			<td>&#160;</td>
 			<td th:text="${build.toJenkinsReportDateString(stopWatchRecord.startTimestamp)}"></td>
-			<td><th:block th:if="${stopWatchRecord.duration == null}">&nbsp;</th:block><th:block th:if="${stopWatchRecord.duration != null}" th:text="${build.toDurationString(stopWatchRecord.duration)}" /></td>
-			<td>&nbsp;</td>
-			<td>&nbsp;</td>
+			<td><th:block th:if="${stopWatchRecord.duration == null}">&#160;</th:block><th:block th:if="${stopWatchRecord.duration != null}" th:text="${build.toDurationString(stopWatchRecord.duration)}" /></td>
+			<td>&#160;</td>
+			<td>&#160;</td>
 		</tr>
 
 		<th:block th:if="${childStopWatchRecords != null}">

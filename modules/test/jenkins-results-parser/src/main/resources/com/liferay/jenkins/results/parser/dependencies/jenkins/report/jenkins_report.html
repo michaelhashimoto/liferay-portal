@@ -1,8 +1,8 @@
 <html>
 	<head>
-		<style th:utext="${cssContent}"></style>
+		<style th:utext="${'/*<![CDATA[*/' + cssContent + '/*]]>*/'}"></style>
 
-		<script language="javascript" th:utext="${jsContent}"></script>
+		<script language="javascript" th:utext="${'/*<![CDATA[*/' + jsContent + '/*]]>*/'}"></script>
 	</head>
 
 	<body th:with="description=${build.buildJSONObject.optString('description')}">

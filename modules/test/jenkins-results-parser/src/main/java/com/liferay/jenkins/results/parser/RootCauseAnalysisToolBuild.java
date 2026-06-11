@@ -14,6 +14,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.dom4j.Element;
+
 import org.thymeleaf.context.Context;
 
 /**
@@ -38,7 +40,7 @@ public class RootCauseAnalysisToolBuild extends DefaultTopLevelBuild {
 	}
 
 	@Override
-	public synchronized String getJenkinsReportString() {
+	public synchronized Element getJenkinsReportElement() {
 		if (_workspaceGitRepository == null) {
 			throw new IllegalStateException(
 				"Please set the workspace Git repository");

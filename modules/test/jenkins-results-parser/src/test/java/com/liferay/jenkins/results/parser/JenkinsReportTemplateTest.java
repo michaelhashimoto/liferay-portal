@@ -12,6 +12,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+import org.dom4j.DocumentException;
+
 import org.json.JSONObject;
 
 import org.junit.Assert;
@@ -28,7 +30,7 @@ import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
 public class JenkinsReportTemplateTest {
 
 	@Test
-	public void testRenderJenkinsReportTemplate() {
+	public void testRenderJenkinsReportTemplate() throws DocumentException {
 		TemplateEngine templateEngine = new TemplateEngine();
 
 		ClassLoaderTemplateResolver classLoaderTemplateResolver =
@@ -209,7 +211,10 @@ public class JenkinsReportTemplateTest {
 			content.contains("id=\"12345-record.one.child\"") &&
 			content.contains("<td style=\"text-indent: 105px\">child</td>") &&
 			content.contains("<td>date-2000</td>") &&
-			content.contains("<td>&nbsp;</td>"));
+			content.contains("<td>&#160;</td>"));
+
+		Dom4JUtil.parse(content);
+
 		Assert.assertTrue(
 			"Missing column header", content.contains("<th>Test Report</th>"));
 		Assert.assertFalse(

@@ -1,9 +1,9 @@
 <html>
 	<head>
 		<script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.3.1.min.js" type="text/javascript"></script>
-		<script th:utext="${jsContent}" type="text/javascript"></script>
+		<script th:utext="${'/*<![CDATA[*/' + jsContent + '/*]]>*/'}" type="text/javascript"></script>
 
-		<style th:utext="${cssContent}"></style>
+		<style th:utext="${'/*<![CDATA[*/' + cssContent + '/*]]>*/'}"></style>
 	</head>
 
 	<body th:with="description=${build.buildJSONObject.optString('description')}">

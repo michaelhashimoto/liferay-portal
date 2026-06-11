@@ -23,6 +23,8 @@ import java.util.regex.Pattern;
 
 import org.apache.commons.lang3.StringUtils;
 
+import org.dom4j.Element;
+
 /**
  * @author Michael Hashimoto
  */
@@ -43,16 +45,18 @@ public class RootCauseAnalysisToolTopLevelBuildRunner
 	}
 
 	@Override
-	protected String getJenkinsReportString() {
+	protected Element getJenkinsReportElement() {
 		PortalTopLevelBuildData portalTopLevelBuildData = getBuildData();
 		Workspace workspace = getWorkspace();
 
 		if (workspace == null) {
 			String buildURL = portalTopLevelBuildData.getBuildURL();
 
-			return JenkinsResultsParserUtil.combine(
-				"<html><h1>Report building in progress for <a href=\"",
-				buildURL, "\">", buildURL, "</a></h1></html>");
+			return Dom4JUtil.getNewElement(
+				"html", null,
+				Dom4JUtil.getNewElement(
+					"h1", null, "Report building in progress for ",
+					Dom4JUtil.getNewAnchorElement(buildURL, buildURL)));
 		}
 
 		RootCauseAnalysisToolBuild rootCauseAnalysisToolBuild =
@@ -75,7 +79,7 @@ public class RootCauseAnalysisToolTopLevelBuildRunner
 		rootCauseAnalysisToolBuild.setWorkspaceGitRepository(
 			workspace.getPrimaryWorkspaceGitRepository());
 
-		return super.getJenkinsReportString();
+		return super.getJenkinsReportElement();
 	}
 
 	@Override

@@ -50,6 +50,8 @@ import java.util.concurrent.ExecutorService;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.dom4j.Document;
+import org.dom4j.DocumentException;
 import org.dom4j.Element;
 
 import org.json.JSONException;
@@ -384,7 +386,7 @@ public abstract class BaseTopLevelBuild
 	}
 
 	@Override
-	public synchronized String getJenkinsReportString() {
+	public synchronized Element getJenkinsReportElement() {
 		long start = JenkinsResultsParserUtil.getCurrentTimeMillis();
 
 		try {
@@ -407,7 +409,7 @@ public abstract class BaseTopLevelBuild
 					"Unable to load Jenkins report resources", ioException);
 			}
 
-			return _templateEngine.process("jenkins_report.html", context);
+			return processJenkinsReportTemplate("jenkins_report.html", context);
 		}
 		finally {
 			String duration = JenkinsResultsParserUtil.toDurationString(
@@ -1803,10 +1805,20 @@ public abstract class BaseTopLevelBuild
 		return false;
 	}
 
-	protected String processJenkinsReportTemplate(
+	protected Element processJenkinsReportTemplate(
 		String templateName, Context context) {
 
-		return _templateEngine.process(templateName, context);
+		String content = _templateEngine.process(templateName, context);
+
+		try {
+			Document document = Dom4JUtil.parse(content);
+
+			return document.getRootElement();
+		}
+		catch (DocumentException documentException) {
+			throw new RuntimeException(
+				"Unable to parse template " + templateName, documentException);
+		}
 	}
 
 	protected void sendBuildMetrics(String message) {
