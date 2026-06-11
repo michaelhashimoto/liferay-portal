@@ -177,22 +177,39 @@ public class JenkinsReportTemplateTest {
 
 		Context context = new Context();
 
-		context.setVariable(
-			"buildURL", "https://test-1-1.liferay.com/job/test/1/");
-		context.setVariable("chartJsContent", "var x = 1 && 2;");
-		context.setVariable("chartJsURL", "https://cdn.example.com/chart.js");
-		context.setVariable(
-			"columnHeaders",
-			Arrays.asList(
-				"Name", "Console", "Test Report", "Start Time", "Build Time",
-				"Status", "Result"));
+		JSONObject buildJSONObject = new JSONObject();
+
+		buildJSONObject.put(
+			"description", "Description with <strong>markup</strong>");
 
 		context.setVariable(
-			"commit",
-			_createMap(
-				"date", "6-10-2026 08:00:00 PST", "message",
-				"LPD-12345 Fix <something>", "senderBranchName", "LPD-12345",
-				"senderBranchSHA", "abc123"));
+			"build",
+			_createObjectMap(
+				"buildJSONObject", buildJSONObject, "buildURL",
+				"https://test-1-1.liferay.com/job/test/1/",
+				"jenkinsReportChartJsContent", "var x = 1 && 2;",
+				"jenkinsReportColumnHeaders",
+				Arrays.asList(
+					"Name", "Console", "Test Report", "Start Time",
+					"Build Time", "Status", "Result"),
+				"jenkinsReportCommitMap",
+				_createMap(
+					"date", "6-10-2026 08:00:00 PST", "message",
+					"LPD-12345 Fix <something>", "senderBranchName",
+					"LPD-12345", "senderBranchSHA", "abc123"),
+				"jenkinsReportSummaryItems",
+				Arrays.asList(
+					_createMap(
+						"linkText", "CI System Status", "url",
+						"https://test-1-0.liferay.com/status"),
+					_createMap("label", "Build Time: ", "value", "10 minutes"),
+					_createMap(
+						"label", "Longest Running Downstream Build: ",
+						"linkText", "downstream-1", "url",
+						"https://test-1-1.liferay.com/job/test-downstream/1/",
+						"value", " in: 9 minutes")),
+				"result", "SUCCESS", "status", "completed"));
+
 		context.setVariable(
 			"completedDownstreamTables",
 			Arrays.asList(
@@ -202,24 +219,8 @@ public class JenkinsReportTemplateTest {
 						"</tr>")));
 		context.setVariable("cssContent", "body { color: red; }");
 		context.setVariable(
-			"description", "Description with <strong>markup</strong>");
-		context.setVariable(
 			"downstreamTables", new ArrayList<Map<String, String>>());
 		context.setVariable("jsContent", "function f() { return 1 < 2; }");
-
-		context.setVariable(
-			"summaryItems",
-			Arrays.asList(
-				_createMap(
-					"linkText", "CI System Status", "url",
-					"https://test-1-0.liferay.com/status"),
-				_createMap("label", "Build Time: ", "value", "10 minutes"),
-				_createMap(
-					"label", "Longest Running Downstream Build: ", "linkText",
-					"downstream-1", "url",
-					"https://test-1-1.liferay.com/job/test-downstream/1/",
-					"value", " in: 9 minutes")));
-		context.setVariable("topLevelResult", "SUCCESS");
 		context.setVariable(
 			"topLevelRowsHTML", "<tr><td>top-level-row</td></tr>");
 
@@ -296,16 +297,18 @@ public class JenkinsReportTemplateTest {
 		Context context = new Context();
 
 		context.setVariable(
-			"buildURL", "https://test-1-1.liferay.com/job/rca/1/");
-		context.setVariable("chartJsContent", "var x = 1;");
-		context.setVariable("chartJsURL", "https://cdn.example.com/chart.js");
-		context.setVariable(
-			"columnHeaders",
-			Arrays.asList(
-				"", "Commit SHA", "Commit Date", "Commit Message",
-				"Commit Diffs", "Build Link", "Build Time", "Build Status",
-				"Build Result"));
-
+			"build",
+			_createObjectMap(
+				"buildJSONObject", new JSONObject(), "buildURL",
+				"https://test-1-1.liferay.com/job/rca/1/",
+				"jenkinsReportChartJsContent", "var x = 1;",
+				"jenkinsReportSummaryItems",
+				Arrays.asList(
+					_createMap("label", "Build Time: ", "value", "10 minutes")),
+				"workspaceGitRepository",
+				_createMap(
+					"gitHubURL",
+					"https://github.com/liferay/liferay-portal/tree/master")));
 		context.setVariable(
 			"commitGroups",
 			Arrays.asList(
@@ -335,16 +338,7 @@ public class JenkinsReportTemplateTest {
 					"https://github.com/liferay/liferay-portal/commit/fed789b",
 					"commits", new ArrayList<>())));
 		context.setVariable("cssContent", "body { font-family: sans-serif; }");
-		context.setVariable(
-			"gitHubCommitsURL",
-			"https://github.com/liferay/liferay-portal/commits/master");
-		context.setVariable(
-			"jQueryURL", "https://cdn.example.com/jquery.min.js");
 		context.setVariable("jsContent", "$(document).ready(function() {});");
-		context.setVariable(
-			"summaryItems",
-			Arrays.asList(
-				_createMap("label", "Build Time: ", "value", "10 minutes")));
 
 		String content = templateEngine.process(
 			"rca_jenkins_report.html", context);
@@ -352,8 +346,9 @@ public class JenkinsReportTemplateTest {
 		Assert.assertTrue(
 			"Missing jQuery script",
 			content.contains(
-				"<script src=\"https://cdn.example.com/jquery.min.js\" " +
-					"type=\"text/javascript\"></script>"));
+				"<script src=\"https://ajax.aspnetcdn.com/ajax/jQuery" +
+					"/jquery-3.3.1.min.js\" type=\"text/javascript\">" +
+						"</script>"));
 		Assert.assertTrue(
 			"Missing raw JS content",
 			content.contains("$(document).ready(function() {});"));

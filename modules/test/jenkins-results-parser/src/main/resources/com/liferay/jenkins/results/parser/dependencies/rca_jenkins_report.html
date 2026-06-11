@@ -1,34 +1,42 @@
 <html>
 	<head>
-		<script th:src="${jQueryURL}" type="text/javascript"></script>
+		<script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.3.1.min.js" type="text/javascript"></script>
 		<script th:utext="${jsContent}" type="text/javascript"></script>
 
 		<style th:utext="${cssContent}"></style>
 	</head>
 
-	<body>
-		<h1>Jenkins report for <a th:href="${buildURL}" th:text="${buildURL}"></a></h1>
+	<body th:with="description=${build.buildJSONObject.optString('description')}">
+		<h1>Jenkins report for <a th:href="${build.buildURL}" th:text="${build.buildURL}"></a></h1>
 
-		<h2 th:if="${description != null}" th:utext="${description}"></h2>
+		<h2 th:if="${!#strings.isEmpty(description)}" th:utext="${description}"></h2>
 
 		<div>
-			<p th:each="summaryItem : ${summaryItems}"><th:block th:text="${summaryItem.label}" /><a th:href="${summaryItem.url}" th:if="${summaryItem.url != null}" th:text="${summaryItem.linkText}"></a><th:block th:text="${summaryItem.value}" /></p>
+			<p th:each="summaryItem : ${build.jenkinsReportSummaryItems}"><th:block th:text="${summaryItem.label}" /><a th:href="${summaryItem.url}" th:if="${summaryItem.url != null}" th:text="${summaryItem.linkText}"></a><th:block th:text="${summaryItem.value}" /></p>
 		</div>
 
 		<div>
 			<canvas height="300" id="timeline"></canvas>
 
-			<script th:src="${chartJsURL}"></script>
-			<script th:utext="${chartJsContent}"></script>
+			<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+			<script th:utext="${build.jenkinsReportChartJsContent}"></script>
 		</div>
 
 		<table>
-			<caption>
+			<caption th:with="gitHubCommitsURL=${#strings.replace(build.workspaceGitRepository.gitHubURL, '/tree/', '/commits/')}">
 				<h2>Commit history of <a th:href="${gitHubCommitsURL}" th:text="${gitHubCommitsURL}"></a></h2>
 			</caption>
 
 			<tr>
-				<th th:each="columnHeader : ${columnHeaders}" th:text="${columnHeader}"></th>
+				<th></th>
+				<th>Commit SHA</th>
+				<th>Commit Date</th>
+				<th>Commit Message</th>
+				<th>Commit Diffs</th>
+				<th>Build Link</th>
+				<th>Build Time</th>
+				<th>Build Status</th>
+				<th>Build Result</th>
 			</tr>
 
 			<th:block th:each="commitGroup : ${commitGroups}">

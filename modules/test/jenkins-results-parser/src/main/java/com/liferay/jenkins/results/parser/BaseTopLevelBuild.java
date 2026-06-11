@@ -51,8 +51,6 @@ import java.util.concurrent.ExecutorService;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.apache.commons.lang3.StringUtils;
-
 import org.dom4j.Element;
 
 import org.json.JSONException;
@@ -364,6 +362,101 @@ public abstract class BaseTopLevelBuild
 		}
 	}
 
+	public String getJenkinsReportChartJsContent() {
+		String resourceFileContent = null;
+
+		try {
+			resourceFileContent =
+				JenkinsResultsParserUtil.getResourceFileContent(
+					"dependencies/chart_template.js");
+		}
+		catch (IOException ioException) {
+			throw new RuntimeException(
+				"Unable to load resource chart_template.js", ioException);
+		}
+
+		TimelineData timelineData = getTimelineData();
+
+		resourceFileContent = resourceFileContent.replace(
+			"'xData'", Arrays.toString(timelineData.getIndexData()));
+
+		resourceFileContent = resourceFileContent.replace(
+			"'y1Data'", Arrays.toString(timelineData.getSlaveUsageData()));
+
+		resourceFileContent = resourceFileContent.replace(
+			"'y2Data'", Arrays.toString(timelineData.getInvocationsData()));
+
+		return resourceFileContent;
+	}
+
+	public List<String> getJenkinsReportColumnHeaders() {
+		List<String> columnHeaders = new ArrayList<>();
+
+		columnHeaders.add("Name");
+		columnHeaders.add("Console");
+		columnHeaders.add("Test Report");
+		columnHeaders.add("Start Time");
+		columnHeaders.add("Build Time");
+
+		if (buildDurationsEnabled()) {
+			columnHeaders.add("Build Time (est)");
+			columnHeaders.add("Build Time (+/-)");
+		}
+
+		columnHeaders.add("Status");
+		columnHeaders.add("Result");
+
+		return columnHeaders;
+	}
+
+	public Map<String, String> getJenkinsReportCommitMap() {
+		if (!(this instanceof WorkspaceBuild)) {
+			return null;
+		}
+
+		WorkspaceBuild workspaceBuild = (WorkspaceBuild)this;
+
+		Workspace workspace = workspaceBuild.getWorkspace();
+
+		WorkspaceGitRepository workspaceGitRepository =
+			workspace.getPrimaryWorkspaceGitRepository();
+
+		WorkspaceBranchInformation workspaceBranchInformation =
+			new WorkspaceBranchInformation(workspaceGitRepository);
+
+		String senderBranchSHA =
+			workspaceBranchInformation.getSenderBranchSHA();
+
+		GitHubRemoteGitCommit gitHubRemoteGitCommit = null;
+
+		if (isReleaseBuild()) {
+			gitHubRemoteGitCommit = GitCommitFactory.newGitHubRemoteGitCommit(
+				workspaceBranchInformation.getSenderUsername(),
+				getReleaseRepositoryName(), senderBranchSHA);
+		}
+		else {
+			gitHubRemoteGitCommit = GitCommitFactory.newGitHubRemoteGitCommit(
+				workspaceBranchInformation.getSenderUsername(),
+				workspaceBranchInformation.getRepositoryName(),
+				senderBranchSHA);
+		}
+
+		Map<String, String> commitMap = new HashMap<>();
+
+		commitMap.put(
+			"date",
+			toJenkinsReportDateString(
+				gitHubRemoteGitCommit.getCommitDate(),
+				getJenkinsReportTimeZoneName()));
+		commitMap.put("message", gitHubRemoteGitCommit.getMessage());
+		commitMap.put(
+			"senderBranchName",
+			workspaceBranchInformation.getSenderBranchName());
+		commitMap.put("senderBranchSHA", senderBranchSHA);
+
+		return commitMap;
+	}
+
 	@Override
 	public synchronized String getJenkinsReportString() {
 		long start = JenkinsResultsParserUtil.getCurrentTimeMillis();
@@ -371,13 +464,7 @@ public abstract class BaseTopLevelBuild
 		try {
 			Context context = new Context();
 
-			context.setVariable("buildURL", getBuildURL());
-			context.setVariable(
-				"chartJsContent", getJenkinsReportChartJsContent());
-			context.setVariable("chartJsURL", _URL_CHART_JS);
-			context.setVariable(
-				"columnHeaders", getJenkinsReportColumnHeaders());
-			context.setVariable("commit", _getJenkinsReportCommitMap());
+			context.setVariable("build", this);
 
 			List<Map<String, String>> completedDownstreamTables =
 				new ArrayList<>();
@@ -416,14 +503,6 @@ public abstract class BaseTopLevelBuild
 					"Unable to load Jenkins report resources", ioException);
 			}
 
-			JSONObject jobJSONObject = getBuildJSONObject();
-
-			String description = jobJSONObject.optString("description");
-
-			if (!description.isEmpty()) {
-				context.setVariable("description", description);
-			}
-
 			List<Map<String, String>> downstreamTables = new ArrayList<>();
 
 			_addJenkinsReportDownstreamTable(
@@ -436,16 +515,6 @@ public abstract class BaseTopLevelBuild
 				downstreamTables, null, "missing", "Missing: ");
 
 			context.setVariable("downstreamTables", downstreamTables);
-
-			context.setVariable("summaryItems", getJenkinsReportSummaryItems());
-
-			String topLevelResult = getResult();
-
-			if (topLevelResult == null) {
-				topLevelResult = StringUtils.upperCase(getStatus());
-			}
-
-			context.setVariable("topLevelResult", topLevelResult);
 
 			List<Map<String, Object>> topLevelTableRows = new ArrayList<>();
 
@@ -465,6 +534,109 @@ public abstract class BaseTopLevelBuild
 
 			System.out.println("Jenkins reported generated in " + duration);
 		}
+	}
+
+	public List<Map<String, String>> getJenkinsReportSummaryItems() {
+		List<Map<String, String>> summaryItems = new ArrayList<>();
+
+		_addJenkinsReportSummaryItem(
+			summaryItems, null, _getCISystemStatusURL(), "CI System Status",
+			null);
+		_addJenkinsReportSummaryItem(
+			summaryItems, "Start Time: ", null, null,
+			toJenkinsReportDateString(
+				new Date(getStartTime()), getJenkinsReportTimeZoneName()));
+		_addJenkinsReportSummaryItem(
+			summaryItems, "Invocation Delay Time: ", null, null,
+			JenkinsResultsParserUtil.toDurationString(getQueuingDuration()));
+		_addJenkinsReportSummaryItem(
+			summaryItems, "Build Time: ", null, null,
+			JenkinsResultsParserUtil.toDurationString(getDuration()));
+		_addJenkinsReportSummaryItem(
+			summaryItems, "Actual CPU Usage Time: ", null, null,
+			JenkinsResultsParserUtil.toDurationString(
+				getTotalActualDuration()));
+		_addJenkinsReportSummaryItem(
+			summaryItems, "Cached CPU Usage Time: ", null, null,
+			JenkinsResultsParserUtil.toDurationString(
+				getTotalCachedDuration()));
+		_addJenkinsReportSummaryItem(
+			summaryItems, "Total CPU Usage Time: ", null, null,
+			JenkinsResultsParserUtil.toDurationString(getTotalDuration()));
+		_addJenkinsReportSummaryItem(
+			summaryItems, "Total number of Jenkins actual slaves used: ", null,
+			null, String.valueOf(getTotalActualSlavesUsedCount()));
+		_addJenkinsReportSummaryItem(
+			summaryItems, "Total number of Jenkins cached slaves used: ", null,
+			null, String.valueOf(getTotalCachedSlavesUsedCount()));
+		_addJenkinsReportSummaryItem(
+			summaryItems, "Total number of Jenkins slaves used: ", null, null,
+			String.valueOf(getTotalSlavesUsedCount()));
+		_addJenkinsReportSummaryItem(
+			summaryItems, "Total number of reinvocations: ", null, null,
+			String.valueOf(_getTotalReinvocationCount()));
+		_addJenkinsReportSummaryItem(
+			summaryItems, "Average delay time for invoked build to start: ",
+			null, null,
+			JenkinsResultsParserUtil.toDurationString(getAverageDelayTime()));
+
+		Build longestDelayedDownstreamBuild =
+			getLongestDelayedDownstreamBuild();
+
+		if (longestDelayedDownstreamBuild != null) {
+			String durationString = JenkinsResultsParserUtil.toDurationString(
+				longestDelayedDownstreamBuild.getDelayTime());
+
+			_addJenkinsReportSummaryItem(
+				summaryItems, "Longest delay time for invoked build to start: ",
+				longestDelayedDownstreamBuild.getBuildURL(),
+				longestDelayedDownstreamBuild.getDisplayName(),
+				" in: " + durationString);
+		}
+
+		Build longestRunningDownstreamBuild =
+			getLongestRunningDownstreamBuild();
+
+		if (longestRunningDownstreamBuild != null) {
+			String durationString = JenkinsResultsParserUtil.toDurationString(
+				longestRunningDownstreamBuild.getDuration());
+
+			_addJenkinsReportSummaryItem(
+				summaryItems, "Longest Running Downstream Build: ",
+				longestRunningDownstreamBuild.getBuildURL(),
+				longestRunningDownstreamBuild.getDisplayName(),
+				" in: " + durationString);
+		}
+
+		try {
+			Properties buildProperties =
+				JenkinsResultsParserUtil.getBuildProperties();
+
+			String longestRunningTestEnabled = buildProperties.getProperty(
+				"jenkins.report.longest.running.test.enabled", "false");
+
+			if (longestRunningTestEnabled.equals("true")) {
+				TestResult longestRunningTest = getLongestRunningTest();
+
+				if (longestRunningTest != null) {
+					String durationString =
+						JenkinsResultsParserUtil.toDurationString(
+							longestRunningTest.getDuration());
+
+					_addJenkinsReportSummaryItem(
+						summaryItems, "Longest Running Test: ",
+						longestRunningTest.getTestReportURL(),
+						longestRunningTest.getDisplayName(),
+						" in: " + durationString);
+				}
+			}
+		}
+		catch (IOException ioException) {
+			throw new RuntimeException(
+				"Unable to get build properties", ioException);
+		}
+
+		return summaryItems;
 	}
 
 	@Override
@@ -1400,160 +1572,6 @@ public abstract class BaseTopLevelBuild
 		return "th";
 	}
 
-	protected String getJenkinsReportChartJsContent() {
-		String resourceFileContent = null;
-
-		try {
-			resourceFileContent =
-				JenkinsResultsParserUtil.getResourceFileContent(
-					"dependencies/chart_template.js");
-		}
-		catch (IOException ioException) {
-			throw new RuntimeException(
-				"Unable to load resource chart_template.js", ioException);
-		}
-
-		TimelineData timelineData = getTimelineData();
-
-		resourceFileContent = resourceFileContent.replace(
-			"'xData'", Arrays.toString(timelineData.getIndexData()));
-
-		resourceFileContent = resourceFileContent.replace(
-			"'y1Data'", Arrays.toString(timelineData.getSlaveUsageData()));
-
-		resourceFileContent = resourceFileContent.replace(
-			"'y2Data'", Arrays.toString(timelineData.getInvocationsData()));
-
-		return resourceFileContent;
-	}
-
-	protected String getJenkinsReportChartJsURL() {
-		return _URL_CHART_JS;
-	}
-
-	protected List<String> getJenkinsReportColumnHeaders() {
-		List<String> columnHeaders = new ArrayList<>();
-
-		columnHeaders.add("Name");
-		columnHeaders.add("Console");
-		columnHeaders.add("Test Report");
-		columnHeaders.add("Start Time");
-		columnHeaders.add("Build Time");
-
-		if (buildDurationsEnabled()) {
-			columnHeaders.add("Build Time (est)");
-			columnHeaders.add("Build Time (+/-)");
-		}
-
-		columnHeaders.add("Status");
-		columnHeaders.add("Result");
-
-		return columnHeaders;
-	}
-
-	protected List<Map<String, String>> getJenkinsReportSummaryItems() {
-		List<Map<String, String>> summaryItems = new ArrayList<>();
-
-		_addJenkinsReportSummaryItem(
-			summaryItems, null, _getCISystemStatusURL(), "CI System Status",
-			null);
-		_addJenkinsReportSummaryItem(
-			summaryItems, "Start Time: ", null, null,
-			toJenkinsReportDateString(
-				new Date(getStartTime()), getJenkinsReportTimeZoneName()));
-		_addJenkinsReportSummaryItem(
-			summaryItems, "Invocation Delay Time: ", null, null,
-			JenkinsResultsParserUtil.toDurationString(getQueuingDuration()));
-		_addJenkinsReportSummaryItem(
-			summaryItems, "Build Time: ", null, null,
-			JenkinsResultsParserUtil.toDurationString(getDuration()));
-		_addJenkinsReportSummaryItem(
-			summaryItems, "Actual CPU Usage Time: ", null, null,
-			JenkinsResultsParserUtil.toDurationString(
-				getTotalActualDuration()));
-		_addJenkinsReportSummaryItem(
-			summaryItems, "Cached CPU Usage Time: ", null, null,
-			JenkinsResultsParserUtil.toDurationString(
-				getTotalCachedDuration()));
-		_addJenkinsReportSummaryItem(
-			summaryItems, "Total CPU Usage Time: ", null, null,
-			JenkinsResultsParserUtil.toDurationString(getTotalDuration()));
-		_addJenkinsReportSummaryItem(
-			summaryItems, "Total number of Jenkins actual slaves used: ", null,
-			null, String.valueOf(getTotalActualSlavesUsedCount()));
-		_addJenkinsReportSummaryItem(
-			summaryItems, "Total number of Jenkins cached slaves used: ", null,
-			null, String.valueOf(getTotalCachedSlavesUsedCount()));
-		_addJenkinsReportSummaryItem(
-			summaryItems, "Total number of Jenkins slaves used: ", null, null,
-			String.valueOf(getTotalSlavesUsedCount()));
-		_addJenkinsReportSummaryItem(
-			summaryItems, "Total number of reinvocations: ", null, null,
-			String.valueOf(_getTotalReinvocationCount()));
-		_addJenkinsReportSummaryItem(
-			summaryItems, "Average delay time for invoked build to start: ",
-			null, null,
-			JenkinsResultsParserUtil.toDurationString(getAverageDelayTime()));
-
-		Build longestDelayedDownstreamBuild =
-			getLongestDelayedDownstreamBuild();
-
-		if (longestDelayedDownstreamBuild != null) {
-			String durationString = JenkinsResultsParserUtil.toDurationString(
-				longestDelayedDownstreamBuild.getDelayTime());
-
-			_addJenkinsReportSummaryItem(
-				summaryItems, "Longest delay time for invoked build to start: ",
-				longestDelayedDownstreamBuild.getBuildURL(),
-				longestDelayedDownstreamBuild.getDisplayName(),
-				" in: " + durationString);
-		}
-
-		Build longestRunningDownstreamBuild =
-			getLongestRunningDownstreamBuild();
-
-		if (longestRunningDownstreamBuild != null) {
-			String durationString = JenkinsResultsParserUtil.toDurationString(
-				longestRunningDownstreamBuild.getDuration());
-
-			_addJenkinsReportSummaryItem(
-				summaryItems, "Longest Running Downstream Build: ",
-				longestRunningDownstreamBuild.getBuildURL(),
-				longestRunningDownstreamBuild.getDisplayName(),
-				" in: " + durationString);
-		}
-
-		try {
-			Properties buildProperties =
-				JenkinsResultsParserUtil.getBuildProperties();
-
-			String longestRunningTestEnabled = buildProperties.getProperty(
-				"jenkins.report.longest.running.test.enabled", "false");
-
-			if (longestRunningTestEnabled.equals("true")) {
-				TestResult longestRunningTest = getLongestRunningTest();
-
-				if (longestRunningTest != null) {
-					String durationString =
-						JenkinsResultsParserUtil.toDurationString(
-							longestRunningTest.getDuration());
-
-					_addJenkinsReportSummaryItem(
-						summaryItems, "Longest Running Test: ",
-						longestRunningTest.getTestReportURL(),
-						longestRunningTest.getDisplayName(),
-						" in: " + durationString);
-				}
-			}
-		}
-		catch (IOException ioException) {
-			throw new RuntimeException(
-				"Unable to get build properties", ioException);
-		}
-
-		return summaryItems;
-	}
-
 	protected Element getJobSummaryElement() {
 		int successCount = getDownstreamBuildCountByResult("SUCCESS");
 
@@ -2325,54 +2343,6 @@ public abstract class BaseTopLevelBuild
 		return _URL_CI_SYSTEM_STATUS;
 	}
 
-	private Map<String, String> _getJenkinsReportCommitMap() {
-		if (!(this instanceof WorkspaceBuild)) {
-			return null;
-		}
-
-		WorkspaceBuild workspaceBuild = (WorkspaceBuild)this;
-
-		Workspace workspace = workspaceBuild.getWorkspace();
-
-		WorkspaceGitRepository workspaceGitRepository =
-			workspace.getPrimaryWorkspaceGitRepository();
-
-		WorkspaceBranchInformation workspaceBranchInformation =
-			new WorkspaceBranchInformation(workspaceGitRepository);
-
-		String senderBranchSHA =
-			workspaceBranchInformation.getSenderBranchSHA();
-
-		GitHubRemoteGitCommit gitHubRemoteGitCommit = null;
-
-		if (isReleaseBuild()) {
-			gitHubRemoteGitCommit = GitCommitFactory.newGitHubRemoteGitCommit(
-				workspaceBranchInformation.getSenderUsername(),
-				getReleaseRepositoryName(), senderBranchSHA);
-		}
-		else {
-			gitHubRemoteGitCommit = GitCommitFactory.newGitHubRemoteGitCommit(
-				workspaceBranchInformation.getSenderUsername(),
-				workspaceBranchInformation.getRepositoryName(),
-				senderBranchSHA);
-		}
-
-		Map<String, String> commitMap = new HashMap<>();
-
-		commitMap.put(
-			"date",
-			toJenkinsReportDateString(
-				gitHubRemoteGitCommit.getCommitDate(),
-				getJenkinsReportTimeZoneName()));
-		commitMap.put("message", gitHubRemoteGitCommit.getMessage());
-		commitMap.put(
-			"senderBranchName",
-			workspaceBranchInformation.getSenderBranchName());
-		commitMap.put("senderBranchSHA", senderBranchSHA);
-
-		return commitMap;
-	}
-
 	private String _getJenkinsReportTableRowsHTML(
 		List<Map<String, Object>> tableRows) {
 
@@ -2479,9 +2449,6 @@ public abstract class BaseTopLevelBuild
 
 	private static final long _MILLIS_DOWNSTREAM_BUILDS_LISTING_INTERVAL =
 		1000 * 60 * 5;
-
-	private static final String _URL_CHART_JS =
-		"https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js";
 
 	private static final String _URL_CI_SYSTEM_STATUS =
 		"https://test-1-0.liferay.com/userContent/reports/ci-system-status" +

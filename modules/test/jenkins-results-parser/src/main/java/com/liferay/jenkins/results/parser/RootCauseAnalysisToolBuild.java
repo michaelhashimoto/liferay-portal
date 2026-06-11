@@ -10,12 +10,9 @@ import com.google.common.collect.Lists;
 import java.io.IOException;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import org.json.JSONObject;
 
 import org.thymeleaf.context.Context;
 
@@ -54,15 +51,7 @@ public class RootCauseAnalysisToolBuild extends DefaultTopLevelBuild {
 
 		Context context = new Context();
 
-		context.setVariable("buildURL", getBuildURL());
-		context.setVariable("chartJsContent", getJenkinsReportChartJsContent());
-		context.setVariable("chartJsURL", getJenkinsReportChartJsURL());
-		context.setVariable(
-			"columnHeaders",
-			Arrays.asList(
-				"", "Commit SHA", "Commit Date", "Commit Message",
-				"Commit Diffs", "Build Link", "Build Time", "Build Status",
-				"Build Result"));
+		context.setVariable("build", this);
 
 		List<Map<String, Object>> commitGroupMaps = new ArrayList<>();
 
@@ -97,24 +86,11 @@ public class RootCauseAnalysisToolBuild extends DefaultTopLevelBuild {
 				"Unable to load Jenkins report resources", ioException);
 		}
 
-		JSONObject jobJSONObject = getBuildJSONObject();
-
-		String description = jobJSONObject.optString("description");
-
-		if (!description.isEmpty()) {
-			context.setVariable("description", description);
-		}
-
-		String gitHubCommitsURL = _workspaceGitRepository.getGitHubURL();
-
-		context.setVariable(
-			"gitHubCommitsURL",
-			gitHubCommitsURL.replace("/tree/", "/commits/"));
-
-		context.setVariable("jQueryURL", _URL_JQUERY);
-		context.setVariable("summaryItems", getJenkinsReportSummaryItems());
-
 		return processJenkinsReportTemplate("rca_jenkins_report.html", context);
+	}
+
+	public WorkspaceGitRepository getWorkspaceGitRepository() {
+		return _workspaceGitRepository;
 	}
 
 	public void setDownstreamPortalBuildDataList(
@@ -341,9 +317,6 @@ public class RootCauseAnalysisToolBuild extends DefaultTopLevelBuild {
 	}
 
 	private static final String _DATE_FORMAT_COMMIT = "yyyy-MM-dd h:mm:ss aa z";
-
-	private static final String _URL_JQUERY =
-		"https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.3.1.min.js";
 
 	private List<PortalBuildData> _downstreamPortalBuildDataList;
 	private WorkspaceGitRepository _workspaceGitRepository;

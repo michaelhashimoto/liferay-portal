@@ -1,35 +1,37 @@
-<html xmlns:th="http://www.thymeleaf.org">
+<html>
 	<head>
 		<style th:utext="${cssContent}"></style>
 
 		<script language="javascript" th:utext="${jsContent}"></script>
 	</head>
 
-	<body>
-		<h1>Jenkins report for <a th:href="${buildURL}" th:text="${buildURL}"></a></h1>
+	<body th:with="description=${build.buildJSONObject.optString('description')}">
+		<h1>Jenkins report for <a th:href="${build.buildURL}" th:text="${build.buildURL}"></a></h1>
 
-		<h2 th:if="${description != null}" th:utext="${description}"></h2>
+		<h2 th:if="${!#strings.isEmpty(description)}" th:utext="${description}"></h2>
 
-		<div th:if="${commit != null}">
-			<p th:text="'Sender Branch Name: ' + ${commit.senderBranchName}"></p>
-			<p th:text="'Sender Branch SHA: ' + ${commit.senderBranchSHA}"></p>
-			<p th:text="'Commit Message: ' + ${commit.message}"></p>
-			<p th:text="'Commit Date: ' + ${commit.date}"></p>
-		</div>
+		<th:block th:with="commit=${build.jenkinsReportCommitMap}">
+			<div th:if="${commit != null}">
+				<p th:text="'Sender Branch Name: ' + ${commit.senderBranchName}"></p>
+				<p th:text="'Sender Branch SHA: ' + ${commit.senderBranchSHA}"></p>
+				<p th:text="'Commit Message: ' + ${commit.message}"></p>
+				<p th:text="'Commit Date: ' + ${commit.date}"></p>
+			</div>
+		</th:block>
 
 		<div>
-			<p th:each="summaryItem : ${summaryItems}"><th:block th:text="${summaryItem.label}" /><a th:href="${summaryItem.url}" th:if="${summaryItem.url != null}" th:text="${summaryItem.linkText}"></a><th:block th:text="${summaryItem.value}" /></p>
+			<p th:each="summaryItem : ${build.jenkinsReportSummaryItems}"><th:block th:text="${summaryItem.label}" /><a th:href="${summaryItem.url}" th:if="${summaryItem.url != null}" th:text="${summaryItem.linkText}"></a><th:block th:text="${summaryItem.value}" /></p>
 		</div>
 
 		<div>
 			<canvas height="300" id="timeline"></canvas>
 
-			<script th:src="${chartJsURL}"></script>
-			<script th:utext="${chartJsContent}"></script>
+			<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+			<script th:utext="${build.jenkinsReportChartJsContent}"></script>
 		</div>
 
-		<table>
-			<caption>Top Level Build - <strong th:text="${topLevelResult}"></strong></caption>
+		<table th:with="columnHeaders=${build.jenkinsReportColumnHeaders}">
+			<caption>Top Level Build - <strong th:text="${build.result != null} ? ${build.result} : ${#strings.toUpperCase(build.status)}"></strong></caption>
 
 			<tr>
 				<th th:each="columnHeader : ${columnHeaders}" th:text="${columnHeader}"></th>
@@ -38,7 +40,7 @@
 			<th:block th:utext="${topLevelRowsHTML}" />
 		</table>
 
-		<div>
+		<div th:with="columnHeaders=${build.jenkinsReportColumnHeaders}">
 			<table th:each="downstreamTable : ${downstreamTables}">
 				<caption th:text="${downstreamTable.caption}"></caption>
 
