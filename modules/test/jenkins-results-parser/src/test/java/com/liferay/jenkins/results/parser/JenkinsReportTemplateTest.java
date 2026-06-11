@@ -186,13 +186,22 @@ public class JenkinsReportTemplateTest {
 					"CI System Status</a></p>"));
 		Assert.assertTrue(
 			"Missing plain summary item",
-			content.contains("<p>Build Time: 10 minutes</p>"));
+			content.contains("<p>Build Time: 10 minutes</p>") &&
+			content.contains("<p>Start Time: 6-10-2026 07:00:00 PST</p>") &&
+			content.contains("<p>Total number of reinvocations: 1</p>"));
 		Assert.assertTrue(
 			"Missing link and value summary item",
+			content.contains(
+				"<p>Longest delay time for invoked build to start: <a " +
+					"href=\"https://test-1-1.liferay.com/job/test-downstream" +
+						"/1/\">downstream-1</a> in: 8 minutes</p>") &&
 			content.contains(
 				"<p>Longest Running Downstream Build: <a " +
 					"href=\"https://test-1-1.liferay.com/job/test-downstream" +
 						"/1/\">downstream-1</a> in: 9 minutes</p>"));
+		Assert.assertFalse(
+			"Unexpected longest running test summary item",
+			content.contains("Longest Running Test: "));
 		Assert.assertTrue(
 			"Missing top level table caption",
 			content.contains("Top Level Build - <strong>SUCCESS</strong>"));
@@ -237,19 +246,7 @@ public class JenkinsReportTemplateTest {
 
 		Context context = new Context();
 
-		context.setVariable(
-			"build",
-			_createObjectMap(
-				"buildJSONObject", new JSONObject(), "buildURL",
-				"https://test-1-1.liferay.com/job/rca/1/",
-				"jenkinsReportChartJsContent", "var x = 1;",
-				"jenkinsReportSummaryItems",
-				Arrays.asList(
-					_createMap("label", "Build Time: ", "value", "10 minutes")),
-				"workspaceGitRepository",
-				_createMap(
-					"gitHubURL",
-					"https://github.com/liferay/liferay-portal/tree/master")));
+		context.setVariable("build", new TestBuild());
 		context.setVariable(
 			"commitGroups",
 			Arrays.asList(
@@ -351,6 +348,10 @@ public class JenkinsReportTemplateTest {
 			return false;
 		}
 
+		public long getAverageDelayTime() {
+			return 4;
+		}
+
 		public JSONObject getBuildJSONObject() {
 			JSONObject buildJSONObject = new JSONObject();
 
@@ -364,8 +365,16 @@ public class JenkinsReportTemplateTest {
 			return "https://test-1-1.liferay.com/job/test/1/";
 		}
 
+		public String getCISystemStatusURL() {
+			return "https://test-1-0.liferay.com/status";
+		}
+
 		public int getDownstreamBuildCount(String result, String status) {
 			return 2;
+		}
+
+		public long getDuration() {
+			return 10;
 		}
 
 		public Map<String, Object> getJenkinsReportBuildInfoRow() {
@@ -380,19 +389,6 @@ public class JenkinsReportTemplateTest {
 			return Arrays.asList(_createTextCellRow("stop-watch-row"));
 		}
 
-		public List<Map<String, String>> getJenkinsReportSummaryItems() {
-			return Arrays.asList(
-				_createMap(
-					"linkText", "CI System Status", "url",
-					"https://test-1-0.liferay.com/status"),
-				_createMap("label", "Build Time: ", "value", "10 minutes"),
-				_createMap(
-					"label", "Longest Running Downstream Build: ", "linkText",
-					"downstream-1", "url",
-					"https://test-1-1.liferay.com/job/test-downstream/1/",
-					"value", " in: 9 minutes"));
-		}
-
 		public List<Map<String, Object>> getJenkinsReportTableRows(
 			String result, String status) {
 
@@ -403,6 +399,20 @@ public class JenkinsReportTemplateTest {
 			return Arrays.asList(
 				_createTextCellRow("downstream-1"),
 				_createTextCellRow("downstream-2"));
+		}
+
+		public Map<String, Object> getLongestDelayedDownstreamBuild() {
+			return _createObjectMap(
+				"buildURL",
+				"https://test-1-1.liferay.com/job/test-downstream/1/",
+				"delayTime", 8L, "displayName", "downstream-1");
+		}
+
+		public Map<String, Object> getLongestRunningDownstreamBuild() {
+			return _createObjectMap(
+				"buildURL",
+				"https://test-1-1.liferay.com/job/test-downstream/1/",
+				"displayName", "downstream-1", "duration", 9L);
 		}
 
 		public Map<String, String> getPrimaryGitHubRemoteGitCommit() {
@@ -416,12 +426,62 @@ public class JenkinsReportTemplateTest {
 				"senderBranchName", "LPD-12345", "senderBranchSHA", "abc123");
 		}
 
+		public long getQueuingDuration() {
+			return 1;
+		}
+
 		public String getResult() {
 			return "SUCCESS";
 		}
 
+		public String getStartTimeString() {
+			return "6-10-2026 07:00:00 PST";
+		}
+
 		public String getStatus() {
 			return "completed";
+		}
+
+		public long getTotalActualDuration() {
+			return 2;
+		}
+
+		public int getTotalActualSlavesUsedCount() {
+			return 6;
+		}
+
+		public long getTotalCachedDuration() {
+			return 3;
+		}
+
+		public int getTotalCachedSlavesUsedCount() {
+			return 7;
+		}
+
+		public long getTotalDuration() {
+			return 5;
+		}
+
+		public int getTotalReinvocationCount() {
+			return 1;
+		}
+
+		public int getTotalSlavesUsedCount() {
+			return 13;
+		}
+
+		public Map<String, String> getWorkspaceGitRepository() {
+			return _createMap(
+				"gitHubURL",
+				"https://github.com/liferay/liferay-portal/tree/master");
+		}
+
+		public boolean isJenkinsReportLongestRunningTestEnabled() {
+			return false;
+		}
+
+		public String toDurationString(long duration) {
+			return duration + " minutes";
 		}
 
 	}

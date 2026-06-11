@@ -11,9 +11,7 @@
 
 		<h2 th:if="${!#strings.isEmpty(description)}" th:utext="${description}"></h2>
 
-		<div>
-			<p th:each="summaryItem : ${build.jenkinsReportSummaryItems}"><th:block th:text="${summaryItem.label}" /><a th:href="${summaryItem.url}" th:if="${summaryItem.url != null}" th:text="${summaryItem.linkText}"></a><th:block th:text="${summaryItem.value}" /></p>
-		</div>
+		<div th:replace="~{jenkins_report.html :: summary}"></div>
 
 		<div>
 			<canvas height="300" id="timeline"></canvas>

@@ -1404,6 +1404,11 @@ public abstract class BaseBuild implements Build {
 		return startTime;
 	}
 
+	public String getStartTimeString() {
+		return toJenkinsReportDateString(
+			new Date(getStartTime()), getJenkinsReportTimeZoneName());
+	}
+
 	@Override
 	public String getStatus() {
 		return _status;
@@ -2007,6 +2012,10 @@ public abstract class BaseBuild implements Build {
 		}
 
 		slaveOfflineRule.takeSlaveOffline(this);
+	}
+
+	public String toDurationString(long duration) {
+		return JenkinsResultsParserUtil.toDurationString(duration);
 	}
 
 	@Override

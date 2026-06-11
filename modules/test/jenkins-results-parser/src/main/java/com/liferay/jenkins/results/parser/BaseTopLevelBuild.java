@@ -254,6 +254,28 @@ public abstract class BaseTopLevelBuild
 		return buildReportJSONObject;
 	}
 
+	public String getCISystemStatusURL() {
+		try {
+			String masterHostname = JenkinsResultsParserUtil.getBuildProperty(
+				"jenkins.remote.url[test-1-0]");
+
+			if (!JenkinsResultsParserUtil.isNullOrEmpty(masterHostname)) {
+				if (!masterHostname.endsWith("/")) {
+					masterHostname += "/";
+				}
+
+				return JenkinsResultsParserUtil.combine(
+					masterHostname,
+					"userContent/reports/ci-system-status/index.html");
+			}
+		}
+		catch (IOException ioException) {
+			ioException.printStackTrace();
+		}
+
+		return _URL_CI_SYSTEM_STATUS;
+	}
+
 	@Override
 	public Build getControllerBuild() {
 		if (_controllerBuild != null) {
@@ -421,109 +443,6 @@ public abstract class BaseTopLevelBuild
 
 			System.out.println("Jenkins reported generated in " + duration);
 		}
-	}
-
-	public List<Map<String, String>> getJenkinsReportSummaryItems() {
-		List<Map<String, String>> summaryItems = new ArrayList<>();
-
-		_addJenkinsReportSummaryItem(
-			summaryItems, null, _getCISystemStatusURL(), "CI System Status",
-			null);
-		_addJenkinsReportSummaryItem(
-			summaryItems, "Start Time: ", null, null,
-			toJenkinsReportDateString(
-				new Date(getStartTime()), getJenkinsReportTimeZoneName()));
-		_addJenkinsReportSummaryItem(
-			summaryItems, "Invocation Delay Time: ", null, null,
-			JenkinsResultsParserUtil.toDurationString(getQueuingDuration()));
-		_addJenkinsReportSummaryItem(
-			summaryItems, "Build Time: ", null, null,
-			JenkinsResultsParserUtil.toDurationString(getDuration()));
-		_addJenkinsReportSummaryItem(
-			summaryItems, "Actual CPU Usage Time: ", null, null,
-			JenkinsResultsParserUtil.toDurationString(
-				getTotalActualDuration()));
-		_addJenkinsReportSummaryItem(
-			summaryItems, "Cached CPU Usage Time: ", null, null,
-			JenkinsResultsParserUtil.toDurationString(
-				getTotalCachedDuration()));
-		_addJenkinsReportSummaryItem(
-			summaryItems, "Total CPU Usage Time: ", null, null,
-			JenkinsResultsParserUtil.toDurationString(getTotalDuration()));
-		_addJenkinsReportSummaryItem(
-			summaryItems, "Total number of Jenkins actual slaves used: ", null,
-			null, String.valueOf(getTotalActualSlavesUsedCount()));
-		_addJenkinsReportSummaryItem(
-			summaryItems, "Total number of Jenkins cached slaves used: ", null,
-			null, String.valueOf(getTotalCachedSlavesUsedCount()));
-		_addJenkinsReportSummaryItem(
-			summaryItems, "Total number of Jenkins slaves used: ", null, null,
-			String.valueOf(getTotalSlavesUsedCount()));
-		_addJenkinsReportSummaryItem(
-			summaryItems, "Total number of reinvocations: ", null, null,
-			String.valueOf(_getTotalReinvocationCount()));
-		_addJenkinsReportSummaryItem(
-			summaryItems, "Average delay time for invoked build to start: ",
-			null, null,
-			JenkinsResultsParserUtil.toDurationString(getAverageDelayTime()));
-
-		Build longestDelayedDownstreamBuild =
-			getLongestDelayedDownstreamBuild();
-
-		if (longestDelayedDownstreamBuild != null) {
-			String durationString = JenkinsResultsParserUtil.toDurationString(
-				longestDelayedDownstreamBuild.getDelayTime());
-
-			_addJenkinsReportSummaryItem(
-				summaryItems, "Longest delay time for invoked build to start: ",
-				longestDelayedDownstreamBuild.getBuildURL(),
-				longestDelayedDownstreamBuild.getDisplayName(),
-				" in: " + durationString);
-		}
-
-		Build longestRunningDownstreamBuild =
-			getLongestRunningDownstreamBuild();
-
-		if (longestRunningDownstreamBuild != null) {
-			String durationString = JenkinsResultsParserUtil.toDurationString(
-				longestRunningDownstreamBuild.getDuration());
-
-			_addJenkinsReportSummaryItem(
-				summaryItems, "Longest Running Downstream Build: ",
-				longestRunningDownstreamBuild.getBuildURL(),
-				longestRunningDownstreamBuild.getDisplayName(),
-				" in: " + durationString);
-		}
-
-		try {
-			Properties buildProperties =
-				JenkinsResultsParserUtil.getBuildProperties();
-
-			String longestRunningTestEnabled = buildProperties.getProperty(
-				"jenkins.report.longest.running.test.enabled", "false");
-
-			if (longestRunningTestEnabled.equals("true")) {
-				TestResult longestRunningTest = getLongestRunningTest();
-
-				if (longestRunningTest != null) {
-					String durationString =
-						JenkinsResultsParserUtil.toDurationString(
-							longestRunningTest.getDuration());
-
-					_addJenkinsReportSummaryItem(
-						summaryItems, "Longest Running Test: ",
-						longestRunningTest.getTestReportURL(),
-						longestRunningTest.getDisplayName(),
-						" in: " + durationString);
-				}
-			}
-		}
-		catch (IOException ioException) {
-			throw new RuntimeException(
-				"Unable to get build properties", ioException);
-		}
-
-		return summaryItems;
 	}
 
 	@Override
@@ -735,6 +654,27 @@ public abstract class BaseTopLevelBuild
 		return cachedDownstreamBuilds.size();
 	}
 
+	public int getTotalReinvocationCount() {
+		BuildDatabase buildDatabase = getBuildDatabase();
+
+		Properties properties = buildDatabase.getProperties(
+			BAD_BUILD_URLS_PROPERTIES_KEY);
+
+		int totalReinvocationCount = 0;
+
+		for (String propertyName : properties.stringPropertyNames()) {
+			String badBuildURLsString = properties.getProperty(propertyName);
+
+			if (!badBuildURLsString.isEmpty()) {
+				String[] badBuildURLs = badBuildURLsString.split(",");
+
+				totalReinvocationCount += badBuildURLs.length;
+			}
+		}
+
+		return totalReinvocationCount;
+	}
+
 	public URL getUserContentURL() {
 		JenkinsMaster jenkinsMaster = getJenkinsMaster();
 
@@ -822,6 +762,22 @@ public abstract class BaseTopLevelBuild
 		}
 
 		return false;
+	}
+
+	public boolean isJenkinsReportLongestRunningTestEnabled() {
+		try {
+			Properties buildProperties =
+				JenkinsResultsParserUtil.getBuildProperties();
+
+			return Objects.equals(
+				buildProperties.getProperty(
+					"jenkins.report.longest.running.test.enabled", "false"),
+				"true");
+		}
+		catch (IOException ioException) {
+			throw new RuntimeException(
+				"Unable to get build properties", ioException);
+		}
 	}
 
 	@Override
@@ -1954,28 +1910,6 @@ public abstract class BaseTopLevelBuild
 		return templateEngine;
 	}
 
-	private void _addJenkinsReportSummaryItem(
-		List<Map<String, String>> summaryItems, String label, String url,
-		String linkText, String value) {
-
-		Map<String, String> summaryItem = new HashMap<>();
-
-		if (label != null) {
-			summaryItem.put("label", label);
-		}
-
-		if (url != null) {
-			summaryItem.put("linkText", linkText);
-			summaryItem.put("url", url);
-		}
-
-		if (value != null) {
-			summaryItem.put("value", value);
-		}
-
-		summaryItems.add(summaryItem);
-	}
-
 	private void _archiveBuildDatabase() {
 		String status = getStatus();
 
@@ -2223,28 +2157,6 @@ public abstract class BaseTopLevelBuild
 		return cachedDownstreamBuilds;
 	}
 
-	private String _getCISystemStatusURL() {
-		try {
-			String masterHostname = JenkinsResultsParserUtil.getBuildProperty(
-				"jenkins.remote.url[test-1-0]");
-
-			if (!JenkinsResultsParserUtil.isNullOrEmpty(masterHostname)) {
-				if (!masterHostname.endsWith("/")) {
-					masterHostname += "/";
-				}
-
-				return JenkinsResultsParserUtil.combine(
-					masterHostname,
-					"userContent/reports/ci-system-status/index.html");
-			}
-		}
-		catch (IOException ioException) {
-			ioException.printStackTrace();
-		}
-
-		return _URL_CI_SYSTEM_STATUS;
-	}
-
 	private Map<Map<String, String>, Integer> _getSlaveUsageByLabels() {
 		Map<Map<String, String>, Integer> slaveUsages = new HashMap<>();
 
@@ -2286,27 +2198,6 @@ public abstract class BaseTopLevelBuild
 			String.valueOf(getDownstreamBuildCount("completed")),
 			" Completed / ", String.valueOf(getDownstreamBuildCount(null)),
 			" Total ");
-	}
-
-	private int _getTotalReinvocationCount() {
-		BuildDatabase buildDatabase = getBuildDatabase();
-
-		Properties properties = buildDatabase.getProperties(
-			BAD_BUILD_URLS_PROPERTIES_KEY);
-
-		int totalReinvocationCount = 0;
-
-		for (String propertyName : properties.stringPropertyNames()) {
-			String badBuildURLsString = properties.getProperty(propertyName);
-
-			if (!badBuildURLsString.isEmpty()) {
-				String[] badBuildURLs = badBuildURLsString.split(",");
-
-				totalReinvocationCount += badBuildURLs.length;
-			}
-		}
-
-		return totalReinvocationCount;
 	}
 
 	private static final FailureMessageGenerator[] _FAILURE_MESSAGE_GENERATORS =

@@ -19,8 +19,31 @@
 			</div>
 		</th:block>
 
-		<div>
-			<p th:each="summaryItem : ${build.jenkinsReportSummaryItems}"><th:block th:text="${summaryItem.label}" /><a th:href="${summaryItem.url}" th:if="${summaryItem.url != null}" th:text="${summaryItem.linkText}"></a><th:block th:text="${summaryItem.value}" /></p>
+		<div th:fragment="summary">
+			<p><a th:href="${build.getCISystemStatusURL()}">CI System Status</a></p>
+			<p th:text="'Start Time: ' + ${build.startTimeString}"></p>
+			<p th:text="'Invocation Delay Time: ' + ${build.toDurationString(build.queuingDuration)}"></p>
+			<p th:text="'Build Time: ' + ${build.toDurationString(build.duration)}"></p>
+			<p th:text="'Actual CPU Usage Time: ' + ${build.toDurationString(build.totalActualDuration)}"></p>
+			<p th:text="'Cached CPU Usage Time: ' + ${build.toDurationString(build.totalCachedDuration)}"></p>
+			<p th:text="'Total CPU Usage Time: ' + ${build.toDurationString(build.totalDuration)}"></p>
+			<p th:text="'Total number of Jenkins actual slaves used: ' + ${build.totalActualSlavesUsedCount}"></p>
+			<p th:text="'Total number of Jenkins cached slaves used: ' + ${build.totalCachedSlavesUsedCount}"></p>
+			<p th:text="'Total number of Jenkins slaves used: ' + ${build.totalSlavesUsedCount}"></p>
+			<p th:text="'Total number of reinvocations: ' + ${build.totalReinvocationCount}"></p>
+			<p th:text="'Average delay time for invoked build to start: ' + ${build.toDurationString(build.averageDelayTime)}"></p>
+
+			<th:block th:with="longestDelayedDownstreamBuild=${build.longestDelayedDownstreamBuild}">
+				<p th:if="${longestDelayedDownstreamBuild != null}">Longest delay time for invoked build to start: <a th:href="${longestDelayedDownstreamBuild.buildURL}" th:text="${longestDelayedDownstreamBuild.displayName}"></a><th:block th:text="' in: ' + ${build.toDurationString(longestDelayedDownstreamBuild.delayTime)}" /></p>
+			</th:block>
+
+			<th:block th:with="longestRunningDownstreamBuild=${build.longestRunningDownstreamBuild}">
+				<p th:if="${longestRunningDownstreamBuild != null}">Longest Running Downstream Build: <a th:href="${longestRunningDownstreamBuild.buildURL}" th:text="${longestRunningDownstreamBuild.displayName}"></a><th:block th:text="' in: ' + ${build.toDurationString(longestRunningDownstreamBuild.duration)}" /></p>
+			</th:block>
+
+			<th:block th:if="${build.isJenkinsReportLongestRunningTestEnabled()}" th:with="longestRunningTest=${build.longestRunningTest}">
+				<p th:if="${longestRunningTest != null}">Longest Running Test: <a th:href="${longestRunningTest.testReportURL}" th:text="${longestRunningTest.displayName}"></a><th:block th:text="' in: ' + ${build.toDurationString(longestRunningTest.duration)}" /></p>
+			</th:block>
 		</div>
 
 		<div>
