@@ -30,37 +30,50 @@
 			<script th:utext="${build.jenkinsReportChartJsContent}"></script>
 		</div>
 
-		<table th:with="columnHeaders=${build.jenkinsReportColumnHeaders}">
+		<table>
 			<caption>Top Level Build - <strong th:text="${build.result != null} ? ${build.result} : ${#strings.toUpperCase(build.status)}"></strong></caption>
 
-			<tr>
-				<th th:each="columnHeader : ${columnHeaders}" th:text="${columnHeader}"></th>
+			<tr th:fragment="columnHeadersRow">
+				<th>Name</th>
+				<th>Console</th>
+				<th>Test Report</th>
+				<th>Start Time</th>
+				<th>Build Time</th>
+				<th th:if="${build.buildDurationsEnabled()}">Build Time (est)</th>
+				<th th:if="${build.buildDurationsEnabled()}">Build Time (+/-)</th>
+				<th>Status</th>
+				<th>Result</th>
 			</tr>
 
-			<th:block th:insert="~{jenkins_report_table_rows.html :: rows(${topLevelRows})}" />
+			<th:block th:insert="~{jenkins_report_table_rows.html :: rows(${ {build.jenkinsReportBuildInfoRow} })}" />
+			<th:block th:insert="~{jenkins_report_table_rows.html :: rows(${build.jenkinsReportStopWatchRecordRows})}" />
 		</table>
 
-		<div th:with="columnHeaders=${build.jenkinsReportColumnHeaders}">
-			<table th:each="downstreamTable : ${downstreamTables}">
-				<caption th:text="${downstreamTable.caption}"></caption>
-
-				<tr>
-					<th th:each="columnHeader : ${columnHeaders}" th:text="${columnHeader}"></th>
-				</tr>
-
-				<th:block th:insert="~{jenkins_report_table_rows.html :: rows(${downstreamTable.rows})}" />
-			</table>
+		<div>
+			<th:block th:insert="~{:: downstreamTable ('Queued: ', null, 'queued')}" />
+			<th:block th:insert="~{:: downstreamTable ('Starting: ', null, 'starting')}" />
+			<th:block th:insert="~{:: downstreamTable ('Running: ', null, 'running')}" />
+			<th:block th:insert="~{:: downstreamTable ('Missing: ', null, 'missing')}" />
 
 			<h2>Completed: </h2>
-			<table th:each="completedDownstreamTable : ${completedDownstreamTables}">
-				<caption th:text="${completedDownstreamTable.caption}"></caption>
 
-				<tr>
-					<th th:each="columnHeader : ${columnHeaders}" th:text="${columnHeader}"></th>
-				</tr>
-
-				<th:block th:insert="~{jenkins_report_table_rows.html :: rows(${completedDownstreamTable.rows})}" />
-			</table>
+			<th:block th:insert="~{:: downstreamTable ('---- Aborted: ', 'ABORTED', 'completed')}" />
+			<th:block th:insert="~{:: downstreamTable ('---- Failure: ', 'FAILURE', 'completed')}" />
+			<th:block th:insert="~{:: downstreamTable ('---- Missing: ', 'MISSING', 'completed')}" />
+			<th:block th:insert="~{:: downstreamTable ('---- Unstable: ', 'UNSTABLE', 'completed')}" />
+			<th:block th:insert="~{:: downstreamTable ('---- Success: ', 'SUCCESS', 'completed')}" />
 		</div>
+
+		<th:block th:if="${false}">
+			<th:block th:fragment="downstreamTable (captionText, result, status)" th:with="rows=${build.getJenkinsReportTableRows(result, status)}">
+				<table th:if="${!rows.isEmpty()}">
+					<caption th:text="${captionText} + ${build.getDownstreamBuildCount(result, status)}"></caption>
+
+					<tr th:replace="~{:: columnHeadersRow}"></tr>
+
+					<th:block th:insert="~{jenkins_report_table_rows.html :: rows(${rows})}" />
+				</table>
+			</th:block>
+		</th:block>
 	</body>
 </html>

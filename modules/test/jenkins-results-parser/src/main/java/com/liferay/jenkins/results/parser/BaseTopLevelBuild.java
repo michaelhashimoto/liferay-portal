@@ -389,26 +389,6 @@ public abstract class BaseTopLevelBuild
 		return resourceFileContent;
 	}
 
-	public List<String> getJenkinsReportColumnHeaders() {
-		List<String> columnHeaders = new ArrayList<>();
-
-		columnHeaders.add("Name");
-		columnHeaders.add("Console");
-		columnHeaders.add("Test Report");
-		columnHeaders.add("Start Time");
-		columnHeaders.add("Build Time");
-
-		if (buildDurationsEnabled()) {
-			columnHeaders.add("Build Time (est)");
-			columnHeaders.add("Build Time (+/-)");
-		}
-
-		columnHeaders.add("Status");
-		columnHeaders.add("Result");
-
-		return columnHeaders;
-	}
-
 	public Map<String, String> getJenkinsReportCommitMap() {
 		if (!(this instanceof WorkspaceBuild)) {
 			return null;
@@ -466,28 +446,6 @@ public abstract class BaseTopLevelBuild
 
 			context.setVariable("build", this);
 
-			List<Map<String, Object>> completedDownstreamTables =
-				new ArrayList<>();
-
-			_addJenkinsReportDownstreamTable(
-				completedDownstreamTables, "ABORTED", "completed",
-				"---- Aborted: ");
-			_addJenkinsReportDownstreamTable(
-				completedDownstreamTables, "FAILURE", "completed",
-				"---- Failure: ");
-			_addJenkinsReportDownstreamTable(
-				completedDownstreamTables, "MISSING", "completed",
-				"---- Missing: ");
-			_addJenkinsReportDownstreamTable(
-				completedDownstreamTables, "UNSTABLE", "completed",
-				"---- Unstable: ");
-			_addJenkinsReportDownstreamTable(
-				completedDownstreamTables, "SUCCESS", "completed",
-				"---- Success: ");
-
-			context.setVariable(
-				"completedDownstreamTables", completedDownstreamTables);
-
 			try {
 				context.setVariable(
 					"cssContent",
@@ -502,27 +460,6 @@ public abstract class BaseTopLevelBuild
 				throw new RuntimeException(
 					"Unable to load Jenkins report resources", ioException);
 			}
-
-			List<Map<String, Object>> downstreamTables = new ArrayList<>();
-
-			_addJenkinsReportDownstreamTable(
-				downstreamTables, null, "queued", "Queued: ");
-			_addJenkinsReportDownstreamTable(
-				downstreamTables, null, "starting", "Starting: ");
-			_addJenkinsReportDownstreamTable(
-				downstreamTables, null, "running", "Running: ");
-			_addJenkinsReportDownstreamTable(
-				downstreamTables, null, "missing", "Missing: ");
-
-			context.setVariable("downstreamTables", downstreamTables);
-
-			List<Map<String, Object>> topLevelTableRows = new ArrayList<>();
-
-			topLevelTableRows.add(getJenkinsReportBuildInfoRow());
-
-			topLevelTableRows.addAll(getJenkinsReportStopWatchRecordRows());
-
-			context.setVariable("topLevelRows", topLevelTableRows);
 
 			return _templateEngine.process("jenkins_report.html", context);
 		}
@@ -2027,26 +1964,6 @@ public abstract class BaseTopLevelBuild
 		templateEngine.setTemplateResolver(classLoaderTemplateResolver);
 
 		return templateEngine;
-	}
-
-	private void _addJenkinsReportDownstreamTable(
-		List<Map<String, Object>> downstreamTables, String result,
-		String status, String captionText) {
-
-		List<Map<String, Object>> tableRows = getJenkinsReportTableRows(
-			result, status);
-
-		if (tableRows.isEmpty()) {
-			return;
-		}
-
-		Map<String, Object> downstreamTable = new HashMap<>();
-
-		downstreamTable.put(
-			"caption", captionText + getDownstreamBuildCount(result, status));
-		downstreamTable.put("rows", tableRows);
-
-		downstreamTables.add(downstreamTable);
 	}
 
 	private void _addJenkinsReportSummaryItem(

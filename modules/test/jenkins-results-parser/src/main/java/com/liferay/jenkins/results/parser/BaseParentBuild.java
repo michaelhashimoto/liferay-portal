@@ -208,6 +208,49 @@ public abstract class BaseParentBuild extends BaseBuild implements ParentBuild {
 	}
 
 	@Override
+	public List<Map<String, Object>> getJenkinsReportTableRows(
+		String result, String status) {
+
+		List<Map<String, Object>> tableRows = super.getJenkinsReportTableRows(
+			result, status);
+
+		List<Build> builds = getDownstreamBuilds(result, status);
+
+		Collections.sort(builds, new BaseBuild.BuildDisplayNameComparator());
+
+		String batchName = null;
+
+		for (Build build : builds) {
+			if (!(build instanceof BaseBuild)) {
+				continue;
+			}
+
+			if (build instanceof DownstreamBuild) {
+				DownstreamBuild downstreamBuild = (DownstreamBuild)build;
+
+				String downstreamBatchName = downstreamBuild.getBatchName();
+
+				if (!Objects.equals(batchName, downstreamBatchName)) {
+					Map<String, Object> batchNameTableRow = new HashMap<>();
+
+					batchNameTableRow.put("batchName", downstreamBatchName);
+
+					tableRows.add(batchNameTableRow);
+
+					batchName = downstreamBatchName;
+				}
+			}
+
+			BaseBuild baseBuild = (BaseBuild)build;
+
+			tableRows.addAll(
+				baseBuild.getJenkinsReportTableRows(result, status));
+		}
+
+		return tableRows;
+	}
+
+	@Override
 	public Long getLatestStartTimestamp() {
 		Long latestStartTimestamp = getStartTime();
 
@@ -713,49 +756,6 @@ public abstract class BaseParentBuild extends BaseBuild implements ParentBuild {
 		failedDownstreamBuilds.addAll(getDownstreamBuilds("UNSTABLE", null));
 
 		return failedDownstreamBuilds;
-	}
-
-	@Override
-	protected List<Map<String, Object>> getJenkinsReportTableRows(
-		String result, String status) {
-
-		List<Map<String, Object>> tableRows = super.getJenkinsReportTableRows(
-			result, status);
-
-		List<Build> builds = getDownstreamBuilds(result, status);
-
-		Collections.sort(builds, new BaseBuild.BuildDisplayNameComparator());
-
-		String batchName = null;
-
-		for (Build build : builds) {
-			if (!(build instanceof BaseBuild)) {
-				continue;
-			}
-
-			if (build instanceof DownstreamBuild) {
-				DownstreamBuild downstreamBuild = (DownstreamBuild)build;
-
-				String downstreamBatchName = downstreamBuild.getBatchName();
-
-				if (!Objects.equals(batchName, downstreamBatchName)) {
-					Map<String, Object> batchNameTableRow = new HashMap<>();
-
-					batchNameTableRow.put("batchName", downstreamBatchName);
-
-					tableRows.add(batchNameTableRow);
-
-					batchName = downstreamBatchName;
-				}
-			}
-
-			BaseBuild baseBuild = (BaseBuild)build;
-
-			tableRows.addAll(
-				baseBuild.getJenkinsReportTableRows(result, status));
-		}
-
-		return tableRows;
 	}
 
 	@Override

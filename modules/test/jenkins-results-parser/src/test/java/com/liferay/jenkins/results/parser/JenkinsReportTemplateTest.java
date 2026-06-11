@@ -10,6 +10,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import org.json.JSONObject;
 
@@ -145,53 +146,9 @@ public class JenkinsReportTemplateTest {
 
 		Context context = new Context();
 
-		JSONObject buildJSONObject = new JSONObject();
-
-		buildJSONObject.put(
-			"description", "Description with <strong>markup</strong>");
-
-		context.setVariable(
-			"build",
-			_createObjectMap(
-				"buildJSONObject", buildJSONObject, "buildURL",
-				"https://test-1-1.liferay.com/job/test/1/",
-				"jenkinsReportChartJsContent", "var x = 1 && 2;",
-				"jenkinsReportColumnHeaders",
-				Arrays.asList(
-					"Name", "Console", "Test Report", "Start Time",
-					"Build Time", "Status", "Result"),
-				"jenkinsReportCommitMap",
-				_createMap(
-					"date", "6-10-2026 08:00:00 PST", "message",
-					"LPD-12345 Fix <something>", "senderBranchName",
-					"LPD-12345", "senderBranchSHA", "abc123"),
-				"jenkinsReportSummaryItems",
-				Arrays.asList(
-					_createMap(
-						"linkText", "CI System Status", "url",
-						"https://test-1-0.liferay.com/status"),
-					_createMap("label", "Build Time: ", "value", "10 minutes"),
-					_createMap(
-						"label", "Longest Running Downstream Build: ",
-						"linkText", "downstream-1", "url",
-						"https://test-1-1.liferay.com/job/test-downstream/1/",
-						"value", " in: 9 minutes")),
-				"result", "SUCCESS", "status", "completed"));
-
-		context.setVariable(
-			"completedDownstreamTables",
-			Arrays.asList(
-				_createObjectMap(
-					"caption", "---- Success: 2", "rows",
-					Arrays.asList(
-						_createTextCellRow("downstream-1"),
-						_createTextCellRow("downstream-2")))));
+		context.setVariable("build", new TestBuild());
 		context.setVariable("cssContent", "body { color: red; }");
-		context.setVariable(
-			"downstreamTables", new ArrayList<Map<String, Object>>());
 		context.setVariable("jsContent", "function f() { return 1 < 2; }");
-		context.setVariable(
-			"topLevelRows", Arrays.asList(_createTextCellRow("top-level-row")));
 
 		String content = templateEngine.process("jenkins_report.html", context);
 
@@ -238,7 +195,16 @@ public class JenkinsReportTemplateTest {
 			"Missing top level table rows",
 			content.contains("<td>top-level-row</td>"));
 		Assert.assertTrue(
+			"Missing stop watch record rows",
+			content.contains("<td>stop-watch-row</td>"));
+		Assert.assertTrue(
 			"Missing column header", content.contains("<th>Test Report</th>"));
+		Assert.assertFalse(
+			"Unexpected build durations column header",
+			content.contains("<th>Build Time (est)</th>"));
+		Assert.assertTrue(
+			"Missing completed heading",
+			content.contains("<h2>Completed: </h2>"));
 		Assert.assertTrue(
 			"Missing completed downstream table caption",
 			content.contains("<caption>---- Success: 2</caption>"));
@@ -246,6 +212,8 @@ public class JenkinsReportTemplateTest {
 			"Missing completed downstream table rows",
 			content.contains("<td>downstream-1</td>") &&
 			content.contains("<td>downstream-2</td>"));
+		Assert.assertFalse(
+			"Unexpected empty downstream table", content.contains("Queued: "));
 	}
 
 	@Test
@@ -370,6 +338,83 @@ public class JenkinsReportTemplateTest {
 		Assert.assertTrue(
 			"Missing HEAD commit note",
 			content.contains("<p><em>Indicates HEAD Commit (*)</em></p>"));
+	}
+
+	public class TestBuild {
+
+		public boolean buildDurationsEnabled() {
+			return false;
+		}
+
+		public JSONObject getBuildJSONObject() {
+			JSONObject buildJSONObject = new JSONObject();
+
+			buildJSONObject.put(
+				"description", "Description with <strong>markup</strong>");
+
+			return buildJSONObject;
+		}
+
+		public String getBuildURL() {
+			return "https://test-1-1.liferay.com/job/test/1/";
+		}
+
+		public int getDownstreamBuildCount(String result, String status) {
+			return 2;
+		}
+
+		public Map<String, Object> getJenkinsReportBuildInfoRow() {
+			return _createTextCellRow("top-level-row");
+		}
+
+		public String getJenkinsReportChartJsContent() {
+			return "var x = 1 && 2;";
+		}
+
+		public Map<String, String> getJenkinsReportCommitMap() {
+			return _createMap(
+				"date", "6-10-2026 08:00:00 PST", "message",
+				"LPD-12345 Fix <something>", "senderBranchName", "LPD-12345",
+				"senderBranchSHA", "abc123");
+		}
+
+		public List<Map<String, Object>> getJenkinsReportStopWatchRecordRows() {
+			return Arrays.asList(_createTextCellRow("stop-watch-row"));
+		}
+
+		public List<Map<String, String>> getJenkinsReportSummaryItems() {
+			return Arrays.asList(
+				_createMap(
+					"linkText", "CI System Status", "url",
+					"https://test-1-0.liferay.com/status"),
+				_createMap("label", "Build Time: ", "value", "10 minutes"),
+				_createMap(
+					"label", "Longest Running Downstream Build: ", "linkText",
+					"downstream-1", "url",
+					"https://test-1-1.liferay.com/job/test-downstream/1/",
+					"value", " in: 9 minutes"));
+		}
+
+		public List<Map<String, Object>> getJenkinsReportTableRows(
+			String result, String status) {
+
+			if (!Objects.equals(result, "SUCCESS")) {
+				return new ArrayList<>();
+			}
+
+			return Arrays.asList(
+				_createTextCellRow("downstream-1"),
+				_createTextCellRow("downstream-2"));
+		}
+
+		public String getResult() {
+			return "SUCCESS";
+		}
+
+		public String getStatus() {
+			return "completed";
+		}
+
 	}
 
 	private Map<String, String> _createMap(String... keyValues) {
