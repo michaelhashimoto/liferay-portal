@@ -991,10 +991,6 @@ public abstract class BaseBuild implements Build {
 		return new ArrayList<>();
 	}
 
-	public List<Map<String, Object>> getJenkinsReportTestDurationRows() {
-		return new ArrayList<>();
-	}
-
 	public String getJenkinsReportTimeZoneName() {
 		return _NAME_JENKINS_REPORT_TIME_ZONE;
 	}
@@ -2544,96 +2540,6 @@ public abstract class BaseBuild implements Build {
 		return getGitHubMessageJobResultsElement();
 	}
 
-	protected Map<String, String> getJenkinsReportExpanderPart(
-		String expanderName, String namespace) {
-
-		Map<String, String> expanderPart = new HashMap<>();
-
-		expanderPart.put(
-			"id",
-			JenkinsResultsParserUtil.combine(
-				namespace, "-expander-anchor-", expanderName));
-		expanderPart.put(
-			"onClick",
-			JenkinsResultsParserUtil.combine(
-				"return toggleStopWatchRecordExpander(\'", namespace, "\', \'",
-				expanderName, "\')"));
-		expanderPart.put(
-			"style",
-			"font-family: monospace, monospace; text-decoration: none");
-		expanderPart.put("type", "expander");
-
-		return expanderPart;
-	}
-
-	protected Map<String, Object> getJenkinsReportTableCell(
-		String tagName, String style, Object... parts) {
-
-		Map<String, Object> tableCell = new HashMap<>();
-
-		List<Map<String, String>> tableCellParts = new ArrayList<>();
-
-		for (Object part : parts) {
-			if (part == null) {
-				continue;
-			}
-
-			if (part instanceof String) {
-				tableCellParts.add(getJenkinsReportTextPart((String)part));
-
-				continue;
-			}
-
-			tableCellParts.add((Map<String, String>)part);
-		}
-
-		tableCell.put("parts", tableCellParts);
-
-		if (style != null) {
-			tableCell.put("style", style);
-		}
-
-		tableCell.put("tagName", tagName);
-
-		return tableCell;
-	}
-
-	protected Map<String, Object> getJenkinsReportTableRow(
-		String id, String style, List<Map<String, Object>> tableCells) {
-
-		Map<String, Object> tableRow = new HashMap<>();
-
-		tableRow.put("cells", tableCells);
-
-		if (id != null) {
-			tableRow.put("id", id);
-		}
-
-		if (style != null) {
-			tableRow.put("style", style);
-		}
-
-		return tableRow;
-	}
-
-	protected Map<String, String> getJenkinsReportTextPart(String text) {
-		Map<String, String> textPart = new HashMap<>();
-
-		textPart.put("text", text);
-		textPart.put("type", "text");
-
-		return textPart;
-	}
-
-	protected Map<String, String> getJenkinsReportUnderlinePart(String text) {
-		Map<String, String> underlinePart = new HashMap<>();
-
-		underlinePart.put("text", text);
-		underlinePart.put("type", "underline");
-
-		return underlinePart;
-	}
-
 	protected Map<String, String> getParameters(JSONArray jsonArray) {
 		Map<String, String> parameters = new HashMap<>(jsonArray.length());
 
@@ -2948,8 +2854,6 @@ public abstract class BaseBuild implements Build {
 
 	protected static final String CACHED_BUILD_URLS_PROPERTIES_KEY =
 		"cached-build-urls.properties";
-
-	protected static final int PIXELS_WIDTH_INDENT = 35;
 
 	protected static final Pattern jobNamePattern = Pattern.compile(
 		"(?<baseJob>[^\\(]+)\\((?<branchName>[^\\)]+)\\)");

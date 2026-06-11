@@ -417,130 +417,6 @@ public class BaseDownstreamBuild extends BaseBuild implements DownstreamBuild {
 		return _gitHubMessageElement;
 	}
 
-	@Override
-	public List<Map<String, Object>> getJenkinsReportTestDurationRows() {
-		if (!isOverheadIncluded()) {
-			return Collections.emptyList();
-		}
-
-		List<Map<String, Object>> tableRows = new ArrayList<>();
-
-		List<Map<String, Object>> headerTableCells = new ArrayList<>();
-
-		headerTableCells.add(
-			getJenkinsReportTableCell(
-				"td",
-				JenkinsResultsParserUtil.combine(
-					"text-indent: ",
-					String.valueOf(getDepth() * PIXELS_WIDTH_INDENT), "px"),
-				getJenkinsReportExpanderPart(
-					"test-durations-header", String.valueOf(hashCode())),
-				getJenkinsReportUnderlinePart("Test Durations")));
-
-		Map<String, Object> headerTableRow = getJenkinsReportTableRow(
-			hashCode() + "-test-durations-header", "display: none",
-			headerTableCells);
-
-		List<String> childStopWatchRows = new ArrayList<>();
-
-		childStopWatchRows.add("test-duration-names");
-
-		tableRows.add(headerTableRow);
-
-		String style = JenkinsResultsParserUtil.combine(
-			"text-indent: ",
-			String.valueOf((getDepth() + 1) * PIXELS_WIDTH_INDENT), "px");
-
-		List<Map<String, Object>> durationNamesTableCells = new ArrayList<>();
-
-		durationNamesTableCells.add(
-			getJenkinsReportTableCell("th", style, "Name"));
-		durationNamesTableCells.add(
-			getJenkinsReportTableCell("th", null, "Duration"));
-		durationNamesTableCells.add(
-			getJenkinsReportTableCell("th", null, "Duration (est)"));
-		durationNamesTableCells.add(
-			getJenkinsReportTableCell("th", null, "Duration (+/-)"));
-
-		tableRows.add(
-			getJenkinsReportTableRow(
-				hashCode() + "-test-duration-names", "display: none;",
-				durationNamesTableCells));
-
-		AxisTestClassGroup axisTestClassGroup = getAxisTestClassGroup();
-
-		if (axisTestClassGroup != null) {
-			List<TestClass> testClasses = axisTestClassGroup.getTestClasses();
-
-			for (int i = 0; i < testClasses.size(); i++) {
-				TestClass testClass = testClasses.get(i);
-
-				TestClassResult testClassResult = null;
-
-				String testClassName = null;
-
-				long duration = 0L;
-
-				if (testClass instanceof JUnitTestClass) {
-					JUnitTestClass jUnitTestClass = (JUnitTestClass)testClass;
-
-					testClassName = jUnitTestClass.getTestClassName();
-
-					testClassResult = getTestClassResult(testClassName);
-
-					if (testClassResult != null) {
-						duration = testClassResult.getDuration();
-					}
-				}
-				else if (testClass instanceof FunctionalTestClass) {
-					FunctionalTestClass functionalTestClass =
-						(FunctionalTestClass)testClass;
-
-					testClassName =
-						functionalTestClass.getTestClassMethodName();
-
-					testClassResult = getTestClassResult(
-						"com.liferay.poshi.runner.PoshiRunner");
-
-					if (testClassResult != null) {
-						for (TestResult testResult :
-								testClassResult.getTestResults()) {
-
-							String testMethodName =
-								"test[" + testClassName + "]";
-
-							if (!Objects.equals(
-									testMethodName, testResult.getTestName())) {
-
-								continue;
-							}
-
-							duration = testResult.getDuration();
-
-							break;
-						}
-					}
-				}
-
-				childStopWatchRows.add("test-duration-values-" + i);
-
-				tableRows.add(
-					getJenkinsReportTableRow(
-						hashCode() + "-test-duration-values-" + i,
-						"display: none;",
-						_getDurationValuesTableCells(
-							testClassName, style, duration,
-							testClass.getAverageDuration())));
-			}
-		}
-
-		headerTableRow.put(
-			"childStopwatchRows",
-			JenkinsResultsParserUtil.join(",", childStopWatchRows));
-
-		return tableRows;
-	}
-
 	public long getOverheadDuration() {
 		long overheadDuration = getDuration() - getTotalTestDuration();
 
@@ -594,6 +470,73 @@ public class BaseDownstreamBuild extends BaseBuild implements DownstreamBuild {
 		}
 
 		return testClassMethodNamesMap;
+	}
+
+	public List<Map<String, Object>> getTestDurations() {
+		List<Map<String, Object>> testDurations = new ArrayList<>();
+
+		AxisTestClassGroup axisTestClassGroup = getAxisTestClassGroup();
+
+		if (axisTestClassGroup == null) {
+			return testDurations;
+		}
+
+		for (TestClass testClass : axisTestClassGroup.getTestClasses()) {
+			TestClassResult testClassResult = null;
+
+			String testClassName = null;
+
+			long duration = 0L;
+
+			if (testClass instanceof JUnitTestClass) {
+				JUnitTestClass jUnitTestClass = (JUnitTestClass)testClass;
+
+				testClassName = jUnitTestClass.getTestClassName();
+
+				testClassResult = getTestClassResult(testClassName);
+
+				if (testClassResult != null) {
+					duration = testClassResult.getDuration();
+				}
+			}
+			else if (testClass instanceof FunctionalTestClass) {
+				FunctionalTestClass functionalTestClass =
+					(FunctionalTestClass)testClass;
+
+				testClassName = functionalTestClass.getTestClassMethodName();
+
+				testClassResult = getTestClassResult(
+					"com.liferay.poshi.runner.PoshiRunner");
+
+				if (testClassResult != null) {
+					for (TestResult testResult :
+							testClassResult.getTestResults()) {
+
+						String testMethodName = "test[" + testClassName + "]";
+
+						if (!Objects.equals(
+								testMethodName, testResult.getTestName())) {
+
+							continue;
+						}
+
+						duration = testResult.getDuration();
+
+						break;
+					}
+				}
+			}
+
+			Map<String, Object> testDuration = new HashMap<>();
+
+			testDuration.put("averageDuration", testClass.getAverageDuration());
+			testDuration.put("duration", duration);
+			testDuration.put("name", testClassName);
+
+			testDurations.add(testDuration);
+		}
+
+		return testDurations;
 	}
 
 	@Override
@@ -965,27 +908,6 @@ public class BaseDownstreamBuild extends BaseBuild implements DownstreamBuild {
 		}
 
 		return testResultGitHubElements;
-	}
-
-	private List<Map<String, Object>> _getDurationValuesTableCells(
-		String name, String style, long duration, long averageDuration) {
-
-		List<Map<String, Object>> tableCells = new ArrayList<>();
-
-		tableCells.add(getJenkinsReportTableCell("td", style, name));
-		tableCells.add(
-			getJenkinsReportTableCell(
-				"td", null,
-				JenkinsResultsParserUtil.toDurationString(duration)));
-		tableCells.add(
-			getJenkinsReportTableCell(
-				"td", null,
-				JenkinsResultsParserUtil.toDurationString(averageDuration)));
-		tableCells.add(
-			getJenkinsReportTableCell(
-				"td", null, getDiffDurationString(duration - averageDuration)));
-
-		return tableCells;
 	}
 
 	private String _getS3ObjectPath(File file) {

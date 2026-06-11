@@ -35,7 +35,10 @@
 
 		<th:block th:if="${build.hasBuildDurations()}">
 			<th:block th:insert="~{:: buildDurationRows (${build})}" />
-			<th:block th:insert="~{:: rows (${build.jenkinsReportTestDurationRows})}" />
+
+			<th:block th:if="${build.isOverheadIncluded()}">
+				<th:block th:insert="~{:: testDurationRows (${build})}" />
+			</th:block>
 		</th:block>
 
 		<th:block th:insert="~{:: stopWatchRecordRows (${build})}" />
@@ -87,14 +90,26 @@
 	</th:block>
 </th:block>
 
-<th:block th:fragment="rows (rows)">
-	<th:block th:each="row : ${rows}">
-		<tr th:attr="child-stopwatch-rows=${row.childStopwatchRows},id=${row.id},style=${row.style}">
-			<th:block th:each="cell : ${row.cells}">
-				<th th:attr="style=${cell.style}" th:if="${cell.tagName == 'th'}"><th:block th:each="part : ${cell.parts}"><a href="" th:attr="id=${part.id},onClick=${part.onClick},style=${part.style}" th:if="${part.type == 'expander'}">+ </a><th:block th:if="${part.type == 'text'}" th:text="${part.text}" /><u th:if="${part.type == 'underline'}" th:text="${part.text}"></u></th:block></th>
-				<td th:attr="style=${cell.style}" th:if="${cell.tagName == 'td'}"><th:block th:each="part : ${cell.parts}"><a href="" th:attr="id=${part.id},onClick=${part.onClick},style=${part.style}" th:if="${part.type == 'expander'}">+ </a><th:block th:if="${part.type == 'text'}" th:text="${part.text}" /><u th:if="${part.type == 'underline'}" th:text="${part.text}"></u></th:block></td>
-			</th:block>
+<th:block th:fragment="testDurationRows (build)">
+	<th:block th:if="${build != null}" th:with="childIndent=(${build.depth} + 1) * 35,hashCode=${build.hashCode()},testDurations=${build.testDurations}">
+		<tr th:attr="child-stopwatch-rows=${testDurations.isEmpty() ? 'test-duration-names' : ('test-duration-names,' + #strings.listJoin(#numbers.sequence(0, testDurations.size() - 1).{'test-duration-values-' + #this}, ','))},id=${hashCode} + '-test-durations-header'" th:style="'display: none'">
+			<td th:style="'text-indent: ' + (${build.depth} * 35) + 'px'"><a href="" th:attr="id=${hashCode} + '-expander-anchor-test-durations-header',onClick='return toggleStopWatchRecordExpander(\'' + ${hashCode} + '\', \'test-durations-header\')',style='font-family: monospace, monospace; text-decoration: none'">+ </a><u>Test Durations</u></td>
 		</tr>
+		<tr th:attr="id=${hashCode} + '-test-duration-names'" th:style="'display: none;'">
+			<th th:style="'text-indent: ' + ${childIndent} + 'px'">Name</th>
+			<th>Duration</th>
+			<th>Duration (est)</th>
+			<th>Duration (+/-)</th>
+		</tr>
+
+		<th:block th:each="testDuration, testDurationStat : ${testDurations}">
+			<tr th:attr="id=${hashCode} + '-test-duration-values-' + ${testDurationStat.index}" th:style="'display: none;'">
+				<td th:style="'text-indent: ' + ${childIndent} + 'px'" th:text="${testDuration.name}"></td>
+				<td th:text="${build.toDurationString(testDuration.duration)}"></td>
+				<td th:text="${build.toDurationString(testDuration.averageDuration)}"></td>
+				<td th:text="${build.getDiffDurationString(testDuration.duration - testDuration.averageDuration)}"></td>
+			</tr>
+		</th:block>
 	</th:block>
 </th:block>
 

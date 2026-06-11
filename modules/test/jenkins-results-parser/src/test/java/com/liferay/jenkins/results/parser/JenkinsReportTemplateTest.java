@@ -28,99 +28,6 @@ import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
 public class JenkinsReportTemplateTest {
 
 	@Test
-	public void testRenderJenkinsReportTableRows() {
-		TemplateEngine templateEngine = new TemplateEngine();
-
-		ClassLoaderTemplateResolver classLoaderTemplateResolver =
-			new ClassLoaderTemplateResolver();
-
-		classLoaderTemplateResolver.setCharacterEncoding("UTF-8");
-		classLoaderTemplateResolver.setPrefix(
-			"com/liferay/jenkins/results/parser/dependencies/jenkins/report/");
-		classLoaderTemplateResolver.setTemplateMode(TemplateMode.HTML);
-
-		templateEngine.setTemplateResolver(classLoaderTemplateResolver);
-
-		List<Map<String, Object>> rows = new ArrayList<>();
-
-		rows.add(
-			_createObjectMap(
-				"cells",
-				Arrays.asList(
-					_createObjectMap(
-						"parts",
-						Arrays.asList(
-							_createMap(
-								"id",
-								"12345-expander-anchor-build-durations-header",
-								"onClick",
-								"return toggleStopWatchRecordExpander(" +
-									"'12345', 'build-durations-header')",
-								"style",
-								"font-family: monospace, monospace; " +
-									"text-decoration: none",
-								"type", "expander"),
-							_createMap(
-								"text", "Build Durations", "type",
-								"underline")),
-						"style", "text-indent: 35px", "tagName", "td")),
-				"childStopwatchRows",
-				"build-duration-names,build-duration-values", "id",
-				"12345-build-durations-header", "style", "display: none"));
-		rows.add(
-			_createObjectMap(
-				"cells",
-				Arrays.asList(
-					_createObjectMap(
-						"parts",
-						Arrays.asList(
-							_createMap("text", "Name", "type", "text")),
-						"style", "text-indent: 70px", "tagName", "th"),
-					_createObjectMap(
-						"parts",
-						Arrays.asList(
-							_createMap("text", "Duration", "type", "text")),
-						"tagName", "th")),
-				"id", "12345-build-duration-names", "style", "display: none;"));
-
-		Context context = new Context();
-
-		context.setVariable("rows", rows);
-
-		String content = templateEngine.process(
-			"jenkins_report_table_rows.html", context);
-
-		Assert.assertTrue(
-			"Missing header row attributes",
-			content.contains(
-				"<tr child-stopwatch-rows=\"build-duration-names," +
-					"build-duration-values\" " +
-						"id=\"12345-build-durations-header\" " +
-							"style=\"display: none\">"));
-		Assert.assertTrue(
-			"Missing expander anchor",
-			content.contains(
-				"<a href=\"\" " +
-					"id=\"12345-expander-anchor-build-durations-header\" " +
-						"onClick=\"return toggleStopWatchRecordExpander(" +
-							"&#39;12345&#39;, " +
-								"&#39;build-durations-header&#39;)\" " +
-									"style=\"font-family: monospace, " +
-										"monospace; text-decoration: " +
-											"none\">+ </a>"));
-		Assert.assertTrue(
-			"Missing underline cell",
-			content.contains("<u>Build Durations</u></td>"));
-		Assert.assertTrue(
-			"Missing header cell style",
-			content.contains("<td style=\"text-indent: 35px\">"));
-		Assert.assertTrue(
-			"Missing duration names cells",
-			content.contains("<th style=\"text-indent: 70px\">Name</th>") &&
-			content.contains("<th>Duration</th>"));
-	}
-
-	@Test
 	public void testRenderJenkinsReportTemplate() {
 		TemplateEngine templateEngine = new TemplateEngine();
 
@@ -264,6 +171,22 @@ public class JenkinsReportTemplateTest {
 			content.contains("<td>4 minutes</td>") &&
 			content.contains("<td>2 minutes</td>") &&
 			content.contains("<td>diff-2</td>"));
+		Assert.assertTrue(
+			"Missing test durations header row",
+			content.contains("id=\"12345-test-durations-header\"") &&
+			content.contains(
+				"child-stopwatch-rows=\"test-duration-names," +
+					"test-duration-values-0\"") &&
+			content.contains("<u>Test Durations</u></td>"));
+		Assert.assertTrue(
+			"Missing test duration values row",
+			content.contains("id=\"12345-test-duration-values-0\"") &&
+			content.contains(
+				"<td style=\"text-indent: 70px\">com.liferay.test.FooTest" +
+					"</td>") &&
+			content.contains("<td>8 minutes</td>") &&
+			content.contains("<td>3 minutes</td>") &&
+			content.contains("<td>diff-5</td>"));
 		Assert.assertTrue(
 			"Missing stop watch record header row",
 			content.contains("id=\"12345-stop-watch-record-header\"") &&
@@ -505,10 +428,6 @@ public class JenkinsReportTemplateTest {
 			return Arrays.asList((TestBuild)new TestDownstreamBuild());
 		}
 
-		public List<Map<String, Object>> getJenkinsReportTestDurationRows() {
-			return new ArrayList<>();
-		}
-
 		public String getJenkinsReportTimeZoneName() {
 			return "PST";
 		}
@@ -574,6 +493,13 @@ public class JenkinsReportTemplateTest {
 								"shortName", "child", "startTimestamp", 2000L)),
 						"depth", 0, "duration", 60L, "name", "record.one",
 						"shortName", "one", "startTimestamp", 1000L)));
+		}
+
+		public List<Map<String, Object>> getTestDurations() {
+			return Arrays.asList(
+				_createObjectMap(
+					"averageDuration", 3L, "duration", 8L, "name",
+					"com.liferay.test.FooTest"));
 		}
 
 		public Map<String, Object> getTimelineData() {
