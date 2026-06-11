@@ -11,7 +11,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import org.junit.Assert;
@@ -85,9 +84,6 @@ public class JenkinsReportTemplateTest {
 						"parts", new ArrayList<>(), "tagName", "td")),
 				"id", "12345-stop-watch-record-header", "style",
 				"display: none"));
-		rows.add(
-			_createObjectMap(
-				"rawHTML", "<tr><td>legacy-archived-row</td></tr>"));
 
 		Context context = new Context();
 
@@ -95,31 +91,6 @@ public class JenkinsReportTemplateTest {
 
 		String content = templateEngine.process(
 			"jenkins_report_table_rows.html", context);
-
-		JSONArray jsonArray = new JSONArray();
-
-		for (Map<String, Object> row : rows) {
-			jsonArray.put(row);
-		}
-
-		jsonArray = new JSONArray(jsonArray.toString());
-
-		List<Map<String, Object>> archivedRows = new ArrayList<>();
-
-		for (int i = 0; i < jsonArray.length(); i++) {
-			JSONObject jsonObject = jsonArray.getJSONObject(i);
-
-			archivedRows.add(jsonObject.toMap());
-		}
-
-		Context archivedContext = new Context();
-
-		archivedContext.setVariable("rows", archivedRows);
-
-		Assert.assertEquals(
-			"Rows rendered from a JSON archive round trip must match", content,
-			templateEngine.process(
-				"jenkins_report_table_rows.html", archivedContext));
 
 		Assert.assertTrue(
 			"Missing build info row attributes",
@@ -156,9 +127,6 @@ public class JenkinsReportTemplateTest {
 					"none\">"));
 		Assert.assertTrue(
 			"Missing hidden row empty cell", content.contains("<td></td>"));
-		Assert.assertTrue(
-			"Missing raw HTML row",
-			content.contains("<tr><td>legacy-archived-row</td></tr>"));
 	}
 
 	@Test
@@ -213,16 +181,17 @@ public class JenkinsReportTemplateTest {
 		context.setVariable(
 			"completedDownstreamTables",
 			Arrays.asList(
-				_createMap(
-					"caption", "---- Success: 2", "rowsHTML",
-					"<tr><td>downstream-1</td></tr><tr><td>downstream-2</td>" +
-						"</tr>")));
+				_createObjectMap(
+					"caption", "---- Success: 2", "rows",
+					Arrays.asList(
+						_createTextCellRow("downstream-1"),
+						_createTextCellRow("downstream-2")))));
 		context.setVariable("cssContent", "body { color: red; }");
 		context.setVariable(
-			"downstreamTables", new ArrayList<Map<String, String>>());
+			"downstreamTables", new ArrayList<Map<String, Object>>());
 		context.setVariable("jsContent", "function f() { return 1 < 2; }");
 		context.setVariable(
-			"topLevelRowsHTML", "<tr><td>top-level-row</td></tr>");
+			"topLevelRows", Arrays.asList(_createTextCellRow("top-level-row")));
 
 		String content = templateEngine.process("jenkins_report.html", context);
 
@@ -267,7 +236,7 @@ public class JenkinsReportTemplateTest {
 			content.contains("Top Level Build - <strong>SUCCESS</strong>"));
 		Assert.assertTrue(
 			"Missing top level table rows",
-			content.contains("<tr><td>top-level-row</td></tr>"));
+			content.contains("<td>top-level-row</td>"));
 		Assert.assertTrue(
 			"Missing column header", content.contains("<th>Test Report</th>"));
 		Assert.assertTrue(
@@ -275,9 +244,8 @@ public class JenkinsReportTemplateTest {
 			content.contains("<caption>---- Success: 2</caption>"));
 		Assert.assertTrue(
 			"Missing completed downstream table rows",
-			content.contains(
-				"<tr><td>downstream-1</td></tr><tr><td>downstream-2</td>" +
-					"</tr>"));
+			content.contains("<td>downstream-1</td>") &&
+			content.contains("<td>downstream-2</td>"));
 	}
 
 	@Test
@@ -422,6 +390,16 @@ public class JenkinsReportTemplateTest {
 		}
 
 		return map;
+	}
+
+	private Map<String, Object> _createTextCellRow(String text) {
+		return _createObjectMap(
+			"cells",
+			Arrays.asList(
+				_createObjectMap(
+					"parts",
+					Arrays.asList(_createMap("text", text, "type", "text")),
+					"tagName", "td")));
 	}
 
 }

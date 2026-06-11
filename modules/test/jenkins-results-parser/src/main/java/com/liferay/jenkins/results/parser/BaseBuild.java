@@ -38,11 +38,8 @@ import java.util.concurrent.TimeoutException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.commons.lang3.StringUtils;
 
-import org.dom4j.Document;
-import org.dom4j.DocumentException;
 import org.dom4j.Element;
 
 import org.json.JSONArray;
@@ -2181,18 +2178,6 @@ public abstract class BaseBuild implements Build {
 		return archiveFile.exists();
 	}
 
-	protected void archiveJenkinsReportTableRows(
-		String urlSuffix, List<Map<String, Object>> tableRows) {
-
-		JSONArray jsonArray = new JSONArray();
-
-		for (Map<String, Object> tableRow : tableRows) {
-			jsonArray.put(tableRow);
-		}
-
-		_archive(jsonArray.toString(), true, urlSuffix);
-	}
-
 	protected boolean buildDurationsEnabled() {
 		if (_buildDurationsEnabled != null) {
 			return _buildDurationsEnabled;
@@ -2296,60 +2281,6 @@ public abstract class BaseBuild implements Build {
 			});
 
 		return archiveCallables;
-	}
-
-	protected List<Map<String, Object>> getArchivedJenkinsReportTableRows(
-		String urlSuffix) {
-
-		String archiveFileContent = getArchiveFileContent(urlSuffix);
-
-		List<Map<String, Object>> tableRows = new ArrayList<>();
-
-		if (JenkinsResultsParserUtil.isNullOrEmpty(archiveFileContent)) {
-			return tableRows;
-		}
-
-		archiveFileContent = archiveFileContent.trim();
-
-		if (archiveFileContent.startsWith("<")) {
-
-			// Archives written before the Jenkins report was rendered with
-			// Thymeleaf contain dom4j XML fragments instead of JSON
-
-			try {
-				Document document = Dom4JUtil.parse(archiveFileContent);
-
-				Element rootElement = document.getRootElement();
-
-				for (Element element : rootElement.elements()) {
-					element.detach();
-
-					Map<String, Object> tableRow = new HashMap<>();
-
-					tableRow.put(
-						"rawHTML",
-						StringEscapeUtils.unescapeXml(
-							Dom4JUtil.format(element, true)));
-
-					tableRows.add(tableRow);
-				}
-			}
-			catch (DocumentException | IOException exception) {
-				throw new RuntimeException(exception);
-			}
-
-			return tableRows;
-		}
-
-		JSONArray jsonArray = new JSONArray(archiveFileContent);
-
-		for (int i = 0; i < jsonArray.length(); i++) {
-			JSONObject jsonObject = jsonArray.getJSONObject(i);
-
-			tableRows.add(jsonObject.toMap());
-		}
-
-		return tableRows;
 	}
 
 	protected File getArchiveFile(String urlSuffix) {
@@ -2752,12 +2683,6 @@ public abstract class BaseBuild implements Build {
 	}
 
 	protected List<Map<String, Object>> getJenkinsReportStopWatchRecordRows() {
-		String urlSuffix = "stopWatchRecordElements";
-
-		if (archiveFileExists(urlSuffix)) {
-			return getArchivedJenkinsReportTableRows(urlSuffix);
-		}
-
 		List<Map<String, Object>> stopWatchRecordTableRows = new ArrayList<>();
 
 		List<Map<String, Object>> headerTableCells = new ArrayList<>();
@@ -2798,8 +2723,6 @@ public abstract class BaseBuild implements Build {
 			stopWatchRecordTableRows.addAll(
 				_getStopWatchRecordTableRows(stopWatchRecord));
 		}
-
-		archiveJenkinsReportTableRows(urlSuffix, stopWatchRecordTableRows);
 
 		return stopWatchRecordTableRows;
 	}

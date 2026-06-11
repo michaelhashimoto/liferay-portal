@@ -37,7 +37,7 @@
 				<th th:each="columnHeader : ${columnHeaders}" th:text="${columnHeader}"></th>
 			</tr>
 
-			<th:block th:utext="${topLevelRowsHTML}" />
+			<th:block th:insert="~{jenkins_report_table_rows.html :: rows(${topLevelRows})}" />
 		</table>
 
 		<div th:with="columnHeaders=${build.jenkinsReportColumnHeaders}">
@@ -48,7 +48,7 @@
 					<th th:each="columnHeader : ${columnHeaders}" th:text="${columnHeader}"></th>
 				</tr>
 
-				<th:block th:utext="${downstreamTable.rowsHTML}" />
+				<th:block th:insert="~{jenkins_report_table_rows.html :: rows(${downstreamTable.rows})}" />
 			</table>
 
 			<h2>Completed: </h2>
@@ -59,7 +59,7 @@
 					<th th:each="columnHeader : ${columnHeaders}" th:text="${columnHeader}"></th>
 				</tr>
 
-				<th:block th:utext="${completedDownstreamTable.rowsHTML}" />
+				<th:block th:insert="~{jenkins_report_table_rows.html :: rows(${completedDownstreamTable.rows})}" />
 			</table>
 		</div>
 	</body>

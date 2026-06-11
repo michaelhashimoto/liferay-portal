@@ -730,12 +730,6 @@ public class BaseDownstreamBuild extends BaseBuild implements DownstreamBuild {
 
 	@Override
 	protected List<Map<String, Object>> getJenkinsReportBuildDurationRows() {
-		String urlSuffix = "buildDurationsElements";
-
-		if (archiveFileExists(urlSuffix)) {
-			return getArchivedJenkinsReportTableRows(urlSuffix);
-		}
-
 		List<Map<String, Object>> tableRows = new ArrayList<>();
 
 		List<Map<String, Object>> headerTableCells = new ArrayList<>();
@@ -809,8 +803,6 @@ public class BaseDownstreamBuild extends BaseBuild implements DownstreamBuild {
 					"Total Duration", style, duration, getAverageDuration())));
 
 		if (!overheadIncluded) {
-			archiveJenkinsReportTableRows(urlSuffix, tableRows);
-
 			return tableRows;
 		}
 
@@ -841,8 +833,6 @@ public class BaseDownstreamBuild extends BaseBuild implements DownstreamBuild {
 					"Overhead Duration", style, overheadDuration,
 					getAverageOverheadDuration())));
 
-		archiveJenkinsReportTableRows(urlSuffix, tableRows);
-
 		return tableRows;
 	}
 
@@ -857,12 +847,6 @@ public class BaseDownstreamBuild extends BaseBuild implements DownstreamBuild {
 			!batchName.startsWith("unit")) {
 
 			return Collections.emptyList();
-		}
-
-		String urlSuffix = "testDurationsElements";
-
-		if (archiveFileExists(urlSuffix)) {
-			return getArchivedJenkinsReportTableRows(urlSuffix);
 		}
 
 		List<Map<String, Object>> tableRows = new ArrayList<>();
@@ -979,8 +963,6 @@ public class BaseDownstreamBuild extends BaseBuild implements DownstreamBuild {
 		headerTableRow.put(
 			"childStopwatchRows",
 			JenkinsResultsParserUtil.join(",", childStopWatchRows));
-
-		archiveJenkinsReportTableRows(urlSuffix, tableRows);
 
 		return tableRows;
 	}

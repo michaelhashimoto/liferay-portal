@@ -466,7 +466,7 @@ public abstract class BaseTopLevelBuild
 
 			context.setVariable("build", this);
 
-			List<Map<String, String>> completedDownstreamTables =
+			List<Map<String, Object>> completedDownstreamTables =
 				new ArrayList<>();
 
 			_addJenkinsReportDownstreamTable(
@@ -503,7 +503,7 @@ public abstract class BaseTopLevelBuild
 					"Unable to load Jenkins report resources", ioException);
 			}
 
-			List<Map<String, String>> downstreamTables = new ArrayList<>();
+			List<Map<String, Object>> downstreamTables = new ArrayList<>();
 
 			_addJenkinsReportDownstreamTable(
 				downstreamTables, null, "queued", "Queued: ");
@@ -522,9 +522,7 @@ public abstract class BaseTopLevelBuild
 
 			topLevelTableRows.addAll(getJenkinsReportStopWatchRecordRows());
 
-			context.setVariable(
-				"topLevelRowsHTML",
-				_getJenkinsReportTableRowsHTML(topLevelTableRows));
+			context.setVariable("topLevelRows", topLevelTableRows);
 
 			return _templateEngine.process("jenkins_report.html", context);
 		}
@@ -2032,7 +2030,7 @@ public abstract class BaseTopLevelBuild
 	}
 
 	private void _addJenkinsReportDownstreamTable(
-		List<Map<String, String>> downstreamTables, String result,
+		List<Map<String, Object>> downstreamTables, String result,
 		String status, String captionText) {
 
 		List<Map<String, Object>> tableRows = getJenkinsReportTableRows(
@@ -2042,12 +2040,11 @@ public abstract class BaseTopLevelBuild
 			return;
 		}
 
-		Map<String, String> downstreamTable = new HashMap<>();
+		Map<String, Object> downstreamTable = new HashMap<>();
 
 		downstreamTable.put(
 			"caption", captionText + getDownstreamBuildCount(result, status));
-		downstreamTable.put(
-			"rowsHTML", _getJenkinsReportTableRowsHTML(tableRows));
+		downstreamTable.put("rows", tableRows);
 
 		downstreamTables.add(downstreamTable);
 	}
@@ -2341,17 +2338,6 @@ public abstract class BaseTopLevelBuild
 		}
 
 		return _URL_CI_SYSTEM_STATUS;
-	}
-
-	private String _getJenkinsReportTableRowsHTML(
-		List<Map<String, Object>> tableRows) {
-
-		Context context = new Context();
-
-		context.setVariable("rows", tableRows);
-
-		return _templateEngine.process(
-			"jenkins_report_table_rows.html", context);
 	}
 
 	private Map<Map<String, String>, Integer> _getSlaveUsageByLabels() {

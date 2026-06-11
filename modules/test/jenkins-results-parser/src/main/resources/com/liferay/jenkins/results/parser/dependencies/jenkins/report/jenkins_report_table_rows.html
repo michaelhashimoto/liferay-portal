@@ -1,11 +1,11 @@
-<th:block th:each="row : ${rows}">
-	<th:block th:if="${row.rawHTML != null}" th:utext="${row.rawHTML}" />
-
-	<th th:if="${row.batchName != null}" th:text="${row.batchName}"></th>
-	<tr th:attr="child-stopwatch-rows=${row.childStopwatchRows},id=${row.id},style=${row.style}" th:if="${row.cells != null}">
-		<th:block th:each="cell : ${row.cells}">
-			<th th:attr="style=${cell.style}" th:if="${cell.tagName == 'th'}"><th:block th:each="part : ${cell.parts}"><a href="" th:attr="id=${part.id},onClick=${part.onClick},style=${part.style}" th:if="${part.type == 'expander'}">+ </a><a th:href="${part.url}" th:if="${part.type == 'link'}" th:text="${part.text}"></a><th:block th:if="${part.type == 'nbsp'}">&nbsp;</th:block><span th:if="${part.type == 'span'}" th:text="${part.text}"></span><th:block th:if="${part.type == 'text'}" th:text="${part.text}" /><u th:if="${part.type == 'underline'}" th:text="${part.text}"></u></th:block></th>
-			<td th:attr="style=${cell.style}" th:if="${cell.tagName == 'td'}"><th:block th:each="part : ${cell.parts}"><a href="" th:attr="id=${part.id},onClick=${part.onClick},style=${part.style}" th:if="${part.type == 'expander'}">+ </a><a th:href="${part.url}" th:if="${part.type == 'link'}" th:text="${part.text}"></a><th:block th:if="${part.type == 'nbsp'}">&nbsp;</th:block><span th:if="${part.type == 'span'}" th:text="${part.text}"></span><th:block th:if="${part.type == 'text'}" th:text="${part.text}" /><u th:if="${part.type == 'underline'}" th:text="${part.text}"></u></th:block></td>
-		</th:block>
-	</tr>
+<th:block th:fragment="rows (rows)">
+	<th:block th:each="row : ${rows}">
+		<th th:if="${row.batchName != null}" th:text="${row.batchName}"></th>
+		<tr th:attr="child-stopwatch-rows=${row.childStopwatchRows},id=${row.id},style=${row.style}" th:if="${row.cells != null}">
+			<th:block th:each="cell : ${row.cells}">
+				<th th:attr="style=${cell.style}" th:if="${cell.tagName == 'th'}"><th:block th:each="part : ${cell.parts}"><a href="" th:attr="id=${part.id},onClick=${part.onClick},style=${part.style}" th:if="${part.type == 'expander'}">+ </a><a th:href="${part.url}" th:if="${part.type == 'link'}" th:text="${part.text}"></a><th:block th:if="${part.type == 'nbsp'}">&nbsp;</th:block><span th:if="${part.type == 'span'}" th:text="${part.text}"></span><th:block th:if="${part.type == 'text'}" th:text="${part.text}" /><u th:if="${part.type == 'underline'}" th:text="${part.text}"></u></th:block></th>
+				<td th:attr="style=${cell.style}" th:if="${cell.tagName == 'td'}"><th:block th:each="part : ${cell.parts}"><a href="" th:attr="id=${part.id},onClick=${part.onClick},style=${part.style}" th:if="${part.type == 'expander'}">+ </a><a th:href="${part.url}" th:if="${part.type == 'link'}" th:text="${part.text}"></a><th:block th:if="${part.type == 'nbsp'}">&nbsp;</th:block><span th:if="${part.type == 'span'}" th:text="${part.text}"></span><th:block th:if="${part.type == 'text'}" th:text="${part.text}" /><u th:if="${part.type == 'underline'}" th:text="${part.text}"></u></th:block></td>
+			</th:block>
+		</tr>
+	</th:block>
 </th:block>
