@@ -279,6 +279,136 @@ public class JenkinsReportTemplateTest {
 					"</tr>"));
 	}
 
+	@Test
+	public void testRenderRCAJenkinsReportTemplate() {
+		TemplateEngine templateEngine = new TemplateEngine();
+
+		ClassLoaderTemplateResolver classLoaderTemplateResolver =
+			new ClassLoaderTemplateResolver();
+
+		classLoaderTemplateResolver.setCharacterEncoding("UTF-8");
+		classLoaderTemplateResolver.setPrefix(
+			"com/liferay/jenkins/results/parser/dependencies/");
+		classLoaderTemplateResolver.setTemplateMode(TemplateMode.HTML);
+
+		templateEngine.setTemplateResolver(classLoaderTemplateResolver);
+
+		Context context = new Context();
+
+		context.setVariable(
+			"buildURL", "https://test-1-1.liferay.com/job/rca/1/");
+		context.setVariable("chartJsContent", "var x = 1;");
+		context.setVariable("chartJsURL", "https://cdn.example.com/chart.js");
+		context.setVariable(
+			"columnHeaders",
+			Arrays.asList(
+				"", "Commit SHA", "Commit Date", "Commit Message",
+				"Commit Diffs", "Build Link", "Build Time", "Build Status",
+				"Build Result"));
+
+		context.setVariable(
+			"commitGroups",
+			Arrays.asList(
+				_createObjectMap(
+					"buildDuration", "10 minutes", "buildResult", "SUCCESS",
+					"buildStatus", "completed", "buildURL",
+					"https://test-1-1.liferay.com/job/rca-batch/1/",
+					"commitDate", "2026-06-10 8:00:00 AM PST", "commitMessage",
+					"LPD-12345 Break <something>", "commitSHA", "*abc123d",
+					"commitURL",
+					"https://github.com/liferay/liferay-portal/commit/abc123d",
+					"commits",
+					Arrays.asList(
+						_createMap(
+							"date", "2026-06-10 7:00:00 AM PST", "message",
+							"LPD-12345 Earlier commit", "sha", "def456a", "url",
+							"https://github.com/liferay/liferay-portal/commit" +
+								"/def456a")),
+					"diffText", "2 commits", "diffURL",
+					"https://github.com/liferay/liferay-portal/compare" +
+						"/def456a...abc123d",
+					"toggleSHA", "abc123d"),
+				_createObjectMap(
+					"commitDate", "2026-06-09 8:00:00 AM PST", "commitMessage",
+					"LPD-12345 Good commit", "commitSHA", "fed789b",
+					"commitURL",
+					"https://github.com/liferay/liferay-portal/commit/fed789b",
+					"commits", new ArrayList<>())));
+		context.setVariable("cssContent", "body { font-family: sans-serif; }");
+		context.setVariable(
+			"gitHubCommitsURL",
+			"https://github.com/liferay/liferay-portal/commits/master");
+		context.setVariable(
+			"jQueryURL", "https://cdn.example.com/jquery.min.js");
+		context.setVariable("jsContent", "$(document).ready(function() {});");
+		context.setVariable(
+			"summaryItems",
+			Arrays.asList(
+				_createMap("label", "Build Time: ", "value", "10 minutes")));
+
+		String content = templateEngine.process(
+			"rca_jenkins_report.html", context);
+
+		Assert.assertTrue(
+			"Missing jQuery script",
+			content.contains(
+				"<script src=\"https://cdn.example.com/jquery.min.js\" " +
+					"type=\"text/javascript\"></script>"));
+		Assert.assertTrue(
+			"Missing raw JS content",
+			content.contains("$(document).ready(function() {});"));
+		Assert.assertTrue(
+			"Missing raw CSS content",
+			content.contains("body { font-family: sans-serif; }"));
+		Assert.assertTrue(
+			"Missing table caption",
+			content.contains(
+				"<h2>Commit history of <a href=\"https://github.com/liferay" +
+					"/liferay-portal/commits/master\">https://github.com" +
+						"/liferay/liferay-portal/commits/master</a></h2>"));
+		Assert.assertTrue(
+			"Missing toggle cell",
+			content.contains(
+				"<td><label for=\"abc123d\">+</label><input " +
+					"data-toggle=\"toggle\" type=\"checkbox\" id=\"abc123d\" " +
+						"name=\"abc123d\" /></td>"));
+		Assert.assertTrue(
+			"Missing commit link",
+			content.contains(
+				"<td><a href=\"https://github.com/liferay/liferay-portal" +
+					"/commit/abc123d\">*abc123d</a></td>"));
+		Assert.assertTrue(
+			"Missing escaped commit message",
+			content.contains("<td>LPD-12345 Break &lt;something&gt;</td>"));
+		Assert.assertTrue(
+			"Missing diff link",
+			content.contains(
+				"<td><a href=\"https://github.com/liferay/liferay-portal" +
+					"/compare/def456a...abc123d\">2 commits</a></td>"));
+		Assert.assertTrue(
+			"Missing build link",
+			content.contains(
+				"<td><a href=\"https://test-1-1.liferay.com/job/rca-batch/1" +
+					"/\">build</a></td>"));
+		Assert.assertTrue(
+			"Missing hidden commit row",
+			content.contains(
+				"<td><a href=\"https://github.com/liferay/liferay-portal" +
+					"/commit/def456a\">def456a</a></td>"));
+		Assert.assertTrue(
+			"Missing result row tbody",
+			content.contains("<tbody class=\"result-row\">"));
+		Assert.assertTrue(
+			"Missing hidden row tbody",
+			content.contains("<tbody class=\"hidden-row\">"));
+		Assert.assertFalse(
+			"Unexpected toggle cell on single commit group",
+			content.contains("for=\"fed789b\""));
+		Assert.assertTrue(
+			"Missing HEAD commit note",
+			content.contains("<p><em>Indicates HEAD Commit (*)</em></p>"));
+	}
+
 	private Map<String, String> _createMap(String... keyValues) {
 		Map<String, String> map = new HashMap<>();
 

@@ -1427,6 +1427,10 @@ public abstract class BaseTopLevelBuild
 		return resourceFileContent;
 	}
 
+	protected String getJenkinsReportChartJsURL() {
+		return _URL_CHART_JS;
+	}
+
 	protected List<String> getJenkinsReportColumnHeaders() {
 		List<String> columnHeaders = new ArrayList<>();
 
@@ -1445,37 +1449,6 @@ public abstract class BaseTopLevelBuild
 		columnHeaders.add("Result");
 
 		return columnHeaders;
-	}
-
-	protected Element getJenkinsReportSummaryElement() {
-		Element summaryElement = Dom4JUtil.getNewElement("div");
-
-		for (Map<String, String> summaryItem : getJenkinsReportSummaryItems()) {
-			Element pElement = Dom4JUtil.getNewElement("p", summaryElement);
-
-			String label = summaryItem.get("label");
-
-			if (label != null) {
-				pElement.addText(label);
-			}
-
-			String url = summaryItem.get("url");
-
-			if (url != null) {
-				Dom4JUtil.addToElement(
-					pElement,
-					Dom4JUtil.getNewAnchorElement(
-						url, summaryItem.get("linkText")));
-			}
-
-			String value = summaryItem.get("value");
-
-			if (value != null) {
-				pElement.addText(value);
-			}
-		}
-
-		return summaryElement;
 	}
 
 	protected List<Map<String, String>> getJenkinsReportSummaryItems() {
@@ -1579,25 +1552,6 @@ public abstract class BaseTopLevelBuild
 		}
 
 		return summaryItems;
-	}
-
-	protected Element getJenkinsReportTimelineElement() {
-		Element canvasElement = Dom4JUtil.getNewElement("canvas");
-
-		canvasElement.addAttribute("height", "300");
-		canvasElement.addAttribute("id", "timeline");
-
-		Element scriptElement = Dom4JUtil.getNewElement("script");
-
-		scriptElement.addAttribute("src", _URL_CHART_JS);
-		scriptElement.addText("");
-
-		Element chartJSScriptElement = Dom4JUtil.getNewElement("script");
-
-		chartJSScriptElement.addText(getJenkinsReportChartJsContent());
-
-		return Dom4JUtil.getNewElement(
-			"div", null, canvasElement, scriptElement, chartJSScriptElement);
 	}
 
 	protected Element getJobSummaryElement() {
@@ -1753,24 +1707,6 @@ public abstract class BaseTopLevelBuild
 		}
 
 		return "liferay-portal";
-	}
-
-	protected Element getResourceFileContentAsElement(
-		String tagName, Element parentElement, String resourceName) {
-
-		String resourceFileContent = null;
-
-		try {
-			resourceFileContent =
-				JenkinsResultsParserUtil.getResourceFileContent(resourceName);
-		}
-		catch (IOException ioException) {
-			throw new RuntimeException(
-				"Unable to load resource " + resourceName, ioException);
-		}
-
-		return Dom4JUtil.getNewElement(
-			tagName, parentElement, resourceFileContent);
 	}
 
 	protected Element getResultElement() {
@@ -2001,6 +1937,12 @@ public abstract class BaseTopLevelBuild
 
 	protected boolean isReleaseBuild() {
 		return false;
+	}
+
+	protected String processJenkinsReportTemplate(
+		String templateName, Context context) {
+
+		return _templateEngine.process(templateName, context);
 	}
 
 	protected void sendBuildMetrics(String message) {
