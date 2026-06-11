@@ -282,6 +282,10 @@ public abstract class BaseBuild implements Build {
 		return gitRepositoryGitDetailsTempMap.get("github.upstream.branch.sha");
 	}
 
+	public String getBatchName() {
+		return null;
+	}
+
 	@Override
 	public String getBatchName(String jobVariant) {
 		jobVariant = jobVariant.replaceAll("(.*)/.*", "$1");
@@ -981,23 +985,10 @@ public abstract class BaseBuild implements Build {
 		return _jenkinsMaster;
 	}
 
-	public List<Map<String, Object>> getJenkinsReportTableEntries(
+	public List<Build> getJenkinsReportDownstreamBuilds(
 		String result, String status) {
 
-		List<Map<String, Object>> tableEntries = new ArrayList<>();
-
-		if ((getParentBuild() != null) &&
-			((result == null) || result.equals(getResult())) &&
-			((status == null) || status.equals(getStatus()))) {
-
-			Map<String, Object> tableEntry = new HashMap<>();
-
-			tableEntry.put("build", this);
-
-			tableEntries.add(tableEntry);
-		}
-
-		return tableEntries;
+		return new ArrayList<>();
 	}
 
 	public List<Map<String, Object>> getJenkinsReportTestDurationRows() {

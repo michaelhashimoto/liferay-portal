@@ -454,6 +454,10 @@ public class JenkinsReportTemplateTest {
 			return 5;
 		}
 
+		public String getBatchName() {
+			return "modules-unit";
+		}
+
 		public JSONObject getBuildJSONObject() {
 			JSONObject buildJSONObject = new JSONObject();
 
@@ -491,16 +495,14 @@ public class JenkinsReportTemplateTest {
 			return 10;
 		}
 
-		public List<Map<String, Object>> getJenkinsReportTableEntries(
+		public List<TestBuild> getJenkinsReportDownstreamBuilds(
 			String result, String status) {
 
 			if (!Objects.equals(result, "SUCCESS")) {
 				return new ArrayList<>();
 			}
 
-			return Arrays.asList(
-				_createObjectMap("batchName", "modules-unit"),
-				_createObjectMap("build", this));
+			return Arrays.asList((TestBuild)new TestDownstreamBuild());
 		}
 
 		public List<Map<String, Object>> getJenkinsReportTestDurationRows() {
@@ -645,6 +647,17 @@ public class JenkinsReportTemplateTest {
 
 		public String toJenkinsReportDateString(long timestamp) {
 			return "date-" + timestamp;
+		}
+
+	}
+
+	public class TestDownstreamBuild extends TestBuild {
+
+		@Override
+		public List<TestBuild> getJenkinsReportDownstreamBuilds(
+			String result, String status) {
+
+			return new ArrayList<>();
 		}
 
 	}

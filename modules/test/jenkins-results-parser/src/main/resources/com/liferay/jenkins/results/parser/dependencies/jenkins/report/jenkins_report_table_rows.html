@@ -77,6 +77,16 @@
 	</th:block>
 </th:block>
 
+<th:block th:fragment="downstreamBuildsRows (downstreamBuilds, result, status)">
+	<th:block th:each="downstreamBuild, downstreamBuildStat : ${downstreamBuilds}">
+		<th th:if="${(downstreamBuild.batchName != null) && (downstreamBuildStat.first || (downstreamBuild.batchName != downstreamBuilds[downstreamBuildStat.index - 1].batchName))}" th:text="${downstreamBuild.batchName}"></th>
+
+		<th:block th:insert="~{:: buildRows (${downstreamBuild}, 'td')}" />
+
+		<th:block th:insert="~{:: downstreamBuildsRows (${downstreamBuild.getJenkinsReportDownstreamBuilds(result, status)}, ${result}, ${status})}" />
+	</th:block>
+</th:block>
+
 <th:block th:fragment="rows (rows)">
 	<th:block th:each="row : ${rows}">
 		<tr th:attr="child-stopwatch-rows=${row.childStopwatchRows},id=${row.id},style=${row.style}">

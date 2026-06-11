@@ -208,46 +208,24 @@ public abstract class BaseParentBuild extends BaseBuild implements ParentBuild {
 	}
 
 	@Override
-	public List<Map<String, Object>> getJenkinsReportTableEntries(
+	public List<Build> getJenkinsReportDownstreamBuilds(
 		String result, String status) {
 
-		List<Map<String, Object>> tableEntries =
-			super.getJenkinsReportTableEntries(result, status);
+		List<Build> jenkinsReportDownstreamBuilds = new ArrayList<>();
 
 		List<Build> builds = getDownstreamBuilds(result, status);
 
 		Collections.sort(builds, new BaseBuild.BuildDisplayNameComparator());
-
-		String batchName = null;
 
 		for (Build build : builds) {
 			if (!(build instanceof BaseBuild)) {
 				continue;
 			}
 
-			if (build instanceof DownstreamBuild) {
-				DownstreamBuild downstreamBuild = (DownstreamBuild)build;
-
-				String downstreamBatchName = downstreamBuild.getBatchName();
-
-				if (!Objects.equals(batchName, downstreamBatchName)) {
-					Map<String, Object> batchNameTableEntry = new HashMap<>();
-
-					batchNameTableEntry.put("batchName", downstreamBatchName);
-
-					tableEntries.add(batchNameTableEntry);
-
-					batchName = downstreamBatchName;
-				}
-			}
-
-			BaseBuild baseBuild = (BaseBuild)build;
-
-			tableEntries.addAll(
-				baseBuild.getJenkinsReportTableEntries(result, status));
+			jenkinsReportDownstreamBuilds.add(build);
 		}
 
-		return tableEntries;
+		return jenkinsReportDownstreamBuilds;
 	}
 
 	@Override
