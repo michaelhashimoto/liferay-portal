@@ -492,11 +492,11 @@ public abstract class BaseTopLevelBuild
 				context.setVariable(
 					"cssContent",
 					JenkinsResultsParserUtil.getResourceFileContent(
-						"dependencies/jenkins_report.css"));
+						"dependencies/jenkins/report/jenkins_report.css"));
 				context.setVariable(
 					"jsContent",
 					JenkinsResultsParserUtil.getResourceFileContent(
-						"dependencies/jenkins_report.js"));
+						"dependencies/jenkins/report/jenkins_report.js"));
 			}
 			catch (IOException ioException) {
 				throw new RuntimeException(
@@ -2023,7 +2023,7 @@ public abstract class BaseTopLevelBuild
 
 		classLoaderTemplateResolver.setCharacterEncoding("UTF-8");
 		classLoaderTemplateResolver.setPrefix(
-			"com/liferay/jenkins/results/parser/dependencies/");
+			"com/liferay/jenkins/results/parser/dependencies/jenkins/report/");
 		classLoaderTemplateResolver.setTemplateMode(TemplateMode.HTML);
 
 		templateEngine.setTemplateResolver(classLoaderTemplateResolver);

@@ -36,7 +36,7 @@ public class JenkinsReportTemplateTest {
 
 		classLoaderTemplateResolver.setCharacterEncoding("UTF-8");
 		classLoaderTemplateResolver.setPrefix(
-			"com/liferay/jenkins/results/parser/dependencies/");
+			"com/liferay/jenkins/results/parser/dependencies/jenkins/report/");
 		classLoaderTemplateResolver.setTemplateMode(TemplateMode.HTML);
 
 		templateEngine.setTemplateResolver(classLoaderTemplateResolver);
@@ -170,7 +170,7 @@ public class JenkinsReportTemplateTest {
 
 		classLoaderTemplateResolver.setCharacterEncoding("UTF-8");
 		classLoaderTemplateResolver.setPrefix(
-			"com/liferay/jenkins/results/parser/dependencies/");
+			"com/liferay/jenkins/results/parser/dependencies/jenkins/report/");
 		classLoaderTemplateResolver.setTemplateMode(TemplateMode.HTML);
 
 		templateEngine.setTemplateResolver(classLoaderTemplateResolver);
@@ -289,7 +289,7 @@ public class JenkinsReportTemplateTest {
 
 		classLoaderTemplateResolver.setCharacterEncoding("UTF-8");
 		classLoaderTemplateResolver.setPrefix(
-			"com/liferay/jenkins/results/parser/dependencies/");
+			"com/liferay/jenkins/results/parser/dependencies/jenkins/report/");
 		classLoaderTemplateResolver.setTemplateMode(TemplateMode.HTML);
 
 		templateEngine.setTemplateResolver(classLoaderTemplateResolver);
@@ -341,7 +341,7 @@ public class JenkinsReportTemplateTest {
 		context.setVariable("jsContent", "$(document).ready(function() {});");
 
 		String content = templateEngine.process(
-			"rca_jenkins_report.html", context);
+			"jenkins_report_rca.html", context);
 
 		Assert.assertTrue(
 			"Missing jQuery script",

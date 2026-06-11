@@ -75,18 +75,18 @@ public class RootCauseAnalysisToolBuild extends DefaultTopLevelBuild {
 			context.setVariable(
 				"cssContent",
 				JenkinsResultsParserUtil.getResourceFileContent(
-					"dependencies/rca_jenkins_report.css"));
+					"dependencies/jenkins/report/jenkins_report_rca.css"));
 			context.setVariable(
 				"jsContent",
 				JenkinsResultsParserUtil.getResourceFileContent(
-					"dependencies/rca_jenkins_report.js"));
+					"dependencies/jenkins/report/jenkins_report_rca.js"));
 		}
 		catch (IOException ioException) {
 			throw new RuntimeException(
 				"Unable to load Jenkins report resources", ioException);
 		}
 
-		return processJenkinsReportTemplate("rca_jenkins_report.html", context);
+		return processJenkinsReportTemplate("jenkins_report_rca.html", context);
 	}
 
 	public WorkspaceGitRepository getWorkspaceGitRepository() {
