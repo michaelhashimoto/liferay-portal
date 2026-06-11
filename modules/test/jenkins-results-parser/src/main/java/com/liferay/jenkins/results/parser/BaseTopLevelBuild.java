@@ -389,54 +389,6 @@ public abstract class BaseTopLevelBuild
 		return resourceFileContent;
 	}
 
-	public Map<String, String> getJenkinsReportCommitMap() {
-		if (!(this instanceof WorkspaceBuild)) {
-			return null;
-		}
-
-		WorkspaceBuild workspaceBuild = (WorkspaceBuild)this;
-
-		Workspace workspace = workspaceBuild.getWorkspace();
-
-		WorkspaceGitRepository workspaceGitRepository =
-			workspace.getPrimaryWorkspaceGitRepository();
-
-		WorkspaceBranchInformation workspaceBranchInformation =
-			new WorkspaceBranchInformation(workspaceGitRepository);
-
-		String senderBranchSHA =
-			workspaceBranchInformation.getSenderBranchSHA();
-
-		GitHubRemoteGitCommit gitHubRemoteGitCommit = null;
-
-		if (isReleaseBuild()) {
-			gitHubRemoteGitCommit = GitCommitFactory.newGitHubRemoteGitCommit(
-				workspaceBranchInformation.getSenderUsername(),
-				getReleaseRepositoryName(), senderBranchSHA);
-		}
-		else {
-			gitHubRemoteGitCommit = GitCommitFactory.newGitHubRemoteGitCommit(
-				workspaceBranchInformation.getSenderUsername(),
-				workspaceBranchInformation.getRepositoryName(),
-				senderBranchSHA);
-		}
-
-		Map<String, String> commitMap = new HashMap<>();
-
-		commitMap.put(
-			"date",
-			toJenkinsReportDateString(
-				gitHubRemoteGitCommit.getCommitDate(),
-				getJenkinsReportTimeZoneName()));
-		commitMap.put("message", gitHubRemoteGitCommit.getMessage());
-		commitMap.put(
-			"senderBranchName",
-			workspaceBranchInformation.getSenderBranchName());
-		commitMap.put("senderBranchSHA", senderBranchSHA);
-
-		return commitMap;
-	}
-
 	@Override
 	public synchronized String getJenkinsReportString() {
 		long start = JenkinsResultsParserUtil.getCurrentTimeMillis();
@@ -646,6 +598,42 @@ public abstract class BaseTopLevelBuild
 		metricLabels.put("top_level_job_name", getJobName());
 
 		return metricLabels;
+	}
+
+	@Override
+	public GitHubRemoteGitCommit getPrimaryGitHubRemoteGitCommit() {
+		WorkspaceGitRepository workspaceGitRepository =
+			getPrimaryWorkspaceGitRepository();
+
+		if (workspaceGitRepository == null) {
+			return null;
+		}
+
+		WorkspaceBranchInformation workspaceBranchInformation =
+			new WorkspaceBranchInformation(workspaceGitRepository);
+
+		String repositoryName = workspaceBranchInformation.getRepositoryName();
+
+		if (isReleaseBuild()) {
+			repositoryName = getReleaseRepositoryName();
+		}
+
+		return GitCommitFactory.newGitHubRemoteGitCommit(
+			workspaceBranchInformation.getSenderUsername(), repositoryName,
+			workspaceBranchInformation.getSenderBranchSHA());
+	}
+
+	@Override
+	public WorkspaceGitRepository getPrimaryWorkspaceGitRepository() {
+		if (!(this instanceof WorkspaceBuild)) {
+			return null;
+		}
+
+		WorkspaceBuild workspaceBuild = (WorkspaceBuild)this;
+
+		Workspace workspace = workspaceBuild.getWorkspace();
+
+		return workspace.getPrimaryWorkspaceGitRepository();
 	}
 
 	@Override

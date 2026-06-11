@@ -21,6 +21,8 @@ public interface GitCommit {
 
 	public Date getCommitDate();
 
+	public String getCommitDateString();
+
 	public String getEmailAddress();
 
 	public String getGitRepositoryName();

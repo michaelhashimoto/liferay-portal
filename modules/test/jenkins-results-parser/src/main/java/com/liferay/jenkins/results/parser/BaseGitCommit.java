@@ -5,8 +5,11 @@
 
 package com.liferay.jenkins.results.parser;
 
+import java.io.IOException;
+
 import java.util.Date;
 import java.util.Objects;
+import java.util.Properties;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -42,6 +45,24 @@ public abstract class BaseGitCommit implements GitCommit {
 		}
 
 		return new Date(commitTime);
+	}
+
+	@Override
+	public String getCommitDateString() {
+		Properties buildProperties = null;
+
+		try {
+			buildProperties = JenkinsResultsParserUtil.getBuildProperties();
+		}
+		catch (IOException ioException) {
+			throw new RuntimeException(
+				"Unable to get build properties", ioException);
+		}
+
+		return JenkinsResultsParserUtil.toDateString(
+			getCommitDate(),
+			buildProperties.getProperty("jenkins.report.date.format"),
+			buildProperties.getProperty("jenkins.report.time.zone"));
 	}
 
 	@Override

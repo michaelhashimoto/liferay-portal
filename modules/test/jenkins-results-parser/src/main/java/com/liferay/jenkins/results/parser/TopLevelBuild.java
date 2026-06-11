@@ -46,6 +46,10 @@ public interface TopLevelBuild extends ParentBuild {
 	public List<Build> getJobVariantsDownstreamBuilds(
 		Iterable<String> jobVariants, String result, String status);
 
+	public GitHubRemoteGitCommit getPrimaryGitHubRemoteGitCommit();
+
+	public WorkspaceGitRepository getPrimaryWorkspaceGitRepository();
+
 	public List<String> getProjectNames();
 
 	public String getStatusSummary();

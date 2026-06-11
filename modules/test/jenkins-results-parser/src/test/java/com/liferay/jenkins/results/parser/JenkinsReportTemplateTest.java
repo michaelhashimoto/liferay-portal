@@ -162,9 +162,14 @@ public class JenkinsReportTemplateTest {
 			"Missing raw description",
 			content.contains("Description with <strong>markup</strong>"));
 		Assert.assertTrue(
+			"Missing sender branch information",
+			content.contains("<p>Sender Branch Name: LPD-12345</p>") &&
+			content.contains("<p>Sender Branch SHA: abc123</p>"));
+		Assert.assertTrue(
 			"Missing commit information",
 			content.contains(
-				"<p>Commit Message: LPD-12345 Fix &lt;something&gt;</p>"));
+				"<p>Commit Message: LPD-12345 Fix &lt;something&gt;</p>") &&
+			content.contains("<p>Commit Date: 6-10-2026 08:00:00 PST</p>"));
 		Assert.assertTrue(
 			"Missing raw CSS content",
 			content.contains("body { color: red; }"));
@@ -371,13 +376,6 @@ public class JenkinsReportTemplateTest {
 			return "var x = 1 && 2;";
 		}
 
-		public Map<String, String> getJenkinsReportCommitMap() {
-			return _createMap(
-				"date", "6-10-2026 08:00:00 PST", "message",
-				"LPD-12345 Fix <something>", "senderBranchName", "LPD-12345",
-				"senderBranchSHA", "abc123");
-		}
-
 		public List<Map<String, Object>> getJenkinsReportStopWatchRecordRows() {
 			return Arrays.asList(_createTextCellRow("stop-watch-row"));
 		}
@@ -405,6 +403,17 @@ public class JenkinsReportTemplateTest {
 			return Arrays.asList(
 				_createTextCellRow("downstream-1"),
 				_createTextCellRow("downstream-2"));
+		}
+
+		public Map<String, String> getPrimaryGitHubRemoteGitCommit() {
+			return _createMap(
+				"commitDateString", "6-10-2026 08:00:00 PST", "message",
+				"LPD-12345 Fix <something>");
+		}
+
+		public Map<String, String> getPrimaryWorkspaceGitRepository() {
+			return _createMap(
+				"senderBranchName", "LPD-12345", "senderBranchSHA", "abc123");
 		}
 
 		public String getResult() {

@@ -10,12 +10,12 @@
 
 		<h2 th:if="${!#strings.isEmpty(description)}" th:utext="${description}"></h2>
 
-		<th:block th:with="commit=${build.jenkinsReportCommitMap}">
-			<div th:if="${commit != null}">
-				<p th:text="'Sender Branch Name: ' + ${commit.senderBranchName}"></p>
-				<p th:text="'Sender Branch SHA: ' + ${commit.senderBranchSHA}"></p>
-				<p th:text="'Commit Message: ' + ${commit.message}"></p>
-				<p th:text="'Commit Date: ' + ${commit.date}"></p>
+		<th:block th:with="primaryGitHubRemoteGitCommit=${build.primaryGitHubRemoteGitCommit},primaryWorkspaceGitRepository=${build.primaryWorkspaceGitRepository}">
+			<div th:if="${primaryGitHubRemoteGitCommit != null}">
+				<p th:text="'Sender Branch Name: ' + ${primaryWorkspaceGitRepository.senderBranchName}"></p>
+				<p th:text="'Sender Branch SHA: ' + ${primaryWorkspaceGitRepository.senderBranchSHA}"></p>
+				<p th:text="'Commit Message: ' + ${primaryGitHubRemoteGitCommit.message}"></p>
+				<p th:text="'Commit Date: ' + ${primaryGitHubRemoteGitCommit.commitDateString}"></p>
 			</div>
 		</th:block>
 
