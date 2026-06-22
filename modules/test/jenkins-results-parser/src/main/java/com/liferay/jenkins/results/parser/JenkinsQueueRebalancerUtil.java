@@ -25,166 +25,25 @@ public class JenkinsQueueRebalancerUtil {
 
 		jenkinsCohort.update();
 
-		RebalanceSummary rebalanceSummary = new RebalanceSummary();
+		RebalanceSummary rebalanceSummary = new RebalanceSummary(jenkinsCohort);
 
-		_drainBlackListedJenkinsMasters(jenkinsCohort, rebalanceSummary);
+		rebalanceSummary.rebalance();
 
-		_rebalanceQueuePressure(jenkinsCohort, rebalanceSummary);
+		System.out.println(rebalanceSummary);
 
-		String summary = rebalanceSummary.toString();
-
-		System.out.println(summary);
-
-		if (!JenkinsResultsParserUtil.isNullOrEmpty(jenkinsBuildURL)) {
+		if (JenkinsResultsParserUtil.isURL(jenkinsBuildURL)) {
 			JenkinsResultsParserUtil.updateBuildDescription(
-				summary, new URL(jenkinsBuildURL));
+				rebalanceSummary.toString(), new URL(jenkinsBuildURL));
 		}
 	}
-
-	private static void _drainBlackListedJenkinsMasters(
-		JenkinsCohort jenkinsCohort, RebalanceSummary rebalanceSummary) {
-
-		for (JenkinsMaster jenkinsMaster : jenkinsCohort.getJenkinsMasters()) {
-			if (!jenkinsMaster.isBlackListed()) {
-				continue;
-			}
-
-			for (JenkinsMaster.QueueItem queueItem :
-					jenkinsMaster.getQueueItems()) {
-
-				rebalanceSummary.act(queueItem);
-			}
-		}
-	}
-
-	private static int _getInteger(String propertyName, int defaultValue) {
-		try {
-			String value = JenkinsResultsParserUtil.getBuildProperty(
-				propertyName);
-
-			if (!JenkinsResultsParserUtil.isNullOrEmpty(value)) {
-				return Integer.parseInt(value);
-			}
-		}
-		catch (Exception exception) {
-		}
-
-		return defaultValue;
-	}
-
-	private static Map<String, List<JenkinsMaster.QueueItem>>
-		_getMovableItemsByLabel(JenkinsMaster jenkinsMaster) {
-
-		Map<String, List<JenkinsMaster.QueueItem>> movableItemsByLabel =
-			new HashMap<>();
-
-		for (JenkinsMaster.QueueItem queueItem :
-				jenkinsMaster.getQueueItems()) {
-
-			String labelExpression = queueItem.getLabelExpression();
-
-			if (JenkinsResultsParserUtil.isNullOrEmpty(labelExpression)) {
-				continue;
-			}
-
-			List<JenkinsMaster.QueueItem> queueItems = movableItemsByLabel.get(
-				labelExpression);
-
-			if (queueItems == null) {
-				queueItems = new ArrayList<>();
-
-				movableItemsByLabel.put(labelExpression, queueItems);
-			}
-
-			queueItems.add(queueItem);
-		}
-
-		return movableItemsByLabel;
-	}
-
-	private static boolean _hasAvailableCapacityElsewhere(
-		List<JenkinsMaster> jenkinsMasters, JenkinsMaster sourceJenkinsMaster,
-		String labelExpression) {
-
-		for (JenkinsMaster jenkinsMaster : jenkinsMasters) {
-			if ((jenkinsMaster == sourceJenkinsMaster) ||
-				!jenkinsMaster.matchesLabelExpression(labelExpression)) {
-
-				continue;
-			}
-
-			if (jenkinsMaster.getAvailableSlavesCount(labelExpression) > 0) {
-				return true;
-			}
-		}
-
-		return false;
-	}
-
-	private static void _rebalanceQueuePressure(
-		JenkinsCohort jenkinsCohort, RebalanceSummary rebalanceSummary) {
-
-		int threshold = _getInteger("jenkins.queue.rebalance.threshold", 5);
-		int maxMoves = _getInteger("jenkins.queue.rebalance.max.moves", 10);
-
-		List<JenkinsMaster> jenkinsMasters = new ArrayList<>();
-
-		for (JenkinsMaster jenkinsMaster : jenkinsCohort.getJenkinsMasters()) {
-			if (!jenkinsMaster.isBlackListed() && jenkinsMaster.isAvailable()) {
-				jenkinsMasters.add(jenkinsMaster);
-			}
-		}
-
-		int moves = 0;
-
-		for (JenkinsMaster sourceJenkinsMaster : jenkinsMasters) {
-			Map<String, List<JenkinsMaster.QueueItem>> movableItemsByLabel =
-				_getMovableItemsByLabel(sourceJenkinsMaster);
-
-			for (Map.Entry<String, List<JenkinsMaster.QueueItem>> entry :
-					movableItemsByLabel.entrySet()) {
-
-				String labelExpression = entry.getKey();
-
-				List<JenkinsMaster.QueueItem> queueItems = entry.getValue();
-
-				if ((queueItems.size() < threshold) ||
-					!_hasAvailableCapacityElsewhere(
-						jenkinsMasters, sourceJenkinsMaster, labelExpression)) {
-
-					continue;
-				}
-
-				Collections.sort(queueItems, _queueItemComparator);
-
-				for (int i = queueItems.size() - 1;
-					 (i >= 0) && (moves < maxMoves); i--) {
-
-					rebalanceSummary.act(queueItems.get(i));
-
-					moves++;
-				}
-			}
-		}
-	}
-
-	private static final Comparator<JenkinsMaster.QueueItem>
-		_queueItemComparator = new Comparator<JenkinsMaster.QueueItem>() {
-
-			@Override
-			public int compare(
-				JenkinsMaster.QueueItem queueItem1,
-				JenkinsMaster.QueueItem queueItem2) {
-
-				return Long.compare(
-					queueItem1.getInQueueSince(), queueItem2.getInQueueSince());
-			}
-
-		};
 
 	private static class RebalanceSummary {
 
-		public void act(JenkinsMaster.QueueItem queueItem) {
+		public RebalanceSummary(JenkinsCohort jenkinsCohort) {
+			_jenkinsCohort = jenkinsCohort;
+		}
+
+		public void processQueueItem(JenkinsMaster.QueueItem queueItem) {
 			JenkinsMaster.QueueItem.RebalanceStatus rebalanceStatus =
 				queueItem.getRebalanceStatus();
 
@@ -203,13 +62,10 @@ public class JenkinsQueueRebalancerUtil {
 					return;
 				}
 
-				JenkinsCohort jenkinsCohort =
-					sourceJenkinsMaster.getJenkinsCohort();
-
 				String jobName = queueItem.getTaskName();
 
 				JenkinsMaster targetJenkinsMaster =
-					jenkinsCohort.getMostAvailableJenkinsMaster(
+					_jenkinsCohort.getMostAvailableJenkinsMaster(
 						sourceJenkinsMaster, 1, jobName);
 
 				if ((targetJenkinsMaster == null) ||
@@ -235,6 +91,12 @@ public class JenkinsQueueRebalancerUtil {
 					"Unable to rebalance queue item " + queueItem.getURL() +
 						": " + exception.getMessage());
 			}
+		}
+
+		public void rebalance() {
+			_drainBlackListedJenkinsMasters();
+
+			_rebalanceQueuePressure();
 		}
 
 		@Override
@@ -281,7 +143,129 @@ public class JenkinsQueueRebalancerUtil {
 					queueItem.getTaskName(), "]"));
 		}
 
+		private void _drainBlackListedJenkinsMasters() {
+			for (JenkinsMaster jenkinsMaster :
+					_jenkinsCohort.getBlackListedJenkinsMasters()) {
+
+				for (JenkinsMaster.QueueItem queueItem :
+						jenkinsMaster.getQueueItems()) {
+
+					processQueueItem(queueItem);
+				}
+			}
+		}
+
+		private Map<String, List<JenkinsMaster.QueueItem>>
+			_getMovableItemsByLabel(JenkinsMaster jenkinsMaster) {
+
+			Map<String, List<JenkinsMaster.QueueItem>> movableItemsByLabel =
+				new HashMap<>();
+
+			for (JenkinsMaster.QueueItem queueItem :
+					jenkinsMaster.getQueueItems()) {
+
+				String labelExpression = queueItem.getLabelExpression();
+
+				if (JenkinsResultsParserUtil.isNullOrEmpty(labelExpression)) {
+					continue;
+				}
+
+				List<JenkinsMaster.QueueItem> queueItems =
+					movableItemsByLabel.get(labelExpression);
+
+				if (queueItems == null) {
+					queueItems = new ArrayList<>();
+
+					movableItemsByLabel.put(labelExpression, queueItems);
+				}
+
+				queueItems.add(queueItem);
+			}
+
+			return movableItemsByLabel;
+		}
+
+		private boolean _hasAvailableCapacityElsewhere(
+			List<JenkinsMaster> jenkinsMasters,
+			JenkinsMaster sourceJenkinsMaster, String labelExpression) {
+
+			for (JenkinsMaster jenkinsMaster : jenkinsMasters) {
+				if ((jenkinsMaster == sourceJenkinsMaster) ||
+					!jenkinsMaster.matchesLabelExpression(labelExpression)) {
+
+					continue;
+				}
+
+				if (jenkinsMaster.getAvailableSlavesCount(labelExpression) >
+						0) {
+
+					return true;
+				}
+			}
+
+			return false;
+		}
+
+		private void _rebalanceQueuePressure() {
+			int threshold = JenkinsResultsParserUtil.getBuildPropertyInteger(
+				"jenkins.queue.rebalance.threshold", 5);
+			int maxMoves = JenkinsResultsParserUtil.getBuildPropertyInteger(
+				"jenkins.queue.rebalance.max.moves", 10);
+
+			List<JenkinsMaster> jenkinsMasters =
+				_jenkinsCohort.getAvailableJenkinsMasters();
+
+			int moves = 0;
+
+			for (JenkinsMaster sourceJenkinsMaster : jenkinsMasters) {
+				Map<String, List<JenkinsMaster.QueueItem>> movableItemsByLabel =
+					_getMovableItemsByLabel(sourceJenkinsMaster);
+
+				for (Map.Entry<String, List<JenkinsMaster.QueueItem>> entry :
+						movableItemsByLabel.entrySet()) {
+
+					String labelExpression = entry.getKey();
+
+					List<JenkinsMaster.QueueItem> queueItems = entry.getValue();
+
+					if ((queueItems.size() < threshold) ||
+						!_hasAvailableCapacityElsewhere(
+							jenkinsMasters, sourceJenkinsMaster,
+							labelExpression)) {
+
+						continue;
+					}
+
+					Collections.sort(queueItems, _queueItemComparator);
+
+					for (int i = queueItems.size() - 1;
+						 (i >= 0) && (moves < maxMoves); i--) {
+
+						processQueueItem(queueItems.get(i));
+
+						moves++;
+					}
+				}
+			}
+		}
+
+		private static final Comparator<JenkinsMaster.QueueItem>
+			_queueItemComparator = new Comparator<JenkinsMaster.QueueItem>() {
+
+				@Override
+				public int compare(
+					JenkinsMaster.QueueItem queueItem1,
+					JenkinsMaster.QueueItem queueItem2) {
+
+					return Long.compare(
+						queueItem1.getInQueueSince(),
+						queueItem2.getInQueueSince());
+				}
+
+			};
+
 		private int _abortedCount;
+		private final JenkinsCohort _jenkinsCohort;
 		private final List<String> _movements = new ArrayList<>();
 		private int _reinvokedCount;
 
