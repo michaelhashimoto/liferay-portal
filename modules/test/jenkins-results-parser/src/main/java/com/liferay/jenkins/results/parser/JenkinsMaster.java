@@ -1085,6 +1085,34 @@ public class JenkinsMaster implements JenkinsNode<JenkinsMaster> {
 			return _getParameters(_jsonObject);
 		}
 
+		public RebalanceStatus getRebalanceStatus() {
+			if (_rebalanceStatus != null) {
+				return _rebalanceStatus;
+			}
+
+			if (!isValidQueueItem()) {
+				_rebalanceStatus = RebalanceStatus.NOT_MOVABLE;
+
+				return _rebalanceStatus;
+			}
+
+			Map<String, String> parameters = getParameters();
+
+			String parentBuildURL = parameters.get("PARENT_BUILD_URL");
+
+			if (JenkinsResultsParserUtil.isNullOrEmpty(parentBuildURL)) {
+				_rebalanceStatus = RebalanceStatus.REINVOKE_CANDIDATE;
+			}
+			else if (_isBuildInProgress(parentBuildURL)) {
+				_rebalanceStatus = RebalanceStatus.ABORT_CANDIDATE;
+			}
+			else {
+				_rebalanceStatus = RebalanceStatus.REINVOKE_CANDIDATE;
+			}
+
+			return _rebalanceStatus;
+		}
+
 		public String getTaskName() {
 			JSONObject taskJSONObject = _jsonObject.optJSONObject("task");
 
@@ -1147,6 +1175,12 @@ public class JenkinsMaster implements JenkinsNode<JenkinsMaster> {
 			return true;
 		}
 
+		public enum RebalanceStatus {
+
+			ABORT_CANDIDATE, NOT_MOVABLE, REINVOKE_CANDIDATE
+
+		}
+
 		protected QueueItem(
 			JenkinsMaster jenkinsMaster, JSONObject jsonObject) {
 
@@ -1154,8 +1188,28 @@ public class JenkinsMaster implements JenkinsNode<JenkinsMaster> {
 			_jsonObject = jsonObject;
 		}
 
+		private boolean _isBuildInProgress(String buildURL) {
+			try {
+				JSONObject jsonObject = JenkinsResultsParserUtil.toJSONObject(
+					JenkinsResultsParserUtil.combine(
+						JenkinsResultsParserUtil.getLocalURL(buildURL),
+						"/api/json?tree=result"),
+					false, 5000);
+
+				if (jsonObject.has("result") && jsonObject.isNull("result")) {
+					return true;
+				}
+
+				return false;
+			}
+			catch (Exception exception) {
+				return false;
+			}
+		}
+
 		private final JenkinsMaster _jenkinsMaster;
 		private final JSONObject _jsonObject;
+		private RebalanceStatus _rebalanceStatus;
 
 	}
 
