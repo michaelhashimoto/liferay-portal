@@ -48,12 +48,6 @@ public class JenkinsQueueRebalancerUtil {
 		JenkinsMaster.QueueItem.RebalanceStatus rebalanceStatus =
 			queueItem.getRebalanceStatus();
 
-		if (rebalanceStatus ==
-				JenkinsMaster.QueueItem.RebalanceStatus.NOT_MOVABLE) {
-
-			return;
-		}
-
 		try {
 			if (rebalanceStatus ==
 					JenkinsMaster.QueueItem.RebalanceStatus.ABORT_CANDIDATE) {
@@ -137,12 +131,6 @@ public class JenkinsQueueRebalancerUtil {
 
 		for (JenkinsMaster.QueueItem queueItem :
 				jenkinsMaster.getQueueItems()) {
-
-			if (queueItem.getRebalanceStatus() ==
-					JenkinsMaster.QueueItem.RebalanceStatus.NOT_MOVABLE) {
-
-				continue;
-			}
 
 			String labelExpression = queueItem.getLabelExpression();
 

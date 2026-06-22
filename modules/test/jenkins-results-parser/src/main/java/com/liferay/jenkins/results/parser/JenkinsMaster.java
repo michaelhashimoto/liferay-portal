@@ -1090,20 +1090,17 @@ public class JenkinsMaster implements JenkinsNode<JenkinsMaster> {
 				return _rebalanceStatus;
 			}
 
-			if (!isValidQueueItem()) {
-				_rebalanceStatus = RebalanceStatus.NOT_MOVABLE;
-
-				return _rebalanceStatus;
-			}
-
 			Map<String, String> parameters = getParameters();
 
 			String parentBuildURL = parameters.get("PARENT_BUILD_URL");
 
 			if (JenkinsResultsParserUtil.isNullOrEmpty(parentBuildURL)) {
 				_rebalanceStatus = RebalanceStatus.REINVOKE_CANDIDATE;
+
+				return _rebalanceStatus;
 			}
-			else if (_isBuildInProgress(parentBuildURL)) {
+
+			if (_isBuildInProgress(parentBuildURL)) {
 				_rebalanceStatus = RebalanceStatus.ABORT_CANDIDATE;
 			}
 			else {
@@ -1177,7 +1174,7 @@ public class JenkinsMaster implements JenkinsNode<JenkinsMaster> {
 
 		public enum RebalanceStatus {
 
-			ABORT_CANDIDATE, NOT_MOVABLE, REINVOKE_CANDIDATE
+			ABORT_CANDIDATE, REINVOKE_CANDIDATE
 
 		}
 
