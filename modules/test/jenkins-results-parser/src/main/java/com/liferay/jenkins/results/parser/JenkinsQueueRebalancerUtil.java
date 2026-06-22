@@ -41,57 +41,6 @@ public class JenkinsQueueRebalancerUtil {
 		}
 	}
 
-	private static void _act(
-		JenkinsCohort jenkinsCohort, JenkinsMaster sourceJenkinsMaster,
-		JenkinsMaster.QueueItem queueItem, RebalanceSummary rebalanceSummary) {
-
-		JenkinsMaster.QueueItem.RebalanceStatus rebalanceStatus =
-			queueItem.getRebalanceStatus();
-
-		try {
-			if (rebalanceStatus ==
-					JenkinsMaster.QueueItem.RebalanceStatus.ABORT_CANDIDATE) {
-
-				JenkinsStopBuildUtil.cancelQueueItem(
-					sourceJenkinsMaster, queueItem.getId());
-
-				rebalanceSummary.addAbort(sourceJenkinsMaster, queueItem);
-
-				return;
-			}
-
-			String jobName = queueItem.getTaskName();
-
-			JenkinsMaster targetJenkinsMaster =
-				jenkinsCohort.getMostAvailableJenkinsMaster(
-					sourceJenkinsMaster, 1, jobName);
-
-			if ((targetJenkinsMaster == null) ||
-				(targetJenkinsMaster == sourceJenkinsMaster)) {
-
-				return;
-			}
-
-			long queueId = JenkinsResultsParserUtil.invokeJenkinsBuild(
-				targetJenkinsMaster, jobName, queueItem.getParameters());
-
-			if (queueId == 0) {
-				return;
-			}
-
-			JenkinsStopBuildUtil.cancelQueueItem(
-				sourceJenkinsMaster, queueItem.getId());
-
-			rebalanceSummary.addReinvoke(
-				sourceJenkinsMaster, targetJenkinsMaster, queueItem);
-		}
-		catch (Exception exception) {
-			System.out.println(
-				"Unable to rebalance queue item " + queueItem.getURL() + ": " +
-					exception.getMessage());
-		}
-	}
-
 	private static void _drainBlackListedJenkinsMasters(
 		JenkinsCohort jenkinsCohort, RebalanceSummary rebalanceSummary) {
 
@@ -103,7 +52,7 @@ public class JenkinsQueueRebalancerUtil {
 			for (JenkinsMaster.QueueItem queueItem :
 					jenkinsMaster.getQueueItems()) {
 
-				_act(jenkinsCohort, jenkinsMaster, queueItem, rebalanceSummary);
+				rebalanceSummary.act(queueItem);
 			}
 		}
 	}
@@ -211,9 +160,7 @@ public class JenkinsQueueRebalancerUtil {
 				for (int i = queueItems.size() - 1;
 					 (i >= 0) && (moves < maxMoves); i--) {
 
-					_act(
-						jenkinsCohort, sourceJenkinsMaster, queueItems.get(i),
-						rebalanceSummary);
+					rebalanceSummary.act(queueItems.get(i));
 
 					moves++;
 				}
@@ -237,28 +184,57 @@ public class JenkinsQueueRebalancerUtil {
 
 	private static class RebalanceSummary {
 
-		public void addAbort(
-			JenkinsMaster sourceJenkinsMaster, JenkinsMaster.QueueItem item) {
+		public void act(JenkinsMaster.QueueItem queueItem) {
+			JenkinsMaster.QueueItem.RebalanceStatus rebalanceStatus =
+				queueItem.getRebalanceStatus();
 
-			_abortedCount++;
+			JenkinsMaster sourceJenkinsMaster = queueItem.getJenkinsMaster();
 
-			_movements.add(
-				JenkinsResultsParserUtil.combine(
-					"ABORT ", sourceJenkinsMaster.getName(), " [",
-					item.getTaskName(), "]"));
-		}
+			try {
+				if (rebalanceStatus ==
+						JenkinsMaster.QueueItem.RebalanceStatus.
+							ABORT_CANDIDATE) {
 
-		public void addReinvoke(
-			JenkinsMaster sourceJenkinsMaster,
-			JenkinsMaster targetJenkinsMaster, JenkinsMaster.QueueItem item) {
+					JenkinsStopBuildUtil.cancelQueueItem(
+						sourceJenkinsMaster, queueItem.getId());
 
-			_reinvokedCount++;
+					_addAbort(queueItem);
 
-			_movements.add(
-				JenkinsResultsParserUtil.combine(
-					"REINVOKE ", sourceJenkinsMaster.getName(), " -> ",
-					targetJenkinsMaster.getName(), " [", item.getTaskName(),
-					"]"));
+					return;
+				}
+
+				JenkinsCohort jenkinsCohort =
+					sourceJenkinsMaster.getJenkinsCohort();
+
+				String jobName = queueItem.getTaskName();
+
+				JenkinsMaster targetJenkinsMaster =
+					jenkinsCohort.getMostAvailableJenkinsMaster(
+						sourceJenkinsMaster, 1, jobName);
+
+				if ((targetJenkinsMaster == null) ||
+					(targetJenkinsMaster == sourceJenkinsMaster)) {
+
+					return;
+				}
+
+				long queueId = JenkinsResultsParserUtil.invokeJenkinsBuild(
+					targetJenkinsMaster, jobName, queueItem.getParameters());
+
+				if (queueId == 0) {
+					return;
+				}
+
+				JenkinsStopBuildUtil.cancelQueueItem(
+					sourceJenkinsMaster, queueItem.getId());
+
+				_addReinvoke(targetJenkinsMaster, queueItem);
+			}
+			catch (Exception exception) {
+				System.out.println(
+					"Unable to rebalance queue item " + queueItem.getURL() +
+						": " + exception.getMessage());
+			}
 		}
 
 		@Override
@@ -277,6 +253,32 @@ public class JenkinsQueueRebalancerUtil {
 			}
 
 			return sb.toString();
+		}
+
+		private void _addAbort(JenkinsMaster.QueueItem queueItem) {
+			_abortedCount++;
+
+			JenkinsMaster sourceJenkinsMaster = queueItem.getJenkinsMaster();
+
+			_movements.add(
+				JenkinsResultsParserUtil.combine(
+					"ABORT ", sourceJenkinsMaster.getName(), " [",
+					queueItem.getTaskName(), "]"));
+		}
+
+		private void _addReinvoke(
+			JenkinsMaster targetJenkinsMaster,
+			JenkinsMaster.QueueItem queueItem) {
+
+			_reinvokedCount++;
+
+			JenkinsMaster sourceJenkinsMaster = queueItem.getJenkinsMaster();
+
+			_movements.add(
+				JenkinsResultsParserUtil.combine(
+					"REINVOKE ", sourceJenkinsMaster.getName(), " -> ",
+					targetJenkinsMaster.getName(), " [",
+					queueItem.getTaskName(), "]"));
 		}
 
 		private int _abortedCount;

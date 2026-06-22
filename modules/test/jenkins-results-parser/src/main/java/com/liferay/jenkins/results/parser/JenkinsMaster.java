@@ -1055,6 +1055,10 @@ public class JenkinsMaster implements JenkinsNode<JenkinsMaster> {
 			return _jsonObject.getLong("inQueueSince");
 		}
 
+		public JenkinsMaster getJenkinsMaster() {
+			return _jenkinsMaster;
+		}
+
 		public JSONObject getJSONObject() {
 			return _jsonObject;
 		}
