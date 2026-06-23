@@ -215,25 +215,45 @@ public class BuildQueueRebalancer {
 		}
 
 		public int getAverageQueueSize() {
-			if (_availableQueueCount == 0) {
+			if (_jenkinsMasters.isEmpty()) {
 				return 0;
 			}
 
-			return _queueItems.size() / _availableQueueCount;
-		}
-
-		public String getLabel() {
-			return _label;
+			return _queueItems.size() / _jenkinsMasters.size();
 		}
 
 		public int getMaxQueueSize() {
 			return _maxQueueSize;
 		}
 
-		// TODO - Somehow calculate which jenkins master has the most room.
-
 		public JenkinsMaster getMostAvailableJenkinsMaster() {
-			return null;
+			JenkinsMaster mostAvailableJenkinsMaster = null;
+
+			int smallestQueueSize = -1;
+
+			for (JenkinsMaster jenkinsMaster : _jenkinsMasters) {
+				int queueSize = _jenkinsMasterQueueSizes.get(jenkinsMaster);
+
+				if ((mostAvailableJenkinsMaster == null) ||
+					(queueSize < smallestQueueSize)) {
+
+					mostAvailableJenkinsMaster = jenkinsMaster;
+					smallestQueueSize = queueSize;
+				}
+			}
+
+			if (mostAvailableJenkinsMaster == null) {
+				return null;
+			}
+
+			_jenkinsMasterQueueSizes.put(
+				mostAvailableJenkinsMaster, smallestQueueSize + 1);
+
+			return mostAvailableJenkinsMaster;
+		}
+
+		public String getPrimaryLabel() {
+			return _primaryLabel;
 		}
 
 		public List<JenkinsMaster.QueueItem> getQueueItems() {
@@ -270,7 +290,7 @@ public class BuildQueueRebalancer {
 		}
 
 		private Queue(AWSFleetCloud awsFleetCloud) {
-			_label = awsFleetCloud.getPrimaryLabel();
+			_primaryLabel = awsFleetCloud.getPrimaryLabel();
 
 			_maxQueueSize = awsFleetCloud.getMaxSize();
 
@@ -278,17 +298,32 @@ public class BuildQueueRebalancer {
 
 			JenkinsCohort jenkinsCohort = jenkinsMaster.getJenkinsCohort();
 
-			List<JenkinsMaster> availableJenkinsMasters =
-				jenkinsCohort.getAvailableJenkinsMasters();
+			_jenkinsMasters = jenkinsCohort.getAvailableJenkinsMasters();
 
-			_availableQueueCount = availableJenkinsMasters.size();
+			for (JenkinsMaster availableJenkinsMaster : _jenkinsMasters) {
+				int queueSize = 0;
+
+				for (JenkinsMaster.QueueItem queueItem :
+						availableJenkinsMaster.getQueueItems()) {
+
+					if (Objects.equals(
+							queueItem.getPrimaryLabel(), _primaryLabel)) {
+
+						queueSize++;
+					}
+				}
+
+				_jenkinsMasterQueueSizes.put(availableJenkinsMaster, queueSize);
+			}
 		}
 
-		private final int _availableQueueCount;
 		private final Map<JenkinsMaster, List<JenkinsMaster.QueueItem>>
 			_jenkinsMasterQueueItems = new HashMap<>();
-		private final String _label;
+		private final Map<JenkinsMaster, Integer> _jenkinsMasterQueueSizes =
+			new HashMap<>();
+		private final List<JenkinsMaster> _jenkinsMasters;
 		private final int _maxQueueSize;
+		private final String _primaryLabel;
 		private final List<JenkinsMaster.QueueItem> _queueItems =
 			new ArrayList<>();
 
