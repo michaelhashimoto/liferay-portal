@@ -14,6 +14,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import org.json.JSONObject;
 
@@ -57,20 +58,22 @@ public class BuildQueueRebalancer {
 
 	}
 
-	private static double _getRebalanceThreshold() {
+	private static double _getRebalanceThresholdMultiplier() {
 		try {
-			String rebalanceThreshold =
+			String rebalanceThresholdMultiplier =
 				JenkinsResultsParserUtil.getBuildProperty(
 					"jenkins.queue.rebalance.threshold");
 
-			if (JenkinsResultsParserUtil.isDouble(rebalanceThreshold)) {
-				return Double.parseDouble(rebalanceThreshold);
+			if (JenkinsResultsParserUtil.isDouble(
+					rebalanceThresholdMultiplier)) {
+
+				return Double.parseDouble(rebalanceThresholdMultiplier);
 			}
 
-			return _REBALANCE_THRESHOLD_DEFAULT;
+			return _REBALANCE_THRESHOLD_MULTIPLIER_DEFAULT;
 		}
 		catch (IOException ioException) {
-			return _REBALANCE_THRESHOLD_DEFAULT;
+			return _REBALANCE_THRESHOLD_MULTIPLIER_DEFAULT;
 		}
 	}
 
@@ -136,6 +139,14 @@ public class BuildQueueRebalancer {
 		for (JenkinsMaster.QueueItem queueItem : queueItems) {
 			AWSFleetCloud awsFleetCloud = queueItem.getAWSFleetCloud();
 
+			if (awsFleetCloud == null) {
+				System.out.println(
+					"Skipping queue item with no matching fleet: " +
+						queueItem.getURL());
+
+				continue;
+			}
+
 			String primaryLabel = awsFleetCloud.getPrimaryLabel();
 
 			Queue queue = queueMap.get(primaryLabel);
@@ -164,7 +175,7 @@ public class BuildQueueRebalancer {
 		return count;
 	}
 
-	private static final double _REBALANCE_THRESHOLD_DEFAULT = 1.5;
+	private static final double _REBALANCE_THRESHOLD_MULTIPLIER_DEFAULT = 1.5;
 
 	private final JenkinsCohort _jenkinsCohort;
 	private final List<RebalanceAction> _rebalanceActions = new ArrayList<>();
@@ -193,6 +204,10 @@ public class BuildQueueRebalancer {
 		}
 
 		public int getAverageQueueSize() {
+			if (_availableQueueCount == 0) {
+				return 0;
+			}
+
 			return _queueItems.size() / _availableQueueCount;
 		}
 
@@ -216,6 +231,10 @@ public class BuildQueueRebalancer {
 			List<JenkinsMaster.QueueItem> queueItems =
 				_jenkinsMasterQueueItems.get(jenkinsMaster);
 
+			if (queueItems == null) {
+				return new ArrayList<>();
+			}
+
 			Collections.sort(queueItems);
 
 			return queueItems;
@@ -230,7 +249,7 @@ public class BuildQueueRebalancer {
 				targetQueueSize = averageQueueSize;
 			}
 
-			return (int)(targetQueueSize * _getRebalanceThreshold());
+			return (int)(targetQueueSize * _getRebalanceThresholdMultiplier());
 		}
 
 		private Queue(AWSFleetCloud awsFleetCloud) {
@@ -279,9 +298,7 @@ public class BuildQueueRebalancer {
 					_jenkinsCohort.getMostAvailableJenkinsMaster(
 						currentJenkinsMaster, 1, jobName);
 
-				if ((targetJenkinsMaster == null) ||
-					(targetJenkinsMaster == currentJenkinsMaster)) {
-
+				if (Objects.equals(targetJenkinsMaster, currentJenkinsMaster)) {
 					return;
 				}
 
