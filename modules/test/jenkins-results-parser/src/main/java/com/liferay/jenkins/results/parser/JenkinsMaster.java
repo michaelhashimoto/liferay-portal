@@ -171,6 +171,17 @@ public class JenkinsMaster implements JenkinsNode<JenkinsMaster> {
 	}
 
 	@Override
+	public boolean equals(Object object) {
+		if (!(object instanceof JenkinsMaster)) {
+			return false;
+		}
+
+		JenkinsMaster jenkinsMaster = (JenkinsMaster)object;
+
+		return Objects.equals(jenkinsMaster.getName(), getName());
+	}
+
+	@Override
 	public List<String> getAssignedLabels() {
 		return _assignedLabels;
 	}
@@ -718,6 +729,13 @@ public class JenkinsMaster implements JenkinsNode<JenkinsMaster> {
 		return _masterURL;
 	}
 
+	@Override
+	public int hashCode() {
+		String name = getName();
+
+		return name.hashCode();
+	}
+
 	public synchronized boolean isAvailable() {
 		if ((_availableTimestamp == -1) ||
 			((System.currentTimeMillis() - _availableTimestamp) >
@@ -1045,7 +1063,32 @@ public class JenkinsMaster implements JenkinsNode<JenkinsMaster> {
 		_buildURLs.addAll(buildURLs);
 	}
 
-	public static class QueueItem {
+	public static class QueueItem implements Comparable<QueueItem> {
+
+		@Override
+		public int compareTo(QueueItem queueItem) {
+			return Long.compare(getInQueueSince(), queueItem.getInQueueSince());
+		}
+
+		public AWSFleetCloud getAWSFleetCloud() {
+			if (_awsFleetCloud != null) {
+				return _awsFleetCloud;
+			}
+
+			for (AWSFleetCloud awsFleetCloud :
+					_jenkinsMaster.getAWSFleetClouds()) {
+
+				if (_jenkinsMaster._matchesLabels(
+						getLabelExpression(), awsFleetCloud.getLabels())) {
+
+					_awsFleetCloud = awsFleetCloud;
+
+					return _awsFleetCloud;
+				}
+			}
+
+			return null;
+		}
 
 		public long getId() {
 			return _jsonObject.getLong("id");
@@ -1158,6 +1201,7 @@ public class JenkinsMaster implements JenkinsNode<JenkinsMaster> {
 			_jsonObject = jsonObject;
 		}
 
+		private AWSFleetCloud _awsFleetCloud;
 		private final JenkinsMaster _jenkinsMaster;
 		private final JSONObject _jsonObject;
 

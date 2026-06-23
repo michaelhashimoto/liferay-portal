@@ -5,9 +5,12 @@
 
 package com.liferay.jenkins.results.parser;
 
+import com.liferay.jenkins.results.parser.aws.AWSFleetCloud;
+
+import java.io.IOException;
+
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -54,6 +57,23 @@ public class BuildQueueRebalancer {
 
 	}
 
+	private static double _getRebalanceThreshold() {
+		try {
+			String rebalanceThreshold =
+				JenkinsResultsParserUtil.getBuildProperty(
+					"jenkins.queue.rebalance.threshold");
+
+			if (JenkinsResultsParserUtil.isDouble(rebalanceThreshold)) {
+				return Double.parseDouble(rebalanceThreshold);
+			}
+
+			return _REBALANCE_THRESHOLD_DEFAULT;
+		}
+		catch (IOException ioException) {
+			return _REBALANCE_THRESHOLD_DEFAULT;
+		}
+	}
+
 	private void _executeRebalanceActions() {
 		for (RebalanceAction rebalanceAction : _rebalanceActions) {
 			rebalanceAction.execute();
@@ -61,43 +81,36 @@ public class BuildQueueRebalancer {
 	}
 
 	private void _generateAvailableRebalanceActions() {
-		int threshold = JenkinsResultsParserUtil.getBuildPropertyInteger(
-			"jenkins.queue.rebalance.threshold", 5);
-		int maxMoves = JenkinsResultsParserUtil.getBuildPropertyInteger(
-			"jenkins.queue.rebalance.max.moves", 10);
+		List<JenkinsMaster.QueueItem> availableQueueItems = new ArrayList<>();
 
 		List<JenkinsMaster> jenkinsMasters =
 			_jenkinsCohort.getAvailableJenkinsMasters();
 
-		int moves = 0;
+		for (JenkinsMaster jenkinsMaster : jenkinsMasters) {
+			availableQueueItems.addAll(jenkinsMaster.getQueueItems());
+		}
 
-		for (JenkinsMaster sourceJenkinsMaster : jenkinsMasters) {
-			Map<String, List<JenkinsMaster.QueueItem>> movableItemsByLabel =
-				_getMovableItemsByLabel(sourceJenkinsMaster);
+		Map<String, Queue> queueMap = _getQueueMap(availableQueueItems);
 
-			for (Map.Entry<String, List<JenkinsMaster.QueueItem>> entry :
-					movableItemsByLabel.entrySet()) {
+		for (Map.Entry<String, Queue> queueEntry : queueMap.entrySet()) {
+			System.out.println(
+				"Rebalancing queue items with label " + queueEntry.getKey());
 
-				String labelExpression = entry.getKey();
+			Queue queue = queueEntry.getValue();
 
-				List<JenkinsMaster.QueueItem> queueItems = entry.getValue();
+			for (JenkinsMaster jenkinsMaster : jenkinsMasters) {
+				List<JenkinsMaster.QueueItem> queueItems = queue.getQueueItems(
+					jenkinsMaster);
 
-				if ((queueItems.size() < threshold) ||
-					!_hasAvailableCapacityElsewhere(
-						jenkinsMasters, sourceJenkinsMaster, labelExpression)) {
+				int targetQueueSize = queue.getTargetQueueSize();
 
+				if (queueItems.size() < targetQueueSize) {
 					continue;
 				}
 
-				Collections.sort(queueItems, _queueItemComparator);
-
-				for (int i = queueItems.size() - 1;
-					 (i >= 0) && (moves < maxMoves); i--) {
-
+				for (int i = targetQueueSize; i < queueItems.size(); i++) {
 					_rebalanceActions.add(
 						new RebalanceAction(queueItems.get(i)));
-
-					moves++;
 				}
 			}
 		}
@@ -115,34 +128,28 @@ public class BuildQueueRebalancer {
 		}
 	}
 
-	private Map<String, List<JenkinsMaster.QueueItem>> _getMovableItemsByLabel(
-		JenkinsMaster jenkinsMaster) {
+	private Map<String, Queue> _getQueueMap(
+		List<JenkinsMaster.QueueItem> queueItems) {
 
-		Map<String, List<JenkinsMaster.QueueItem>> movableItemsByLabel =
-			new HashMap<>();
+		Map<String, Queue> queueMap = new HashMap<>();
 
-		for (JenkinsMaster.QueueItem queueItem :
-				jenkinsMaster.getQueueItems()) {
+		for (JenkinsMaster.QueueItem queueItem : queueItems) {
+			AWSFleetCloud awsFleetCloud = queueItem.getAWSFleetCloud();
 
-			String labelExpression = queueItem.getLabelExpression();
+			String primaryLabel = awsFleetCloud.getPrimaryLabel();
 
-			if (JenkinsResultsParserUtil.isNullOrEmpty(labelExpression)) {
-				continue;
+			Queue queue = queueMap.get(primaryLabel);
+
+			if (queue == null) {
+				queue = new Queue(awsFleetCloud);
 			}
 
-			List<JenkinsMaster.QueueItem> queueItems = movableItemsByLabel.get(
-				labelExpression);
+			queue.addQueueItem(queueItem);
 
-			if (queueItems == null) {
-				queueItems = new ArrayList<>();
-
-				movableItemsByLabel.put(labelExpression, queueItems);
-			}
-
-			queueItems.add(queueItem);
+			queueMap.put(primaryLabel, queue);
 		}
 
-		return movableItemsByLabel;
+		return queueMap;
 	}
 
 	private int _getRebalanceActionCount(Type type) {
@@ -157,41 +164,99 @@ public class BuildQueueRebalancer {
 		return count;
 	}
 
-	private boolean _hasAvailableCapacityElsewhere(
-		List<JenkinsMaster> jenkinsMasters, JenkinsMaster sourceJenkinsMaster,
-		String labelExpression) {
-
-		for (JenkinsMaster jenkinsMaster : jenkinsMasters) {
-			if ((jenkinsMaster == sourceJenkinsMaster) ||
-				!jenkinsMaster.matchesLabelExpression(labelExpression)) {
-
-				continue;
-			}
-
-			if (jenkinsMaster.getAvailableSlavesCount(labelExpression) > 0) {
-				return true;
-			}
-		}
-
-		return false;
-	}
-
-	private static final Comparator<JenkinsMaster.QueueItem>
-		_queueItemComparator = new Comparator<JenkinsMaster.QueueItem>() {
-
-			@Override
-			public int compare(
-				JenkinsMaster.QueueItem queueItem1,
-				JenkinsMaster.QueueItem queueItem2) {
-
-				return Long.compare(
-					queueItem1.getInQueueSince(), queueItem2.getInQueueSince());
-			}
-
-		};
+	private static final double _REBALANCE_THRESHOLD_DEFAULT = 1.5;
 
 	private final JenkinsCohort _jenkinsCohort;
 	private final List<RebalanceAction> _rebalanceActions = new ArrayList<>();
+
+	private static class Queue {
+
+		public void addQueueItem(JenkinsMaster.QueueItem queueItem) {
+			if (_queueItems.contains(queueItem)) {
+				return;
+			}
+
+			_queueItems.add(queueItem);
+
+			JenkinsMaster jenkinsMaster = queueItem.getJenkinsMaster();
+
+			List<JenkinsMaster.QueueItem> queueItems =
+				_jenkinsMasterQueueItems.get(jenkinsMaster);
+
+			if (queueItems == null) {
+				queueItems = new ArrayList<>();
+			}
+
+			queueItems.add(queueItem);
+
+			_jenkinsMasterQueueItems.put(jenkinsMaster, queueItems);
+		}
+
+		public int getAverageQueueSize() {
+			return _queueItems.size() / _availableQueueCount;
+		}
+
+		public String getLabel() {
+			return _label;
+		}
+
+		public int getMaxQueueSize() {
+			return _maxQueueSize;
+		}
+
+		public List<JenkinsMaster.QueueItem> getQueueItems() {
+			Collections.sort(_queueItems);
+
+			return new ArrayList<>(_queueItems);
+		}
+
+		public List<JenkinsMaster.QueueItem> getQueueItems(
+			JenkinsMaster jenkinsMaster) {
+
+			List<JenkinsMaster.QueueItem> queueItems =
+				_jenkinsMasterQueueItems.get(jenkinsMaster);
+
+			Collections.sort(queueItems);
+
+			return queueItems;
+		}
+
+		public int getTargetQueueSize() {
+			int targetQueueSize = getMaxQueueSize();
+
+			int averageQueueSize = getAverageQueueSize();
+
+			if (targetQueueSize < averageQueueSize) {
+				targetQueueSize = averageQueueSize;
+			}
+
+			return (int)(targetQueueSize * _getRebalanceThreshold());
+		}
+
+		private Queue(AWSFleetCloud awsFleetCloud) {
+			_label = awsFleetCloud.getPrimaryLabel();
+
+			_maxQueueSize = awsFleetCloud.getMaxSize();
+
+			JenkinsMaster jenkinsMaster = awsFleetCloud.getJenkinsMaster();
+
+			JenkinsCohort jenkinsCohort = jenkinsMaster.getJenkinsCohort();
+
+			List<JenkinsMaster> availableJenkinsMasters =
+				jenkinsCohort.getAvailableJenkinsMasters();
+
+			_availableQueueCount = availableJenkinsMasters.size();
+		}
+
+		private final int _availableQueueCount;
+		private final Map<JenkinsMaster, List<JenkinsMaster.QueueItem>>
+			_jenkinsMasterQueueItems = new HashMap<>();
+		private final String _label;
+		private final int _maxQueueSize;
+		private final List<JenkinsMaster.QueueItem> _queueItems =
+			new ArrayList<>();
+
+	}
 
 	private class RebalanceAction {
 
@@ -199,7 +264,7 @@ public class BuildQueueRebalancer {
 			try {
 				JenkinsMaster currentJenkinsMaster = _getCurrentJenkinsMaster();
 
-				if (_type == Type.ABORT) {
+				if (getType() == Type.ABORT) {
 					JenkinsStopBuildUtil.cancelQueueItem(
 						currentJenkinsMaster, _queueItem.getId());
 
