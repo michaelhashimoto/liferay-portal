@@ -84,16 +84,7 @@ public class BuildQueueRebalancer {
 	}
 
 	private void _generateAvailableRebalanceActions() {
-		List<JenkinsMaster.QueueItem> availableQueueItems = new ArrayList<>();
-
-		List<JenkinsMaster> jenkinsMasters =
-			_jenkinsCohort.getAvailableJenkinsMasters();
-
-		for (JenkinsMaster jenkinsMaster : jenkinsMasters) {
-			availableQueueItems.addAll(jenkinsMaster.getQueueItems());
-		}
-
-		Map<String, Queue> queueMap = _getQueueMap(availableQueueItems);
+		Map<String, Queue> queueMap = _getQueueMap();
 
 		for (Map.Entry<String, Queue> queueEntry : queueMap.entrySet()) {
 			System.out.println(
@@ -101,7 +92,9 @@ public class BuildQueueRebalancer {
 
 			Queue queue = queueEntry.getValue();
 
-			for (JenkinsMaster jenkinsMaster : jenkinsMasters) {
+			for (JenkinsMaster jenkinsMaster :
+					_jenkinsCohort.getAvailableJenkinsMasters()) {
+
 				List<JenkinsMaster.QueueItem> queueItems = queue.getQueueItems(
 					jenkinsMaster);
 
@@ -131,12 +124,29 @@ public class BuildQueueRebalancer {
 		}
 	}
 
-	private Map<String, Queue> _getQueueMap(
-		List<JenkinsMaster.QueueItem> queueItems) {
+	private Queue _getQueue(String primaryLabel) {
+		Map<String, Queue> queueMap = _getQueueMap();
 
-		Map<String, Queue> queueMap = new HashMap<>();
+		return queueMap.get(primaryLabel);
+	}
 
-		for (JenkinsMaster.QueueItem queueItem : queueItems) {
+	private synchronized Map<String, Queue> _getQueueMap() {
+		if (_queueMaps != null) {
+			return _queueMaps;
+		}
+
+		List<JenkinsMaster.QueueItem> availableQueueItems = new ArrayList<>();
+
+		List<JenkinsMaster> jenkinsMasters =
+			_jenkinsCohort.getAvailableJenkinsMasters();
+
+		for (JenkinsMaster jenkinsMaster : jenkinsMasters) {
+			availableQueueItems.addAll(jenkinsMaster.getQueueItems());
+		}
+
+		_queueMaps = new HashMap<>();
+
+		for (JenkinsMaster.QueueItem queueItem : availableQueueItems) {
 			AWSFleetCloud awsFleetCloud = queueItem.getAWSFleetCloud();
 
 			if (awsFleetCloud == null) {
@@ -149,7 +159,7 @@ public class BuildQueueRebalancer {
 
 			String primaryLabel = awsFleetCloud.getPrimaryLabel();
 
-			Queue queue = queueMap.get(primaryLabel);
+			Queue queue = _queueMaps.get(primaryLabel);
 
 			if (queue == null) {
 				queue = new Queue(awsFleetCloud);
@@ -157,10 +167,10 @@ public class BuildQueueRebalancer {
 
 			queue.addQueueItem(queueItem);
 
-			queueMap.put(primaryLabel, queue);
+			_queueMaps.put(primaryLabel, queue);
 		}
 
-		return queueMap;
+		return _queueMaps;
 	}
 
 	private int _getRebalanceActionCount(Type type) {
@@ -178,6 +188,7 @@ public class BuildQueueRebalancer {
 	private static final double _REBALANCE_THRESHOLD_MULTIPLIER_DEFAULT = 1.5;
 
 	private final JenkinsCohort _jenkinsCohort;
+	private Map<String, Queue> _queueMaps;
 	private final List<RebalanceAction> _rebalanceActions = new ArrayList<>();
 
 	private static class Queue {
@@ -217,6 +228,12 @@ public class BuildQueueRebalancer {
 
 		public int getMaxQueueSize() {
 			return _maxQueueSize;
+		}
+
+		// TODO - Somehow calculate which jenkins master has the most room.
+
+		public JenkinsMaster getMostAvailableJenkinsMaster() {
+			return null;
 		}
 
 		public List<JenkinsMaster.QueueItem> getQueueItems() {
@@ -292,18 +309,20 @@ public class BuildQueueRebalancer {
 					return;
 				}
 
-				String jobName = _queueItem.getTaskName();
+				Queue queue = _getQueue(_queueItem.getPrimaryLabel());
 
 				JenkinsMaster targetJenkinsMaster =
-					_jenkinsCohort.getMostAvailableJenkinsMaster(
-						currentJenkinsMaster, 1, jobName);
+					queue.getMostAvailableJenkinsMaster();
 
-				if (Objects.equals(targetJenkinsMaster, currentJenkinsMaster)) {
+				if ((targetJenkinsMaster == null) ||
+					(targetJenkinsMaster == currentJenkinsMaster)) {
+
 					return;
 				}
 
 				long queueId = JenkinsResultsParserUtil.invokeJenkinsBuild(
-					targetJenkinsMaster, jobName, _queueItem.getParameters());
+					targetJenkinsMaster, _queueItem.getTaskName(),
+					_queueItem.getParameters());
 
 				if (queueId == 0) {
 					return;

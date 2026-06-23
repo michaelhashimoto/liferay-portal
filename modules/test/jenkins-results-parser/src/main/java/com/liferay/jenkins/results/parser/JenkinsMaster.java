@@ -1132,6 +1132,10 @@ public class JenkinsMaster implements JenkinsNode<JenkinsMaster> {
 			return _getParameters(_jsonObject);
 		}
 
+		public String getPrimaryLabel() {
+			return _awsFleetCloud.getPrimaryLabel();
+		}
+
 		public String getTaskName() {
 			JSONObject taskJSONObject = _jsonObject.optJSONObject("task");
 
