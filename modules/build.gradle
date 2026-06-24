@@ -636,11 +636,7 @@ gradle.beforeProject {
 			}
 
 			compileTestIntegrationJava {
-				configurations.testIntegrationImplementation.allDependencies.withType(ProjectDependency) {
-					if (!it.dependencyProject.name.endsWith("-theme")) {
-						mustRunAfter "${it.dependencyProject.path}:processResources"
-					}
-				}
+				_mustRunAfterProcessResources(compileTestIntegrationJava, configurations.testIntegrationImplementation)
 
 				if (!implicitDependencyProjects.contains(project)) {
 					implicitDependencyProjects.forEach {
@@ -655,21 +651,8 @@ gradle.beforeProject {
 			}
 
 			compileTestJava {
-				for (ProjectDependency projectDependency in configurations.compileOnly.allDependencies.withType(ProjectDependency)) {
-					Project dependencyProject = projectDependency.dependencyProject
-
-					if (!dependencyProject.name.endsWith("-theme")) {
-						mustRunAfter "${dependencyProject.path}:processResources"
-					}
-				}
-
-				for (ProjectDependency projectDependency in configurations.testImplementation.allDependencies.withType(ProjectDependency)) {
-					Project dependencyProject = projectDependency.dependencyProject
-
-					if (!dependencyProject.name.endsWith("-theme")) {
-						mustRunAfter "${dependencyProject.path}:processResources"
-					}
-				}
+				_mustRunAfterProcessResources(compileTestJava, configurations.compileOnly)
+				_mustRunAfterProcessResources(compileTestJava, configurations.testImplementation)
 			}
 
 			dependencies {
@@ -1081,6 +1064,18 @@ private List<String> _getTestClasses(Task task) {
 	}
 
 	return testClasses
+}
+
+private void _mustRunAfterProcessResources(
+	Task task, Configuration configuration) {
+
+	for (ProjectDependency projectDependency in configuration.allDependencies.withType(ProjectDependency)) {
+		Project dependencyProject = projectDependency.dependencyProject
+
+		if (!dependencyProject.name.endsWith("-theme")) {
+			task.mustRunAfter "${dependencyProject.path}:processResources"
+		}
+	}
 }
 
 private boolean _hasTestClasses(Task task, String testClassesDirName) {
