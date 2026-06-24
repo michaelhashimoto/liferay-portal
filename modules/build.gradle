@@ -636,11 +636,7 @@ gradle.beforeProject {
 			}
 
 			compileTestIntegrationJava {
-				configurations.testIntegrationImplementation.allDependencies.withType(ProjectDependency) {
-					if (!it.dependencyProject.name.endsWith("-theme")) {
-						mustRunAfter "${it.dependencyProject.path}:processResources"
-					}
-				}
+				_mustRunAfterProcessResources(compileTestIntegrationJava, configurations.testIntegrationImplementation)
 
 				if (!implicitDependencyProjects.contains(project)) {
 					implicitDependencyProjects.forEach {
@@ -655,11 +651,8 @@ gradle.beforeProject {
 			}
 
 			compileTestJava {
-				configurations.compileOnly.allDependencies.withType(ProjectDependency) {
-					if (!it.dependencyProject.name.endsWith("-theme")) {
-						mustRunAfter "${it.dependencyProject.path}:processResources"
-					}
-				}
+				_mustRunAfterProcessResources(compileTestJava, configurations.compileOnly)
+				_mustRunAfterProcessResources(compileTestJava, configurations.testImplementation)
 			}
 
 			dependencies {
@@ -1052,20 +1045,26 @@ private boolean _containsProject(
 }
 
 private List<String> _getTestClasses(Task task) {
-	return task.project.gradle.testClasses.collect {
+	Project project = task.project
+
+	String javaDirName = "src/" + task.name + "/java/"
+
+	return project.gradle.testClasses.findAll {
 		String testClass ->
 
-		if (testClass.startsWith("/modules/")) {
-			String projectPath = task.project.path.replace(':' as char, '/' as char)
+		project.file(javaDirName + testClass.replace(".class", ".java")).exists()
+	}
+}
 
-			String javaPath = "/modules" + projectPath + "/src/" + task.name + "/java/"
+private void _mustRunAfterProcessResources(
+	Task task, Configuration configuration) {
 
-			if (testClass.startsWith(javaPath)) {
-				testClass = testClass.replace(javaPath, "")
-			}
+	for (ProjectDependency projectDependency in configuration.allDependencies.withType(ProjectDependency)) {
+		Project dependencyProject = projectDependency.dependencyProject
+
+		if (!dependencyProject.name.endsWith("-theme")) {
+			task.mustRunAfter "${dependencyProject.path}:processResources"
 		}
-
-		return testClass
 	}
 }
 
