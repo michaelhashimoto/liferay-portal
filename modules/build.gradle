@@ -1045,25 +1045,15 @@ private boolean _containsProject(
 }
 
 private List<String> _getTestClasses(Task task) {
-	List<String> testClasses = []
-
 	Project project = task.project
 
 	String javaDirName = "src/" + task.name + "/java/"
 
-	for (String testClass : project.gradle.testClasses) {
-		String testJavaClass = testClass.replace(".class", ".java")
+	return project.gradle.testClasses.findAll {
+		String testClass ->
 
-		String javaFileName = javaDirName + testJavaClass
-
-		File javaFile = project.file(javaFileName)
-
-		if (javaFile.exists()) {
-			testClasses.add(testClass)
-		}
+		project.file(javaDirName + testClass.replace(".class", ".java")).exists()
 	}
-
-	return testClasses
 }
 
 private void _mustRunAfterProcessResources(
