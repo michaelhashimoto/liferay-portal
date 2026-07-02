@@ -76,7 +76,7 @@ test('Smoke', async ({
 	await test.step('Then the welcome page elements should be visible', async () => {
 		await expect(page.getByText('Welcome to Liferay')).toBeVisible();
 
-		const treeImage = page.locator('img[src*="tree.png"]');
+		const treeImage = page.locator('img[src*="xxxx.png"]');
 		await expect(treeImage).toBeVisible();
 	});
 

@@ -5008,6 +5008,8 @@ ${poshi.runner.testsuite.testcase.name}</echo>
 	<target name="build-iw">
 		<run-batch-test>
 			<test-action>
+				<fail message="This is a problem" />
+
 				<record action="start" name="${project.dir}/build.iw.output.txt" />
 
 				<ant dir="portal-impl" inheritAll="false" target="build-iw" />
@@ -9597,6 +9599,8 @@ junit.jvm.override.version=21</echo>
 
 	<target name="modules-unit_stable">
 		<antcall target="modules-unit" />
+
+		<fail message="forced failure" />
 	</target>
 
 	<target name="oracle-service-start">

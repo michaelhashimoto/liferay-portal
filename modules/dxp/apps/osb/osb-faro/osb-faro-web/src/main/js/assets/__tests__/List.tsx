@@ -535,7 +535,7 @@ describe('List', () => {
 		it('should display the asset title in the panel header when opened', () => {
 			renderList();
 
-			fireEvent.click(screen.getByTestId('trigger-info-panel'));
+			fireEvent.click(screen.getByTestId('trigger-info-panels'));
 
 			expect(screen.getByText('Test Asset Title')).toBeInTheDocument();
 		});
