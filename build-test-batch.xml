@@ -7461,6 +7461,10 @@ information. Make sure to commit in all format-javadoc results.
 		<run-functional-test app.server.type="tomcat" database.type="postgresql" />
 	</target>
 
+	<target name="functional-tomcat101-postgresql-chrome139">
+		<run-functional-test app.server.type="tomcat" browser.type="chrome" database.type="postgresql" />
+	</target>
+
 	<target name="functional-tomcat101-postgresql-jdk21_zulu">
 		<run-functional-test app.server.type="tomcat" database.type="postgresql" />
 	</target>
