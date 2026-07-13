@@ -152,8 +152,7 @@ public class ObjectDefinitionResourcePermissionUtil {
 			modelPermissions);
 	}
 
-	private static Serializable _getCacheKey(
-		ObjectDefinition objectDefinition) {
+	private static Serializable _getKey(ObjectDefinition objectDefinition) {
 
 		if (PropsValues.DATABASE_PARTITION_ENABLED) {
 			return objectDefinition.getObjectDefinitionId() + StringPool.AT +
