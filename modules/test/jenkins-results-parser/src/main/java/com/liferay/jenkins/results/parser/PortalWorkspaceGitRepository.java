@@ -243,13 +243,27 @@ public class PortalWorkspaceGitRepository extends BaseWorkspaceGitRepository {
 		}
 	}
 
+	protected boolean isYarnCacheEnabled() {
+		try {
+			return Boolean.parseBoolean(
+				JenkinsResultsParserUtil.getBuildProperty(
+					"yarn.cache.enabled", Environment.get("CI_TEST_SUITE"),
+					Environment.get("JOB_NAME")));
+		}
+		catch (IOException ioException) {
+			return true;
+		}
+	}
+
 	@Override
 	protected void setUpAdditionalCaches() throws IOException {
 		if (isBinariesCacheEnabled()) {
 			_setUpBinariesCache();
 		}
 
-		_setUpYarnCache();
+		if (isYarnCacheEnabled()) {
+			_setUpYarnCache();
+		}
 	}
 
 	private String _getLiferayFacesURL(
