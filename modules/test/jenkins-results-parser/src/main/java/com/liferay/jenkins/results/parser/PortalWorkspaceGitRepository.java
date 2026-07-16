@@ -438,7 +438,9 @@ public class PortalWorkspaceGitRepository extends BaseWorkspaceGitRepository {
 	}
 
 	private synchronized void _setUpYarnCache() {
-		if (!JenkinsResultsParserUtil.isCloudCINode() || _setUpYarnCache) {
+		if (!JenkinsResultsParserUtil.isCloudCINode() || isSnapshot() ||
+			_setUpYarnCache) {
+
 			return;
 		}
 

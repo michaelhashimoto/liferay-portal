@@ -651,6 +651,10 @@ public abstract class BaseWorkspaceGitRepository
 		return _setUp;
 	}
 
+	protected boolean isSnapshot() {
+		return _snapshot;
+	}
+
 	protected void prepareGitWorkingDirectory() throws IOException {
 		if (!_isGitArchiveEnabled()) {
 			_initializeGitWorkingDirectory();
