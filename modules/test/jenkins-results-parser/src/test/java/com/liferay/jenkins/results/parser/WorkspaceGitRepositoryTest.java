@@ -7,8 +7,7 @@ package com.liferay.jenkins.results.parser;
 
 import java.io.File;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
+import org.json.JSONObject;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -23,28 +22,14 @@ public class WorkspaceGitRepositoryTest
 	extends com.liferay.jenkins.results.parser.Test {
 
 	@Test
-	public void testIsFullDotGitDirArchiveRequiredOnlyForEE62X()
-		throws Exception {
-
+	public void testIsFullDotGitDirArchiveRequired() throws Exception {
 		Assert.assertTrue(
-			"A full .git dir archive is required for ee-6.2.x working dirs",
-			_isFullDotGitDirArchiveRequired(
-				_mockWorkspaceGitRepository("liferay-plugins-ee-6.2.x")));
-
+			_isFullDotGitDirArchiveRequired("liferay-plugins-ee-6.2.x"));
 		Assert.assertTrue(
-			"A full .git dir archive is required for ee-6.2.x working dirs",
-			_isFullDotGitDirArchiveRequired(
-				_mockWorkspaceGitRepository("liferay-portal-ee-6.2.x")));
-
+			_isFullDotGitDirArchiveRequired("liferay-portal-ee-6.2.x"));
+		Assert.assertFalse(_isFullDotGitDirArchiveRequired("liferay-portal"));
 		Assert.assertFalse(
-			"A full .git dir archive is not required for master working dirs",
-			_isFullDotGitDirArchiveRequired(
-				_mockWorkspaceGitRepository("liferay-portal")));
-
-		Assert.assertFalse(
-			"A full .git dir archive is not required for 7.0.x working dirs",
-			_isFullDotGitDirArchiveRequired(
-				_mockWorkspaceGitRepository("liferay-portal-7.0.x")));
+			_isFullDotGitDirArchiveRequired("liferay-portal-7.0.x"));
 	}
 
 	@Test
@@ -70,16 +55,10 @@ public class WorkspaceGitRepositoryTest
 		);
 
 		DefaultWorkspaceGitRepository defaultWorkspaceGitRepository =
-			Mockito.mock(DefaultWorkspaceGitRepository.class);
+			_newDefaultWorkspaceGitRepository(gitWorkingDirectory);
 
-		Mockito.when(
-			defaultWorkspaceGitRepository.getGitWorkingDirectory()
-		).thenReturn(
-			gitWorkingDirectory
-		);
-
-		_validateSHAInRemoteGitRef(
-			defaultWorkspaceGitRepository, "master", remoteGitRef, sha);
+		defaultWorkspaceGitRepository.validateSHAInRemoteGitRef(
+			"master", remoteGitRef, sha);
 
 		InOrder inOrder = Mockito.inOrder(gitWorkingDirectory);
 
@@ -96,66 +75,73 @@ public class WorkspaceGitRepositoryTest
 		);
 	}
 
-	private boolean _isFullDotGitDirArchiveRequired(
-			WorkspaceGitRepository workspaceGitRepository)
+	private boolean _isFullDotGitDirArchiveRequired(String workingDirectoryName)
 		throws Exception {
-
-		Method method = BaseWorkspaceGitRepository.class.getDeclaredMethod(
-			"_isFullDotGitDirArchiveRequired");
-
-		method.setAccessible(true);
-
-		return (Boolean)method.invoke(workspaceGitRepository);
-	}
-
-	private WorkspaceGitRepository _mockWorkspaceGitRepository(
-		String workingDirectoryName) {
 
 		GitWorkingDirectory gitWorkingDirectory = Mockito.mock(
 			GitWorkingDirectory.class);
 
-		Mockito.when(
-			gitWorkingDirectory.getWorkingDirectory()
-		).thenReturn(
+		Mockito.doReturn(
 			new File(workingDirectoryName)
+		).when(
+			gitWorkingDirectory
+		).getWorkingDirectory();
+
+		DefaultWorkspaceGitRepository defaultWorkspaceGitRepository =
+			_newDefaultWorkspaceGitRepository(gitWorkingDirectory);
+
+		return defaultWorkspaceGitRepository.isFullDotGitDirArchiveRequired();
+	}
+
+	private DefaultWorkspaceGitRepository _newDefaultWorkspaceGitRepository(
+			GitWorkingDirectory gitWorkingDirectory)
+		throws Exception {
+
+		File workingDirectory = File.createTempFile("workspace-", null);
+
+		workingDirectory.delete();
+
+		workingDirectory.mkdir();
+
+		JSONObject jsonObject = new JSONObject();
+
+		jsonObject.put(
+			"base_branch_head_sha", "1234567890123456789012345678901234567890"
+		).put(
+			"base_branch_sha", "1234567890123456789012345678901234567890"
+		).put(
+			"base_branch_username", "liferay"
+		).put(
+			"directory",
+			JenkinsResultsParserUtil.getCanonicalPath(workingDirectory)
+		).put(
+			"directory_name", "test-repository"
+		).put(
+			"git_hub_url", "https://github.com/liferay/test-repository"
+		).put(
+			"name", "test-repository"
+		).put(
+			"sender_branch_head_sha", "0987654321098765432109876543210987654321"
+		).put(
+			"sender_branch_name", "master"
+		).put(
+			"sender_branch_sha", "0987654321098765432109876543210987654321"
+		).put(
+			"sender_branch_username", "test"
+		).put(
+			"upstream_branch_name", "master"
 		);
 
 		DefaultWorkspaceGitRepository defaultWorkspaceGitRepository =
-			Mockito.mock(DefaultWorkspaceGitRepository.class);
+			Mockito.spy(new DefaultWorkspaceGitRepository(jsonObject));
 
-		Mockito.when(
-			defaultWorkspaceGitRepository.getGitWorkingDirectory()
-		).thenReturn(
+		Mockito.doReturn(
 			gitWorkingDirectory
-		);
+		).when(
+			defaultWorkspaceGitRepository
+		).getGitWorkingDirectory();
 
 		return defaultWorkspaceGitRepository;
-	}
-
-	private void _validateSHAInRemoteGitRef(
-			WorkspaceGitRepository workspaceGitRepository, String branchName,
-			RemoteGitRef remoteGitRef, String sha)
-		throws Exception {
-
-		Method method = BaseWorkspaceGitRepository.class.getDeclaredMethod(
-			"_validateSHAInRemoteGitRef", String.class, RemoteGitRef.class,
-			String.class);
-
-		method.setAccessible(true);
-
-		try {
-			method.invoke(
-				workspaceGitRepository, branchName, remoteGitRef, sha);
-		}
-		catch (InvocationTargetException invocationTargetException) {
-			Throwable throwable = invocationTargetException.getCause();
-
-			if (throwable instanceof RuntimeException) {
-				throw (RuntimeException)throwable;
-			}
-
-			throw invocationTargetException;
-		}
 	}
 
 }
