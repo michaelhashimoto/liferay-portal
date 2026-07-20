@@ -1360,10 +1360,18 @@ public class JenkinsResultsParserUtil {
 
 			String s3BucketName = Environment.get("S3_BUCKET_NAME");
 
-			if (!isNullOrEmpty(s3BucketName)) {
-				properties.setProperty(
-					"env.S3_BUCKET_NAME", Environment.get("S3_BUCKET_NAME"));
+			if (isNullOrEmpty(s3BucketName)) {
+				String jenkinsURL = Environment.get("JENKINS_URL");
+
+				if ((jenkinsURL != null) && jenkinsURL.contains("test-5")) {
+					s3BucketName = "liferayci-file-propagator-staging";
+				}
+				else {
+					s3BucketName = "liferayci-file-propagator";
+				}
 			}
+
+			properties.setProperty("env.S3_BUCKET_NAME", s3BucketName);
 
 			if (!properties.containsKey("user.home")) {
 				properties.setProperty(
