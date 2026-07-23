@@ -40,8 +40,6 @@ public class WorkspaceGitRepositoryTest
 		LocalGitBranch localGitBranch = Mockito.mock(LocalGitBranch.class);
 		RemoteGitRef remoteGitRef = Mockito.mock(RemoteGitRef.class);
 
-		String sha = "0123456789012345678901234567890123456789";
-
 		Mockito.when(
 			gitWorkingDirectory.fetch(remoteGitRef)
 		).thenReturn(
@@ -49,7 +47,7 @@ public class WorkspaceGitRepositoryTest
 		);
 
 		Mockito.when(
-			gitWorkingDirectory.refContainsSHA(localGitBranch, sha)
+			gitWorkingDirectory.refContainsSHA(localGitBranch, null)
 		).thenReturn(
 			true
 		);
@@ -58,7 +56,7 @@ public class WorkspaceGitRepositoryTest
 			_newDefaultWorkspaceGitRepository(gitWorkingDirectory);
 
 		defaultWorkspaceGitRepository.validateSHAInRemoteGitRef(
-			"master", remoteGitRef, sha);
+			"master", remoteGitRef, null);
 
 		InOrder inOrder = Mockito.inOrder(gitWorkingDirectory);
 
@@ -71,7 +69,7 @@ public class WorkspaceGitRepositoryTest
 		inOrder.verify(
 			gitWorkingDirectory
 		).refContainsSHA(
-			localGitBranch, sha
+			localGitBranch, null
 		);
 	}
 
