@@ -246,96 +246,11 @@ public class PortalWorkspaceGitRepository extends BaseWorkspaceGitRepository {
 	@Override
 	protected void setUpAdditionalCaches() throws IOException {
 		if (isBinariesCacheEnabled()) {
-			_setUpBinariesCache();
+			setUpBinariesCache();
 		}
 	}
 
-	private String _getLiferayFacesURL(
-		String repositoryName, String propertyName) {
-
-		try {
-			String branchName = JenkinsResultsParserUtil.getProperty(
-				JenkinsResultsParserUtil.getBuildProperties(),
-				"portal.test.properties", propertyName,
-				getUpstreamBranchName());
-
-			if (JenkinsResultsParserUtil.isNullOrEmpty(branchName)) {
-				branchName = "master";
-			}
-
-			return JenkinsResultsParserUtil.combine(
-				"https://github.com/liferay/", repositoryName, "/tree/",
-				branchName);
-		}
-		catch (IOException ioException) {
-			throw new RuntimeException(ioException);
-		}
-	}
-
-	private Properties _getPortalTestProperties() {
-		Properties testProperties = getProperties("portal.test.properties");
-
-		String companyDefaultLocale = Environment.get(
-			"TEST_COMPANY_DEFAULT_LOCALE");
-
-		if (!JenkinsResultsParserUtil.isNullOrEmpty(companyDefaultLocale)) {
-			testProperties.setProperty(
-				"test.company.default.locale", companyDefaultLocale);
-		}
-
-		String portalLatestBundleVersion = Environment.get(
-			"PORTAL_LATEST_BUNDLE_VERSION");
-
-		if (!JenkinsResultsParserUtil.isNullOrEmpty(
-				portalLatestBundleVersion)) {
-
-			testProperties.put(
-				"test.released.release.bundle.version",
-				portalLatestBundleVersion);
-
-			Properties buildProperties = null;
-
-			try {
-				buildProperties = JenkinsResultsParserUtil.getBuildProperties();
-			}
-			catch (IOException ioException) {
-				throw new RuntimeException(ioException);
-			}
-
-			String portalBundleTomcatURL = JenkinsResultsParserUtil.getProperty(
-				buildProperties, "portal.bundle.tomcat",
-				portalLatestBundleVersion);
-
-			if (!JenkinsResultsParserUtil.isNullOrEmpty(
-					portalBundleTomcatURL)) {
-
-				testProperties.put(
-					"test.released.test.portal.bundle.zip.url",
-					portalBundleTomcatURL);
-			}
-		}
-
-		return testProperties;
-	}
-
-	private PortalAcceptancePullRequestJob
-		_getRelevantPortalAcceptancePullRequestJob() {
-
-		String upstreamBranchName = getUpstreamBranchName();
-
-		PortalGitWorkingDirectory portalGitWorkingDirectory =
-			(PortalGitWorkingDirectory)getGitWorkingDirectory();
-
-		portalGitWorkingDirectory.getGitRepositoryName();
-
-		return (PortalAcceptancePullRequestJob)JobFactory.newJob(
-			Job.BuildProfile.DXP, "test-portal-acceptance-pullrequest(master)",
-			null, portalGitWorkingDirectory, upstreamBranchName, null,
-			portalGitWorkingDirectory.getGitRepositoryName(), "relevant",
-			upstreamBranchName);
-	}
-
-	private void _setUpBinariesCache() {
+	protected void setUpBinariesCache() {
 		if (!JenkinsResultsParserUtil.isCloudCINode() || _setUpBinariesCache) {
 			return;
 		}
@@ -391,6 +306,102 @@ public class PortalWorkspaceGitRepository extends BaseWorkspaceGitRepository {
 
 			_setUpBinariesCache = true;
 		}
+	}
+
+	private String _getLiferayFacesURL(
+		String repositoryName, String propertyName) {
+
+		try {
+			String branchName = JenkinsResultsParserUtil.getProperty(
+				JenkinsResultsParserUtil.getBuildProperties(),
+				"portal.test.properties", propertyName,
+				getUpstreamBranchName());
+
+			if (JenkinsResultsParserUtil.isNullOrEmpty(branchName)) {
+				branchName = "master";
+			}
+
+			return JenkinsResultsParserUtil.combine(
+				"https://github.com/liferay/", repositoryName, "/tree/",
+				branchName);
+		}
+		catch (IOException ioException) {
+			throw new RuntimeException(ioException);
+		}
+	}
+
+	private Properties _getPortalTestProperties() {
+		Properties testProperties = getProperties("portal.test.properties");
+
+		String companyDefaultLocale = Environment.get(
+			"TEST_COMPANY_DEFAULT_LOCALE");
+
+		if (!JenkinsResultsParserUtil.isNullOrEmpty(companyDefaultLocale)) {
+			testProperties.setProperty(
+				"test.company.default.locale", companyDefaultLocale);
+		}
+
+		String portalLatestBundleVersion = Environment.get(
+			"PORTAL_LATEST_BUNDLE_VERSION");
+
+		if (JenkinsResultsParserUtil.isNullOrEmpty(portalLatestBundleVersion)) {
+			try {
+				portalLatestBundleVersion =
+					JenkinsResultsParserUtil.getBuildProperty(
+						"portal.latest.bundle.version",
+						getUpstreamBranchName());
+			}
+			catch (IOException ioException) {
+			}
+		}
+
+		if (!JenkinsResultsParserUtil.isNullOrEmpty(
+				portalLatestBundleVersion)) {
+
+			testProperties.put(
+				"test.released.release.bundle.version",
+				portalLatestBundleVersion);
+
+			Properties buildProperties = null;
+
+			try {
+				buildProperties = JenkinsResultsParserUtil.getBuildProperties();
+			}
+			catch (IOException ioException) {
+				throw new RuntimeException(ioException);
+			}
+
+			String portalBundleTomcatURL = JenkinsResultsParserUtil.getProperty(
+				buildProperties, "portal.bundle.tomcat",
+				portalLatestBundleVersion);
+
+			if (!JenkinsResultsParserUtil.isNullOrEmpty(
+					portalBundleTomcatURL)) {
+
+				testProperties.put(
+					"test.released.test.portal.bundle.zip.url",
+					portalBundleTomcatURL);
+			}
+		}
+
+		return testProperties;
+	}
+
+	private PortalAcceptancePullRequestJob
+		_getRelevantPortalAcceptancePullRequestJob() {
+
+		String upstreamBranchName = getUpstreamBranchName();
+
+		PortalGitWorkingDirectory portalGitWorkingDirectory =
+			(PortalGitWorkingDirectory)getGitWorkingDirectory();
+
+		portalGitWorkingDirectory.getGitRepositoryName();
+
+		return (PortalAcceptancePullRequestJob)JobFactory.newJob(
+			Job.BuildProfile.DXP, "test-portal-acceptance-pullrequest(master)",
+			null, portalGitWorkingDirectory, upstreamBranchName, null,
+			portalGitWorkingDirectory.getGitRepositoryName(), "relevant",
+			upstreamBranchName);
 	}
 
 	private void _writeAppServerPropertiesFile() {
