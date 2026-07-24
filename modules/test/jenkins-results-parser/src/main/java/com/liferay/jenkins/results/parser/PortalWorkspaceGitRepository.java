@@ -243,10 +243,26 @@ public class PortalWorkspaceGitRepository extends BaseWorkspaceGitRepository {
 		}
 	}
 
+	protected boolean isYarnCacheEnabled() {
+		try {
+			return Boolean.parseBoolean(
+				JenkinsResultsParserUtil.getBuildProperty(
+					"yarn.cache.enabled", Environment.get("CI_TEST_SUITE"),
+					Environment.get("JOB_NAME")));
+		}
+		catch (IOException ioException) {
+			return true;
+		}
+	}
+
 	@Override
 	protected void setUpAdditionalCaches() throws IOException {
 		if (isBinariesCacheEnabled()) {
 			_setUpBinariesCache();
+		}
+
+		if (isYarnCacheEnabled()) {
+			_setUpYarnCache();
 		}
 	}
 
@@ -335,6 +351,34 @@ public class PortalWorkspaceGitRepository extends BaseWorkspaceGitRepository {
 			upstreamBranchName);
 	}
 
+	private String _getYarnCacheS3BucketPath() {
+		try {
+			return JenkinsResultsParserUtil.combine(
+				JenkinsResultsParserUtil.getBuildProperty(
+					"cloud.ci.s3.bucket.yarn.caches.path"),
+				"/", getDirectoryName(), "/", _getYarnLockSHA(),
+				"/yarn-cache.zip");
+		}
+		catch (IOException ioException) {
+			throw new RuntimeException(ioException);
+		}
+	}
+
+	private String _getYarnLockSHA() {
+		GitWorkingDirectory gitWorkingDirectory = getGitWorkingDirectory();
+
+		List<LocalGitCommit> localGitCommits = gitWorkingDirectory.log(
+			1, new File(getDirectory(), "modules/yarn.lock"));
+
+		if (localGitCommits.isEmpty()) {
+			return null;
+		}
+
+		LocalGitCommit localGitCommit = localGitCommits.get(0);
+
+		return localGitCommit.getSHA();
+	}
+
 	private void _setUpBinariesCache() {
 		if (!JenkinsResultsParserUtil.isCloudCINode() || _setUpBinariesCache) {
 			return;
@@ -393,6 +437,75 @@ public class PortalWorkspaceGitRepository extends BaseWorkspaceGitRepository {
 		}
 	}
 
+	private synchronized void _setUpYarnCache() {
+		if (!JenkinsResultsParserUtil.isCloudCINode() || isSnapshot() ||
+			_setUpYarnCache) {
+
+			return;
+		}
+
+		String upstreamBranchName = getUpstreamBranchName();
+
+		if (upstreamBranchName.startsWith("ee-")) {
+			return;
+		}
+
+		if (JenkinsResultsParserUtil.isNullOrEmpty(_getYarnLockSHA())) {
+			System.out.println(
+				"WARNING: Unable to get the latest SHA of modules/yarn.lock");
+
+			_setUpYarnCache = true;
+
+			return;
+		}
+
+		String yarnCacheS3BucketPath = _getYarnCacheS3BucketPath();
+
+		File yarnCacheFile = new File(getDirectory(), "yarn-cache.zip");
+
+		if (CloudBucketUtil.isS3ObjectPathAvailable(yarnCacheS3BucketPath)) {
+			try {
+				CloudBucketUtil.downloadS3File(
+					yarnCacheFile, yarnCacheS3BucketPath);
+
+				JenkinsResultsParserUtil.unzip(yarnCacheFile, getDirectory());
+
+				return;
+			}
+			catch (IOException ioException) {
+				System.out.println(
+					"WARNING: Unable to download " + yarnCacheS3BucketPath);
+			}
+			finally {
+				JenkinsResultsParserUtil.delete(yarnCacheFile);
+
+				_setUpYarnCache = true;
+			}
+		}
+
+		if (yarnCacheFile.exists()) {
+			JenkinsResultsParserUtil.delete(yarnCacheFile);
+		}
+
+		PortalGitWorkingDirectory portalGitWorkingDirectory =
+			(PortalGitWorkingDirectory)getGitWorkingDirectory();
+
+		portalGitWorkingDirectory.createYarnCache(yarnCacheFile.getName());
+
+		try {
+			CloudBucketUtil.uploadS3File(yarnCacheS3BucketPath, yarnCacheFile);
+		}
+		catch (IOException ioException) {
+			System.out.println(
+				"WARNING: Unable to upload " + yarnCacheS3BucketPath);
+		}
+		finally {
+			JenkinsResultsParserUtil.delete(yarnCacheFile);
+
+			_setUpYarnCache = true;
+		}
+	}
+
 	private void _writeAppServerPropertiesFile() {
 		JenkinsResultsParserUtil.writePropertiesFile(
 			new File(
@@ -440,5 +553,6 @@ public class PortalWorkspaceGitRepository extends BaseWorkspaceGitRepository {
 
 	private Properties _appServerProperties;
 	private boolean _setUpBinariesCache;
+	private boolean _setUpYarnCache;
 
 }
