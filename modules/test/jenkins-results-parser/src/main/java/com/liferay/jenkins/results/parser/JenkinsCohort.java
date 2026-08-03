@@ -37,7 +37,8 @@ import org.json.JSONObject;
 public class JenkinsCohort {
 
 	public static synchronized JenkinsCohort getInstance(String cohortName) {
-		return _jenkinsCohorts.computeIfAbsent(cohortName, JenkinsCohort::new);
+		return _jenkinsCohorts.getOrDefault(
+			cohortName, new JenkinsCohort(cohortName));
 	}
 
 	public Set<String> getASGPrimaryLabels() {
@@ -749,9 +750,8 @@ public class JenkinsCohort {
 			jobName = jobName.replace("-downstream", "");
 		}
 
-		JenkinsCohortJob jenkinsCohortJob =
-			_jenkinsCohortJobsMap.computeIfAbsent(
-				jobName, JenkinsCohortJob::new);
+		JenkinsCohortJob jenkinsCohortJob = _jenkinsCohortJobsMap.getOrDefault(
+			jobName, new JenkinsCohortJob(jobName));
 
 		if (downstreamJobName == null) {
 			jenkinsCohortJob.addTopLevelBuildURL(buildURL);
@@ -792,8 +792,8 @@ public class JenkinsCohort {
 				}
 
 				JenkinsCohortJob jenkinsCohortJob =
-					_jenkinsCohortJobsMap.computeIfAbsent(
-						jobName, JenkinsCohortJob::new);
+					_jenkinsCohortJobsMap.getOrDefault(
+						jobName, new JenkinsCohortJob(jobName));
 
 				if (downstreamJobName == null) {
 					jenkinsCohortJob.addQueuedTopLevelBuildJsonMapEntry(

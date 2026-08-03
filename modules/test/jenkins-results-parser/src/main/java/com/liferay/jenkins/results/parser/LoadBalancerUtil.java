@@ -32,12 +32,11 @@ public class LoadBalancerUtil {
 		String blacklistString, String masterPrefix, Properties properties,
 		boolean verbose) {
 
-		List<JenkinsMaster> allJenkinsMasters =
-			_jenkinsMastersMap.computeIfAbsent(
-				masterPrefix,
-				key -> JenkinsResultsParserUtil.getJenkinsMasters(
-					properties, JenkinsMaster.getSlaveRAMMinimumDefault(),
-					JenkinsMaster.getSlavesPerHostDefault(), masterPrefix));
+		List<JenkinsMaster> allJenkinsMasters = _jenkinsMastersMap.getOrDefault(
+			masterPrefix,
+			JenkinsResultsParserUtil.getJenkinsMasters(
+				properties, JenkinsMaster.getSlaveRAMMinimumDefault(),
+				JenkinsMaster.getSlavesPerHostDefault(), masterPrefix));
 
 		List<String> blacklist = _getBlacklist(
 			properties, blacklistString, verbose);
