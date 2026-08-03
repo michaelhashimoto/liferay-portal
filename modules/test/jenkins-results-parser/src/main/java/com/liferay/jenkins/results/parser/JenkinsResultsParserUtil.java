@@ -2884,6 +2884,13 @@ public class JenkinsResultsParserUtil {
 	}
 
 	public static String getMostAvailableMasterURL(
+		String baseInvocationURL, int invokedBatchSize, int minimumRAM) {
+
+		return getMostAvailableMasterURL(
+			baseInvocationURL, null, invokedBatchSize, null, minimumRAM);
+	}
+
+	public static String getMostAvailableMasterURL(
 		String baseInvocationURL, String blacklist, int invokedBatchSize) {
 
 		return getMostAvailableMasterURL(
@@ -2893,6 +2900,14 @@ public class JenkinsResultsParserUtil {
 	public static String getMostAvailableMasterURL(
 		String baseInvocationURL, String blacklist, int invokedBatchSize,
 		String jobName) {
+
+		return getMostAvailableMasterURL(
+			baseInvocationURL, blacklist, invokedBatchSize, jobName, 0);
+	}
+
+	public static String getMostAvailableMasterURL(
+		String baseInvocationURL, String blacklist, int invokedBatchSize,
+		String jobName, int minimumRAM) {
 
 		StringBuilder sb = new StringBuilder();
 
@@ -2913,6 +2928,11 @@ public class JenkinsResultsParserUtil {
 		if (!isNullOrEmpty(jobName)) {
 			sb.append("&jobName=");
 			sb.append(fixURL(jobName));
+		}
+
+		if (minimumRAM > 0) {
+			sb.append("&minimumRAM=");
+			sb.append(minimumRAM);
 		}
 
 		try {
