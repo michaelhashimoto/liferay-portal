@@ -49,6 +49,8 @@ definition {
 			PagesAdmin.addPublicPage(pageName = "Test Page3");
 		}
 
+		fail("Breaking change!");
+
 		var pageName = "Test Page1";
 		var portletBody = "Test Page1";
 		var portletName = "Menu Display";
