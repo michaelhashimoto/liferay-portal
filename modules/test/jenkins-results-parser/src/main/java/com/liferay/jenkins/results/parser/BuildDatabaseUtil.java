@@ -80,6 +80,8 @@ public class BuildDatabaseUtil {
 	}
 
 	public static BuildDatabase getBuildDatabase(Build build) {
+		System.out.println("build=" + build);
+
 		TopLevelBuild topLevelBuild = null;
 
 		if (build != null) {
@@ -120,6 +122,8 @@ public class BuildDatabaseUtil {
 	}
 
 	private static void _downloadBuildDatabaseFile(File buildDir, Build build) {
+		System.out.println("buildDir=" + buildDir);
+
 		if (!buildDir.exists()) {
 			buildDir.mkdirs();
 		}
