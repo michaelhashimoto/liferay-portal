@@ -204,7 +204,8 @@ public class JobFactory {
 			portalGitWorkingDirectory.getGitRepositoryName(), testSuiteName,
 			upstreamBranchName);
 
-		File summaryDir = JenkinsResultsParserUtil.getCanonicalFile(new File("."));
+		File summaryDir = JenkinsResultsParserUtil.getCanonicalFile(
+			new File("."));
 
 		CIJobSummaryReportUtil.writeJobSummaryReport(summaryDir, job);
 

@@ -163,7 +163,8 @@ public class JUnitTestClass extends BaseTestClass {
 			String projectPath = matcher.group("projectPath");
 
 			return JenkinsResultsParserUtil.combine(
-				"workspaces/", matcher.group("workspaceName"),
+				_getWorkspacesDirName(testClassFilePath), "/",
+				matcher.group("workspaceName"),
 				projectPath.replaceAll("/", ":"), ":", taskName);
 		}
 
@@ -483,6 +484,27 @@ public class JUnitTestClass extends BaseTestClass {
 		}
 
 		return null;
+	}
+
+	private String _getWorkspacesDirName(String testClassFilePath) {
+		PortalGitWorkingDirectory portalGitWorkingDirectory =
+			getPortalGitWorkingDirectory();
+
+		File portalPrivateDir = portalGitWorkingDirectory.getPortalPrivateDir();
+
+		if (portalPrivateDir == null) {
+			return "workspaces";
+		}
+
+		String portalPrivateDirPath = JenkinsResultsParserUtil.getCanonicalPath(
+			portalPrivateDir);
+
+		if (!testClassFilePath.startsWith(portalPrivateDirPath + "/")) {
+			return "workspaces";
+		}
+
+		return portalGitWorkingDirectory.getPortalPrivateDirName() +
+			"/workspaces";
 	}
 
 	private void _initTestClassMethods(String fileContent) {

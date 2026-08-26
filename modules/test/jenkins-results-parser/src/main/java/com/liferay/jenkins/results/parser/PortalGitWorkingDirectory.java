@@ -374,6 +374,32 @@ public class PortalGitWorkingDirectory extends GitWorkingDirectory {
 			"Unable to find a plugins Git working directory");
 	}
 
+	public File getPortalPrivateDir() {
+		String portalPrivateDirName = getPortalPrivateDirName();
+
+		if (JenkinsResultsParserUtil.isNullOrEmpty(portalPrivateDirName)) {
+			return null;
+		}
+
+		File portalPrivateDir = new File(portalPrivateDirName);
+
+		if (!portalPrivateDir.isAbsolute()) {
+			portalPrivateDir = new File(
+				getWorkingDirectory(), portalPrivateDirName);
+		}
+
+		if (!portalPrivateDir.exists()) {
+			return null;
+		}
+
+		return JenkinsResultsParserUtil.getCanonicalFile(portalPrivateDir);
+	}
+
+	public String getPortalPrivateDirName() {
+		return JenkinsResultsParserUtil.getProperty(
+			getTestProperties(), "liferay.portal.private.dir");
+	}
+
 	public Properties getReleaseProperties() {
 		if (_releaseProperties != null) {
 			return _releaseProperties;

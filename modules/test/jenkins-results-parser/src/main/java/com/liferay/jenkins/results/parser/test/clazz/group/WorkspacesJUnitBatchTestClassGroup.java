@@ -12,6 +12,8 @@ import com.liferay.jenkins.results.parser.test.batch.JUnitTestBatch;
 
 import java.io.File;
 
+import java.nio.file.PathMatcher;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -45,6 +47,66 @@ public class WorkspacesJUnitBatchTestClassGroup
 	}
 
 	@Override
+	protected List<File> getAdditionalJavaFileDirs() {
+		File portalPrivateWorkspacesDir = _getPortalPrivateWorkspacesDir();
+
+		if (portalPrivateWorkspacesDir == null) {
+			return super.getAdditionalJavaFileDirs();
+		}
+
+		List<File> additionalJavaFileDirs = new ArrayList<>(
+			super.getAdditionalJavaFileDirs());
+
+		additionalJavaFileDirs.add(portalPrivateWorkspacesDir);
+
+		return additionalJavaFileDirs;
+	}
+
+	@Override
+	protected List<PathMatcher> getFilterPathMatchers() {
+		List<PathMatcher> filterPathMatchers = new ArrayList<>(
+			super.getFilterPathMatchers());
+
+		File portalPrivateDir = _getPortalPrivateDir();
+
+		if (portalPrivateDir == null) {
+			return filterPathMatchers;
+		}
+
+		JobProperty jobProperty = getJobProperty(
+			"test.batch.class.names.filter", JobProperty.Type.FILTER_GLOB);
+
+		filterPathMatchers.addAll(
+			getPathMatchers(jobProperty.getValue(), portalPrivateDir));
+
+		return filterPathMatchers;
+	}
+
+	@Override
+	protected List<PathMatcher> getIncludesPathMatchers() {
+		List<PathMatcher> includesPathMatchers = new ArrayList<>(
+			super.getIncludesPathMatchers());
+
+		if (testRelevantChanges || testReleaseBundle) {
+			return includesPathMatchers;
+		}
+
+		File portalPrivateDir = _getPortalPrivateDir();
+
+		if (portalPrivateDir == null) {
+			return includesPathMatchers;
+		}
+
+		JobProperty jobProperty = getJobProperty(
+			"test.batch.class.names.includes");
+
+		includesPathMatchers.addAll(
+			getPathMatchers(jobProperty.getValue(), portalPrivateDir));
+
+		return includesPathMatchers;
+	}
+
+	@Override
 	protected List<JobProperty> getRelevantIncludesJobProperties() {
 		if (includeStableTestSuite && isStableTestSuiteBatch()) {
 			return super.getRelevantIncludesJobProperties();
@@ -71,43 +133,89 @@ public class WorkspacesJUnitBatchTestClassGroup
 	}
 
 	@Override
-	protected String getTestClassRootDirName() {
-		return "workspaces";
+	protected List<File> getTestClassRootDirs() {
+		List<File> testClassRootDirs = new ArrayList<>();
+
+		testClassRootDirs.add(
+			new File(
+				portalGitWorkingDirectory.getWorkingDirectory(), "workspaces"));
+
+		File portalPrivateWorkspacesDir = _getPortalPrivateWorkspacesDir();
+
+		if (portalPrivateWorkspacesDir != null) {
+			testClassRootDirs.add(portalPrivateWorkspacesDir);
+		}
+
+		return testClassRootDirs;
+	}
+
+	private File _getPortalPrivateDir() {
+		return portalGitWorkingDirectory.getPortalPrivateDir();
+	}
+
+	private File _getPortalPrivateWorkspacesDir() {
+		File portalPrivateDir = _getPortalPrivateDir();
+
+		if (portalPrivateDir == null) {
+			return null;
+		}
+
+		File portalPrivateWorkspacesDir = new File(
+			portalPrivateDir, "workspaces");
+
+		if (!portalPrivateWorkspacesDir.exists()) {
+			return null;
+		}
+
+		return portalPrivateWorkspacesDir;
+	}
+
+	private File _getWorkspaceModuleDir(File workspaceDir, File modifiedFile) {
+		File parentDir = modifiedFile.getParentFile();
+
+		while ((parentDir != null) && !parentDir.equals(workspaceDir)) {
+			File buildGradleFile = new File(parentDir, "build.gradle");
+
+			if (buildGradleFile.exists()) {
+				return parentDir;
+			}
+
+			parentDir = parentDir.getParentFile();
+		}
+
+		return workspaceDir;
 	}
 
 	private File _getWorkspaceProjectDir(File modifiedFile) {
-		File workspacesDir = new File(
-			portalGitWorkingDirectory.getWorkingDirectory(), "workspaces");
-
-		String workspacesDirPath = JenkinsResultsParserUtil.getCanonicalPath(
-			workspacesDir);
-
-		String modifiedFilePath = JenkinsResultsParserUtil.getCanonicalPath(
+		File canonicalModifiedFile = JenkinsResultsParserUtil.getCanonicalFile(
 			modifiedFile);
 
-		if (!modifiedFilePath.startsWith(workspacesDirPath + "/")) {
-			return null;
+		String modifiedFilePath = JenkinsResultsParserUtil.getCanonicalPath(
+			canonicalModifiedFile);
+
+		for (File workspacesDir : getTestClassRootDirs()) {
+			String workspacesDirPath =
+				JenkinsResultsParserUtil.getCanonicalPath(workspacesDir);
+
+			if (!modifiedFilePath.startsWith(workspacesDirPath + "/")) {
+				continue;
+			}
+
+			String relativePath = modifiedFilePath.substring(
+				workspacesDirPath.length() + 1);
+
+			String[] relativePathParts = relativePath.split("/");
+
+			if (relativePathParts.length < 2) {
+				return null;
+			}
+
+			return _getWorkspaceModuleDir(
+				new File(workspacesDir, relativePathParts[0]),
+				canonicalModifiedFile);
 		}
 
-		String relativePath = modifiedFilePath.substring(
-			workspacesDirPath.length() + 1);
-
-		String[] relativePathParts = relativePath.split("/");
-
-		if (relativePathParts.length < 2) {
-			return null;
-		}
-
-		File workspaceDir = new File(workspacesDir, relativePathParts[0]);
-
-		if ((relativePathParts.length < 3) ||
-			!relativePathParts[1].equals("modules")) {
-
-			return workspaceDir;
-		}
-
-		return new File(
-			workspaceDir, relativePathParts[1] + "/" + relativePathParts[2]);
+		return null;
 	}
 
 }
