@@ -4634,7 +4634,7 @@ ${poshi.runner.testsuite.testcase.name}</echo>
 						try {
 							System.out.println("\"gradle-execute-workspaces\" will timeout in " + timeout);
 
-							AntUtil.callTargetWithTimeout(projectDir, "build-common.xml", "gradle-execute-workspaces", parameters, timeout, true);
+							AntUtil.callTargetWithTimeout(projectDir, "build-common.xml", "gradle-execute-workspaces", parameters, timeout, false);
 						}
 						catch(Exception exception) {
 							System.out.println("Unable to run Gradle execute workspaces target for " + testTaskName);

@@ -15,6 +15,9 @@ import com.liferay.jenkins.results.parser.test.clazz.group.JUnitBatchTestClassGr
 import java.io.File;
 import java.io.IOException;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -503,8 +506,14 @@ public class JUnitTestClass extends BaseTestClass {
 			return "workspaces";
 		}
 
-		return portalGitWorkingDirectory.getPortalPrivateDirName() +
-			"/workspaces";
+		Path workingDirectoryPath = Paths.get(
+			JenkinsResultsParserUtil.getCanonicalPath(
+				portalGitWorkingDirectory.getWorkingDirectory()));
+
+		Path portalPrivateRelativePath = workingDirectoryPath.relativize(
+			Paths.get(portalPrivateDirPath));
+
+		return portalPrivateRelativePath + "/workspaces";
 	}
 
 	private void _initTestClassMethods(String fileContent) {
