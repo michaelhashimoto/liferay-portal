@@ -151,6 +151,22 @@ public class JUnitTestClass extends BaseTestClass {
 		String testClassFilePath = JenkinsResultsParserUtil.getCanonicalPath(
 			getTestClassFile());
 
+		Pattern workspaceTestClassFilePattern = Pattern.compile(
+			JenkinsResultsParserUtil.combine(
+				".*/workspaces/(?<workspaceName>[^/]+)",
+				"(?<projectPath>/.+)/src/", taskName, "/.+"));
+
+		Matcher matcher = workspaceTestClassFilePattern.matcher(
+			testClassFilePath);
+
+		if (matcher.matches()) {
+			String projectPath = matcher.group("projectPath");
+
+			return JenkinsResultsParserUtil.combine(
+				"workspaces/", matcher.group("workspaceName"),
+				projectPath.replaceAll("/", ":"), ":", taskName);
+		}
+
 		String testTaskName = testClassFilePath.replaceAll(
 			".*/modules(/.+)/src/" + taskName + "/.+", "$1");
 
@@ -460,7 +476,9 @@ public class JUnitTestClass extends BaseTestClass {
 		if (batchName.startsWith("modules-integration")) {
 			return "testIntegration";
 		}
-		else if (batchName.startsWith("modules-unit")) {
+		else if (batchName.startsWith("modules-unit") ||
+				 batchName.startsWith("workspaces-unit")) {
+
 			return "test";
 		}
 

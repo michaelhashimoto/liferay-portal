@@ -93,13 +93,14 @@ public class ModulesJUnitBatchTestClassGroup extends JUnitBatchTestClassGroup {
 		String testClassFilePath = JenkinsResultsParserUtil.getCanonicalPath(
 			testClass.getTestClassFile());
 
-		File modulesDir = new File(
-			portalGitWorkingDirectory.getWorkingDirectory(), "modules");
+		File testClassRootDir = new File(
+			portalGitWorkingDirectory.getWorkingDirectory(),
+			getTestClassRootDirName());
 
-		String modulesDirPath = JenkinsResultsParserUtil.getCanonicalPath(
-			modulesDir);
+		String testClassRootDirPath = JenkinsResultsParserUtil.getCanonicalPath(
+			testClassRootDir);
 
-		if (!testClassFilePath.startsWith(modulesDirPath + "/")) {
+		if (!testClassFilePath.startsWith(testClassRootDirPath + "/")) {
 			return;
 		}
 
@@ -257,6 +258,10 @@ public class ModulesJUnitBatchTestClassGroup extends JUnitBatchTestClassGroup {
 		}
 
 		return new ArrayList<>(includesJobProperties);
+	}
+
+	protected String getTestClassRootDirName() {
+		return "modules";
 	}
 
 	private String _getAppTitle(File appBndFile) {
