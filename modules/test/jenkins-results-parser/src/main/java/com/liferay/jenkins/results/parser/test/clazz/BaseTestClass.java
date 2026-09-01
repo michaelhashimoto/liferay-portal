@@ -126,9 +126,27 @@ public abstract class BaseTestClass implements TestClass {
 		PortalGitWorkingDirectory portalGitWorkingDirectory =
 			getPortalGitWorkingDirectory();
 
+		File testClassFile = getTestClassFile();
+
+		File portalPrivateDir = portalGitWorkingDirectory.getPortalPrivateDir();
+
+		if (portalPrivateDir != null) {
+			String portalPrivateDirPath =
+				JenkinsResultsParserUtil.getCanonicalPath(portalPrivateDir);
+
+			String testClassFilePath =
+				JenkinsResultsParserUtil.getCanonicalPath(testClassFile);
+
+			if (testClassFilePath.startsWith(portalPrivateDirPath + "/")) {
+				return JenkinsResultsParserUtil.combine(
+					portalGitWorkingDirectory.getPortalPrivateDirName(), "/",
+					JenkinsResultsParserUtil.getPathRelativeTo(
+						testClassFile, portalPrivateDir));
+			}
+		}
+
 		return JenkinsResultsParserUtil.getPathRelativeTo(
-			getTestClassFile(),
-			portalGitWorkingDirectory.getWorkingDirectory());
+			testClassFile, portalGitWorkingDirectory.getWorkingDirectory());
 	}
 
 	@Override
