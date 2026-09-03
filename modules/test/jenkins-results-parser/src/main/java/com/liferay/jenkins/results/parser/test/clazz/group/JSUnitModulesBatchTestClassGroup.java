@@ -47,6 +47,28 @@ public class JSUnitModulesBatchTestClassGroup
 		super(batchName, portalTestClassJob);
 	}
 
+	protected List<File> getBaseModuleDirs() throws IOException {
+		return new ArrayList<>(
+			portalGitWorkingDirectory.getModuleDirsList(
+				new File(
+					portalGitWorkingDirectory.getWorkingDirectory(), "modules"),
+				getPathMatchers(getExcludesJobProperties()),
+				getIncludesPathMatchers()));
+	}
+
+	protected boolean isSkippedProjectDir(File projectDir) {
+		String projectDirPath = projectDir.getAbsolutePath();
+
+		if (projectDirPath.contains("modules") &&
+			!(projectDirPath.contains("modules/apps") ||
+			  projectDirPath.contains("modules/dxp"))) {
+
+			return true;
+		}
+
+		return false;
+	}
+
 	@Override
 	protected void setAxisTestClassGroups() {
 		super.setAxisTestClassGroups();
@@ -83,16 +105,6 @@ public class JSUnitModulesBatchTestClassGroup
 
 	@Override
 	protected void setTestClasses() throws IOException {
-		List<File> moduleDirs = new ArrayList<>();
-
-		PortalGitWorkingDirectory portalGitWorkingDirectory =
-			getPortalGitWorkingDirectory();
-
-		moduleDirs.addAll(
-			portalGitWorkingDirectory.getModuleDirsList(
-				getPathMatchers(getExcludesJobProperties()),
-				getIncludesPathMatchers()));
-
 		List<String> excludedTestMethodNames = new ArrayList<>();
 
 		for (JobProperty excludesJobProperty : getExcludesJobProperties()) {
@@ -112,10 +124,17 @@ public class JSUnitModulesBatchTestClassGroup
 			}
 		}
 
-		for (File moduleDir : moduleDirs) {
-			List<File> moduleTestDirs = _getModulesProjectDirs(moduleDir);
+		PortalGitWorkingDirectory portalGitWorkingDirectory =
+			getPortalGitWorkingDirectory();
+
+		for (File baseModuleDir : getBaseModuleDirs()) {
+			System.out.println("baseModuleDir=" + baseModuleDir);
+
+			List<File> moduleTestDirs = _getModulesProjectDirs(baseModuleDir);
 
 			for (File moduleTestDir : moduleTestDirs) {
+				System.out.println("moduleTestDir=" + moduleTestDir);
+
 				String moduleTestDirPath =
 					JenkinsResultsParserUtil.getCanonicalPath(moduleTestDir);
 				TestClass testClass = TestClassFactory.newTestClass(
@@ -197,10 +216,7 @@ public class JSUnitModulesBatchTestClassGroup
 					String currentDirectoryPath =
 						currentDirectory.getAbsolutePath();
 
-					if (currentDirectoryPath.contains("modules") &&
-						!(currentDirectoryPath.contains("modules/apps") ||
-						  currentDirectoryPath.contains("modules/dxp"))) {
-
+					if (isSkippedProjectDir(currentDirectory)) {
 						return FileVisitResult.SKIP_SUBTREE;
 					}
 
@@ -219,6 +235,9 @@ public class JSUnitModulesBatchTestClassGroup
 						currentDirectory, "build.gradle");
 					File packageJSONFile = new File(
 						currentDirectory, "package.json");
+
+					System.out.println("buildGradleFile=" + buildGradleFile);
+					System.out.println("packageJSONFile=" + packageJSONFile);
 
 					if (!buildGradleFile.exists() ||
 						!packageJSONFile.exists()) {

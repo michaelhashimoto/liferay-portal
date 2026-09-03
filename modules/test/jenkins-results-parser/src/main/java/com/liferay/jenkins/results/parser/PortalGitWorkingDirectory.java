@@ -223,13 +223,11 @@ public class PortalGitWorkingDirectory extends GitWorkingDirectory {
 	}
 
 	public List<File> getModuleDirsList(
-			List<PathMatcher> excludesPathMatchers,
+			File baseModulesDir, List<PathMatcher> excludesPathMatchers,
 			List<PathMatcher> includesPathMatchers)
 		throws IOException {
 
-		File modulesDir = new File(getWorkingDirectory(), "modules");
-
-		if (!modulesDir.exists()) {
+		if (!baseModulesDir.exists()) {
 			return new ArrayList<>();
 		}
 
@@ -241,7 +239,7 @@ public class PortalGitWorkingDirectory extends GitWorkingDirectory {
 		final List<File> moduleDirsList = new ArrayList<>();
 
 		Files.walkFileTree(
-			modulesDir.toPath(),
+			baseModulesDir.toPath(),
 			new SimpleFileVisitor<Path>() {
 
 				@Override
@@ -310,6 +308,16 @@ public class PortalGitWorkingDirectory extends GitWorkingDirectory {
 		return moduleDirsList;
 	}
 
+	public List<File> getModuleDirsList(
+			List<PathMatcher> excludesPathMatchers,
+			List<PathMatcher> includesPathMatchers)
+		throws IOException {
+
+		return getModuleDirsList(
+			new File(getWorkingDirectory(), "modules"), excludesPathMatchers,
+			includesPathMatchers);
+	}
+
 	public List<File> getModulePullSubrepoDirs() {
 		File modulesDir = new File(getWorkingDirectory(), "modules");
 
@@ -372,6 +380,28 @@ public class PortalGitWorkingDirectory extends GitWorkingDirectory {
 
 		throw new RuntimeException(
 			"Unable to find a plugins Git working directory");
+	}
+
+	public File getPortalPrivateDir() {
+		String portalPrivateDirPath = JenkinsResultsParserUtil.getProperty(
+			getTestProperties(), "liferay.portal.private.dir");
+
+		if (JenkinsResultsParserUtil.isNullOrEmpty(portalPrivateDirPath)) {
+			return null;
+		}
+
+		File portalPrivateDir = new File(portalPrivateDirPath);
+
+		if (!portalPrivateDir.isAbsolute()) {
+			portalPrivateDir = new File(
+				getWorkingDirectory(), portalPrivateDirPath);
+		}
+
+		if (!portalPrivateDir.exists()) {
+			return null;
+		}
+
+		return JenkinsResultsParserUtil.getCanonicalFile(portalPrivateDir);
 	}
 
 	public Properties getReleaseProperties() {
