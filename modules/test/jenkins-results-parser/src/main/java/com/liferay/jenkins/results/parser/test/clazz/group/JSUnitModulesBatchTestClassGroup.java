@@ -127,6 +127,9 @@ public class JSUnitModulesBatchTestClassGroup
 		PortalGitWorkingDirectory portalGitWorkingDirectory =
 			getPortalGitWorkingDirectory();
 
+		System.out.println(
+			"portalGitWorkingDirectory=" + portalGitWorkingDirectory);
+
 		for (File baseModuleDir : getBaseModuleDirs()) {
 			System.out.println("baseModuleDir=" + baseModuleDir);
 
