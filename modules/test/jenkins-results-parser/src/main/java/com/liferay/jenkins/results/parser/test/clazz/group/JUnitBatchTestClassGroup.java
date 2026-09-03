@@ -43,7 +43,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -365,6 +364,10 @@ public class JUnitBatchTestClassGroup extends BatchTestClassGroup {
 
 		_loadJavaFiles(_getWorkingDirectory());
 
+		for (File additionalJavaFileDir : getAdditionalJavaFileDirs()) {
+			_loadJavaFiles(additionalJavaFileDir);
+		}
+
 		setTestClasses();
 
 		_setAutoBalanceTestFiles();
@@ -403,6 +406,10 @@ public class JUnitBatchTestClassGroup extends BatchTestClassGroup {
 
 		_loadJavaFiles(_getWorkingDirectory());
 
+		for (File additionalJavaFileDir : getAdditionalJavaFileDirs()) {
+			_loadJavaFiles(additionalJavaFileDir);
+		}
+
 		setTestClasses(jUnitTestBatch.getTestSelector());
 
 		_setAutoBalanceTestFiles();
@@ -412,6 +419,10 @@ public class JUnitBatchTestClassGroup extends BatchTestClassGroup {
 		setAxisTestClassGroups();
 
 		setSegmentTestClassGroups();
+	}
+
+	protected List<File> getAdditionalJavaFileDirs() {
+		return Collections.emptyList();
 	}
 
 	protected List<JobProperty> getDefaultExcludesJobProperties() {
@@ -434,6 +445,10 @@ public class JUnitBatchTestClassGroup extends BatchTestClassGroup {
 				JobProperty.Type.INCLUDE_GLOB));
 
 		return includesJobProperties;
+	}
+
+	protected List<PathMatcher> getFilterPathMatchers() {
+		return getPathMatchers(getFilterJobProperties());
 	}
 
 	protected List<PathMatcher> getIncludesPathMatchers() {
@@ -807,8 +822,7 @@ public class JUnitBatchTestClassGroup extends BatchTestClassGroup {
 
 		List<PathMatcher> excludesPathMatchers = getPathMatchers(
 			getExcludesJobProperties());
-		List<PathMatcher> filterPathMatchers = getPathMatchers(
-			getFilterJobProperties());
+		List<PathMatcher> filterPathMatchers = getFilterPathMatchers();
 
 		for (final File javaTestClassFile : _javaTestClassFiles) {
 			if (JenkinsResultsParserUtil.isFileExcluded(
@@ -869,8 +883,7 @@ public class JUnitBatchTestClassGroup extends BatchTestClassGroup {
 
 		long start = System.currentTimeMillis();
 
-		List<PathMatcher> filterPathMatchers = getPathMatchers(
-			getFilterJobProperties());
+		List<PathMatcher> filterPathMatchers = getFilterPathMatchers();
 
 		List<JobProperty> excludesJobProperties =
 			jUnitTestSelector.getExcludesJobProperties();
@@ -968,8 +981,11 @@ public class JUnitBatchTestClassGroup extends BatchTestClassGroup {
 	}
 
 	private void _loadJavaFiles(File workingDirectory) {
-		synchronized (_javaFilesLoaded) {
-			if (_javaFilesLoaded.get()) {
+		synchronized (_javaFileDirPaths) {
+			String workingDirectoryPath =
+				JenkinsResultsParserUtil.getCanonicalPath(workingDirectory);
+
+			if (!_javaFileDirPaths.add(workingDirectoryPath)) {
 				return;
 			}
 
@@ -1039,8 +1055,6 @@ public class JUnitBatchTestClassGroup extends BatchTestClassGroup {
 					" Java test class files in ", workingDirectory.toString(),
 					" in ",
 					JenkinsResultsParserUtil.toDurationString(duration)));
-
-			_javaFilesLoaded.set(true);
 		}
 	}
 
@@ -1143,7 +1157,8 @@ public class JUnitBatchTestClassGroup extends BatchTestClassGroup {
 		"(?<testClassGlob>[^#]+)#(?<testClassMethodName>.+)");
 	private static final Set<String> _javaDirPathStrings =
 		ConcurrentHashMap.newKeySet();
-	private static final AtomicBoolean _javaFilesLoaded = new AtomicBoolean();
+	private static final Set<String> _javaFileDirPaths =
+		ConcurrentHashMap.newKeySet();
 	private static final Set<File> _javaTestClassFiles =
 		ConcurrentHashMap.newKeySet();
 

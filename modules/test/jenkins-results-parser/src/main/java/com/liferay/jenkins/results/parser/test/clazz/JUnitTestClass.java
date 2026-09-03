@@ -15,6 +15,9 @@ import com.liferay.jenkins.results.parser.test.clazz.group.JUnitBatchTestClassGr
 import java.io.File;
 import java.io.IOException;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -150,6 +153,23 @@ public class JUnitTestClass extends BaseTestClass {
 
 		String testClassFilePath = JenkinsResultsParserUtil.getCanonicalPath(
 			getTestClassFile());
+
+		Pattern workspaceTestClassFilePattern = Pattern.compile(
+			JenkinsResultsParserUtil.combine(
+				".*/workspaces/(?<workspaceName>[^/]+)",
+				"(?<projectPath>/.+)/src/", taskName, "/.+"));
+
+		Matcher matcher = workspaceTestClassFilePattern.matcher(
+			testClassFilePath);
+
+		if (matcher.matches()) {
+			String projectPath = matcher.group("projectPath");
+
+			return JenkinsResultsParserUtil.combine(
+				_getWorkspacesDirName(testClassFilePath), "/",
+				matcher.group("workspaceName"),
+				projectPath.replaceAll("/", ":"), ":", taskName);
+		}
 
 		String testTaskName = testClassFilePath.replaceAll(
 			".*/modules(/.+)/src/" + taskName + "/.+", "$1");
@@ -460,11 +480,40 @@ public class JUnitTestClass extends BaseTestClass {
 		if (batchName.startsWith("modules-integration")) {
 			return "testIntegration";
 		}
-		else if (batchName.startsWith("modules-unit")) {
+		else if (batchName.startsWith("modules-unit") ||
+				 batchName.startsWith("workspaces-unit")) {
+
 			return "test";
 		}
 
 		return null;
+	}
+
+	private String _getWorkspacesDirName(String testClassFilePath) {
+		PortalGitWorkingDirectory portalGitWorkingDirectory =
+			getPortalGitWorkingDirectory();
+
+		File portalPrivateDir = portalGitWorkingDirectory.getPortalPrivateDir();
+
+		if (portalPrivateDir == null) {
+			return "workspaces";
+		}
+
+		String portalPrivateDirPath = JenkinsResultsParserUtil.getCanonicalPath(
+			portalPrivateDir);
+
+		if (!testClassFilePath.startsWith(portalPrivateDirPath + "/")) {
+			return "workspaces";
+		}
+
+		Path workingDirectoryPath = Paths.get(
+			JenkinsResultsParserUtil.getCanonicalPath(
+				portalGitWorkingDirectory.getWorkingDirectory()));
+
+		Path portalPrivateRelativePath = workingDirectoryPath.relativize(
+			Paths.get(portalPrivateDirPath));
+
+		return portalPrivateRelativePath + "/workspaces";
 	}
 
 	private void _initTestClassMethods(String fileContent) {

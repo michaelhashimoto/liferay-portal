@@ -179,6 +179,39 @@ public class JobFactory {
 			jsonObject.optString("upstream_branch_name"));
 	}
 
+	public static void main(String[] args) throws Exception {
+		String testSuiteName = _DEFAULT_TEST_SUITE_NAME;
+
+		if (args.length > 0) {
+			testSuiteName = args[0];
+		}
+
+		String upstreamBranchName = _DEFAULT_UPSTREAM_BRANCH_NAME;
+
+		if (args.length > 1) {
+			upstreamBranchName = args[1];
+		}
+
+		PortalGitWorkingDirectory portalGitWorkingDirectory =
+			GitWorkingDirectoryFactory.newPortalGitWorkingDirectory(
+				upstreamBranchName);
+
+		Job job = newJob(
+			_DEFAULT_BUILD_PROFILE,
+			JenkinsResultsParserUtil.combine(
+				"test-portal-testsuite-upstream(", upstreamBranchName, ")"),
+			null, portalGitWorkingDirectory, upstreamBranchName, null,
+			portalGitWorkingDirectory.getGitRepositoryName(), testSuiteName,
+			upstreamBranchName);
+
+		File summaryDir = JenkinsResultsParserUtil.getCanonicalFile(
+			new File("."));
+
+		CIJobSummaryReportUtil.writeJobSummaryReport(summaryDir, job);
+
+		System.out.println("file://" + summaryDir.getAbsolutePath());
+	}
+
 	public static Job newJob(Build build) {
 		TopLevelBuild topLevelBuild = build.getTopLevelBuild();
 
@@ -635,6 +668,13 @@ public class JobFactory {
 			return job;
 		}
 	}
+
+	private static final Job.BuildProfile _DEFAULT_BUILD_PROFILE =
+		Job.BuildProfile.DXP;
+
+	private static final String _DEFAULT_TEST_SUITE_NAME = "ai-hub";
+
+	private static final String _DEFAULT_UPSTREAM_BRANCH_NAME = "master";
 
 	private static final Map<String, Job> _jobs = new ConcurrentHashMap<>();
 
