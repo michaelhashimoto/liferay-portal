@@ -25,6 +25,11 @@ import org.json.JSONObject;
 public class WorkspacesJSUnitModulesTestClass extends JSUnitModulesTestClass {
 
 	@Override
+	public String getTestClassName() {
+		return getName();
+	}
+
+	@Override
 	public String getTestTaskName() {
 		Matcher matcher = _pattern.matcher(
 			_getPortalRelativePath(getTestClassFile()));

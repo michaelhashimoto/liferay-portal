@@ -60,6 +60,22 @@ public class JSUnitModulesBatchTestClassGroup
 		return getPathMatchers(getExcludesJobProperties());
 	}
 
+	protected String getTestClassMethodName(File jsUnitFile) {
+		return JenkinsResultsParserUtil.getPathRelativeTo(
+			jsUnitFile, portalGitWorkingDirectory.getWorkingDirectory());
+	}
+
+	protected boolean isModulesProjectDir(File projectDir) {
+		File buildGradleFile = new File(projectDir, "build.gradle");
+		File packageJSONFile = new File(projectDir, "package.json");
+
+		if (buildGradleFile.exists() && packageJSONFile.exists()) {
+			return true;
+		}
+
+		return false;
+	}
+
 	protected boolean isSkippedProjectDir(File projectDir) {
 		String projectDirPath = projectDir.getAbsolutePath();
 
@@ -157,14 +173,10 @@ public class JSUnitModulesBatchTestClassGroup
 						continue;
 					}
 
-					String testClassMethodName =
-						JenkinsResultsParserUtil.getPathRelativeTo(
-							jsUnitFile,
-							portalGitWorkingDirectory.getWorkingDirectory());
-
 					testClass.addTestClassMethod(
 						TestClassFactory.newTestClassMethod(
-							false, testClassMethodName, testClass));
+							false, getTestClassMethodName(jsUnitFile),
+							testClass));
 				}
 
 				if (!testClass.hasTestClassMethods()) {
@@ -238,19 +250,12 @@ public class JSUnitModulesBatchTestClassGroup
 						}
 					}
 
-					File buildGradleFile = new File(
-						currentDirectory, "build.gradle");
-					File packageJSONFile = new File(
-						currentDirectory, "package.json");
-
-					System.out.println("buildGradleFile=" + buildGradleFile);
-					System.out.println("packageJSONFile=" + packageJSONFile);
-
-					if (!buildGradleFile.exists() ||
-						!packageJSONFile.exists()) {
-
+					if (!isModulesProjectDir(currentDirectory)) {
 						return FileVisitResult.CONTINUE;
 					}
+
+					File packageJSONFile = new File(
+						currentDirectory, "package.json");
 
 					try {
 						JSONObject packageJSONObject = new JSONObject(

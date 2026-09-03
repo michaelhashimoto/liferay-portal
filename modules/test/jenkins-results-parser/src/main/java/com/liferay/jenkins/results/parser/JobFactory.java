@@ -5,6 +5,10 @@
 
 package com.liferay.jenkins.results.parser;
 
+import com.liferay.jenkins.results.parser.test.clazz.TestClass;
+import com.liferay.jenkins.results.parser.test.clazz.group.AxisTestClassGroup;
+import com.liferay.jenkins.results.parser.test.clazz.group.BatchTestClassGroup;
+
 import java.io.File;
 
 import java.util.ArrayList;
@@ -177,6 +181,47 @@ public class JobFactory {
 			jsonObject.optString("repository_name"),
 			jsonObject.optString("test_suite_name"),
 			jsonObject.optString("upstream_branch_name"));
+	}
+
+	public static void main(String[] args) {
+		Job.BuildProfile buildProfile = Job.BuildProfile.DXP;
+		String jobName = "test-portal-acceptance-pullrequest(master)";
+		JSONObject jsonObject = null;
+		PortalGitWorkingDirectory portalGitWorkingDirectory =
+			GitWorkingDirectoryFactory.newPortalGitWorkingDirectory("master");
+		String portalUpstreamBranchName = "master";
+		List<String> projectNames = null;
+		String repositoryName = "liferay-portal";
+		String testSuiteName = "ai-hub";
+		String upstreamBranchName = "master";
+
+		Job job = JobFactory.newJob(
+			buildProfile, jobName, jsonObject, portalGitWorkingDirectory,
+			portalUpstreamBranchName, projectNames, repositoryName,
+			testSuiteName, upstreamBranchName);
+
+		System.out.println("-------------------------------------------------");
+		List<BatchTestClassGroup> batchTestClassGroups =
+			job.getBatchTestClassGroups();
+		System.out.println("-------------------------------------------------");
+
+		for (BatchTestClassGroup batchTestClassGroup : batchTestClassGroups) {
+			System.out.println(batchTestClassGroup.getBatchName());
+
+			for (AxisTestClassGroup axisTestClassGroup :
+					batchTestClassGroup.getAxisTestClassGroups()) {
+
+				System.out.println("> " + axisTestClassGroup.getAxisName());
+
+				for (TestClass testClass :
+						axisTestClassGroup.getTestClasses()) {
+
+					System.out.println("> > " + testClass.getTestClassName());
+				}
+			}
+		}
+
+		System.out.println("-------------------------------------------------");
 	}
 
 	public static Job newJob(Build build) {

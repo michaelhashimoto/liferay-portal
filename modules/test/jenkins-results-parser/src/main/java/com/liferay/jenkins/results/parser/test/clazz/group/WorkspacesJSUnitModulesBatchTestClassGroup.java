@@ -5,11 +5,11 @@
 
 package com.liferay.jenkins.results.parser.test.clazz.group;
 
+import com.liferay.jenkins.results.parser.JenkinsResultsParserUtil;
 import com.liferay.jenkins.results.parser.PortalTestClassJob;
 import com.liferay.jenkins.results.parser.job.property.JobProperty;
 
 import java.io.File;
-import java.io.IOException;
 
 import java.nio.file.PathMatcher;
 
@@ -37,17 +37,8 @@ public class WorkspacesJSUnitModulesBatchTestClassGroup
 	}
 
 	@Override
-	protected List<File> getBaseModuleDirs() throws IOException {
-		List<File> baseModuleDirs = new ArrayList<>();
-
-		for (File workspacesDir : getWorkspacesDirs()) {
-			baseModuleDirs.addAll(
-				portalGitWorkingDirectory.getModuleDirsList(
-					workspacesDir, getExcludesPathMatchers(),
-					getIncludesPathMatchers()));
-		}
-
-		return baseModuleDirs;
+	protected List<File> getBaseModuleDirs() {
+		return getWorkspacesDirs();
 	}
 
 	@Override
@@ -64,25 +55,75 @@ public class WorkspacesJSUnitModulesBatchTestClassGroup
 		return _getWorkspacesPathMatchers(getIncludesJobProperties());
 	}
 
+	@Override
+	protected String getTestClassMethodName(File jsUnitFile) {
+		String jsUnitFilePath = JenkinsResultsParserUtil.getCanonicalPath(
+			jsUnitFile);
+
+		for (File portalDir : _getPortalDirs()) {
+			String portalDirPath = JenkinsResultsParserUtil.getCanonicalPath(
+				portalDir);
+
+			if (jsUnitFilePath.startsWith(portalDirPath + "/")) {
+				return jsUnitFilePath.substring(portalDirPath.length() + 1);
+			}
+		}
+
+		return super.getTestClassMethodName(jsUnitFile);
+	}
+
 	protected List<File> getWorkspacesDirs() {
 		List<File> workspacesDirs = new ArrayList<>();
 
-		workspacesDirs.add(
-			new File(
-				portalGitWorkingDirectory.getWorkingDirectory(), "workspaces"));
+		for (File portalDir : _getPortalDirs()) {
+			File workspacesDir = new File(portalDir, "workspaces");
 
-		File portalPrivateDir = portalGitWorkingDirectory.getPortalPrivateDir();
-
-		if (portalPrivateDir != null) {
-			workspacesDirs.add(new File(portalPrivateDir, "workspaces"));
+			if (workspacesDir.exists()) {
+				workspacesDirs.add(workspacesDir);
+			}
 		}
 
 		return workspacesDirs;
 	}
 
 	@Override
+	protected boolean isModulesProjectDir(File projectDir) {
+		File packageJSONFile = new File(projectDir, "package.json");
+
+		if (!packageJSONFile.exists()) {
+			return false;
+		}
+
+		return JenkinsResultsParserUtil.isFileIncluded(
+			getExcludesPathMatchers(), getIncludesPathMatchers(),
+			projectDir.toPath());
+	}
+
+	@Override
 	protected boolean isSkippedProjectDir(File projectDir) {
+		String projectDirName = projectDir.getName();
+
+		if (projectDirName.equals("build") || projectDirName.equals("dist") ||
+			projectDirName.equals("node_modules")) {
+
+			return true;
+		}
+
 		return false;
+	}
+
+	private List<File> _getPortalDirs() {
+		List<File> portalDirs = new ArrayList<>();
+
+		portalDirs.add(portalGitWorkingDirectory.getWorkingDirectory());
+
+		File portalPrivateDir = portalGitWorkingDirectory.getPortalPrivateDir();
+
+		if (portalPrivateDir != null) {
+			portalDirs.add(portalPrivateDir);
+		}
+
+		return portalDirs;
 	}
 
 	private List<PathMatcher> _getWorkspacesPathMatchers(
@@ -90,14 +131,14 @@ public class WorkspacesJSUnitModulesBatchTestClassGroup
 
 		List<PathMatcher> pathMatchers = new ArrayList<>();
 
-		for (File workspacesDir : getWorkspacesDirs()) {
+		for (File portalDir : _getPortalDirs()) {
 			for (JobProperty jobProperty : jobProperties) {
 				if (jobProperty == null) {
 					continue;
 				}
 
 				pathMatchers.addAll(
-					getPathMatchers(jobProperty.getValue(), workspacesDir));
+					getPathMatchers(jobProperty.getValue(), portalDir));
 			}
 		}
 
