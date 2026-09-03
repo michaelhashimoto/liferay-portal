@@ -86,6 +86,16 @@ public class JSUnitModulesBatchTestClassGroup
 			return true;
 		}
 
+		if (_isTestGitrepoJSUnit()) {
+			return false;
+		}
+
+		File gitrepoFile = new File(projectDir, ".gitrepo");
+
+		if (gitrepoFile.exists() && !projectDirPath.contains("osb-faro")) {
+			return true;
+		}
+
 		return false;
 	}
 
@@ -217,8 +227,6 @@ public class JSUnitModulesBatchTestClassGroup
 
 		List<File> modulesProjectDirs = new ArrayList<>();
 
-		boolean testGitrepoJSUnit = _isTestGitrepoJSUnit();
-
 		Files.walkFileTree(
 			portalModulesBaseDir.toPath(),
 			new SimpleFileVisitor<Path>() {
@@ -232,22 +240,8 @@ public class JSUnitModulesBatchTestClassGroup
 					File currentDirectory =
 						JenkinsResultsParserUtil.getCanonicalFile(file);
 
-					String currentDirectoryPath =
-						currentDirectory.getAbsolutePath();
-
 					if (isSkippedProjectDir(currentDirectory)) {
 						return FileVisitResult.SKIP_SUBTREE;
-					}
-
-					if (!testGitrepoJSUnit) {
-						File gitrepoFile = new File(
-							currentDirectory, ".gitrepo");
-
-						if (gitrepoFile.exists() &&
-							!currentDirectoryPath.contains("osb-faro")) {
-
-							return FileVisitResult.SKIP_SUBTREE;
-						}
 					}
 
 					if (!isModulesProjectDir(currentDirectory)) {
@@ -287,6 +281,16 @@ public class JSUnitModulesBatchTestClassGroup
 	}
 
 	private boolean _isTestGitrepoJSUnit() {
+		if (_testGitrepoJSUnit != null) {
+			return _testGitrepoJSUnit;
+		}
+
+		_testGitrepoJSUnit = _isTestGitrepoJSUnitJobProperty();
+
+		return _testGitrepoJSUnit;
+	}
+
+	private boolean _isTestGitrepoJSUnitJobProperty() {
 		JobProperty jobProperty = getJobProperty("test.gitrepo.js.unit");
 
 		String jobPropertyValue = jobProperty.getValue();
@@ -301,5 +305,7 @@ public class JSUnitModulesBatchTestClassGroup
 
 		return false;
 	}
+
+	private Boolean _testGitrepoJSUnit;
 
 }
