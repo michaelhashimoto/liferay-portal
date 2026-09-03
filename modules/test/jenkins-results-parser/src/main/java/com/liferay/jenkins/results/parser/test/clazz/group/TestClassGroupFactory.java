@@ -569,7 +569,7 @@ public class TestClassGroupFactory {
 							batchName, portalTestClassJob);
 				}
 			}
-			else if (batchName.startsWith("workspace-js-unit")) {
+			else if (batchName.startsWith("workspaces-js-unit")) {
 				if (jsonObject != null) {
 					batchTestClassGroup =
 						new WorkspacesJSUnitModulesBatchTestClassGroup(
