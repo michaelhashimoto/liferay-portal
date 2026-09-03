@@ -98,7 +98,13 @@ public class PortalGitWorkingDirectory extends GitWorkingDirectory {
 		}
 
 		_jsUnitFiles = new ArrayList<>(
-			findFiles(null, "describe\\( -- '*.js' '*.jsx' '*.ts' '*.tsx'"));
+			findFiles(null, _FILE_CONTENT_SNIPPET_JS_UNIT));
+
+		File portalPrivateDir = getPortalPrivateDir();
+
+		if (portalPrivateDir != null) {
+			_jsUnitFiles.addAll(_findJSUnitFiles(portalPrivateDir));
+		}
 
 		return _jsUnitFiles;
 	}
@@ -223,13 +229,11 @@ public class PortalGitWorkingDirectory extends GitWorkingDirectory {
 	}
 
 	public List<File> getModuleDirsList(
-			List<PathMatcher> excludesPathMatchers,
+			File baseModulesDir, List<PathMatcher> excludesPathMatchers,
 			List<PathMatcher> includesPathMatchers)
 		throws IOException {
 
-		File modulesDir = new File(getWorkingDirectory(), "modules");
-
-		if (!modulesDir.exists()) {
+		if (!baseModulesDir.exists()) {
 			return new ArrayList<>();
 		}
 
@@ -241,7 +245,7 @@ public class PortalGitWorkingDirectory extends GitWorkingDirectory {
 		final List<File> moduleDirsList = new ArrayList<>();
 
 		Files.walkFileTree(
-			modulesDir.toPath(),
+			baseModulesDir.toPath(),
 			new SimpleFileVisitor<Path>() {
 
 				@Override
@@ -310,6 +314,16 @@ public class PortalGitWorkingDirectory extends GitWorkingDirectory {
 		return moduleDirsList;
 	}
 
+	public List<File> getModuleDirsList(
+			List<PathMatcher> excludesPathMatchers,
+			List<PathMatcher> includesPathMatchers)
+		throws IOException {
+
+		return getModuleDirsList(
+			new File(getWorkingDirectory(), "modules"), excludesPathMatchers,
+			includesPathMatchers);
+	}
+
 	public List<File> getModulePullSubrepoDirs() {
 		File modulesDir = new File(getWorkingDirectory(), "modules");
 
@@ -372,6 +386,28 @@ public class PortalGitWorkingDirectory extends GitWorkingDirectory {
 
 		throw new RuntimeException(
 			"Unable to find a plugins Git working directory");
+	}
+
+	public File getPortalPrivateDir() {
+		String portalPrivateDirPath = JenkinsResultsParserUtil.getProperty(
+			getTestProperties(), "liferay.portal.private.dir");
+
+		if (JenkinsResultsParserUtil.isNullOrEmpty(portalPrivateDirPath)) {
+			return null;
+		}
+
+		File portalPrivateDir = new File(portalPrivateDirPath);
+
+		if (!portalPrivateDir.isAbsolute()) {
+			portalPrivateDir = new File(
+				getWorkingDirectory(), portalPrivateDirPath);
+		}
+
+		if (!portalPrivateDir.exists()) {
+			return null;
+		}
+
+		return JenkinsResultsParserUtil.getCanonicalFile(portalPrivateDir);
 	}
 
 	public Properties getReleaseProperties() {
@@ -599,6 +635,36 @@ public class PortalGitWorkingDirectory extends GitWorkingDirectory {
 		return filteredEnv;
 	}
 
+	private List<File> _findJSUnitFiles(File gitRepositoryDir) {
+		List<File> jsUnitFiles = new ArrayList<>();
+
+		String standardOut = null;
+
+		try {
+			Process process = JenkinsResultsParserUtil.executeBashCommands(
+				false, gitRepositoryDir, _MILLIS_GIT_GREP_TIMEOUT,
+				"git grep " + _FILE_CONTENT_SNIPPET_JS_UNIT);
+
+			standardOut = JenkinsResultsParserUtil.readInputStream(
+				process.getInputStream());
+		}
+		catch (IOException | TimeoutException exception) {
+			throw new GitWorkingDirectoryRuntimeException(
+				this, "Unable to run: git grep in " + gitRepositoryDir,
+				exception);
+		}
+
+		Matcher matcher = _jsUnitFilePathPattern.matcher(standardOut);
+
+		while (matcher.find()) {
+			String filePath = matcher.group("filePath");
+
+			jsUnitFiles.add(new File(gitRepositoryDir, filePath.trim()));
+		}
+
+		return jsUnitFiles;
+	}
+
 	private boolean _isGitArchiveYarnCacheEnabled() {
 		String gitArchiveYarnCacheEnabled = null;
 
@@ -666,8 +732,15 @@ public class PortalGitWorkingDirectory extends GitWorkingDirectory {
 		"\\.gradle/", "\\.yarn/", "modules/\\.tsc/", "node_modules_cache"
 	};
 
+	private static final String _FILE_CONTENT_SNIPPET_JS_UNIT =
+		"describe\\( -- '*.js' '*.jsx' '*.ts' '*.tsx'";
+
+	private static final long _MILLIS_GIT_GREP_TIMEOUT = 60 * 1000;
+
 	private static final Pattern _esBuildFileNamePattern = Pattern.compile(
 		"@esbuild-(linux-.*?)-.*");
+	private static final Pattern _jsUnitFilePathPattern = Pattern.compile(
+		"(?<filePath>[^\\:]+)\\:.+");
 
 	private Properties _appServerProperties;
 	private List<File> _jsUnitFiles;
