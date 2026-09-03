@@ -12616,6 +12616,7 @@ send_user $expect_out(buffer)]]></echo>
 				<basedir file="tools/tck/test-results" />
 				<basedir file="util-java/test-results" />
 				<basedir file="util-taglib/test-results" />
+				<basedir file="workspaces" />
 				<basedir file="${blade.samples.dir}/liferay-workspace/tests" />
 				<basedir file="${liferay.jenkins.dir}/commands/custom-scripts/test-results" />
 				<basedir file="${liferay.faces.bridge.impl.dir}/tck/bridge-tck-main-portlet" />

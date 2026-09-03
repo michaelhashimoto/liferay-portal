@@ -56,6 +56,19 @@ public class JSUnitModulesBatchTestClassGroup
 				getIncludesPathMatchers()));
 	}
 
+	protected boolean isSkippedProjectDir(File projectDir) {
+		String projectDirPath = projectDir.getAbsolutePath();
+
+		if (projectDirPath.contains("modules") &&
+			!(projectDirPath.contains("modules/apps") ||
+			  projectDirPath.contains("modules/dxp"))) {
+
+			return true;
+		}
+
+		return false;
+	}
+
 	@Override
 	protected void setAxisTestClassGroups() {
 		super.setAxisTestClassGroups();
@@ -199,10 +212,7 @@ public class JSUnitModulesBatchTestClassGroup
 					String currentDirectoryPath =
 						currentDirectory.getAbsolutePath();
 
-					if (currentDirectoryPath.contains("modules") &&
-						!(currentDirectoryPath.contains("modules/apps") ||
-						  currentDirectoryPath.contains("modules/dxp"))) {
-
+					if (isSkippedProjectDir(currentDirectory)) {
 						return FileVisitResult.SKIP_SUBTREE;
 					}
 

@@ -60,4 +60,9 @@ public class WorkspacesJSUnitModulesBatchTestClassGroup
 		return baseModuleDirs;
 	}
 
+	@Override
+	protected boolean isSkippedProjectDir(File projectDir) {
+		return false;
+	}
+
 }
