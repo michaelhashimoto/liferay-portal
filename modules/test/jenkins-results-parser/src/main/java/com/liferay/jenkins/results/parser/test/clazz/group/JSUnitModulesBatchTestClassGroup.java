@@ -128,9 +128,13 @@ public class JSUnitModulesBatchTestClassGroup
 			getPortalGitWorkingDirectory();
 
 		for (File baseModuleDir : getBaseModuleDirs()) {
+			System.out.println("baseModuleDir=" + baseModuleDir);
+
 			List<File> moduleTestDirs = _getModulesProjectDirs(baseModuleDir);
 
 			for (File moduleTestDir : moduleTestDirs) {
+				System.out.println("moduleTestDir=" + moduleTestDir);
+
 				String moduleTestDirPath =
 					JenkinsResultsParserUtil.getCanonicalPath(moduleTestDir);
 				TestClass testClass = TestClassFactory.newTestClass(
@@ -231,6 +235,9 @@ public class JSUnitModulesBatchTestClassGroup
 						currentDirectory, "build.gradle");
 					File packageJSONFile = new File(
 						currentDirectory, "package.json");
+
+					System.out.println("buildGradleFile=" + buildGradleFile);
+					System.out.println("packageJSONFile=" + packageJSONFile);
 
 					if (!buildGradleFile.exists() ||
 						!packageJSONFile.exists()) {
