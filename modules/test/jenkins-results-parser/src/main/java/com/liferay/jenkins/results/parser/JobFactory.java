@@ -8,6 +8,8 @@ package com.liferay.jenkins.results.parser;
 import com.liferay.jenkins.results.parser.test.clazz.TestClass;
 import com.liferay.jenkins.results.parser.test.clazz.group.AxisTestClassGroup;
 import com.liferay.jenkins.results.parser.test.clazz.group.BatchTestClassGroup;
+import com.liferay.jenkins.results.parser.testray.TestrayFactory;
+import com.liferay.jenkins.results.parser.testray.TestrayRoutine;
 
 import java.io.File;
 
@@ -222,6 +224,11 @@ public class JobFactory {
 		}
 
 		System.out.println("-------------------------------------------------");
+
+		TestrayRoutine testrayRoutine = TestrayFactory.newTestrayRoutine(
+			"https://testray.liferay.com/#/project/35392/routines/590307");
+
+		System.out.println(testrayRoutine.getTestrayProject());
 	}
 
 	public static Job newJob(Build build) {

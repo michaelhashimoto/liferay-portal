@@ -378,13 +378,15 @@ public class BatchBuildTestrayCaseResult
 			sb.append("\n");
 		}
 
-		errorMessage = sb.toString();
+		errorMessage = _truncateErrorMessageLines(sb.toString());
 
 		errorMessage = errorMessage.trim();
 
 		if (JenkinsResultsParserUtil.isNullOrEmpty(errorMessage)) {
 			return null;
 		}
+
+		errorMessage = errorMessage.replaceAll("(?i)filewriter", "File-Writer");
 
 		int errorMessageMaxLength = _getErrorMessageMaxLength();
 
@@ -711,6 +713,25 @@ public class BatchBuildTestrayCaseResult
 		}
 	}
 
+	private int _getErrorMessageMaxLineCount() {
+		try {
+			String errorMessageMaxLineCount =
+				JenkinsResultsParserUtil.getBuildProperty(
+					"testray.case.result.error.message.max.line.count");
+
+			if ((errorMessageMaxLineCount != null) &&
+				errorMessageMaxLineCount.matches("\\d+")) {
+
+				return Integer.parseInt(errorMessageMaxLineCount);
+			}
+
+			return _ERROR_MESSAGE_MAX_LINE_COUNT_DEFAULT;
+		}
+		catch (IOException ioException) {
+			throw new RuntimeException(ioException);
+		}
+	}
+
 	private List<TestrayAttachment> _getGCLogsTestrayAttachments() {
 		List<TestrayAttachment> testrayAttachments = new ArrayList<>();
 
@@ -863,6 +884,39 @@ public class BatchBuildTestrayCaseResult
 		return testrayAttachments;
 	}
 
+	private String _truncateErrorMessageLines(String errorMessage) {
+		String[] errorMessageLines = errorMessage.split("\n");
+
+		int errorMessageMaxLineCount = _getErrorMessageMaxLineCount();
+
+		if (errorMessageLines.length <= errorMessageMaxLineCount) {
+			return errorMessage;
+		}
+
+		int headErrorMessageLineCount = errorMessageMaxLineCount / 2;
+
+		int tailErrorMessageLineCount =
+			errorMessageMaxLineCount - headErrorMessageLineCount;
+
+		StringBuilder sb = new StringBuilder();
+
+		for (int i = 0; i < headErrorMessageLineCount; i++) {
+			sb.append(errorMessageLines[i]);
+			sb.append("\n");
+		}
+
+		sb.append("...\n");
+
+		for (int i = errorMessageLines.length - tailErrorMessageLineCount;
+			 i < errorMessageLines.length; i++) {
+
+			sb.append(errorMessageLines[i]);
+			sb.append("\n");
+		}
+
+		return sb.toString();
+	}
+
 	private String _upperCaseFirstLetterOfEachWord(String string) {
 		StringBuilder sb = new StringBuilder(string);
 
@@ -876,6 +930,8 @@ public class BatchBuildTestrayCaseResult
 	}
 
 	private static final int _ERROR_MESSAGE_MAX_LENGTH_DEFAULT = 50000;
+
+	private static final int _ERROR_MESSAGE_MAX_LINE_COUNT_DEFAULT = 50;
 
 	private static final Pattern _dockerLogsURLPattern = Pattern.compile(
 		"https?://.+/(?<key>docker-logs/(?<fileName>[^/]+.log).txt.gz)");
