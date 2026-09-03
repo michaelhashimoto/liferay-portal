@@ -5,11 +5,13 @@
 
 package com.liferay.jenkins.results.parser.test.clazz.group;
 
-import com.liferay.jenkins.results.parser.PortalGitWorkingDirectory;
 import com.liferay.jenkins.results.parser.PortalTestClassJob;
+import com.liferay.jenkins.results.parser.job.property.JobProperty;
 
 import java.io.File;
 import java.io.IOException;
+
+import java.nio.file.PathMatcher;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,24 +38,12 @@ public class WorkspacesJSUnitModulesBatchTestClassGroup
 
 	@Override
 	protected List<File> getBaseModuleDirs() throws IOException {
-		PortalGitWorkingDirectory portalGitWorkingDirectory =
-			getPortalGitWorkingDirectory();
+		List<File> baseModuleDirs = new ArrayList<>();
 
-		File workingDirectory = portalGitWorkingDirectory.getWorkingDirectory();
-
-		List<File> baseModuleDirs = new ArrayList<>(
-			portalGitWorkingDirectory.getModuleDirsList(
-				new File(workingDirectory, "workspaces"),
-				getPathMatchers(getExcludesJobProperties()),
-				getIncludesPathMatchers()));
-
-		File portalPrivateDir = portalGitWorkingDirectory.getPortalPrivateDir();
-
-		if (portalPrivateDir != null) {
+		for (File workspacesDir : getWorkspacesDirs()) {
 			baseModuleDirs.addAll(
 				portalGitWorkingDirectory.getModuleDirsList(
-					new File(portalPrivateDir, "workspaces"),
-					getPathMatchers(getExcludesJobProperties()),
+					workspacesDir, getExcludesPathMatchers(),
 					getIncludesPathMatchers()));
 		}
 
@@ -61,8 +51,57 @@ public class WorkspacesJSUnitModulesBatchTestClassGroup
 	}
 
 	@Override
+	protected List<PathMatcher> getExcludesPathMatchers() {
+		return _getWorkspacesPathMatchers(getExcludesJobProperties());
+	}
+
+	@Override
+	protected List<PathMatcher> getIncludesPathMatchers() {
+		if (isRootCauseAnalysis()) {
+			return super.getIncludesPathMatchers();
+		}
+
+		return _getWorkspacesPathMatchers(getIncludesJobProperties());
+	}
+
+	protected List<File> getWorkspacesDirs() {
+		List<File> workspacesDirs = new ArrayList<>();
+
+		workspacesDirs.add(
+			new File(
+				portalGitWorkingDirectory.getWorkingDirectory(), "workspaces"));
+
+		File portalPrivateDir = portalGitWorkingDirectory.getPortalPrivateDir();
+
+		if (portalPrivateDir != null) {
+			workspacesDirs.add(new File(portalPrivateDir, "workspaces"));
+		}
+
+		return workspacesDirs;
+	}
+
+	@Override
 	protected boolean isSkippedProjectDir(File projectDir) {
 		return false;
+	}
+
+	private List<PathMatcher> _getWorkspacesPathMatchers(
+		List<JobProperty> jobProperties) {
+
+		List<PathMatcher> pathMatchers = new ArrayList<>();
+
+		for (File workspacesDir : getWorkspacesDirs()) {
+			for (JobProperty jobProperty : jobProperties) {
+				if (jobProperty == null) {
+					continue;
+				}
+
+				pathMatchers.addAll(
+					getPathMatchers(jobProperty.getValue(), workspacesDir));
+			}
+		}
+
+		return pathMatchers;
 	}
 
 }

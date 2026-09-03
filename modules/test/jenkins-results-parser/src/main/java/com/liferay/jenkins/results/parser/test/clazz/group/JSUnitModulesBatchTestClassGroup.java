@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.nio.file.FileVisitResult;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.PathMatcher;
 import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
 
@@ -52,8 +53,11 @@ public class JSUnitModulesBatchTestClassGroup
 			portalGitWorkingDirectory.getModuleDirsList(
 				new File(
 					portalGitWorkingDirectory.getWorkingDirectory(), "modules"),
-				getPathMatchers(getExcludesJobProperties()),
-				getIncludesPathMatchers()));
+				getExcludesPathMatchers(), getIncludesPathMatchers()));
+	}
+
+	protected List<PathMatcher> getExcludesPathMatchers() {
+		return getPathMatchers(getExcludesJobProperties());
 	}
 
 	protected boolean isSkippedProjectDir(File projectDir) {
