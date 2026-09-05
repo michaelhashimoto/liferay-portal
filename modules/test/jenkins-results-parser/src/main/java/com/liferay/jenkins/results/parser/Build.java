@@ -19,6 +19,7 @@ import org.json.JSONObject;
 
 /**
  * @author Kevin Yen
+ * @author Michael Hashimoto
  */
 public interface Build {
 
