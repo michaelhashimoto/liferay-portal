@@ -1011,7 +1011,7 @@ public class PullRequest {
 			_labels = null;
 		}
 		catch (IOException ioException) {
-			System.out.println("Unable to remove label " + labelName);
+			System.out.println("Unable to remove labels " + labelName);
 
 			ioException.printStackTrace();
 		}
