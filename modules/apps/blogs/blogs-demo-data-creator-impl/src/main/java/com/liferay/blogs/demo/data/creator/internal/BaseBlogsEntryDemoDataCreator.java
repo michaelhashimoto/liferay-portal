@@ -47,6 +47,8 @@ public abstract class BaseBlogsEntryDemoDataCreator
 
 		ServiceContext serviceContext = new ServiceContext();
 
+		System.out.println("serviceContext=" + serviceContext);
+
 		serviceContext.setAddGroupPermissions(true);
 		serviceContext.setAddGuestPermissions(true);
 		serviceContext.setScopeGroupId(groupId);
