@@ -1584,7 +1584,7 @@ app.server.type=@{app.server.type}]]></echo>
 			<for param="ci.test.results.file">
 				<path>
 					<fileset
-						dir="${ci.test.results.base.dir}/@{dir}"
+						dir="@{dir}"
 						erroronmissingdir="false"
 						excludes="**/node_modules/**"
 						includes="**/TEST-frontend-js.xml"
@@ -11092,7 +11092,7 @@ junit.jvm.override.version=21</echo>
 				<lstopwatch action="total" name="test.execution.duration" />
 
 				<if>
-					<isset property="ci.test.results.enabled" />
+					<equals arg1="${ci.test.results.enabled}" arg2="true" />
 					<then>
 						<replace-js-unit-test-results base.dir="${basedir}" dir="workspaces" />
 
