@@ -8821,7 +8821,7 @@ information. Make sure to commit in all format-javadoc results.
 				</for>
 
 				<if>
-					<isset property="ci.test.results.enabled" />
+					<equals arg1="${ci.test.results.enabled}" arg2="true" />
 					<then>
 						<replace-js-unit-test-results dir="modules" />
 					</then>
