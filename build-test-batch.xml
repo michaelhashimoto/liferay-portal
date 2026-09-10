@@ -1686,6 +1686,8 @@ app.server.type=@{app.server.type}]]></echo>
 										if (!name.contains(" > ") && (x > 0)) {
 											testName = name.substring(0, x);
 
+											testName = testName.replaceAll("[\\(|\\)]", "");
+
 											String methodName = name.substring(x);
 
 											System.out.println("testName=" + testName);
@@ -1696,7 +1698,7 @@ app.server.type=@{app.server.type}]]></echo>
 
 										File testClassFile = null;
 
-										File dir = new File(projectPath + "/" + classPath);
+										File dir = new File(baseDir, projectPath + "/" + classPath);
 
 										System.out.println("dir=" + dir);
 
@@ -1724,7 +1726,7 @@ app.server.type=@{app.server.type}]]></echo>
 
 										System.out.println("projectName=" + projectName);
 
-										testCaseClassName = String.valueOf(testClassFile);
+										testCaseClassName = JenkinsResultsParserUtil.getPathRelativeTo(testClassFile, baseDir);
 									}
 
 									System.out.println("testCaseClassName=" + testCaseClassName);
