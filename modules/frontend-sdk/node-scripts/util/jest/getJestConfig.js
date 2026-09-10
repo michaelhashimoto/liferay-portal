@@ -3,26 +3,7 @@
  * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
  */
 
-const fs = require('fs');
 const path = require('path');
-
-/**
- * Returns the path of `dir` relative to the repository that holds it, so that
- * the JUnit report identifies a test by its path within the repository.
- */
-function getRepositoryRelativePath(dir) {
-	let currentDir = dir;
-
-	while (currentDir && currentDir !== path.dirname(currentDir)) {
-		if (fs.existsSync(path.join(currentDir, '.git'))) {
-			return path.relative(currentDir, dir).split(path.sep).join('/');
-		}
-
-		currentDir = path.dirname(currentDir);
-	}
-
-	return '';
-}
 
 function getJestConfig({rootDir = '<rootDir>'}) {
 	let moduleNameMapper = {};
@@ -57,20 +38,6 @@ function getJestConfig({rootDir = '<rootDir>'}) {
 		moduleNameMapper,
 		modulePathIgnorePatterns: ['/__fixtures__/', '/build/', '/classes/'],
 		prettierPath: null,
-		reporters: [
-			'default',
-			[
-				'jest-junit',
-				{
-					ancestorSeparator: ' > ',
-					classNameTemplate: '{filepath}',
-					filePathPrefix: getRepositoryRelativePath(rootDir),
-					outputName: 'TEST-CI-frontend-js.xml',
-					suiteNameTemplate: '{filepath}',
-					titleTemplate: '{classname} > {title}',
-				},
-			],
-		],
 		resolver: path.join(__dirname, 'resolver.js'),
 		setupFiles: [path.join(__dirname, 'setup.js')],
 		setupFilesAfterEnv: [path.join(__dirname, 'setupAfterEnv.js')],

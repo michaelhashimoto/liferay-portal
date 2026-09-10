@@ -1565,6 +1565,130 @@ app.server.type=@{app.server.type}]]></echo>
 		</sequential>
 	</macrodef>
 
+	<macrodef name="replace-js-unit-test-results">
+		<attribute default="${basedir}" name="dir" />
+
+		<sequential>
+			<local name="ci.test.results.base.dir" />
+
+			<property location="@{dir}" name="ci.test.results.base.dir" />
+
+			<for param="ci.test.results.file">
+				<path>
+					<fileset
+						dir="@{dir}"
+						erroronmissingdir="false"
+						includes="**/TEST-frontend-js.xml"
+					/>
+				</path>
+				<sequential>
+					<beanshell>
+						<![CDATA[
+							import com.liferay.jenkins.results.parser.Dom4JUtil;
+							import com.liferay.jenkins.results.parser.JenkinsResultsParserUtil;
+
+							import java.io.File;
+
+							import java.util.ArrayList;
+							import java.util.List;
+
+							import org.dom4j.Document;
+							import org.dom4j.Element;
+
+							File testResultsFile = new File("@{ci.test.results.file}");
+
+							if (!testResultsFile.exists()) {
+								return;
+							}
+
+							File baseDir = new File(project.getProperty("ci.test.results.base.dir"));
+
+							String baseDirPath = JenkinsResultsParserUtil.getCanonicalPath(baseDir);
+
+							File projectDir = testResultsFile.getParentFile();
+
+							String projectDirPath = JenkinsResultsParserUtil.getCanonicalPath(projectDir);
+
+							String projectPath = projectDirPath;
+
+							if (projectDirPath.startsWith(baseDirPath + "/")) {
+								projectPath = projectDirPath.substring(baseDirPath.length() + 1);
+							}
+
+							Document document = Dom4JUtil.parse(JenkinsResultsParserUtil.read(testResultsFile));
+
+							Element rootElement = document.getRootElement();
+
+							List testSuiteElements = new ArrayList();
+
+							if (rootElement.getName().equals("testsuites")) {
+								testSuiteElements.addAll(rootElement.elements("testsuite"));
+							}
+							else {
+								testSuiteElements.add(rootElement);
+							}
+
+							for (Element testSuiteElement : testSuiteElements) {
+								testSuiteElement.addAttribute("package", projectPath);
+
+								String testSuiteName = testSuiteElement.attributeValue("name");
+
+								for (Element testCaseElement : testSuiteElement.elements("testcase")) {
+									String testClassName = null;
+
+									if ((testSuiteName != null) && testSuiteName.contains("/")) {
+
+										// The test framework names the test suite after the
+										// test file
+
+										testClassName = projectPath + "/" + testSuiteName;
+									}
+									else {
+
+										// The test framework reports the directory of the
+										// test file, so the file name is unavailable
+
+										String className = testCaseElement.attributeValue("classname");
+
+										if (className == null) {
+											continue;
+										}
+
+										String classPath = className.replace('.', '/');
+
+										String projectName = projectPath;
+
+										int index = projectName.lastIndexOf("/");
+
+										if (index != -1) {
+											projectName = projectName.substring(index + 1);
+										}
+
+										index = classPath.indexOf(projectName + "/");
+
+										if (index != -1) {
+											classPath = classPath.substring(index + projectName.length() + 1);
+										}
+
+										testClassName = projectPath + "/" + classPath;
+									}
+
+									testCaseElement.addAttribute("classname", testClassName);
+								}
+							}
+
+							File ciTestResultsFile = new File(projectDir, "CI_TEST-frontend-js.xml");
+
+							JenkinsResultsParserUtil.write(ciTestResultsFile, Dom4JUtil.format(rootElement));
+
+							System.out.println("Wrote " + ciTestResultsFile);
+						]]>
+					</beanshell>
+				</sequential>
+			</for>
+		</sequential>
+	</macrodef>
+
 	<macrodef name="run-archived-module-smoke">
 		<attribute name="database.type" />
 		<attribute name="database.version" />
@@ -8695,6 +8819,13 @@ information. Make sure to commit in all format-javadoc results.
 						</trycatch>
 					</sequential>
 				</for>
+
+				<if>
+					<isset property="ci.test.results.enabled" />
+					<then>
+						<replace-js-unit-test-results dir="modules" />
+					</then>
+				</if>
 
 				<replace
 					dir="modules"
