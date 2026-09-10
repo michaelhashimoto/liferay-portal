@@ -1566,7 +1566,7 @@ app.server.type=@{app.server.type}]]></echo>
 	</macrodef>
 
 	<target name="replace-js-unit-test-results">
-		<replace-js-unit-test-results base.dir="${basedir}" dir="modules/apps/analytics/analytics-settings-web" />
+		<replace-js-unit-test-results base.dir="${basedir}" dir="modules" />
 		<!-- <replace-js-unit-test-results base.dir="${liferay.portal.private.dir}" dir="${liferay.portal.private.dir}/workspaces" /> -->
 	</target>
 
@@ -1595,6 +1595,8 @@ app.server.type=@{app.server.type}]]></echo>
 						<![CDATA[
 							import com.liferay.jenkins.results.parser.Dom4JUtil;
 							import com.liferay.jenkins.results.parser.JenkinsResultsParserUtil;
+							import com.liferay.jenkins.results.parser.JSUnitTestName;
+							import com.liferay.jenkins.results.parser.JSUnitTestNameUtil;
 
 							import java.io.File;
 
@@ -1656,18 +1658,17 @@ app.server.type=@{app.server.type}]]></echo>
 										testCaseClassName = projectPath + "/" + testSuiteName;
 									}
 									else {
+
+										// The test framework reports the
+										// directory of the test file, so read
+										// the test files in that directory to
+										// find the one that declares the test
+
 										String className = testCaseElement.attributeValue("classname");
-										String name = testCaseElement.attributeValue("name");
 
 										if (className == null) {
 											continue;
 										}
-
-										// DELETE ME
-										if (!className.contains("src.main.resources.META-INF")) {
-											continue;
-										}
-										// THE ISSUES IS "Organizations Modal" is a describe group.
 
 										String classPath = className.replace('.', '/');
 
@@ -1685,68 +1686,52 @@ app.server.type=@{app.server.type}]]></echo>
 											classPath = classPath.substring(index + projectName.length() + 1);
 										}
 
-										String testName = null;
+										testCaseClassName = projectPath + "/" + classPath;
 
-										int x = name.indexOf(" ");
+										String name = testCaseElement.attributeValue("name");
 
-										if (!name.contains(" > ") && (x > 0)) {
-											testName = name.substring(0, x);
+										File dir = new File(baseDir, testCaseClassName);
 
-											String methodName = name.substring(x);
-
-											System.out.println("testName=" + testName);
-											System.out.println("methodName=" + methodName);
-
-											testCaseElement.addAttribute("name", testName.trim() + " > " + methodName.trim());
-										}
-
-										if (testName == null) {
-											continue;
-										}
-
-										File testClassFile = null;
-
-										File dir = new File(baseDir, projectPath + "/" + classPath);
-
-										System.out.println("dir=" + dir);
-
-										if (!dir.exists()) {
-											System.out.println("Could not find " + dir);
-
+										if ((name == null) || !dir.isDirectory()) {
 											continue;
 										}
 
 										for (File file : dir.listFiles()) {
-											String fileName = file.getName();
-
 											if (file.isDirectory()) {
 												continue;
 											}
 
-											String fileContent = JenkinsResultsParserUtil.read(file);
+											String fileName = file.getName();
 
-											if (fileContent.contains("\"" + testName + "\"") || fileContent.contains("'" + testName + "'")) {
-												testClassFile = file;
-
-												break;
+											if (!fileName.endsWith(".js") && !fileName.endsWith(".jsx") && !fileName.endsWith(".ts") && !fileName.endsWith(".tsx")) {
+												continue;
 											}
 
-											if (fileName.contains(testName.replaceAll("[\\(|\\)]", "") + ".")) {
-												testClassFile = file;
+											JSUnitTestName matchingJSUnitTestName = null;
 
-												break;
+											for (JSUnitTestName jsUnitTestName : JSUnitTestNameUtil.getJSUnitTestNames(file)) {
+
+												// Jest joins the names with a
+												// space and Vitest joins them
+												// with " > "
+
+												if (Objects.equals(name, jsUnitTestName.getName()) || Objects.equals(name, jsUnitTestName.getName(" "))) {
+													matchingJSUnitTestName = jsUnitTestName;
+
+													break;
+												}
 											}
+
+											if (matchingJSUnitTestName == null) {
+												continue;
+											}
+
+											testCaseClassName = JenkinsResultsParserUtil.getPathRelativeTo(file, baseDir);
+
+											testCaseElement.addAttribute("name", matchingJSUnitTestName.getName());
+
+											break;
 										}
-
-										if (testClassFile == null) {
-											continue;
-										}
-
-										System.out.println("testClassFile=" + testClassFile);
-
-										System.out.println("projectName=" + projectName);
-
-										testCaseClassName = JenkinsResultsParserUtil.getPathRelativeTo(testClassFile, baseDir);
 									}
 
 									System.out.println("testCaseClassName=" + testCaseClassName);
@@ -1756,11 +1741,9 @@ app.server.type=@{app.server.type}]]></echo>
 								}
 							}
 
-							File ciTestResultsFile = new File("@{ci.test.results.file}.ci");
+							JenkinsResultsParserUtil.write(testResultsFile, Dom4JUtil.format(rootElement));
 
-							JenkinsResultsParserUtil.write(ciTestResultsFile, Dom4JUtil.format(rootElement));
-
-							System.out.println("Updated " + ciTestResultsFile);
+							System.out.println("Updated " + testResultsFile);
 						]]>
 					</beanshell>
 				</sequential>
