@@ -1565,6 +1565,11 @@ app.server.type=@{app.server.type}]]></echo>
 		</sequential>
 	</macrodef>
 
+	<target name="replace-js-unit-test-results">
+		<!-- <replace-js-unit-test-results base.dir="${basedir}" dir="modules" /> -->
+		<replace-js-unit-test-results base.dir="${liferay.portal.private.dir}" dir="${liferay.portal.private.dir}/workspaces" />
+	</target>
+
 	<macrodef name="replace-js-unit-test-results">
 		<attribute default="${basedir}" name="base.dir" />
 		<attribute default="${basedir}" name="dir" />
@@ -1574,11 +1579,14 @@ app.server.type=@{app.server.type}]]></echo>
 
 			<property location="@{base.dir}" name="ci.test.results.base.dir" />
 
+			<echo>${ci.test.results.base.dir}/@{dir}</echo>
+
 			<for param="ci.test.results.file">
 				<path>
 					<fileset
-						dir="@{dir}"
+						dir="${ci.test.results.base.dir}/@{dir}"
 						erroronmissingdir="false"
+						excludes="**/node_modules/**"
 						includes="**/TEST-frontend-js.xml"
 					/>
 				</path>
@@ -1598,9 +1606,13 @@ app.server.type=@{app.server.type}]]></echo>
 
 							File testResultsFile = new File("@{ci.test.results.file}");
 
+							System.out.println("Finding " + testResultsFile);
+
 							if (!testResultsFile.exists()) {
 								return;
 							}
+
+							System.out.println("Updating " + testResultsFile);
 
 							File baseDir = new File(project.getProperty("ci.test.results.base.dir"));
 
@@ -1634,22 +1646,18 @@ app.server.type=@{app.server.type}]]></echo>
 
 								String testSuiteName = testSuiteElement.attributeValue("name");
 
+								System.out.println("##\n## testSuiteName=" + testSuiteName + "\n##\n\n");
+
 								for (Element testCaseElement : testSuiteElement.elements("testcase")) {
-									String testClassName = null;
+									String testCaseClassName = null;
+									String testCaseName = null;
 
 									if ((testSuiteName != null) && testSuiteName.contains("/")) {
-
-										// The test framework names the test suite after the
-										// test file
-
-										testClassName = projectPath + "/" + testSuiteName;
+										testCaseClassName = projectPath + "/" + testSuiteName;
 									}
 									else {
-
-										// The test framework reports the directory of the
-										// test file, so the file name is unavailable
-
 										String className = testCaseElement.attributeValue("classname");
+										String name = testCaseElement.attributeValue("name");
 
 										if (className == null) {
 											continue;
@@ -1671,16 +1679,64 @@ app.server.type=@{app.server.type}]]></echo>
 											classPath = classPath.substring(index + projectName.length() + 1);
 										}
 
-										testClassName = projectPath + "/" + classPath;
+										String testName = null;
+
+										int x = name.indexOf(" ");
+
+										if (!name.contains(" > ") && (x > 0)) {
+											testName = name.substring(0, x);
+
+											String methodName = name.substring(x);
+
+											System.out.println("testName=" + testName);
+											System.out.println("methodName=" + methodName);
+
+											testCaseElement.addAttribute("name", testName.trim() + " > " + methodName.trim());
+										}
+
+										File testClassFile = null;
+
+										File dir = new File(projectPath + "/" + classPath);
+
+										System.out.println("dir=" + dir);
+
+										if (!dir.exists()) {
+											System.out.println("Could not find " + dir);
+
+											continue;
+										}
+
+										for (File file : dir.listFiles()) {
+											String fileName = file.getName();
+
+											if (fileName.contains(testName + ".")) {
+												testClassFile = file;
+
+												break;
+											}
+										}
+
+										if (testClassFile == null) {
+											continue;
+										}
+
+										System.out.println("testClassFile=" + testClassFile);
+
+										System.out.println("projectName=" + projectName);
+
+										testCaseClassName = String.valueOf(testClassFile);
 									}
 
-									testCaseElement.addAttribute("classname", testClassName);
+									System.out.println("testCaseClassName=" + testCaseClassName);
+									System.out.println();
+
+									testCaseElement.addAttribute("classname", testCaseClassName);
 								}
 							}
 
 							JenkinsResultsParserUtil.write(testResultsFile, Dom4JUtil.format(rootElement));
 
-							System.out.println("Replaced " + testResultsFile);
+							System.out.println("Updated " + testResultsFile);
 						]]>
 					</beanshell>
 				</sequential>
