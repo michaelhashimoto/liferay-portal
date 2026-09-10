@@ -1566,8 +1566,8 @@ app.server.type=@{app.server.type}]]></echo>
 	</macrodef>
 
 	<target name="replace-js-unit-test-results">
-		<replace-js-unit-test-results base.dir="${basedir}" dir="modules" />
-		<replace-js-unit-test-results base.dir="${liferay.portal.private.dir}" dir="${liferay.portal.private.dir}/workspaces" />
+		<replace-js-unit-test-results base.dir="${basedir}" dir="modules/apps/analytics/analytics-settings-web" />
+		<!-- <replace-js-unit-test-results base.dir="${liferay.portal.private.dir}" dir="${liferay.portal.private.dir}/workspaces" /> -->
 	</target>
 
 	<macrodef name="replace-js-unit-test-results">
@@ -1663,6 +1663,12 @@ app.server.type=@{app.server.type}]]></echo>
 											continue;
 										}
 
+										// DELETE ME
+										if (!className.contains("src.main.resources.META-INF")) {
+											continue;
+										}
+										// THE ISSUES IS "Organizations Modal" is a describe group.
+
 										String classPath = className.replace('.', '/');
 
 										String projectName = projectPath;
@@ -1694,6 +1700,10 @@ app.server.type=@{app.server.type}]]></echo>
 											testCaseElement.addAttribute("name", testName.trim() + " > " + methodName.trim());
 										}
 
+										if (testName == null) {
+											continue;
+										}
+
 										File testClassFile = null;
 
 										File dir = new File(baseDir, projectPath + "/" + classPath);
@@ -1708,6 +1718,18 @@ app.server.type=@{app.server.type}]]></echo>
 
 										for (File file : dir.listFiles()) {
 											String fileName = file.getName();
+
+											if (file.isDirectory()) {
+												continue;
+											}
+
+											String fileContent = JenkinsResultsParserUtil.read(file);
+
+											if (fileContent.contains("\"" + testName + "\"") || fileContent.contains("'" + testName + "'")) {
+												testClassFile = file;
+
+												break;
+											}
 
 											if (fileName.contains(testName.replaceAll("[\\(|\\)]", "") + ".")) {
 												testClassFile = file;
@@ -1734,9 +1756,11 @@ app.server.type=@{app.server.type}]]></echo>
 								}
 							}
 
-							JenkinsResultsParserUtil.write(testResultsFile, Dom4JUtil.format(rootElement));
+							File ciTestResultsFile = new File("@{ci.test.results.file}.ci");
 
-							System.out.println("Updated " + testResultsFile);
+							JenkinsResultsParserUtil.write(ciTestResultsFile, Dom4JUtil.format(rootElement));
+
+							System.out.println("Updated " + ciTestResultsFile);
 						]]>
 					</beanshell>
 				</sequential>
