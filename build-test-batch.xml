@@ -1566,7 +1566,7 @@ app.server.type=@{app.server.type}]]></echo>
 	</macrodef>
 
 	<target name="replace-js-unit-test-results">
-		<!-- <replace-js-unit-test-results base.dir="${basedir}" dir="modules" /> -->
+		<replace-js-unit-test-results base.dir="${basedir}" dir="modules" />
 		<replace-js-unit-test-results base.dir="${liferay.portal.private.dir}" dir="${liferay.portal.private.dir}/workspaces" />
 	</target>
 
@@ -1606,8 +1606,6 @@ app.server.type=@{app.server.type}]]></echo>
 
 							File testResultsFile = new File("@{ci.test.results.file}");
 
-							System.out.println("Finding " + testResultsFile);
-
 							if (!testResultsFile.exists()) {
 								return;
 							}
@@ -1628,13 +1626,15 @@ app.server.type=@{app.server.type}]]></echo>
 								projectPath = projectDirPath.substring(baseDirPath.length() + 1);
 							}
 
+							System.out.println("##\n##projectPath=" + projectPath + "\n##\n");
+
 							Document document = Dom4JUtil.parse(JenkinsResultsParserUtil.read(testResultsFile));
 
 							Element rootElement = document.getRootElement();
 
 							List testSuiteElements = new ArrayList();
 
-							if (rootElement.getName().equals("testsuites")) {
+							if (Objects.equals(rootElement.getName(), "testsuites")) {
 								testSuiteElements.addAll(rootElement.elements("testsuite"));
 							}
 							else {
