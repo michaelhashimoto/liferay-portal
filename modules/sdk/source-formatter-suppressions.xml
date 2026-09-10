@@ -52,7 +52,6 @@
 		<suppress checks="JavaXMLSecurityCheck" files="gradle-plugins-maven-plugin-builder/src/main/java/com/liferay/gradle/plugins/maven/plugin/builder/internal/util/XMLUtil\.java" />
 		<suppress checks="JavaXMLSecurityCheck" files="gradle-plugins-maven-plugin-builder/src/main/java/com/liferay/gradle/plugins/maven/plugin/builder/task/BuildPluginDescriptorTask\.java" />
 		<suppress checks="JavaXMLSecurityCheck" files="gradle-plugins-tlddoc-builder/src/main/java/com/liferay/gradle/plugins/tlddoc/builder/internal/util/TLDUtil\.java" />
-		<suppress checks="JavaXMLSecurityCheck" files="gradle-plugins-workspace/src/main/java/com/liferay/gradle/plugins/workspace/LiferayWorkspaceNodePlugin\.java" />
 		<suppress checks="JSONValidationCheck" files="project-templates/.*" />
 		<suppress checks="LibraryVulnerabilitiesCheck" files="gradle-plugins-target-platform/src/gradleTest/.*" />
 		<suppress checks="MarkdownStylingCheck" files=".*/CHANGELOG\.md" />

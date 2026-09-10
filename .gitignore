@@ -3,7 +3,6 @@
 **/.settings
 **/.sonar
 **/TEST-frontend-js.xml
-**/TEST-CI-frontend-js.xml
 **/liferay/logs/*.log
 **/liferay/logs/*.xml
 **/liferay/logs/companies/*

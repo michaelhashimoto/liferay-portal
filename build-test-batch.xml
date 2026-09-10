@@ -1566,12 +1566,13 @@ app.server.type=@{app.server.type}]]></echo>
 	</macrodef>
 
 	<macrodef name="replace-js-unit-test-results">
+		<attribute default="${basedir}" name="base.dir" />
 		<attribute default="${basedir}" name="dir" />
 
 		<sequential>
 			<local name="ci.test.results.base.dir" />
 
-			<property location="@{dir}" name="ci.test.results.base.dir" />
+			<property location="@{base.dir}" name="ci.test.results.base.dir" />
 
 			<for param="ci.test.results.file">
 				<path>
@@ -1677,11 +1678,9 @@ app.server.type=@{app.server.type}]]></echo>
 								}
 							}
 
-							File ciTestResultsFile = new File(projectDir, "CI_TEST-frontend-js.xml");
+							JenkinsResultsParserUtil.write(testResultsFile, Dom4JUtil.format(rootElement));
 
-							JenkinsResultsParserUtil.write(ciTestResultsFile, Dom4JUtil.format(rootElement));
-
-							System.out.println("Wrote " + ciTestResultsFile);
+							System.out.println("Replaced " + testResultsFile);
 						]]>
 					</beanshell>
 				</sequential>
@@ -8823,13 +8822,13 @@ information. Make sure to commit in all format-javadoc results.
 				<if>
 					<equals arg1="${ci.test.results.enabled}" arg2="true" />
 					<then>
-						<replace-js-unit-test-results dir="modules" />
+						<replace-js-unit-test-results base.dir="${basedir}" dir="modules" />
 					</then>
 				</if>
 
 				<replace
 					dir="modules"
-					includes="**/TEST-CI-frontend-js.xml"
+					includes="**/TEST-frontend-js.xml"
 				>
 					<replacefilter>
 						<replacetoken><![CDATA[<testsuites>]]></replacetoken>
@@ -11035,6 +11034,15 @@ junit.jvm.override.version=21</echo>
 				<run-workspaces-js-unit-test test.class.group="${modules.test.class.group}" test.gradle.args="--continue" />
 
 				<lstopwatch action="total" name="test.execution.duration" />
+
+				<if>
+					<isset property="ci.test.results.enabled" />
+					<then>
+						<replace-js-unit-test-results base.dir="${basedir}" dir="workspaces" />
+
+						<replace-js-unit-test-results base.dir="${liferay.portal.private.dir}" dir="${liferay.portal.private.dir}/workspaces" />
+					</then>
+				</if>
 
 				<for param="test.results.file">
 					<path>
