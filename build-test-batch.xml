@@ -1686,8 +1686,6 @@ app.server.type=@{app.server.type}]]></echo>
 										if (!name.contains(" > ") && (x > 0)) {
 											testName = name.substring(0, x);
 
-											testName = testName.replaceAll("[\\(|\\)]", "");
-
 											String methodName = name.substring(x);
 
 											System.out.println("testName=" + testName);
@@ -1711,7 +1709,7 @@ app.server.type=@{app.server.type}]]></echo>
 										for (File file : dir.listFiles()) {
 											String fileName = file.getName();
 
-											if (fileName.contains(testName + ".")) {
+											if (fileName.contains(testName.replaceAll("[\\(|\\)]", "") + ".")) {
 												testClassFile = file;
 
 												break;
