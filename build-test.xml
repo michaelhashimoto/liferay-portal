@@ -12654,6 +12654,7 @@ send_user $expect_out(buffer)]]></echo>
 				<exclude name="**/test-classes/**" />
 				<exclude name="**/test-coverage/**" />
 				<exclude name="**/tmp/**" />
+				<exclude name="**/TEST-frontend-js.xml" />
 				<include name="**/TEST-*.xml" />
 			</multirootfileset>
 		</path>

@@ -8698,7 +8698,7 @@ information. Make sure to commit in all format-javadoc results.
 
 				<replace
 					dir="modules"
-					includes="**/TEST-frontend-js.xml"
+					includes="**/TEST-CI-frontend-js.xml"
 				>
 					<replacefilter>
 						<replacetoken><![CDATA[<testsuites>]]></replacetoken>
