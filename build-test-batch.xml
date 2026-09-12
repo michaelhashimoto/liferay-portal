@@ -1565,6 +1565,192 @@ app.server.type=@{app.server.type}]]></echo>
 		</sequential>
 	</macrodef>
 
+	<target name="replace-js-unit-test-results">
+		<replace-js-unit-test-results base.dir="${basedir}" dir="modules" />
+		<!-- <replace-js-unit-test-results base.dir="${liferay.portal.private.dir}" dir="${liferay.portal.private.dir}/workspaces" /> -->
+	</target>
+
+	<macrodef name="replace-js-unit-test-results">
+		<attribute default="${basedir}" name="base.dir" />
+		<attribute default="${basedir}" name="dir" />
+
+		<sequential>
+			<local name="ci.test.results.base.dir" />
+
+			<property location="@{base.dir}" name="ci.test.results.base.dir" />
+
+			<echo>${ci.test.results.base.dir}/@{dir}</echo>
+
+			<for param="ci.test.results.file">
+				<path>
+					<fileset
+						dir="@{dir}"
+						erroronmissingdir="false"
+						excludes="**/node_modules/**"
+						includes="**/TEST-frontend-js.xml"
+					/>
+				</path>
+				<sequential>
+					<beanshell>
+						<![CDATA[
+							import com.liferay.jenkins.results.parser.Dom4JUtil;
+							import com.liferay.jenkins.results.parser.JenkinsResultsParserUtil;
+							import com.liferay.jenkins.results.parser.JSUnitTestName;
+							import com.liferay.jenkins.results.parser.JSUnitTestNameUtil;
+
+							import java.io.File;
+
+							import java.util.ArrayList;
+							import java.util.List;
+
+							import org.dom4j.Document;
+							import org.dom4j.Element;
+
+							File testResultsFile = new File("@{ci.test.results.file}");
+
+							if (!testResultsFile.exists()) {
+								return;
+							}
+
+							System.out.println("Updating " + testResultsFile);
+
+							File baseDir = new File(project.getProperty("ci.test.results.base.dir"));
+
+							String baseDirPath = JenkinsResultsParserUtil.getCanonicalPath(baseDir);
+
+							File projectDir = testResultsFile.getParentFile();
+
+							String projectDirPath = JenkinsResultsParserUtil.getCanonicalPath(projectDir);
+
+							String projectPath = projectDirPath;
+
+							if (projectDirPath.startsWith(baseDirPath + "/")) {
+								projectPath = projectDirPath.substring(baseDirPath.length() + 1);
+							}
+
+							System.out.println("##\n##projectPath=" + projectPath + "\n##\n");
+
+							Document document = Dom4JUtil.parse(JenkinsResultsParserUtil.read(testResultsFile));
+
+							Element rootElement = document.getRootElement();
+
+							List testSuiteElements = new ArrayList();
+
+							if (Objects.equals(rootElement.getName(), "testsuites")) {
+								testSuiteElements.addAll(rootElement.elements("testsuite"));
+							}
+							else {
+								testSuiteElements.add(rootElement);
+							}
+
+							for (Element testSuiteElement : testSuiteElements) {
+								testSuiteElement.addAttribute("package", projectPath);
+
+								String testSuiteName = testSuiteElement.attributeValue("name");
+
+								System.out.println("##\n## testSuiteName=" + testSuiteName + "\n##\n\n");
+
+								for (Element testCaseElement : testSuiteElement.elements("testcase")) {
+									String testCaseClassName = null;
+									String testCaseName = null;
+
+									if ((testSuiteName != null) && testSuiteName.contains("/")) {
+										testCaseClassName = projectPath + "/" + testSuiteName;
+									}
+									else {
+
+										// The test framework reports the
+										// directory of the test file, so read
+										// the test files in that directory to
+										// find the one that declares the test
+
+										String className = testCaseElement.attributeValue("classname");
+
+										if (className == null) {
+											continue;
+										}
+
+										String classPath = className.replace('.', '/');
+
+										String projectName = projectPath;
+
+										int index = projectName.lastIndexOf("/");
+
+										if (index != -1) {
+											projectName = projectName.substring(index + 1);
+										}
+
+										index = classPath.indexOf(projectName + "/");
+
+										if (index != -1) {
+											classPath = classPath.substring(index + projectName.length() + 1);
+										}
+
+										testCaseClassName = projectPath + "/" + classPath;
+
+										String name = testCaseElement.attributeValue("name");
+
+										File dir = new File(baseDir, testCaseClassName);
+
+										if ((name == null) || !dir.isDirectory()) {
+											continue;
+										}
+
+										for (File file : dir.listFiles()) {
+											if (file.isDirectory()) {
+												continue;
+											}
+
+											String fileName = file.getName();
+
+											if (!fileName.endsWith(".js") && !fileName.endsWith(".jsx") && !fileName.endsWith(".ts") && !fileName.endsWith(".tsx")) {
+												continue;
+											}
+
+											JSUnitTestName matchingJSUnitTestName = null;
+
+											for (JSUnitTestName jsUnitTestName : JSUnitTestNameUtil.getJSUnitTestNames(file)) {
+
+												// Jest joins the names with a
+												// space and Vitest joins them
+												// with " > "
+
+												if (Objects.equals(name, jsUnitTestName.getName()) || Objects.equals(name, jsUnitTestName.getName(" "))) {
+													matchingJSUnitTestName = jsUnitTestName;
+
+													break;
+												}
+											}
+
+											if (matchingJSUnitTestName == null) {
+												continue;
+											}
+
+											testCaseClassName = JenkinsResultsParserUtil.getPathRelativeTo(file, baseDir);
+
+											testCaseElement.addAttribute("name", matchingJSUnitTestName.getName());
+
+											break;
+										}
+									}
+
+									System.out.println("testCaseClassName=" + testCaseClassName);
+									System.out.println();
+
+									testCaseElement.addAttribute("classname", testCaseClassName);
+								}
+							}
+
+							JenkinsResultsParserUtil.write(testResultsFile, Dom4JUtil.format(rootElement));
+
+							System.out.println("Updated " + testResultsFile);
+						]]>
+					</beanshell>
+				</sequential>
+			</for>
+		</sequential>
+	</macrodef>
+
 	<macrodef name="run-archived-module-smoke">
 		<attribute name="database.type" />
 		<attribute name="database.version" />
@@ -4509,6 +4695,67 @@ ${poshi.runner.testsuite.testcase.name}</echo>
 					</if>
 				</test-set-up>
 			</run-batch-test>
+		</sequential>
+	</macrodef>
+
+	<macrodef name="run-workspaces-js-unit-test">
+		<attribute name="test.class.group" />
+		<attribute default="" name="test.gradle.args" />
+
+		<sequential>
+			<beanshell>
+				<![CDATA[
+					import com.liferay.jenkins.results.parser.AntUtil;
+
+					import java.io.File;
+
+					import java.util.HashMap;
+					import java.util.Map;
+
+					File projectDir = new File(project.getProperty("project.dir"));
+
+					int failureCount = 0;
+
+					String testClassGroup = "@{test.class.group}";
+
+					for (String testTaskName : testClassGroup.split("\\s+")) {
+						testTaskName = testTaskName.trim();
+
+						if (testTaskName.isEmpty()) {
+							continue;
+						}
+
+						int index = testTaskName.indexOf(":");
+
+						if (index == -1) {
+							System.out.println("Unable to find a workspace directory in " + testTaskName);
+
+							continue;
+						}
+
+						Map parameters = new HashMap();
+
+						parameters.put("dir", testTaskName.substring(0, index));
+						parameters.put("gradle.jvm.args", "@{test.gradle.args}");
+						parameters.put("test.task", testTaskName.substring(index));
+
+						System.out.println("Executing Gradle task: " + testTaskName);
+
+						try {
+							AntUtil.callTarget(projectDir, "build-common.xml", "gradle-execute-workspaces-js-unit", parameters);
+						}
+						catch (Exception exception) {
+							System.out.println("Unable to run Gradle task " + testTaskName);
+
+							exception.printStackTrace();
+
+							failureCount++;
+						}
+					}
+
+					project.setProperty("js.unit.failure.count", String.valueOf(failureCount));
+				]]>
+			</beanshell>
 		</sequential>
 	</macrodef>
 
@@ -8635,6 +8882,13 @@ information. Make sure to commit in all format-javadoc results.
 					</sequential>
 				</for>
 
+				<if>
+					<equals arg1="${ci.test.results.enabled}" arg2="true" />
+					<then>
+						<replace-js-unit-test-results base.dir="${basedir}" dir="modules" />
+					</then>
+				</if>
+
 				<replace
 					dir="modules"
 					includes="**/TEST-frontend-js.xml"
@@ -10833,6 +11087,100 @@ junit.jvm.override.version=21</echo>
 		<antcall target="workspaces-compile">
 			<param name="batch.jdk.version" value="11" />
 		</antcall>
+	</target>
+
+	<target name="workspaces-js-unit">
+		<run-batch-test>
+			<test-action>
+				<lstopwatch action="start" name="test.execution.duration" />
+
+				<run-workspaces-js-unit-test test.class.group="${modules.test.class.group}" test.gradle.args="--continue" />
+
+				<lstopwatch action="total" name="test.execution.duration" />
+
+				<if>
+					<equals arg1="${ci.test.results.enabled}" arg2="true" />
+					<then>
+						<replace-js-unit-test-results base.dir="${basedir}" dir="workspaces" />
+
+						<replace-js-unit-test-results base.dir="${liferay.portal.private.dir}" dir="${liferay.portal.private.dir}/workspaces" />
+					</then>
+				</if>
+
+				<for param="test.results.file">
+					<path>
+						<fileset
+							dir="workspaces"
+							erroronmissingdir="false"
+							includes="**/TEST-frontend-js.xml"
+						/>
+						<fileset
+							dir="${liferay.portal.private.dir}/workspaces"
+							erroronmissingdir="false"
+							includes="**/TEST-frontend-js.xml"
+						/>
+					</path>
+					<sequential>
+						<beanshell>
+							<![CDATA[
+								import com.liferay.jenkins.results.parser.Dom4JUtil;
+								import com.liferay.jenkins.results.parser.JenkinsResultsParserUtil;
+
+								import java.io.File;
+
+								import java.util.List;
+
+								import org.dom4j.Document;
+								import org.dom4j.Element;
+
+								File testResultsFile = new File("@{test.results.file}");
+
+								if (!testResultsFile.exists()) {
+									return;
+								}
+
+								Document document = Dom4JUtil.parse(JenkinsResultsParserUtil.read(testResultsFile));
+
+								Element rootElement = document.getRootElement();
+
+								if (!rootElement.getName().equals("testsuites")) {
+									return;
+								}
+
+								List elements = rootElement.elements("testsuite");
+
+								int index = 0;
+
+								for (Element element : elements) {
+									File file = new File(testResultsFile.getParentFile(), "TEST-frontend-js-" + index + ".xml");
+
+									JenkinsResultsParserUtil.write(file, Dom4JUtil.format(element));
+
+									System.out.println("Extracted " + file + " from " + testResultsFile);
+
+									index++;
+								}
+
+								testResultsFile.delete();
+							]]>
+						</beanshell>
+					</sequential>
+				</for>
+
+				<if>
+					<not>
+						<equals arg1="${js.unit.failure.count}" arg2="0" />
+					</not>
+					<then>
+						<fail message="${js.unit.failure.count} JS unit tests failed." />
+					</then>
+				</if>
+			</test-action>
+
+			<test-set-up>
+				<setup-test-environment />
+			</test-set-up>
+		</run-batch-test>
 	</target>
 
 	<target name="workspaces-unit">
