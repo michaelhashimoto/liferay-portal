@@ -23,6 +23,6 @@ public interface TestClassFile {
 
 	public String getRelativePath(File dir);
 
-	public List<TestClassFileMethod> getTestMethods();
+	public List<TestClassFileMethod> getTestClassFileMethods();
 
 }

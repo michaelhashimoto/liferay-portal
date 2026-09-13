@@ -24,7 +24,7 @@ import java.util.Objects;
 public class JSUnitTestClassFile extends BaseTestClassFile {
 
 	@Override
-	public List<TestClassFileMethod> getTestMethods() {
+	public List<TestClassFileMethod> getTestClassFileMethods() {
 		return Collections.unmodifiableList(_testClassFileMethods);
 	}
 
@@ -788,9 +788,7 @@ public class JSUnitTestClassFile extends BaseTestClassFile {
 	}
 
 	private void _parse() {
-		_parse(
-			new HashMap<String, String>(), getContent(),
-			new ArrayList<String>());
+		_parse(new HashMap<>(), getContent(), new ArrayList<>());
 	}
 
 	private void _parse(
