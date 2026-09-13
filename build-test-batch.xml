@@ -772,31 +772,31 @@ mariadb.executable=${mariadb.executable}]]></echo>
 												}
 
 												TestClassFile matchingTestClassFile = null;
-												TestClassFileMethod matchingTestMethod = null;
+												TestClassFileMethod matchingTestClassFileMethod = null;
 
 												for (TestClassFile testClassFile : testClassFiles) {
-													for (TestClassFileMethod testMethod : testClassFile.getTestMethods()) {
-														if (testMethod.matches(name) || testMethod.matchesPattern(name)) {
+													for (TestClassFileMethod testClassFileMethod : testClassFile.getTestClassFileMethods()) {
+														if (testClassFileMethod.matches(name) || testClassFileMethod.matchesPattern(name)) {
 															matchingTestClassFile = testClassFile;
-															matchingTestMethod = testMethod;
+															matchingTestClassFileMethod = testClassFileMethod;
 
 															break;
 														}
 													}
 
-													if (matchingTestMethod != null) {
+													if (matchingTestClassFileMethod != null) {
 														continue;
 													}
 												}
 
-												if ((matchingTestClassFile == null) || (matchingTestMethod == null)) {
+												if ((matchingTestClassFile == null) || (matchingTestClassFileMethod == null)) {
 													continue;
 												}
 
 												testCaseClassName = matchingTestClassFile.getRelativePath(baseDir);
 
-												if (!matchingTestMethod.isDynamic()) {
-													testCaseElement.addAttribute("name", matchingTestMethod.getFullName());
+												if (!matchingTestClassFileMethod.isDynamic()) {
+													testCaseElement.addAttribute("name", matchingTestClassFileMethod.getFullName());
 												}
 											}
 

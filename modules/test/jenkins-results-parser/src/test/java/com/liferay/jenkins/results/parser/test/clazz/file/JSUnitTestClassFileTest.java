@@ -59,59 +59,59 @@ public class JSUnitTestClassFileTest
 	}
 
 	@Test
-	public void testGetTestMethods() throws Exception {
-		_testGetTestMethods("", new String[0]);
-		_testGetTestMethods(
+	public void testGetTestClassFileMethods() throws Exception {
+		_testGetTestClassFileMethods("", new String[0]);
+		_testGetTestClassFileMethods(
 			"const a = /alert\\((.*?)\\)/;const b = /'|\"/g;it('c', () => {});",
 			"c");
-		_testGetTestMethods(
+		_testGetTestClassFileMethods(
 			"describe('a', () => {describe('b', () => {it('c', () => {});});" +
 				"});",
 			"a > b > c");
-		_testGetTestMethods(
+		_testGetTestClassFileMethods(
 			"describe('a', () => {it('b', () => {});it('c', () => {});});",
 			"a > b", "a > c");
-		_testGetTestMethods(
+		_testGetTestClassFileMethods(
 			"describe('a', ({b}) => {it('c', () => {});});", "a > c");
-		_testGetTestMethods(
+		_testGetTestClassFileMethods(
 			"describe.each([['a'], ['b']])('%s', (c) => {" +
 				"it(`${c} d`, () => {});});",
 			"a > a d", "b > b d");
-		_testGetTestMethods("it('a ' + 'b' + \n'c', () => {});", "a bc");
-		_testGetTestMethods(
+		_testGetTestClassFileMethods("it('a ' + 'b' + \n'c', () => {});", "a bc");
+		_testGetTestClassFileMethods(
 			"it('a', () => {render(<b c={{d: 1}} />);render(<e>f</e>);});",
 			"a");
-		_testGetTestMethods("it(`a ${b} c`, () => {});", "a ${b} c");
-		_testGetTestMethods("it(`a`, () => {});", "a");
-		_testGetTestMethods("it(a, () => {});", "${a}");
-		_testGetTestMethods(
+		_testGetTestClassFileMethods("it(`a ${b} c`, () => {});", "a ${b} c");
+		_testGetTestClassFileMethods("it(`a`, () => {});", "a");
+		_testGetTestClassFileMethods("it(a, () => {});", "${a}");
+		_testGetTestClassFileMethods(
 			"it.each(['a', 'b'])('c %s', () => {});", "c a", "c b");
-		_testGetTestMethods("it.each(['a'])('b %p', () => {});", "b %p");
-		_testGetTestMethods("it.each([a.b])('c %s', () => {});", "c %s");
-		_testGetTestMethods("it.each(a)('b %s', () => {});", "b %s");
-		_testGetTestMethods(
+		_testGetTestClassFileMethods("it.each(['a'])('b %p', () => {});", "b %p");
+		_testGetTestClassFileMethods("it.each([a.b])('c %s', () => {});", "c %s");
+		_testGetTestClassFileMethods("it.each(a)('b %s', () => {});", "b %s");
+		_testGetTestClassFileMethods(
 			"test.each(['a'])('%# %% b %s', () => {});", "0 % b a");
-		_testGetTestMethods(
+		_testGetTestClassFileMethods(
 			"test.each([['a', 'b'], ['c', 'd']])('e %s %s', () => {});",
 			"e a b", "e c d");
 	}
 
 	@Test
-	public void testGetTestMethodsComments() throws Exception {
-		_testGetTestMethods(
+	public void testGetTestClassFileMethodsComments() throws Exception {
+		_testGetTestClassFileMethods(
 			"/* describe('a', () => {}); */ it('b', () => {});", "b");
-		_testGetTestMethods("// it('a', () => {});\nit('b', () => {});", "b");
-		_testGetTestMethods(
+		_testGetTestClassFileMethods("// it('a', () => {});\nit('b', () => {});", "b");
+		_testGetTestClassFileMethods(
 			"describe('a', () => {// comment\nit('b', () => {});});", "a > b");
 	}
 
 	@Test
-	public void testGetTestMethodsDeclarationWords() throws Exception {
+	public void testGetTestClassFileMethodsDeclarationWords() throws Exception {
 		String[] describeWords = ReflectionTestUtil.getFieldValue(
 			JSUnitTestClassFile.class, "_DESCRIBE_WORDS");
 
 		for (String describeWord : describeWords) {
-			_testGetTestMethods(
+			_testGetTestClassFileMethods(
 				describeWord + "('a', () => {it('b', () => {});});", "a > b");
 		}
 
@@ -119,23 +119,23 @@ public class JSUnitTestClassFileTest
 			JSUnitTestClassFile.class, "_TEST_WORDS");
 
 		for (String testWord : testWords) {
-			_testGetTestMethods(testWord + "('a', () => {});", "a");
+			_testGetTestClassFileMethods(testWord + "('a', () => {});", "a");
 		}
 	}
 
 	@Test
-	public void testGetTestMethodsEscapes() throws Exception {
-		_testGetTestMethods("it('a\\'b', () => {});", "a'b");
-		_testGetTestMethods("it('a\\nb', () => {});", "a\nb");
-		_testGetTestMethods("it(\"a\\\"b\", () => {});", "a\"b");
+	public void testGetTestClassFileMethodsEscapes() throws Exception {
+		_testGetTestClassFileMethods("it('a\\'b', () => {});", "a'b");
+		_testGetTestClassFileMethods("it('a\\nb', () => {});", "a\nb");
+		_testGetTestClassFileMethods("it(\"a\\\"b\", () => {});", "a\"b");
 	}
 
 	@Test
-	public void testGetTestMethodsExpressionTitles() throws Exception {
-		_testGetTestMethods("it(() => {}, () => {});", new String[0]);
-		_testGetTestMethods("it(a('b, c'), () => {});", "${a('b, c')}");
-		_testGetTestMethods("it(a.b, () => {});", "${a.b}");
-		_testGetTestMethods("it(a[0], () => {});", "${a[0]}");
+	public void testGetTestClassFileMethodsExpressionTitles() throws Exception {
+		_testGetTestClassFileMethods("it(() => {}, () => {});", new String[0]);
+		_testGetTestClassFileMethods("it(a('b, c'), () => {});", "${a('b, c')}");
+		_testGetTestClassFileMethods("it(a.b, () => {});", "${a.b}");
+		_testGetTestClassFileMethods("it(a[0], () => {});", "${a[0]}");
 	}
 
 	@Test
@@ -169,7 +169,7 @@ public class JSUnitTestClassFileTest
 				"it('e', () => {});});");
 
 		List<TestClassFileMethod> testClassFileMethods =
-			testClassFile.getTestMethods();
+			testClassFile.getTestClassFileMethods();
 
 		TestClassFileMethod dynamicTestClassFileMethod =
 			testClassFileMethods.get(0);
@@ -221,12 +221,12 @@ public class JSUnitTestClassFileTest
 		TestClassFile testClassFile) {
 
 		List<TestClassFileMethod> testClassFileMethods =
-			testClassFile.getTestMethods();
+			testClassFile.getTestClassFileMethods();
 
 		return testClassFileMethods.get(0);
 	}
 
-	private void _testGetTestMethods(
+	private void _testGetTestClassFileMethods(
 			String content, String... expectedFullNames)
 		throws Exception {
 
@@ -235,7 +235,7 @@ public class JSUnitTestClassFileTest
 		TestClassFile testClassFile = _getTestClassFile(content);
 
 		for (TestClassFileMethod testClassFileMethod :
-				testClassFile.getTestMethods()) {
+				testClassFile.getTestClassFileMethods()) {
 
 			fullNames.add(testClassFileMethod.getFullName());
 		}
