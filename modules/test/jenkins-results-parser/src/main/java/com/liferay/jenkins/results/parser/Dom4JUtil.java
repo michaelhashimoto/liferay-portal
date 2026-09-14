@@ -342,6 +342,37 @@ public class Dom4JUtil {
 		}
 	}
 
+	/**
+	 * Removes the text nodes of <code>element</code> that contain only
+	 * whitespace, so that formatting the element again produces the same output
+	 * rather than adding to the whitespace that the previous format added.
+	 */
+	public static void removeWhitespaceTextNodes(Element element) {
+		List<Node> nodes = element.content();
+
+		for (int i = nodes.size() - 1; i >= 0; i--) {
+			Node node = nodes.get(i);
+
+			if (node instanceof Element) {
+				removeWhitespaceTextNodes((Element)node);
+
+				continue;
+			}
+
+			if (!(node instanceof Text)) {
+				continue;
+			}
+
+			String text = node.getText();
+
+			if (text.trim(
+				).isEmpty()) {
+
+				nodes.remove(i);
+			}
+		}
+	}
+
 	public static void replace(
 		Element element, boolean cascade, String replacementText,
 		String targetText) {
