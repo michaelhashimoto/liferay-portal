@@ -5,6 +5,7 @@
 
 package com.liferay.jenkins.results.parser.testray;
 
+import com.liferay.jenkins.results.parser.JenkinsResultsParserUtil;
 import com.liferay.jenkins.results.parser.TopLevelBuildReport;
 import com.liferay.jenkins.results.parser.test.clazz.JSUnitModulesTestClass;
 import com.liferay.jenkins.results.parser.test.clazz.TestClassFactory;
@@ -18,6 +19,7 @@ import java.util.List;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import org.junit.Assert;
 import org.junit.Test;
 
 import org.mockito.Mockito;
@@ -32,50 +34,76 @@ public class JSUnitBatchBuildTestrayCaseResultTest
 	public void testGetName() throws Exception {
 		_mockWorkspace();
 
-		JSUnitModulesTestClass jsUnitModulesTestClass = _getTestClass();
+		// A batch that reports by test task names the test task
 
 		testEquals(
 			":apps:a:b:packageRunTest",
-			_getJSUnitBatchBuildTestrayCaseResult(
-				jsUnitModulesTestClass, null
-			).getName());
+			_getName("modules/apps/a/b/test/js/c.js", null));
+	}
+
+	@Test
+	public void testGetNameLong() throws Exception {
+		_mockWorkspace();
+
+		String name = JenkinsResultsParserUtil.combine(
+			"modules/dxp/apps/portal-workflow/portal-workflow-kaleo-designer",
+			"-web/test/js/designer/definition-builder/diagram-builder",
+			"/components/nodes/state/StateNode.js");
+
+		// A Testray case name holds 150 characters, so a longer name drops its
+		// leading directories rather than the name of the test class file
+
+		String shortenedName = _getName(name, name);
+
+		Assert.assertTrue(shortenedName.length() <= 150);
+		Assert.assertTrue(name.endsWith(shortenedName));
+		Assert.assertTrue(shortenedName.endsWith("state/StateNode.js"));
+		Assert.assertFalse(shortenedName.startsWith("/"));
 	}
 
 	@Test
 	public void testGetNameTestClassFile() throws Exception {
 		_mockWorkspace();
 
-		JSUnitModulesTestClass jsUnitModulesTestClass = _getTestClass();
-
-		List<TestClassMethod> testClassMethods =
-			jsUnitModulesTestClass.getTestClassMethods();
+		// A batch that reports by test class file names the test class file
 
 		testEquals(
 			"modules/apps/a/b/test/js/c.js",
-			_getJSUnitBatchBuildTestrayCaseResult(
-				jsUnitModulesTestClass, testClassMethods.get(0)
-			).getName());
+			_getName(
+				"modules/apps/a/b/test/js/c.js",
+				"modules/apps/a/b/test/js/c.js"));
 	}
 
-	private JSUnitBatchBuildTestrayCaseResult
-		_getJSUnitBatchBuildTestrayCaseResult(
-			JSUnitModulesTestClass jsUnitModulesTestClass,
-			TestClassMethod testClassMethod) {
+	private String _getName(String methodName, String testClassMethodName) {
+		JSUnitModulesTestClass jsUnitModulesTestClass = _getTestClass(
+			methodName);
 
-		return new JSUnitBatchBuildTestrayCaseResult(
-			Mockito.mock(JSUnitAxisTestClassGroup.class),
-			jsUnitModulesTestClass, testClassMethod,
-			Mockito.mock(TestrayBuild.class),
-			Mockito.mock(TopLevelBuildReport.class));
+		TestClassMethod testClassMethod = null;
+
+		if (testClassMethodName != null) {
+			List<TestClassMethod> testClassMethods =
+				jsUnitModulesTestClass.getTestClassMethods();
+
+			testClassMethod = testClassMethods.get(0);
+		}
+
+		JSUnitBatchBuildTestrayCaseResult jsUnitBatchBuildTestrayCaseResult =
+			new JSUnitBatchBuildTestrayCaseResult(
+				Mockito.mock(JSUnitAxisTestClassGroup.class),
+				jsUnitModulesTestClass, testClassMethod,
+				Mockito.mock(TestrayBuild.class),
+				Mockito.mock(TopLevelBuildReport.class));
+
+		return jsUnitBatchBuildTestrayCaseResult.getName();
 	}
 
-	private JSUnitModulesTestClass _getTestClass() {
+	private JSUnitModulesTestClass _getTestClass(String methodName) {
 		JSONObject methodJSONObject = new JSONObject();
 
 		methodJSONObject.put(
 			"ignored", false
 		).put(
-			"name", "modules/apps/a/b/test/js/c.js"
+			"name", methodName
 		);
 
 		JSONObject jsonObject = new JSONObject();
