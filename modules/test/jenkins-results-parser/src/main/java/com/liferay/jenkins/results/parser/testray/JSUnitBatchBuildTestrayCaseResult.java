@@ -141,7 +141,7 @@ public class JSUnitBatchBuildTestrayCaseResult
 	@Override
 	public String getName() {
 		if (_testClassMethod != null) {
-			return _testClassMethod.getName();
+			return _getShortenedName(_testClassMethod.getName());
 		}
 
 		JSUnitModulesTestClass jsUnitModulesTestClass = getTestClass();
@@ -208,6 +208,20 @@ public class JSUnitBatchBuildTestrayCaseResult
 		super.initBuildReport();
 	}
 
+	private String _getShortenedName(String name) {
+		if (name.length() <= _NAME_LENGTH_MAX) {
+			return name;
+		}
+
+		int index = name.indexOf("/", name.length() - _NAME_LENGTH_MAX);
+
+		if (index == -1) {
+			return name.substring(name.length() - _NAME_LENGTH_MAX);
+		}
+
+		return name.substring(index + 1);
+	}
+
 	private TestClassReport _getTestClassReport() {
 		if (_testClassReport != null) {
 			return _testClassReport;
@@ -257,6 +271,8 @@ public class JSUnitBatchBuildTestrayCaseResult
 
 		return false;
 	}
+
+	private static final int _NAME_LENGTH_MAX = 150;
 
 	private final TestClassMethod _testClassMethod;
 	private TestClassReport _testClassReport;
