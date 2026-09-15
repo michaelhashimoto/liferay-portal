@@ -3537,13 +3537,13 @@ public abstract class BaseBuild implements Build {
 			}
 		}
 
-		for (JSONObject suiteJSONObject : mergedSuiteJSONObjects.values()) {
-			TestClassResult testClassResult =
-				TestClassResultFactory.newTestClassResult(
-					this, suiteJSONObject);
+		for (Map.Entry<String, JSONObject> entry :
+				mergedSuiteJSONObjects.entrySet()) {
 
 			_testClassResults.put(
-				testClassResult.getClassName(), testClassResult);
+				entry.getKey(),
+				TestClassResultFactory.newTestClassResult(
+					this, entry.getValue()));
 		}
 	}
 

@@ -248,7 +248,13 @@ public abstract class BaseTestClassResult implements TestClassResult {
 
 	@Override
 	public TestResult getTestResult(String testName) {
-		return _testResults.get(testName);
+		for (TestResult testResult : _testResults.values()) {
+			if (Objects.equals(testName, testResult.getTestName())) {
+				return testResult;
+			}
+		}
+
+		return null;
 	}
 
 	@Override
@@ -302,7 +308,10 @@ public abstract class BaseTestClassResult implements TestClassResult {
 			TestResult testResult = TestResultFactory.newTestResult(
 				build, caseJSONObject);
 
-			_testResults.put(testResult.getTestName(), testResult);
+			_testResults.put(
+				JenkinsResultsParserUtil.combine(
+					testResult.getClassName(), "#", testResult.getTestName()),
+				testResult);
 		}
 	}
 
