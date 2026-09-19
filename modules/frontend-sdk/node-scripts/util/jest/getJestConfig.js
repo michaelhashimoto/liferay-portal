@@ -1,5 +1,5 @@
 /**
- * SPDX-FileCopyrightText: (c) 2000 Liferay, Inc. https://liferay.com
+ * SPDX-FileCopyrightText: (c) 2026 Liferay, Inc. https://liferay.com
  * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
  */
 
@@ -51,7 +51,10 @@ function getJestConfig({rootDir = '<rootDir>'}) {
 			`${rootDir}/test/stories/`,
 			'/test/__lib__/',
 		],
-		testResultsProcessor: '@liferay/jest-junit-reporter',
+		testResultsProcessor:
+			process.env.JEST_JUNIT_REPORTER === 'ci'
+				? path.join(__dirname, 'jestJUnitReporter.js')
+				: '@liferay/jest-junit-reporter',
 		transform: {
 
 			/* eslint-disable sort-keys */
