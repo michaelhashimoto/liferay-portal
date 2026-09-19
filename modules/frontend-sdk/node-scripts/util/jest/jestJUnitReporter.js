@@ -99,13 +99,11 @@ module.exports = (testReport) => {
 		if (testCase.failureMessages && testCase.failureMessages.length) {
 			const failureMessageArray = testCase.failureMessages.map(
 				(failureMessage) =>
-					failureMessage
-						.split('\n')
-						.map((message) =>
-							stripAnsi(message)
-								.split(PROJECT_DIR + path.sep)
-								.join('')
-						)
+					failureMessage.split('\n').map((message) =>
+						stripAnsi(message)
+							.split(PROJECT_DIR + path.sep)
+							.join('')
+					)
 			);
 
 			testResults.push({
@@ -116,9 +114,7 @@ module.exports = (testReport) => {
 						},
 					},
 					failureMessageArray
-						.map((failureMessage) =>
-							failureMessage.join('\n')
-						)
+						.map((failureMessage) => failureMessage.join('\n'))
 						.join('\n'),
 				],
 			});
