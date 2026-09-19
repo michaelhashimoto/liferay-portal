@@ -51,7 +51,10 @@ function getJestConfig({rootDir = '<rootDir>'}) {
 			`${rootDir}/test/stories/`,
 			'/test/__lib__/',
 		],
-		testResultsProcessor: '@liferay/jest-junit-reporter',
+		testResultsProcessor:
+			process.env.JEST_JUNIT_REPORTER === 'ci'
+				? path.join(__dirname, 'jestJUnitReporter.js')
+				: '@liferay/jest-junit-reporter',
 		transform: {
 
 			/* eslint-disable sort-keys */

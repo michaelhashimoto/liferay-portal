@@ -16,6 +16,16 @@ apply plugin: "com.liferay.settings.plugin"
 
 apply from: "build-develocity.gradle"
 
+gradle.allprojects {
+	tasks.withType(com.liferay.gradle.plugins.node.task.PackageRunTestTask) {
+		String jestJUnitReporter = System.getProperty("jest.junit.reporter")
+
+		if (jestJUnitReporter) {
+			environment "JEST_JUNIT_REPORTER", jestJUnitReporter
+		}
+	}
+}
+
 if (Boolean.getBoolean("gradle.s3.build.cache.enabled")) {
 	apply plugin: "com.github.burrunan.s3-build-cache"
 
