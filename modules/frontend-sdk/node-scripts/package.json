@@ -4,7 +4,7 @@
 		"node-scripts": "./bin.js"
 	},
 	"com.liferay": {
-		"sha256": "e3db194ec1f030cfc9ab17ec639b3a15464c03fb7ea902bc5d5cccab386d6a7e"
+		"sha256": "75adcc9d3230c323ed68e2ff2a471d41c0b78d7aa11e9c39ed0620a3350eb260"
 	},
 	"dependencies": {
 		"@babel/preset-env": "7.24.7",
@@ -49,12 +49,10 @@
 		"rtlcss": "4.3.0",
 		"sass": "1.77.5",
 		"sonda": "0.7.1",
-		"strip-ansi": "6.0.1",
 		"stylelint": "13.2.0",
 		"tar": "7.5.22",
 		"typescript": "4.7.4",
-		"unzipper": "0.11.6",
-		"xml": "1.0.1"
+		"unzipper": "0.11.6"
 	},
 	"exports": {
 		".": "./index.js",
