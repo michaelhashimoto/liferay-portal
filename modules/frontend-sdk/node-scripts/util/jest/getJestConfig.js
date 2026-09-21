@@ -51,10 +51,17 @@ function getJestConfig({rootDir = '<rootDir>'}) {
 			`${rootDir}/test/stories/`,
 			'/test/__lib__/',
 		],
+
+		// The JEST_JUNIT_REPORTER flag is temporary. It lets CI opt into the
+		// reporter that lives here while the legacy one is phased out. Once
+		// every consumer is on it, drop the flag along with the
+		// "@liferay/jest-junit-reporter" dependency instead of updating both.
+
 		testResultsProcessor:
 			process.env.JEST_JUNIT_REPORTER === 'ci'
 				? path.join(__dirname, 'jestJUnitReporter.js')
 				: '@liferay/jest-junit-reporter',
+
 		transform: {
 
 			/* eslint-disable sort-keys */
