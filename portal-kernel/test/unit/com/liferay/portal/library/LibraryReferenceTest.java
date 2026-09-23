@@ -84,6 +84,8 @@ public class LibraryReferenceTest {
 	@Test
 	public void testEclipseJarsInLib() {
 		testNonexistentJarReferences(_eclipseJars, _ECLIPSE_FILE_NAME);
+
+		Assert.assertEquals("one", "two");
 	}
 
 	@Test
