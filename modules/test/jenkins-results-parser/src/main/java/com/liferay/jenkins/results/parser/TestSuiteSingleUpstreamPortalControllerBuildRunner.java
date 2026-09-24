@@ -25,4 +25,17 @@ public class TestSuiteSingleUpstreamPortalControllerBuildRunner
 			buildData.getPortalUpstreamBranchName(), ")");
 	}
 
+	@Override
+	protected String getInvocationPortalUpstreamBranchName() {
+		String portalUpstreamBranchName =
+			super.getInvocationPortalUpstreamBranchName();
+
+		if (portalUpstreamBranchName.endsWith("-private")) {
+			return portalUpstreamBranchName.substring(
+				0, portalUpstreamBranchName.length() - "-private".length());
+		}
+
+		return portalUpstreamBranchName;
+	}
+
 }

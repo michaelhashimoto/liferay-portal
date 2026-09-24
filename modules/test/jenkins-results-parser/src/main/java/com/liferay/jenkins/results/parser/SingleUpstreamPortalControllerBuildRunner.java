@@ -24,6 +24,12 @@ public class SingleUpstreamPortalControllerBuildRunner
 		return "test-portal-upstream";
 	}
 
+	protected String getInvocationPortalUpstreamBranchName() {
+		S buildData = getBuildData();
+
+		return buildData.getPortalUpstreamBranchName();
+	}
+
 	@Override
 	protected void invokeBuild() {
 		S buildData = getBuildData();
@@ -58,7 +64,7 @@ public class SingleUpstreamPortalControllerBuildRunner
 			"PORTAL_GITHUB_URL", buildData.getPortalGitHubURL());
 		invocationParameters.put(
 			"PORTAL_UPSTREAM_BRANCH_NAME",
-			buildData.getPortalUpstreamBranchName());
+			getInvocationPortalUpstreamBranchName());
 		invocationParameters.put("SLAVE_LABEL", getSlaveLabel(testSuiteName));
 		invocationParameters.put(
 			"TEST_PORTAL_BUILD_PROFILE",

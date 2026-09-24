@@ -23,14 +23,17 @@ public class UpstreamPortalTopLevelBuild
 
 	@Override
 	public String getBranchName() {
-		String portalUpstreamBranchName = getParameterValue(
-			"PORTAL_UPSTREAM_BRANCH_NAME");
+		String branchName = super.getBranchName();
 
-		if (!JenkinsResultsParserUtil.isNullOrEmpty(portalUpstreamBranchName)) {
-			return portalUpstreamBranchName;
+		String portalUpstreamBranchName = _getPortalUpstreamBranchName();
+
+		if ((portalUpstreamBranchName == null) ||
+			branchName.equals(portalUpstreamBranchName + "-private")) {
+
+			return branchName;
 		}
 
-		return super.getBranchName();
+		return portalUpstreamBranchName;
 	}
 
 	@Override
@@ -56,11 +59,13 @@ public class UpstreamPortalTopLevelBuild
 			portalWorkspace.setOSBAsahGitHubURL(_getOSBAsahGitHubURL());
 			portalWorkspace.setOSBFaroGitHubURL(_getOSBFaroGitHubURL());
 
-			String branchName = getBranchName();
+			String portalUpstreamBranchName = _getPortalUpstreamBranchName();
 
-			if (branchName.endsWith("-private")) {
+			if ((portalUpstreamBranchName != null) &&
+				!portalUpstreamBranchName.equals(getBranchName())) {
+
 				portalWorkspace.setPortalUpstreamBranchName(
-					branchName.replace("-private", ""));
+					portalUpstreamBranchName);
 			}
 		}
 
@@ -213,6 +218,17 @@ public class UpstreamPortalTopLevelBuild
 		sb.append(gitHubBranchName);
 
 		return sb.toString();
+	}
+
+	private String _getPortalUpstreamBranchName() {
+		String portalUpstreamBranchName = getParameterValue(
+			"PORTAL_UPSTREAM_BRANCH_NAME");
+
+		if (!JenkinsResultsParserUtil.isNullOrEmpty(portalUpstreamBranchName)) {
+			return portalUpstreamBranchName;
+		}
+
+		return null;
 	}
 
 }
