@@ -55,6 +55,13 @@ public class UpstreamPortalTopLevelBuild
 			portalWorkspace.setBuildProfile(getBuildProfile());
 			portalWorkspace.setOSBAsahGitHubURL(_getOSBAsahGitHubURL());
 			portalWorkspace.setOSBFaroGitHubURL(_getOSBFaroGitHubURL());
+
+			String branchName = getBranchName();
+
+			if (branchName.endsWith("-private")) {
+				portalWorkspace.setPortalUpstreamBranchName(
+					branchName.replace("-private", ""));
+			}
 		}
 
 		WorkspaceGitRepository workspaceGitRepository =
