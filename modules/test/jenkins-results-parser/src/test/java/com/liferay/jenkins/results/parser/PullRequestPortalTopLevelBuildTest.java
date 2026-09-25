@@ -242,6 +242,13 @@ public class PullRequestPortalTopLevelBuildTest
 				ReflectionTestUtil.invoke(
 					pullRequestPortalTopLevelBuild, "_getStableJob",
 					new Class<?>[0]));
+
+			jobFactoryMockedStatic.verify(
+				() -> JobFactory.getKey(
+					Mockito.isNull(), Mockito.isNull(), Mockito.isNull(),
+					Mockito.eq(expectedPortalUpstreamBranchName),
+					Mockito.isNull(), Mockito.isNull(), Mockito.eq("stable"),
+					Mockito.eq(branchName)));
 		}
 	}
 
