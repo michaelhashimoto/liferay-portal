@@ -58,12 +58,20 @@ gradle.buildFinished {
 		workingDir = gradle.gradleUserHomeDir
 	}
 
+	println "STDOUT: ${outputByteArrayOutputStream.toString()}"
+	println "STDERR: ${errorByteArrayOutputStream.toString()}"
+
 	String errorString = errorByteArrayOutputStream.toString()
 
 	String lowerCaseErrorString = errorString.toLowerCase()
 
+	println "lowerCaseErrorString: ${lowerCaseErrorString}"
+
 	if (!lowerCaseErrorString.contains("not a git repository")) {
 		logger.error errorString
+
+		println "HMMM: ${errorString}"
+		println "WHAT: ${lowerCaseErrorString}"
 	}
 
 	String output = outputByteArrayOutputStream.toString()
