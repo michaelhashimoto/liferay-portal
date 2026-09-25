@@ -98,17 +98,15 @@ public class PortalWorkspace extends BaseWorkspace {
 		String directoryName = JenkinsResultsParserUtil.getGitDirectoryName(
 			repositoryName, portalUpstreamBranchName);
 
-		WorkspaceGitRepository portalWorkspaceGitRepository =
+		WorkspaceGitRepository workspaceGitRepository =
 			getWorkspaceGitRepository(directoryName);
 
-		if (!(portalWorkspaceGitRepository instanceof
-				PortalWorkspaceGitRepository)) {
-
+		if (!(workspaceGitRepository instanceof PortalWorkspaceGitRepository)) {
 			throw new RuntimeException(
 				"The portal workspace Git repository is not set");
 		}
 
-		return (PortalWorkspaceGitRepository)portalWorkspaceGitRepository;
+		return (PortalWorkspaceGitRepository)workspaceGitRepository;
 	}
 
 	public void setBuildProfile(Job.BuildProfile buildProfile) {

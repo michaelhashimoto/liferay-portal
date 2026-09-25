@@ -43,18 +43,20 @@ public class PullRequestPortalTopLevelBuildTest
 
 	@Test
 	public void testGetPortalUpstreamBranchName() {
+		_testGetPortalUpstreamBranchName("master-private", "master", null);
+
 		String portalUpstreamBranchName = RandomTestUtil.randomString();
 
-		_testGetPortalUpstreamBranchName("master-private", "master", null);
 		_testGetPortalUpstreamBranchName(
 			"master-private", portalUpstreamBranchName,
-			portalUpstreamBranchName);
-		_testGetPortalUpstreamBranchName(
-			RandomTestUtil.randomString(), portalUpstreamBranchName,
 			portalUpstreamBranchName);
 
 		_testGetPortalUpstreamBranchName(
 			RandomTestUtil.randomString(), null, "");
+
+		_testGetPortalUpstreamBranchName(
+			RandomTestUtil.randomString(), portalUpstreamBranchName,
+			portalUpstreamBranchName);
 	}
 
 	@Test
@@ -106,6 +108,11 @@ public class PullRequestPortalTopLevelBuildTest
 		PullRequestPortalTopLevelBuild pullRequestPortalTopLevelBuild =
 			Mockito.mock(PullRequestPortalTopLevelBuild.class);
 
+		Mockito.doCallRealMethod(
+		).when(
+			pullRequestPortalTopLevelBuild
+		).getWorkspace();
+
 		String portalUpstreamBranchName = RandomTestUtil.randomString();
 
 		Mockito.doReturn(
@@ -119,11 +126,6 @@ public class PullRequestPortalTopLevelBuildTest
 		).when(
 			pullRequestPortalTopLevelBuild
 		).getPullRequest();
-
-		Mockito.doCallRealMethod(
-		).when(
-			pullRequestPortalTopLevelBuild
-		).getWorkspace();
 
 		pullRequestPortalTopLevelBuild.getWorkspace();
 
@@ -141,6 +143,11 @@ public class PullRequestPortalTopLevelBuildTest
 		PullRequestPortalTopLevelBuild pullRequestPortalTopLevelBuild =
 			Mockito.mock(PullRequestPortalTopLevelBuild.class);
 
+		Mockito.doCallRealMethod(
+		).when(
+			pullRequestPortalTopLevelBuild
+		).getPortalUpstreamBranchName();
+
 		Mockito.doReturn(
 			branchName
 		).when(
@@ -154,11 +161,6 @@ public class PullRequestPortalTopLevelBuildTest
 		).getParameterValue(
 			"PORTAL_UPSTREAM_BRANCH_NAME"
 		);
-
-		Mockito.doCallRealMethod(
-		).when(
-			pullRequestPortalTopLevelBuild
-		).getPortalUpstreamBranchName();
 
 		testEquals(
 			expectedPortalUpstreamBranchName,
@@ -193,16 +195,16 @@ public class PullRequestPortalTopLevelBuildTest
 		PullRequestPortalTopLevelBuild pullRequestPortalTopLevelBuild =
 			Mockito.mock(PullRequestPortalTopLevelBuild.class);
 
+		Mockito.doCallRealMethod(
+		).when(
+			pullRequestPortalTopLevelBuild
+		).getPortalUpstreamBranchName();
+
 		Mockito.doReturn(
 			branchName
 		).when(
 			pullRequestPortalTopLevelBuild
 		).getBranchName();
-
-		Mockito.doCallRealMethod(
-		).when(
-			pullRequestPortalTopLevelBuild
-		).getPortalUpstreamBranchName();
 
 		Mockito.doReturn(
 			"relevant"

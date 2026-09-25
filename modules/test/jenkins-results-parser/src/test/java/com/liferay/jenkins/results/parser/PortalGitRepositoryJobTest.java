@@ -22,8 +22,12 @@ public class PortalGitRepositoryJobTest
 
 	@Test
 	public void testGetPortalUpstreamBranchName() {
-		String portalUpstreamBranchName = RandomTestUtil.randomString();
 		String upstreamBranchName = RandomTestUtil.randomString();
+
+		_testGetPortalUpstreamBranchName(
+			new JSONObject(), upstreamBranchName, upstreamBranchName);
+
+		String portalUpstreamBranchName = RandomTestUtil.randomString();
 
 		_testGetPortalUpstreamBranchName(
 			new JSONObject(
@@ -31,8 +35,7 @@ public class PortalGitRepositoryJobTest
 				"upstream_branch_name", portalUpstreamBranchName
 			),
 			portalUpstreamBranchName, upstreamBranchName);
-		_testGetPortalUpstreamBranchName(
-			new JSONObject(), upstreamBranchName, upstreamBranchName);
+
 		_testGetPortalUpstreamBranchName(
 			null, upstreamBranchName, upstreamBranchName);
 	}

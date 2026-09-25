@@ -544,17 +544,18 @@ public class PullRequestPortalTopLevelBuild
 			return null;
 		}
 
-		String branchName = getBranchName();
-		Job.BuildProfile buildProfile = getBuildProfile();
-		String jobName = getJobName();
-		String repositoryName = getBaseGitRepositoryName();
-		String stableTestSuiteName = "stable";
-
 		String portalUpstreamBranchName = getPortalUpstreamBranchName();
+
+		String branchName = getBranchName();
 
 		if (JenkinsResultsParserUtil.isNullOrEmpty(portalUpstreamBranchName)) {
 			portalUpstreamBranchName = branchName;
 		}
+
+		Job.BuildProfile buildProfile = getBuildProfile();
+		String jobName = getJobName();
+		String repositoryName = getBaseGitRepositoryName();
+		String stableTestSuiteName = "stable";
 
 		PortalGitWorkingDirectory portalGitWorkingDirectory = null;
 
