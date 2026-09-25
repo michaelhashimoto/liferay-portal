@@ -5,6 +5,7 @@
 
 package com.liferay.jenkins.results.parser.test.clazz;
 
+import com.liferay.jenkins.results.parser.JenkinsResultsParserUtil;
 import com.liferay.jenkins.results.parser.RandomTestUtil;
 
 import java.io.File;
@@ -41,7 +42,8 @@ public class BaseTestClassTest extends com.liferay.jenkins.results.parser.Test {
 		JSONObject baseTestClassJSONObject = baseTestClass.getJSONObject();
 
 		testEquals(
-			testClassFile.getPath(), baseTestClassJSONObject.get("file"));
+			JenkinsResultsParserUtil.getCanonicalPath(testClassFile),
+			baseTestClassJSONObject.get("file"));
 	}
 
 }

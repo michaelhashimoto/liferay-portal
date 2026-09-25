@@ -5,6 +5,7 @@
 
 package com.liferay.jenkins.results.parser.test.clazz;
 
+import com.liferay.jenkins.results.parser.JenkinsResultsParserUtil;
 import com.liferay.jenkins.results.parser.RandomTestUtil;
 import com.liferay.jenkins.results.parser.ReflectionTestUtil;
 
@@ -47,7 +48,7 @@ public class JUnitTestClassTest
 		JSONObject jUnitTestClassJSONObject = jUnitTestClass.getJSONObject();
 
 		testEquals(
-			testPropertiesFile.getPath(),
+			JenkinsResultsParserUtil.getCanonicalPath(testPropertiesFile),
 			jUnitTestClassJSONObject.get("test_properties_file"));
 	}
 

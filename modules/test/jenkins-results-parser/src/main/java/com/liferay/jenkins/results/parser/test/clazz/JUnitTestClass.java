@@ -84,7 +84,8 @@ public class JUnitTestClass extends BaseTestClass {
 
 		if ((_testPropertiesFile != null) && _testPropertiesFile.exists()) {
 			jsonObject.put(
-				"test_properties_file", _testPropertiesFile.getPath());
+				"test_properties_file",
+				JenkinsResultsParserUtil.getCanonicalPath(_testPropertiesFile));
 		}
 
 		if (!JenkinsResultsParserUtil.isNullOrEmpty(
