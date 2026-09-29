@@ -508,11 +508,18 @@ passwords.encryption.algorithm=NONE</echo>
 					<local name="gradle.wrapper.bin.file.name" />
 					<local name="gradle.wrapper.bin.file.url" />
 
+					<echo>project.dir=${project.dir}</echo>
+
 					<beanshell>
 						<![CDATA[
+							System.out.println("java.class.path=" + project.getProperty("java.class.path"));
+
 							import com.liferay.jenkins.results.parser.JenkinsResultsParserUtil;
 
 							File gradleWrapperPropertiesFile = new File("@{workspace.dir}" + "/gradle/wrapper/gradle-wrapper.properties");
+
+							System.out.println("gradleWrapperPropertiesFile=" + gradleWrapperPropertiesFile);
+							System.out.println("gradleWrapperPropertiesFile.exists()=" + gradleWrapperPropertiesFile.exists());
 
 							Properties gradleWrapperProperties = JenkinsResultsParserUtil.getProperties(new File[] {gradleWrapperPropertiesFile});
 
@@ -12088,6 +12095,8 @@ send_user $expect_out(buffer)]]></echo>
 		</antelope:stringutil>
 
 		<property location="${dir}" name="workspace.dir" />
+
+		<echo>workspace.dir=${workspace.dir}</echo>
 
 		<download-gradle-wrapper-binary workspace.dir="${workspace.dir}" />
 
