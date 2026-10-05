@@ -331,6 +331,7 @@ public abstract class BaseBundlePersistentResource
 					continue;
 				}
 
+				_missingCount = 0;
 				_queueItemWhy = queueItem.getWhy();
 
 				long queueDuration =
@@ -359,6 +360,7 @@ public abstract class BaseBundlePersistentResource
 				producerBuildURL = queueItem.getExecutableURL();
 
 				if (!JenkinsResultsParserUtil.isURL(producerBuildURL)) {
+					_missingCount = 0;
 					_queueItemWhy = queueItem.getWhy();
 
 					return;
@@ -370,6 +372,8 @@ public abstract class BaseBundlePersistentResource
 			}
 
 			if (JenkinsResultsParserUtil.isURL(producerBuildURL)) {
+				_missingCount = 0;
+
 				setStatus(Status.IN_PROGRESS);
 
 				setProducerBuildURL(producerBuildURL);
