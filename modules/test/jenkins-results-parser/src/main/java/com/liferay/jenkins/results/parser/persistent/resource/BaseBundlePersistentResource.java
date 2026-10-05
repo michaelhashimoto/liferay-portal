@@ -210,7 +210,7 @@ public abstract class BaseBundlePersistentResource
 	}
 
 	@Override
-	protected void update() {
+	protected synchronized void update() {
 		JSONObject dataJSONObject = getDataJSONObject();
 
 		if (dataJSONObject == null) {
