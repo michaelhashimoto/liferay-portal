@@ -6,8 +6,10 @@
 package com.liferay.jenkins.results.parser.testray;
 
 import com.liferay.jenkins.results.parser.Build;
+import com.liferay.jenkins.results.parser.BuildDatabase;
 import com.liferay.jenkins.results.parser.JenkinsResultsParserUtil;
 import com.liferay.jenkins.results.parser.Retryable;
+import com.liferay.jenkins.results.parser.TopLevelBuild;
 import com.liferay.jenkins.results.parser.TopLevelBuildReport;
 import com.liferay.jenkins.results.parser.test.clazz.BaseAntTargetTestClass;
 import com.liferay.jenkins.results.parser.test.clazz.SemVerModulesTestClass;
@@ -469,6 +471,19 @@ public class TestrayFactory {
 		TestrayProject testrayProject, JSONObject jsonObject) {
 
 		return new TestrayComponent(testrayProject, jsonObject);
+	}
+
+	public static TestrayContext newTestrayContext(
+		BuildDatabase buildDatabase, TopLevelBuild topLevelBuild) {
+
+		return new BuildTestrayContext(buildDatabase, topLevelBuild);
+	}
+
+	public static TestrayContext newTestrayContext(
+		BuildDatabase buildDatabase, TopLevelBuildReport topLevelBuildReport) {
+
+		return new BuildReportTestrayContext(
+			buildDatabase, topLevelBuildReport);
 	}
 
 	public static TestrayFactor.Category newTestrayFactorCategory(
