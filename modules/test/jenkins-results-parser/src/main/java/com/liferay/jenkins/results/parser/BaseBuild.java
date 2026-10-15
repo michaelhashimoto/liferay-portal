@@ -2515,6 +2515,10 @@ public abstract class BaseBuild implements Build {
 		return _buildURLMultiPattern;
 	}
 
+	protected DownstreamBuildReport getCachedDownstreamBuildReport() {
+		return _cachedDownstreamBuildReport;
+	}
+
 	protected String getDiffDurationString(long diffDuration) {
 		String diffDurationPrefix = "";
 
