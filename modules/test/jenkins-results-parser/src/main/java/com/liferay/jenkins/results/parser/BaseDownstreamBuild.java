@@ -787,22 +787,6 @@ public class BaseDownstreamBuild extends BaseBuild implements DownstreamBuild {
 	}
 
 	@Override
-	public void reset() {
-		super.reset();
-
-		_downstreamBuildReport = null;
-		_testrayCaseResultURL = null;
-
-		Build parentBuild = getParentBuild();
-
-		if (parentBuild instanceof BaseParentBuild) {
-			BaseParentBuild baseParentBuild = (BaseParentBuild)parentBuild;
-
-			baseParentBuild.removeTestrayCaseResultURL(getAxisName());
-		}
-	}
-
-	@Override
 	public void saveBuildURLInBuildDatabase() {
 		String buildURL = getBuildURL();
 
