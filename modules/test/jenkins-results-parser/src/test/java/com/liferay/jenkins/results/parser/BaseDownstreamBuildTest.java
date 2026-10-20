@@ -423,6 +423,7 @@ public class BaseDownstreamBuildTest
 			createdBaseDownstreamBuild.getTestrayCaseResultURL());
 
 		AtomicBoolean monitorAvailable = new AtomicBoolean();
+		AtomicBoolean topLevelBuildLocked = new AtomicBoolean();
 
 		BaseDownstreamBuild lockedBaseDownstreamBuild =
 			_mockGetTestrayCaseResultURL();
@@ -439,6 +440,8 @@ public class BaseDownstreamBuildTest
 			lockedTopLevelBuild.getTestrayContext()
 		).thenAnswer(
 			invocation -> {
+				topLevelBuildLocked.set(Thread.holdsLock(lockedTopLevelBuild));
+
 				Thread thread = new Thread(
 					() -> {
 						synchronized (lockedBaseDownstreamBuild) {
@@ -456,6 +459,7 @@ public class BaseDownstreamBuildTest
 
 		Assert.assertNull(lockedBaseDownstreamBuild.getTestrayCaseResultURL());
 		Assert.assertTrue(monitorAvailable.get());
+		Assert.assertTrue(topLevelBuildLocked.get());
 	}
 
 	@Test

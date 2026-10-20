@@ -549,9 +549,13 @@ public class BaseDownstreamBuild extends BaseBuild implements DownstreamBuild {
 			}
 
 			try {
-				TestrayCaseResult testrayCaseResult =
-					TestrayFactory.newDownstreamBuildTestrayCaseResult(
-						this, topLevelBuild.getTestrayContext());
+				TestrayCaseResult testrayCaseResult = null;
+
+				synchronized (topLevelBuild) {
+					testrayCaseResult =
+						TestrayFactory.newDownstreamBuildTestrayCaseResult(
+							this, topLevelBuild.getTestrayContext());
+				}
 
 				if (testrayCaseResult == null) {
 					return null;
