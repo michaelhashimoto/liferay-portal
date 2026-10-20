@@ -427,10 +427,6 @@ public class TestrayCaseResult {
 		_testrayCase = testrayCase;
 	}
 
-	public synchronized void setTestrayCaseResultURL(URL testrayCaseResultURL) {
-		_testrayCaseResultURL = testrayCaseResultURL;
-	}
-
 	public void setTestrayComponent(TestrayComponent testrayComponent) {
 		_testrayComponent = testrayComponent;
 	}
