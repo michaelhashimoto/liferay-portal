@@ -55,6 +55,4 @@ public interface ParentBuild extends Build {
 
 	public void removeDownstreamBuild(Build build);
 
-	public void waitForDownstreamTestrayCaseResultURLs();
-
 }
