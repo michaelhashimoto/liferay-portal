@@ -146,7 +146,7 @@ public abstract class BaseWorkspaceGitRepository
 
 		String branchNamePrefix = getUpstreamBranchName() + "-temp";
 
-		if (!branchName.contains(branchNamePrefix)) {
+		if (!branchName.startsWith(branchNamePrefix)) {
 			branchName = branchName.replaceAll(".+-temp", branchNamePrefix);
 		}
 
