@@ -10743,6 +10743,16 @@ ${output.content}</echo>
 						<delete file="@{log.file}" />
 					</sequential>
 				</for>
+
+				<echo>Deleting cached Liferay artifacts so baseline resolves them from the repository.</echo>
+
+				<delete includeemptydirs="true">
+					<fileset
+						dir="${project.dir}/.gradle/caches/modules-2/files-2.1"
+						erroronmissingdir="false"
+						includes="com.liferay/**,com.liferay.*/**"
+					/>
+				</delete>
 			</test-set-up>
 		</run-batch-test>
 	</target>
