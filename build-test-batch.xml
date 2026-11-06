@@ -10753,6 +10753,8 @@ ${output.content}</echo>
 						includes="com.liferay/**,com.liferay.*/**"
 					/>
 				</delete>
+
+				<echo>Deleting cached Liferay artifacts completed.</echo>
 			</test-set-up>
 		</run-batch-test>
 	</target>
