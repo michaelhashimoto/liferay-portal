@@ -10727,27 +10727,37 @@ ${output.content}</echo>
 						</trycatch>
 
 						<echo>Deleting cached Liferay artifacts so baseline resolves them from the repository.</echo>
+						<echo>${project.dir}/.gradle/caches/modules-2/files-2.1</echo>
 
-						<delete includeemptydirs="true">
+						<for param="artifact.file">
 							<fileset
 								dir="${project.dir}/.gradle/caches/modules-2/files-2.1"
-								erroronmissingdir="false"
-								includes="com.liferay/**,com.liferay.*/**"
-							/>
-						</delete>
+							>
+								<include name="com.liferay/**" />
+								<include name="com.liferay.*/**" />
+							</fileset>
+							<sequential>
+								<delete file="@{artifact.file}" />
+							</sequential>
+						</for>
 
 						<echo>Deleting cached Liferay artifacts completed.</echo>
 					</then>
 					<else>
 						<echo>Deleting cached Liferay artifacts so baseline resolves them from the repository.</echo>
+						<echo>${project.dir}/.gradle/caches/modules-2/files-2.1</echo>
 
-						<delete includeemptydirs="true">
+						<for param="artifact.file">
 							<fileset
 								dir="${project.dir}/.gradle/caches/modules-2/files-2.1"
-								erroronmissingdir="false"
-								includes="com.liferay/**,com.liferay.*/**"
-							/>
-						</delete>
+							>
+								<include name="com.liferay/**" />
+								<include name="com.liferay.*/**" />
+							</fileset>
+							<sequential>
+								<delete file="@{artifact.file}" />
+							</sequential>
+						</for>
 
 						<echo>Deleting cached Liferay artifacts completed.</echo>
 
