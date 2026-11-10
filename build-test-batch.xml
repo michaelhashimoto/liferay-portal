@@ -10628,6 +10628,19 @@ ${output.content}</echo>
 			</test-action>
 
 			<test-set-up>
+				<echo>Deleting cached Liferay artifacts so baseline resolves them from the repository.</echo>
+
+				<delete includeemptydirs="true">
+					<fileset
+						dir="${project.dir}/.gradle/caches/modules-2/files-2.1"
+					>
+						<include name="com.liferay/**" />
+						<include name="com.liferay.jakarta.portlet/**" />
+						<include name="com.liferay.portal/**" />
+						<include name="com.liferay.webjars/**" />
+					</fileset>
+				</delete>
+
 				<if>
 					<and>
 						<or>
