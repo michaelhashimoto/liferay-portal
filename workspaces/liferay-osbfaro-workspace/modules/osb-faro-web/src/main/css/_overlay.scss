@@ -1,9 +1,0 @@
-.overlay-content-root {
-	position: absolute;
-	z-index: $overlayZIndex;
-
-	&.base-select-container,
-	&.dropdown-root {
-		z-index: $menuZIndex;
-	}
-}
