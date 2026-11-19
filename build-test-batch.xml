@@ -11242,20 +11242,14 @@ junit.jvm.override.version=21</echo>
 						if (!prohibitedFilePaths.isEmpty()) {
 							StringBuilder sb = new StringBuilder();
 
-							sb.append("These file paths are not allowed in ");
+							sb.append("FAILURE: These file paths are not allowed in ");
 							sb.append(getCurrentBranch());
-							sb.append(". Submit them to ");
+							sb.append(", please submit them to ");
 							sb.append(getCompanionBranch());
-							sb.append(", or add them to working.dir.shared.allowed.file.paths");
-
-							if (privateBranch) {
-								sb.append(" or working.dir.private.allowed.file.paths");
-							}
-
-							sb.append(" in test.properties:");
+							sb.append(":");
 
 							for (String prohibitedFilePath : prohibitedFilePaths) {
-								sb.append("\n    ");
+								sb.append("\n>    ");
 								sb.append(prohibitedFilePath);
 							}
 
