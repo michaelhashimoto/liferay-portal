@@ -10465,34 +10465,38 @@ ${output.content}</echo>
 	<target name="publish-source-formatter">
 		<fail message="Please set the property ${source.formatter.s3.path}." unless="source.formatter.s3.path" />
 
-		<local name="source.formatter.tree.sha" />
+		<fail message="Please set the property ${source.formatter.tree.sha}." unless="source.formatter.tree.sha" />
 
-		<exec executable="git" failonerror="true" outputproperty="source.formatter.tree.sha">
-			<arg value="rev-parse" />
-			<arg value="HEAD:modules/util/source-formatter" />
-		</exec>
+		<local name="source.formatter.publish.failure" />
 
-		<beanshell>
-			<![CDATA[
-				import com.liferay.jenkins.results.parser.CloudBucketUtil;
+		<trycatch property="source.formatter.publish.failure">
+			<try>
+				<beanshell>
+					<![CDATA[
+						import com.liferay.jenkins.results.parser.CloudBucketUtil;
 
-				import java.io.File;
+						import java.io.File;
 
-				File libDir = new File(project.getBaseDir(), "tools/sdk/dependencies/com.liferay.source.formatter/lib");
+						File libDir = new File(project.getBaseDir(), "tools/sdk/dependencies/com.liferay.source.formatter/lib");
 
-				File jarFile = new File(libDir, "com.liferay.source.formatter.jar");
+						File jarFile = new File(libDir, "com.liferay.source.formatter.jar");
 
-				if (!jarFile.exists()) {
-					throw new RuntimeException("Unable to find " + jarFile);
-				}
+						if (!jarFile.exists() || (jarFile.length() == 0)) {
+							throw new RuntimeException("Unable to find " + jarFile);
+						}
 
-				String treeSHA = project.getProperty("source.formatter.tree.sha").trim();
+						String treeSHA = project.getProperty("source.formatter.tree.sha").trim();
 
-				CloudBucketUtil.syncS3Files(project.getProperty("source.formatter.s3.path") + "/snapshots/" + treeSHA, libDir.getAbsolutePath());
+						CloudBucketUtil.syncS3Files(project.getProperty("source.formatter.s3.path") + "/snapshots/" + treeSHA, libDir.getAbsolutePath());
 
-				System.out.println("Published source-formatter to S3 at tree SHA " + treeSHA);
-			]]>
-		</beanshell>
+						System.out.println("Published source-formatter to S3 at tree SHA " + treeSHA);
+					]]>
+				</beanshell>
+			</try>
+			<catch>
+				<echo>Unable to publish source-formatter: ${source.formatter.publish.failure}</echo>
+			</catch>
+		</trycatch>
 	</target>
 
 	<target name="release-functional-smoke-tomcat-mysql84">
@@ -10630,6 +10634,10 @@ ${output.content}</echo>
 						<echo>Unable to find cached source-formatter. Using the released source-formatter.</echo>
 
 						<antcall inheritAll="false" target="setup-sdk" />
+
+						<antcall target="publish-source-formatter">
+							<param name="source.formatter.tree.sha" value="${source.formatter.tree.sha}" />
+						</antcall>
 					</then>
 					<else>
 						<echo>Unable to find cached source-formatter. Building from source.</echo>
@@ -10645,7 +10653,9 @@ ${output.content}</echo>
 							</then>
 						</if>
 
-						<antcall target="publish-source-formatter" />
+						<antcall target="publish-source-formatter">
+							<param name="source.formatter.tree.sha" value="${source.formatter.tree.sha}" />
+						</antcall>
 					</else>
 				</if>
 			</catch>
@@ -10859,7 +10869,18 @@ ${output.content}</echo>
 
 						<echo>Running com.liferay.source.formatter.jar from HEAD.</echo>
 
-						<antcall target="publish-source-formatter" />
+						<local name="source.formatter.tree.sha" />
+
+						<property file="source.formatter.tree.properties" />
+
+						<exec executable="git" failonerror="true" outputproperty="source.formatter.tree.sha" unless:set="source.formatter.tree.sha">
+							<arg value="rev-parse" />
+							<arg value="HEAD:modules/util/source-formatter" />
+						</exec>
+
+						<antcall target="publish-source-formatter">
+							<param name="source.formatter.tree.sha" value="${source.formatter.tree.sha}" />
+						</antcall>
 					</then>
 					<else>
 						<lstopwatch action="start" name="setup.source.format" />
